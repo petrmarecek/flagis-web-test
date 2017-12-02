@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
-
+import Logo from 'assets/img/logo.svg'
 
 class NavigationLanding extends Component {
 
@@ -20,7 +20,7 @@ class NavigationLanding extends Component {
         <div className="navbar-landing__flex-container navbar-landing__flex-container--flex-row">
           <div className="navbar-landing__logo">
             <Link to="/landing-page">
-              <img src="../../assets/img/logo.svg"/>
+              <img src={Logo} />
             </Link>
           </div>
 

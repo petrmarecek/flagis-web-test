@@ -4,6 +4,13 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import cx from 'classnames'
+import Logo from 'assets/img/logo.svg'
+import CheckImg from 'assets/img/check.svg'
+import AndroidImg from 'assets/img/android_b.svg'
+
+import MainImg from 'assets/img/img.png'
+import MainImg2x from 'assets/img/img@2x.png'
+import MainImg3x from 'assets/img/img@3x.png'
 
 import { controlRedirectTasks } from 'redux/store/auth/auth.actions'
 import NavigationLanding from 'components/navigation/navigation-landing'
@@ -64,7 +71,7 @@ class LandingPage extends Component {
           <div className="landing-container__mobile-ledge__flex-container landing-container__mobile-ledge__flex-container--flex-row">
             <div className="landing-container__mobile-ledge__logo">
               <div className="landing-container__mobile-ledge__logo__border">
-                <img src="../../assets/img/logo.svg"/>
+                <img src={Logo} />
               </div>
             </div>
 
@@ -86,10 +93,8 @@ class LandingPage extends Component {
               <div className="landing-page__text-main">
                 <p className="landing-page__text-main--color">Manage<br/> all your things</p><p><b>that matter!</b></p>
               </div>
-
               <div className="landing-page__img">
-                <img src="../../assets/img/img@3x.png"
-                      srcSet="../../assets/img/img.png 681w, ../../assets/img/img@2x.png 1362w, l../../assets/img/img@3x.png 2043w" />
+                <img src={MainImg} srcSet={`${MainImg} 681w, ${MainImg2x} 1362w, ${MainImg3x} 2043w`} />
               </div>
             </div>
           </div>
@@ -97,32 +102,25 @@ class LandingPage extends Component {
           <div className="landing-page__info">
             <div className="landing-page__flex-container landing-page__flex-container--flex-row landing-page__flex-container--flex-column">
               <div className="landing-page__check-img">
-                <img src="../../assets/img/check.svg" />
+                <img src={CheckImg} />
               </div>
               <div className="landing-page__text-info">
                 <p><b>One clear view over tasks</b> that matter to you.</p>
               </div>
             </div>
-
-
-            <div className="landing-page__line">
-            </div>
-
+            <div className="landing-page__line" />
             <div className="landing-page__flex-container landing-page__flex-container--flex-row landing-page__flex-container--flex-column">
               <div className="landing-page__check-img">
-                <img src="../../assets/img/check.svg" />
+                <img src={CheckImg} />
               </div>
               <div className="landing-page__text-info">
                 <p>Use tags for marking your tasks and <b>manage them the way you like</b>.</p>
               </div>
             </div>
-
-            <div className="landing-page__line">
-            </div>
-
+            <div className="landing-page__line" />
             <div className="landing-page__flex-container landing-page__flex-container--flex-row landing-page__flex-container--flex-column">
               <div className="landing-page__check-img">
-                <img src="../../assets/img/check.svg" />
+                <img src={CheckImg} />
               </div>
               <div className="landing-page__text-info">
                 <p><b>Create your own permanent hierarchic filters</b> of tags to keep your regular views.</p>
@@ -137,7 +135,7 @@ class LandingPage extends Component {
 
             <div className="landing-page__google">
               <a href="https://play.google.com/store/apps/details?id=com.flagis.mobile&ah=DFhuZmCYbFHAjJ2y8pWz6B5JeCE&hl=en-GB">
-                <img src="../../assets/img/android_b.svg"/>
+                <img src={AndroidImg} />
               </a>
             </div>
           </div>
