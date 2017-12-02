@@ -1,39 +1,39 @@
-import { Schema, arrayOf } from 'normalizr';
+import { schema } from 'normalizr';
 
-const tag = new Schema('tags', { idAttribute: 'id' })
-const tagList = arrayOf(tag)
+const tag = new schema.Entity('tags', { idAttribute: 'id' })
+const tagList = new schema.Array(tag)
 
-const task = new Schema('tasks', { idAttribute: 'id' })
-const taskList = arrayOf(task)
+const task = new schema.Entity('tasks', { idAttribute: 'id' })
+const taskList = new schema.Array(task)
 
 task.define({
-  tags: arrayOf(tag),
+  tags: new schema.Array(tag),
 })
 
-const treeItem = new Schema('treeItem', { idAttribute: 'id' })
+const treeItem = new schema.Entity('treeItem', { idAttribute: 'id' })
 treeItem.define({
   tag
 })
 
-const tree = new Schema('tree', { idAttribute: 'parentId' })
-const treeList = arrayOf(tree)
+const tree = new schema.Entity('tree', { idAttribute: 'parentId' })
+const treeList = new schema.Array(tree)
 
 tree.define({
-  items: arrayOf(treeItem)
+  items: new schema.Array(treeItem)
 })
 
-const comment = new Schema('comment', { idAttribute: 'id' })
-const commentList = arrayOf(comment)
+const comment = new schema.Entity('comment', { idAttribute: 'id' })
+const commentList = new schema.Array(comment)
 
 comment.define({
-  items: arrayOf(comment)
+  items: new schema.Array(comment)
 })
 
-const attachment = new Schema('attachment', { idAttribute: 'id' })
-const attachmentList = arrayOf(attachment)
+const attachment = new schema.Entity('attachment', { idAttribute: 'id' })
+const attachmentList = new schema.Array(attachment)
 
 attachment.define({
-  items: arrayOf(attachment)
+  items: new schema.Array(attachment)
 })
 
 export default {

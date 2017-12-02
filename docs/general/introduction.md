@@ -98,12 +98,12 @@ Webpack requires an entry point to your application. Think of it as a door to yo
 - A redux `store` is instantiated.
 - A `history` object is created, which remembers all the browsing history for your app. This is used by the router to know which page your users visit. (very useful for analytics, by the way)
 - A Router is connected to Redux.
-- Hot module replacement setup via vanilla [Webpack HMR](https://webpack.js.org/guides/hot-module-replacement/) that makes all the reducers, injected sagas, components, containers, and i18n messages hot reloadable. 
+- Hot module replacement setup via vanilla [Webpack HMR](https://webpack.js.org/guides/hot-module-replacement/) that makes all the reducers, injected sagas, components, containers, and i18n messages hot reloadable.
 - i18n internationalization support setup.
 - Offline plugin support to make your app [offline-first](https://developers.google.com/web/fundamentals/getting-started/codelabs/offline/).
 - `ReactDOM.render()` not only renders the [root react component](https://github.com/react-boilerplate/react-boilerplate/blob/master/app/containers/App/index.js) called `<App />`, of your application, but it renders it with `<Provider />`, `<LanguageProvider />` and `<Router />`.
  * `<Provider />` connects your app with the redux `store`.
- * `<LanguageProvider />` provides language translation support to your app. 
+ * `<LanguageProvider />` provides language translation support to your app.
 
 ### Redux
 
@@ -113,7 +113,7 @@ Redux is going to play a huge role in your application. If you're new to Redux, 
 - [ ] Understand the three principles of Redux
 - [ ] Implement Redux in a small React app of yours
 
-The Redux `store` is the heart of your application. Check out [`configureStore.js`](https://github.com/react-boilerplate/react-boilerplate/blob/master/app/configureStore.js) to see how we have configured the store.
+The Redux `store` is the heart of your application. Check out [`configure-store.js`](https://github.com/react-boilerplate/react-boilerplate/blob/master/app/configureStore.js) to see how we have configured the store.
 
 The store is created with the `createStore()` factory, which accepts three parameters.
 
