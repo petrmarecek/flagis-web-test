@@ -1,0 +1,34 @@
+﻿@import "../../common/lesshat.less";
+@import "../../common/fonts.less";
+@import "../../common/mixins.less";
+
+/* ------ Variables ------------------------------------------------------------------------------- */
+@cl-txt-filter: #8C9DA9;
+@cl-txt-filter-active: #293034;
+
+/* ------ Component ------------------------------------------------------------------------------- */
+.search {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    &__icon {
+        margin-left: 10px;
+        flex-shrink: 0;
+    }
+
+    &__input {
+        .placeholder-color(#8c9da9);
+        .font-sub();
+        .box-sizing(border-box);
+        font-size: 14px;
+        margin: 0 0 0 12px;
+        border: none;
+        height: 26px;
+        color: @cl-txt-filter-active;
+        width: 100%;
+        background-color: transparent;
+    }
+}

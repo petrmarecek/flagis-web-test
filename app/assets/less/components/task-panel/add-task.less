@@ -1,0 +1,54 @@
+﻿@import "../../common/lesshat.less";
+@import "../../common/fonts.less";
+@import "../../common/mixins.less";
+
+/* ------ Variables ------------------------------------------------------------------------------- */
+@cl-tx-submit: @cl-tx-command;
+@cl-bg-submit: white;
+@cl-txt-important-icon: #D7E3EC;
+@cl-txt-important-icon-active: #FF9D9D;
+
+/* ------ Component ------------------------------------------------------------------------------- */
+.add-task {
+    margin-bottom: 4px;
+    background-color: @cl-bg-submit;
+
+    &__subject-container {
+        position: relative;
+        margin-right: 61px;
+        padding: 0;
+        height: 50px;
+    }
+
+    &__important {
+        position: absolute;
+        float: left;
+        padding: 0 10px;
+        margin: 13px 9px 12px 3px;
+        z-index: 10;
+    }
+
+    &__subject {
+        .box-sizing(border-box);
+        .placeholder-color(#d7e3ec);
+        position: absolute;
+        border: none;
+        width: 100%;
+        font-size: 18px;
+        line-height: 30px;
+        padding: 10px 0 10px 36px;
+        z-index: 5;
+        margin: 0;
+    }
+
+    &__submit {
+        .box-sizing(border-box);
+        display: inline-block;
+        float: right;
+        margin: 0;
+        height: 50px;
+        padding: 11px 16px 10px 16px;
+        width: 61px;
+        cursor: pointer;
+    }
+}

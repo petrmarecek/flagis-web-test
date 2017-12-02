@@ -1,0 +1,65 @@
+﻿@import "../../common/lesshat.less";
+@import "../../common/mixins.less";
+
+/* ------ Variables ------------------------------------------------------------------------------- */
+@cl-tx-title: #282f34;
+@cl-br-title: #fff;
+/* ------ Component ------------------------------------------------------------------------------- */
+.center-panel {
+    margin: 0 10px 0 10px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 290px;
+    right: 0;
+    z-index: 50;
+    transition: 0.2s right ease-in;
+
+    &--resizing {
+        transition: none;
+    }
+
+    &__top {
+        position: relative;
+        z-index: 10;
+    }
+
+    &__title {
+        height: 14px;
+        font-size: 14px;
+        font-weight: bold;
+        text-align: left;
+        color: @cl-tx-title;
+        border-top: 2px solid @cl-br-title;
+        padding: 9px 0 9px 10px;
+    }
+
+    &__scroll {
+        position: absolute;
+        top: 0;
+        bottom: 30px;
+        left: 0;
+        right: 0;
+
+        &--offset {
+            top: 48px;
+        }
+
+        &--small-offset {
+            top: 82px;
+        }
+
+        &--large-offset {
+            top: 102px;
+        }
+
+        &--small-offset-bottom {
+            bottom: 10px;
+        }
+    }
+
+    &__body {
+        position: relative;
+        overflow: hidden;
+    }
+}

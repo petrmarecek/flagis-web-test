@@ -1,0 +1,207 @@
+﻿@import "../../common/fonts.less";
+@import "../../common/mixins.less";
+
+/* ------ Variables ------------------------------------------------------------------------------- */
+@tagPanel-cl-bg-shadow: #BDBDBD;
+@taskitem-cl-br: #808080;
+@cl-bg-tagitem-active: #F5F5F5;
+@cl-bg-tagitem-hover: #4d5457;
+@cl-br-tagitem: #fafafa;
+@cl-tx-icon: #fff;
+@cl-tx-icon-active: #fff;
+@cl-tx-default: #fff;
+@cl-tx-active: #fff;
+@cl-bg-folder: #293034;
+@cl-tx-folder: #fff;
+@cl-tx-folder-active: #fff;
+@cl-bg-panel: #293034;
+@cl-tx-section: #fff;
+@cl-tx-add-section: #fff;
+@cl-bg-section: #fff;
+@cl-br-section: #E4E4E4;
+@cl-line: #43FFB1;
+
+
+/* ------ Mixins ---------------------------------------------------------------------------------- */
+.tree-item-style() {
+    font-size: 12px;
+    cursor: pointer;
+    margin: 0 0;
+    padding: 0 5px;
+    display: block;
+    height: 25px;
+    line-height: 25px;
+    position: relative;
+}
+
+.tag-style() {
+    .tree-item-style();
+    color: @cl-tx-default;
+}
+
+.icon-style(@color, @fontSize) {
+    font-size: @fontSize;
+    display: block;
+    width: 20px;
+    height: 20px;
+    color: @color;
+}
+
+.icon(@content, @color, @fontSize, @float, @width, @height) {
+    
+    display: block;
+    width: @width;
+    height: @height;
+    font-size: @fontSize;
+    float: @float;
+
+    &:before {
+        //.font-icon();
+        content: @content;
+        text-align: center;
+        color: @color;
+        display: block;
+        width: @width;
+        height: @height;
+        line-height: @height;
+    }
+}
+
+.icon-mdi(@content, @color, @fontSize, @float, @width, @height) {
+    
+    display: block;
+    width: @width;
+    height: @height;
+    font-size: @fontSize;
+    float: @float;
+
+    &:before {
+        .font-icon-mdi();
+        font-size: @fontSize;
+        content: @content;
+        text-align: center;
+        color: @color;
+        display: block;
+        width: @width;
+        height: @height;
+        line-height: @height;
+    }
+}
+
+.icon-default(@content, @float) {
+    .icon(@content, @cl-tx-icon, 12px, @float, 20px, 25px);
+}
+
+/* ------ Component ------------------------------------------------------------------------------- */
+.tag-tree-container {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    bottom: 60px;
+    left: 0;
+    padding: 26px 28px 0 28px;
+    .box-sizing(border-box);
+
+    .collapsible-content {
+       overflow: hidden;
+
+        &.dragging {
+            overflow: visible;
+        }
+    }
+
+    .add-tree-item {
+        .font-main();
+
+        &--type-item {
+            .tag-style();
+            line-height: 26px;
+            height: 26px;
+
+            .icon.main {
+                display: block;
+                position: absolute;
+                left: 7px;
+                top: 2px;
+            }
+
+            .input-container {
+                margin: -2px 0 0 26px;
+                input {
+                    font-size: 16px;
+                    border: none !important;
+                }
+            }
+        }
+
+        &--type-section {
+            background-color: @cl-bg-folder;
+            border-bottom: 1px solid @cl-brand-tx !important;
+
+            .input-container {
+
+                input {
+                    background-color: @cl-bg-folder;
+                    font-size: 20px;
+                    color: @cl-tx-section !important;
+                    border: none !important;
+                }
+            }
+        }
+
+        .input-container input {
+            .font-main();
+            color: #91a19a;
+            padding: 3px;
+            border: 1px solid #DADADA;
+        }
+    }
+}
+
+.left-panel {
+    background-color: @cl-bg-panel;
+    position: absolute;
+    width: 290px;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    .box-sizing(border-box);
+
+    .loader {
+        margin: 0 auto;
+        width: 30px;
+
+        #canvasLoader {
+            margin: 10px 0;
+        }
+    }
+
+    .add-section {
+        display: flex;
+        position: absolute;
+        width: 100%;
+        background-color: @cl-bg-panel;
+        bottom: 0;
+        left: 0;
+        flex-direction: row;
+        cursor: pointer;
+
+        &__text {
+            flex: 3;
+            border-top: 1px solid @cl-line;
+            color: @cl-tx-add-section;
+            margin: 0 0 23px 28px;
+            padding: 8px 0 0 3px;
+            font-size: 14px;
+        }
+
+        &__icon-plus {
+            flex: 1;
+            margin: 0 28px 24px 0;
+            padding: 8px 13px 0 0;
+            border-top: 1px solid @cl-line;
+            text-align: right;
+        }
+    }
+}

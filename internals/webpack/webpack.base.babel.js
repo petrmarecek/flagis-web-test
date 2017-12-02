@@ -36,6 +36,11 @@ module.exports = (options) => ({
         use: ['style-loader', 'css-loader'],
       },
       {
+        test: /\.less$/,
+        include: /app/,
+        use: ['style-loader', 'css-loader', 'less-loader'],
+      },
+      {
         // Preprocess 3rd party .css files located in node_modules
         test: /\.css$/,
         include: /node_modules/,
@@ -113,5 +118,5 @@ module.exports = (options) => ({
   },
   devtool: options.devtool,
   target: 'web', // Make web variables accessible to webpack, e.g. window
-  performance: options.performance || {},
+  performance: options.performance || {}
 });

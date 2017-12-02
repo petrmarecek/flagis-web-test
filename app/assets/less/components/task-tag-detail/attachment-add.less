@@ -1,0 +1,35 @@
+﻿@import "../../common/lesshat.less";
+@import "../../common/fonts.less";
+@import "../../common/mixins.less";
+
+/* ------ Variables ------------------------------------------------------------------------------- */
+@cl-txt-button: #8C9DA9;
+@cl-br-attachments: #8C9DA9;
+@cl-bg-button: #fff;
+@cl-txt-button-hover: #293034;
+
+/* ------ Component ------------------------------------------------------------------------------- */
+.attachment-add {
+    margin-top: 10px;
+
+    &__icon-pin {
+        vertical-align: middle;
+        padding-right: 8px;
+    }
+
+    &__button {
+        color: @cl-txt-button;
+        border: none;
+        background-color: @cl-bg-button;
+        line-height: 26px;
+        padding: 0;
+
+        &:active {
+            outline: none;
+        }
+
+        &:hover {
+            color: @cl-txt-button-hover;
+        }
+    }
+}

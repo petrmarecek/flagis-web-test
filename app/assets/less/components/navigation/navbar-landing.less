@@ -1,0 +1,256 @@
+.navbar-landing {
+    &__flex-container {
+        display: flex;
+        justify-content: center;
+
+        &--flex-row {
+            flex-flow: row wrap;
+        }
+    }
+
+    &__logo {
+        flex: 5;
+
+        img {
+          margin: 75px 0 0 125px;
+          height: auto;
+         width: 120px;
+        }
+    }
+
+    &__link-up {
+        flex: 5;
+        padding: 90px 125px 0 0;
+        text-align: right;
+    }
+}
+
+.form-link {
+    &__button-up {
+        padding: 15px 35px 15px 35px;
+        border: 1px solid #43FFB1;
+        border-radius: 100px;
+        font-size: 24px;
+        transition: 500ms;
+        color: #282F34;
+    }
+
+    &__button-up:hover {
+        background-color: #43FFB1;
+    }
+
+    &__button-in {
+        margin: 15px 50px 15px 20px;
+        font-size: 24px;
+        transition: 500ms;
+        color: #282F34;
+    }
+
+    &__button-in:hover {
+        text-decoration: underline;
+    }
+}
+
+@media screen and (max-width: 1600px) {
+    .navbar-landing {
+
+        &__logo {
+            img {
+                margin: 50px 0 0 75px;
+                width: 110px;
+            }
+        }
+
+        &__link-up {
+            padding: 65px 75px 0 0;
+        }
+    }
+
+    .form-link {
+        &__button-up {
+            font-size: 22px;
+        }
+
+        &__button-in {
+            font-size: 22px;
+        }
+    }
+}
+
+@media screen and (max-width: 1440px) {
+    .navbar-landing {
+
+        &__logo {
+            img {
+                margin: 50px 0 0 75px;
+                width: 105px;
+            }
+        }
+
+        &__link-up {
+            padding: 65px 75px 0 0;
+        }
+    }
+
+    .form-link {
+        &__button-up {
+            font-size: 20px;
+        }
+
+        &__button-in {
+            font-size: 20px;
+        }
+    }
+}
+
+@media screen and (max-width: 1366px) {
+    .navbar-landing {
+
+        &__logo {
+            img {
+                margin: 50px 0 0 75px;
+                width: 105px;
+            }
+        }
+
+        &__link-up {
+            padding: 65px 75px 0 0;
+        }
+    }
+
+    .form-link {
+        &__button-up {
+            font-size: 20px;
+        }
+
+        &__button-in {
+            font-size: 20px;
+        }
+    }
+}
+
+@media screen and (max-width: 1280px) {
+    .navbar-landing {
+
+        &__logo {
+            img {
+                margin: 50px 0 0 75px;
+                width: 95px;
+            }
+        }
+
+        &__link-up {
+            padding: 65px 75px 0 0;
+        }
+    }
+
+    .form-link {
+        &__button-up {
+            padding: 10px 28px 10px 28px;
+            font-size: 18px;
+        }
+
+        &__button-in {
+            font-size: 18px;
+        }
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .navbar-landing {
+
+        &__logo {
+            img {
+                margin: 25px 0 0 50px;
+                width: 80px;
+            }
+        }
+
+        &__link-up {
+            padding: 35px 50px 0 0;
+        }
+    }
+
+    .form-link {
+        &__button-up {
+            padding: 8px 25px 8px 25px;
+            font-size: 18px;
+        }
+
+        &__button-in {
+            font-size: 18px;
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .navbar-landing {
+
+        &__flex-container {
+            padding: 25px;
+            &--flex-column {
+                flex-flow: column wrap;
+            }
+        }
+
+        &__logo {
+            img {
+                margin: 25px 0 0 25px;
+                width: 90px;
+            }
+        }
+
+        &__link-up {
+            padding: 25px 25px 0 0;
+        }
+    }
+
+    .form-link {
+        &__button-up {
+            padding: 8px 20px 8px 20px;
+            font-size: 18px;
+        }
+
+        &__button-in {
+            font-size: 18px;
+            margin: 0 10px 0 0;
+        }
+    }
+}
+
+@media screen and (max-width: 440px) {
+    .navbar-landing {
+
+        &__flex-container {
+            padding: 5px;
+            &--flex-column {
+                flex-flow: column wrap;
+            }
+        }
+
+        &__logo {
+            flex: 3;
+            img {
+                margin: 15px 0 0 15px;
+                width: 60px;
+            }
+        }
+
+        &__link-up {
+            flex: 7;
+            padding: 18px 15px 0 0;
+        }
+    }
+
+    .form-link {
+        &__button-up {
+            padding: 8px 14px 8px 14px;
+            font-size: 18px;
+        }
+
+        &__button-in {
+            margin: 0 10px 0 0;
+            font-size: 18px;
+        }
+    }
+}

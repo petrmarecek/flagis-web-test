@@ -1,0 +1,87 @@
+﻿@import "../../common/lesshat.less";
+@import "../../common/mixins.less";
+
+/* ------ Variables ------------------------------------------------------------------------------- */
+@dialog-min-width: 200px;
+@cl-bg-dialog: white;
+@cl-br-dialog: #9CAEBD;
+@dialog-sh-color: #666;
+@cl-dialog-header: #293034;
+@cl-br-dialog-title: #00FFC7;
+/* ------ Component ------------------------------------------------------------------------------- */
+.dialog {
+    font-size: 16px;
+    position: absolute;
+    min-width: @dialog-min-width;
+    background-color: @cl-bg-dialog;
+    z-index: 1000;
+
+    &__close {
+        .user-select(none);
+        position: absolute;
+        z-index: 1000;
+        right: 20px;
+        top: 15px;
+        cursor: pointer;
+    }
+
+    &__title-small {
+        position: absolute;
+        z-index: 1000;
+        font-size: 14px;
+        color: darkgrey;
+        left: 20px;
+        top: 15px;
+    }
+
+    &__title {
+        font-size: 18px;
+        margin: 35px 55px 5px 25px;
+    }
+
+    &__line {
+        margin: 0 20px 0 20px;
+        border-bottom: 1px solid @cl-br-dialog-title;
+    }
+    
+    &__content {
+        margin: 20px 20px 10px 20px;
+
+        &--one-item {
+            margin: 60px 20px 10px 20px;
+        }
+
+        .highlighted {
+            font-weight: bold;
+        }
+
+        input {
+            .common-input();
+        }
+    }
+
+    &.loading {
+        padding: 20px;
+
+        .loader-container {
+            .bg-image('spiffygif_62x62.gif');
+            width: 62px;
+            height: 62px;
+            margin: 10px auto;
+        }
+
+        .message {
+            font-size: 14px;
+            display: none;
+            text-align: center;
+        }
+    }
+
+    &.tree-item-update {
+        width: 500px;
+    }
+
+    &.task-delete {
+        width: 400px;
+    }
+}

@@ -1,0 +1,333 @@
+﻿@import "./reset.less";
+
+@import "./common/lesshat.less";
+@import "./common/fonts.less";
+@import "./common/mixins.less";
+@import "./common/common-form.less";
+@import "./common/materialdesignicons.css";
+
+@import "./components/btn.less";
+@import "./components/react-datepicker.less";
+@import "./components/tags-autocomplete.less";
+@import "./components/rule-editor.less";
+@import "./components/messages.less";
+@import "./components/listTable.less";
+@import "./components/settingsnavigation.less";
+@import "./components/tag.less";
+@import "./components/scrollbar.less";
+@import "./components/cke-overrides.less";
+@import "./components/button-row.less";
+@import "./components/loader.less";
+@import "./components/main-search.less";
+
+@import './components/editor/editor';
+@import './components/editor/editor-preview';
+@import './components/editor/editorcss';
+@import './components/editor/menu';
+
+@import "./components/dialogs/dialog.less";
+@import "./components/dialogs/dialog-container.less";
+@import "./components/dialogs/add-remove-tags-dialog.less";
+
+@import "./components/forms/field.less";
+
+@import "./components/navigation/navbar.less";
+@import "./components/navigation/nav-button.less";
+@import "./components/navigation/logout-form.less";
+@import "./components/navigation/navbar-landing.less";
+
+@import "./components/pages/account-page.less";
+@import "./components/pages/landing-page.less";
+
+@import "./components/task-panel/task-item.less";
+@import "./components/task-panel/add-task.less";
+@import "./components/task-panel/tasks-menu.less";
+@import "./components/task-panel/tag-list.less";
+@import "./components/task-panel/task-list.less";
+@import "./components/task-panel/search.less";
+@import "./components/task-panel/task-count-indicator.less";
+@import "./components/task-panel/multi-select.less";
+@import "./components/task-panel/tag-item.less";
+@import "./components/task-panel/task-panel.less";
+@import "./components/task-panel/empty-list.less";
+@import "./components/task-panel/tasks-menu-box.less";
+@import "./components/task-panel/time-line.less";
+@import "./components/task-panel/tasks-progress-bar.less";
+@import "./components/task-panel/resize-handle.less";
+@import "./components/task-panel/collapse-handle.less";
+
+@import "./components/task-tag-detail/detail-subject.less";
+@import "components/task-tag-detail/attachment-list-containe.less";
+@import "./components/task-tag-detail/attachment-add.less";
+@import "./components/task-tag-detail/attachment.less";
+@import "./components/task-tag-detail/comment.less";
+@import "./components/task-tag-detail/comment-add.less";
+@import "./components/task-tag-detail/comment-list-container.less";
+@import "./components/task-tag-detail/color-selector.less";
+@import "./components/task-tag-detail/detail-content.less";
+@import "./components/task-tag-detail/detail.less";
+@import "./components/task-tag-detail/detail-menu.less";
+
+@import "./components/tag-panel/add-tag.less";
+@import "./components/tag-panel/tag-top-menu.less";
+@import "./components/tag-panel/tree-section.less";
+@import "./components/tag-panel/tree-item.less";
+@import "./components/tag-panel/tag-subtree.less";
+@import "./components/tag-panel/tree-item-wrapper.less";
+@import "./components/tag-panel/tree-section-wrapper.less";
+
+@import "./components/panels/left-panel.less";
+@import "./components/panels/center-panel.less";
+
+
+/* ------ Variables ------------------------------------------------------------------------------- */
+@cl-bg-main: #EBF8E1;
+@cl-bg-sub: #fff;
+@cl-tx-link: @cl-brand-sub;
+@cl-sh-page: gray;
+@cl-tx-body: #293034;
+@cl-bg-body: white;
+
+/* ------ Base rules ------------------------------------------------------------------------------ */
+html {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+
+    -ms-text-size-adjust: 100%; /* 2 */
+    -webkit-text-size-adjust: 100%; /* 2 */
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    font-size: 12px;
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    color: @cl-tx-body;
+    .font-main();
+    background-color: @cl-bg-body;
+}
+
+h1 {
+    .font-sub();
+    font-size: 40px;
+    padding: 0;
+    margin: 0;
+}
+
+h2 {
+    .font-sub();
+    .subheader();
+}
+
+p {
+    margin: 0;
+}
+
+a {
+    padding: 0;
+    margin: 0;
+    text-decoration: none;
+    color: @cl-tx-link;
+}
+
+ul {
+    padding: 0;
+    margin: 0;
+}
+
+button, input[type=button], input[type=submit] {
+    cursor: pointer;
+}
+
+input, textarea {
+    &:active, &:focus {
+        outline: none;
+    }
+}
+
+/* Remove autofill yellow color */
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px white inset;
+}
+
+form {
+    &.invisible {
+        display: inline;
+        margin: 0;
+        padding: 0;
+    }
+
+    &.form-imap-setup {
+    }
+}
+
+/* ------ Layout rules ---------------------------------------------------------------------------- */
+.page {
+    padding: 40px 0 0;
+
+    &--plain {
+        background-color: white;
+    }
+
+    .page-sheet {
+        margin: 0 auto;
+        max-width: 1120px;
+        min-height: 400px;
+        padding: 40px;
+        background-color: white;
+        .box-shadow(0 0 10px @cl-sh-page);
+
+        .main-content {
+            padding: 1px 0;
+
+            .content {
+                margin: 20px 0 0 250px;
+                position: relative;
+            }
+        }
+
+        &:after {
+            content: "";
+            display: block;
+            clear: both;
+            height: 0;
+            width: 100%;
+        }
+    }
+}
+
+.page-overflow-fix {
+    position: absolute;
+    margin-top: 60px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    background-color: #E7ECED;
+
+    &--transparent {
+        background-color: transparent;
+    }
+}
+
+.components-container {
+    display: none;
+}
+
+/* ------ Module rules ---------------------------------------------------------------------------- */
+.text-success {
+    padding: 10px;
+    text-align: center;
+    background-color: #E7F8D2;
+    color: #666;
+    border: 1px solid #C2CAA8;
+}
+
+.auto-fill {
+    position: absolute;
+    top: 50px;
+    left: 440px;
+
+    .header {
+        font-size: 12px;
+        margin-bottom: 5px;
+    }
+
+    ul li {
+        list-style-type: none;
+        height: 45px;
+        margin: 1px;
+        padding: 1px;
+        text-align: center;
+        .lift();
+
+        .service {
+            display: block;
+            margin: 10px;
+            height: 30px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            cursor: pointer;
+        }
+
+        .gmail {
+            .bg-image('logo-gmail.png');
+        }
+
+        .seznam {
+            .bg-image('logo-seznam.jpg');
+        }
+
+        .centrum {
+            .bg-image('logo-centrum.png');
+        }
+    }
+
+    @media screen and (max-width:830px) {
+        display: none;
+    }
+}
+
+.loader-box {
+    width: 200px;
+    margin: 20px auto;
+
+    &.middle-page {
+        margin-top: 100px;
+    }
+
+    .spinner.big {
+        .bg-image('spiffygif_62x62.gif');
+        width: 62px;
+        height: 62px;
+        margin: 10px auto;
+    }
+
+    .message {
+        font-size: 16px;
+        text-align: center;
+    }
+}
+
+.progress-bar {
+    max-width: 400px;
+    margin: 50px auto;
+
+    .message {
+        font-size: 16px;
+        text-align: center;
+        margin: 2px;
+    }
+
+    .indicator {
+        border: none;
+        overflow: hidden;
+        background-color: #eee;
+        padding: 1px;
+        width: 400px;
+        .box-shadow(inset 1px 1px 3px #666);
+        .border-radius(3px);
+
+        .indicator-bar {
+            background-color: #6B869B;
+            margin: 2px;
+            height: 20px;
+            width: 0;
+            .border-radius(3px);
+            .box-sizing(border-box);
+        }
+    }
+}
+
+.logo {
+    background-image: url('../img/logo-dark.png');
+    background-repeat: no-repeat;
+    height: 63px;
+    width: 111px;
+    display: block;
+    margin: 0 auto;
+}

@@ -1,0 +1,147 @@
+﻿@import "../common/lesshat.less";
+@import "../common/mixins.less";
+
+/* ------ Variables ------------------------------------------------------------------------------- */
+@ruleeditor-cl-tx-label: #68afda;
+@rulelist-cl-sh: #808080;
+
+/* ------ Mixins ---------------------------------------------------------------------------------- */
+
+/* ------ Component ------------------------------------------------------------------------------- */
+
+.rule-editor {
+    label.section-label {
+        font-size: 16px;
+        color: @ruleeditor-cl-tx-label;
+        margin: 10px auto;
+        display: block;
+    }
+
+    select {
+        font-size: 15px;
+        padding: 6px;
+    }
+
+    .rule-editor-header {
+        .subheader();
+        margin: 0 0 10px;
+    }
+
+    .rule-condition {
+        .subject, .operator, .operand {
+            display: inline-block;
+            margin: 0 10px 0 0;
+        }
+    }
+
+    .rule-complete-action {
+        label {
+            font-size: 15px;
+        }
+
+        .sub-select {
+            margin: 5px 0 0 60px;
+        }
+    }
+
+    button.btn-default.btn-save {
+        display: none;
+    }
+}
+
+.rule-list {
+    margin: 10px 0;
+
+    .rule-list-header {
+        .subheader();
+        margin: 10px 0 10px;
+    }
+
+    & > ul > li {
+        min-width: 500px;
+        display: block;
+        padding: 8px 10px 6px;
+        font-size: 0;
+        list-style-type: none;
+        width: 100%;
+        margin: 1px 0;
+        .box-sizing(border-box);
+        .gradient(linear-gradient(to bottom, white, #fafafa));
+        .box-shadow(1px 1px 3px #aaaaaa);
+
+        &.header {
+            background-image: none;
+            padding: 5px 10px;
+            color: #666;
+            .box-shadow(none);
+
+            .rule-actions, .rule-equation, .rule-tags, .rule-completeaction, .rule-matches, .rule-enabled {
+                font-size: 11px;
+            }
+        }
+
+        .rule-actions, .rule-equation, .rule-tags, .rule-completeaction, .rule-matches, .rule-enabled {
+            display: inline-block;
+            font-size: 15px;
+            padding: 0 10px;
+            vertical-align: middle;
+            .box-sizing(border-box);
+        }
+
+        .rule-actions {
+            width: 10%;
+
+            .icon {
+                margin: 5px;
+                color: #cccccc;
+
+                &:hover {
+                    color: #222222;
+                    cursor: pointer;
+                }
+            }
+        }
+
+        .rule-equation {
+            width: 30%;
+
+            .subject, .operator, .operand {
+                font-weight: bold;
+            }
+        }
+
+        .rule-tags {
+            width: 35%;
+            font-size: 11px;
+
+            .tag-item {
+                width: inherit;
+                font-size: 11px;
+                margin: 1px 3px 3px 1px;
+                padding: 2px 5px;
+                display: block;
+                float: left;
+                color: #222222;
+                .gradient(linear-gradient(to bottom, #eee, #ddd));
+                .box-shadow(1px 1px 3px #aaa);
+            }
+        }
+
+        .rule-completeaction {
+            width: 15%;
+        }
+
+        .rule-matches, .rule-enabled {
+            width: 5%;
+        }
+
+         .rule-matches {
+             .progress {
+                 .bg-image('spiffygif_22x22.gif');
+                 display: block;
+                 width: 22px;
+                 height: 22px;
+             }
+         }
+    }
+}

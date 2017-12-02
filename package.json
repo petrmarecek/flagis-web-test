@@ -225,6 +225,8 @@
     "intl": "1.2.5",
     "invariant": "2.2.2",
     "ip": "1.1.5",
+    "less": "^2.7.3",
+    "less-loader": "^4.0.5",
     "lodash": "4.17.4",
     "minimist": "1.2.0",
     "prop-types": "15.5.10",

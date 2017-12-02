@@ -1,0 +1,24 @@
+@import "../../common/lesshat.less";
+@import "../../common/fonts.less";
+@import "../../common/mixins.less";
+
+/* ------ Variables ------------------------------------------------------------------------------- */
+@cl-txt-filter: #8C9DA9;
+@cl-txt-filter-active: #293034;
+
+/* ------ Component ------------------------------------------------------------------------------- */
+.multi-select {
+    height: 100%;
+    float: right;
+    font-size: 14px;
+    color: @cl-txt-filter;
+    display: flex;
+    align-items: center;
+
+    &__items {
+        display: inline-block;
+        margin: 0 10px;
+        text-align: left;
+    }
+
+}

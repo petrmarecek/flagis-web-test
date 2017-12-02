@@ -1,0 +1,25 @@
+﻿@import "../../common/lesshat.less";
+@import "../../common/mixins.less";
+
+/* ------ Variables ------------------------------------------------------------------------------- */
+
+/* ------ Component ------------------------------------------------------------------------------- */
+.task-list {
+    .user-select(none);
+    margin: 0 0 10px;
+    clear: both;
+
+    .task-items {
+        clear: both;
+    }
+
+    .loader {
+        margin: 0 auto;
+        padding-top: 1px;
+        width: 30px;
+
+        #canvasLoader {
+            margin: 10px 0;
+        }
+    }
+}

@@ -1,0 +1,109 @@
+﻿@import "../common/lesshat.less";
+@import "../common/fonts.less";
+@import "../common/mixins.less";
+
+/* ------ Variables ------------------------------------------------------------------------------- */
+@cl-bg-editor-bottom: #D7E3EC;
+@cl-br-editor: #D7E3EC;
+@cl-bg-button-active: #D7E3EC;
+@cl-bg-button-hover: lighten(#D7E3EC, 5%);
+@cl-bg-button-disabled: white;
+
+/* ------ Component ------------------------------------------------------------------------------- */
+.cke_chrome {
+    box-shadow: none !important;
+    border: none !important;
+    border-bottom: none !important;
+}
+.cke_top {
+    padding: 6px 0 2px !important;
+    background: none !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border-bottom: none !important;
+}
+.cke_inner {
+    background: transparent !important;
+}
+.cke_contents {
+    border: 1px solid @cl-br-editor !important;
+}
+.cke_bottom {
+    background: @cl-bg-editor-bottom !important;
+    box-shadow: none !important;
+    border-left: 1px solid @cl-br-editor !important;
+    border-bottom: 1px solid @cl-br-editor !important;
+    border-right: 1px solid @cl-br-editor !important;
+    border-top: none !important;
+    padding: 0 8px 2px !important;
+}
+
+.cke_path {
+    margin: 2px 0 0 !important;
+    display: none !important;
+}
+
+.cke_1 .cke_toolgroup {
+    .border-radius(0);
+    border-color: @cl-br-editor !important;
+    box-shadow: none !important;
+    background: white !important;
+}
+
+.cke_1 .cke_combo_button {
+    .border-radius(0);
+    border-color: @cl-br-editor !important;
+}
+
+.cke_1 a.cke_button_off:hover, 
+.cke_1 a.cke_button_off:focus, 
+.cke_1 a.cke_button_off:active {
+    .border-radius(0);
+    box-shadow: none !important;
+    background-image: none !important;
+    background-color: @cl-bg-button-hover !important;
+}
+
+a.cke_button_on:hover, 
+a.cke_button_on:focus, 
+a.cke_button_on:active {
+    box-shadow: none !important;
+}
+
+.cke_ltr .cke_button:first-child, 
+.cke_rtl .cke_button:last-child {
+    .border-radius(0);
+}
+
+.cke_1 .cke_button_on {
+    background-image: none !important;
+    background-color: @cl-bg-button-active !important;
+    box-shadow: none !important;
+}
+
+a.cke_button_off:hover, 
+a.cke_button_off:focus, 
+a.cke_button_off:active, 
+a.cke_button_disabled:hover, 
+a.cke_button_disabled:focus, 
+a.cke_button_disabled:active {
+    .border-radius(0);
+    box-shadow: none !important;
+    background-image: none !important;
+    background-color: @cl-bg-button-disabled !important;
+}
+
+a.cke_combo_button, a.cke_combo_button:hover, .cke_1 .cke_combo_button {
+    background-image: none !important;
+    box-shadow: none !important;
+    margin-right: 0 !important;
+    background-color: white !important;
+}
+
+a.cke_combo_button:hover {
+    background-color: @cl-bg-button-hover !important;
+}
+
+.cke_1 .cke_combo_on .cke_combo_button {
+    background-color: @cl-bg-button-active !important;
+}

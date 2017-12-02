@@ -1,0 +1,226 @@
+﻿@import "../../common/lesshat.less";
+@import "../../common/mixins.less";
+
+/* ------ Variables ------------------------------------------------------------------------------- */
+@cl-br-description: #D7E3EC;
+@cl-tx-description: #293034;
+@cl-bg-input: #fff;
+@cl-bg-archived-detail: #c1cad0;
+@cl-bg-completed-detail: #f6f8f9;
+@cl-br-datepicker: #8c9ea9;
+@cl-bg-datepicker: #e7eced;
+
+/* ------ Component ------------------------------------------------------------------------------- */
+.detail-content {
+    display: flex;
+    flex-wrap: wrap;
+
+    &__top {
+        .box-sizing(border-box);
+        flex-grow: 100;
+        min-height: 48px;
+        justify-content: flex-start;
+        position: relative;
+        background-color: @cl-bg-input;
+        z-index: 1;
+        padding: 0 12px;
+        margin-bottom: 21px;
+
+        &:before {
+            content: "";
+            position: absolute;
+            z-index:-1;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: @cl-bg-completed-detail;
+            .transform(scaleX(0));
+            .transform-origin(0 50%);
+        }
+
+        &.animation {
+            &:before {
+                .transition(transform 500ms ease-out);
+            }
+        }
+
+        &.completed {
+            &:before {
+                .transform(scaleX(1));
+            }
+        }
+
+        &.archived {
+            background-color: @cl-bg-archived-detail;
+        }
+
+        &:after {
+            content: "";
+            position: absolute;
+            left: 10px;
+            right: 10px;
+            bottom: 0;
+            border-bottom: 2px solid @cl-tx-command;
+        }
+    }
+
+    &__center {
+        flex-shrink: 100;
+        height: 100%;
+        margin-bottom: 22px;
+
+        &--column {
+            flex-direction: column;
+        }
+    }
+
+    &__subject {
+        .box-sizing(border-box);
+        flex: 12;
+        min-width: 30%;
+        padding: 11px 10px 11px 0;
+    }
+
+    &__tag-autocomplete {
+        .box-sizing(border-box);
+        flex: 7;
+        padding-right: 10px;
+        min-width: 25%;
+        padding-top: 12px;
+    }
+
+    &__delete {
+        .box-sizing(border-box);
+        flex: 1;
+        max-width: 3%;
+        text-align: right;
+        padding-right: 6px;
+        padding-top: 10px;
+    }
+
+    &__dates-attachment {
+        flex: 3;
+        margin: 0 25px 0 13px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    &__attachment {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    &__dates {
+        margin: 6px 0 10px;
+    }
+
+    &__date {
+        position: relative;
+    }
+
+    &__date-label {
+        position: absolute;
+        top: 10px;
+        left: 3px;
+        z-index: 1;
+        color: #8c9da9;
+        font-size: 14px;
+        pointer-events: none;
+    }
+
+    &__date-picker {
+        z-index: 2;
+
+        .react-datepicker__input-container {
+            input {
+                text-align: right;
+                font-size: 15px;
+                background-color: @cl-bg-input;
+            }
+        }
+
+        .react-datepicker-popper {
+            z-index: 2;
+
+            .react-datepicker {
+                .border-radius(5px 0 5px 5px);
+
+                .react-datepicker__header {
+                    .border-radius(5px 0 0 0);
+                }
+
+                .react-datepicker__today-button {
+                    .border-radius(0 0 5px 5px);
+                }
+
+                .react-datepicker__time-container {
+                    .border-radius(0 5px 5px 0);
+
+                    .react-datepicker__header {
+                        .border-radius(0 5px 0 0);
+                    }
+
+                    .react-datepicker__time{
+                        .border-radius(0 0 5px 0);
+                    }
+                }
+            }
+        }
+
+        .react-datepicker-wrapper {
+            width: 100%;
+        }
+    }
+
+    &__tag-color {
+        margin: 0 17px;
+    }
+
+    &__description {
+        flex: 6;
+        margin-right: 22px;
+
+        textarea {
+            .placeholder-color(#8c9da9);
+            background-color: @cl-bg-input;
+            .font-sub();
+            .box-sizing(border-box);
+            color: @cl-tx-description;
+            width: 100%;
+            height: 100%;
+            padding: 15px;
+            border: 1px solid @cl-br-description;
+            resize: none;
+            font-size: 14px;
+        }
+
+        &--tag {
+            margin: 0 17px;
+            height: calc(100% - 69px);
+
+            textarea {
+                resize: vertical;
+                min-height: 190px;
+                max-height: 100%;
+                height: auto;
+            }
+        }
+    }
+
+    &__comment {
+        flex: 4;
+        margin-right: 14px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    &__tags {
+        flex: 5;
+        height: 22px;
+        float: right;
+    }
+}

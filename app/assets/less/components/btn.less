@@ -1,0 +1,73 @@
+﻿@import "../common/lesshat.less";
+@import "../common/fonts.less";
+@import "../common/mixins.less";
+
+/* ------ Variables ------------------------------------------------------------------------------- */
+@cl-tx-btn-default: white;
+@cl-bg-btn-default: #293034;
+@cl-bg-btn-green: #00FFC7;
+@cl-bg-btn-red: #FF9D9D;
+@cl-bg-btn-grey: #9CAEBD;
+@cl-bg-btn-colored: white;
+@cl-tx-btn-colored: #293034;
+
+/* ------ Component ------------------------------------------------------------------------------- */
+.btn {
+    outline: none;
+
+    &:focus, &:active {
+        outline: none;
+    }
+
+    &-default {
+        .font-main();
+        .transition(all 300ms ease);
+        background-color: @cl-brand-sub;
+        display: block;
+        cursor: pointer;
+        color: @cl-tx-btn-default;
+        font-size: 18px;
+        padding: 14px 30px;
+        text-decoration: none;
+        border: none;
+
+        &:hover {
+            background-color: lighten(@cl-bg-btn-default, 10%);
+        }
+
+        &:active {
+            outline: none;
+            background-color: lighten(@cl-bg-btn-default, 15%);
+        }
+
+        &--green {
+            color: @cl-tx-btn-colored;
+            background-color: @cl-bg-btn-colored;
+            border-bottom: 5px solid @cl-bg-btn-green;
+
+            &:hover {
+                background-color: @cl-bg-btn-green;
+            }
+        }
+
+        &--red {
+            color: @cl-tx-btn-colored;
+            background-color: @cl-bg-btn-colored;
+            border-bottom: 5px solid @cl-bg-btn-red;
+
+            &:hover {
+                background-color: @cl-bg-btn-red;
+            }
+        }
+
+        &--grey {
+            color: @cl-tx-btn-colored;
+            background-color: @cl-bg-btn-colored;
+            border-bottom: 5px solid @cl-bg-btn-grey;
+
+            &:hover {
+                background-color: @cl-bg-btn-grey;
+            }
+        }
+    }
+}

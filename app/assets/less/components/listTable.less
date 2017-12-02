@@ -1,0 +1,81 @@
+﻿@import "../common/lesshat.less";
+@import "../common/mixins.less";
+
+/* ------ Variables ------------------------------------------------------------------------------- */
+
+/* ------ Mixins ---------------------------------------------------------------------------------- */
+
+/* ------ Component ------------------------------------------------------------------------------- */
+.list-table {
+    margin: 10px 0 30px;
+
+    .list-table-header {
+        .subheader();
+        margin: 10px 0 10px;
+    }
+
+    & > ul > li {
+        display: table;
+        table-layout: fixed;
+        min-width: 500px;
+        padding: 8px 10px;
+        list-style-type: none;
+        width: 100%;
+        margin: 1px 0;
+        .box-sizing(border-box);
+        .lift();
+
+        &.header {
+            background-image: none;
+            padding: 5px 10px;
+            color: #666;
+            .box-shadow(none);
+
+            .col {
+                font-size: 11px;
+            }
+        }
+
+        .col {
+            display: table-cell;
+            font-size: 15px;
+            padding: 0 10px;
+            vertical-align: middle;
+            .box-sizing(border-box);
+
+            &.actions {
+                .icon {
+                    margin: 5px;
+                    color: #cccccc;
+
+                    &:before {
+                        font-size: 15px;
+                    }
+
+                    &:hover {
+                        color: #222222;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+    }
+
+
+    &.task-sources {
+        .col.type {
+            font-weight: bold;
+
+            .icon {
+                font-size: 20px;
+                padding: 0 5px 0 0;
+                color: #666;
+                vertical-align: middle;
+            }
+        }
+
+        .col.actions {
+            width: 15%;
+        }
+    }
+}

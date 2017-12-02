@@ -1,0 +1,71 @@
+﻿@import "../../common/lesshat.less";
+@import "../../common/mixins.less";
+@import "../../common/images.less";
+
+/* ------ Variables ------------------------------------------------------------------------------- */
+@navbar-height: 60px;
+@navbar-bg-color: @cl-brand;
+@navbar-br-color: #3e484f;
+@navbar-tx-color: white;
+@nav-button-width: 49px;
+@nav-button-active-br-color: #43ffb1;
+@nav-button-hover-bg-color: #3a434a;
+
+/* ------ Mixins ---------------------------------------------------------------------------------- */
+.nav-background() {
+    background-color: @navbar-bg-color;
+}
+
+/* ------ Component ------------------------------------------------------------------------------- */
+.nav-button-container {
+    display: flex;
+
+    .nav-button {
+        .nav-background();
+        .box-sizing(border-box);
+        color: @navbar-tx-color;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: @navbar-height;
+        cursor: pointer;
+        width: @nav-button-width;
+        border-bottom: 3px solid @navbar-bg-color;
+        margin-left: 15px;
+
+        &:hover {
+            .transition(400ms);
+            background-color: @nav-button-hover-bg-color;
+            border-bottom: 3px solid @nav-button-active-br-color;
+        }
+
+        &--active {
+            pointer-events: none;
+            border-bottom: 3px solid @nav-button-active-br-color;
+            background-color: @nav-button-hover-bg-color;
+        }
+
+        /*a {
+            display: block;
+            padding: 0 12px;
+            color: @navbar-tx-color;
+            line-height: @navbar-height;
+            height: @navbar-height;
+            min-width: @nav-button-min-width;
+            text-align: center;
+
+            &:before {
+                .font-icon();
+                font-size: 22px;
+            }
+        }*/
+
+        &--sign-in a:before {
+            color:white;
+        }
+
+        &--sign-up a:before {
+            color:white;
+        }
+    }
+}

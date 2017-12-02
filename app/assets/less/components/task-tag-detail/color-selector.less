@@ -1,0 +1,63 @@
+﻿@import "../../common/lesshat.less";
+@import "../../common/fonts.less";
+@import "../../common/mixins.less";
+
+/* ------ Variables ------------------------------------------------------------------------------- */
+@cl-tx-selector: #8C9DA9;
+@cl-br-selector: #D7E3EC;
+@cl-br-selector-item-active: black;
+
+/* ------ Component ------------------------------------------------------------------------------- */
+.color-selector {
+    color: @cl-tx-selector;
+    font-size: 14px;
+
+    &__label {
+        display: block;
+        margin: 0 0 11px 0;
+    }
+
+    &__item {
+        .tag-colors();
+        .border-radius(50%);
+        float: left;
+        width: 24px;
+        height: 24px;
+        margin: 0 9px 20px 0;
+        list-style-type: none;
+        cursor: pointer;
+
+        &.selected {
+            border: 2px dashed @cl-br-selector-item-active;
+        }
+    }
+
+    &__row {
+        margin: 15px 0 0;
+
+        &:first-of-type {
+            margin: 0;
+        }
+    }
+
+    &__current-container {
+        padding: 10px;
+        border: 1px solid @cl-br-selector;
+    }
+
+    &__options {
+
+       &:after {
+            display: block;
+            content: "";
+            clear: both;
+        }
+    }
+
+    &__current {
+        .border-radius(50%);
+        .tag-colors();
+        width: 50px;
+        height: 50px;
+    }
+}

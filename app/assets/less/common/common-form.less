@@ -1,0 +1,75 @@
+﻿@import "mixins.less";
+
+.form-window {
+    max-width: 400px;
+    margin: 120px auto 0;
+
+    .form-window-body {
+        padding: 20px;
+    }
+}
+
+.common-form {
+    display: block;
+    position: relative;
+
+    .form-fields {
+        padding: 10px;
+    }
+
+    .form-error {
+        margin-bottom: 40px;
+
+        .error-list {
+            list-style-type: none;
+
+            &--dialog {
+                margin: 0 0 40px 0;
+            }
+
+            .error-list-item {
+                display: flex;
+                flex-flow: row wrap;
+                border-bottom: 1px solid red;
+                font-size: 15px;
+                margin-bottom: 20px;
+                padding: 5px 10px;
+                color: red;
+
+                &__text {
+                    flex: 19;
+                }
+
+                &__icon {
+                    flex: 1;
+                }
+            }
+        }
+    }
+
+    .form-row {
+        margin-top: 20px;
+
+        .form-link {
+            cursor: pointer;
+        }
+    }
+
+    &__loader {
+        position: absolute;
+        background: #fff;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        flex: 1;
+        display: flex;
+        align-items: center;
+        opacity: 0.8;
+    }
+}
+
+.form-link {
+    color: #8C9DA9;
+    font-size: 14px;
+}

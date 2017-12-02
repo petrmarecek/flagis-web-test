@@ -1,0 +1,88 @@
+﻿@import "../../common/lesshat.less";
+@import "../../common/fonts.less";
+@import "../../common/mixins.less";
+
+/* ------ Variables ------------------------------------------------------------------------------- */
+@cl-br-subject: #44FFB1;
+@cl-bg-subject: white;
+@cl-txt-default-completed: #D7E3EC;
+@cl-txt-task: #293034;
+@cl-txt-important-icon-active: #FF9D9D;
+@cl-txt-important-icon-completed: #FFDDDD;
+@cl-txt-icon: #D7E3EC;
+@cl-txt-icon-hover: darken(@cl-txt-icon, 20%);
+
+/* ------ Component ------------------------------------------------------------------------------- */
+
+.detail-subject {
+    position: relative;
+    z-index: 30;
+
+    &__important {
+        position: absolute;
+        left: 0;
+        top: 0;
+        padding: 0 5px 0 0;
+        .detail-subject.archived & {
+            pointer-events: none;
+        }
+    }
+
+    &__completed {
+        position: absolute;
+        left: 15px;
+        top: 0;
+        padding: 2px 5px;
+    }
+
+    &__archive {
+        position: absolute;
+        left: 50px;
+        top: 0;
+        padding: 0 5px;
+        .detail-subject.archived & {
+            left: 15px;
+            top: -1px;
+        }
+    }
+
+    &__tag-color {
+        position: absolute;
+        pointer-events: none;
+        left: 4px;
+        top: 14px;
+    }
+
+    &__content {
+        line-height: 22px;
+        font-size: 18px;
+        outline: none !important;
+        box-sizing: border-box;
+        margin-left: 60px;
+        padding-top: 3px;
+        color: @cl-txt-task;
+        max-height: 134px;
+        overflow-y: auto;
+        overflow-x: hidden;
+
+        &--tag {
+            margin-left: 50px;
+        }
+
+        .detail-subject.completed & {
+            margin-left: 100px;
+            color: @cl-txt-default-completed;
+            text-decoration: line-through;
+        }
+
+        .detail-subject.animation & {
+            .transition(margin 500ms ease-out, color 500ms ease-out);
+        }
+
+        .detail-subject.archived & {
+            color: @cl-txt-task;
+            text-decoration: line-through;
+            pointer-events: none;
+        }
+    }
+}
