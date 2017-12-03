@@ -3,9 +3,9 @@ import { Switch, Route } from 'react-router-dom';
 
 // import HomePage from 'containers/HomePage/Loadable';
 import LandingPage from 'containers/landing-page/loadable'
+import SignIn from 'containers/sign-in'
 
 // import UserContainer from './components/containers/user-container'
-// import SignIn from './components/pages/sign-in'
 // import SignUp from './components/pages/sign-up'
 // import EmailResetPassword from './components/pages/email-reset-password'
 // import ResetPassword from './components/pages/reset-password'
@@ -20,8 +20,8 @@ export default function App() {
     <div>
       <Switch>
         <Route exact path="/" component={LandingPage} />
-        {/* <Route path="sign-in" component={SignIn} />
-        <Route path="sign-up" component={SignUp} />
+        <Route path="/sign-in" component={SignIn} />
+        {/* <Route path="sign-up" component={SignUp} />
         <Route path="email-reset-password" component={EmailResetPassword} />
         <Route path="reset-password/*" component={ResetPassword} />
         <Route path="user" component={UserContainer}>
