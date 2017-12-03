@@ -11,7 +11,7 @@ export const getTagHints = state => {
 export const getTagHintsRaw = state => state.appState.get('tagHints')
 
 export const getAppStateItem = (state, type) => {
-  return state.appState.get(type)
+  return state.getIn(['appState', type])
 }
 
 export const getMultiSelectVisibility = (state) => {

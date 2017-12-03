@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { List } from 'immutable'
 import { Field, reduxForm } from 'redux-form'
@@ -147,7 +147,7 @@ class SignIn extends Component {
 const mapStateToProps = state => ({
   auth: state.auth,
   errorSignIn: getAppStateItem(state, 'signIn'),
-  loader: state.appState.loader.isVisible,
+  loader: state.getIn(['appState', 'loader', 'isVisible']),
 })
 const mapDispatchToProps = {
   controlRedirectTasks,
