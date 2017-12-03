@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { compose } from 'recompose'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
@@ -155,9 +156,11 @@ const mapDispatchToProps = {
   deselectError,
   visibleLoader,
 }
-const form = reduxForm({
-  form: 'signIn',
-  validate: validateSignIn,
-})
 
-export default connect(mapStateToProps, mapDispatchToProps)(form(SignIn))
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  reduxForm({
+    form: 'signIn',
+    validate: validateSignIn,
+  }),
+)(SignIn)

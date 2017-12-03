@@ -19,7 +19,7 @@ class NavigationLanding extends Component {
       <nav className="navbar-landing">
         <div className="navbar-landing__flex-container navbar-landing__flex-container--flex-row">
           <div className="navbar-landing__logo">
-            <Link to="/landing-page">
+            <Link to="/">
               <img src={Logo} />
             </Link>
           </div>
