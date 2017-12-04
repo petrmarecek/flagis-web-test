@@ -6,11 +6,9 @@ import LandingPage from 'containers/landing-page/loadable'
 import SignIn from 'containers/sign-in'
 import SignUp from 'containers/sign-up'
 import EmailResetPassword from 'containers/email-reset-password'
+import ResetPassword from 'containers/reset-password'
 
 // import UserContainer from './components/containers/user-container'
-// import SignUp from './components/pages/sign-up'
-// import EmailResetPassword from './components/pages/email-reset-password'
-// import ResetPassword from './components/pages/reset-password'
 // import TaskPage from './components/pages/task-page'
 // import TagPage from './components/pages/tag-page'
 // import ArchivePage from './components/pages/archive-page'
@@ -25,8 +23,8 @@ export default function App() {
         <Route path="/sign-in" component={SignIn} />
         <Route path="/sign-up" component={SignUp} />
         <Route path="/email-reset-password" component={EmailResetPassword} />
-        {/*<Route path="reset-password/*" component={ResetPassword} />
-        <Route path="user" component={UserContainer}>
+        <Route path="/reset-password/*" component={ResetPassword} />
+        {/*<Route path="user" component={UserContainer}>
           <Route path="tasks" component={TaskPage} />
           <Route path="tags" component={TagPage} />
           <Route path="archive" component={ArchivePage} />
