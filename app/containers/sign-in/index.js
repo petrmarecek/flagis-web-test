@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { List } from 'immutable'
-import { Field, reduxForm } from 'redux-form'
+import { Field, reduxForm } from 'redux-form/immutable'
 import { NotificationContainer } from 'react-notifications'
 
 import { controlRedirectTasks, login } from 'redux/store/auth/auth.actions'
@@ -101,7 +101,7 @@ class SignIn extends Component {
                     name="email"
                     type="text"
                     label="E-mail"
-                    component={InputField}/>
+                    component={InputField} />
                 </div>
                 <div className="form-row">
                   <Field
@@ -109,7 +109,7 @@ class SignIn extends Component {
                     name="password"
                     type="password"
                     label="Password"
-                    component={InputField}/>
+                    component={InputField} />
                 </div>
                 <div className="form-row form-button-row">
                   <div className="field-label-offset">
