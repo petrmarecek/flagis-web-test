@@ -3,12 +3,12 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { List } from 'immutable'
 
-import { getActiveTags } from '../../redux/store/tags/tags.selectors'
-import { selectActiveTags } from '../../redux/store/tags/tags.actions'
-import TagAutocomplete from './tag-autocomplete/tag-autocomplete'
+import { getActiveTags } from 'redux/store/tags/tags.selectors'
+import { selectActiveTags } from 'redux/store/tags/tags.actions'
+import TagAutocomplete from 'components/elements/tag-autocomplete/tag-autocomplete'
 
-import { ICONS } from "../icons/icon-constants"
-import Icon from '../icons/icon'
+import { ICONS } from 'components/icons/icon-constants'
+import Icon from 'components/icons/icon'
 
 class MainSearch extends Component {
 

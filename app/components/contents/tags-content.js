@@ -2,11 +2,11 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
-import { updateTagSearch } from '../../redux/store/tags/tags.actions.js'
+import { updateTagSearch } from 'redux/store/tags/tags.actions'
 
-import TagList from '../tag-list/tag-list-container'
-import SearchBox from '../elements/search-box'
-import AddTagForm from '../elements/add-tag-form'
+import TagList from 'components/tag-list/tag-list-container'
+import SearchBox from 'components/elements/search-box'
+import AddTagForm from 'components/elements/add-tag-form'
 
 class TagsContent extends Component {
 

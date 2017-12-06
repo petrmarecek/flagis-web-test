@@ -7,24 +7,24 @@ import {
   deselectTags,
   selectTag,
   updateTag,
-} from '../../redux/store/tags/tags.actions'
+} from 'redux/store/tags/tags.actions'
 import {
   getCurrentTag,
   getNextTag,
   getPreviousTag,
-} from "../../redux/store/tags/tags.selectors"
+} from 'redux/store/tags/tags.selectors'
 
-import commonUtils from '../../redux/utils/common'
-import { getTagColor } from '../../redux/utils/component-helper'
+import commonUtils from 'redux/utils/common'
+import { getTagColor } from 'redux/utils/component-helper'
 
 import {
   showDialog,
   deselectDetail
-} from "../../redux/store/app-state/app-state.actions"
+} from 'redux/store/app-state/app-state.actions'
 
-import ContentEditable from '../common/content-editable'
-import Icon from '../icons/icon'
-import {ICONS} from '../icons/icon-constants'
+import ContentEditable from 'components/common/content-editable'
+import Icon from 'components/icons/icon'
+import {ICONS} from 'components/icons/icon-constants'
 
 class TagDetail extends Component {
 

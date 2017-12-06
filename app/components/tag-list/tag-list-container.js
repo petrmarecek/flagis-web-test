@@ -2,13 +2,13 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
-import TagItem from './tag-item'
-import Loader from '../elements/loader'
-import ShadowScrollbar from '../elements/shadow-scrollbar'
+import TagItem from 'components/tag-list/tag-item'
+import Loader from 'components/elements/loader'
+import ShadowScrollbar from 'components/elements/shadow-scrollbar'
 
-import { getVisibleTags } from '../../redux/store/tags/tags.selectors.js'
-import { selectTag } from './../../redux/store/tags/tags.actions'
-import { setDetail } from './../../redux/store/app-state/app-state.actions'
+import { getVisibleTags } from 'redux/store/tags/tags.selectors'
+import { selectTag } from 'redux/store/tags/tags.actions'
+import { setDetail } from 'redux/store/app-state/app-state.actions'
 
 class TagListContainer extends Component {
 

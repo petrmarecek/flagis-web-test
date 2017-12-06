@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import TagDetail from '../task-tag-detail/tag-detail'
+import TagDetail from 'components/task-tag-detail/tag-detail'
 
 export default class TagDetailContent extends Component {
 

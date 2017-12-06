@@ -9,8 +9,8 @@ import EmailResetPassword from 'containers/email-reset-password'
 import ResetPassword from 'containers/reset-password'
 import UserContainer from 'containers/user-container'
 import TaskPage from 'containers/task-page'
+import TagPage from 'containers/tag-page'
 
-// import TagPage from './components/pages/tag-page'
 // import ArchivePage from './components/pages/archive-page'
 // import AccountPage from './components/pages/account-page'
 import NotFoundPage from 'containers/not-found-page/loadable';
@@ -26,8 +26,8 @@ export default function App() {
         <Route path="/reset-password/*" component={ResetPassword} />
         <Route path="/user" component={UserContainer} >
           <Route path="/tasks" component={TaskPage} />
-          {/*<Route path="tags" component={TagPage} />
-          <Route path="archive" component={ArchivePage} />
+          <Route path="tags" component={TagPage} />
+          {/*<Route path="archive" component={ArchivePage} />
           <Route path="account" component={AccountPage} />*/}
         </Route>
         <Route component={NotFoundPage} />
