@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import cx from 'classnames'
 
-import AddTreeItemForm from './add-tree-item-form'
-import TreeItem from './tree-item'
+import AddTreeItemForm from 'components/tag-tree/add-tree-item-form'
+import TreeItem from 'components/tag-tree/tree-item'
 
 export default class TreeItemList extends Component {
 

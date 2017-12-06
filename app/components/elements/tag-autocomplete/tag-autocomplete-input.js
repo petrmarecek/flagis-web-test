@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
-import domUtils from '../../../redux/utils/dom'
+import domUtils from 'redux/utils/dom'
 import {
   tagAutocompleteBlur,
   tagAutocompleteFocus,
@@ -12,10 +12,10 @@ import {
   tagAutocompletePositionChanged,
   tagAutocompleteSubmit,
   tagAutocompleteReset,
-} from '../../../redux/store/app-state/app-state.actions'
-import { getTags } from '../../../redux/store/tags/tags.selectors'
-import { getCurrentTaskTags } from '../../../redux/store/tasks/tasks.selectors'
-import commonUtils from '../../../redux/utils/common'
+} from 'redux/store/app-state/app-state.actions'
+import { getTags } from 'redux/store/tags/tags.selectors'
+import { getCurrentTaskTags } from 'redux/store/tasks/tasks.selectors'
+import commonUtils from 'redux/utils/common'
 
 const HINTS_TOP_OFFSET = -30
 const HINTS_LEFT_OFFSET = 115

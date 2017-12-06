@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import AttachmentListItem from './attachment-list-item'
+import AttachmentListItem from 'components/attachment-list/attachment-list-item'
 
 export default class AttachmentList extends Component{
 
@@ -13,7 +13,7 @@ export default class AttachmentList extends Component{
   render() {
     return (
       <div className="attachment-list-container">
-        {!this.props.attachments.isFetching && 
+        {!this.props.attachments.isFetching &&
           <ul className="attachment-list">
           {!this.props.disabled && this.props.attachments.items.map(attachment =>
             <AttachmentListItem

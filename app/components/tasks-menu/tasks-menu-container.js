@@ -19,25 +19,25 @@ import {
   hideMenuSort,
   visibleMenuOption,
   hideMenuOption,
-} from '../../redux/store/tasks-menu/tasks-menu.action'
+} from 'redux/store/tasks-menu/tasks-menu.action'
 import {
   setArchiveTasks,
   deselectTasks,
   selectAllTask,
-} from '../../redux/store/tasks/tasks.actions'
-import { showDialog } from '../../redux/store/app-state/app-state.actions'
+} from 'redux/store/tasks/tasks.actions'
+import { showDialog } from 'redux/store/app-state/app-state.actions'
 import {
   getTasksId,
   getCompletedTasksId,
-} from './../../redux/store/tasks/tasks.selectors'
-import { archiveCompletedTasks } from '../../redux/utils/component-helper'
+} from 'redux/store/tasks/tasks.selectors'
+import { archiveCompletedTasks } from 'redux/utils/component-helper'
 
-import SearchBox from '../elements/search-box'
-import TasksMenuFilters from './tasks-menu-filters'
-import TasksMenuFiltersActive from './tasks-menu-filters-active'
-import TasksMenuSort from './tasks-menu-sort'
-import TasksMenuOptions from './tasks-menu-options'
-import TasksMenuMultiSelect from './tasks-menu-multi-select'
+import SearchBox from 'components/elements/search-box'
+import TasksMenuFilters from 'components/tasks-menu/tasks-menu-filters'
+import TasksMenuFiltersActive from 'components/tasks-menu//tasks-menu-filters-active'
+import TasksMenuSort from 'components/tasks-menu//tasks-menu-sort'
+import TasksMenuOptions from 'components/tasks-menu//tasks-menu-options'
+import TasksMenuMultiSelect from 'components/tasks-menu//tasks-menu-multi-select'
 
 class TasksMenuContainer extends Component {
 

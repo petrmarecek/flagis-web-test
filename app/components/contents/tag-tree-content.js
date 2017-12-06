@@ -1,5 +1,5 @@
 import React from 'react'
-import TreeContainer from '../tag-tree/tree-container'
+import TreeContainer from 'components/tag-tree/tree-container'
 
 export default class TagTreeContent extends React.Component {
 

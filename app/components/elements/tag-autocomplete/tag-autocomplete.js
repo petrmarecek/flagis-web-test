@@ -2,10 +2,10 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import cx from 'classnames'
 
-import TagAutocompleteItem from './tag-autocomplete-item'
-import TagAutocompleteInput from './tag-autocomplete-input'
-import Icon from '../../icons/icon'
-import { ICONS } from '../../icons/icon-constants'
+import TagAutocompleteItem from 'components/elements/tag-autocomplete/tag-autocomplete-item'
+import TagAutocompleteInput from 'components/elements/tag-autocomplete/tag-autocomplete-input'
+import Icon from 'components/icons/icon'
+import { ICONS } from 'components/icons/icon-constants'
 
 export default class TagAutocomplete extends Component {
 

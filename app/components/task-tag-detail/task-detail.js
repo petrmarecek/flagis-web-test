@@ -11,7 +11,7 @@ import { connect } from 'react-redux'
 import {
   showDialog,
   deselectDetail
-} from "../../redux/store/app-state/app-state.actions"
+} from 'redux/store/app-state/app-state.actions'
 
 import {
   selectTask,
@@ -24,40 +24,40 @@ import {
   removeTag,
   setDate,
   setDescription,
-} from '../../redux/store/tasks/tasks.actions'
+} from 'redux/store/tasks/tasks.actions'
 import {
   getCurrentTask,
   getNextTask,
   getPreviousTask,
-} from "../../redux/store/tasks/tasks.selectors"
+} from 'redux/store/tasks/tasks.selectors'
 
 import {
   fetchAttachment,
   createAttachment,
   deleteAttachment
-} from '../../redux/store/attachments/attachments.action'
-import { getAttachments } from './../../redux/store/attachments/attachments.selectors'
+} from 'redux/store/attachments/attachments.action'
+import { getAttachments } from 'redux/store/attachments/attachments.selectors'
 
 import {
   fetchComment,
   createComment,
-} from '../../redux/store/comments/comments.action'
-import { getComments } from './../../redux/store/comments/comments.selectors'
+} from 'redux/store/comments/comments.action'
+import { getComments } from 'redux/store/comments/comments.selectors'
 
 import {
   getSelectionInfo,
   setArchive
-} from '../../redux/utils/component-helper'
-import dateUtil from './../../redux/utils/date'
+} from 'redux/utils/component-helper'
+import dateUtil from 'redux/utils/date'
 
-import TagAutocomplete from '../elements/tag-autocomplete/tag-autocomplete'
-import ContentEditable from '../common/content-editable'
-import FilePicker from '../elements/file-picker'
-import AttachmentList from '../attachment-list/attachment-list'
-import CommentList from '../comment-list/comment-list'
-import Loader from '../elements/loader'
-import Icon from '../icons/icon'
-import {ICONS} from '../icons/icon-constants'
+import TagAutocomplete from 'components/elements/tag-autocomplete/tag-autocomplete'
+import ContentEditable from 'components/common/content-editable'
+import FilePicker from 'components/elements/file-picker'
+import AttachmentList from 'components/attachment-list/attachment-list'
+import CommentList from 'components/comment-list/comment-list'
+import Loader from 'components/elements/loader'
+import Icon from 'components/icons/icon'
+import {ICONS} from 'components/icons/icon-constants'
 
 class TaskDetail extends Component {
 

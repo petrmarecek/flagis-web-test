@@ -2,10 +2,10 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
 
-import { ICONS } from "../icons/icon-constants"
-import Icon from '../icons/icon'
+import { ICONS } from 'components/icons/icon-constants'
+import Icon from 'components/icons/icon'
 
-import TreeItemList from './tree-item-list'
+import TreeItemList from 'components/tag-tree/tree-item-list'
 
 export default class TreeSection extends Component {
 
@@ -77,7 +77,7 @@ export default class TreeSection extends Component {
       'folder': this.props.section.childItems.length > 0,
       'drop-section': true,
     })
-    
+
     const currentItemClasses = classnames({
       'tree-section': !this.props.section.parentId,
       'tree-section--collapsed': this.props.section.collapsed,
@@ -86,7 +86,7 @@ export default class TreeSection extends Component {
     })
 
     const style = { maxWidth: this.props.maxWidth - 135 }
-    
+
     // component
     return (
       <li ref="node" className={treeItemClasses} data-item-id={this.props.section.id} draggable>
@@ -108,10 +108,10 @@ export default class TreeSection extends Component {
             </span>
           </span>
         </a>
-        <TreeItemList 
+        <TreeItemList
           addControlParentId={this.props.addControlParentId}
           tagsRelations={this.props.tagsRelations}
-          onAddChild={this.props.onAddChild} 
+          onAddChild={this.props.onAddChild}
           onAddControlCancel={this.props.onAddControlCancel}
           onCollapse={this.props.onCollapse}
           onDrop={this.props.onDrop}

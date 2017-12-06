@@ -24,7 +24,7 @@ export default function App() {
         <Route path="/sign-up" component={SignUp} />
         <Route path="/email-reset-password" component={EmailResetPassword} />
         <Route path="/reset-password/*" component={ResetPassword} />
-        <Route path="/user" component={UserContainer}>
+        <Route path="/user" component={UserContainer} >
           <Route path="/tasks" component={TaskPage} />
           {/*<Route path="tags" component={TagPage} />
           <Route path="archive" component={ArchivePage} />

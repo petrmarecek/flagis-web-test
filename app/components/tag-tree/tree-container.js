@@ -2,16 +2,16 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
-import AddTreeItemForm from './add-tree-item-form'
-import Tree from './tree'
-import Loader from '../elements/loader'
+import AddTreeItemForm from 'components/tag-tree/add-tree-item-form'
+import Tree from 'components/tag-tree/tree'
+import Loader from 'components/elements/loader'
 
-import { ICONS } from "../icons/icon-constants"
-import Icon from '../icons/icon'
-import ShadowScrollbar from '../elements/shadow-scrollbar'
+import { ICONS } from 'components/icons/icon-constants'
+import Icon from 'components/icons/icon'
+import ShadowScrollbar from 'components/elements/shadow-scrollbar'
 
-import { getTree } from '../../redux/store/tree/tree.selectors'
-import { showDialog } from '../../redux/store/app-state/app-state.actions'
+import { getTree } from 'redux/store/tree/tree.selectors'
+import { showDialog } from 'redux/store/app-state/app-state.actions'
 import {
   toggleMenu,
   showTreeItemAddControl,
@@ -20,7 +20,7 @@ import {
   selectPath,
   collapse,
   dropTreeItem,
-} from '../../redux/store/tree/tree.actions'
+} from 'redux/store/tree/tree.actions'
 
 class TreeContainer extends React.Component {
 

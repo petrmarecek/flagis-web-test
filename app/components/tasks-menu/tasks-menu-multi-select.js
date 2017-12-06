@@ -2,12 +2,12 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { findDOMNode } from 'react-dom'
 import velocity from 'velocity-animate'
+
+import { ICONS } from 'components/icons/icon-constants'
+import Icon from 'components/icons/icon'
+import FileDownload from 'components/elements/file-download/index'
+
 import config from '../../config/index'
-
-
-import { ICONS } from '../icons/icon-constants'
-import Icon from '../icons/icon'
-import FileDownload from '../elements/file-download/index'
 
 export default class TasksMenuMultiSelect extends Component {
 

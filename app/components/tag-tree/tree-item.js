@@ -5,13 +5,13 @@ import { Set } from 'immutable'
 import { DragSource, DropTarget } from 'react-dnd'
 import { findDOMNode } from 'react-dom'
 import includes from 'lodash/includes'
-import { getTagColor } from '../../redux/utils/component-helper'
 
-import { ICONS } from "../icons/icon-constants"
-import Icon from '../icons/icon'
+import { getTagColor } from 'redux/utils/component-helper'
 
-import TreeItemList from './tree-item-list'
-import commonUtils from '../../redux/utils/common'
+import { ICONS } from 'components/icons/icon-constants'
+import Icon from 'components/icons/icon'
+import TreeItemList from 'components/tag-tree/tree-item-list'
+import commonUtils from 'redux/utils/common'
 
 const ITEM_HEIGHT = 27
 const SECTION_HEIGHT = 32
@@ -31,7 +31,7 @@ const TreeItemDragDrop = {
       isOver: monitor.isOver(),
     }
   },
-  
+
   taskSource: {
     beginDrag: props => ({
       treeItem: props.treeItem,
@@ -70,7 +70,7 @@ const TreeItemDragDrop = {
       }
 
       const hoverBoundingRect = findDOMNode(component).getBoundingClientRect()
-      const thirdHeight = props.treeItem.parentId 
+      const thirdHeight = props.treeItem.parentId
         ? ITEM_HEIGHT / 3
         : SECTION_HEIGHT / 3
 
@@ -210,7 +210,7 @@ class TreeItem extends Component {
     if (!currentTagRelations) {
       return Set()
     }
-    
+
     // If it is a nested tag --> intersect with parent tags
     return this.props.parentTagRelations
       ? currentTagRelations.intersect(this.props.parentTagRelations || Set())
@@ -303,7 +303,7 @@ class TreeItem extends Component {
         )}
         <TreeItemList
           addControlParentId={this.props.addControlParentId}
-          onAddChild={this.props.onAddChild} 
+          onAddChild={this.props.onAddChild}
           onAddControlCancel={this.props.onAddControlCancel}
           onCollapse={this.props.onCollapse}
           onDrop={this.props.onDrop}

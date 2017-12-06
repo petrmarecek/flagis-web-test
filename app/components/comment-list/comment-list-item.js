@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import dateUtil from './../../redux/utils/date'
+import dateUtil from 'redux/utils/date'
 
-import { ICONS } from "../icons/icon-constants"
-import Icon from '../icons/icon'
+import { ICONS } from 'components/icons/icon-constants'
+import Icon from 'components/icons/icon'
 
 export default class CommentListItem extends Component {
 

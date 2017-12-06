@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import utils from './../../redux/utils/common'
+import utils from 'redux/utils/common'
 
 class TaskListItemTag extends Component {
 

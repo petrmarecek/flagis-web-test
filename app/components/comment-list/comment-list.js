@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import CommentListItem from './comment-list-item'
+import CommentListItem from 'components/comment-list/comment-list-item'
 
 export default class CommentList extends Component {
 

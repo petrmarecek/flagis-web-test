@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import css from 'dom-css'
+import css from 'classnames'
 import { Scrollbars } from 'react-custom-scrollbars'
 
 export default class ShadowScrollbar extends Component {

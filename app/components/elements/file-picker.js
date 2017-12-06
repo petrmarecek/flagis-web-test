@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import filepicker from 'filepicker-js'
 
-import { ICONS } from "../icons/icon-constants"
-import Icon from '../icons/icon'
+import { ICONS } from 'components/icons/icon-constants'
+import Icon from 'components/icons/icon'
 
 filepicker.setKey('A7hMFRb7XS6KIA4fg4DChz')
 

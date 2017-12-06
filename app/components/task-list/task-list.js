@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import TaskListItem from './task-list-item'
-import { getTimeLineByDueDate } from "../../redux/utils/component-helper"
+import TaskListItem from 'components/task-list/task-list-item'
+import { getTimeLineByDueDate } from 'redux/utils/component-helper'
 
 class TaskList extends Component {
 
@@ -229,5 +229,5 @@ class TaskList extends Component {
   }
 }
 
-export default TaskList;
+export default TaskList
 

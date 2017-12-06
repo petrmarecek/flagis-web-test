@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import commonUtils from '../../../redux/utils/common'
+import commonUtils from 'redux/utils/common'
 
-import { ICONS } from "../../icons/icon-constants"
-import Icon from '../../icons/icon'
+import { ICONS } from 'components/icons/icon-constants'
+import Icon from 'components/icons/icon'
 
 export default class TagAutocompleteItem extends React.Component {
 

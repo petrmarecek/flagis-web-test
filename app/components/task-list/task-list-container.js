@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import debounce from 'lodash/debounce'
 import { NotificationManager } from 'react-notifications'
 
-import { getTasks } from './../../redux/store/tasks/tasks.selectors'
+import { getTasks } from 'redux/store/tasks/tasks.selectors'
 import {
   selectTask,
   setComplete,
@@ -15,18 +15,18 @@ import {
   deselectTasks,
   setArchiveTasks,
   cancelArchiveTasks
-} from './../../redux/store/tasks/tasks.actions'
-import { selectActiveTags } from './../../redux/store/tags/tags.actions'
-import { computeTaskOrder } from '../../redux/utils/redux-helper'
+} from 'redux/store/tasks/tasks.actions'
+import { selectActiveTags } from 'redux/store/tags/tags.actions'
+import { computeTaskOrder } from 'redux/utils/redux-helper'
 import {
   getSelectionInfo,
   setArchive,
   cancelArchive
-} from '../../redux/utils/component-helper'
+} from 'redux/utils/component-helper'
 
-import Loader from '../elements/loader'
-import ShadowScrollbar from '../elements/shadow-scrollbar'
-import TaskList from './task-list'
+import Loader from 'components/elements/loader'
+import ShadowScrollbar from 'components/elements/shadow-scrollbar'
+import TaskList from 'components/task-list/task-list'
 
 class TaskListContainer extends Component {
 

@@ -7,12 +7,12 @@ import moment from 'moment'
 import velocity from 'velocity-animate'
 import 'velocity-animate/velocity.ui'
 
-import dateUtils from './../../redux/utils/date'
+import dateUtils from 'redux/utils/date'
 
-import { ICONS } from '../icons/icon-constants'
-import Icon from '../icons/icon'
+import { ICONS } from 'components/icons/icon-constants'
+import Icon from 'components/icons/icon'
 
-import TaskListItemTag from './task-list-item-tag'
+import TaskListItemTag from 'components/task-list/task-list-item-tag'
 
 const ItemTypes = {
   TASK: 'task'

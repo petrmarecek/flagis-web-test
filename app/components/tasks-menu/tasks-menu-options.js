@@ -2,11 +2,11 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import velocity from 'velocity-animate'
 
-import MenuBox from '../elements/menux-box/menu-box'
-import MenuBoxGroupItems from '../elements/menux-box/menu-box-group-items'
-import MenuBoxItem from '../elements/menux-box/menu-box-item'
-import { ICONS } from '../icons/icon-constants'
-import Icon from "../icons/icon"
+import MenuBox from 'components/elements/menux-box/menu-box'
+import MenuBoxGroupItems from 'components/elements/menux-box/menu-box-group-items'
+import MenuBoxItem from 'components/elements/menux-box/menu-box-item'
+import { ICONS } from 'components/icons/icon-constants'
+import Icon from 'components/icons/icon'
 
 export default class TasksMenuOptions extends Component {
 

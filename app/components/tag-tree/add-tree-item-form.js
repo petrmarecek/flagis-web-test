@@ -2,11 +2,10 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
 
-import { ICONS } from "../icons/icon-constants"
-import Icon from '../icons/icon'
-
-import TagAutocompleteInput from '../elements/tag-autocomplete/tag-autocomplete-input'
-import AddTreeItemSectionForm from './add-tree-item-section-form'
+import { ICONS } from 'components/icons/icon-constants'
+import Icon from 'components/icons/icon'
+import TagAutocompleteInput from 'components/elements/tag-autocomplete/tag-autocomplete-input'
+import AddTreeItemSectionForm from 'components/tag-tree/add-tree-item-section-form'
 
 export default class AddTreeItemForm extends Component {
 

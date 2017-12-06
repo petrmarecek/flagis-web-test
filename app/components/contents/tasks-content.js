@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 
-import TaskListContainer from '../task-list/task-list-container'
-import TasksMenuContainer from '../tasks-menu/tasks-menu-container'
-import AddTaskForm from '../elements/add-task-form'
-import TasksProgressBar from '../elements/tasks-progress-bar'
+import TaskListContainer from 'components/task-list/task-list-container'
+import TasksMenuContainer from 'components/tasks-menu/tasks-menu-container'
+import AddTaskForm from 'components/elements/add-task-form'
+import TasksProgressBar from 'components/elements/tasks-progress-bar'
 
 export default class TasksContent extends Component {
   render() {

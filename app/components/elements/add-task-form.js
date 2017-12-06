@@ -3,11 +3,11 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 import { connect } from 'react-redux'
 
-import { ICONS } from '../icons/icon-constants'
-import Icon from '../icons/icon'
+import { ICONS } from 'components/icons/icon-constants'
+import Icon from 'components/icons/icon'
 
-import commonUtils from './../../redux/utils/common'
-import { createTask } from './../../redux/store/tasks/tasks.actions'
+import commonUtils from 'redux/utils/common'
+import { createTask } from 'redux/store/tasks/tasks.actions'
 
 class AddTaskForm extends Component {
 
