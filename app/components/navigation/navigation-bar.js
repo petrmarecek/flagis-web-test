@@ -2,12 +2,13 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
-import { defaultDisplay } from '../../redux/store/app-state/app-state.actions'
-import NavigationRight from './navigation-right'
-import MainSearch from '../elements/main-search'
+import { defaultDisplay } from 'redux/store/app-state/app-state.actions'
 
-import { ICONS } from '../icons/icon-constants'
-import Icon from '../icons/icon'
+import NavigationRight from 'components/navigation/navigation-right'
+import MainSearch from 'components/elements/main-search'
+
+import { ICONS } from 'components/icons/icon-constants'
+import Icon from 'components/icons/icon'
 
 class NavigationBar extends Component {
 

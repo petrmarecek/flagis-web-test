@@ -7,15 +7,15 @@ import {
   fetchTasks,
   fetchArchivedTasks,
   deselectTasks
-} from '../../redux/store/tasks/tasks.actions'
-import { deselectTags } from '../../redux/store/tags/tags.actions'
+} from 'redux/store/tasks/tasks.actions'
+import { deselectTags } from 'redux/store/tags/tags.actions'
 import {
   hideArchivedTasks,
   changeLocation,
-} from '../../redux/store/app-state/app-state.actions'
+} from 'redux/store/app-state/app-state.actions'
 
-import { ICONS } from '../icons/icon-constants'
-import Icon from '../icons/icon'
+import { ICONS } from 'components/icons/icon-constants'
+import Icon from 'components/icons/icon'
 
 class NavigationRight extends Component {
 
