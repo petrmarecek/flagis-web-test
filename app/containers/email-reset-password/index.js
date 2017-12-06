@@ -37,7 +37,7 @@ class EmailResetPassword extends Component {
     this.props.controlRedirectTasks()
   }
 
-  onSubmit =  values => {
+  onSubmit = values => {
     this.props.emailResetPassword({ email: values.email })
     this.props.visibleLoader()
   }

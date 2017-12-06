@@ -146,8 +146,8 @@ class LandingPage extends Component {
 }
 
 
-  const mapStateToProps = () => ({})
-  const mapDispatchToProps = { controlRedirectTasks }
+const mapStateToProps = () => ({})
+const mapDispatchToProps = { controlRedirectTasks }
 
-  export default connect(mapStateToProps, mapDispatchToProps)(LandingPage)
+export default connect(mapStateToProps, mapDispatchToProps)(LandingPage)
 
