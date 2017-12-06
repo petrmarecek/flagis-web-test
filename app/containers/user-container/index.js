@@ -10,7 +10,7 @@ import { controlRedirectSignIn } from 'redux/store/auth/auth.actions'
 
 //import Dialogs from 'components/dialogs/dialogs'
 import NavigationBar from 'components/navigation/navigation-bar'
-//import FloatingComponents from 'components/floating/floating-components'
+import FloatingComponents from 'components/floating/floating-components'
 
 class UserContainer extends Component {
   static propTypes = {
@@ -43,7 +43,7 @@ class UserContainer extends Component {
           {/*<Dialogs />*/}
         </div>
         <div className="floating-components">
-          {/*<FloatingComponents />*/}
+          <FloatingComponents />
           <NotificationContainer />
         </div>
       </div>

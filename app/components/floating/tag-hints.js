@@ -4,9 +4,9 @@ import onClickOutside from 'react-onclickoutside'
 import classnames from 'classnames'
 import { connect } from 'react-redux'
 
-import { hintsClickOutside, tagHintSelected } from '../../redux/store/app-state/app-state.actions'
-import { getTagHints } from '../../redux/store/app-state/app-state.selectors'
-import commonUtils from '../../redux/utils/common'
+import { hintsClickOutside, tagHintSelected } from 'redux/store/app-state/app-state.actions'
+import { getTagHints } from 'redux/store/app-state/app-state.selectors'
+import commonUtils from 'redux/utils/common'
 
 class TagsHints extends Component {
 
