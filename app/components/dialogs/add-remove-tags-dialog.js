@@ -1,10 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import DialogBase from 'components/dialogs/dialog-base'
 
-import { ICONS } from '../icons/icon-constants'
-import Icon from '../icons/icon'
-import DialogBase from './dialog-base'
-import AddRemoveTagsItem from './add-remove-tags-item'
+import AddRemoveTagsItem from 'components/dialogs/add-remove-tags-item'
+
+import { ICONS } from 'components/icons/icon-constants'
+import Icon from 'components/icons/icon'
 
 export default class AddRemoveTagsDialog extends DialogBase {
 

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
-import TagHints from './tag-hints'
+import TagHints from 'components/floating/tag-hints'
 
 class FloatingComponents extends Component {
 

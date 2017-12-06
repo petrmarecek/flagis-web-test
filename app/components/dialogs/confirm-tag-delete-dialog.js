@@ -1,11 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
-import utils from './../../redux/utils/common'
-import DialogBase from './dialog-base'
+import utils from 'redux/utils/common'
+import DialogBase from 'components/dialogs/dialog-base'
 
-import { ICONS } from '../icons/icon-constants'
-import Icon from '../icons/icon'
+import { ICONS } from 'components/icons/icon-constants'
+import Icon from 'components/icons/icon'
 
 export default class ConfirmTagDeleteDialog extends DialogBase {
 

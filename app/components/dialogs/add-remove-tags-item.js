@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import commonUtils from 'redux/utils/common'
 
-import commonUtils from '../../redux/utils/common'
-import { getTagColor } from '../../redux/utils/component-helper'
+import { getTagColor } from 'redux/utils/component-helper'
 
-import Icon from '../icons/icon'
-import { ICONS } from '../icons/icon-constants'
+import { ICONS } from 'components/icons/icon-constants'
+import Icon from 'components/icons/icon'
 
 export default class AddRemoveTagsItem extends Component {
 

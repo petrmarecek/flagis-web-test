@@ -1,39 +1,39 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { NotificationManager } from 'react-notifications'
 
-import { hideDialog } from '../../redux/store/app-state/app-state.actions'
+import { hideDialog } from 'redux/store/app-state/app-state.actions'
 import {
   updateTreeItemTitle,
-  deleteTreeItem
-} from '../../redux/store/tree/tree.actions'
+  deleteTreeItem,
+} from 'redux/store/tree/tree.actions'
 import {
   addTaskTag,
   removeTag,
   deleteTask,
   deselectTasks,
-} from '../../redux/store/tasks/tasks.actions'
+} from 'redux/store/tasks/tasks.actions'
 import {
   deleteTag,
   setActiveTags,
   deselectTags,
-} from '../../redux/store/tags/tags.actions'
-import { getTagsReferences } from '../../redux/store/tree/tree.selectors'
-import { NotificationManager } from 'react-notifications'
+} from 'redux/store/tags/tags.actions'
+import { getTagsReferences } from 'redux/store/tree/tree.selectors'
 import {
   getSelectTasks,
-  getSelectTasksTags
-} from '../../redux/store/tasks/tasks.selectors'
-import { getTags } from '../../redux/store/tags/tags.selectors'
+  getSelectTasksTags,
+} from 'redux/store/tasks/tasks.selectors'
+import { getTags } from 'redux/store/tags/tags.selectors'
 import {
   addToList,
   deleteFromList,
-  clearLists
-} from '../../redux/store/multi-select/multi-select.action'
+  clearLists,
+} from 'redux/store/multi-select/multi-select.action'
 import {
   getAddTags,
-  getRemoveTags
-} from '../../redux/store/multi-select/multi-select.selectors'
+  getRemoveTags,
+} from 'redux/store/multi-select/multi-select.selectors'
 
 import ConfirmTaskDeleteDialog from './confirm-task-delete-dialog'
 import ConfirmTagDeleteDialog from './confirm-tag-delete-dialog'

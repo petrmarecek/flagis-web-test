@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import DialogBase from './dialog-base'
+import DialogBase from 'components/dialogs/dialog-base'
 
-import { ICONS } from '../icons/icon-constants'
-import Icon from '../icons/icon'
+import { ICONS } from 'components/icons/icon-constants'
+import Icon from 'components/icons/icon'
 
 export default class ConfirmTaskDeleteDialog extends DialogBase {
 

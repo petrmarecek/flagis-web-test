@@ -8,7 +8,7 @@ import { DragDropContext } from 'react-dnd'
 
 import { controlRedirectSignIn } from 'redux/store/auth/auth.actions'
 
-//import Dialogs from 'components/dialogs/dialogs'
+import Dialogs from 'components/dialogs/dialogs'
 import NavigationBar from 'components/navigation/navigation-bar'
 import FloatingComponents from 'components/floating/floating-components'
 
@@ -40,7 +40,7 @@ class UserContainer extends Component {
           {this.props.children}
         </div>
         <div className="dialog-container">
-          {/*<Dialogs />*/}
+          <Dialogs />
         </div>
         <div className="floating-components">
           <FloatingComponents />

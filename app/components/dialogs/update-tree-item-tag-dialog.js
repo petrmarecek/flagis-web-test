@@ -1,11 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import DialogBase from 'components/dialogs/dialog-base'
 
-import DialogBase from './dialog-base'
-import TagAutocompleteInput from '../elements/tag-autocomplete/tag-autocomplete-input'
+import TagAutocompleteInput from 'components/elements/tag-autocomplete/tag-autocomplete-input'
 
-import { ICONS } from '../icons/icon-constants'
-import Icon from '../icons/icon'
+import { ICONS } from 'components/icons/icon-constants'
+import Icon from 'components/icons/icon'
 
 export default class UpdateTreeItemTagDialog extends DialogBase {
 
