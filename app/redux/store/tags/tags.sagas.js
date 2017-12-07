@@ -18,8 +18,8 @@ export function* fetchTags() {
   })
 
   // Initialize search service
-  search.tags.resetIndex()
-  search.tags.addItems(result)
+  /*search.tags.resetIndex()
+  search.tags.addItems(result)*/
 }
 
 export function* selectActiveTags(action) {

@@ -181,8 +181,8 @@ function updateReferencingTreeItems(state, tagId, tagFieldName, tagFieldValue) {
 }
 
 function saveTree(payload, state) {
-  const rawItems = payload || {}
-  const rawTags = payload.tags || {}
+  const rawItems = payload.entities.treeItem || {}
+  const rawTags = payload.entities.tags || {}
   const items = convertToImmutable(rawItems, records.TreeItem)
   const tags = convertToImmutable(rawTags, records.Tag)
 
@@ -192,8 +192,8 @@ function saveTree(payload, state) {
 }
 
 function saveTasks(payload, state) {
-  const rawTasks = payload || {}
-  const rawTags = payload.tags || {}
+  const rawTasks = payload.entities.tasks || {}
+  const rawTags = payload.entities.tags || {}
   const tags = convertToImmutable(rawTags, records.Tag)
   const tasks = convertToImmutable(rawTasks, records.Task)
 
@@ -203,7 +203,7 @@ function saveTasks(payload, state) {
 }
 
 function saveComments(payload, state) {
-  const rawComments = payload || {}
+  const rawComments = payload.entities.comment || {}
   const comments = convertToImmutable(rawComments, records.Comment)
 
   return state
@@ -212,7 +212,7 @@ function saveComments(payload, state) {
 
 
 function saveAttachments(payload, state) {
-  const rawAttachments = payload || {}
+  const rawAttachments = payload.entities.attachment || {}
   const attachments = convertToImmutable(rawAttachments, records.Attachment)
 
   return state

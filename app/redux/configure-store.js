@@ -4,8 +4,9 @@
 
 import { createStore, applyMiddleware, compose } from 'redux';
 import { fromJS } from 'immutable';
-import { routerMiddleware } from 'react-router-redux';
-import createSagaMiddleware from 'redux-saga';
+import { routerMiddleware } from 'react-router-redux'
+import normalizrMiddleware from 'redux-normalizr-middleware'
+import createSagaMiddleware from 'redux-saga'
 
 import createReducer from 'redux/store/root.reducer';
 import sagas from 'redux//store/root.sagas'
@@ -19,6 +20,7 @@ export default function configureStore(initialState = {}, history) {
   const middlewares = [
     sagaMiddleware,
     routerMiddleware(history),
+    normalizrMiddleware(),
   ];
 
   const enhancers = [

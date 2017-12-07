@@ -24,7 +24,7 @@ export default typeToReducer({
     }),
 
     FULFILLED: (state, action) => {
-      const tasks = action.payload
+      const tasks = action.payload.entities.tasks
       const completedTasksIds = completedTasks(tasks)
       const taskIds = action.payload.result
 
