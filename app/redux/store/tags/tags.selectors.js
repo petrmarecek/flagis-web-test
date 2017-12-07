@@ -1,4 +1,4 @@
-import search from '../../services/search'
+import search from 'redux/services/search'
 import intersection from 'lodash/intersection'
 
 // ------ Helpers -------------------------------------------------------------
@@ -105,6 +105,6 @@ export const getPreviousTag = state => {
 }
 
 export const getActiveTags = state =>
-  state.tags.activeTags.map(tagId => state.entities.getIn(['tags', tagId])).reverse()
+  state.tags.activeTags.map(tagId => state.getIn(['entities', 'tags', tagId])).reverse()
 
-export const getActiveTagIds = state => state.tags.activeTags
+export const getActiveTagIds = state => state.getIn(['tags', 'activeTags'])

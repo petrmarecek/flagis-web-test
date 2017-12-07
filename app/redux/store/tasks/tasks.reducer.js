@@ -1,13 +1,13 @@
 import { List } from 'immutable'
 import typeToReducer from 'type-to-reducer'
 
-import { AUTH } from '../auth/auth.actions'
-import { TAGS } from '../tags/tags.actions'
-import { TASKS } from './tasks.actions'
-import { TaskStore } from '../../data/records'
+import { AUTH } from 'redux/store/auth/auth.actions'
+import { TAGS } from 'redux/store/tags/tags.actions'
+import { TASKS } from 'redux/store/tasks/tasks.actions'
+import { TaskStore } from 'redux/data/records'
 
 export default typeToReducer({
-  
+
   [TASKS.ADD]: (state, action) => {
     const newTaskId = action.payload.result
     return state.updateIn(['items'],
@@ -24,7 +24,7 @@ export default typeToReducer({
     }),
 
     FULFILLED: (state, action) => {
-      const tasks = action.payload.entities.tasks
+      const tasks = action.payload
       const completedTasksIds = completedTasks(tasks)
       const taskIds = action.payload.result
 

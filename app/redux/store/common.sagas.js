@@ -1,9 +1,9 @@
 import { call, put } from 'redux-saga/effects'
 import { NotificationManager } from 'react-notifications'
 
-import { logout } from './auth/auth.actions'
-import { deselectTasks } from './tasks/tasks.actions'
-import { deselectTags } from './tags/tags.actions'
+import { logout } from 'redux/store/auth/auth.actions'
+import { deselectTasks } from 'redux/store/tasks/tasks.actions'
+import { deselectTags } from 'redux/store/tags/tags.actions'
 
 /**
  * Creates common action types for fetch action type

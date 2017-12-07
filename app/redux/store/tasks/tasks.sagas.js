@@ -1,15 +1,15 @@
 import { call, put, select, fork } from 'redux-saga/effects'
-import { fetch } from '../common.sagas'
-import * as appStateActions from '../app-state/app-state.actions'
-import * as tagsActions from '../tags/tags.actions'
-import * as taskActions from './tasks.actions'
-import * as taskMenuActions from '../tasks-menu/tasks-menu.action'
-import api from '../../utils/api'
-import schema from '../../data/schema'
-import * as appStateSelectors from '../app-state/app-state.selectors'
-import * as taskSelectors from '../tasks/tasks.selectors'
-import * as tagsSelectors from '../tags/tags.selectors'
-import search from '../../services/search'
+import { fetch } from 'redux/store/common.sagas'
+import * as appStateActions from 'redux/store/app-state/app-state.actions'
+import * as tagsActions from 'redux/store/tags/tags.actions'
+import * as taskActions from 'redux/store/tasks/tasks.actions'
+import * as taskMenuActions from 'redux/store/tasks-menu/tasks-menu.action'
+import api from 'redux/utils/api'
+import schema from 'redux/data/schema'
+import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'
+import * as taskSelectors from 'redux/store/tasks/tasks.selectors'
+import * as tagsSelectors from 'redux/store/tags/tags.selectors'
+import search from 'redux/services/search'
 
 const TASKS = taskActions.TASKS
 
@@ -20,7 +20,7 @@ export function* fetchTasks() {
     yield put(appStateActions.hideArchivedTasks())
   }
 
-  const activeTags = yield select(tagsSelectors.getActiveTagIds)
+  const activeTags = yield select(state => tagsSelectors.getActiveTagIds(state))
   const result = yield* fetch(TASKS.FETCH, {
     method: api.tasks.search,
     args: [{

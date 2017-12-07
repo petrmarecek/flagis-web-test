@@ -15,7 +15,7 @@ export const getAppStateItem = (state, type) => {
 }
 
 export const getMultiSelectVisibility = (state) => {
-  return state.appState.multiSelect.isVisible
+  return state.getIn(['appState', 'multiSelect', 'isVisible'])
 }
 
 export const getDialog = (state) => {
@@ -33,11 +33,11 @@ export const getTasksListVisibility = (state) => {
 }
 
 export const getArchivedTasksVisibility = (state) => {
-  return state.appState.archivedTasks.isVisible
+  return state.getIn(['appState', 'archivedTasks', 'isVisible'])
 }
 
 export const getTaskTagDetail = (state) => {
-  return state.appState.taskTagDetail
+  return state.getIn(['appState', 'taskTagDetail'])
 }
 
 

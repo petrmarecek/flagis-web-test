@@ -1,13 +1,13 @@
 import { Map, List } from 'immutable'
 import typeToReducer from 'type-to-reducer'
 
-import { AUTH } from '../auth/auth.actions'
-import { TASKS } from '../tasks/tasks.actions'
-import { TREE } from '../tree/tree.actions'
-import { TAGS } from '../tags/tags.actions'
-import { COMMENTS } from '../comments/comments.action'
-import { ATTACHMENTS } from '../attachments/attachments.action'
-import * as records from '../../data/records'
+import { AUTH } from 'redux/store/auth/auth.actions'
+import { TASKS } from 'redux/store/tasks/tasks.actions'
+import { TREE } from 'redux/store/tree/tree.actions'
+import { TAGS } from 'redux/store/tags/tags.actions'
+import { COMMENTS } from 'redux/store/comments/comments.action'
+import { ATTACHMENTS } from 'redux/store/attachments/attachments.action'
+import * as records from 'redux/data/records'
 
 export default typeToReducer({
 
@@ -181,8 +181,8 @@ function updateReferencingTreeItems(state, tagId, tagFieldName, tagFieldValue) {
 }
 
 function saveTree(payload, state) {
-  const rawItems = payload.entities.treeItem || {}
-  const rawTags = payload.entities.tags || {}
+  const rawItems = payload || {}
+  const rawTags = payload.tags || {}
   const items = convertToImmutable(rawItems, records.TreeItem)
   const tags = convertToImmutable(rawTags, records.Tag)
 
@@ -192,8 +192,8 @@ function saveTree(payload, state) {
 }
 
 function saveTasks(payload, state) {
-  const rawTasks = payload.entities.tasks || {}
-  const rawTags = payload.entities.tags || {}
+  const rawTasks = payload || {}
+  const rawTags = payload.tags || {}
   const tags = convertToImmutable(rawTags, records.Tag)
   const tasks = convertToImmutable(rawTasks, records.Task)
 
@@ -203,7 +203,7 @@ function saveTasks(payload, state) {
 }
 
 function saveComments(payload, state) {
-  const rawComments = payload.entities.comment || {}
+  const rawComments = payload || {}
   const comments = convertToImmutable(rawComments, records.Comment)
 
   return state
@@ -212,7 +212,7 @@ function saveComments(payload, state) {
 
 
 function saveAttachments(payload, state) {
-  const rawAttachments = payload.entities.attachment || {}
+  const rawAttachments = payload || {}
   const attachments = convertToImmutable(rawAttachments, records.Attachment)
 
   return state

@@ -1,14 +1,14 @@
 import { put, call, select } from 'redux-saga/effects'
-import * as tagActions from './tags.actions'
-import { TASKS } from '../tasks/tasks.actions'
-import { deselectPath } from '../tree/tree.actions'
-import * as appStateActions from '../app-state/app-state.actions'
-import { fetch } from '../common.sagas'
-import api from '../../utils/api'
-import schema from '../../data/schema'
-import search from '../../services/search'
+import * as tagActions from 'redux/store/tags/tags.actions'
+import { TASKS } from 'redux/store/tasks/tasks.actions'
+import { deselectPath } from 'redux/store/tree/tree.actions'
+import * as appStateActions from 'redux/store/app-state/app-state.actions'
+import { fetch } from 'redux/store/common.sagas'
+import api from 'redux/utils/api'
+import schema from 'redux/data/schema'
+import search from 'redux/services/search'
 import { NotificationManager } from 'react-notifications'
-import * as appStateSelectors from '../app-state/app-state.selectors'
+import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'
 
 export function* fetchTags() {
   const result = yield* fetch(tagActions.TAGS.FETCH, {
