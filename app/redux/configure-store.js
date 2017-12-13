@@ -5,7 +5,7 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import { fromJS } from 'immutable';
 import { routerMiddleware } from 'react-router-redux'
-import normalizrMiddleware from 'redux-normalizr-middleware'
+import normalizrMiddleware from 'redux/utils/normalizr-middleware'
 import createSagaMiddleware from 'redux-saga'
 
 import createReducer from 'redux/store/root.reducer';
