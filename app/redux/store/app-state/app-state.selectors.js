@@ -1,14 +1,14 @@
 
 export const getTagHints = state => {
-  const tagHintsData = state.appState.tagHints
-  const visibleTags = state.appState
-    .getIn(['tagHints', 'visibleTags'])
-    .map(tagId => state.entities.getIn(['tags', tagId]))
+  const tagHintsData = state.getIn(['appState', 'tagHints'])
+  const visibleTags = state
+    .getIn(['appState', 'tagHints', 'visibleTags'])
+    .map(tagId => state.getIn(['entities', 'tags', tagId]))
 
   return tagHintsData.setIn(['visibleTags'], visibleTags)
 }
 
-export const getTagHintsRaw = state => state.appState.get('tagHints')
+export const getTagHintsRaw = state => state.getIn(['appState']).get('tagHints')
 
 export const getAppStateItem = (state, type) => {
   return state.getIn(['appState', type])
@@ -19,7 +19,7 @@ export const getMultiSelectVisibility = (state) => {
 }
 
 export const getDialog = (state) => {
-  const dialog = state.appState.currentDialog
+  const dialog = state.getIn(['appState', 'currentDialog'])
 
   if (!dialog) {
     return false
@@ -29,7 +29,7 @@ export const getDialog = (state) => {
 }
 
 export const getTasksListVisibility = (state) => {
-  return state.appState.tasksList.isVisible
+  return state.getIn(['appState', 'tasksList', 'isVisible'])
 }
 
 export const getArchivedTasksVisibility = (state) => {

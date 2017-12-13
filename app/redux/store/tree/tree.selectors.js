@@ -2,7 +2,7 @@ import { List } from 'immutable'
 
 // ------ Selectors -------------------------------------------------------------
 
-export const getTreeItem = (state, treeItemId) => state.entities.treeItems.get(treeItemId)
+export const getTreeItem = (state, treeItemId) => state.getIn(['entities', 'treeItems']).get(treeItemId)
 
 // ------ Helpers -------------------------------------------------------------
 
@@ -31,28 +31,28 @@ const getTagIdsOfAllParents = (state, treeItemId) => {
 
 export const getTree = (state, parentId = null) => {
 
-  const sectionIds = state.tree.itemsByParent.get(parentId)
+  const sectionIds = state.getIn(['tree', 'itemsByParent']).get(parentId)
   if (!sectionIds) {
     return List()
   }
 
   const sections = sectionIds.map(childId => {
-    const section = state.entities.treeItems.get(childId)
+    const section = state.getIn(['entities', 'treeItems']).get(childId)
     if (!section) {
       return section
     }
 
     return section
-      .set('collapsed', state.tree.collapsedItems.has(childId))
+      .set('collapsed', state.getIn(['tree', 'collapsedItems']).has(childId))
       .set('childItems', getTree(state, childId))
-      .set('tag', state.entities.tags.get(section.tagId))
+      .set('tag', state.getIn(['entities', 'tags']).get(section.tagId))
   })
 
   return sections
 }
 
 export const getTagsReferences = (state) =>
-  state.entities.treeItems.map(treeItem => treeItem.tagId).toSet()
+  state.getIn(['entities', 'treeItems']).map(treeItem => treeItem.tagId).toSet()
 
 /**
  * Returns tag ids which cannot be selected in tag autocomplete
@@ -91,7 +91,7 @@ export const getDisabledTagIds = (state, parentId, updatedTreeItem = {}) => {
  * @param {String} treeItemId
  */
 function getTagIdsOfChilds(state, treeItemId) {
-  const childIds = state.tree.itemsByParent.get(treeItemId)
+  const childIds = state.getIn(['tree', 'itemsByParent']).get(treeItemId)
 
   if (!childIds) {
     return List()

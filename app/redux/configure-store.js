@@ -9,7 +9,7 @@ import normalizrMiddleware from 'redux-normalizr-middleware'
 import createSagaMiddleware from 'redux-saga'
 
 import createReducer from 'redux/store/root.reducer';
-import sagas from 'redux//store/root.sagas'
+import sagas from 'redux/store/root.sagas'
 
 const sagaMiddleware = createSagaMiddleware();
 

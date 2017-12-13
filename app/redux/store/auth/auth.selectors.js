@@ -1,7 +1,7 @@
 export const getEmail = (state) => {
-  if (!state.auth.profile) {
+  if (!state.getIn(['auth', 'profile'])) {
     return ''
   }
 
-  return state.auth.profile.email
+  return state.getIn(['auth', 'profile', 'email'])
 }

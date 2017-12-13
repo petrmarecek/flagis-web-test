@@ -1,7 +1,7 @@
 export const getAddTags = state => {
-  return state.multiSelect.tasks.addTags.map(tagId => state.entities.getIn(['tags', tagId]))
+  return state.getIn(['multiSelect', 'tasks', 'addTags']).map(tagId => state.getIn(['entities', 'tags', tagId]))
 }
 
 export const getRemoveTags = state => {
-  return state.multiSelect.tasks.removeTags.map(tagId => state.entities.getIn(['tags', tagId]))
+  return state.getIn(['multiSelect', 'tasks', 'removeTags']).map(tagId => state.getIn(['entities', 'tags', tagId]))
 }

@@ -26,85 +26,85 @@ export const compareTagByTitle = (tagA, tagB) => {
 // ------ Selectors -------------------------------------------------------------
 
 export const getTags = state => ({
-  isFetching: state.tags.all.isFetching,
-  items: state.tags.all.items.map(tagId => state.entities.getIn(['tags', tagId]))
+  isFetching: state.getIn(['tags', 'all', 'isFetching']),
+  items: state.getIn(['tags', 'all', 'items']).map(tagId => state.getIn(['entities', 'tags', tagId]))
 })
 
 export const getVisibleTags = state => {
-  let ids = state.tags.all.items.toArray()
+  let ids = state.getIn(['tags', 'all', 'items']).toArray()
 
   // apply search filter
   if (state.tags.search) {
-    const foundIds = search.tags.get(state.tags.search).map(item => item.ref)
+    const foundIds = search.getIn(['tags']).get(state.getIn(['tags', 'search'])).map(item => item.ref)
     ids = intersection(ids, foundIds)
   }
 
   return {
     isFetching: state.tags.all.isFetching,
-    items: ids.map(tagId => state.entities.getIn(['tags', tagId])).sort(compareTagByTitle)
+    items: ids.map(tagId => state.getIn(['entities', 'tags', tagId])).sort(compareTagByTitle)
   }
 }
 
-export const getTag = (state, tagId) => state.entities.tags.get(tagId)
+export const getTag = (state, tagId) => state.getIn(['entities', 'tags']).get(tagId)
 
 export const getCurrentTag = state => {
-  const tagId = state.tags.current
+  const tagId = state.getIn(['tags', 'current'])
   if (!tagId) {
     return null
   }
 
-  return state.entities.tags.get(tagId)
+  return state.getIn(['entities', 'tags']).get(tagId)
 }
 
 export const getNextTag = state => {
-  if (!state.appState.taskTagDetail.tag) {
+  if (!state.getIn(['appState', 'taskTagDetail', 'tag'])) {
     return null
   }
 
-  const tagId = state.tags.current
+  const tagId = state.getIn(['tags', 'current'])
   if (!tagId) {
     return null
   }
 
-  const sizeListOfTags = state.tags.all.items.size
+  const sizeListOfTags = state.getIn(['tags', 'all', 'items']).size
   if (sizeListOfTags === 1) {
     return null
   }
 
-  let nextIndex = state.tags.all.items.indexOf(tagId) + 1
+  let nextIndex = state.getIn(['tags', 'all', 'items']).indexOf(tagId) + 1
   if (nextIndex === sizeListOfTags) {
     nextIndex = 0
   }
 
-  const nextTagId = state.tags.all.items.get(nextIndex)
-  return state.entities.tags.get(nextTagId)
+  const nextTagId = state.getIn(['tags', 'all', 'items']).get(nextIndex)
+  return state.getIn(['entities', 'tags']).get(nextTagId)
 }
 
 export const getPreviousTag = state => {
-  if (!state.appState.taskTagDetail.tag) {
+  if (!state.getIn(['appState', 'taskTagDetail', 'tag'])) {
     return null
   }
 
-  const tagId = state.tags.current
+  const tagId = state.getIn(['tags', 'current'])
   if (!tagId) {
     return null
   }
 
-  const sizeListOfTags = state.tags.all.items.size
+  const sizeListOfTags = state.getIn(['tags', 'all', 'items']).size
   if (sizeListOfTags === 1) {
     return null
   }
 
-  let prevIndex = state.tags.all.items.indexOf(tagId) - 1
+  let prevIndex = state.getIn(['tags', 'all', 'items']).indexOf(tagId) - 1
   if (prevIndex < 0) {
     prevIndex = sizeListOfTags - 1
   }
 
-  const prevTagId = state.tags.all.items.get(prevIndex)
-  return state.entities.tags.get(prevTagId)
+  const prevTagId = state.getIn(['tags', 'all', 'items']).get(prevIndex)
+  return state.getIn(['entities', 'tags']).get(prevTagId)
 }
 
 export const getActiveTags = state =>
-  state.tags.activeTags.map(tagId => state.getIn(['entities', 'tags', tagId])).reverse()
+  state.getIn(['tags', 'activeTags']).map(tagId => state.getIn(['entities', 'tags', tagId])).reverse()
 
 export const getActiveTagIds = state => state.getIn(['tags', 'activeTags'])
