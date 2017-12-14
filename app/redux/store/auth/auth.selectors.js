@@ -1,5 +1,5 @@
 export const getAuth = (state) => {
-  return state.getIn(['auth']))
+  return state.getIn(['auth'])
 }
 
 export const getEmail = (state) => {
@@ -11,5 +11,5 @@ export const getEmail = (state) => {
 }
 
 export const getNewRefreshToken = (state) => {
-  return state.getIn(['auth', 'newRefreshToken']))
+  return state.getIn(['auth', 'newRefreshToken'])
 }
