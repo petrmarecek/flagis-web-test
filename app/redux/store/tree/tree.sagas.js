@@ -4,16 +4,21 @@ import intersection from 'lodash/intersection'
 import includes from 'lodash/includes'
 import { NotificationManager } from 'react-notifications'
 
-import consts from '../../data/consts'
-import { createLoadActions, fetch } from '../common.sagas'
-import { TREE } from '../tree/tree.actions'
-import * as treeActions from './tree.actions'
-import { deselectTasks } from '../tasks/tasks.actions'
-import * as tagActions from '../tags/tags.actions'
-import * as appStateActions from '../app-state/app-state.actions'
-import * as appStateSelectors from '../app-state/app-state.selectors'
-import api from '../../utils/api'
-import schema from '../../data/schema'
+import consts from 'redux/data/consts'
+import { createLoadActions, fetch } from 'redux/store/common.sagas'
+import * as treeActions from 'redux/store/tree/tree.actions'
+import * as treeSelectors from 'redux/store/tree/tree.selectors'
+import { deselectTasks } from 'redux/store/tasks/tasks.actions'
+import * as tagActions from 'redux/store/tags/tags.actions'
+import * as tagsSelectors from 'redux/store/tags/tags.selectors'
+import * as appStateActions from 'redux/store/app-state/app-state.actions'
+import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'
+import * as entitiesSelectors from 'redux/store/entities/entities.selectors'
+import * as routingSelectors from 'redux/store/routing/routing.selectors'
+import api from 'redux/utils/api'
+import schema from 'redux/data/schema'
+
+const TREE = treeActions.TREE
 
 export function* fetchTree() {
   yield* fetch(TREE.FETCH, {
@@ -51,7 +56,7 @@ export function* createTreeItem(action) {
 export function* selectPath(action) {
   yield put(deselectTasks())
 
-  const location = yield select(state => state.routing.locationBeforeTransitions.pathname)
+  const location = yield select(state => routingSelectors.getRoutingPathname(state))
   if (location !== '/user/tasks') {
     if (location !== '/user/archive') {
       yield put(push('/user/tasks'))
@@ -69,7 +74,7 @@ export function* updateTreeItem(action) {
   yield put(appStateActions.hideDialog())
 
   const originalTreeItem = action.payload.treeItem
-  const treeStore = yield select(state => state.tree)
+  const treeStore = yield select(state => treeSelectors.getTreeStore(state))
 
   const { PENDING, FULFILLED, REJECTED } = createLoadActions(TREE.UPDATE)
 
@@ -96,7 +101,7 @@ export function* updateTreeItem(action) {
     if (treeStore.selection.includes(originalTreeItem.id)) {
       const newTagId = result.tag.id
       const isArchivedTasks = yield select(state => appStateSelectors.getArchivedTasksVisibility(state))
-      let activeTags = yield select(state => state.tags.activeTags)
+      let activeTags = yield select(state => tagsSelectors.getActiveTagsIds(state))
 
       // replace old tag by new tag id
       activeTags = activeTags.update(activeTags.indexOf(originalTreeItem.tagId), () => newTagId)
@@ -131,8 +136,8 @@ export function* deleteTreeItem(action) {
 export function* dropTreeItem(action) {
 
   const storeData = yield select(state => ({
-    treeMap: state.tree.itemsByParent,
-    treeEntities: state.entities.treeItems,
+    treeMap: treeSelectors.getTreeItemsByParent(state),
+    treeEntities: entitiesSelectors.getEntitiesTreeItems(state),
   }))
 
   // Collect fields
@@ -147,7 +152,7 @@ export function* dropTreeItem(action) {
   const sourceChildTags = treeItemsToTags(storeData.treeEntities, findChildrenRecursive(storeData.treeMap, sourceItemId))
   const sourceTag = treeItemToTag(storeData.treeEntities, sourceItemId)
 
-  // Validate parents-children conflicts (when target parents contain similar tag that source with children that the 
+  // Validate parents-children conflicts (when target parents contain similar tag that source with children that the
   // tree path to the leaf will contain a duplicate tag)
   const isParentColision = action.payload.dropPosition !== 'MIDDLE'
     ? intersection(targetParentsTags, [sourceTag, ...sourceChildTags]).length !== 0

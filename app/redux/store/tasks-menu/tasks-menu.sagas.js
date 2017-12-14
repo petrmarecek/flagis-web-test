@@ -1,9 +1,10 @@
 import { put, select } from 'redux-saga/effects'
-import * as taskMenuActions from '../tasks-menu/tasks-menu.action'
+import * as taskMenuActions from 'redux/store/tasks-menu/tasks-menu.action'
+import * as taskMenuSelectros from 'redux/store/tasks-menu/tasks-menu.selectors'
 
 export function* changeRangeFilter(action) {
-  const activeFilters = yield select (state => state.tasksMenu.filters.active)
-  const range = yield select(state => state.tasksMenu.filters.range)
+  const activeFilters = yield select(state => taskMenuSelectros.getTaskMenuFiltersItem(state, 'active'))
+  const range = yield select(state => taskMenuSelectros.getTaskMenuFiltersItem(state, 'range'))
   const value = action.value
 
   if (range) {
@@ -27,8 +28,8 @@ export function* changeRangeFilter(action) {
 }
 
 export function* toggleImportantFilter() {
-  const activeFilters = yield select (state => state.tasksMenu.filters.active)
-  const important = yield select(state => state.tasksMenu.filters.important)
+  const activeFilters = yield select(state => taskMenuSelectros.getTaskMenuFiltersItem(state, 'active'))
+  const important = yield select(state => taskMenuSelectros.getTaskMenuFiltersItem(state, 'important'))
 
   if (important) {
     if (activeFilters.includes('unimportant')) {
@@ -42,8 +43,8 @@ export function* toggleImportantFilter() {
 }
 
 export function* toggleUnimportantFilter() {
-  const activeFilters = yield select (state => state.tasksMenu.filters.active)
-  const unimportant = yield select(state => state.tasksMenu.filters.unimportant)
+  const activeFilters = yield select(state => taskMenuSelectros.getTaskMenuFiltersItem(state, 'active'))
+  const unimportant = yield select(state => taskMenuSelectros.getTaskMenuFiltersItem(state, 'unimportant'))
 
   if (unimportant) {
     if (activeFilters.includes('important')) {
@@ -57,7 +58,7 @@ export function* toggleUnimportantFilter() {
 }
 
 export function* toggleNoTagsFilter() {
-  const noTags = yield select(state => state.tasksMenu.filters.noTags)
+  const noTags = yield select(state => taskMenuSelectros.getTaskMenuFiltersItem(state, 'noTags'))
 
   if (noTags) {
     yield put(taskMenuActions.addActiveFilter('noTags'))

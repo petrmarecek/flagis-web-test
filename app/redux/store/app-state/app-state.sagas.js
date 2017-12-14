@@ -1,15 +1,15 @@
 import { put, select } from 'redux-saga/effects'
 import { push } from 'react-router-redux'
-import * as treeActions from '../tree/tree.actions'
-import * as tasksMenuActions from '../tasks-menu/tasks-menu.action'
-import * as taskActions from '../tasks/tasks.actions'
-import * as appStateActions from '../app-state/app-state.actions'
-import * as appStateSelectors from '../app-state/app-state.selectors'
-import * as tagActions from '../tags/tags.actions'
-import * as tagSelectors from '../tags/tags.selectors'
-import * as taskSelectors from '../tasks/tasks.selectors'
-import * as treeSelectors from '../tree/tree.selectors'
-import { TagInfo, HintsContext, Position } from '../../data/records'
+import * as treeActions from 'redux/store/tree/tree.actions'
+import * as tasksMenuActions from 'redux/store/tasks-menu/tasks-menu.action'
+import * as taskActions from 'redux/store/tasks/tasks.actions'
+import * as appStateActions from 'redux/store/app-state/app-state.actions'
+import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'
+import * as tagActions from 'redux/store/tags/tags.actions'
+import * as tagSelectors from 'redux/store/tags/tags.selectors'
+import * as taskSelectors from 'redux/store/tasks/tasks.selectors'
+import * as treeSelectors from 'redux/store/tree/tree.selectors'
+import { TagInfo, HintsContext, Position } from 'redux/data/records'
 
 export function* defaultDisplay() {
   const isArchivedTask = select(state => appStateSelectors.getArchivedTasksVisibility(state))
@@ -34,7 +34,7 @@ export function* handleAutocompleteFocus(action) {
   const allTags = (yield select(tagSelectors.getTags)).items
   const context = new HintsContext(action.payload.data.context)
   const selectedTagsIds = yield getSelectedTagIds(action.payload.autocompleteId, context)
-  const tagHintsData = yield select(appStateSelectors.getTagHintsRaw)
+  const tagHintsData = yield select(state => appStateSelectors.getTagHintsRaw(state))
   const search = tagHintsData.search
   const selectionIndex = tagHintsData.selectionIndex
   const isSelectOnly = action.payload.autocompleteId === 'search'
@@ -65,9 +65,9 @@ export function* handleAutocompleteGoNext(action) {
 
 export function* handleAutocompleteTextChange(action) {
   const allTags = (yield select(tagSelectors.getTags)).items
-  const context = (yield select(appStateSelectors.getTagHintsRaw)).context
+  const context = (yield select(state => appStateSelectors.getTagHintsRaw(state))).context
   const selectedTagsIds = yield getSelectedTagIds(action.payload.autocompleteId, context)
-  const isSelectOnly = yield select(state => state.appState.tagHints.isSelectOnly)
+  const isSelectOnly = yield select(state => appStateSelectors.getTagHintsSelectOnly(state))
 
   const hintsVisibility = computeHintsVisibility({
     allTags,
@@ -121,7 +121,7 @@ export function* selectHint(action) {
   // Hint selected in main search
   if (payload.autocompleteId === 'search') {
     const tagId = action.payload.tag.id
-    const activeTags = yield select(state => state.tags.activeTags)
+    const activeTags = yield select(state => tagSelectors.getActiveTagsIds(state))
 
     yield put(tagActions.selectActiveTags(activeTags.unshift(tagId)))
     yield put(appStateActions.hideTagHints())
@@ -176,8 +176,8 @@ function* selectTaskDetailHint(action) {
 
   // Update hints visibility
   const allTags = (yield select(tagSelectors.getTags)).items
-  const selectedTagsIds = yield select(taskSelectors.getCurrentTaskTags)
-  const tagHintsData = yield select(appStateSelectors.getTagHintsRaw)
+  const selectedTagsIds = yield select(state => taskSelectors.getCurrentTaskTags(state))
+  const tagHintsData = yield select(state => appStateSelectors.getTagHintsRaw(state))
   const newSearchText = ''
   const hintsVisibility = computeHintsVisibility({
     allTags,
@@ -195,7 +195,7 @@ function* selectTaskDetailHint(action) {
 }
 
 function* setNewSelectionIndex(autocompleteId, updateFunc) {
-  const tagHintsData = yield select(appStateSelectors.getTagHintsRaw)
+  const tagHintsData = yield select(state => appStateSelectors.getTagHintsRaw(state))
   const newSelectionIndex = updateFunc(tagHintsData.selectionIndex)
 
   // Compute selection

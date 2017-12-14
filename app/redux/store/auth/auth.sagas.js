@@ -3,22 +3,22 @@ import { delay } from 'redux-saga'
 import { call, put, race, take } from 'redux-saga/effects'
 import { NotificationManager } from 'react-notifications'
 
-import { createLoadActions } from './../common.sagas'
+import { createLoadActions } from 'redux/store/common.sagas'
 import {
   setError,
   deselectError,
   hideLoader,
   changeLocation,
-} from '../app-state/app-state.actions'
+} from 'redux/store/app-state/app-state.actions'
 import {
   fetchTags,
   fetchTagsRelations
-} from '../tags/tags.actions'
-import { fetchTasks } from '../tasks/tasks.actions'
-import { fetchTree } from '../tree/tree.actions'
-import * as authActions from './auth.actions'
-import api from '../../utils/api'
-import persistentStore from '../../utils/persistentStore'
+} from 'redux/store/tags/tags.actions'
+import { fetchTasks } from 'redux/store/tasks/tasks.actions'
+import { fetchTree } from 'redux/store/tree/tree.actions'
+import * as authActions from 'redux/store/auth/auth.actions'
+import api from 'redux/utils/api'
+import persistentStore from 'redux/utils/persistentStore'
 
 const AUTH = authActions.AUTH
 const MIN_TOKEN_LIFESPAN = 300 * 1000

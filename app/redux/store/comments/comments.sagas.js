@@ -1,8 +1,8 @@
 import { call, put } from 'redux-saga/effects'
-import { fetch } from '../common.sagas'
-import * as actions from './comments.action'
-import api from '../../utils/api'
-import schema from '../../data/schema'
+import { fetch } from 'redux/store/common.sagas'
+import * as actions from 'redux/store/comments/comments.action'
+import api from 'redux/utils/api'
+import schema from 'redux/data/schema'
 
 const COMMENTS = actions.COMMENTS
 

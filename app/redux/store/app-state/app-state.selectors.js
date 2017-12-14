@@ -14,9 +14,11 @@ export const getTagHints = state => {
 
 export const getTagHintsRaw = state => state.getIn(['appState', 'tagHints'])
 
-export const getTagAutocompletes = state => state.getIn(['appState', 'tagAutocompletes'])
-
 export const getTagHintsVisibility = state => state.getIn(['appState', 'tagHints', 'isVisible'])
+
+export const getTagHintsSelectOnly = state => state.getIn(['appState', 'tagHints', 'isSelectOnly'])
+
+export const getTagAutocompletes = state => state.getIn(['appState', 'tagAutocompletes'])
 
 export const getAppStateItem = (state, type) => {
   return state.getIn(['appState', type])

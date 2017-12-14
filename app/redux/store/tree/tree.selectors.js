@@ -29,6 +29,8 @@ const getTagIdsOfAllParents = (state, treeItemId) => {
 
 // ------ Selectors -------------------------------------------------------------
 
+export const getTreeStore = state => state.getIn(['tree'])
+
 export const getTree = (state, parentId = null) => {
 
   const sectionIds = state.getIn(['tree', 'itemsByParent']).get(parentId)
@@ -53,6 +55,10 @@ export const getTree = (state, parentId = null) => {
 
 export const getFetchTree = (state) => {
   return state.getIn(['tree', 'isFetching'])
+}
+
+export const getTreeItemsByParent = (state) => {
+  return state.getIn(['tree', 'itemsByParent'])
 }
 
 export const getSelectionTree = (state) => {

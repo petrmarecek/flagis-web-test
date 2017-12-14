@@ -43,7 +43,7 @@ export function* fetchArchivedTasks() {
     yield put(appStateActions.visibleArchivedTasks())
   }
 
-  const activeTags = yield select(tagsSelectors.getActiveTagsIds)
+  const activeTags = yield select(state => tagsSelectors.getActiveTagsIds(state))
   const result = yield* fetch(TASKS.FETCH_ARCHIVED, {
     method: api.tasks.search,
     args: [{
@@ -380,7 +380,7 @@ function* saveTaskTagRelation(taskId, tag) {
     // Send them to server
     const resultTagList = yield call(() => api.tasks.setTags(taskId, tags))
 
-    const activeTags = yield select(tagsSelectors.getActiveTagsIds)
+    const activeTags = yield select(state => tagsSelectors.getActiveTagsIds(state))
     const tagId = tag.id
     if (activeTags.includes(tagId)) {
       yield* fetch(TASKS.FETCH, {
