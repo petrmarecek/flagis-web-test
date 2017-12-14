@@ -14,10 +14,10 @@ import {
   tagAutocompleteReset,
 } from 'redux/store/app-state/app-state.actions'
 import {
-  getTags,
   getTagAutocompletes,
   getTagHintsRaw,
-} from 'redux/store/tags/tags.selectors'
+} from 'redux/store/app-state/app-state.selectors'
+import { getTags } from 'redux/store/tags/tags.selectors'
 import { getCurrentTaskTags } from 'redux/store/tasks/tasks.selectors'
 import commonUtils from 'redux/utils/common'
 

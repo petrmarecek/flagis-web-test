@@ -35,11 +35,6 @@ import {
   getTags,
   getTagsRelations,
   getActiveTagsIds,
-  getMultiSelectAddTagsIds,
-  getMultiSelectRemoveTagsIds,
-  getMultiSelectActiveTags,
-  getMultiSelectInactiveTags,
-  getMultiSelectOtherTags,
 } from 'redux/store/tags/tags.selectors'
 import { getEntitiesTasks } from 'redux/store/entities/entities.selectors'
 import {
@@ -50,6 +45,11 @@ import {
 import {
   getMultiSelectAddTags,
   getMultiSelectRemoveTags,
+  getMultiSelectAddTagsIds,
+  getMultiSelectRemoveTagsIds,
+  getMultiSelectActiveTags,
+  getMultiSelectInactiveTags,
+  getMultiSelectOtherTags,
 } from 'redux/store/multi-select/multi-select.selectors'
 
 import ConfirmTaskDeleteDialog from './confirm-task-delete-dialog'
