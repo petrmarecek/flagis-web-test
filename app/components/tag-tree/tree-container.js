@@ -10,8 +10,13 @@ import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
 import ShadowScrollbar from 'components/elements/shadow-scrollbar'
 
-import { getTree } from 'redux/store/tree/tree.selectors'
 import { showDialog } from 'redux/store/app-state/app-state.actions'
+import {
+  getLeftPanel,
+  getArchivedTasksVisibility,
+} from 'redux/store/app-state/app-state.selectors'
+import { getNewRefreshToken } from 'redux/store/auth/auth.selectors'
+import { getTagsRelations } from 'redux/store/tags/tags.selectors'
 import {
   toggleMenu,
   showTreeItemAddControl,
@@ -21,6 +26,12 @@ import {
   collapse,
   dropTreeItem,
 } from 'redux/store/tree/tree.actions'
+import {
+  getTree,
+  getFetchTree,
+  getSelectionTree,
+  getAddControlParentId,
+} from 'redux/store/tree/tree.selectors'
 
 class TreeContainer extends React.Component {
 
@@ -183,14 +194,14 @@ class TreeContainer extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  isFetching: state.tree.isFetching,
-  isNewRefreshToken: state.auth.newRefreshToken,
+  isFetching: getFetchTree(state),
+  isNewRefreshToken: getNewRefreshToken(state),
   tree: getTree(state),
-  selection: state.tree.selection,
-  addControlParentId: state.tree.addControlParentId,
-  tagsRelations: state.tags.relations,
-  leftPanel: state.appState.leftPanel,
-  archivedTasks: state.appState.archivedTasks.isVisible
+  selection: getSelectionTree(state),
+  addControlParentId: getAddControlParentId(state),
+  tagsRelations: getTagsRelations(state),
+  leftPanel: getLeftPanel(state),
+  archivedTasks: getArchivedTasksVisibility(state),
 })
 
 const mapDispatchToProps = {

@@ -51,6 +51,18 @@ export const getTree = (state, parentId = null) => {
   return sections
 }
 
+export const getFetchTree = (state) => {
+  return state.getIn(['tree', 'isFetching'])
+}
+
+export const getSelectionTree = (state) => {
+  return state.getIn(['tree', 'selection'])
+}
+
+export const getAddControlParentId = (state) => {
+  return state.getIn(['tree', 'addControlParentId'])
+}
+
 export const getTagsReferences = (state) =>
   state.getIn(['entities', 'treeItems']).map(treeItem => treeItem.tagId).toSet()
 

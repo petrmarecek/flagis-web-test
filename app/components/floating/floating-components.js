@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
+import { getTagHintsVisibility } from 'redux/store/app-state/app-state.selectors'
+
 import TagHints from 'components/floating/tag-hints'
 
 class FloatingComponents extends Component {
@@ -20,7 +22,7 @@ class FloatingComponents extends Component {
 }
 
 const mapStateToProps = state => ({
-  showTagHints: state.appState.tagHints.isVisible,
+  showTagHints: getTagHintsVisibility(state),
 })
 const mapDispatchToProps = {}
 

@@ -13,7 +13,11 @@ import {
   tagAutocompleteSubmit,
   tagAutocompleteReset,
 } from 'redux/store/app-state/app-state.actions'
-import { getTags } from 'redux/store/tags/tags.selectors'
+import {
+  getTags,
+  getTagAutocompletes,
+  getTagHintsRaw,
+} from 'redux/store/tags/tags.selectors'
 import { getCurrentTaskTags } from 'redux/store/tasks/tasks.selectors'
 import commonUtils from 'redux/utils/common'
 
@@ -209,8 +213,9 @@ class TagAutocompleteInput extends Component {
 }
 
 const mapStateToProps = (state, props) => {
-  const autocompleteData = state.appState.tagAutocompletes[props.id]
-  const tagHints = state.appState.tagHints
+  const autocomplete = getTagAutocompletes(state)
+  const autocompleteData = autocomplete[props.id]
+  const tagHints = getTagHintsRaw(state)
   return {
     selectedItem: tagHints.selectedItem,
     hintsVisible: tagHints.isVisible,

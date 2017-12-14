@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import cx from 'classnames'
 
+import { getAppState } from 'redux/store/app-state/app-state.selectors'
+
 class CenterPanel extends React.Component {
 
   static propTypes = {
@@ -27,6 +29,8 @@ class CenterPanel extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({ appState: state.appState })
+const mapStateToProps = state => ({
+  appState: getAppState(state)
+})
 const mapDispatchToProps = {}
 export default connect(mapStateToProps, mapDispatchToProps)(CenterPanel)

@@ -213,6 +213,22 @@ export const getTasksId = state => {
 
 }
 
+export const getTasksItems = state => {
+  return state.getIn(['tasks', 'items'])
+}
+
+export const getCompletedTasksItems = state => {
+  return state.getIn(['tasks', 'completed'])
+}
+
+export const getArchivedTasksItems = state => {
+  return state.getIn(['tasks', 'archived', 'items'])
+}
+
+export const getSelectionTasks = state => {
+  return state.getIn(['tasks', 'selection'])
+}
+
 export const getCompletedTasksId = state => {
   const tasks = loadTasks(state.getIn(['tasks', 'completed']).toArray(), state)
   return List(tasks.map(task => task.id))

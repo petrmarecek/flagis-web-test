@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import { updateTagSearch } from 'redux/store/tags/tags.actions'
+import { getTagsSearch } from 'redux/store/tags/tags.selectors'
 
 import TagList from 'components/tag-list/tag-list-container'
 import SearchBox from 'components/elements/search-box'
@@ -41,7 +42,7 @@ class TagsContent extends Component {
 }
 
 const mapStateToProps = state => ({
-  search: state.tags.search,
+  search: getTagsSearch(state),
 })
 
 const mapDispatchToProps = { updateTagSearch }

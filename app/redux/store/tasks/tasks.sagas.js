@@ -20,7 +20,7 @@ export function* fetchTasks() {
     yield put(appStateActions.hideArchivedTasks())
   }
 
-  const activeTags = yield select(state => tagsSelectors.getActiveTagIds(state))
+  const activeTags = yield select(state => tagsSelectors.getActiveTagsIds(state))
   const result = yield* fetch(TASKS.FETCH, {
     method: api.tasks.search,
     args: [{
@@ -43,7 +43,7 @@ export function* fetchArchivedTasks() {
     yield put(appStateActions.visibleArchivedTasks())
   }
 
-  const activeTags = yield select(tagsSelectors.getActiveTagIds)
+  const activeTags = yield select(tagsSelectors.getActiveTagsIds)
   const result = yield* fetch(TASKS.FETCH_ARCHIVED, {
     method: api.tasks.search,
     args: [{
@@ -312,7 +312,7 @@ export function* removeTag(action) {
     yield put(tagsActions.deleteTagsRelations(action.payload.tag.id, action.payload.taskId))
 
     // Refresh task list if add tag that it set as active
-    const activeTags = yield select(tagsSelectors.getActiveTagIds)
+    const activeTags = yield select(tagsSelectors.getActiveTagsIds)
     const tagId = action.payload.tag.id
 
     if (activeTags.includes(tagId)) {
@@ -329,7 +329,7 @@ export function* removeTag(action) {
     }
 
     // Remove from current list if it does not match filter anymore
-    // const activeTags = yield select(tagsSelectors.getActiveTagIds)
+    // const activeTags = yield select(tagsSelectors.getActiveTagsIds)
     // if (activeTags.includes(action.payload.tag.id)) {
     //   yield put(taskActions.removeTaskFromLists(taskId))
     // }
@@ -380,7 +380,7 @@ function* saveTaskTagRelation(taskId, tag) {
     // Send them to server
     const resultTagList = yield call(() => api.tasks.setTags(taskId, tags))
 
-    const activeTags = yield select(tagsSelectors.getActiveTagIds)
+    const activeTags = yield select(tagsSelectors.getActiveTagsIds)
     const tagId = tag.id
     if (activeTags.includes(tagId)) {
       yield* fetch(TASKS.FETCH, {

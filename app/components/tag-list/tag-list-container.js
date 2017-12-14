@@ -6,7 +6,10 @@ import TagItem from 'components/tag-list/tag-item'
 import Loader from 'components/elements/loader'
 import ShadowScrollbar from 'components/elements/shadow-scrollbar'
 
-import { getVisibleTags } from 'redux/store/tags/tags.selectors'
+import {
+  getVisibleTags,
+  getCurrentTagId,
+} from 'redux/store/tags/tags.selectors'
 import { selectTag } from 'redux/store/tags/tags.actions'
 import { setDetail } from 'redux/store/app-state/app-state.actions'
 
@@ -56,7 +59,7 @@ class TagListContainer extends Component {
 
 const mapStateToProps = state => ({
   tags: getVisibleTags(state),
-  currentTag: state.tags.current,
+  currentTag: getCurrentTagId(state),
 })
 
 const mapDispatchToProps = {

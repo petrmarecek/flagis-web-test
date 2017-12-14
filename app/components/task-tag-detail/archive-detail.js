@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
-import commonUtils from '../../redux/utils/common'
+import commonUtils from 'redux/utils/common'
 import { NotificationManager } from 'react-notifications'
 import { List } from 'immutable'
 import cx from 'classnames'
@@ -12,18 +12,24 @@ import { connect } from 'react-redux'
 import {
   showDialog,
   deselectDetail
-} from "../../redux/store/app-state/app-state.actions"
+} from 'redux/store/app-state/app-state.actions'
 
 import {
   selectTask,
   deselectTasks,
   cancelArchiveTasks,
-} from '../../redux/store/tasks/tasks.actions'
+} from 'redux/store/tasks/tasks.actions'
 import {
+  getTasksItems,
+  getCompletedTasksItems,
+  getArchivedTasksItems,
+  getSelectionTasks,
   getCurrentTask,
   getNextTask,
   getPreviousTask,
-} from "../../redux/store/tasks/tasks.selectors"
+} from 'redux/store/tasks/tasks.selectors'
+
+import { getEntitiesTasks } from 'redux/store/entities/entities.selectors'
 
 import { fetchComment} from '../../redux/store/comments/comments.action'
 import { getComments } from './../../redux/store/comments/comments.selectors'
@@ -420,11 +426,11 @@ class ArchiveDetail extends Component {
 
 const mapStateToProps = state => ({
   task: getCurrentTask(state),
-  tasks: state.tasks.items,
-  completedTasks: state.tasks.completed,
-  archivedTasks: state.tasks.archived.items,
-  entitiesTasks: state.entities.tasks,
-  selectedTasks: state.tasks.selection,
+  tasks: getTasksItems(state),
+  completedTasks: getCompletedTasksItems(state),
+  archivedTasks: getArchivedTasksItems(state),
+  entitiesTasks: getEntitiesTasks(state),
+  selectedTasks: getSelectionTasks(state),
   nextTask: getNextTask(state),
   previousTask: getPreviousTask(state),
   comments: getComments(state),

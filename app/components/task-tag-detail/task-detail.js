@@ -26,10 +26,16 @@ import {
   setDescription,
 } from 'redux/store/tasks/tasks.actions'
 import {
+  getTasksItems,
+  getCompletedTasksItems,
+  getArchivedTasksItems,
+  getSelectionTasks,
   getCurrentTask,
   getNextTask,
   getPreviousTask,
 } from 'redux/store/tasks/tasks.selectors'
+
+import { getEntitiesTasks } from 'redux/store/entities/entities.selectors'
 
 import {
   fetchAttachment,
@@ -628,11 +634,11 @@ class TaskDetail extends Component {
 
 const mapStateToProps = state => ({
   task: getCurrentTask(state),
-  tasks: state.tasks.items,
-  completedTasks: state.tasks.completed,
-  archivedTasks: state.tasks.archived.items,
-  entitiesTasks: state.entities.tasks,
-  selectedTasks: state.tasks.selection,
+  tasks: getTasksItems(state),
+  completedTasks: getCompletedTasksItems(state),
+  archivedTasks: getArchivedTasksItems(state),
+  entitiesTasks: getEntitiesTasks(state),
+  selectedTasks: getSelectionTasks(state),
   nextTask: getNextTask(state),
   previousTask: getPreviousTask(state),
   comments: getComments(state),

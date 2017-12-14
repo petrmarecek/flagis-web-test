@@ -7,9 +7,19 @@ import { List } from 'immutable'
 import { Field, reduxForm } from 'redux-form/immutable'
 import { NotificationContainer } from 'react-notifications'
 
-import { controlRedirectTasks, login } from 'redux/store/auth/auth.actions'
-import { deselectError, visibleLoader } from 'redux/store/app-state/app-state.actions'
-import { getAppStateItem } from 'redux/store/app-state/app-state.selectors'
+import {
+  deselectError,
+  visibleLoader,
+} from 'redux/store/app-state/app-state.actions'
+import {
+  getLoader,
+  getAppStateItem,
+} from 'redux/store/app-state/app-state.selectors'
+import {
+  controlRedirectTasks,
+  login,
+} from 'redux/store/auth/auth.actions'
+import { getAuth } from 'redux/store/auth/auth.selectors'
 import { validateSignIn } from 'redux/utils/validate'
 import NavigationLanding from 'components/navigation/navigation-landing'
 import InputField from 'components/forms/input-field'
@@ -146,10 +156,11 @@ class SignIn extends Component {
 }
 
 const mapStateToProps = state => ({
-  auth: state.auth,
+  auth: getAuth(state),
   errorSignIn: getAppStateItem(state, 'signIn'),
-  loader: state.getIn(['appState', 'loader', 'isVisible']),
+  loader: getLoader(state),
 })
+
 const mapDispatchToProps = {
   controlRedirectTasks,
   login,

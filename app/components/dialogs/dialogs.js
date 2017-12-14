@@ -5,6 +5,10 @@ import { NotificationManager } from 'react-notifications'
 
 import { hideDialog } from 'redux/store/app-state/app-state.actions'
 import {
+  getCurrentDialog,
+  getArchivedTasksVisibility,
+} from 'redux/store/app-state/app-state.selectors'
+import {
   updateTreeItemTitle,
   deleteTreeItem,
 } from 'redux/store/tree/tree.actions'
@@ -15,24 +19,37 @@ import {
   deselectTasks,
 } from 'redux/store/tasks/tasks.actions'
 import {
+  getSelectTasks,
+  getSelectTasksTags,
+  getTasksItems,
+  getCompletedTasksItems,
+  getArchivedTasksItems,
+} from 'redux/store/tasks/tasks.selectors'
+import {
   deleteTag,
   setActiveTags,
   deselectTags,
 } from 'redux/store/tags/tags.actions'
 import { getTagsReferences } from 'redux/store/tree/tree.selectors'
 import {
-  getSelectTasks,
-  getSelectTasksTags,
-} from 'redux/store/tasks/tasks.selectors'
-import { getTags } from 'redux/store/tags/tags.selectors'
+  getTags,
+  getTagsRelations,
+  getActiveTagsIds,
+  getMultiSelectAddTagsIds,
+  getMultiSelectRemoveTagsIds,
+  getMultiSelectActiveTags,
+  getMultiSelectInactiveTags,
+  getMultiSelectOtherTags,
+} from 'redux/store/tags/tags.selectors'
+import { getEntitiesTasks } from 'redux/store/entities/entities.selectors'
 import {
   addToList,
   deleteFromList,
   clearLists,
 } from 'redux/store/multi-select/multi-select.action'
 import {
-  getAddTags,
-  getRemoveTags,
+  getMultiSelectAddTags,
+  getMultiSelectRemoveTags,
 } from 'redux/store/multi-select/multi-select.selectors'
 
 import ConfirmTaskDeleteDialog from './confirm-task-delete-dialog'
@@ -318,25 +335,25 @@ class Dialogs extends Component {
 }
 
 const mapStateToProps = state => ({
-  currentDialog: state.appState.currentDialog,
-  tasks: state.tasks.items,
-  completedTasks: state.tasks.completed,
-  archivedTasks: state.tasks.archived.items,
-  entitiesTasks: state.entities.tasks,
+  currentDialog: getCurrentDialog(state),
+  tasks: getTasksItems(state),
+  completedTasks: getCompletedTasksItems(state),
+  archivedTasks: getArchivedTasksItems(state),
+  entitiesTasks: getEntitiesTasks(state),
   tagsReferences: getTagsReferences(state),
-  tagsRelations: state.tags.relations,
-  activeTags: state.tags.activeTags,
+  tagsRelations: getTagsRelations(state),
+  activeTags: getActiveTagsIds(state),
   tags: getTags(state),
   tagsLists: getSelectTasksTags(state),
-  multiSelectActiveTags: state.multiSelect.tasks.activeTags,
-  multiSelectInactiveTags: state.multiSelect.tasks.inactiveTags,
-  multiSelectOtherTags: state.multiSelect.tasks.otherTags,
-  multiSelectAddTags: state.multiSelect.tasks.addTags,
-  multiSelectAddEntitiesTags: getAddTags(state),
-  multiSelectRemoveTags: state.multiSelect.tasks.removeTags,
-  multiSelectRemoveEntitiesTags: getRemoveTags(state),
+  multiSelectActiveTags: getMultiSelectActiveTags(state),
+  multiSelectInactiveTags: getMultiSelectInactiveTags(state),
+  multiSelectOtherTags: getMultiSelectOtherTags(state),
+  multiSelectAddTags: getMultiSelectAddTagsIds(state),
+  multiSelectAddEntitiesTags: getMultiSelectAddTags(state),
+  multiSelectRemoveTags: getMultiSelectRemoveTagsIds(state),
+  multiSelectRemoveEntitiesTags: getMultiSelectRemoveTags(state),
   selectTasks: getSelectTasks(state),
-  isVisibleArchivedTasks: state.appState.archivedTasks.isVisible,
+  isVisibleArchivedTasks: getArchivedTasksVisibility(state),
 })
 
 const mapDispatchToProps = {

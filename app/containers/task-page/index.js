@@ -13,11 +13,11 @@ import TaskDetailContent from 'components/contents/task-detail-content'
 class TaskPage extends React.Component {
 
   static propTypes = {
-    taskDetail: PropTypes.bool,
+    detail: PropTypes.bool,
   }
 
   getContent() {
-    if (this.props.taskDetail) {
+    if (this.props.detail.task) {
       return (
         <TaskDetailContent />
       )
@@ -44,7 +44,7 @@ class TaskPage extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  taskDetail: getTaskTagDetail(state).task
+  detail: getTaskTagDetail(state),
 })
 
 const mapDispatchToProps = {}

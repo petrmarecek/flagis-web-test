@@ -3,6 +3,11 @@ import PropTypes from 'prop-types'
 import velocity from 'velocity-animate'
 import { connect } from 'react-redux'
 
+import {
+  getTasksItems,
+  getCompletedTasksItems,
+} from 'redux/store/tasks/tasks.selectors'
+
 class TasksProgressBar extends Component {
 
   static propTypes = {
@@ -48,8 +53,8 @@ class TasksProgressBar extends Component {
 }
 
 const mapStateToProps = state => ({
-  tasksCount: state.tasks.items.size,
-  completedTasksCount: state.tasks.completed.size,
+  tasksCount: getTasksItems(state).size,
+  completedTasksCount: getCompletedTasksItems(state).size,
 })
 
 const mapDispatchToProps = {}

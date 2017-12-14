@@ -13,11 +13,11 @@ import TagTreeContent from 'components/contents/tag-tree-content'
 class TagPage extends Component {
 
   static propTypes = {
-    tagDetail: PropTypes.bool,
+    detail: PropTypes.bool,
   }
 
   getContent() {
-    if (this.props.tagDetail) {
+    if (this.props.detail.tag) {
       return (
         <TagDetailContent />
       )
@@ -44,7 +44,7 @@ class TagPage extends Component {
 }
 
 const mapStateToProps = state => ({
-  tagDetail: getTaskTagDetail(state).tag
+  detail: getTaskTagDetail(state),
 })
 
 const mapDispatchToProps = {}

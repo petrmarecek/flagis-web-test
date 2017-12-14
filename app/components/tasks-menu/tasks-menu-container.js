@@ -5,6 +5,27 @@ import { OrderedSet } from 'immutable'
 import { connect } from 'react-redux'
 import { NotificationManager } from 'react-notifications'
 
+import { getAuth } from 'redux/store/auth/auth.selectors'
+import { showDialog } from 'redux/store/app-state/app-state.actions'
+import {
+  getMultiSelectVisibility,
+  getArchivedTasksVisibility,
+} from 'redux/store/app-state/app-state.selectors'
+import { getEntitiesTasks } from 'redux/store/entities/entities.selectors'
+import { getActiveTagsIds } from 'redux/store/tags/tags.selectors'
+import {
+  setArchiveTasks,
+  deselectTasks,
+  selectAllTask,
+} from 'redux/store/tasks/tasks.actions'
+import {
+  getTasksItems,
+  getCompletedTasksItems,
+  getArchivedTasksItems,
+  getSelectionTasks,
+  getTasksId,
+  getCompletedTasksId,
+} from 'redux/store/tasks/tasks.selectors'
 import {
   changeRangeFilter,
   toggleImportantFilter,
@@ -20,24 +41,15 @@ import {
   visibleMenuOption,
   hideMenuOption,
 } from 'redux/store/tasks-menu/tasks-menu.action'
-import {
-  setArchiveTasks,
-  deselectTasks,
-  selectAllTask,
-} from 'redux/store/tasks/tasks.actions'
-import { showDialog } from 'redux/store/app-state/app-state.actions'
-import {
-  getTasksId,
-  getCompletedTasksId,
-} from 'redux/store/tasks/tasks.selectors'
+import { getTasksMenu } from 'redux/store/tasks-menu/tasks-menu.selectors'
 import { archiveCompletedTasks } from 'redux/utils/component-helper'
 
 import SearchBox from 'components/elements/search-box'
 import TasksMenuFilters from 'components/tasks-menu/tasks-menu-filters'
-import TasksMenuFiltersActive from 'components/tasks-menu//tasks-menu-filters-active'
+import TasksMenuFiltersActive from 'components/tasks-menu/tasks-menu-filters-active'
 import TasksMenuSort from 'components/tasks-menu//tasks-menu-sort'
 import TasksMenuOptions from 'components/tasks-menu//tasks-menu-options'
-import TasksMenuMultiSelect from 'components/tasks-menu//tasks-menu-multi-select'
+import TasksMenuMultiSelect from 'components/tasks-menu/tasks-menu-multi-select'
 
 class TasksMenuContainer extends Component {
 
@@ -175,7 +187,7 @@ class TasksMenuContainer extends Component {
           auth={this.props.auth}
           activeTags={this.props.activeTags}
           isVisibleArchivedTasks={isVisibleArchivedTasks}
-          deselectTasks={this.props.deselectTasks}/>}
+          deselectTasks={this.props.deselectTasks} />}
 
         {!isMultiSelect &&
         <div className="filter-active">
@@ -201,7 +213,7 @@ class TasksMenuContainer extends Component {
           hideMenuFilter={this.props.hideMenuFilter}
           hideMenuSort={this.props.hideMenuSort}
           hideMenuOption={this.props.hideMenuOption}
-          tasksMenu={this.props.tasksMenu}/>}
+          tasksMenu={this.props.tasksMenu} />}
 
         {!isMultiSelect &&
         <TasksMenuOptions
@@ -212,7 +224,7 @@ class TasksMenuContainer extends Component {
           hideMenuSort={this.props.hideMenuSort}
           hideMenuOption={this.props.hideMenuOption}
           tasksMenu={this.props.tasksMenu}
-          isVisibleArchivedTasks={isVisibleArchivedTasks}/>}
+          isVisibleArchivedTasks={isVisibleArchivedTasks} />}
 
         <span className="task-count-indicator">
           <span className={taskCountCss}>{taskCount}</span>
@@ -224,19 +236,19 @@ class TasksMenuContainer extends Component {
 }
 
 const mapStateToProps = state => ({
-  tasksId: state.tasks.items,
+  tasksId: getTasksItems(state),
   showTasksId: getTasksId(state),
-  completedTasks: state.tasks.completed,
+  completedTasks: getCompletedTasksItems(state),
   showCompletedTasks: getCompletedTasksId(state),
-  archivedTasks: state.tasks.archived.items,
-  entitiesTasks: state.entities.tasks,
-  selectTasks: state.tasks.selection,
-  selectTaskCount: state.tasks.selection.size,
-  tasksMenu: state.tasksMenu,
-  multiSelect: state.appState.multiSelect.isVisible,
-  activeTags: state.tags.activeTags,
-  auth: state.auth,
-  isVisibleArchivedTasks: state.appState.archivedTasks.isVisible,
+  archivedTasks: getArchivedTasksItems(state),
+  entitiesTasks: getEntitiesTasks(state),
+  selectTasks: getSelectionTasks(state),
+  selectTaskCount: getSelectionTasks(state).size,
+  tasksMenu: getTasksMenu(state),
+  multiSelect: getMultiSelectVisibility(state),
+  activeTags: getActiveTagsIds(state),
+  auth: getAuth(state),
+  isVisibleArchivedTasks: getArchivedTasksVisibility(state),
 })
 const mapDispatchToProps = {
   changeRangeFilter,

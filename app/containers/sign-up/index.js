@@ -7,19 +7,22 @@ import { List } from 'immutable'
 import { Field, reduxForm } from 'redux-form/immutable'
 
 import {
-  controlRedirectTasks,
-  signUp,
-} from 'redux/store/auth/auth.actions'
-import {
   deselectError,
   visibleLoader,
 } from 'redux/store/app-state/app-state.actions'
-import { getAppStateItem } from 'redux/store/app-state/app-state.selectors'
+import {
+  getAppStateItem,
+  getLoader,
+} from 'redux/store/app-state/app-state.selectors'
+import {
+  controlRedirectTasks,
+  signUp,
+} from 'redux/store/auth/auth.actions'
 import { validateSignUp } from 'redux/utils/validate'
+
 import NavigationLanding from 'components/navigation/navigation-landing'
 import InputField from 'components/forms/input-field'
 import Loader from 'components/elements/loader'
-
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
 
@@ -173,7 +176,7 @@ class SignUp extends Component {
 }
 
 const mapStateToProps = state => ({
-  loader: state.getIn(['appState', 'loader', 'isVisible']),
+  loader: getLoader(state),
   errorSignUp: getAppStateItem(state, 'signUp'),
 })
 const mapDispatchToProps = {

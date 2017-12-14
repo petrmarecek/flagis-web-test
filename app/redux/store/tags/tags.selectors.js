@@ -34,7 +34,7 @@ export const getVisibleTags = state => {
   let ids = state.getIn(['tags', 'all', 'items']).toArray()
 
   // apply search filter
-  if (state.tags.search) {
+  if (state.getIn(['tags', 'search'])) {
     const foundIds = search.getIn(['tags']).get(state.getIn(['tags', 'search'])).map(item => item.ref)
     ids = intersection(ids, foundIds)
   }
@@ -54,6 +54,10 @@ export const getCurrentTag = state => {
   }
 
   return state.getIn(['entities', 'tags']).get(tagId)
+}
+
+export const getCurrentTagId = state => {
+  return state.getIn(['tags', 'current'])
 }
 
 export const getNextTag = state => {
@@ -107,4 +111,12 @@ export const getPreviousTag = state => {
 export const getActiveTags = state =>
   state.getIn(['tags', 'activeTags']).map(tagId => state.getIn(['entities', 'tags', tagId])).reverse()
 
-export const getActiveTagIds = state => state.getIn(['tags', 'activeTags'])
+export const getActiveTagsId = state => {
+  return state.getIn(['tags', 'activeTags']).map(tagId => ({ id: tagId }))
+}
+
+export const getActiveTagsIds = state => state.getIn(['tags', 'activeTags'])
+
+export const getTagsSearch = state => state.getIn(['tags', 'search'])
+
+export const getTagsRelations = state => state.getIn(['tags', 'relations'])

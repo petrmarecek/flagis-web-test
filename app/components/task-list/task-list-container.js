@@ -4,7 +4,11 @@ import { connect } from 'react-redux'
 import debounce from 'lodash/debounce'
 import { NotificationManager } from 'react-notifications'
 
-import { getTasks } from 'redux/store/tasks/tasks.selectors'
+import { getArchivedTasksVisibility } from 'redux/store/app-state/app-state.selectors'
+import { getNewRefreshToken } from 'redux/store/auth/auth.selectors'
+import { getEntitiesTasks } from 'redux/store/entities/entities.selectors'
+import { selectActiveTags } from 'redux/store/tags/tags.actions'
+import { getActiveTagsIds } from 'redux/store/tags/tags.selectors'
 import {
   selectTask,
   setComplete,
@@ -14,15 +18,22 @@ import {
   moveTask,
   deselectTasks,
   setArchiveTasks,
-  cancelArchiveTasks
+  cancelArchiveTasks,
 } from 'redux/store/tasks/tasks.actions'
-import { selectActiveTags } from 'redux/store/tags/tags.actions'
-import { computeTaskOrder } from 'redux/utils/redux-helper'
+import {
+  getTasksItems,
+  getCompletedTasksItems,
+  getArchivedTasksItems,
+  getSelectionTasks,
+  getTasks,
+} from 'redux/store/tasks/tasks.selectors'
+import { getTasksMenuSort } from 'redux/store/tasks-menu/tasks-menu.selectors'
 import {
   getSelectionInfo,
   setArchive,
   cancelArchive
 } from 'redux/utils/component-helper'
+import { computeTaskOrder } from 'redux/utils/redux-helper'
 
 import Loader from 'components/elements/loader'
 import ShadowScrollbar from 'components/elements/shadow-scrollbar'
@@ -190,15 +201,15 @@ class TaskListContainer extends Component {
 
 const mapStateToProps = state => ({
   tasks: getTasks(state),
-  isNewRefreshToken: state.auth.newRefreshToken,
-  tasksId: state.tasks.items,
-  completedTasks: state.tasks.completed,
-  archivedTasks: state.tasks.archived.items,
-  entitiesTasks: state.entities.tasks,
-  selectedTasks: state.tasks.selection,
-  selectedTags: state.tags.activeTags,
-  sort: state.tasksMenu.sort,
-  isVisibleArchivedTasks: state.appState.archivedTasks.isVisible,
+  isNewRefreshToken: getNewRefreshToken(state),
+  tasksId: getTasksItems(state),
+  completedTasks: getCompletedTasksItems(state),
+  archivedTasks: getArchivedTasksItems(state),
+  entitiesTasks: getEntitiesTasks(state),
+  selectedTasks: getSelectionTasks(state),
+  selectedTags: getActiveTagsIds(state),
+  sort: getTasksMenuSort(state),
+  isVisibleArchivedTasks: getArchivedTasksVisibility(state),
 })
 
 const mapDispatchToProps = {

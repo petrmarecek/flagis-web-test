@@ -1,4 +1,8 @@
 
+export const getAppState = state => state.getIn(['appState'])
+
+export const getLeftPanel = state => state.getIn(['appState', 'leftPanel'])
+
 export const getTagHints = state => {
   const tagHintsData = state.getIn(['appState', 'tagHints'])
   const visibleTags = state
@@ -8,7 +12,11 @@ export const getTagHints = state => {
   return tagHintsData.setIn(['visibleTags'], visibleTags)
 }
 
-export const getTagHintsRaw = state => state.getIn(['appState']).get('tagHints')
+export const getTagHintsRaw = state => state.getIn(['appState', 'tagHints'])
+
+export const getTagAutocompletes = state => state.getIn(['appState', 'tagAutocompletes'])
+
+export const getTagHintsVisibility = state => state.getIn(['appState', 'tagHints', 'isVisible'])
 
 export const getAppStateItem = (state, type) => {
   return state.getIn(['appState', type])
@@ -28,16 +36,22 @@ export const getDialog = (state) => {
   return true
 }
 
-export const getTasksListVisibility = (state) => {
+export const getCurrentDialog = state => {
+  return state.getIn(['appState', 'currentDialog'])
+}
+
+export const getTasksListVisibility = state => {
   return state.getIn(['appState', 'tasksList', 'isVisible'])
 }
 
-export const getArchivedTasksVisibility = (state) => {
+export const getArchivedTasksVisibility = state => {
   return state.getIn(['appState', 'archivedTasks', 'isVisible'])
 }
 
-export const getTaskTagDetail = (state) => {
+export const getTaskTagDetail = state => {
   return state.getIn(['appState', 'taskTagDetail'])
 }
 
-
+export const getLoader = state => {
+  return state.getIn(['appState', 'loader', 'isVisible'])
+}

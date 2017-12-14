@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form/immutable'
 
 import { visibleLoader } from 'redux/store/app-state/app-state.actions'
+import { getLoader } from 'redux/store/app-state/app-state.selectors'
 import {
   controlRedirectTasks,
   emailResetPassword
@@ -87,8 +88,9 @@ class EmailResetPassword extends Component {
 }
 
 const mapStateToProps = state => ({
-  loader: state.getIn(['appState', 'loader', 'isVisible']),
+  loader: getLoader(state),
 })
+
 const mapDispatchToProps = {
   controlRedirectTasks,
   visibleLoader,

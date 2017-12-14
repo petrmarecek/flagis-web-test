@@ -8,6 +8,8 @@ import Icon from 'components/icons/icon'
 
 import commonUtils from 'redux/utils/common'
 import { createTask } from 'redux/store/tasks/tasks.actions'
+import { getTasksMenu } from 'redux/store/tasks-menu/tasks-menu.selectors'
+import { getActiveTagsId } from 'redux/store/tags/tags.selectors'
 
 class AddTaskForm extends Component {
 
@@ -143,8 +145,8 @@ class AddTaskForm extends Component {
 }
 
 const mapStateToProps = state => ({
-  tags: state.tags.activeTags.map(tagId => ({ id: tagId })),
-  tasksMenu: state.tasksMenu
+  tags: getActiveTagsId(state),
+  tasksMenu: getTasksMenu(state),
 })
 const actionCreators = { createTask }
 export default connect(mapStateToProps, actionCreators)(AddTaskForm)

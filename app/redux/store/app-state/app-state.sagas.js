@@ -309,7 +309,7 @@ function* getSelectedTagIds(autocompleteId, context) {
       ]
     },
     'search': {
-      selector: tagSelectors.getActiveTagIds,
+      selector: tagSelectors.getActiveTagsIds,
       params: []
     },
   }
