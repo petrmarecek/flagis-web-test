@@ -13,7 +13,7 @@ import TaskDetailContent from 'components/contents/task-detail-content'
 class TaskPage extends React.Component {
 
   static propTypes = {
-    detail: PropTypes.bool,
+    detail: PropTypes.object,
   }
 
   getContent() {

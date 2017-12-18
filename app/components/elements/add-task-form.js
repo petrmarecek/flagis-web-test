@@ -105,7 +105,7 @@ class AddTaskForm extends Component {
 
     return (
       <form className="add-task" autoComplete="off" onSubmit={this.handleSubmit}>
-        <div className="add-task__submit" type="submit" onClick={this.handleSubmit} disabled={addButtonDisabled}>
+        <div className="add-task__submit" onClick={this.handleSubmit} disabled={addButtonDisabled}>
           <Icon
             icon={ICONS.PLUS}
             width={29}

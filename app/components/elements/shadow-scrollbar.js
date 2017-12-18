@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import css from 'classnames'
 import { Scrollbars } from 'react-custom-scrollbars'
 
 export default class ShadowScrollbar extends Component {
 
   constructor(props, ...rest) {
-    super(props, ...rest);
+    super(props, ...rest)
     this.state = {
       scrollTop: 0,
       scrollHeight: 0,
@@ -19,23 +18,13 @@ export default class ShadowScrollbar extends Component {
     verticalStyle: PropTypes.object,
   }
 
-  handleUpdate = (values) => {
-    const { shadowTop, shadowBottom } = this.refs
-    const { scrollTop, scrollHeight, clientHeight } = values
-    const shadowTopOpacity = 1 / 20 * Math.min(scrollTop, 20)
-    const bottomScrollTop = scrollHeight - clientHeight
-    const shadowBottomOpacity = 1 / 20 * (bottomScrollTop - Math.max(scrollTop, bottomScrollTop - 20))
-    css(shadowTop, { opacity: shadowTopOpacity })
-    css(shadowBottom, { opacity: shadowBottomOpacity })
-  }
-
   getScrollbars() {
     const { verticalStyle, ...props } = this.props
     return verticalStyle
       ? (
         <Scrollbars
           ref="scrollbars"
-          renderThumbVertical={scrollProps => <div {...scrollProps} style={verticalStyle}/>}
+          renderThumbVertical={scrollProps => <div {...scrollProps} style={verticalStyle} />}
           onUpdate={this.handleUpdate}
           {...props}/>
       )
@@ -45,6 +34,16 @@ export default class ShadowScrollbar extends Component {
           onUpdate={this.handleUpdate}
           {...props}/>
       )
+  }
+
+  handleUpdate = (values) => {
+    const { shadowTop, shadowBottom } = this.refs
+    const { scrollTop, scrollHeight, clientHeight } = values
+    const shadowTopOpacity = 1 / 20 * Math.min(scrollTop, 20)
+    const bottomScrollTop = scrollHeight - clientHeight
+    const shadowBottomOpacity = 1 / 20 * (bottomScrollTop - Math.max(scrollTop, bottomScrollTop - 20))
+    shadowTop.style.opacity = shadowTopOpacity
+    shadowBottom.style.opacity = shadowBottomOpacity
   }
 
   render() {
@@ -61,7 +60,7 @@ export default class ShadowScrollbar extends Component {
       right: 0,
       pointerEvents: 'none',
       height: style.shadowHeight,
-      boxShadow: style.boxShadowTop
+      boxShadow: style.boxShadowTop,
     }
     const shadowBottomStyle = {
       position: 'absolute',
@@ -70,7 +69,7 @@ export default class ShadowScrollbar extends Component {
       right: 0,
       pointerEvents: 'none',
       height: style.shadowHeight,
-      boxShadow: style.boxShadowBottom
+      boxShadow: style.boxShadowBottom,
     }
 
     return (
@@ -78,10 +77,10 @@ export default class ShadowScrollbar extends Component {
         {scrollbars}
         <div
           ref="shadowTop"
-          style={shadowTopStyle}/>
+          style={shadowTopStyle} />
         <div
           ref="shadowBottom"
-          style={shadowBottomStyle}/>
+          style={shadowBottomStyle} />
       </div>
     )
   }

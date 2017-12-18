@@ -19,12 +19,12 @@ export default class MenuBox extends Component {
     velocity(this.refs.elem, this.props.animation, { duration: 400 })
 
     // Add listener for close menu
-    document.getElementById('page').addEventListener("click", this.handleClick, false)
+    document.getElementById('user-container').addEventListener("click", this.handleClick, false)
   }
 
   componentWillUnmount() {
     // Remove listener for close menu
-    document.getElementById('page').removeEventListener("click", this.handleClick, false)
+    document.getElementById('user-container').removeEventListener("click", this.handleClick, false)
   }
 
   handleClick = event => {

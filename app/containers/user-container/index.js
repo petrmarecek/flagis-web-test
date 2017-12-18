@@ -39,7 +39,7 @@ class UserContainer extends Component {
     })
 
     return (
-      <div>
+      <div id="user-container">
         <NavigationBar location={this.props.location} />
         <div className={backgroundCss}>
           <Switch>

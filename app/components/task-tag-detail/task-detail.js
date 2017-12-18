@@ -108,13 +108,8 @@ class TaskDetail extends Component {
     // Load comments
     this.props.fetchComment(this.props.task.id)
 
-    document.getElementById('page').addEventListener("click", this.handleClickOutSide, false)
-    document.addEventListener("keydown", this.handleKeyDown, false)
-  }
-
-  componentWillUnmount() {
-    document.getElementById('page').removeEventListener("click", this.handleClickOutSide, false)
-    document.removeEventListener("keydown", this.handleKeyDown, false)
+    document.getElementById('user-container').addEventListener('click', this.handleClickOutSide, false)
+    document.addEventListener('keydown', this.handleKeyDown, false)
   }
 
   componentWillReceiveProps(newProps) {
@@ -130,6 +125,11 @@ class TaskDetail extends Component {
         animation: false
       })
     }
+  }
+
+  componentWillUnmount() {
+    document.getElementById('user-container').removeEventListener('click', this.handleClickOutSide, false)
+    document.removeEventListener('keydown', this.handleKeyDown, false)
   }
 
   // Back to task list

@@ -59,7 +59,7 @@ class AddTagForm extends Component {
 
     return (
       <form className="add-tag" autoComplete="off" onSubmit={this.handleSubmit}>
-        <div className="add-tag__submit" type="submit" onClick={this.handleSubmit} disabled={addButtonDisabled}>
+        <div className="add-tag__submit" onClick={this.handleSubmit} disabled={addButtonDisabled}>
           <Icon
             icon={ICONS.PLUS}
             width={16}
