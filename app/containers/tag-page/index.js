@@ -13,7 +13,7 @@ import TagTreeContent from 'components/contents/tag-tree-content'
 class TagPage extends Component {
 
   static propTypes = {
-    detail: PropTypes.bool,
+    detail: PropTypes.object,
   }
 
   getContent() {

@@ -35,12 +35,12 @@ export const getVisibleTags = state => {
 
   // apply search filter
   if (state.getIn(['tags', 'search'])) {
-    const foundIds = search.getIn(['tags']).get(state.getIn(['tags', 'search'])).map(item => item.ref)
+    const foundIds = search.tags.get(state.getIn(['tags', 'search'])).map(item => item.ref)
     ids = intersection(ids, foundIds)
   }
 
   return {
-    isFetching: state.tags.all.isFetching,
+    isFetching: state.getIn(['tags', 'all', 'isFetching']),
     items: ids.map(tagId => state.getIn(['entities', 'tags', tagId])).sort(compareTagByTitle)
   }
 }

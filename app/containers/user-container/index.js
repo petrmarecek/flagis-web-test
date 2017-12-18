@@ -13,7 +13,7 @@ import Dialogs from 'components/dialogs/dialogs'
 import NavigationBar from 'components/navigation/navigation-bar'
 import FloatingComponents from 'components/floating/floating-components'
 import TaskPage from 'containers/task-page'
-//import TagPage from 'containers/tag-page'
+import TagPage from 'containers/tag-page'
 // import ArchivePage from 'containersarchive-page'
 // import AccountPage from 'containersaccount-page'
 
@@ -44,8 +44,8 @@ class UserContainer extends Component {
         <div className={backgroundCss}>
           <Switch>
             <Route path={`${this.props.match.path}/tasks`} component={TaskPage} />
-            {/*<Route path={`${this.props.match.path}/tags`} component={TagPage} />
-            <Route path={`${this.props.match.path}/archive`} component={ArchivePage} />
+            <Route path={`${this.props.match.path}/tags`} component={TagPage} />
+            {/*<Route path={`${this.props.match.path}/archive`} component={ArchivePage} />
             <Route path={`${this.props.match.path}/account`} component={AccountPage} />*/}
           </Switch>
         </div>
