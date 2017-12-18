@@ -14,8 +14,8 @@ import NavigationBar from 'components/navigation/navigation-bar'
 import FloatingComponents from 'components/floating/floating-components'
 import TaskPage from 'containers/task-page'
 import TagPage from 'containers/tag-page'
-// import ArchivePage from 'containersarchive-page'
-// import AccountPage from 'containersaccount-page'
+import ArchivePage from 'containers/archive-page'
+import AccountPage from 'containers/account-page'
 
 class UserContainer extends Component {
   static propTypes = {
@@ -45,8 +45,8 @@ class UserContainer extends Component {
           <Switch>
             <Route path={`${this.props.match.path}/tasks`} component={TaskPage} />
             <Route path={`${this.props.match.path}/tags`} component={TagPage} />
-            {/*<Route path={`${this.props.match.path}/archive`} component={ArchivePage} />
-            <Route path={`${this.props.match.path}/account`} component={AccountPage} />*/}
+            <Route path={`${this.props.match.path}/archive`} component={ArchivePage} />
+            <Route path={`${this.props.match.path}/account`} component={AccountPage} />
           </Switch>
         </div>
         <div className="dialog-container">

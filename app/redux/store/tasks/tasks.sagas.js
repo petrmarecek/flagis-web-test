@@ -56,8 +56,8 @@ export function* fetchArchivedTasks() {
   })
 
   // Initialize search service
-  search.tasks.resetIndex()
-  search.tasks.addItems(result)
+  /*search.tasks.resetIndex()
+  search.tasks.addItems(result)*/
 }
 
 export function* createTask(action) {
