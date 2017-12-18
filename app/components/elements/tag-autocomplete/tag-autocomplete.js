@@ -45,6 +45,11 @@ export default class TagAutocomplete extends Component {
     }
   }
 
+  handleClearFilter = event => {
+    event.stopPropagation()
+    this.props.clearFilter()
+  }
+
   handleClick = () => {
     this.setFocusToInput()
   }
@@ -80,7 +85,7 @@ export default class TagAutocomplete extends Component {
           {this.props.clearFilter &&
           <li
             className="tag-autocomplete__clear"
-            onClick={this.props.clearFilter}>
+            onClick={this.handleClearFilter}>
             <Icon
               icon={ICONS.CROSS_SIMPLE}
               width={11}
