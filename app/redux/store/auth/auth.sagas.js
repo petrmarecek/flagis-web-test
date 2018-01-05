@@ -18,7 +18,7 @@ import { fetchTasks } from 'redux/store/tasks/tasks.actions'
 import { fetchTree } from 'redux/store/tree/tree.actions'
 import * as authActions from 'redux/store/auth/auth.actions'
 import api from 'redux/utils/api'
-import persistentStore from 'redux/utils/persistentStore'
+import persistentStore from 'redux/utils/persistent-store'
 
 const AUTH = authActions.AUTH
 const MIN_TOKEN_LIFESPAN = 300 * 1000

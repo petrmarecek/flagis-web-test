@@ -5,7 +5,7 @@ import createSagaMiddleware from 'redux-saga'
 import { routerMiddleware } from 'react-router-redux'
 import { hashHistory } from 'react-router'
 
-import persistentStore from './utils/persistentStore'
+import persistentStore from './utils/persistent-store'
 import { AuthStore } from './data/records'
 import rootReducer from './store/root.reducer'
 import rootSaga from './store/root.sagas'
@@ -25,7 +25,7 @@ export function configureStore() {
 
   const devTools = window.devToolsExtension ? window.devToolsExtension() : f => f
   const auth = persistentStore.getItem('auth')
-  
+
   const initialState = {}
   if (auth) {
     initialState.auth = new AuthStore({ ...auth, isLogged: true })
