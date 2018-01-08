@@ -18,8 +18,8 @@ export function* fetchTags() {
   })
 
   // Initialize search service
-  /*search.tags.resetIndex()
-  search.tags.addItems(result)*/
+  search.tags.resetIndex()
+  search.tags.addItems(result)
 }
 
 export function* selectActiveTags(action) {
@@ -67,7 +67,7 @@ export function* createTag(action) {
     const tag = yield call(api.tags.create, data)
 
     // add the tag to the search index
-    search.tasks.addItem(tag)
+    search.tags.addItem(tag)
 
     // add the tag to store
     yield put(tagActions.addTag(tag))
@@ -114,6 +114,9 @@ export function* deleteTag(action) {
   })
 
   yield put(tagActions.deleteTagsRelations(action.payload, null))
+
+  // delete tag from the search index
+  search.tags.removeItem({ id: action.payload })
 }
 
 export function* fetchTagsRelations() {

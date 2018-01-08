@@ -32,8 +32,8 @@ export function* fetchTasks() {
   })
 
   // Initialize search service
-  /*search.tasks.resetIndex()
-  search.tasks.addItems(result)*/
+  search.tasks.resetIndex()
+  search.tasks.addItems(result)
 }
 
 export function* fetchArchivedTasks() {
@@ -56,8 +56,8 @@ export function* fetchArchivedTasks() {
   })
 
   // Initialize search service
-  /*search.tasks.resetIndex()
-  search.tasks.addItems(result)*/
+  search.tasks.resetIndex()
+  search.tasks.addItems(result)
 }
 
 export function* createTask(action) {
@@ -283,15 +283,14 @@ export function* deleteTask(action) {
         }
       }
 
+      // delete task from the search index
+      search.tasks.removeItem({ id: taskId })
     } catch(err) {
       console.error(err)
     }
   }
 
   yield put(taskActions.deselectTasks())
-
-  // delete task from the search index
-  //search.tasks.removeItem({ id: action.payload })
 }
 
 export function* removeTag(action) {

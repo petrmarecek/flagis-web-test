@@ -230,7 +230,7 @@
     "less": "^2.7.3",
     "less-loader": "^4.0.5",
     "lodash": "4.17.4",
-    "lunr": "^2.1.5",
+    "lunr": "^1.0.0",
     "minimist": "1.2.0",
     "moment": "^2.19.3",
     "normalizr": "^3.2.4",
