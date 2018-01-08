@@ -179,7 +179,7 @@ function loadArchiveTasks(ids, state) {
 }
 
 export const getTasks = state => {
-  const archived = state.getIn(['routing', 'locationBeforeTransitions', 'pathname']) === '/user/archive'
+  const archived = state.getIn(['route', 'location', 'pathname']) === '/user/archive'
 
   if (archived) {
     return ({
@@ -201,7 +201,7 @@ export const getCompletedTasks = state => ({
 })
 
 export const getTasksId = state => {
-  const archived = state.getIn(['routing', 'locationBeforeTransitions', 'pathname']) === '/user/archive'
+  const archived = state.getIn(['route', 'location', 'pathname']) === '/user/archive'
 
   if (archived) {
     const tasks = loadArchiveTasks(state.getIn(['tasks', 'archived', 'items']).toArray(), state)
