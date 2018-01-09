@@ -8,7 +8,9 @@ import SignUp from 'containers/sign-up'
 import EmailResetPassword from 'containers/email-reset-password'
 import ResetPassword from 'containers/reset-password'
 import UserContainer from 'containers/user-container'
-import NotFoundPage from 'containers/not-found-page/loadable';
+import NotFoundPage from 'containers/not-found-page/loadable'
+
+import 'assets/vendor/react-notifications/react-notifications.css'
 
 export default function App() {
   return (
