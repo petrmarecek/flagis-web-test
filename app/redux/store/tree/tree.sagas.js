@@ -3,9 +3,14 @@ import { push } from 'react-router-redux'
 import intersection from 'lodash/intersection'
 import includes from 'lodash/includes'
 import { NotificationManager } from 'react-notifications'
+import { Map } from 'immutable'
 
 import consts from 'redux/data/consts'
-import { createLoadActions, fetch } from 'redux/store/common.sagas'
+import {
+  createLoadActions,
+  fetch,
+  mainUndo,
+} from 'redux/store/common.sagas'
 import * as treeActions from 'redux/store/tree/tree.actions'
 import * as treeSelectors from 'redux/store/tree/tree.selectors'
 import { deselectTasks } from 'redux/store/tasks/tasks.actions'
@@ -121,15 +126,71 @@ export function* updateTreeItem(action) {
 }
 
 export function* deleteTreeItem(action) {
+  // Get position of delete item
+  const itemsByParent = yield select(state => treeSelectors.getTreeItemsByParent(state))
+  const position = itemsByParent.get(action.payload.originalData.parentId).indexOf(action.payload.originalData.id)
+
   yield* fetch(TREE.DELETE, {
     method: api.tree.delete,
-    args: [action.payload.treeItem.id],
+    args: [action.payload.originalData.id],
     schema: null,
     payload: action.payload
   })
 
+  action.payload.originalData.position = position
+  const title = action.payload.originalData.isSection
+    ? 'tree-group-delete'
+    : 'tree-item-delete'
+  yield* mainUndo(action, title)
   // delete all child items on client
-  yield* deleteChildItems(action.payload.treeItem)
+  yield* deleteChildItems(action.payload.originalData)
+}
+
+export function* undoDeleteTreeItem(action) {
+  try {
+    // BFS algorithm
+    const stack = []
+    let mapId = Map()
+    // set main node
+    let parentId = action.payload.parentId
+    mapId = mapId.set(parentId, parentId)
+    stack.push(action.payload)
+
+    while (stack.length > 0) {
+      const item = stack.shift()
+      // get new id of old item
+      parentId = mapId.get(item.parentId)
+      // title for section or tag-item
+      const title = item.isSection
+        ? item.title
+        : yield select(state => tagsSelectors.getTag(state, item.tagId).title)
+      // data for server
+      const createData = {
+        title: title,
+        parentId: parentId,
+        position: item.order,
+      }
+
+      // call server
+      const treeItem = yield call(api.tree.create, createData)
+
+      if (Number.isInteger(item.position)) {
+        treeItem.position = item.position
+      }
+
+      // add tree item to the store
+      yield put(treeActions.addTreeItem(treeItem))
+
+      for (const child of item.childItems) {
+        // map new id with key of old id
+        mapId = mapId.set(item.id, treeItem.id)
+        stack.push(child)
+      }
+    }
+  } catch (err) {
+    console.error(err)
+  }
+
 }
 
 // TODO: this is too long --> split
@@ -209,6 +270,21 @@ export function* dropTreeItem(action) {
   }
 }
 
+export function* dropSection(action) {
+
+  try {
+    // Call server
+    const sourceUpdate = {
+      parentId: null,
+      position: action.payload.order,
+    }
+
+    yield call(api.tree.updateParent, action.payload.section.id, sourceUpdate)
+  } catch (err) {
+    console.error(err, 'Unable to update position for section.')
+  }
+}
+
 // ------ Helper methods ------------------------------------------------------
 
 function* deleteChildItems(treeItem) {
@@ -218,7 +294,9 @@ function* deleteChildItems(treeItem) {
 
   yield put({
     type: PENDING,
-    payload: { treeItem }
+    payload: {
+      originalData: treeItem
+    }
   })
 }
 

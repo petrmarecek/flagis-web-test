@@ -5,6 +5,7 @@ export const TREE = {
   CREATE: 'TREE/CREATE',
   UPDATE: 'TREE/UPDATE',
   DELETE: 'TREE/DELETE',
+  UNDO_DELETE: 'UNDO_TREE/DELETE',
   FETCH: 'TREE/FETCH',
   TOGGLE_MENU: 'TREE/TOGGLE-MENU',
   SHOW_ADD_CONTROL: 'TREE/SHOW_ADD_CONTROL',
@@ -15,6 +16,8 @@ export const TREE = {
 
   MOVE_TREE_ITEM: 'TREE/MOVE_TREE_ITEM',
   DROP_TREE_ITEM: 'TREE/DROP_TREE_ITEM',
+  MOVE_SECTION: 'TREE/MOVE_SECTION',
+  DROP_SECTION: 'TREE/DROP_SECTION',
 }
 
 export const addTreeItem = item => ({
@@ -68,10 +71,10 @@ export const updateTreeItemTitle = (treeItem, title) => ({
   }
 })
 
-export const deleteTreeItem = treeItem => ({
+export const deleteTreeItem = originalData => ({
   type: TREE.DELETE,
   payload: {
-    treeItem
+    originalData
   }
 })
 
@@ -90,4 +93,17 @@ export const dropTreeItem = dropResult => ({
 export const moveTreeItem = data => ({
   type: TREE.MOVE_TREE_ITEM,
   payload: data,
+})
+
+export const moveSection = move => ({
+  type: TREE.MOVE_SECTION,
+  payload: move,
+})
+
+export const dropSection = (section, order) => ({
+  type: TREE.DROP_SECTION,
+  payload: {
+    section: section,
+    order: order,
+  },
 })

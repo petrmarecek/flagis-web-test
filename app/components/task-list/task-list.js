@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import TaskListItem from 'components/task-list/task-list-item'
+import moment from 'moment'
 import { getTimeLineByDueDate } from 'redux/utils/component-helper'
 
-class TaskList extends Component {
+export default class TaskList extends Component {
 
   static propTypes = {
     selectedTasks: PropTypes.object,
@@ -26,7 +27,35 @@ class TaskList extends Component {
     return this.props.selectedTasks.has(taskId)
   }
 
-  getTaskItems(tasks, index, section) {
+  getEmptyTask(typeDate, section) {
+    const now = moment()
+    const dayOfWeek = now.isoWeekday()
+    const dayToNewWeek = (7 - dayOfWeek) + 1
+    const today = now.set({'hour': 23, 'minute': 45, 'second': 0, 'millisecond': 0})
+
+    const date = {
+      today: today,
+      tomorrow: today.clone().add(1, 'days'),
+      week: today.clone().add(2, 'days'),
+      month: today.clone().add(dayToNewWeek, 'days'),
+      others: null,
+    }
+    const task = { dueDate: date[typeDate] }
+
+    return (
+      <TaskListItem
+        index={0}
+        listType="main"
+        task={task}
+        moveTask={this.props.moveTask}
+        dropTask={this.props.dropTask}
+        sort={null}
+        section={section}
+        noTaskFound/>
+    )
+  }
+
+  getTaskItems(tasks, section) {
 
     if (!this.props.listType) {
       return null
@@ -35,11 +64,11 @@ class TaskList extends Component {
     switch (this.props.listType) {
       case 'main': {
         return (
-          tasks.map(task =>
+          tasks.map((task, i) =>
             <TaskListItem
               key={task.id}
               task={task}
-              index={index++}
+              index={i}
               order={task.order}
               listType={this.props.listType}
               isSelected={this.isSelected(task.id)}
@@ -86,10 +115,9 @@ class TaskList extends Component {
   getTaskItemsList(tasks) {
     if (this.props.sort.dueDate && !this.props.isVisibleArchivedTasks) {
       // Due date sorting algorithm is activated
-      let index = 0
       const timeLineTasks = getTimeLineByDueDate(tasks)
       const tasksRender = {
-        overdueDateTasks: null,
+        overdueTasks: null,
         todayTasks: null,
         tomorrowTasks: null,
         weekTasks: null,
@@ -97,37 +125,32 @@ class TaskList extends Component {
         othersTasks: null,
       }
 
-      if (timeLineTasks.overdueDateTasks.length !== 0) {
-        tasksRender.overdueDateTasks = this.getTaskItems(timeLineTasks.overdueDateTasks, index, 'overdue')
-        index += timeLineTasks.overdueDateTasks.length
+      if (timeLineTasks.overdueTasks.length !== 0) {
+        tasksRender.overdueTasks = this.getTaskItems(timeLineTasks.overdueTasks, 'overdueTasks')
       }
 
       if (timeLineTasks.todayTasks.length !== 0) {
-        tasksRender.todayTasks = this.getTaskItems(timeLineTasks.todayTasks, index, 'today')
-        index += timeLineTasks.todayTasks.length
+        tasksRender.todayTasks = this.getTaskItems(timeLineTasks.todayTasks, 'todayTasks')
       }
 
       if (timeLineTasks.tomorrowTasks.length !== 0) {
-        tasksRender.tomorrowTasks = this.getTaskItems(timeLineTasks.tomorrowTasks, index, 'tomorrow')
-        index += timeLineTasks.tomorrowTasks.length
+        tasksRender.tomorrowTasks = this.getTaskItems(timeLineTasks.tomorrowTasks, 'tomorrowTasks')
       }
 
       if (timeLineTasks.weekTasks.length !== 0) {
-        tasksRender.weekTasks = this.getTaskItems(timeLineTasks.weekTasks, index, 'week')
-        index += timeLineTasks.weekTasks.length
+        tasksRender.weekTasks = this.getTaskItems(timeLineTasks.weekTasks, 'weekTasks')
       }
 
       if (timeLineTasks.monthTasks.length !== 0) {
-        tasksRender.monthTasks = this.getTaskItems(timeLineTasks.monthTasks, index, 'month')
-        index += timeLineTasks.monthTasks.length
+        tasksRender.monthTasks = this.getTaskItems(timeLineTasks.monthTasks, 'monthTasks')
       }
 
       if (timeLineTasks.othersTasks.length !== 0) {
-        tasksRender.othersTasks = this.getTaskItems(timeLineTasks.othersTasks, index, 'others')
+        tasksRender.othersTasks = this.getTaskItems(timeLineTasks.othersTasks, 'othersTasks')
       }
 
       return {
-        overdueDateTasks: tasksRender.overdueDateTasks,
+        overdueTasks: tasksRender.overdueTasks,
         todayTasks: tasksRender.todayTasks,
         tomorrowTasks: tasksRender.tomorrowTasks,
         weekTasks: tasksRender.weekTasks,
@@ -136,7 +159,7 @@ class TaskList extends Component {
       }
     } else {
       // Due date sorting algorithm isn't activated
-      return this.getTaskItems(tasks, 0)
+      return this.getTaskItems(tasks, null)
     }
   }
 
@@ -160,12 +183,12 @@ class TaskList extends Component {
 
         {dueDateSort && !isVisibleArchivedTasks &&
         <ul className="time-line">
-          {taskItems.overdueDateTasks &&
+          {taskItems.overdueTasks &&
           <li className="time-line__list">
             <span className="time-line__point"/>
             <p className="time-line__text">Overdue</p>
             <ul ref="list" className="task-items">
-              {taskItems.overdueDateTasks}
+              {taskItems.overdueTasks}
             </ul>
           </li>}
 
@@ -173,8 +196,7 @@ class TaskList extends Component {
             <span className="time-line__point"/>
             <p className="time-line__text">Today</p>
             <ul ref="list" className="task-items">
-              {!taskItems.todayTasks &&
-              <li className="empty-list">No task found</li>}
+              {!taskItems.todayTasks && this.getEmptyTask('today', 'todayTasks')}
 
               {taskItems.todayTasks}
             </ul>
@@ -184,8 +206,7 @@ class TaskList extends Component {
             <span className="time-line__point"/>
             <p className="time-line__text">Tomorrow</p>
             <ul ref="list" className="task-items">
-              {!taskItems.tomorrowTasks &&
-              <li className="empty-list">No task found</li>}
+              {!taskItems.tomorrowTasks && this.getEmptyTask('tomorrow', 'tomorrowTasks')}
 
               {taskItems.tomorrowTasks}
             </ul>
@@ -195,8 +216,7 @@ class TaskList extends Component {
             <span className="time-line__point"/>
             <p className="time-line__text">This week</p>
             <ul ref="list" className="task-items">
-              {!taskItems.weekTasks &&
-              <li className="empty-list">No task found</li>}
+              {!taskItems.weekTasks && this.getEmptyTask('week', 'weekTasks')}
 
               {taskItems.weekTasks}
             </ul>
@@ -206,8 +226,7 @@ class TaskList extends Component {
             <span className="time-line__point"/>
             <p className="time-line__text">This Month</p>
             <ul ref="list" className="task-items">
-              {!taskItems.monthTasks &&
-              <li className="empty-list">No task found</li>}
+              {!taskItems.monthTasks && this.getEmptyTask('month', 'monthTasks')}
 
               {taskItems.monthTasks}
             </ul>
@@ -217,8 +236,7 @@ class TaskList extends Component {
             <span className="time-line__point"/>
             <p className="time-line__text">Others</p>
             <ul ref="list" className="task-items">
-              {!taskItems.othersTasks &&
-              <li className="empty-list">No task found</li>}
+              {!taskItems.othersTasks && this.getEmptyTask('others', 'othersTasks')}
 
               {taskItems.othersTasks}
             </ul>
@@ -228,6 +246,4 @@ class TaskList extends Component {
     )
   }
 }
-
-export default TaskList
 

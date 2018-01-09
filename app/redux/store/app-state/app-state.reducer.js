@@ -1,8 +1,8 @@
 import typeToReducer from 'type-to-reducer'
 
-import { APP_STATE } from './app-state.actions'
-import { AUTH } from '../auth/auth.actions'
-import { AppStateStore, Position, TagAutocomplete } from '../../data/records'
+import { APP_STATE } from 'redux/store/app-state/app-state.actions'
+import { AUTH } from 'redux/store/auth/auth.actions'
+import { AppStateStore, Position, TagAutocomplete } from 'redux/data/records'
 
 export default typeToReducer({
 
@@ -49,6 +49,12 @@ export default typeToReducer({
     const width = Math.min(Math.max(suggestedWidth, 290), maxWidth)
     return state.setIn(['leftPanel', 'width'], width)
   },
+
+  [APP_STATE.UNDO_SHOW]: (state, action) => state
+    .setIn(['undoBox'], action.payload),
+
+  [APP_STATE.UNDO_HIDE]: state => state
+    .setIn(['undoBox'], null),
 
   [APP_STATE.DIALOG_SHOW]: (state, action) => {
 

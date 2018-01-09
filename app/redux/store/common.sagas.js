@@ -1,9 +1,13 @@
-import { call, put } from 'redux-saga/effects'
+import { call, put, take, spawn, race } from 'redux-saga/effects'
+import { delay } from 'redux-saga'
 import { NotificationManager } from 'react-notifications'
 
+import * as appStateActions from 'redux/store/app-state/app-state.actions'
 import { logout } from 'redux/store/auth/auth.actions'
 import { deselectTasks } from 'redux/store/tasks/tasks.actions'
 import { deselectTags } from 'redux/store/tags/tags.actions'
+
+const APP_STATE = appStateActions.APP_STATE
 
 /**
  * Creates common action types for fetch action type
@@ -79,4 +83,30 @@ export function* fetch(actionType, fetchDef) {
 
   // Return the result so that callers can use it
   return result
+}
+
+// Undo
+function* onUndo(action, name) {
+  const undoAction = `UNDO_${action.type}`
+  const undoData = action.payload.originalData
+
+  yield put(appStateActions.showUndo(name))
+
+  const { undo } = yield race({
+    undo: take(APP_STATE.UNDO_ACTIVE),
+    noUndo: call(delay, 8000),
+  })
+
+  yield put(appStateActions.hideUndo())
+
+  if (undo) {
+    yield put({
+      type: undoAction,
+      payload: undoData
+    })
+  }
+}
+
+export function* mainUndo(action, name) {
+  yield spawn(onUndo, action, name)
 }

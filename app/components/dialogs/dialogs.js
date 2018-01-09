@@ -143,6 +143,13 @@ class Dialogs extends Component {
     let newTaskCompleteList = this.props.completedTasks
     let newArchivedTasks = this.props.archivedTasks
     let newTaskEntitiesList = this.props.entitiesTasks
+    const originalData = {
+      taskDeleteList: deleteTasks,
+      taskList: newTasksList,
+      taskCompleteList: newTaskCompleteList,
+      taskArchiveList: newArchivedTasks,
+      taskEntitiesList: newTaskEntitiesList,
+    }
 
     for (const taskId of deleteTasks) {
       newTasksList = newTasksList.includes(taskId)
@@ -162,13 +169,20 @@ class Dialogs extends Component {
 
     this.props.hideDialog()
     this.props.deselectTasks()
-    this.props.deleteTask(deleteTasks, newTasksList, newTaskCompleteList, newArchivedTasks, newTaskEntitiesList)
-    NotificationManager.success('Task delete', 'Success', 3000)
+    this.props.deleteTask(
+      deleteTasks,
+      newTasksList,
+      newTaskCompleteList,
+      newArchivedTasks,
+      newTaskEntitiesList,
+      originalData
+    )
 
   }
 
   // confirm-tag-delete-dialog
-  handleTagDelete = tagId => {
+  handleTagDelete = tag => {
+    const tagId = tag.id
     const tagsRelations = this.props.tagsRelations
     const tagsReferences = this.props.tagsReferences
     const isReferenced = tagsReferences.has(tagId)
@@ -191,8 +205,7 @@ class Dialogs extends Component {
     // Delete tag
     this.props.hideDialog()
     this.props.deselectTags()
-    this.props.deleteTag(tagId)
-    NotificationManager.success('Tag delete', 'Success', 3000)
+    this.props.deleteTag(tag)
 
     // Delete tag from activeTags if the tag in activeTags
     const isArchivedTasks = this.props.isVisibleArchivedTasks

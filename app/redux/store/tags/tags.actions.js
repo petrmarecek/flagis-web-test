@@ -10,6 +10,7 @@ export const TAGS = {
   UPDATE: 'TAGS/UPDATE',
   UPDATE_SEARCH: 'TAGS/UPDATE_SEARCH',
   DELETE: 'TAGS/DELETE',
+  UNDO_DELETE: 'UNDO_TAGS/DELETE',
   FETCH_TAGS_RELATIONS: 'TAGS/FETCH_TAGS_RELATIONS',
   ADD_TAGS_RELATIONS: 'TAGS/ADD_TAGS_RELATIONS',
   DELETE_TAGS_RELATIONS: 'TAGS/DELETE_TAGS_RELATIONS',
@@ -82,9 +83,11 @@ export const updateTagSearch = search => ({
   }
 })
 
-export const deleteTag = tagId => ({
+export const deleteTag = originalData => ({
   type: TAGS.DELETE,
-  payload: tagId
+  payload: {
+    originalData
+  }
 })
 
 export const fetchTagsRelations = () => ({

@@ -52,7 +52,7 @@ export default typeToReducer({
     .setIn(['search'], action.payload.search),
 
   [TAGS.DELETE]: (state, action) => state
-    .updateIn(['all', 'items'], list => list.delete(list.indexOf(action.payload))),
+    .updateIn(['all', 'items'], list => list.delete(list.indexOf(action.payload.originalData.id))),
 
   [TAGS.FETCH_TAGS_RELATIONS]: {
     FULFILLED: (state, action) => saveTagsRelations(action.payload, state)

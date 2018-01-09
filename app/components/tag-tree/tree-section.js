@@ -6,8 +6,101 @@ import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
 
 import TreeItemList from 'components/tag-tree/tree-item-list'
+import {findDOMNode} from 'react-dom'
+import {DragSource, DropTarget} from 'react-dnd'
 
-export default class TreeSection extends Component {
+const TreeSectionDragDrop = {
+  type: 'tree-section',
+
+  collectDragSource(connect, monitor) {
+    return {
+      connectDragSource: connect.dragSource(),
+      isDragging: monitor.isDragging(),
+    }
+  },
+  collectDropTarget(connect, monitor) {
+    return {
+      connectDropTarget: connect.dropTarget(),
+      isOver: monitor.isOver(),
+    }
+  },
+
+  sectionSource: {
+    beginDrag: props => ({
+      section: props.section,
+      index: props.index,
+    }),
+  },
+
+  sectionTarget: {
+
+    canDrop(props) {
+      // Not section
+      if (props.section.parentId) {
+        return false
+      }
+
+      // Is section
+      return Boolean(!props.section.parentId)
+    },
+
+    hover(props, monitor, component) {
+      const canDrop = monitor.canDrop()
+      if (!canDrop) {
+        return
+      }
+
+      const dragSource = monitor.getItem()
+      const dragIndex = dragSource.index
+      const hoverIndex = props.index
+
+      // Drag index didn't change, do nothing
+      if (dragIndex === hoverIndex) {
+        return
+      }
+
+      const hoverBoundingRect = findDOMNode(component).getBoundingClientRect()
+      // Size of section / 2
+      const hoverMiddleY = Math.round(hoverBoundingRect.height / 2)
+      // Current position of mouse
+      const clientOffset = monitor.getClientOffset()
+      const hoverClientY = clientOffset.y - hoverBoundingRect.top
+
+      // Dragging downwards (not yet too far)
+      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+        return
+      }
+
+      // Dragging upwards (not yet too far)
+      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+        return
+      }
+
+      const move = {
+        sourceSectionId: dragSource.section.id,
+        targetSectionId: props.section.id,
+      }
+
+      props.onMoveSection(move)
+      dragSource.index = hoverIndex
+    },
+
+    drop(props, monitor, component) {
+      const canDrop = monitor.canDrop()
+      if (!canDrop) {
+        return
+      }
+
+      const dragSource = monitor.getItem()
+      const direction = dragSource.index > component.state.sourceIndex
+        ? 'DOWN'
+        : 'UP'
+      props.onDropSection(dragSource.index, dragSource.section, direction)
+    },
+  }
+}
+
+class TreeSection extends Component {
 
   static propTypes = {
     addControlParentId: PropTypes.string,
@@ -23,6 +116,16 @@ export default class TreeSection extends Component {
     tagsRelations: PropTypes.object,
     archivedTasks: PropTypes.bool,
     maxWidth: PropTypes.number,
+    isDragging: PropTypes.bool,
+    connectDragSource: PropTypes.func.isRequired,
+    connectDropTarget: PropTypes.func.isRequired,
+    onMoveSection: PropTypes.func.isRequired,
+    onDropSection: PropTypes.func.isRequired,
+    index: PropTypes.number,
+  }
+
+  state = {
+    sourceIndex: this.props.index
   }
 
   handleAddChildClicked = event => {
@@ -87,10 +190,17 @@ export default class TreeSection extends Component {
 
     const style = { maxWidth: this.props.maxWidth - 135 }
 
-    // component
-    return (
-      <li ref="node" className={treeItemClasses} data-item-id={this.props.section.id} draggable>
-        <a ref="elem"
+    // render component
+    const { connectDragSource, connectDropTarget, isDragging } = this.props
+    const opacity = isDragging ? 0 : 1
+
+    return connectDragSource(connectDropTarget(
+      <li
+        className={treeItemClasses}
+        data-item-id={this.props.section.id}
+        draggable
+        style={{ opacity }} >
+        <a
           className={currentItemClasses}
           data-item-id={this.props.section.id}
           onClick={this.handleClicked}>
@@ -136,6 +246,13 @@ export default class TreeSection extends Component {
             onClick={this.handleAddChildClicked}/>
         </span>}
       </li>
-    )
+    ))
   }
 }
+
+export default
+DragSource(TreeSectionDragDrop.type, TreeSectionDragDrop.sectionSource, TreeSectionDragDrop.collectDragSource)(
+  DropTarget(TreeSectionDragDrop.type, TreeSectionDragDrop.sectionTarget, TreeSectionDragDrop.collectDropTarget)(
+    TreeSection
+  )
+)

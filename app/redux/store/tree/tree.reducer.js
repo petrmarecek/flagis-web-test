@@ -47,7 +47,11 @@ export default typeToReducer({
 
     return state
       .setIn(['itemsById', itemId], new TreeRecord({ id: itemId }))
-      .updateIn(['itemsByParent', item.parentId], list => list ? list.push(itemId) : List([itemId]))
+      .updateIn(['itemsByParent', item.parentId], list => list
+        ? Number.isInteger(item.position)
+          ? list.insert(item.position, itemId)
+          : list.push(itemId)
+        : List([itemId]))
   },
 
   [TREE.SELECT_PATH]: (state, action) => {
@@ -59,9 +63,9 @@ export default typeToReducer({
 
   [TREE.DELETE]: {
     PENDING: (state, action) => state
-      .deleteIn(['itemsById', action.payload.treeItem.id])
-      .updateIn(['itemsByParent', action.payload.treeItem.parentId], list =>
-        list.filter(item => item !== action.payload.treeItem.id)
+      .deleteIn(['itemsById', action.payload.originalData.id])
+      .updateIn(['itemsByParent', action.payload.originalData.parentId], list =>
+        list.filter(item => item !== action.payload.originalData.id)
       )
   },
 
@@ -74,6 +78,20 @@ export default typeToReducer({
   },
 
   [TREE.MOVE_TREE_ITEM]: (state, action) => moveItem(state, action.payload),
+
+  [TREE.MOVE_SECTION]: (state, action) => {
+    const move = action.payload
+    return state.updateIn(['itemsByParent', null], list => {
+
+      // Find  of hovered task & compute index for dragged one
+      const targetSectionIndex = list.indexOf(move.targetSectionId)
+
+      // Move taskId within the list
+      return list
+        .filter(sectionId => sectionId !== move.sourceSectionId)
+        .insert(targetSectionIndex, move.sourceSectionId)
+    })
+  },
 
   [AUTH.LOGOUT]: () => new TreeStore()
 

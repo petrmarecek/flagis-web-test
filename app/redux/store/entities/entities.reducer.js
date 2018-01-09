@@ -51,6 +51,9 @@ export default typeToReducer({
   [TASKS.REPLACE]: (state, action) =>
     saveTasks(action.payload, state),
 
+  [TASKS.MOVE_TIME_LINE]: (state, action) => state
+    .setIn(['tasks', action.payload.taskId, 'dueDate'], action.payload.dueDate),
+
   [TASKS.ADD_TAG]: (state, action) => state
     .updateIn(['tasks', action.payload.taskId, 'tags'], tagList => tagList.push(action.payload.tag.id)),
 
@@ -59,6 +62,9 @@ export default typeToReducer({
       tagList => tagList.filter(tagId => tagId !== action.payload.tag.id)),
 
   [TASKS.DELETE]: (state, action) => state
+    .setIn(['tasks', action.payload.taskEntitiesList]),
+
+  [TASKS.UNDO_DELETE]: (state, action) => state
     .setIn(['tasks', action.payload.taskEntitiesList]),
 
   // ------ Tree --------------------------------------------------------------
@@ -78,7 +84,7 @@ export default typeToReducer({
 
   [TREE.DELETE]: {
     PENDING: (state, action) => state
-      .deleteIn(['treeItems', action.payload.treeItem.id])
+      .deleteIn(['treeItems', action.payload.originalData.id])
   },
 
   // ------ Tags --------------------------------------------------------------

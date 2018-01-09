@@ -10,12 +10,24 @@ import { DragDropContext } from 'react-dnd'
 import { controlRedirectSignIn } from 'redux/store/auth/auth.actions'
 
 import Dialogs from 'components/dialogs/dialogs'
+import UndoBox from 'components/elements/undo-box'
 import NavigationBar from 'components/navigation/navigation-bar'
 import FloatingComponents from 'components/floating/floating-components'
 import TaskPage from 'containers/task-page'
 import TagPage from 'containers/tag-page'
 import ArchivePage from 'containers/archive-page'
 import AccountPage from 'containers/account-page'
+
+import styled from 'styled-components'
+
+const Notification = styled.div`
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  padding: 0 26px 46px 0;
+  z-index: 999999;
+  overflow: none;
+`;
 
 class UserContainer extends Component {
   static propTypes = {
@@ -54,7 +66,10 @@ class UserContainer extends Component {
         </div>
         <div className="floating-components">
           <FloatingComponents />
-          <NotificationContainer />
+          <Notification >
+            <NotificationContainer />
+            <UndoBox />
+          </Notification>
         </div>
       </div>
     )

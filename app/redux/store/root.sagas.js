@@ -48,6 +48,7 @@ export default function* root() {
     takeEvery(TASKS.SELECT_ALL, task.selectAllTask),
     takeEvery(TASKS.DESELECT, task.deselectTasks),
     takeEvery(TASKS.DELETE, task.deleteTask),
+    takeEvery(TASKS.UNDO_DELETE, task.undoDeleteTask),
 
     // task-menu
     takeEvery(TASKS_MENU.CHANGE_RANGE_FILTER, taskMenu.changeRangeFilter),
@@ -62,7 +63,9 @@ export default function* root() {
     takeLatest(TREE.SELECT_PATH, tree.selectPath),
     takeEvery(TREE.UPDATE, tree.updateTreeItem),
     takeEvery(TREE.DELETE, tree.deleteTreeItem),
+    takeEvery(TREE.UNDO_DELETE, tree.undoDeleteTreeItem),
     takeEvery(TREE.DROP_TREE_ITEM, tree.dropTreeItem),
+    takeEvery(TREE.DROP_SECTION, tree.dropSection),
 
     // tags
     takeLatest(TAGS.FETCH, tag.fetchTags),
@@ -71,6 +74,7 @@ export default function* root() {
     takeLatest(TAGS.SET_ACTIVE_TAGS, tag.setActiveTags),
     takeLatest(TAGS.UPDATE, tag.update),
     takeEvery(TAGS.DELETE, tag.deleteTag),
+    takeEvery(TAGS.UNDO_DELETE, tag.undoDeleteTag),
     takeEvery(TAGS.DESELECT, tag.deselectTags),
     takeLatest(TAGS.FETCH_TAGS_RELATIONS, tag.fetchTagsRelations),
 

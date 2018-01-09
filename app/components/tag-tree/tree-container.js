@@ -25,13 +25,18 @@ import {
   selectPath,
   collapse,
   dropTreeItem,
+  moveSection,
+  dropSection,
 } from 'redux/store/tree/tree.actions'
 import {
   getTree,
   getFetchTree,
   getSelectionTree,
   getAddControlParentId,
+  getSections,
 } from 'redux/store/tree/tree.selectors'
+import { computeSectionOrder } from 'redux/utils/redux-helper'
+import debounce from 'lodash/debounce'
 
 class TreeContainer extends React.Component {
 
@@ -49,13 +54,37 @@ class TreeContainer extends React.Component {
     showTreeItemAddControl: PropTypes.func,
     tagsRelations: PropTypes.object,
     tree: PropTypes.object,
+    sections: PropTypes.object,
     leftPanel: PropTypes.object,
     archivedTasks: PropTypes.bool,
+    moveSection: PropTypes.func,
+    dropSection: PropTypes.func,
   }
 
   state = {
     showAddControl: false,
     top: 0,
+  }
+
+  constructor(props) {
+    super(props)
+    this.debouncedMoveSection = debounce(this.invokeMove, 10)
+  }
+
+  moveSection = move => this.debouncedMoveSection(move)
+
+  invokeMove(move) {
+    this.props.moveSection(move)
+  }
+
+  handleDropSection = (dropIndex, sourceSection, direction) => {
+    const sections = this.props.sections
+    const newOrder = computeSectionOrder(sections, dropIndex, direction)
+    if (newOrder === null) {
+      return
+    }
+
+    this.props.dropSection(sourceSection, newOrder)
   }
 
   handleAddTreeItem = parentTreeItemId => {
@@ -146,36 +175,38 @@ class TreeContainer extends React.Component {
         <ShadowScrollbar
           style={scrollStyle}
           verticalStyle={verticalStyle} >
-        <div
-          className="tag-tree-container collapsible-container">
-          <div ref="collapseContentTree" className="collapsible-content">
-            {(this.props.isNewRefreshToken || this.props.isFetching) && <Loader />}
-            {!this.props.isFetching && (
-              <Tree
-                treeItems={this.props.tree}
-                selection={this.props.selection}
-                addControlParentId={this.props.addControlParentId}
-                onTreeItemSelected={this.handleTreeItemsSelected}
-                onSubitemCreated={this.handleSubitemCreated}
-                onTreeItemEdit={this.handleEditTreeItem}
-                onAddChild={this.handleAddTreeItem}
-                onAddControlSubmit={this.handleAddItemSubmit}
-                onAddControlCancel={this.handleAddItemCancel}
-                onCollapse={this.handleCollapse}
-                onDrop={this.handleDrop}
-                tagsRelations={this.props.tagsRelations}
-                archivedTasks={this.props.archivedTasks}
-                maxWidth={leftPanel.width} />
-            )}
-            {this.state.showAddControl &&
+          <div
+            className="tag-tree-container collapsible-container">
+            <div ref="collapseContentTree" className="collapsible-content">
+              {(this.props.isNewRefreshToken || this.props.isFetching) && <Loader />}
+              {!this.props.isFetching && (
+                <Tree
+                  treeItems={this.props.tree}
+                  selection={this.props.selection}
+                  addControlParentId={this.props.addControlParentId}
+                  onTreeItemSelected={this.handleTreeItemsSelected}
+                  onSubitemCreated={this.handleSubitemCreated}
+                  onTreeItemEdit={this.handleEditTreeItem}
+                  onAddChild={this.handleAddTreeItem}
+                  onAddControlSubmit={this.handleAddItemSubmit}
+                  onAddControlCancel={this.handleAddItemCancel}
+                  onCollapse={this.handleCollapse}
+                  onDrop={this.handleDrop}
+                  tagsRelations={this.props.tagsRelations}
+                  archivedTasks={this.props.archivedTasks}
+                  maxWidth={leftPanel.width}
+                  onMoveSection={this.moveSection}
+                  onDropSection={this.handleDropSection} />
+              )}
+              {this.state.showAddControl &&
               <AddTreeItemForm
                 parentId={null}
                 forbiddenTitles={this.getForbiddenTitles()}
                 onSubmit={this.handleAddSectionSubmit}
                 onCancel={this.handleAddSectionCancel} />
-            }
+              }
+            </div>
           </div>
-        </div>
         </ShadowScrollbar>
         <div className="add-section" style={style} onClick={this.handleAddButtonClicked}>
           <div className="add-section__text">Add new filter group</div>
@@ -197,6 +228,7 @@ const mapStateToProps = state => ({
   isFetching: getFetchTree(state),
   isNewRefreshToken: getNewRefreshToken(state),
   tree: getTree(state),
+  sections: getSections(state),
   selection: getSelectionTree(state),
   addControlParentId: getAddControlParentId(state),
   tagsRelations: getTagsRelations(state),
@@ -213,6 +245,8 @@ const mapDispatchToProps = {
   showDialog,
   collapse,
   dropTreeItem,
+  moveSection,
+  dropSection,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TreeContainer)

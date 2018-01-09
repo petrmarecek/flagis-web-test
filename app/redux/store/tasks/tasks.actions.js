@@ -20,14 +20,16 @@ export const TASKS = {
   SET_DESCRIPTION: 'TASK/SET_DESCRIPTION',
   SET_SUBJECT: 'TASK/SET_SUBJECT',
   MOVE: 'TASK/MOVE',
+  MOVE_TIME_LINE: 'TASK/MOVE_TIME_LINE',
   ADD_TAG: 'TASK/ADD_TAG',
   REMOVE_TAG: 'TASK/REMOVE_TAG',
   DELETE: 'TASK/DELETE',
+  UNDO_DELETE: 'UNDO_TASK/DELETE',
   SET_FIELD: 'TASK/SET_FIELD',
   REMOVE_FROM_LISTS: 'TASK/REMOVE_FROM_LISTS',
 }
 
-export const fetchTasks = () => ({ 
+export const fetchTasks = () => ({
   type: TASKS.FETCH
 })
 
@@ -55,7 +57,7 @@ export const selectAllTask = taskList => ({
   }
 })
 
-export const deselectTasks = () => ({ 
+export const deselectTasks = () => ({
   type: TASKS.DESELECT,
 })
 
@@ -133,6 +135,14 @@ export const moveTask = move => ({
   payload: move,
 })
 
+export const moveTimeLineTask = (taskId, dueDate) => ({
+  type: TASKS.MOVE_TIME_LINE,
+  payload: {
+    taskId,
+    dueDate,
+  },
+})
+
 export const replaceTask = task => ({
   type: TASKS.REPLACE,
   payload: task,
@@ -161,7 +171,7 @@ export const removeTag = (taskId, tag) => ({
   }
 })
 
-export const deleteTask = (taskDeleteList, taskList, taskCompleteList, taskArchiveList, taskEntitiesList) => ({
+export const deleteTask = (taskDeleteList, taskList, taskCompleteList, taskArchiveList, taskEntitiesList, originalData) => ({
   type: TASKS.DELETE,
   payload: {
     taskDeleteList,
@@ -169,6 +179,7 @@ export const deleteTask = (taskDeleteList, taskList, taskCompleteList, taskArchi
     taskCompleteList,
     taskArchiveList,
     taskEntitiesList,
+    originalData,
   }
 })
 

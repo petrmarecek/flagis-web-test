@@ -113,6 +113,11 @@ export default typeToReducer({
     .setIn(['completed'], action.payload.taskCompleteList)
     .setIn(['archived', 'items'], action.payload.taskArchiveList),
 
+  [TASKS.UNDO_DELETE]: (state, action) => state
+    .setIn(['items'], action.payload.taskList)
+    .setIn(['completed'], action.payload.taskCompleteList)
+    .setIn(['archived', 'items'], action.payload.taskArchiveList),
+
   [TASKS.REMOVE_FROM_LISTS]: (state, action) => state
     .updateIn(['completed'], list => list.filter(taskId => taskId !== action.payload.taskId))
     .updateIn(['items'], list => list.filter(taskId => taskId !== action.payload.taskId)),

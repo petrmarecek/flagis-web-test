@@ -28,6 +28,11 @@ export const APP_STATE = {
   // Left panel
   LEFT_PANEL_RESIZE: 'APP-STATE/LEFT_PANEL_RESIZE',
 
+  // Undo
+  UNDO_SHOW: 'APP-STATE/UNDO_VISIBLE',
+  UNDO_HIDE: 'APP-STATE/UNDO_HIDE',
+  UNDO_ACTIVE: 'APP-STATE/UNDO_ACTIVE',
+
   // Dialog
   DIALOG_SHOW: 'APP-STATE/DIALOG_SHOW',
   DIALOG_HIDE: 'APP-STATE/DIALOG_HIDE',
@@ -51,7 +56,7 @@ export const APP_STATE = {
   TAG_AUTOCOMPLETE_RESET: 'APP-STATE/TAG_AUTOCOMPLETE_RESET',
 }
 
-// ------ Default display --------------------------------------------------------------
+// ------ Default display -----------------------------------------------------------
 
 export const defaultDisplay = () => ({
   type: APP_STATE.DEFAULT_DISPLAY
@@ -66,7 +71,7 @@ export const changeLocation = pathname => ({
   }
 })
 
-// ------ Loader --------------------------------------------------------------
+// ------ Loader --------------------------------------------------------------------
 
 export const visibleLoader = () => ({
   type: APP_STATE.LOADER_VISIBLE
@@ -76,7 +81,7 @@ export const hideLoader = () => ({
   type: APP_STATE.LOADER_HIDE
 })
 
-// ------ Multi select --------------------------------------------------------
+// ------ Multi select --------------------------------------------------------------
 
 export const visibleMultiSelect = () => ({
   type: APP_STATE.MULTI_SELECT_VISIBLE
@@ -86,7 +91,7 @@ export const hideMultiSelect = () => ({
   type: APP_STATE.MULTI_SELECT_HIDE
 })
 
-// ------ Archived tasks --------------------------------------------------------
+// ------ Archived tasks ------------------------------------------------------------
 
 export const visibleArchivedTasks = () => ({
   type: APP_STATE.ARCHIVED_TASKS_VISIBLE
@@ -96,7 +101,7 @@ export const hideArchivedTasks = () => ({
   type: APP_STATE.ARCHIVED_TASKS_HIDE
 })
 
-// ------ Task tag detail --------------------------------------------------------
+// ------ Task tag detail -----------------------------------------------------------
 
 export const setDetail = detail => ({
   type: APP_STATE.SET_DETAIL,
@@ -112,7 +117,7 @@ export const deselectDetail = detail => ({
   }
 })
 
-// ------ Error ---------------------------------------------------------------
+// ------ Error ---------------------------------------------------------------------
 
 export const setError = (type, message) => ({
   type: APP_STATE.SET_ERROR,
@@ -127,7 +132,7 @@ export const deselectError = type => ({
   payload: { type }
 })
 
-// ------ Left panel ----------------------------------------------------------
+// ------ Left panel ----------------------------------------------------------------
 
 export const resizeLeftPanel = width => ({
   type: APP_STATE.LEFT_PANEL_RESIZE,
@@ -136,7 +141,26 @@ export const resizeLeftPanel = width => ({
   }
 })
 
-// ------ Dialog --------------------------------------------------------------
+// ------ Undo ----------------------------------------------------------------------
+
+export const showUndo = (undoBoxName) => ({
+  type: APP_STATE.UNDO_SHOW,
+  payload: {
+    name: undoBoxName,
+  }
+})
+
+export const hideUndo = () => ({
+  type: APP_STATE.UNDO_HIDE
+})
+
+export const activeUndo = () => ({
+  type: APP_STATE.UNDO_ACTIVE,
+})
+
+
+
+// ------ Dialog --------------------------------------------------------------------
 
 export const showDialog = (dialogName, data) => ({
   type: APP_STATE.DIALOG_SHOW,
@@ -150,7 +174,7 @@ export const hideDialog = () => ({
   type: APP_STATE.DIALOG_HIDE,
 })
 
-// ------ Tag hints -----------------------------------------------------------
+// ------ Tag hints -----------------------------------------------------------------
 
 export const showTagHints = payload => ({
   type: APP_STATE.TAG_HINTS_SHOW,
@@ -182,7 +206,7 @@ export const tagHintSelected = (autocompleteId, context, tag) => ({
   }
 })
 
-// ------ Tag autocomplete ----------------------------------------------------
+// ------ Tag autocomplete -----------------------------------------------------------
 
 export const tagAutocompleteGoNext = autocompleteId => ({
   type: APP_STATE.TAG_AUTOCOMPLETE_GO_NEXT,

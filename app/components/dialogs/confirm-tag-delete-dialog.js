@@ -32,7 +32,7 @@ export default class ConfirmTagDeleteDialog extends DialogBase {
   }
 
   handleDelete = () => {
-    this.props.onDelete(this.props.data.tag.id)
+    this.props.onDelete(this.props.data.tag)
     this.props.onHide()
   }
 

@@ -15,7 +15,9 @@ import {
   setIncomplete,
   requestToggleImportant,
   setOrder,
+  setDate,
   moveTask,
+  moveTimeLineTask,
   deselectTasks,
   setArchiveTasks,
   cancelArchiveTasks,
@@ -33,11 +35,15 @@ import {
   setArchive,
   cancelArchive
 } from 'redux/utils/component-helper'
-import { computeTaskOrder } from 'redux/utils/redux-helper'
+import {
+  computeTaskOrder,
+  computeTaskDate,
+} from 'redux/utils/redux-helper'
 
 import Loader from 'components/elements/loader'
 import ShadowScrollbar from 'components/elements/shadow-scrollbar'
 import TaskList from 'components/task-list/task-list'
+import moment from 'moment'
 
 class TaskListContainer extends Component {
 
@@ -54,7 +60,9 @@ class TaskListContainer extends Component {
     requestToggleImportant: PropTypes.func,
     fetchTasks: PropTypes.func,
     setOrder: PropTypes.func,
+    setDate: PropTypes.func,
     moveTask: PropTypes.func,
+    moveTimeLineTask: PropTypes.func,
     selectActiveTags: PropTypes.func.isRequired,
     selectedTags: PropTypes.object,
     selectedTasks: PropTypes.object,
@@ -65,6 +73,10 @@ class TaskListContainer extends Component {
     isVisibleArchivedTasks: PropTypes.bool,
   }
 
+  state = {
+    dueDate: null,
+  }
+
   constructor(props) {
     super(props)
     this.debouncedMoveTask = debounce(this.invokeMove, 10)
@@ -73,12 +85,68 @@ class TaskListContainer extends Component {
   moveTask = move => this.debouncedMoveTask(move)
 
   invokeMove(move) {
+    const { sourceTaskId, targetIndex, targetSection, direction, dueDate } = move
+    const tasks = this.props.tasks.items
+    // Time line
+    if (targetSection) {
+      // No task for this week
+      if (targetSection === 'weekTasks') {
+        const now = moment()
+        const dayOfWeek = now.isoWeekday()
+
+        if (dayOfWeek >= 6) {
+          return
+        }
+      }
+
+      // No task for this month
+      if (targetSection === 'monthTasks') {
+        const now = moment()
+        const date = now.date()
+        const dayOfMonth = now.daysInMonth()
+        const diff = dayOfMonth - date
+        if (diff <= 1) {
+          return
+        }
+
+        const dayOfWeek = now.isoWeekday()
+        const dayToNewWeek = (7 - dayOfWeek) + 1
+        const add = date + dayToNewWeek
+        if (add > dayOfMonth) {
+          return
+        }
+      }
+
+      // Null due date for other tasks, default user sorting
+      const newDueDate = computeTaskDate(tasks, targetIndex, targetSection, direction, dueDate)
+      if (!newDueDate) {
+        return
+      }
+
+      if (newDueDate === 'othersTasks') {
+        this.setState({ dueDate: null })
+        this.props.moveTimeLineTask(sourceTaskId, null)
+        this.props.moveTask(move)
+        return
+      }
+
+      this.setState({ dueDate: newDueDate })
+      this.props.moveTimeLineTask(sourceTaskId, newDueDate)
+      return
+    }
+
     this.props.moveTask(move)
   }
 
-  dropTask = (dropIndex, dropTask) => {
-
+  dropTask = drop => {
+    const { dropIndex, dropTask, targetSection } = drop
     const tasks = this.props.tasks.items
+
+    if (targetSection) {
+      this.props.setDate(dropTask, this.state.dueDate, 'dueDate')
+      return
+    }
+
     const newOrder = computeTaskOrder(tasks, dropIndex)
     if (!newOrder) {
       return
@@ -218,7 +286,9 @@ const mapDispatchToProps = {
   setIncomplete,
   requestToggleImportant,
   setOrder,
+  setDate,
   moveTask,
+  moveTimeLineTask,
   selectActiveTags,
   deselectTasks,
   setArchiveTasks,

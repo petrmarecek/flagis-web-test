@@ -81,7 +81,7 @@ export function getTimeLineByDueDate(tasks) {
   const month = now.month()
   const year = now.year()
 
-  const overdueDateTasks = []
+  const overdueTasks = []
   const todayTasks = []
   const tomorrowTasks = []
   const weekTasks = []
@@ -93,7 +93,7 @@ export function getTimeLineByDueDate(tasks) {
     const currentYear = dueDate.year() === year
 
     if (dueDate.isBefore(now)) {
-      overdueDateTasks.push(task)
+      overdueTasks.push(task)
       continue
     }
 
@@ -120,7 +120,7 @@ export function getTimeLineByDueDate(tasks) {
     othersTasks.push(task)
   }
 
-  return {overdueDateTasks, todayTasks, tomorrowTasks, weekTasks, monthTasks, othersTasks}
+  return {overdueTasks, todayTasks, tomorrowTasks, weekTasks, monthTasks, othersTasks}
 }
 
 export function getTagColor(index) {

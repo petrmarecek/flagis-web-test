@@ -1,5 +1,8 @@
 import { call, put, select, fork } from 'redux-saga/effects'
-import { fetch } from 'redux/store/common.sagas'
+import {
+  fetch,
+  mainUndo,
+} from 'redux/store/common.sagas'
 import * as appStateActions from 'redux/store/app-state/app-state.actions'
 import * as tagsActions from 'redux/store/tags/tags.actions'
 import * as taskActions from 'redux/store/tasks/tasks.actions'
@@ -291,6 +294,28 @@ export function* deleteTask(action) {
   }
 
   yield put(taskActions.deselectTasks())
+  yield* mainUndo(action, 'task-delete')
+}
+
+export function* undoDeleteTask(action) {
+  const update = { isTrashed: false }
+
+  for (const taskId of action.payload.taskDeleteList) {
+    try {
+      // update task (change isTrashed: false)
+      yield* updateTask(taskId, update)
+
+      const tagList = yield select(state => taskSelectors.getTaskTags(state, taskId))
+      if(tagList.length !== 0) {
+        for (const tag of tagList) {
+          yield put(tagsActions.addTagsRelations(tag, taskId))
+        }
+      }
+
+    } catch(err) {
+      console.error(err)
+    }
+  }
 }
 
 export function* removeTag(action) {

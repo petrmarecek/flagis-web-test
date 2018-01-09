@@ -24,13 +24,17 @@ const taskSource = {
       listType: props.listType,
       task: props.task,
       index: props.index,
+      section: props.section,
     }
   },
 
+  isDragging(props, monitor) {
+    return monitor.getItem().task.id === props.task.id
+  },
+
   canDrag(props) {
-    const { dueDate, alphabet, important, incomplete } = props.sort
-    return !dueDate
-      && !alphabet
+    const { alphabet, important, incomplete } = props.sort
+    return !alphabet
       && !important
       && !incomplete
       && props.listType !== 'archived'
@@ -39,6 +43,35 @@ const taskSource = {
 
 const taskTarget = {
   canDrop(props, monitor) {
+    // No task for this week
+    if (props.section === 'weekTasks') {
+      const now = moment()
+      const dayOfWeek = now.isoWeekday()
+
+      if (dayOfWeek >= 6) {
+        return false
+      }
+    }
+
+    // No task for this month
+    if (props.section === 'monthTasks') {
+      const now = moment()
+      const date = now.date()
+      const dayOfMonth = now.daysInMonth()
+      const diff = dayOfMonth - date
+
+      if (diff <= 1) {
+        return false
+      }
+
+      const dayOfWeek = now.isoWeekday()
+      const dayToNewWeek = (7 - dayOfWeek) + 1
+      const add = date + dayToNewWeek
+      if (add > dayOfMonth) {
+        return false
+      }
+    }
+
     const sourceList = monitor.getItem().listType
     const targetList = props.listType
     return sourceList === targetList
@@ -56,15 +89,17 @@ const taskTarget = {
     const hoverIndex = props.index
 
     // Drag index didn't change, do nothing
-    if (dragIndex === hoverIndex) {
+    if ((dragSource.section === props.section) && (dragIndex === hoverIndex)) {
       return
     }
 
+    // Get size of target component
     const hoverBoundingRect = findDOMNode(component).getBoundingClientRect()
-    // Size of task / 2 = 25
-    const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
+    // Height of task / 2 = 25
+    const hoverMiddleY = hoverBoundingRect.height / 2
     // Current position of mouse
     const clientOffset = monitor.getClientOffset()
+    // Get position of mouse on task
     const hoverClientY = clientOffset.y - hoverBoundingRect.top
 
     // Dragging downwards (not yet too far)
@@ -82,7 +117,10 @@ const taskTarget = {
       source: props.listType,
       sourceTaskId: dragSource.task.id,
       targetTaskId: props.task.id,
-      direction: dragIndex < hoverIndex ? 'DOWN' : 'UP'
+      targetIndex: hoverIndex,
+      targetSection: props.section,
+      direction: dragIndex < hoverIndex ? 'DOWN' : 'UP',
+      dueDate: props.task.dueDate,
     }
 
     props.moveTask(move)
@@ -96,7 +134,13 @@ const taskTarget = {
     }
 
     const dragSource = monitor.getItem()
-    props.dropTask(dragSource.index, dragSource.task)
+    const drop = {
+      dropIndex: dragSource.index,
+      dropTask: dragSource.task,
+      targetSection: props.section,
+    }
+
+    props.dropTask(drop)
   }
 }
 
@@ -128,11 +172,12 @@ class TaskListItem extends Component {
     connectDropTarget: PropTypes.func.isRequired,
     moveTask: PropTypes.func.isRequired,
     dropTask: PropTypes.func.isRequired,
-    onTagClick: PropTypes.func.isRequired,
+    onTagClick: PropTypes.func,
     listType: PropTypes.string.isRequired,
     setArchiveTasks: PropTypes.func,
     cancelArchiveTasks: PropTypes.func,
     section: PropTypes.string,
+    noTaskFound: PropTypes.bool,
   }
 
   state = {
@@ -145,7 +190,9 @@ class TaskListItem extends Component {
   }
 
   componentDidMount() {
-    velocity(this.refs.elem, 'transition.slideUpIn', { duration: 400 })
+    if (!this.props.noTaskFound) {
+      velocity(this.refs.elem, 'transition.slideUpIn', { duration: 400 })
+    }
   }
 
   componentWillReceiveProps(newProps) {
@@ -190,6 +237,10 @@ class TaskListItem extends Component {
   }
 
   getSortedTags(props) {
+    if (this.props.noTaskFound) {
+      return []
+    }
+
     const orderedTagIds = props.task.tags.sort(TaskListItem.compareTagByTitle).map(tag => tag.id)
     const tagsById = props.task.tags.reduce((acc, tag) => {
       acc[tag.id] = tag
@@ -328,17 +379,21 @@ class TaskListItem extends Component {
 
     // render component
     const { connectDragSource, connectDropTarget, isDragging } = this.props
-    const opacity = isDragging ? 0 : 1
+    const visibility = isDragging ? 'hidden' : ''
 
     return connectDragSource(connectDropTarget(
       <div>
+        {this.props.noTaskFound &&
+        <li className="empty-list">No task found</li>}
+
+        {!this.props.noTaskFound &&
         <li
           key={this.props.task.id}
           tabIndex="-1"
           className={taskListItemClasses}
           data-item-id={this.props.task.id}
           onClick={this.handleClicked}
-          style={{ opacity }}
+          style={{ visibility }}
           ref="elem" >
           <Icon
             className="task-item__important"
@@ -368,7 +423,7 @@ class TaskListItem extends Component {
             </div>
             <div className={dueDateClass} title={fromNow}>{dueDateFormat}</div>
           </div>
-        </li>
+        </li>}
       </div>
     ))
   }

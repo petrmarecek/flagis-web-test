@@ -138,6 +138,7 @@ export const AppStateStore = Record({
   multiSelect: new Visibility(),
   archivedTasks: new Visibility(),
   taskTagDetail: new TaskTagDetail(),
+  undoBox: null,
   currentDialog: null,
   tagAutocompletes: new TagAutocompleteMap(),
   tagHints: new TagHints(),

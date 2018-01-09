@@ -3,7 +3,10 @@ import * as tagActions from 'redux/store/tags/tags.actions'
 import { TASKS } from 'redux/store/tasks/tasks.actions'
 import { deselectPath } from 'redux/store/tree/tree.actions'
 import * as appStateActions from 'redux/store/app-state/app-state.actions'
-import { fetch } from 'redux/store/common.sagas'
+import {
+  fetch,
+  mainUndo
+} from 'redux/store/common.sagas'
 import api from 'redux/utils/api'
 import schema from 'redux/data/schema'
 import search from 'redux/services/search'
@@ -109,14 +112,25 @@ export function* update(action) {
 export function* deleteTag(action) {
   yield* fetch(tagActions.TAGS.DELETE, {
     method: api.tags.delete,
-    args: [action.payload],
+    args: [action.payload.originalData.id],
     schema: null,
   })
 
-  yield put(tagActions.deleteTagsRelations(action.payload, null))
+  yield put(tagActions.deleteTagsRelations(action.payload.originalData.id, null))
+  yield* mainUndo(action, 'tag-delete')
 
   // delete tag from the search index
   search.tags.removeItem({ id: action.payload })
+}
+
+export function* undoDeleteTag(action) {
+  const createData = {
+    title: action.payload.title,
+    description: action.payload.description,
+    colorIndex: action.payload.colorIndex,
+  }
+
+  yield put(tagActions.createTag(createData))
 }
 
 export function* fetchTagsRelations() {

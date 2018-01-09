@@ -57,6 +57,17 @@ export const getFetchTree = (state) => {
   return state.getIn(['tree', 'isFetching'])
 }
 
+export const getSections = state => {
+  const sectionIds = state.getIn(['tree', 'itemsByParent']).get(null)
+  if (!sectionIds) {
+    return null
+  }
+
+  return sectionIds.map(id => {
+    return state.getIn(['entities', 'treeItems']).get(id)
+  })
+}
+
 export const getTreeItemsByParent = (state) => {
   return state.getIn(['tree', 'itemsByParent'])
 }

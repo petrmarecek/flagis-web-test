@@ -39,10 +39,14 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: @cl-bg-completed;
+        background-color: @cl-bg-completed;
         .transform(scaleX(0));
         transform-origin: 0 50%;
         .transition(transform 500ms ease-out);
+    }
+
+    &.dragging {
+        background-color: @cl-bg-completed;
     }
 
     &.completed {
@@ -56,11 +60,11 @@
     }
 
     &.selected {
-        background: @cl-bg-selected;
+        background-color: @cl-bg-selected;
 
         &.completed {
             &:before {
-                background: @cl-bg-selected;
+                background-color: @cl-bg-selected;
                 .transform(scaleX(1));
             }
         }
