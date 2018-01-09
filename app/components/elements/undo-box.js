@@ -21,6 +21,7 @@ const UndoContainer = styled.div`
 	border-radius: 5px;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
+	pointer-events: auto;
 `;
 
 const Info = styled.div`

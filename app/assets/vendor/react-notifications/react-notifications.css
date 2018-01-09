@@ -12,6 +12,7 @@
 .notification-container {
     box-sizing: border-box;
     position: relative;
+    pointer-events: auto;
     /*position: fixed;
     bottom: 15px;
     right: 0;*/

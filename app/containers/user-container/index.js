@@ -22,6 +22,7 @@ import styled from 'styled-components'
 
 const Notification = styled.div`
   position: fixed;
+  pointer-events: none;
   bottom: 0;
   right: 0;
   padding: 0 26px 46px 0;
