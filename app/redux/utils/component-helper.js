@@ -123,65 +123,25 @@ export function getTimeLineByDueDate(tasks) {
   return {overdueTasks, todayTasks, tomorrowTasks, weekTasks, monthTasks, othersTasks}
 }
 
+const color = {
+  0: '#6F8083',
+  1: '#F0BD67',
+  2: '#52C2D9',
+  3: '#3FB198',
+  4: '#6999B9',
+  5: '#E197F0',
+  6: '#D88C69',
+  7: '#9188E3',
+  8: '#9EDB5B',
+  9: '#ADB09F',
+  10: '#7BA6DE',
+  11: '#B3AD36',
+  12: '#34A2EE',
+  13: '#5BDBA3',
+  14: '#ff6a6a',
+  15: '#6F8083',
+}
+
 export function getTagColor(index) {
-  switch(index) {
-    case 1: {
-      return '#F0BD67'
-    }
-
-    case 2: {
-      return '#52C2D9'
-    }
-
-    case 3: {
-      return '#3FB198'
-    }
-
-    case 4: {
-      return '#6999B9'
-    }
-
-    case 5: {
-      return '#E197F0'
-    }
-
-    case 6: {
-      return '#D88C69'
-    }
-
-    case 7: {
-      return '#9188E3'
-    }
-
-    case 8: {
-      return '#9EDB5B'
-    }
-
-    case 9: {
-      return '#ADB09F'
-    }
-
-    case 10: {
-      return '#7BA6DE'
-    }
-
-    case 11: {
-      return '#B3AD36'
-    }
-
-    case 12: {
-      return '#34A2EE'
-    }
-
-    case 13: {
-      return '#5BDBA3'
-    }
-
-    case 14: {
-      return '#ff6a6a'
-    }
-
-    default:
-      return '#6F8083'
-  }
+  return color[index]
 }
