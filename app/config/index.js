@@ -3,6 +3,10 @@ const configs = {
     isProduction: false,
     apiURL: 'https://flagis-api-development.herokuapp.com',
   },
+  test: {
+    isProduction: false,
+    apiURL: 'https://flagis-api-development.herokuapp.com',
+  },
   staging: {
     isProduction: false,
     apiURL: 'https://flagis-api-staging.herokuapp.com',
