@@ -15,19 +15,19 @@ export default class AttachmentList extends Component{
       <div className="attachment-list-container">
         {!this.props.attachments.isFetching &&
           <ul className="attachment-list">
-          {!this.props.disabled && this.props.attachments.items.map(attachment =>
+          {!this.props.disabled && this.props.attachments.items.map(attachment => (
             <AttachmentListItem
               key={attachment.id}
               attachment={attachment}
               attachmentDelete={this.props.attachmentDelete}/>
-          )}
-          {this.props.disabled && this.props.attachments.items.map(attachment =>
+          ))}
+          {this.props.disabled && this.props.attachments.items.map(attachment => (
             <AttachmentListItem
               key={attachment.id}
               attachment={attachment}
               attachmentDelete={this.props.attachmentDelete}
               disabled/>
-          )}
+          ))}
           </ul>
         }
       </div>

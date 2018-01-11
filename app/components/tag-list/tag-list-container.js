@@ -43,13 +43,13 @@ class TagListContainer extends Component {
         <ShadowScrollbar
           style={scrollStyle}>
         <ul>
-          {this.props.tags.items.map(tag =>
+          {this.props.tags.items.map(tag => (
             <TagItem
               key={tag.id}
               tag={tag}
               selected={this.props.currentTag === tag.id}
-              onClick={this.handleItemClick}/>)
-          }
+              onClick={this.handleItemClick}/>
+          ))}
         </ul>
         </ShadowScrollbar>
       </div>

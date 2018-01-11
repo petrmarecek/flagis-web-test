@@ -64,7 +64,7 @@ export default class TaskList extends Component {
     switch (this.props.listType) {
       case 'main': {
         return (
-          tasks.map((task, i) =>
+          tasks.map((task, i) => (
             <TaskListItem
               key={task.id}
               task={task}
@@ -82,13 +82,13 @@ export default class TaskList extends Component {
               sort={this.props.sort}
               setArchiveTasks={this.props.setArchiveTasks}
               section={section}/>
-          )
+          ))
         )
       }
 
       case 'archived': {
         return (
-          tasks.map((task, i) =>
+          tasks.map((task, i) => (
             <TaskListItem
               key={task.id}
               task={task}
@@ -104,7 +104,7 @@ export default class TaskList extends Component {
               sort={this.props.sort}
               cancelArchiveTasks={this.props.cancelArchiveTasks}
               section={section}/>
-          )
+          ))
         )
       }
 

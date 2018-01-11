@@ -72,11 +72,12 @@ export default class TagAutocomplete extends Component {
       'tag-autocomplete__search--task-detail': this.props.id === 'task'
     })
 
-    const tags = this.state.selectedTags.map(tag =>
+    const tags = this.state.selectedTags.map(tag => (
       <TagAutocompleteItem
         key={tag.id}
         model={tag}
-        onDelete={this.handleTagDeleted} />)
+        onDelete={this.handleTagDeleted} />
+    ))
 
     return (
       <div className={css} onClick={this.handleClick} ref="container" data-id={this.props.id}>

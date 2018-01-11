@@ -12,11 +12,11 @@ export default class CommentList extends Component {
     return (
       <div className="comment-list-container">
         <ul className="comment-list">
-          {!this.props.comments.isFetching && this.props.comments.items.map(comment =>
+          {!this.props.comments.isFetching && this.props.comments.items.map(comment => (
             <CommentListItem
               key={comment.id}
               comment={comment} />
-          )}
+          ))}
         </ul>
       </div>
     )

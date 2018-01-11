@@ -157,11 +157,12 @@ class TasksMenuContainer extends Component {
   render() {
     const isMultiSelect = this.props.multiSelect
     const isVisibleArchivedTasks = this.props.isVisibleArchivedTasks
-    const activeFilters = this.props.tasksMenu.filters.active.map((filter, key) =>
+    const activeFilters = this.props.tasksMenu.filters.active.map((filter, key) => (
       <TasksMenuFiltersActive
         key={key}
         title={filter}
-        onDelete={this.handleDeleteFilter}/>)
+        onDelete={this.handleDeleteFilter}/>
+    ))
 
     const taskCount = isMultiSelect
       ? this.props.selectTaskCount

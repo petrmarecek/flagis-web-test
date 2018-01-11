@@ -51,8 +51,6 @@ class EmailResetPassword extends Component {
           <div className="form-window-body">
             <form className="common-form" method="post">
               <div className="form-fields">
-                <div className="form-error">
-                </div>
                 <div className="form-row">
                   <div className="field-control">
                     <Field

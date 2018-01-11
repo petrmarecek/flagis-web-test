@@ -28,12 +28,12 @@ export default class ContentEditable extends Component {
       ReactDOM.findDOMNode(this).innerHTML = this.props.html
     }
   }
-  
+
   componentDidMount() {
-    
+
     // Inform parent that height of content-editable has changed
     this.height = this.getHeight()
-    
+
     // Subscribe on content changes and raise height changed event when needed
     this.refs.content.addEventListener("input", () => {
 
@@ -46,7 +46,7 @@ export default class ContentEditable extends Component {
       }
     }, false)
   }
-  
+
   getHeight() {
     return this.refs.content.offsetHeight
   }
@@ -65,7 +65,7 @@ export default class ContentEditable extends Component {
 
   makePlainText(html) {
     const htmlWithoutTags = this.stripHtmlTags(html)
-    return htmlWithoutTags.replace(/[#\*\n]/gi, '')
+    return htmlWithoutTags.replace(/[#*\n]/gi, '')
   }
 
   emitChange = evt => {
@@ -92,6 +92,6 @@ export default class ContentEditable extends Component {
         contentEditable="true"
         onKeyPress={this.onKeyPress}
         dangerouslySetInnerHTML={{__html: this.props.html}}/>
-      )
+    )
   }
 }

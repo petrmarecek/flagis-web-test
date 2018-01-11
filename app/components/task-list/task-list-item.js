@@ -323,13 +323,14 @@ class TaskListItem extends Component {
   render() {
 
     // child tags
-    const tags = this.sortedTags.map(tag =>
+    const tags = this.sortedTags.map(tag => (
       <TaskListItemTag
         key={tag.id}
         className="tag"
         model={tag}
         onClick={this.props.onTagClick}
-        listType={this.props.listType} />)
+        listType={this.props.listType} />
+    ))
 
     // init classes
     const taskListItemClasses = classnames({

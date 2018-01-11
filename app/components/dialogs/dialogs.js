@@ -234,14 +234,14 @@ class Dialogs extends Component {
     const addTags = this.props.multiSelectAddEntitiesTags
     const removeTags = this.props.multiSelectRemoveEntitiesTags
 
-    for (let task of tasks) {
-      for (let tag of addTags) {
+    for (const task of tasks) {
+      for (const tag of addTags) {
         if (!task.tags.includes(tag)) {
           this.props.addTaskTag(task.id, tag)
         }
       }
 
-      for (let tag of removeTags) {
+      for (const tag of removeTags) {
         if (task.tags.includes(tag)) {
           this.props.removeTag(task.id, tag)
         }
