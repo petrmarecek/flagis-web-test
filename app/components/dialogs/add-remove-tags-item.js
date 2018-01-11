@@ -40,7 +40,7 @@ export default class AddRemoveTagsItem extends Component {
     let count = 0
     let icon = ICONS.TAG_INACTIVE
 
-    for (let tagsList of tagsLists) {
+    for (const tagsList of tagsLists) {
       if (tagsList.includes(tag)) {
         count++
       }

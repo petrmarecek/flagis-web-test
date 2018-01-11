@@ -1,13 +1,12 @@
-import React, { Component } from 'react'
-
+import React from 'react'
 import ArchiveDetail from '../task-tag-detail/archive-detail'
 
-export default class ArchiveDetailContent extends Component {
-  render() {
-    return (
-      <div>
-        <ArchiveDetail />
-      </div>
-    )
-  }
+const ArchiveDetailContent = () => {
+  return (
+    <div>
+      <ArchiveDetail />
+    </div>
+  )
 }
+
+export default ArchiveDetailContent

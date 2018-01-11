@@ -21,6 +21,7 @@ import Loader from 'components/elements/loader'
 
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
+import {compose} from "recompose";
 
 class AccountPage extends Component {
 
@@ -195,4 +196,12 @@ const form = reduxForm({
   validate: validateChangePassword,
   onSubmitSuccess: afterSubmit,
 })
-export default connect(mapStateToProps, mapDispatchToProps)(form(AccountPage))
+
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  reduxForm({
+    form: 'changePassword',
+    validate: validateChangePassword,
+    onSubmitSuccess: afterSubmit,
+  }),
+)(AccountPage)

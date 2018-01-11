@@ -1,18 +1,16 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 
-export default class MenuBoxGroupItems extends Component {
-
-  static propTypes = {
-    children: PropTypes.any,
-  }
-
-  render() {
-
-    return (
-      <div className="menu-box-group">
-        {this.props.children}
-      </div>
-    )
-  }
+const MenuBoxGroupItems = props => {
+  return (
+    <div className="menu-box-group">
+      {props.children}
+    </div>
+  )
 }
+
+MenuBoxGroupItems.propTypes = {
+  children: PropTypes.any,
+}
+
+export default MenuBoxGroupItems

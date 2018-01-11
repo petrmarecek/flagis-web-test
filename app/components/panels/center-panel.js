@@ -5,32 +5,29 @@ import cx from 'classnames'
 
 import { getAppState } from 'redux/store/app-state/app-state.selectors'
 
-class CenterPanel extends React.Component {
+const CenterPanel = props => {
+  const { leftPanel, centerPanel } = props.appState
+  const positionLeft = leftPanel.width
 
-  static propTypes = {
-    appState: PropTypes.object,
-    children: PropTypes.object,
-  }
+  const css = cx({
+    'center-panel': true,
+    'center-panel--resizing': centerPanel.isResizing,
+  })
 
-  render() {
-    const { leftPanel, centerPanel } = this.props.appState
-    const positionLeft = leftPanel.width
-
-    const css = cx({
-      'center-panel': true,
-      'center-panel--resizing': centerPanel.isResizing,
-    })
-
-    return (
-      <div className={css} style={{ left: positionLeft }}>
-        {this.props.children}
-      </div>
-    )
-  }
+  return (
+    <div className={css} style={{ left: positionLeft }}>
+      {props.children}
+    </div>
+  )
 }
 
+CenterPanel.propTypes = {
+  appState: PropTypes.object,
+  children: PropTypes.object,
+}
 const mapStateToProps = state => ({
   appState: getAppState(state)
 })
 const mapDispatchToProps = {}
+
 export default connect(mapStateToProps, mapDispatchToProps)(CenterPanel)

@@ -630,7 +630,9 @@ module.exports = {
     // Enforce stateless React Components to be written as a pure function
     // Stateless functional components are more simple than class based components and will benefit
     // from future React performance optimizations specific to these components.
-    'react/prefer-stateless-function': 1,
+    'react/prefer-stateless-function': [1, {
+      "ignorePureComponents": true
+    }],
 
     // Prevent usage of dangerous JSX properties
     'react/no-danger': 1,
