@@ -16,6 +16,9 @@ import {
   RESTART_ON_REMOUNT,
 } from '../constants';
 
+/* eslint-disable no-undefined */
+/* eslint-disable no-undef */
+
 function* testSaga() {
   yield put({ type: 'TEST', payload: 'yup' });
 }

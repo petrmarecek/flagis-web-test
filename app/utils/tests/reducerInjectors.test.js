@@ -12,6 +12,8 @@ import getInjectors, {
   injectReducerFactory,
 } from '../reducerInjectors';
 
+/* eslint-disable no-undef */
+
 // Fixtures
 
 const initialState = fromJS({ reduced: 'soon' });

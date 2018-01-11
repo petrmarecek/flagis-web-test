@@ -4,6 +4,8 @@
 
 import checkStore from '../checkStore';
 
+/* eslint-disable no-undef */
+
 describe('checkStore', () => {
   let store;
 

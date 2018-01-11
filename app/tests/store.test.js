@@ -5,6 +5,9 @@
 import { browserHistory } from 'react-router-dom';
 import configureStore from '../redux/configure-store';
 
+/* eslint-disable no-undefined */
+/* eslint-disable no-undef */
+
 describe('configureStore', () => {
   let store;
 

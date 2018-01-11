@@ -1,5 +1,8 @@
 import { fromJS } from 'immutable';
 
+/* eslint-disable no-undefined */
+/* eslint-disable no-undef */
+
 import languageProviderReducer from '../reducer';
 import {
   CHANGE_LOCALE,

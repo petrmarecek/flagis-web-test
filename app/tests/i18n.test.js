@@ -1,6 +1,8 @@
 import { DEFAULT_LOCALE } from '../containers/app/constants';
 import { formatTranslationMessages } from '../i18n';
 
+/* eslint-disable no-undef */
+
 jest.mock('../translations/en.json', () => (
   {
     message1: 'default message',

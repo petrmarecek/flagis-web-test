@@ -11,6 +11,8 @@ import configureStore from '../../redux/configure-store';
 import injectSaga from '../injectSaga';
 import * as sagaInjectors from '../sagaInjectors';
 
+/* eslint-disable no-undef */
+
 // Fixtures
 const Component = () => null;
 

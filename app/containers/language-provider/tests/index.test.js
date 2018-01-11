@@ -9,6 +9,8 @@ import configureStore from '../../../redux/configure-store';
 
 import { translationMessages } from '../../../i18n';
 
+/* eslint-disable no-undef */
+
 const messages = defineMessages({
   someMessage: {
     id: 'some.id',

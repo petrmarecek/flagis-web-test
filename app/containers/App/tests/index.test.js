@@ -4,6 +4,8 @@ import { Route } from 'react-router-dom';
 
 import App from '../index';
 
+/* eslint-disable no-undef */
+
 describe('<App />', () => {
   it('should render some routes', () => {
     const renderedComponent = shallow(

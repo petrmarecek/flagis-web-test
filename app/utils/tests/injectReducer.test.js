@@ -11,6 +11,8 @@ import configureStore from '../../redux/configure-store';
 import injectReducer from '../injectReducer';
 import * as reducerInjectors from '../reducerInjectors';
 
+/* eslint-disable no-undef */
+
 // Fixtures
 const Component = () => null;
 
