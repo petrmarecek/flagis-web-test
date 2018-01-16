@@ -31,18 +31,12 @@ export default class TaskList extends Component {
     const now = moment()
     const dayOfWeek = now.isoWeekday()
     const dayToNewWeek = (7 - dayOfWeek) + 1
-    const today = now.set({
-      'hour': 23,
-      'minute': 45,
-      'second': 0,
-      'millisecond': 0,
-    })
 
     const date = {
-      today: today,
-      tomorrow: today.clone().add(1, 'days'),
-      week: today.clone().add(2, 'days'),
-      month: today.clone().add(dayToNewWeek, 'days'),
+      today: now,
+      tomorrow: now.clone().add(1, 'days'),
+      week: now.clone().add(2, 'days'),
+      month: now.clone().add(dayToNewWeek, 'days'),
       others: null,
     }
     const task = { dueDate: date[typeDate] }

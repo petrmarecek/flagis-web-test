@@ -85,7 +85,7 @@ class TaskListContainer extends Component {
   moveTask = move => this.debouncedMoveTask(move)
 
   invokeMove(move) {
-    const { sourceTaskId, targetIndex, targetSection, direction, dueDate } = move
+    const { sourceTaskId, targetSection } = move
     const tasks = this.props.tasks.items
     // Time line
     if (targetSection) {
@@ -118,7 +118,7 @@ class TaskListContainer extends Component {
       }
 
       // Null due date for other tasks, default user sorting
-      const newDueDate = computeTaskDate(tasks, targetIndex, targetSection, direction, dueDate)
+      const newDueDate = computeTaskDate(tasks, move)
       if (!newDueDate) {
         return
       }

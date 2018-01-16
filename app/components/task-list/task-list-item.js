@@ -116,15 +116,18 @@ const taskTarget = {
     const move = {
       source: props.listType,
       sourceTaskId: dragSource.task.id,
+      sourceSection: dragSource.section,
+      sourceDueDate: dragSource.task.dueDate,
       targetTaskId: props.task.id,
-      targetIndex: hoverIndex,
       targetSection: props.section,
+      targetDueDate: props.task.dueDate,
+      targetIndex: hoverIndex,
       direction: dragIndex < hoverIndex ? 'DOWN' : 'UP',
-      dueDate: props.task.dueDate,
     }
 
     props.moveTask(move)
     dragSource.index = hoverIndex
+    dragSource.section = props.section
   },
 
   drop(props, monitor) {
