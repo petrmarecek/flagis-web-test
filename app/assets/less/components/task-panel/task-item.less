@@ -12,9 +12,9 @@
 @cl-txt-task-description: #8C9DA9;
 @cl-bg: white;
 @cl-bg-archived: #c1cad0;
-@cl-bg-completed: #f6f8f9;
+@cl-bg-completed: #f6f7f8;
 @cl-bg-selected: #ffffd7;
-@cl-txt-overdue: #EE5252;
+@cl-txt-overdue: #ff6a6a;
 
 @cl-task-item-shadow: #ddd;
 @cl-task-item-gradient-from: #fff;
@@ -165,6 +165,12 @@
         &--overdue {
             color: @cl-txt-overdue;
             font-weight: 600;
+
+          .completed & {
+                color: @cl-txt-task-description;
+                font-weight: normal;
+            }
+
         }
     }
 }

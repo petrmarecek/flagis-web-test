@@ -363,20 +363,21 @@ class TaskListItem extends Component {
 
     const archiveIcon = this.getArchiveIcon()
 
-    const dueDateClass = classnames({
-      'task-item__due-date': true,
-      'task-item__due-date--overdue': this.props.task.isOverdue
-    })
-
     const subjectDescriptionClass = classnames({
       'task-item__subject': true,
       'task-item__subject--description': this.props.task.description
     })
 
+    const now = moment()
     const dueDate = this.props.task.dueDate
     const dueDateFormat = dateUtils.formatDate(dueDate)
     const fromNow = this.props.task.dueDate ? moment(dueDate).fromNow() : ''
     const description = this.props.task.description === null ? '' : this.props.task.description
+
+    const dueDateClass = classnames({
+      'task-item__due-date': true,
+      'task-item__due-date--overdue': moment(dueDate) < now && this.props.listType !== 'archived',
+    })
 
     // render component
     const { connectDragSource, connectDropTarget, isDragging } = this.props
