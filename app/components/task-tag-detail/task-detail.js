@@ -275,7 +275,10 @@ class TaskDetail extends Component {
 
   handleDueDateChanged = date => {
     if (date) {
-      date.set({'second': 0, 'millisecond': 0})
+      date.set({
+        'second': 0,
+        'millisecond': 0,
+      })
 
       if (date.hour() === 0 && date.minute() === 0) {
         date.add(59, 's').add(999, 'ms')

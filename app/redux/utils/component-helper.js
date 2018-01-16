@@ -74,14 +74,14 @@ export function archiveCompletedTasks(tasks, showCompletedTasks, completedTasks,
 }
 
 export function getTimeLineByDueDate(tasks) {
-  const now = moment()
+  const now = moment().set({'hour': 0, 'minute': 0, 'second': 0, 'millisecond': 0})
   const today = now.dayOfYear()
   const tomorrow = now.clone().add(1, 'days').dayOfYear()
   const week = now.isoWeek()
   const month = now.month()
   const year = now.year()
 
-  const overdueTasks = []
+  const previousDaysTasks = []
   const todayTasks = []
   const tomorrowTasks = []
   const weekTasks = []
@@ -93,7 +93,7 @@ export function getTimeLineByDueDate(tasks) {
     const currentYear = dueDate.year() === year
 
     if (dueDate.isBefore(now)) {
-      overdueTasks.push(task)
+      previousDaysTasks.push(task)
       continue
     }
 
@@ -120,7 +120,7 @@ export function getTimeLineByDueDate(tasks) {
     othersTasks.push(task)
   }
 
-  return {overdueTasks, todayTasks, tomorrowTasks, weekTasks, monthTasks, othersTasks}
+  return {previousDaysTasks, todayTasks, tomorrowTasks, weekTasks, monthTasks, othersTasks}
 }
 
 const color = {

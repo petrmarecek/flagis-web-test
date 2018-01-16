@@ -31,7 +31,12 @@ export default class TaskList extends Component {
     const now = moment()
     const dayOfWeek = now.isoWeekday()
     const dayToNewWeek = (7 - dayOfWeek) + 1
-    const today = now.set({'hour': 23, 'minute': 45, 'second': 0, 'millisecond': 0})
+    const today = now.set({
+      'hour': 23,
+      'minute': 45,
+      'second': 0,
+      'millisecond': 0,
+    })
 
     const date = {
       today: today,
@@ -117,7 +122,7 @@ export default class TaskList extends Component {
       // Due date sorting algorithm is activated
       const timeLineTasks = getTimeLineByDueDate(tasks)
       const tasksRender = {
-        overdueTasks: null,
+        previousDaysTasks: null,
         todayTasks: null,
         tomorrowTasks: null,
         weekTasks: null,
@@ -125,8 +130,8 @@ export default class TaskList extends Component {
         othersTasks: null,
       }
 
-      if (timeLineTasks.overdueTasks.length !== 0) {
-        tasksRender.overdueTasks = this.getTaskItems(timeLineTasks.overdueTasks, 'overdueTasks')
+      if (timeLineTasks.previousDaysTasks.length !== 0) {
+        tasksRender.previousDaysTasks = this.getTaskItems(timeLineTasks.previousDaysTasks, 'previousDaysTasks')
       }
 
       if (timeLineTasks.todayTasks.length !== 0) {
@@ -150,7 +155,7 @@ export default class TaskList extends Component {
       }
 
       return {
-        overdueTasks: tasksRender.overdueTasks,
+        previousDaysTasks: tasksRender.previousDaysTasks,
         todayTasks: tasksRender.todayTasks,
         tomorrowTasks: tasksRender.tomorrowTasks,
         weekTasks: tasksRender.weekTasks,
@@ -183,12 +188,12 @@ export default class TaskList extends Component {
 
         {dueDateSort && !isVisibleArchivedTasks &&
         <ul className="time-line">
-          {taskItems.overdueTasks &&
+          {taskItems.previousDaysTasks &&
           <li className="time-line__list">
             <span className="time-line__point"/>
-            <p className="time-line__text">Overdue</p>
+            <p className="time-line__text">Previous days</p>
             <ul ref="list" className="task-items">
-              {taskItems.overdueTasks}
+              {taskItems.previousDaysTasks}
             </ul>
           </li>}
 
