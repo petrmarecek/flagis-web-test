@@ -26,12 +26,14 @@ export default class TasksMenuMultiSelect extends Component {
     // Add listener for close menu
     document.getElementsByClassName('page-overflow-fix')[0].addEventListener("click", this.handleClick, false)
     document.getElementsByClassName('navbar')[0].addEventListener("click", this.handleClick, false)
+    document.addEventListener('keydown', this.handleKeyDown, false)
   }
 
   componentWillUnmount() {
     // Remove listener for close menu
     document.getElementsByClassName('page-overflow-fix')[0].removeEventListener("click", this.handleClick, false)
     document.getElementsByClassName('navbar')[0].addEventListener("click", this.handleClick, false)
+    document.removeEventListener('keydown', this.handleKeyDown, false)
   }
 
   state = {
@@ -52,6 +54,28 @@ export default class TasksMenuMultiSelect extends Component {
 
     if (notContainsElem && notContainsElemTaskPanel) {
       this.props.deselectTasks()
+    }
+  }
+
+  handleKeyDown = event => {
+    if (event.repeat) {
+      return
+    }
+
+    switch (event.which) {
+
+      // escape
+      case 27:
+        this.props.deselectTasks()
+        return
+
+      // delete
+      case 46:
+        this.props.onDelete()
+        return
+
+      default:
+        return
     }
   }
 
