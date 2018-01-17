@@ -7,8 +7,6 @@ import { logout } from 'redux/store/auth/auth.actions'
 import { deselectTasks } from 'redux/store/tasks/tasks.actions'
 import { deselectTags } from 'redux/store/tags/tags.actions'
 
-const APP_STATE = appStateActions.APP_STATE
-
 /**
  * Creates common action types for fetch action type
  * @param {String} actionType Type of fetch action
@@ -93,7 +91,7 @@ function* onUndo(action, name) {
   yield put(appStateActions.showUndo(name))
 
   const { undo } = yield race({
-    undo: take(APP_STATE.UNDO_ACTIVE),
+    undo: take(act => act.type === 'APP-STATE/UNDO_ACTIVE' && act.undoType === undoAction),
     noUndo: call(delay, 8000),
   })
 

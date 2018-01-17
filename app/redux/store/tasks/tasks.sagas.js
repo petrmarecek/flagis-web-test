@@ -294,7 +294,7 @@ export function* deleteTask(action) {
   }
 
   yield put(taskActions.deselectTasks())
-  yield* mainUndo(action, 'task-delete')
+  yield* mainUndo(action, 'taskDelete')
 }
 
 export function* undoDeleteTask(action) {

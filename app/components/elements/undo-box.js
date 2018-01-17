@@ -71,35 +71,33 @@ class UndoBox extends Component {
   }
 
   handleUndo = () => {
-    this.props.activeUndo()
+    const { name } = this.props.undoBox
+    if (name === 'tagDelete') {
+      this.props.activeUndo('UNDO_TAGS/DELETE')
+      return
+    }
+
+    if (name === 'treeItemDelete' || name === 'treeGroupDelete') {
+      this.props.activeUndo('UNDO_TREE/DELETE')
+      return
+    }
+
+    this.props.activeUndo('UNDO_TASK/DELETE')
   }
 
   // Get current undoBox
-  getTitle(undoBox) {
-    switch (undoBox.name) {
-
-      case 'tag-delete': {
-        return 'Tag deleted'
-      }
-
-      case 'tree-item-delete': {
-        return 'Tree item deleted'
-      }
-
-      case 'tree-group-delete': {
-        return 'Tree filter group deleted'
-      }
-
-      default: return 'Task deleted'
-    }
-  }
-
   getRenderUndoBox(undoBox) {
     if (!undoBox) {
       return null
     }
 
-    const title = this.getTitle(this.props.undoBox)
+    const title = {
+      taskDelete: 'Task deleted',
+      tagDelete: 'Tag deleted',
+      treeItemDelete: 'Tree item deleted',
+      treeGroupDelete: 'Tree filter group deleted',
+    }
+
     return (
       <UndoContainer innerRef={comp => {this.container = comp}}>
         <Info>
@@ -109,7 +107,7 @@ class UndoBox extends Component {
             height={20}
             color="#fff" />
           <Title >
-            {title}
+            {title[undoBox.name]}
           </Title>
         </Info>
         <Button onClick={this.handleUndo}>

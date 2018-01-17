@@ -143,10 +143,10 @@ export const resizeLeftPanel = width => ({
 
 // ------ Undo ----------------------------------------------------------------------
 
-export const showUndo = (undoBoxName) => ({
+export const showUndo = name => ({
   type: APP_STATE.UNDO_SHOW,
   payload: {
-    name: undoBoxName,
+    name
   }
 })
 
@@ -154,11 +154,10 @@ export const hideUndo = () => ({
   type: APP_STATE.UNDO_HIDE
 })
 
-export const activeUndo = () => ({
+export const activeUndo = undoType => ({
   type: APP_STATE.UNDO_ACTIVE,
+  undoType,
 })
-
-
 
 // ------ Dialog --------------------------------------------------------------------
 

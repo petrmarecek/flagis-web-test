@@ -139,8 +139,8 @@ export function* deleteTreeItem(action) {
 
   action.payload.originalData.position = position
   const title = action.payload.originalData.isSection
-    ? 'tree-group-delete'
-    : 'tree-item-delete'
+    ? 'treeGroupDelete'
+    : 'treeItemDelete'
   yield* mainUndo(action, title)
   // delete all child items on client
   yield* deleteChildItems(action.payload.originalData)

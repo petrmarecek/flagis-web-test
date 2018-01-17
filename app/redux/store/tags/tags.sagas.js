@@ -117,7 +117,7 @@ export function* deleteTag(action) {
   })
 
   yield put(tagActions.deleteTagsRelations(action.payload.originalData.id, null))
-  yield* mainUndo(action, 'tag-delete')
+  yield* mainUndo(action, 'tagDelete')
 
   // delete tag from the search index
   search.tags.removeItem({ id: action.payload })
