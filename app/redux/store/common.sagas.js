@@ -92,7 +92,8 @@ function* onUndo(action, name) {
 
   const { undo } = yield race({
     undo: take(act => act.type === 'APP-STATE/UNDO_ACTIVE' && act.undoType === undoAction),
-    noUndo: call(delay, 8000),
+    actionAgain: take(act => act.type === action.type),
+    timeout: call(delay, 8000),
   })
 
   yield put(appStateActions.hideUndo())
@@ -100,7 +101,7 @@ function* onUndo(action, name) {
   if (undo) {
     yield put({
       type: undoAction,
-      payload: undoData
+      payload: undoData,
     })
   }
 }
