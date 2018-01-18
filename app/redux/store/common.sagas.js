@@ -85,22 +85,34 @@ export function* fetch(actionType, fetchDef) {
 
 // Undo
 function* onUndo(action, name) {
-  const undoAction = `UNDO_${action.type}`
+  // type and data for undo action
+  const undoType = `UNDO_${action.type}`
   const undoData = action.payload.originalData
 
+  // show UI element for undo
   yield put(appStateActions.showUndo(name))
 
+  // reset delay if action for undo was dispatched
   const { undo } = yield race({
-    undo: take(act => act.type === 'APP-STATE/UNDO_ACTIVE' && act.undoType === undoAction),
-    actionAgain: take(act => act.type === action.type),
+    undo: take(act => act.type === 'APP-STATE/UNDO_ACTIVE' && act.undoType === undoType),
+    undoAction: take(act =>
+      act.type === 'TASK/DELETE' ||
+      act.type === 'TAGS/DELETE' ||
+      act.type === 'TREE/DELETE'
+    ),
     timeout: call(delay, 8000),
   })
 
+  // hide UI element
+  // if user clicked undo button
+  // if action for undo was dispatched
+  // if timeout was expired
   yield put(appStateActions.hideUndo())
 
+  // dispatch undo action if user clicked undo button
   if (undo) {
     yield put({
-      type: undoAction,
+      type: undoType,
       payload: undoData,
     })
   }
