@@ -2,13 +2,15 @@
  * Create the store with dynamic reducers
  */
 
-import { createStore, applyMiddleware, compose } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux'
 import { fromJS } from 'immutable';
 import { routerMiddleware } from 'react-router-redux'
+import { persistStore } from 'redux-persist'
 import normalizrMiddleware from 'redux/utils/normalizr-middleware'
 import createSagaMiddleware from 'redux-saga'
+import api from './utils/api'
 
-import createReducer from 'redux/store/root.reducer';
+import createReducer from 'redux/store/root.reducer'
 import sagas from 'redux/store/root.sagas'
 
 const sagaMiddleware = createSagaMiddleware();
@@ -44,7 +46,7 @@ export default function configureStore(initialState = {}, history) {
   const store = createStore(
     createReducer(),
     fromJS(initialState),
-    composeEnhancers(...enhancers)
+    composeEnhancers(...enhancers),
   );
 
   sagaMiddleware.run(sagas)
@@ -62,5 +64,14 @@ export default function configureStore(initialState = {}, history) {
     });
   }
 
-  return store
+  const persistor = persistStore(store, () => {
+    const restoredState = store.getState()
+    if (typeof restoredState === 'object'
+      && typeof restoredState.auth === 'object'
+      && restoredState.auth.accessToken) {
+      api.setApiToken(restoredState.auth.accessToken)
+    }
+  })
+
+  return { store, persistor }
 }

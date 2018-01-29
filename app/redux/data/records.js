@@ -123,7 +123,7 @@ export const AuthStore = Record({
   refreshToken: null,
   newRefreshToken: false,
   profile: null,
-})
+}, 'auth')
 
 export const TasksMenuStore = Record({
   filters: new TasksFilters(),

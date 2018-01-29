@@ -35,7 +35,7 @@ describe('<ConnectedLanguageProvider />', () => {
   let store;
 
   beforeAll(() => {
-    store = configureStore({}, browserHistory);
+    store = configureStore({}, browserHistory).store;
   });
 
   it('should render the default language messages', () => {
