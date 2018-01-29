@@ -18,10 +18,6 @@ import tags from 'redux/store/tags/tags.reducer'
 import comments from 'redux/store/comments/comments.reducer'
 import attachments from 'redux/store/attachments/attachments.reducer'
 import multiSelect from 'redux/store/multi-select/multi-select.reducer'
-import { persistReducer } from 'redux-persist'
-import immutableTransform from 'redux-persist-transform-immutable'
-import storage from 'redux-persist/lib/storage'
-import { AuthStore } from 'redux/data/records'
 
 /*
  * routeReducer
@@ -55,7 +51,7 @@ function routeReducer(state = routeInitialState, action) {
  * Creates the main reducer with the dynamically injected ones
  */
 export default function createReducer(injectedReducers) {
-  const rootReducers = combineReducers({
+  return combineReducers({
     appState,
     auth,
     entities,
@@ -71,16 +67,4 @@ export default function createReducer(injectedReducers) {
     language: languageProviderReducer,
     ...injectedReducers,
   });
-
-  const persistConfig = {
-    key: 'root',
-    storage: storage,
-    whitelist: ['auth'],
-    transforms: [immutableTransform({
-      records: [AuthStore],
-      whitelist: ['auth'],
-    })],
-  }
-
-  return persistReducer(persistConfig, rootReducers)
 }

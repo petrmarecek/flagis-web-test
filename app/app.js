@@ -38,8 +38,6 @@ import 'file-loader?name=[name].[ext]!./.htaccess';
 /* eslint-enable import/no-unresolved, import/extensions */
 
 import configureStore from 'redux/configure-store';
-import { PersistGate } from 'redux-persist/lib/integration/react'
-import Loader from 'components/elements/loader'
 
 // Import i18n messages
 import { translationMessages } from './i18n';
@@ -51,7 +49,7 @@ import './assets/less/site.less';
 // Create redux store with history
 const initialState = {};
 const history = createHistory();
-const { store, persistor } = configureStore(initialState, history);
+const store = configureStore(initialState, history);
 const MOUNT_NODE = document.getElementById('app');
 
 const render = (messages) => {
@@ -59,9 +57,7 @@ const render = (messages) => {
     <Provider store={store}>
       <LanguageProvider messages={messages}>
         <ConnectedRouter history={history}>
-          <PersistGate loading={<Loader />} persistor={persistor}>
-            <App />
-          </PersistGate>
+          <App />
         </ConnectedRouter>
       </LanguageProvider>
     </Provider>,

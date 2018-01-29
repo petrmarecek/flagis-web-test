@@ -12,7 +12,7 @@ describe('configureStore', () => {
   let store;
 
   beforeAll(() => {
-    store = configureStore({}, browserHistory).store;
+    store = configureStore({}, browserHistory);
   });
 
   describe('injectedReducers', () => {
@@ -39,7 +39,7 @@ describe('configureStore params', () => {
     /* eslint-disable no-underscore-dangle */
     const compose = jest.fn();
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ = () => compose;
-    configureStore(undefined, browserHistory).store;
+    configureStore(undefined, browserHistory);
     expect(compose).toHaveBeenCalled();
     /* eslint-enable */
   });

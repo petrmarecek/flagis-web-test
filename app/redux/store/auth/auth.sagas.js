@@ -1,7 +1,9 @@
 import { push } from 'react-router-redux'
 import { delay } from 'redux-saga'
-import { call, put, race, take } from 'redux-saga/effects'
+import { call, put, race, take, select } from 'redux-saga/effects'
 import { NotificationManager } from 'react-notifications'
+import { REHYDRATE } from 'redux-persist'
+import { Map } from 'immutable'
 
 import { createLoadActions } from 'redux/store/common.sagas'
 import {
@@ -17,8 +19,8 @@ import {
 import { fetchTasks } from 'redux/store/tasks/tasks.actions'
 import { fetchTree } from 'redux/store/tree/tree.actions'
 import * as authActions from 'redux/store/auth/auth.actions'
+import * as authSelectors from 'redux/store/auth/auth.selectors'
 import api from 'redux/utils/api'
-import persistentStore from 'redux/utils/persistent-store'
 
 const AUTH = authActions.AUTH
 const MIN_TOKEN_LIFESPAN = 300 * 1000
@@ -44,9 +46,13 @@ export function* initData() {
 }
 
 export function* authFlow() {
+
+  // Wait to load from persist store
+  yield take(REHYDRATE)
+
   // Check if user is logged
-  let auth = persistentStore.getItem('auth')
-  if (auth) {
+  let auth = yield select(state => authSelectors.getAuth(state))
+  if (auth.isLogged) {
     // redirect
     const redirectAction = push('/user/tasks')
     yield put(redirectAction)
@@ -91,18 +97,18 @@ export function* authFlow() {
 }
 
 export function* controlRedirectSignIn() {
-  const auth = persistentStore.getItem('auth')
+  const auth = yield select(state => authSelectors.getAuth(state))
 
-  if (!auth) {
+  if (!auth.isLogged) {
     const redirectAction = push('/sign-in')
     yield put(redirectAction)
   }
 }
 
 export function* controlRedirectTasks() {
-  const auth = persistentStore.getItem('auth')
+  const auth = yield select(state => authSelectors.getAuth(state))
 
-  if (auth) {
+  if (auth.isLogged) {
     const redirectAction = push('/user/tasks')
     yield put(redirectAction)
   }
@@ -215,7 +221,6 @@ function* authorizeUser(authApiCall, action) {
     yield put({ type: FULFILLED, payload: auth })
 
     // save auth data to persistentStore & client
-    persistentStore.setItem('auth', auth)
     setAuthToken(auth.accessToken)
 
     // hide loader
@@ -250,7 +255,6 @@ function* authorizeUser(authApiCall, action) {
 
 function cleanStore() {
   // clean
-  persistentStore.clear()
   api.clearApiToken()
 }
 
@@ -271,7 +275,9 @@ function* tokenLoop(auth) {
     yield put({ type: PENDING })
 
     const data = {
-      userId: auth.profile.id,
+      userId: auth.profile instanceof Map
+        ? auth.profile.get('id')
+        : auth.profile.id,
       refreshToken: auth.refreshToken,
     }
 

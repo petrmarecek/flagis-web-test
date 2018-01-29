@@ -5,13 +5,16 @@
 import { createStore, applyMiddleware, compose } from 'redux'
 import { fromJS } from 'immutable';
 import { routerMiddleware } from 'react-router-redux'
-import { persistStore } from 'redux-persist'
+import { persistStore, autoRehydrate, getStoredState } from 'redux-persist-immutable'
+import immutableTransform from 'redux-persist-transform-immutable'
 import normalizrMiddleware from 'redux/utils/normalizr-middleware'
 import createSagaMiddleware from 'redux-saga'
-import api from './utils/api'
 
 import createReducer from 'redux/store/root.reducer'
 import sagas from 'redux/store/root.sagas'
+import { AuthStore as auth } from './data/records'
+import localforage from 'localforage'
+import api from './utils/api'
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -26,6 +29,7 @@ export default function configureStore(initialState = {}, history) {
   ];
 
   const enhancers = [
+    autoRehydrate(),
     applyMiddleware(...middlewares),
   ];
 
@@ -64,14 +68,31 @@ export default function configureStore(initialState = {}, history) {
     });
   }
 
-  const persistor = persistStore(store, () => {
-    const restoredState = store.getState()
+  // auth store to persist storage
+  const persistConfig = {
+    storage: localforage,
+    whitelist: ['auth'],
+    transforms: [immutableTransform({
+      records: [auth],
+      whitelist: ['auth'],
+    })],
+  }
+
+  // get access token and set to api
+  getStoredState(persistConfig, (err, restoredState) => {
     if (typeof restoredState === 'object'
       && typeof restoredState.auth === 'object'
       && restoredState.auth.accessToken) {
       api.setApiToken(restoredState.auth.accessToken)
     }
+
+    if (err) {
+      // eslint-disable-next-line no-warning-comments
+      // TODO
+    }
   })
 
-  return { store, persistor }
+  persistStore(store, persistConfig)
+
+  return store
 }
