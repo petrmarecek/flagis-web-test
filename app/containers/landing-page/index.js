@@ -28,8 +28,7 @@ class LandingPage extends Component {
     }).isRequired,
   }
 
-  constructor(props) {
-    super(props)
+  componentWillMount() {
     this.props.controlRedirectTasks()
   }
 

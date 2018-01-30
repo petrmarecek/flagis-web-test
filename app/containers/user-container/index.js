@@ -39,8 +39,7 @@ class UserContainer extends Component {
     match: PropTypes.any,
   }
 
-  constructor(props) {
-    super(props)
+  componentWillMount() {
     this.props.controlRedirectSignIn()
   }
 

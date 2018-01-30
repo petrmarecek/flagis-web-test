@@ -33,8 +33,7 @@ class EmailResetPassword extends Component {
     loader: PropTypes.bool,
   }
 
-  constructor(props) {
-    super(props)
+  componentWillMount() {
     this.props.controlRedirectTasks()
   }
 

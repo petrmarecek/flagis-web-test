@@ -52,11 +52,7 @@ export function* authFlow() {
 
   // Check if user is logged
   let auth = yield select(state => authSelectors.getAuth(state))
-  if (auth.isLogged) {
-    // redirect
-    const redirectAction = push('/user/tasks')
-    yield put(redirectAction)
-  } else {
+  if (!auth.isLogged) {
     auth = null
     cleanStore()
   }
@@ -290,11 +286,15 @@ function* tokenLoop(auth) {
       yield put({ type: FULFILLED, payload: response })
       setAuthToken(response.accessToken)
 
+      // redirect
+      const redirectAction = push('/user/tasks')
+      yield put(redirectAction)
+
       yield call(delay, response.expiresIn - MIN_TOKEN_LIFESPAN)
 
     } catch (error) {
       yield put({ type: REJECTED })
-      yield put(AUTH.LOGOUT)
+      logout()
       return
     }
   }

@@ -49,8 +49,7 @@ class SignUp extends Component {
     errorMessage: List(),
   }
 
-  constructor(props) {
-    super(props)
+  componentWillMount() {
     this.props.controlRedirectTasks()
   }
 
