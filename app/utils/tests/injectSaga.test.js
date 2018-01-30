@@ -4,12 +4,16 @@
 
 import { memoryHistory } from 'react-router-dom';
 import { put } from 'redux-saga/effects';
-import { shallow } from 'enzyme';
 import React from 'react';
 
 import configureStore from '../../redux/configure-store';
 import injectSaga from '../injectSaga';
 import * as sagaInjectors from '../sagaInjectors';
+
+import Enzyme, { shallow } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+
+Enzyme.configure({ adapter: new Adapter() });
 
 /* eslint-disable no-undef */
 

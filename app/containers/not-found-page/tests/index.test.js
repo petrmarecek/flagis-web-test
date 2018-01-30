@@ -1,9 +1,13 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { shallow } from 'enzyme';
 
 import NotFoundPage from '../index';
 import messages from '../messages';
+
+import Enzyme, { shallow } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+
+Enzyme.configure({ adapter: new Adapter() });
 
 /* eslint-disable no-undef */
 

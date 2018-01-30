@@ -1,5 +1,4 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
 import { FormattedMessage, defineMessages } from 'react-intl';
 import { Provider } from 'react-redux';
 import { browserHistory } from 'react-router-dom';
@@ -8,6 +7,11 @@ import ConnectedLanguageProvider, { LanguageProvider } from '../index';
 import configureStore from '../../../redux/configure-store';
 
 import { translationMessages } from '../../../i18n';
+
+import Enzyme, { shallow, mount } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+
+Enzyme.configure({ adapter: new Adapter() });
 
 /* eslint-disable no-undef */
 

@@ -3,13 +3,17 @@
  */
 
 import { memoryHistory } from 'react-router-dom';
-import { shallow } from 'enzyme';
 import React from 'react';
 import identity from 'lodash/identity';
 
 import configureStore from '../../redux/configure-store';
 import injectReducer from '../injectReducer';
 import * as reducerInjectors from '../reducerInjectors';
+
+import Enzyme, { shallow } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+
+Enzyme.configure({ adapter: new Adapter() });
 
 /* eslint-disable no-undef */
 
