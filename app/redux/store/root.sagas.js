@@ -1,4 +1,4 @@
-import { effects, takeLatest, takeEvery } from 'redux-saga'
+import { fork, takeLatest, takeEvery } from 'redux-saga/effects'
 
 import { AUTH } from './auth/auth.actions'
 import { APP_STATE } from './app-state/app-state.actions'
@@ -21,8 +21,8 @@ import * as attachment from './attachments/attachments.sagas'
 export default function* root() {
   yield [
     // auth
-    effects.fork(auth.authFlow),
-    effects.fork(auth.initData),
+    fork(auth.authFlow),
+    fork(auth.initData),
     takeLatest(AUTH.CONTROL_REDIRECT_SIGN_IN, auth.controlRedirectSignIn),
     takeLatest(AUTH.CONTROL_REDIRECT_TASKS, auth.controlRedirectTasks),
     takeLatest(AUTH.CHANGE_PASSWORD, auth.changePassword),
