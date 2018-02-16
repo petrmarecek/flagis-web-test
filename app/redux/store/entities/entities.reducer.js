@@ -45,14 +45,24 @@ export default typeToReducer({
   [TASKS.SET_ORDER]: (state, action) =>
     state.setIn(['tasks', action.payload.task.id, 'order'], action.payload.order),
 
+  [TASKS.SET_ORDER_TIME_LINE]: (state, action) =>
+    state.setIn(['tasks', action.payload.task.id, 'orderTimeLine'], action.payload.order),
+
   [TASKS.SET_FIELD]: (state, action) =>
     state.setIn(['tasks', action.payload.task.id, action.payload.fieldName], action.payload.fieldValue),
 
   [TASKS.REPLACE]: (state, action) =>
     saveTasks(action.payload, state),
 
-  [TASKS.MOVE_TIME_LINE]: (state, action) => state
-    .setIn(['tasks', action.payload.taskId, 'dueDate'], action.payload.dueDate),
+  [TASKS.MOVE_TIME_LINE]: (state, action) => {
+    if (action.payload.orderTimeLine) {
+      return state
+        .setIn(['tasks', action.payload.taskId, 'dueDate'], action.payload.dueDate)
+        .setIn(['tasks', action.payload.taskId, 'orderTimeLine'], action.payload.orderTimeLine)
+    }
+
+    return state.setIn(['tasks', action.payload.taskId, 'dueDate'], action.payload.dueDate)
+  },
 
   [TASKS.ADD_TAG]: (state, action) => state
     .updateIn(['tasks', action.payload.taskId, 'tags'], tagList => tagList.push(action.payload.tag.id)),
@@ -86,6 +96,12 @@ export default typeToReducer({
     PENDING: (state, action) => state
       .deleteIn(['treeItems', action.payload.originalData.id])
   },
+
+  [TREE.DROP_SECTION]: (state, action) =>
+    state.setIn(['treeItems', action.payload.section.id, 'order'], action.payload.order),
+
+  [TREE.MOVE_TREE_ITEM]: (state, action) =>
+    state.setIn(['treeItems', action.payload.source.id, 'order'], action.payload.order),
 
   // ------ Tags --------------------------------------------------------------
 

@@ -31,9 +31,9 @@ export default class AddTreeItemForm extends Component {
 
     // Get result of the add form
     const result = {
-      parentId: this.props.parentId,
       title: tag.title,
-      isSection: this.props.parentId === null
+      parentId: this.props.parentId,
+      order: Date.now()
     }
 
     // Validate

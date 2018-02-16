@@ -207,6 +207,7 @@ export const Task = Record({
   dueDate: null,
   reminderDate: null,
   order: null,
+  orderTimeLine: null,
   isImportant: false,
   isCompleted: null,
   completedAt: null,

@@ -85,17 +85,18 @@ const TreeSectionDragDrop = {
       dragSource.index = hoverIndex
     },
 
-    drop(props, monitor, component) {
+    drop(props, monitor) {
       const canDrop = monitor.canDrop()
       if (!canDrop) {
         return
       }
 
       const dragSource = monitor.getItem()
-      const direction = dragSource.index > component.state.sourceIndex
-        ? 'DOWN'
-        : 'UP'
-      props.onDropSection(dragSource.index, dragSource.section, direction)
+      const drop = {
+        dropIndex: dragSource.index,
+        sourceSection: dragSource.section,
+      }
+      props.onDropSection(drop)
     },
   }
 }
@@ -122,10 +123,6 @@ class TreeSection extends Component {
     onMoveSection: PropTypes.func.isRequired,
     onDropSection: PropTypes.func.isRequired,
     index: PropTypes.number,
-  }
-
-  state = {
-    sourceIndex: this.props.index
   }
 
   handleAddChildClicked = event => {

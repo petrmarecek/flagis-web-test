@@ -211,6 +211,21 @@ export function* setOrder(action) {
   }
 }
 
+export function* setOrderTimeLine(action) {
+  const task = action.payload.task
+  const orderTimeLine = action.payload.order
+
+  try {
+    // call server
+    const update = { orderTimeLine }
+    yield* updateTask(task.id, update)
+
+  } catch(err) {
+    // TODO: revert
+    // We need to both revert Task.order field and position within loaded list
+  }
+}
+
 export function* setDate(action) {
   const fieldName = action.payload.type
   const fieldValue = action.payload.date

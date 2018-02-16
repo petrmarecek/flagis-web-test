@@ -15,6 +15,7 @@ import {
   setIncomplete,
   requestToggleImportant,
   setOrder,
+  setOrderTimeLine,
   setDate,
   moveTask,
   moveTimeLineTask,
@@ -36,8 +37,8 @@ import {
   cancelArchive
 } from 'redux/utils/component-helper'
 import {
-  computeTaskOrder,
-  computeTaskDate,
+  computeOrder,
+  computeTimeLine,
 } from 'redux/utils/redux-helper'
 
 import Loader from 'components/elements/loader'
@@ -60,6 +61,7 @@ class TaskListContainer extends Component {
     requestToggleImportant: PropTypes.func,
     fetchTasks: PropTypes.func,
     setOrder: PropTypes.func,
+    setOrderTimeLine: PropTypes.func,
     setDate: PropTypes.func,
     moveTask: PropTypes.func,
     moveTimeLineTask: PropTypes.func,
@@ -75,6 +77,7 @@ class TaskListContainer extends Component {
 
   state = {
     dueDate: null,
+    orderTimeLine: null,
   }
 
   constructor(props) {
@@ -87,7 +90,8 @@ class TaskListContainer extends Component {
   invokeMove(move) {
     const { sourceTaskId, targetSection } = move
     const tasks = this.props.tasks.items
-    // Time line
+
+    // Sort by Due Date
     if (targetSection) {
       // No task for this week
       if (targetSection === 'weekTasks') {
@@ -117,24 +121,31 @@ class TaskListContainer extends Component {
         }
       }
 
-      // Null due date for other tasks, default user sorting
-      const newDueDate = computeTaskDate(tasks, move)
-      if (!newDueDate) {
+      const timeLine = computeTimeLine(tasks, move)
+      if (!timeLine) {
         return
       }
 
-      if (newDueDate === 'othersTasks') {
-        this.setState({ dueDate: null })
-        this.props.moveTimeLineTask(sourceTaskId, null)
-        this.props.moveTask(move)
+      // Move to the otherTasks section and previous and next task has null due date
+      if (timeLine.dueDate === 'othersTasks') {
+        this.setState({
+          dueDate: null,
+          orderTimeLine: timeLine.orderTimeLine,
+        })
+        // Set null due date
+        this.props.moveTimeLineTask(sourceTaskId, null, timeLine.orderTimeLine)
         return
       }
 
-      this.setState({ dueDate: newDueDate })
-      this.props.moveTimeLineTask(sourceTaskId, newDueDate)
+      this.setState({
+        dueDate: timeLine.dueDate,
+        orderTimeLine: timeLine.orderTimeLine,
+      })
+      this.props.moveTimeLineTask(sourceTaskId, timeLine.dueDate, timeLine.orderTimeLine)
       return
     }
 
+    // Default user sorting
     this.props.moveTask(move)
   }
 
@@ -142,12 +153,17 @@ class TaskListContainer extends Component {
     const { dropIndex, dropTask, targetSection } = drop
     const tasks = this.props.tasks.items
 
+    // Sort by Due Date
     if (targetSection) {
       this.props.setDate(dropTask, this.state.dueDate, 'dueDate')
+      if (this.state.orderTimeLine) {
+        this.props.setOrderTimeLine(dropTask, this.state.orderTimeLine)
+      }
       return
     }
 
-    const newOrder = computeTaskOrder(tasks, dropIndex)
+    // Default user sorting
+    const newOrder = computeOrder(tasks, dropIndex)
     if (!newOrder) {
       return
     }
@@ -286,6 +302,7 @@ const mapDispatchToProps = {
   setIncomplete,
   requestToggleImportant,
   setOrder,
+  setOrderTimeLine,
   setDate,
   moveTask,
   moveTimeLineTask,

@@ -123,6 +123,10 @@ function loadTasks(ids, state) {
     tasksDueDate.sort((a, b) => {
       if(moment(a.dueDate) < moment(b.dueDate)) return -1;
       if(moment(a.dueDate) > moment(b.dueDate)) return 1;
+
+      if(moment(a.orderTimeLine) < moment(b.orderTimeLine)) return -1;
+      if(moment(a.orderTimeLine) > moment(b.orderTimeLine)) return 1;
+
       return 0;
     })
 

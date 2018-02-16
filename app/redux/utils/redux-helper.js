@@ -1,44 +1,89 @@
 import { getTimeLineByDueDate } from 'redux/utils/component-helper'
 import moment from 'moment'
 
-export function computeTaskOrder(tasks, dropIndex) {
+// For task order nad filter group order in tag tree
+export function computeOrder(items, dropIndex, timeLine) {
 
   // Moving just one task
-  if (tasks.length === 1) {
+  if (items.length === 1) {
     return null
   }
 
   // Moved to the top
   if (dropIndex === 0) {
+    if (timeLine) {
+      // Subtract an hour to the order
+      const hourInMs = 60 * 60 * 1000
+      const nextItemsOrder = items[dropIndex + 1].order
+      return new Date(nextItemsOrder + hourInMs).getTime()
+    }
+
     return Date.now()
   }
 
   // Moved to the end
-  if (dropIndex === (tasks.length - 1)) {
-
+  if (dropIndex === (items.length - 1)) {
     // Subtract an hour to the order
     const hourInMs = 60 * 60 * 1000
-    const prevTaskOrder = tasks[dropIndex - 1].order
-    return new Date(prevTaskOrder - hourInMs).getTime()
+    const prevItemsOrder = items[dropIndex - 1].order
+    return new Date(prevItemsOrder - hourInMs).getTime()
   }
 
   // Moved in the middle
-  const prevTaskOrder = tasks[dropIndex - 1].order
-  const nextTaskOrder = tasks[dropIndex + 1].order
-  return prevTaskOrder + ((nextTaskOrder - prevTaskOrder) / 2)
+  const prevItemsOrder = items[dropIndex - 1].order
+  const nextItemsOrder = items[dropIndex + 1].order
+  return prevItemsOrder + ((prevItemsOrder - nextItemsOrder) / 2)
 }
 
-export function computeTaskDate(tasks, move) {
+export function computeTreeOrder(items, dropIndex, isSection) {
 
+  // Moving just one task
+  if (items.size === 1) {
+    return null
+  }
+
+  const itemsArray = items.toArray()
+
+  // Moved to the top
+  if (dropIndex === 0) {
+
+    // Subtract an hour to the order
+    const hourInMs = 60 * 60 * 1000
+    const nextItemsOrder = itemsArray[dropIndex + 1].order
+    return new Date(nextItemsOrder - hourInMs).getTime()
+  }
+
+  // Moved to the end
+  if (dropIndex === (itemsArray.length - 1)) {
+    return Date.now()
+  }
+
+  // Moved in the middle
+  const prevItemsOrder = itemsArray[dropIndex - 1].order
+  const nextItemsOrder = isSection
+    ? itemsArray[dropIndex + 1].order
+    : itemsArray[dropIndex].order
+
+  return prevItemsOrder + ((nextItemsOrder - prevItemsOrder) / 2)
+}
+
+export function computeTimeLine(tasks, move) {
   const {sourceSection, sourceDueDate, targetSection, targetDueDate, targetIndex, direction} = move
   const sectionTasks = getTimeLineByDueDate(tasks)[targetSection]
+  const orderTimeLine = computeOrder(sectionTasks, targetIndex, true)
+
+  // Move to the same section
   if (sectionTasks.length === 1 && sourceSection === targetSection) {
     return null
   }
 
+  // Move to the empty section
   if (sectionTasks.length === 0) {
     if (targetSection === 'othersTasks') {
-      return 'othersTasks'
+      return {
+        dueDate: 'othersTasks',
+        orderTimeLine: null
+      }
     }
 
     const time = sourceDueDate
@@ -49,84 +94,60 @@ export function computeTaskDate(tasks, move) {
           'millisecond': moment(sourceDueDate).get('millisecond'),
         }
       : {
-          'hour': 0,
-          'minute': 0,
+          'hour': 23,
+          'minute': 45,
           'second': 0,
           'millisecond': 0,
         }
 
-    return targetDueDate.set({
-      'hour': time.hour,
-      'minute': time.minute,
-      'second': time.second,
-      'millisecond': time.millisecond,
-    })
+    return {
+      dueDate: targetDueDate.set({
+        'hour': time.hour,
+        'minute': time.minute,
+        'second': time.second,
+        'millisecond': time.millisecond,
+        orderTimeLine: null
+      }),
+      orderTimeLine: null,
+    }
   }
 
-  // Moved to the top section - subtract 1 s
+  // Moved to the top of section
   if (targetIndex === 0) {
     const nextDueDate = sectionTasks[0].dueDate
     if (!nextDueDate) {
-      return 'othersTasks'
+      return {
+        dueDate: 'othersTasks', orderTimeLine }
     }
 
-    return moment(nextDueDate).subtract(1, 's')
+    return { dueDate: moment(nextDueDate), orderTimeLine }
   }
 
-  // Moved to the end section - add 1 s
+  // Moved to the end of section
   if (targetIndex === (sectionTasks.length - 1)) {
     const prevDueDate = sectionTasks[targetIndex].dueDate
     if (!prevDueDate) {
       return 'othersTasks'
     }
 
-    return moment(prevDueDate).add(1, 's')
+    return { dueDate: moment(prevDueDate), orderTimeLine }
   }
 
   // Moved in the middle
+  // Up direction
+  let prevDueDate = sectionTasks[targetIndex - 1].dueDate
+  let nextDueDate = sectionTasks[targetIndex].dueDate
+
+  // Down direction
   if (direction === 'DOWN') {
-    const prevDueDate = sectionTasks[targetIndex].dueDate
-    const nextDueDate = sectionTasks[targetIndex + 1].dueDate
-    if (!prevDueDate && !nextDueDate) {
-      return 'othersTasks'
-    }
-
-    if (prevDueDate && !nextDueDate) {
-      return moment(prevDueDate).add(1, 's')
-    }
-
-    const diff = moment(nextDueDate).diff(moment(prevDueDate))
-    return moment(prevDueDate).add(diff/2)
+    prevDueDate = sectionTasks[targetIndex].dueDate
+    nextDueDate = sectionTasks[targetIndex + 1].dueDate
   }
 
-  const prevDueDate = sectionTasks[targetIndex - 1].dueDate
-  const nextDueDate = sectionTasks[targetIndex].dueDate
   if (!prevDueDate && !nextDueDate) {
-    return 'othersTasks'
+    return { dueDate: 'othersTasks', orderTimeLine }
   }
 
-  if (prevDueDate && !nextDueDate) {
-    return moment(prevDueDate).add(1, 's')
-  }
-
-  const diff = moment(nextDueDate).diff(moment(prevDueDate))
-  return moment(prevDueDate).add(diff/2)
+  return { dueDate: moment(prevDueDate), orderTimeLine }
 }
 
-export function computeSectionOrder(sections, dropIndex, direction) {
-  // Moving just one section
-  if (sections.length === 1) {
-    return null
-  }
-
-  // Moved to the top
-  if (dropIndex === 0) {
-    return 0
-  }
-
-  // Moved in the middle
-  const prevSectionOrder = sections.get(dropIndex - 1).order
-  return direction === 'DOWN'
-    ? prevSectionOrder
-    : prevSectionOrder + 1
-}

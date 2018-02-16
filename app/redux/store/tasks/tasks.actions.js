@@ -17,6 +17,7 @@ export const TASKS = {
   ADD: 'TASK/ADD',
   SET_DATE: 'TASK/SET_DATE',
   SET_ORDER: 'TASK/SET_ORDER',
+  SET_ORDER_TIME_LINE: 'TASK/SET_TIME_LINE_ORDER',
   SET_DESCRIPTION: 'TASK/SET_DESCRIPTION',
   SET_SUBJECT: 'TASK/SET_SUBJECT',
   MOVE: 'TASK/MOVE',
@@ -115,6 +116,11 @@ export const setOrder = (task, order) => ({
   payload: { task, order },
 })
 
+export const setOrderTimeLine = (task, order) => ({
+  type: TASKS.SET_ORDER_TIME_LINE,
+  payload: { task, order },
+})
+
 export const setDescription = (task, description) => ({
   type: TASKS.SET_DESCRIPTION,
   payload: { task, description },
@@ -135,11 +141,12 @@ export const moveTask = move => ({
   payload: move,
 })
 
-export const moveTimeLineTask = (taskId, dueDate) => ({
+export const moveTimeLineTask = (taskId, dueDate, orderTimeLine) => ({
   type: TASKS.MOVE_TIME_LINE,
   payload: {
     taskId,
     dueDate,
+    orderTimeLine,
   },
 })
 

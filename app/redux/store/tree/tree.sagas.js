@@ -22,6 +22,7 @@ import * as entitiesSelectors from 'redux/store/entities/entities.selectors'
 import * as routingSelectors from 'redux/store/routing/routing.selectors'
 import api from 'redux/utils/api'
 import schema from 'redux/data/schema'
+import { computeTreeOrder } from 'redux/utils/redux-helper'
 
 const TREE = treeActions.TREE
 
@@ -44,8 +45,11 @@ export function* createTreeItem(action) {
 
     const data = {
       title: action.payload.title,
-      parentId: action.payload.parentId
+      parentId: action.payload.parentId,
+      order: action.payload.order
     }
+
+    console.log(data)
 
     // call server
     const item = yield call(api.tree.create, data)
@@ -244,17 +248,18 @@ export function* dropTreeItem(action) {
 
   try {
     // Call server
-    let position = 0
+    let order = Date.now()
     if (action.payload.dropPosition !== 'MIDDLE') {
       const targetPosition = storeData.treeMap.get(targetParentId).indexOf(targetItemId)
-      position = action.payload.dropPosition === 'TOP'
-        ? targetPosition
-        : targetPosition + 1
+      const children = yield select(state => treeSelectors.getTree(state, targetParentId))
+      const isSection = false
+
+      order = computeTreeOrder(children, targetPosition, isSection)
     }
 
     const update = {
       parentId: targetParentId,
-      position: position,
+      order,
     }
 
     yield call(api.tree.updateParent, sourceItemId, update)
@@ -264,6 +269,7 @@ export function* dropTreeItem(action) {
       position: action.payload.dropPosition,
       source: action.payload.dragSource,
       target: action.payload.dragTarget,
+      order
     }))
   } catch (err) {
     console.error(err, 'Unable to update parent.')
@@ -276,7 +282,7 @@ export function* dropSection(action) {
     // Call server
     const sourceUpdate = {
       parentId: null,
-      position: action.payload.order,
+      order: action.payload.order,
     }
 
     yield call(api.tree.updateParent, action.payload.section.id, sourceUpdate)

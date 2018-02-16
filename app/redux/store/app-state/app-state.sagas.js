@@ -131,9 +131,9 @@ export function* selectHint(action) {
   // Hint selected within tree context
   if (payload.autocompleteId === 'tree') {
     yield put(treeActions.createTreeItem({
-      parentId: payload.context.parentId,
       title: payload.tag.title,
-      isSection: false,
+      parentId: payload.context.parentId,
+      order: Date.now()
     }))
     return
   }
