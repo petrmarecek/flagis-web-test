@@ -16,7 +16,7 @@ import {
   requestToggleImportant,
   setOrder,
   setOrderTimeLine,
-  setDate,
+  setDueDateTimeLine,
   moveTask,
   moveTimeLineTask,
   deselectTasks,
@@ -62,7 +62,7 @@ class TaskListContainer extends Component {
     fetchTasks: PropTypes.func,
     setOrder: PropTypes.func,
     setOrderTimeLine: PropTypes.func,
-    setDate: PropTypes.func,
+    setDueDateTimeLine: PropTypes.func,
     moveTask: PropTypes.func,
     moveTimeLineTask: PropTypes.func,
     selectActiveTags: PropTypes.func.isRequired,
@@ -130,10 +130,12 @@ class TaskListContainer extends Component {
       if (timeLine.dueDate === 'othersTasks') {
         this.setState({
           dueDate: null,
-          orderTimeLine: timeLine.orderTimeLine,
+          orderTimeLine: null,
         })
         // Set null due date
-        this.props.moveTimeLineTask(sourceTaskId, null, timeLine.orderTimeLine)
+        this.props.moveTimeLineTask(sourceTaskId, null, null)
+        // Default user sorting
+        this.props.moveTask(move)
         return
       }
 
@@ -141,6 +143,7 @@ class TaskListContainer extends Component {
         dueDate: timeLine.dueDate,
         orderTimeLine: timeLine.orderTimeLine,
       })
+
       this.props.moveTimeLineTask(sourceTaskId, timeLine.dueDate, timeLine.orderTimeLine)
       return
     }
@@ -155,7 +158,7 @@ class TaskListContainer extends Component {
 
     // Sort by Due Date
     if (targetSection) {
-      this.props.setDate(dropTask, this.state.dueDate, 'dueDate')
+      this.props.setDueDateTimeLine(dropTask, this.state.dueDate)
       if (this.state.orderTimeLine) {
         this.props.setOrderTimeLine(dropTask, this.state.orderTimeLine)
       }
@@ -303,7 +306,7 @@ const mapDispatchToProps = {
   requestToggleImportant,
   setOrder,
   setOrderTimeLine,
-  setDate,
+  setDueDateTimeLine,
   moveTask,
   moveTimeLineTask,
   selectActiveTags,

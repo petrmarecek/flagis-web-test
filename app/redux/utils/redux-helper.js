@@ -2,7 +2,7 @@ import { getTimeLineByDueDate } from 'redux/utils/component-helper'
 import moment from 'moment'
 
 // For task order nad filter group order in tag tree
-export function computeOrder(items, dropIndex, timeLine) {
+export function computeOrder(items, dropIndex) {
 
   // Moving just one task
   if (items.length === 1) {
@@ -11,13 +11,6 @@ export function computeOrder(items, dropIndex, timeLine) {
 
   // Moved to the top
   if (dropIndex === 0) {
-    if (timeLine) {
-      // Subtract an hour to the order
-      const hourInMs = 60 * 60 * 1000
-      const nextItemsOrder = items[dropIndex + 1].order
-      return new Date(nextItemsOrder + hourInMs).getTime()
-    }
-
     return Date.now()
   }
 
@@ -70,7 +63,6 @@ export function computeTreeOrder(items, dropIndex, isSection) {
 export function computeTimeLine(tasks, move) {
   const {sourceSection, sourceDueDate, targetSection, targetDueDate, targetIndex, direction} = move
   const sectionTasks = getTimeLineByDueDate(tasks)[targetSection]
-  const orderTimeLine = computeOrder(sectionTasks, targetIndex, true)
 
   // Move to the same section
   if (sectionTasks.length === 1 && sourceSection === targetSection) {
@@ -114,40 +106,71 @@ export function computeTimeLine(tasks, move) {
 
   // Moved to the top of section
   if (targetIndex === 0) {
-    const nextDueDate = sectionTasks[0].dueDate
+    const nextTask = sectionTasks[0]
+    const hourInMs = 60 * 60 * 1000
+    const nextOrderTimeLine = nextTask.orderTimeLine
+    const orderTimeLine = new Date(nextOrderTimeLine + hourInMs).getTime()
+    const nextDueDate = nextTask.dueDate
+
     if (!nextDueDate) {
       return {
-        dueDate: 'othersTasks', orderTimeLine }
+        dueDate: 'othersTasks',
+        orderTimeLine: null
+      }
     }
 
-    return { dueDate: moment(nextDueDate), orderTimeLine }
+    return {
+      dueDate: moment(nextDueDate),
+      orderTimeLine
+    }
   }
 
   // Moved to the end of section
   if (targetIndex === (sectionTasks.length - 1)) {
-    const prevDueDate = sectionTasks[targetIndex].dueDate
+    const task = sectionTasks[targetIndex]
+    const hourInMs = 60 * 60 * 1000
+    const prevOrderTimeLIne = task.orderTimeLine
+    const orderTimeLine = new Date(prevOrderTimeLIne - hourInMs).getTime()
+    const prevDueDate = task.dueDate
+
     if (!prevDueDate) {
-      return 'othersTasks'
+      return {
+        dueDate: 'othersTasks',
+        orderTimeLine: null
+      }
     }
 
-    return { dueDate: moment(prevDueDate), orderTimeLine }
+    return {
+      dueDate: moment(prevDueDate),
+      orderTimeLine
+    }
   }
 
   // Moved in the middle
   // Up direction
+  let prevOrderTimeLine = sectionTasks[targetIndex - 1].orderTimeLine
+  let nextOrderTimeLine = sectionTasks[targetIndex].orderTimeLine
+  let orderTimeLine = nextOrderTimeLine + ((prevOrderTimeLine - nextOrderTimeLine) / 2)
   let prevDueDate = sectionTasks[targetIndex - 1].dueDate
-  let nextDueDate = sectionTasks[targetIndex].dueDate
 
   // Down direction
   if (direction === 'DOWN') {
+    prevOrderTimeLine = sectionTasks[targetIndex].orderTimeLine
+    nextOrderTimeLine = sectionTasks[targetIndex + 1].orderTimeLine
+    orderTimeLine = nextOrderTimeLine + ((prevOrderTimeLine - nextOrderTimeLine) / 2)
     prevDueDate = sectionTasks[targetIndex].dueDate
-    nextDueDate = sectionTasks[targetIndex + 1].dueDate
   }
 
-  if (!prevDueDate && !nextDueDate) {
-    return { dueDate: 'othersTasks', orderTimeLine }
+  if (!prevDueDate) {
+    return {
+      dueDate: 'othersTasks',
+      orderTimeLine: null
+    }
   }
 
-  return { dueDate: moment(prevDueDate), orderTimeLine }
+  return {
+    dueDate: moment(prevDueDate),
+    orderTimeLine
+  }
 }
 

@@ -46,7 +46,12 @@ class AddTaskForm extends Component {
     // due date sorting algorithm is activated
     const now = moment()
     const dueDate = tasksMenu.sort.dueDate || tasksMenu.filters.range
-      ? now.startOf('day').add(1, 'day').startOf('day').subtract(1, 'millisecond')
+      ? now.startOf('day').set({
+        'hour': 23,
+        'minute': 45,
+        'second': 0,
+        'millisecond': 0
+      })
       : null
 
     // extract data
