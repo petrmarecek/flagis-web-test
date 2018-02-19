@@ -141,19 +141,19 @@
         display: none;
         float: right;
 
-        &.edit {
-            margin: 0 6px 0 5px;
+        &.delete {
+          margin: 0 4px 0 0;
         }
 
-        &.add-subtag {
-            margin-right: 5px;
+        &.margin {
+            margin-right: 10px;
         }
 
         &.arrow {
-            margin: 0 6px 0 5px;
+            margin: 0 6px 0 6px;
             .transition(all 0.1s ease-out);
             .transform(rotate(0deg));
-                    
+
             &.collapsed {
                 .transition(all 0.1s ease-out);
                 .transform(rotate(90deg));
@@ -167,6 +167,7 @@
         width: 100%;
         overflow: hidden;
         white-space: nowrap;
+        max-width: 100%;
     }
 
     &:hover .tree-item__icon {

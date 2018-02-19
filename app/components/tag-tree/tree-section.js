@@ -174,7 +174,7 @@ class TreeSection extends Component {
       'tree-section-wrapper': true,
       'active': this.props.section.active,
       'selected': this.props.section.selected,
-      'folder': this.props.section.childItems.length > 0,
+      'folder': this.props.section.childItems.size > 0,
       'drop-section': true,
     })
 
@@ -185,7 +185,7 @@ class TreeSection extends Component {
       'drag-item': true,
     })
 
-    const style = { maxWidth: this.props.maxWidth - 135 }
+    const styleWidth = { maxWidth: this.props.maxWidth - 125 }
 
     // render component
     const { connectDragSource, connectDropTarget, isDragging } = this.props
@@ -201,7 +201,7 @@ class TreeSection extends Component {
           className={currentItemClasses}
           data-item-id={this.props.section.id}
           onClick={this.handleClicked}>
-          <span className="tree-section__title" style={style}>{this.props.section.title}</span>
+          <span className="tree-section__title" style={styleWidth}>{this.props.section.title}</span>
           <span className="tree-section__icons">
             {this.renderArrowIcon(this.props.section.childItems)}
             <span title="Edit">

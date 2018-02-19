@@ -244,6 +244,8 @@ class TreeItem extends Component {
       'drop-item': true
     })
 
+    const styleWidth = { maxWidth: `calc(100% - 30px)` }
+
     return connectDragSource(
       <li
         className={treeItemClasses}
@@ -271,15 +273,26 @@ class TreeItem extends Component {
                 color={tagColor}/>
             </span>}
             <span className="tree-item__main-icon" />
-            <span className="tree-item__title">{this.props.treeItem.tag.title}</span>
+            <span className="tree-item__title" style={styleWidth}>{this.props.treeItem.tag.title}</span>
             {!this.props.archivedTasks &&
             <span className="tree-item__relations">{currentTagRelations.size}</span>}
             <span className="tree-item__actions">
               <div>
                 {this.renderArrowIcon(this.props.treeItem.childItems)}
+                <span title="Delete">
+                  <Icon
+                    className="tree-item__icon delete"
+                    icon={ICONS.TRASH}
+                    width={12}
+                    height={13}
+                    scale={0.5}
+                    color="#fff"
+                    hoverColor="#ff8181"
+                    onClick={this.handleDelete}/>
+                </span>
                 <span title="Edit">
                   <Icon
-                    className="tree-item__icon edit"
+                    className="tree-item__icon margin"
                     icon={ICONS.PENCIL}
                     width={11}
                     height={11}
@@ -287,9 +300,9 @@ class TreeItem extends Component {
                     color="#fff"
                     onClick={this.handleEditIconClicked}/>
                 </span>
-                <span title="Add child filter">
+                <span title="Add sub filter">
                   <Icon
-                    className="tree-item__icon add-subtag"
+                    className="tree-item__icon margin"
                     icon={ICONS.PLUS}
                     width={12}
                     height={12}
