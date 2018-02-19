@@ -136,6 +136,14 @@ function loadTasks(ids, state) {
       return 0;
     })
 
+    // Sort othersTasks by orderTimeLine
+    tasksOthers.sort((a, b) => {
+      if (a.orderTimeLine > b.orderTimeLine) return -1;
+      if (a.orderTimeLine < b.orderTimeLine) return 1;
+
+      return 0;
+    })
+
     tasks = tasksDueDate.concat(tasksOthers)
   }
 

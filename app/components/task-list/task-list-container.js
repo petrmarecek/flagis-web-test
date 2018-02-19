@@ -130,10 +130,10 @@ class TaskListContainer extends Component {
       if (timeLine.dueDate === 'othersTasks') {
         this.setState({
           dueDate: null,
-          orderTimeLine: null,
+          orderTimeLine: timeLine.orderTimeLine,
         })
         // Set null due date
-        this.props.moveTimeLineTask(sourceTaskId, null, null)
+        this.props.moveTimeLineTask(sourceTaskId, null, timeLine.orderTimeLine)
         // Default user sorting
         this.props.moveTask(move)
         return

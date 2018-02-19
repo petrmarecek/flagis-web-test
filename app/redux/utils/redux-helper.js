@@ -115,7 +115,7 @@ export function computeTimeLine(tasks, move) {
     if (!nextDueDate) {
       return {
         dueDate: 'othersTasks',
-        orderTimeLine: null
+        orderTimeLine
       }
     }
 
@@ -136,7 +136,7 @@ export function computeTimeLine(tasks, move) {
     if (!prevDueDate) {
       return {
         dueDate: 'othersTasks',
-        orderTimeLine: null
+        orderTimeLine
       }
     }
 

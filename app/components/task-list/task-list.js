@@ -30,14 +30,18 @@ export default class TaskList extends Component {
   getEmptyTask(typeDate, section) {
     const now = moment()
     const dayOfWeek = now.isoWeekday()
-    const dayToNewWeek = (7 - dayOfWeek) + 1
+    const daysToNewWeek = (7 - dayOfWeek) + 1
+    const dayOfMonth = now.date()
+    const daysOfMonth = now.daysInMonth()
+    const daysToNewMonth = (daysOfMonth - dayOfMonth) + 1
 
     const date = {
       today: now,
       tomorrow: now.clone().add(1, 'days'),
       week: now.clone().add(2, 'days'),
-      month: now.clone().add(dayToNewWeek, 'days'),
-      others: null,
+      month: now.clone().add(daysToNewWeek, 'days'),
+      later: now.clone().add(daysToNewMonth, 'days'),
+      noDueDates: null,
     }
     const task = { dueDate: date[typeDate] }
 
@@ -121,7 +125,8 @@ export default class TaskList extends Component {
         tomorrowTasks: null,
         weekTasks: null,
         monthTasks: null,
-        othersTasks: null,
+        laterTasks: null,
+        noDueDatesTasks: null,
       }
 
       if (timeLineTasks.previousDaysTasks.length !== 0) {
@@ -144,8 +149,12 @@ export default class TaskList extends Component {
         tasksRender.monthTasks = this.getTaskItems(timeLineTasks.monthTasks, 'monthTasks')
       }
 
-      if (timeLineTasks.othersTasks.length !== 0) {
-        tasksRender.othersTasks = this.getTaskItems(timeLineTasks.othersTasks, 'othersTasks')
+      if (timeLineTasks.laterTasks.length !== 0) {
+        tasksRender.laterTasks = this.getTaskItems(timeLineTasks.laterTasks, 'laterTasks')
+      }
+
+      if (timeLineTasks.noDueDatesTasks.length !== 0) {
+        tasksRender.noDueDatesTasks = this.getTaskItems(timeLineTasks.noDueDatesTasks, 'noDueDatesTasks')
       }
 
       return {
@@ -154,7 +163,8 @@ export default class TaskList extends Component {
         tomorrowTasks: tasksRender.tomorrowTasks,
         weekTasks: tasksRender.weekTasks,
         monthTasks: tasksRender.monthTasks,
-        othersTasks: tasksRender.othersTasks,
+        laterTasks: tasksRender.laterTasks,
+        noDueDatesTasks: tasksRender.noDueDatesTasks,
       }
     } else {
       // Due date sorting algorithm isn't activated
@@ -223,7 +233,7 @@ export default class TaskList extends Component {
 
           <li className="time-line__list">
             <span className="time-line__point"/>
-            <p className="time-line__text">This Month</p>
+            <p className="time-line__text">This month</p>
             <ul ref="list" className="task-items">
               {!taskItems.monthTasks && this.getEmptyTask('month', 'monthTasks')}
 
@@ -233,11 +243,21 @@ export default class TaskList extends Component {
 
           <li className="time-line__list">
             <span className="time-line__point"/>
-            <p className="time-line__text">Others</p>
+            <p className="time-line__text">Later</p>
             <ul ref="list" className="task-items">
-              {!taskItems.othersTasks && this.getEmptyTask('others', 'othersTasks')}
+              {!taskItems.laterTasks && this.getEmptyTask('later', 'laterTasks')}
 
-              {taskItems.othersTasks}
+              {taskItems.laterTasks}
+            </ul>
+          </li>
+
+          <li className="time-line__list">
+            <span className="time-line__point"/>
+            <p className="time-line__text">No Due Dates</p>
+            <ul ref="list" className="task-items">
+              {!taskItems.noDueDatesTasks && this.getEmptyTask('noDueDates', 'noDueDatesTasks')}
+
+              {taskItems.noDueDatesTasks}
             </ul>
           </li>
         </ul>}

@@ -86,7 +86,8 @@ export function getTimeLineByDueDate(tasks) {
   const tomorrowTasks = []
   const weekTasks = []
   const monthTasks = []
-  const othersTasks = []
+  const laterTasks = []
+  const noDueDatesTasks = []
 
   for(const task of tasks) {
     const dueDate = moment(task.dueDate)
@@ -117,10 +118,23 @@ export function getTimeLineByDueDate(tasks) {
       continue
     }
 
-    othersTasks.push(task)
+    if (!task.dueDate) {
+      noDueDatesTasks.push(task)
+      continue
+    }
+
+    laterTasks.push(task)
   }
 
-  return {previousDaysTasks, todayTasks, tomorrowTasks, weekTasks, monthTasks, othersTasks}
+  return {
+    previousDaysTasks,
+    todayTasks,
+    tomorrowTasks,
+    weekTasks,
+    monthTasks,
+    laterTasks,
+    noDueDatesTasks
+  }
 }
 
 const color = {
