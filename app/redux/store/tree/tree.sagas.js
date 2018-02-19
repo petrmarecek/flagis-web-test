@@ -49,8 +49,6 @@ export function* createTreeItem(action) {
       order: action.payload.order
     }
 
-    console.log(data)
-
     // call server
     const item = yield call(api.tree.create, data)
 
@@ -172,7 +170,7 @@ export function* undoDeleteTreeItem(action) {
       const createData = {
         title: title,
         parentId: parentId,
-        position: item.order,
+        order: item.order,
       }
 
       // call server

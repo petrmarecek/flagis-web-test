@@ -17,15 +17,15 @@ const UndoContainer = styled.div`
   margin-top: 10px;
   display: flex;
   height: 45px;
-	color: #fff;
-	border-radius: 5px;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	pointer-events: auto;
+  color: #fff;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  pointer-events: auto;
 `;
 
 const Info = styled.div`
-	display: flex;
+  display: flex;
   align-items: center;
   justify-content: flex-start;
   background-color: #1c2124;
@@ -46,15 +46,15 @@ const Button = styled.div`
   align-items: center;
   justify-content: flex-start;
   height: 100%;
-	padding: 0 20px;
-	background-color: #293034;
-	font-size: 16px;
-	font-weight: 600;
-	border-radius: 0 5px 5px 0;
-	-webkit-border-radius: 0 5px 5px 0;
-	-moz-border-radius: 0 5px 5px 0;
-	border-left: 1px solid #8c9da9;
-	cursor: pointer;
+  padding: 0 20px;
+  background-color: #293034;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 0 5px 5px 0;
+  -webkit-border-radius: 0 5px 5px 0;
+  -moz-border-radius: 0 5px 5px 0;
+  border-left: 1px solid #8c9da9;
+  cursor: pointer;
 `;
 
 class UndoBox extends Component {
