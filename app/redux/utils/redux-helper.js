@@ -11,7 +11,10 @@ export function computeOrder(items, dropIndex) {
 
   // Moved to the top
   if (dropIndex === 0) {
-    return Date.now()
+    const start = new Date(1970, 1, 1, 0, 0, 0)
+    const now = new Date()
+
+    return new Date(now - start).getTime()
   }
 
   // Moved to the end
@@ -25,7 +28,7 @@ export function computeOrder(items, dropIndex) {
   // Moved in the middle
   const prevItemsOrder = items[dropIndex - 1].order
   const nextItemsOrder = items[dropIndex + 1].order
-  return prevItemsOrder + ((prevItemsOrder - nextItemsOrder) / 2)
+  return nextItemsOrder + ((prevItemsOrder - nextItemsOrder) / 2)
 }
 
 export function computeTreeOrder(items, dropIndex, isSection) {
