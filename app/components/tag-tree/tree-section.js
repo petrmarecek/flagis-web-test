@@ -110,6 +110,7 @@ class TreeSection extends Component {
     onCollapse: PropTypes.func,
     onSubitemCreated: PropTypes.func,
     onTreeItemEdit: PropTypes.func,
+    onTreeItemDelete: PropTypes.func,
     onTreeItemSelected: PropTypes.func,
     onDrop: PropTypes.func.isRequired,
     section: PropTypes.object,
@@ -225,6 +226,7 @@ class TreeSection extends Component {
           onSubitemCreated={this.props.onSubitemCreated}
           onSubmit={this.props.onSubitemCreated}
           onTreeItemEdit={this.props.onTreeItemEdit}
+          onTreeItemDelete={this.props.onTreeItemDelete}
           onTreeItemSelected={this.props.onTreeItemSelected}
           selection={this.props.selection}
           parents={parents}

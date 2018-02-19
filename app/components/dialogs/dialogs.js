@@ -55,7 +55,7 @@ import {
 import ConfirmTaskDeleteDialog from './confirm-task-delete-dialog'
 import ConfirmTagDeleteDialog from './confirm-tag-delete-dialog'
 import UpdateTreeItemDialog from './update-tree-item-dialog'
-import UpdateTreeItemTagDialog from './update-tree-item-tag-dialog'
+import ConfirmTreeItemTagDeleteDialog from './confirm-tree-item-tag-delete-dialog'
 import AddRemoveTagsDialog from './add-remove-tags-dialog'
 
 class Dialogs extends Component {
@@ -273,13 +273,12 @@ class Dialogs extends Component {
         )
       }
 
-      case 'tree-item-tag-update': {
+      case 'tree-item-tag-delete-confirm': {
         return (
-          <UpdateTreeItemTagDialog
+          <ConfirmTreeItemTagDeleteDialog
             data={currentDialog.data}
             onHide={this.props.hideDialog}
             onDelete={this.handleTreeItemDelete}
-            onUpdate={this.handleTreeItemUpdate}
             windowHeight={window.innerHeight}
             windowWidth={window.innerWidth} />
         )

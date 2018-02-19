@@ -117,6 +117,7 @@ class TreeItem extends Component {
     onCollapse: PropTypes.func.isRequired,
     onSubitemCreated: PropTypes.func,
     onTreeItemEdit: PropTypes.func,
+    onTreeItemDelete: PropTypes.func,
     onTreeItemSelected: PropTypes.func,
     parents: PropTypes.array.isRequired,
     parentTagRelations: PropTypes.object,
@@ -169,6 +170,11 @@ class TreeItem extends Component {
   handleEditIconClicked = event => {
     event.stopPropagation()
     this.props.onTreeItemEdit(this.props.treeItem.toJS())
+  }
+
+  handleDeleteIconClicked = event => {
+    event.stopPropagation()
+    this.props.onTreeItemDelete(this.props.treeItem.toJS())
   }
 
   getColorIndex() {
@@ -288,7 +294,7 @@ class TreeItem extends Component {
                     scale={0.5}
                     color="#fff"
                     hoverColor="#ff8181"
-                    onClick={this.handleDelete}/>
+                    onClick={this.handleDeleteIconClicked}/>
                 </span>
                 <span title="Edit">
                   <Icon
@@ -323,6 +329,7 @@ class TreeItem extends Component {
           onSubitemCreated={this.props.onSubitemCreated}
           onSubmit={this.props.onSubitemCreated}
           onTreeItemEdit={this.props.onTreeItemEdit}
+          onTreeItemDelete={this.props.onTreeItemDelete}
           onTreeItemSelected={this.handleTreeItemSelected}
           parents={parents}
           parentTagRelations={currentTagRelations}

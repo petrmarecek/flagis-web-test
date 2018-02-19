@@ -15,6 +15,7 @@ export default class TreeItemList extends Component {
     onDrop: PropTypes.func.isRequired,
     onSubitemCreated: PropTypes.func.isRequired,
     onTreeItemEdit: PropTypes.func.isRequired,
+    onTreeItemDelete: PropTypes.func.isRequired,
     onTreeItemSelected: PropTypes.func.isRequired,
     parents: PropTypes.array.isRequired,
     parentTagRelations: PropTypes.object,
@@ -45,6 +46,7 @@ export default class TreeItemList extends Component {
             onDrop={this.props.onDrop}
             onSubitemCreated={this.props.onSubitemCreated}
             onTreeItemEdit={this.props.onTreeItemEdit}
+            onTreeItemDelete={this.props.onTreeItemDelete}
             onTreeItemSelected={this.props.onTreeItemSelected}
             parents={this.props.parents}
             parentTagRelations={this.props.parentTagRelations}

@@ -12,6 +12,7 @@ export default class Tree extends Component {
     addControlParentId: PropTypes.string,
     onAddControlCancel: PropTypes.func,
     onTreeItemEdit: PropTypes.func,
+    onTreeItemDelete: PropTypes.func,
     onCollapse: PropTypes.func,
     onDrop: PropTypes.func.isRequired,
     selection: PropTypes.object,
@@ -36,6 +37,7 @@ export default class Tree extends Component {
             onSubitemCreated={this.props.onSubitemCreated}
             onTreeItemSelected={this.props.onTreeItemSelected}
             onTreeItemEdit={this.props.onTreeItemEdit}
+            onTreeItemDelete={this.props.onTreeItemDelete}
             onAddChild={this.props.onAddChild}
             onAddControlCancel={this.props.onAddControlCancel}
             onCollapse={this.props.onCollapse}

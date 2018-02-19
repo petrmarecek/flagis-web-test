@@ -7,12 +7,11 @@ import TagAutocompleteInput from 'components/elements/tag-autocomplete/tag-autoc
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
 
-export default class UpdateTreeItemTagDialog extends DialogBase {
+export default class ConfirmTreeItemTagDeleteDialog extends DialogBase {
 
   static propTypes = {
     data: PropTypes.object.isRequired,
     onHide: PropTypes.func.isRequired,
-    onUpdate: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
     windowHeight: PropTypes.number,
     windowWidth: PropTypes.number,
@@ -37,17 +36,9 @@ export default class UpdateTreeItemTagDialog extends DialogBase {
   }
 
   render() {
-    const context = {
-      source: 'treeUpdate',
-      parentId: this.props.data.treeItem.parentId,
-      updatedTreeItem: {
-        treeItemId: this.props.data.treeItem.id,
-        tagId: this.props.data.treeItem.tag.id
-      }
-    }
 
     return (
-      <div className="dialog tree-item-update" ref="dialogWin">
+      <div className="dialog tree-item-tag-delete" ref="dialogWin">
         <Icon
           icon={ICONS.CROSS_SIMPLE}
           width={14}
@@ -55,22 +46,22 @@ export default class UpdateTreeItemTagDialog extends DialogBase {
           color="#293034"
           className="dialog__close"
           onClick={this.props.onHide}/>
-        <div className="dialog__title-small">Filter item</div>
-        <div className="dialog__content dialog__content--one-item">
-          <TagAutocompleteInput
-            id="treeUpdate"
-            ref="input"
-            context={context}
-            allowMultiSelect={false}/>
-        </div>
-        <div className="button-row">
-          <div className="button-row__right">
-            <button
-              type="button"
-              className="btn-default btn-default--red"
-              onClick={this.handleDelete}>Delete</button>
+        <div className="dialog__title-small">Delete confirmation</div>
+        <form
+          className="common-form"
+          onSubmit={this.handleDelete}>
+          <div className="dialog__content dialog__content--one-item">
+            Do you really want to delete the filter?
           </div>
-        </div>
+          <div className="button-row">
+            <div className="button-row__right">
+              <button
+                type="button"
+                className="btn-default btn-default--red"
+                onClick={this.handleDelete}>Delete</button>
+            </div>
+          </div>
+        </form>
       </div>
     )
   }

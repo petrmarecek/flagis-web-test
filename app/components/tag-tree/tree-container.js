@@ -10,12 +10,19 @@ import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
 import ShadowScrollbar from 'components/elements/shadow-scrollbar'
 
-import { showDialog } from 'redux/store/app-state/app-state.actions'
+import {
+  showDialog,
+  setDetail,
+  hideArchivedTasks,
+  changeLocation
+} from 'redux/store/app-state/app-state.actions'
 import {
   getLeftPanel,
   getArchivedTasksVisibility,
 } from 'redux/store/app-state/app-state.selectors'
 import { getNewRefreshToken } from 'redux/store/auth/auth.selectors'
+import { deselectTasks} from 'redux/store/tasks/tasks.actions'
+import { selectTag } from 'redux/store/tags/tags.actions'
 import { getTagsRelations } from 'redux/store/tags/tags.selectors'
 import {
   toggleMenu,
@@ -59,6 +66,11 @@ class TreeContainer extends React.Component {
     archivedTasks: PropTypes.bool,
     moveSection: PropTypes.func,
     dropSection: PropTypes.func,
+    selectTag: PropTypes.func,
+    setDetail: PropTypes.func,
+    hideArchivedTasks: PropTypes.func,
+    changeLocation: PropTypes.func,
+    deselectTasks: PropTypes.func,
   }
 
   state = {
@@ -133,13 +145,24 @@ class TreeContainer extends React.Component {
   }
 
   handleEditTreeItem = treeItem => {
-    let dialog = 'tree-item-update'
 
     if (treeItem.parentId) {
-      dialog = 'tree-item-tag-update'
+      // Redirect to tag content
+      this.props.hideArchivedTasks()
+      this.props.deselectTasks()
+      this.props.changeLocation('/user/tags')
+
+      // Show tag detail
+      this.props.selectTag(treeItem.tag.id)
+      this.props.setDetail('tag')
+      return
     }
 
-    this.props.showDialog(dialog, { treeItem })
+    this.props.showDialog('tree-item-update', { treeItem })
+  }
+
+  handleDeleteTreeItem = treeItem => {
+    this.props.showDialog('tree-item-tag-delete-confirm', { treeItem })
   }
 
   handleCollapse = treeItem => {
@@ -189,6 +212,7 @@ class TreeContainer extends React.Component {
                   onTreeItemSelected={this.handleTreeItemsSelected}
                   onSubitemCreated={this.handleSubitemCreated}
                   onTreeItemEdit={this.handleEditTreeItem}
+                  onTreeItemDelete={this.handleDeleteTreeItem}
                   onAddChild={this.handleAddTreeItem}
                   onAddControlSubmit={this.handleAddItemSubmit}
                   onAddControlCancel={this.handleAddItemCancel}
@@ -249,6 +273,11 @@ const mapDispatchToProps = {
   dropTreeItem,
   moveSection,
   dropSection,
+  selectTag,
+  setDetail,
+  hideArchivedTasks,
+  changeLocation,
+  deselectTasks
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TreeContainer)
