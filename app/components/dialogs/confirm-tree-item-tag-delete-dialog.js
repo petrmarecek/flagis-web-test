@@ -2,8 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import DialogBase from 'components/dialogs/dialog-base'
 
-import TagAutocompleteInput from 'components/elements/tag-autocomplete/tag-autocomplete-input'
-
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
 
