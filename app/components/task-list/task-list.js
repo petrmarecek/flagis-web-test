@@ -33,7 +33,10 @@ export default class TaskList extends Component {
     const daysToNewWeek = (7 - dayOfWeek) + 1
     const dayOfMonth = now.date()
     const daysOfMonth = now.daysInMonth()
-    const daysToNewMonth = (daysOfMonth - dayOfMonth) + 1
+    const add = dayOfMonth === daysOfMonth ? 2 : 1
+    const daysToNewMonth = (daysOfMonth - dayOfMonth) + add
+
+
 
     const date = {
       today: now,

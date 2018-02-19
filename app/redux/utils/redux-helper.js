@@ -71,9 +71,10 @@ export function computeTimeLine(tasks, move) {
 
   // Move to the empty section
   if (sectionTasks.length === 0) {
-    if (targetSection === 'othersTasks') {
+
+    if (targetSection === 'noDueDatesTasks') {
       return {
-        dueDate: 'othersTasks',
+        dueDate: null,
         orderTimeLine: null
       }
     }
@@ -107,14 +108,13 @@ export function computeTimeLine(tasks, move) {
   // Moved to the top of section
   if (targetIndex === 0) {
     const nextTask = sectionTasks[0]
-    const hourInMs = 60 * 60 * 1000
     const nextOrderTimeLine = nextTask.orderTimeLine
-    const orderTimeLine = new Date(nextOrderTimeLine + hourInMs).getTime()
+    const orderTimeLine = new Date(nextOrderTimeLine + 1000).getTime()
     const nextDueDate = nextTask.dueDate
 
-    if (!nextDueDate) {
+    if (targetSection === 'noDueDatesTasks') {
       return {
-        dueDate: 'othersTasks',
+        dueDate: null,
         orderTimeLine
       }
     }
@@ -128,14 +128,13 @@ export function computeTimeLine(tasks, move) {
   // Moved to the end of section
   if (targetIndex === (sectionTasks.length - 1)) {
     const task = sectionTasks[targetIndex]
-    const hourInMs = 60 * 60 * 1000
     const prevOrderTimeLIne = task.orderTimeLine
-    const orderTimeLine = new Date(prevOrderTimeLIne - hourInMs).getTime()
+    const orderTimeLine = new Date(prevOrderTimeLIne - 1000).getTime()
     const prevDueDate = task.dueDate
 
-    if (!prevDueDate) {
+    if (targetSection === 'noDueDatesTasks') {
       return {
-        dueDate: 'othersTasks',
+        dueDate: null,
         orderTimeLine
       }
     }
@@ -161,10 +160,10 @@ export function computeTimeLine(tasks, move) {
     prevDueDate = sectionTasks[targetIndex].dueDate
   }
 
-  if (!prevDueDate) {
+  if (targetSection === 'noDueDatesTasks') {
     return {
-      dueDate: 'othersTasks',
-      orderTimeLine: null
+      dueDate: null,
+      orderTimeLine
     }
   }
 

@@ -93,6 +93,7 @@ class TaskListContainer extends Component {
 
     // Sort by Due Date
     if (targetSection) {
+
       // No task for this week
       if (targetSection === 'weekTasks') {
         const now = moment()
@@ -126,23 +127,17 @@ class TaskListContainer extends Component {
         return
       }
 
-      // Move to the otherTasks section and previous and next task has null due date
-      if (timeLine.dueDate === 'othersTasks') {
-        this.setState({
-          dueDate: null,
-          orderTimeLine: timeLine.orderTimeLine,
-        })
-        // Set null due date
-        this.props.moveTimeLineTask(sourceTaskId, null, timeLine.orderTimeLine)
-        // Default user sorting
-        this.props.moveTask(move)
-        return
-      }
-
       this.setState({
         dueDate: timeLine.dueDate,
         orderTimeLine: timeLine.orderTimeLine,
       })
+
+      // Move to the otherTasks section and previous and next task has null due date
+      if (targetSection === 'noDueDateTasks') {
+        // Set null due date
+        this.props.moveTimeLineTask(sourceTaskId, null, timeLine.orderTimeLine)
+        return
+      }
 
       this.props.moveTimeLineTask(sourceTaskId, timeLine.dueDate, timeLine.orderTimeLine)
       return
