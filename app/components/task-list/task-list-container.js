@@ -13,7 +13,6 @@ import {
   selectTask,
   setComplete,
   setIncomplete,
-  requestToggleImportant,
   setOrder,
   setOrderTimeLine,
   setDueDateTimeLine,
@@ -58,7 +57,6 @@ class TaskListContainer extends Component {
     selectTask: PropTypes.func,
     setComplete: PropTypes.func,
     setIncomplete: PropTypes.func,
-    requestToggleImportant: PropTypes.func,
     fetchTasks: PropTypes.func,
     setOrder: PropTypes.func,
     setOrderTimeLine: PropTypes.func,
@@ -183,10 +181,6 @@ class TaskListContainer extends Component {
     this.props.setComplete(task.id)
   }
 
-  handleToggleImportant = task => {
-    this.props.requestToggleImportant(task)
-  }
-
   handleTagClick = tag => {
     this.props.deselectTasks()
     this.props.selectActiveTags([tag.id])
@@ -257,7 +251,6 @@ class TaskListContainer extends Component {
             selectedTasks={this.props.selectedTasks}
             onCompleteClick={this.handleCompleteClick}
             onTaskSelect={this.handleTaskSelect}
-            onToggleImportant={this.handleToggleImportant}
             moveTask={this.moveTask}
             dropTask={this.dropTask}
             onTagClick={this.handleTagClick}
@@ -298,7 +291,6 @@ const mapDispatchToProps = {
   selectTask,
   setComplete,
   setIncomplete,
-  requestToggleImportant,
   setOrder,
   setOrderTimeLine,
   setDueDateTimeLine,

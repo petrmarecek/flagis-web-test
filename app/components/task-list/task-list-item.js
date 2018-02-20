@@ -166,7 +166,6 @@ class TaskListItem extends Component {
   static propTypes = {
     onClick: PropTypes.func,
     onCompleteClick: PropTypes.func,
-    onToggleImportant: PropTypes.func,
     isSelected: PropTypes.bool,
     isDragging: PropTypes.bool,
     sort: PropTypes.object,
@@ -216,16 +215,6 @@ class TaskListItem extends Component {
     }
 
     this.props.onCompleteClick(this.props.task)
-  }
-
-  handleImportantClicked = event => {
-    event.stopPropagation()
-
-    if (this.props.listType === 'archived') {
-      return
-    }
-
-    this.props.onToggleImportant(this.props.task)
   }
 
   handleArchiveClicked = event => {
@@ -344,22 +333,6 @@ class TaskListItem extends Component {
       'completed': this.props.task.isCompleted && this.props.listType !== 'archived',
     })
 
-    const isImportantTaskColor = this.props.task.isImportant
-      ? '#ff6a6a'
-      : '#D7E3EC'
-
-    const isImportantCompletedTaskColor = this.props.task.isCompleted && this.props.task.isImportant
-      ? '#e7c8c8'
-      : isImportantTaskColor
-
-    const isImportantArchivedTaskColor = this.props.task.isImportant
-      ? '#282f34'
-      : '#8c9ea9'
-
-    const importantIconColor = this.props.listType === 'archived'
-      ? isImportantArchivedTaskColor
-      : isImportantCompletedTaskColor
-
     const isCompletedTaskColor = this.props.task.isCompleted
       ? '#c2fee5'
       : '#D7E3EC'
@@ -400,13 +373,6 @@ class TaskListItem extends Component {
           onClick={this.handleClicked}
           style={{ visibility }}
           ref="elem" >
-          <Icon
-            className="task-item__important"
-            icon={ICONS.IMPORTANT}
-            color={importantIconColor}
-            width={5}
-            height={25}
-            onClick={this.handleImportantClicked}/>
           {this.props.listType !== 'archived' &&
           <Icon
             className="task-item__completed"

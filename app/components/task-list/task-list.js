@@ -12,7 +12,6 @@ export default class TaskList extends Component {
     onTaskSelect: PropTypes.func,
     tasks: PropTypes.array,
     selectedTags: PropTypes.object,
-    onToggleImportant: PropTypes.func,
     moveTask: PropTypes.func,
     dropTask: PropTypes.func,
     onTagClick: PropTypes.func.isRequired,
@@ -81,7 +80,6 @@ export default class TaskList extends Component {
               selectedTags={this.props.selectedTags}
               onCompleteClick={this.props.onCompleteClick}
               onClick={this.props.onTaskSelect}
-              onToggleImportant={this.props.onToggleImportant}
               moveTask={this.props.moveTask}
               dropTask={this.props.dropTask}
               onTagClick={this.props.onTagClick}
