@@ -296,7 +296,7 @@ class TreeItem extends Component {
                     hoverColor="#ff8181"
                     onClick={this.handleDeleteIconClicked}/>
                 </span>
-                <span title="Edit">
+                <span title="Go to edit tag">
                   <Icon
                     className="tree-item__icon margin"
                     icon={ICONS.PENCIL}

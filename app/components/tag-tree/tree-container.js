@@ -44,6 +44,7 @@ import {
 } from 'redux/store/tree/tree.selectors'
 import { computeTreeOrder } from 'redux/utils/redux-helper'
 import debounce from 'lodash/debounce'
+import { NotificationManager } from 'react-notifications'
 
 class TreeContainer extends React.Component {
 
@@ -155,6 +156,7 @@ class TreeContainer extends React.Component {
       // Show tag detail
       this.props.selectTag(treeItem.tag.id)
       this.props.setDetail('tag')
+      NotificationManager.info('You are editing tag properties (not the filter).', '', 6000)
       return
     }
 
