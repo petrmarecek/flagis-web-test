@@ -414,22 +414,16 @@ class TaskDetail extends Component {
       'detail-content': true,
       'detail-content__top': true,
       'completed': bindingData.isCompleted,
+      'important': bindingData.isImportant,
       'animation': this.state.animation,
     })
 
     const taskItemSubjectDetail = cx({
       'detail-subject': true,
       'completed': bindingData.isCompleted,
+      'important': bindingData.isImportant,
       'animation': this.state.animation,
     })
-
-    const isImportantTaskColor = bindingData.isImportant
-      ? '#ff6a6a'
-      : '#D7E3EC'
-
-    const isImportantCompletedTaskColor = bindingData.isCompleted && bindingData.isImportant
-      ? '#e7c8c8'
-      : isImportantTaskColor
 
     const isCompletedTaskColor = bindingData.isCompleted
       ? '#c2fee5'
@@ -481,13 +475,6 @@ class TaskDetail extends Component {
             <div className="detail-content__subject">
               <div className={taskItemSubjectDetail} >
                 <Icon
-                  className="detail-subject__important"
-                  icon={ICONS.IMPORTANT}
-                  color={isImportantCompletedTaskColor}
-                  width={5}
-                  height={25}
-                  onClick={this.handleToggleImportant}/>
-                <Icon
                   className="detail-subject__completed"
                   icon={ICONS.TASK_CHECKED}
                   color={isCompletedTaskColor}
@@ -531,8 +518,8 @@ class TaskDetail extends Component {
           </div>
 
           <div className="detail-content detail-content__center">
-            <div className="detail-content__dates-attachment">
-              <div className="detail-content__dates">
+            <div className="detail-content__options-attachment">
+              <div className="detail-content__options">
                 <div className="detail-content__date">
                   <span className="detail-content__date-label">
                     Start date
@@ -585,6 +572,16 @@ class TaskDetail extends Component {
                       dateFormat={dateUtil.DEFAULT_DATE_TIME_FORMAT}
                       selected={bindingData.reminderDate}
                       onChange={this.handleReminderDateChanged}/>
+                  </div>
+                </div>
+                <div
+                  className="detail-content__bold"
+                  onClick={this.handleToggleImportant}>
+                  <span className="detail-content__bold-label">
+                    Bold
+                  </span>
+                  <div className="detail-content__bold-content">
+                    B<span className="bold">/B</span>
                   </div>
                 </div>
               </div>

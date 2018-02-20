@@ -331,6 +331,7 @@ class TaskListItem extends Component {
       'active': this.props.task.active,
       'selected': this.props.isSelected,
       'completed': this.props.task.isCompleted && this.props.listType !== 'archived',
+      'important': this.props.task.isImportant,
     })
 
     const isCompletedTaskColor = this.props.task.isCompleted

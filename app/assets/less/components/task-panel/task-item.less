@@ -91,7 +91,7 @@
         .archived & {
             position: absolute;
             top: 11px;
-            left: 32px;
+            left: 13px;
         }
     }
 
@@ -123,6 +123,10 @@
         .task-item.completed & {
             text-decoration: line-through;
             color: @cl-txt-default-completed;
+        }
+
+        .task-item.important & {
+            font-weight: bold;
         }
 
         .task-item.archived & {

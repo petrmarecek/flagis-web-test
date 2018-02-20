@@ -264,18 +264,16 @@ class ArchiveDetail extends Component {
 
     const taskItemSubjectDetail = cx({
       'detail-subject': true,
-      'archived': true
+      'archived': true,
+      'important': bindingData.isImportant,
     })
 
     const taskTopDetail = cx({
       'detail-content': true,
       'detail-content__top': true,
       'archived': true,
+      'important': bindingData.isImportant,
     })
-
-    const isImportantTaskColor = bindingData.isImportant
-      ? '#282f34'
-      : '#8c9ea9'
 
     return (
       <div
@@ -317,12 +315,6 @@ class ArchiveDetail extends Component {
             <div className="detail-content__subject">
               <div className={taskItemSubjectDetail} >
                 <Icon
-                  className="detail-subject__important"
-                  icon={ICONS.IMPORTANT}
-                  color={isImportantTaskColor}
-                  width={5}
-                  height={25}/>
-                <Icon
                   className="detail-subject__archive"
                   icon={ICONS.NON_ARCHIVE}
                   color="#282f34"
@@ -355,8 +347,8 @@ class ArchiveDetail extends Component {
           </div>
 
           <div className="detail-content detail-content__center">
-            <div className="detail-content__dates-attachment">
-              <div className="detail-content__dates">
+            <div className="detail-content__options-attachment">
+              <div className="detail-content__options">
                 <div className="detail-content__date">
                   <span className="detail-content__date-label">
                     Start date

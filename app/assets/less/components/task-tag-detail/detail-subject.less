@@ -30,18 +30,18 @@
 
     &__completed {
         position: absolute;
-        left: 15px;
+        left: 5px;
         top: 0;
         margin: 2px 5px;
     }
 
     &__archive {
         position: absolute;
-        left: 50px;
+        left: 40px;
         top: 0;
         margin: 0 5px;
         .detail-subject.archived & {
-            left: 15px;
+            left: 5px;
             top: -1px;
         }
     }
@@ -58,7 +58,7 @@
         font-size: 18px;
         outline: none !important;
         box-sizing: border-box;
-        margin-left: 60px;
+        margin-left: 45px;
         padding-top: 3px;
         color: @cl-txt-task;
         max-height: 134px;
@@ -70,9 +70,13 @@
         }
 
         .detail-subject.completed & {
-            margin-left: 100px;
+            margin-left: 85px;
             color: @cl-txt-default-completed;
             text-decoration: line-through;
+        }
+
+        .detail-subject.important & {
+            font-weight: bold;
         }
 
         .detail-subject.animation & {
