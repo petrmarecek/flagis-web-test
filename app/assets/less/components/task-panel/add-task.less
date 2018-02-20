@@ -21,14 +21,6 @@
         height: 50px;
     }
 
-    &__important {
-        position: absolute;
-        float: left;
-        padding: 0 10px;
-        margin: 13px 9px 12px 3px;
-        z-index: 10;
-    }
-
     &__subject {
         .box-sizing(border-box);
         .placeholder-color(#d7e3ec);
@@ -37,9 +29,13 @@
         width: 100%;
         font-size: 18px;
         line-height: 30px;
-        padding: 10px 0 10px 36px;
+        padding: 10px 0 10px 17px;
         z-index: 5;
         margin: 0;
+
+        &.important {
+            font-weight: bold;
+        }
     }
 
     &__submit {

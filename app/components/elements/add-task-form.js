@@ -10,6 +10,7 @@ import commonUtils from 'redux/utils/common'
 import { createTask } from 'redux/store/tasks/tasks.actions'
 import { getTasksMenu } from 'redux/store/tasks-menu/tasks-menu.selectors'
 import { getActiveTagsId } from 'redux/store/tags/tags.selectors'
+import cx from "classnames"
 
 class AddTaskForm extends Component {
 
@@ -75,10 +76,6 @@ class AddTaskForm extends Component {
     this.setState({ subject: '' })
   }
 
-  handleImportantClicked = () => {
-    this.setState({isImportant: !this.state.isImportant})
-  }
-
   handleSubjectChanged = event => {
     this.setState({ subject: event.target.value })
   }
@@ -98,15 +95,15 @@ class AddTaskForm extends Component {
   render() {
     const addButtonDisabled = !this.state.subject.trim()
     const tasksMenu = this.props.tasksMenu
-    const importantIconDisabled = Boolean(tasksMenu.filters.important) || Boolean(tasksMenu.filters.unimportant)
+
+    const subjectCss = cx({
+      'add-task__subject': true,
+      'important': Boolean(tasksMenu.filters.important),
+    })
 
     const plusColor = addButtonDisabled
       ? '#d7e3ec'
       : '#44FFB1'
-
-    const isImportantTaskColor = this.state.isImportant
-      ? '#ff6a6a'
-      : '#D7E3EC'
 
     return (
       <form className="add-task" autoComplete="off" onSubmit={this.handleSubmit}>
@@ -118,23 +115,8 @@ class AddTaskForm extends Component {
             color={plusColor}/>
         </div>
         <div className="add-task__subject-container">
-          {importantIconDisabled &&
-          <Icon
-            className="add-task__important"
-            icon={ICONS.IMPORTANT}
-            color={isImportantTaskColor}
-            width={5}
-            height={25}/>}
-          {!importantIconDisabled &&
-          <Icon
-            className="add-task__important"
-            icon={ICONS.IMPORTANT}
-            color={isImportantTaskColor}
-            width={5}
-            height={25}
-            onClick={this.handleImportantClicked}/>}
           <input
-            className="add-task__subject"
+            className={subjectCss}
             type="text"
             name="subject"
             ref="subject"
