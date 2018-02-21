@@ -133,7 +133,7 @@ export default class TasksMenuSort extends Component {
               iconScale={0.64}
               onChange={this.handleSortAlgorithmToggle} />
             <MenuBoxItem
-              title="Sort by importance"
+              title="Sort by Bold"
               type="important"
               active={important}
               onChange={this.handleSortAlgorithmToggle} />

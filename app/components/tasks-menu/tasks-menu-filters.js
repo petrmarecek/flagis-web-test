@@ -100,12 +100,12 @@ export default class TasksMenuFilters extends Component {
               iconScale={1.14}
               onChange={this.props.onToggleImportantFilter} />
             <MenuBoxItem
-              title="Important"
+              title="Bold"
               active={important}
               onChange={this.props.onToggleImportantFilter} />
             <span>|</span>
             <MenuBoxItem
-              title="Unimportant"
+              title="Normal"
               active={unimportant}
               onChange={this.props.onToggleUnimportantFilter} />
           </MenuBoxGroupItems>

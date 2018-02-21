@@ -30,7 +30,7 @@ export default class TasksMenuFiltersActive extends Component {
         break;
 
       case ('unimportant'):
-        title = 'Unimportant'
+        title = 'Normal'
         break;
 
       case ('noTags'):
@@ -38,7 +38,7 @@ export default class TasksMenuFiltersActive extends Component {
         break;
 
       default:
-        title = 'Important'
+        title = 'Bold'
     }
 
     return title
