@@ -1,4 +1,4 @@
-import { put, select } from 'redux-saga/effects'
+import { all, put, select } from 'redux-saga/effects'
 import { push } from 'react-router-redux'
 import * as treeActions from 'redux/store/tree/tree.actions'
 import * as tasksMenuActions from 'redux/store/tasks-menu/tasks-menu.action'
@@ -185,13 +185,13 @@ function* selectTaskDetailHint(action) {
     search: newSearchText,
     selectionIndex: tagHintsData.selectionIndex,
   })
-  yield [
+  yield all([
     put(appStateActions.updateTagHints({
       search: newSearchText,
       ...hintsVisibility,
     })),
     put(appStateActions.tagAutocompleteSetFocus(action.payload.autocompleteId)),
-  ]
+  ])
 }
 
 function* setNewSelectionIndex(autocompleteId, updateFunc) {

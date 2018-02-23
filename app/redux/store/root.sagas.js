@@ -1,4 +1,4 @@
-import { fork, takeLatest, takeEvery } from 'redux-saga/effects'
+import { all, fork, takeLatest, takeEvery } from 'redux-saga/effects'
 
 import { AUTH } from './auth/auth.actions'
 import { APP_STATE } from './app-state/app-state.actions'
@@ -19,7 +19,7 @@ import * as comment from './comments/comments.sagas'
 import * as attachment from './attachments/attachments.sagas'
 
 export default function* root() {
-  yield [
+  yield all([
     // auth
     fork(auth.authFlow),
     fork(auth.initData),
@@ -102,5 +102,5 @@ export default function* root() {
     takeEvery(APP_STATE.TAG_AUTOCOMPLETE_SUBMIT, appState.handleAutocompleteSubmit),
     takeEvery(APP_STATE.TAG_HINTS_SELECT, appState.selectHint),
     takeLatest(APP_STATE.TAG_HINTS_OUTSIDE_CLICK, appState.handleHintsOutsideClick),
-  ]
+  ])
 }
