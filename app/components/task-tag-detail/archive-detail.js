@@ -275,6 +275,12 @@ class ArchiveDetail extends Component {
       'important': bindingData.isImportant,
     })
 
+    const taskOptionsDetail = cx({
+      'detail-content__options': true,
+      'important': bindingData.isImportant,
+      'archived': true,
+    })
+
     return (
       <div
         ref="detail"
@@ -348,7 +354,7 @@ class ArchiveDetail extends Component {
 
           <div className="detail-content detail-content__center">
             <div className="detail-content__options-attachment">
-              <div className="detail-content__options">
+              <div className={taskOptionsDetail}>
                 <div className="detail-content__date">
                   <span className="detail-content__date-label">
                     Start date
@@ -380,6 +386,15 @@ class ArchiveDetail extends Component {
                       dateFormat={dateUtil.DEFAULT_DATE_TIME_FORMAT}
                       selected={bindingData.reminderDate}
                       disabled />
+                  </div>
+                </div>
+                <div
+                  className="detail-content__bold">
+                  <span className="detail-content__bold-label">
+                    Bold
+                  </span>
+                  <div className="detail-content__bold-content">
+                    B<span className="bold">/B</span>
                   </div>
                 </div>
               </div>

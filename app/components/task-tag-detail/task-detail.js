@@ -425,6 +425,11 @@ class TaskDetail extends Component {
       'animation': this.state.animation,
     })
 
+    const taskOptionsDetail = cx({
+      'detail-content__options': true,
+      'important': bindingData.isImportant,
+    })
+
     const isCompletedTaskColor = bindingData.isCompleted
       ? '#c2fee5'
       : '#D7E3EC'
@@ -519,7 +524,7 @@ class TaskDetail extends Component {
 
           <div className="detail-content detail-content__center">
             <div className="detail-content__options-attachment">
-              <div className="detail-content__options">
+              <div className={taskOptionsDetail}>
                 <div className="detail-content__date">
                   <span className="detail-content__date-label">
                     Start date
