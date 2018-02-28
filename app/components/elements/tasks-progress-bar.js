@@ -4,8 +4,8 @@ import velocity from 'velocity-animate'
 import { connect } from 'react-redux'
 
 import {
-  getTasksItems,
-  getCompletedTasksItems,
+  getTasksId,
+  getCompletedTasksId,
 } from 'redux/store/tasks/tasks.selectors'
 
 class TasksProgressBar extends Component {
@@ -53,8 +53,8 @@ class TasksProgressBar extends Component {
 }
 
 const mapStateToProps = state => ({
-  tasksCount: getTasksItems(state).size,
-  completedTasksCount: getCompletedTasksItems(state).size,
+  tasksCount: getTasksId(state).size,
+  completedTasksCount: getCompletedTasksId(state).size,
 })
 
 const mapDispatchToProps = {}
