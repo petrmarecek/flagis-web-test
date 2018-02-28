@@ -50,12 +50,8 @@ export function* authFlow() {
   // Wait to load from persist store
   yield take(REHYDRATE)
 
-  // Check if user is logged
+  // Get auth information
   let auth = yield select(state => authSelectors.getAuth(state))
-  if (!auth.isLogged) {
-    auth = null
-    cleanStore()
-  }
 
   while (true) { // eslint-disable-line
     // login or register
@@ -80,7 +76,7 @@ export function* authFlow() {
     }
 
     const { logOutAction } = yield race({
-      signOutAction: take(AUTH.LOGOUT),
+      logOutAction: take(AUTH.LOGOUT),
       refreshTokenLoop: call(tokenLoop, auth)
     })
 
@@ -267,17 +263,16 @@ function* tokenLoop(auth) {
   const { PENDING, FULFILLED, REJECTED } = createLoadActions(AUTH.REFRESH_TOKEN)
 
   while (true) { // eslint-disable-line
-
     yield put({ type: PENDING })
 
-    const data = {
-      userId: auth.profile instanceof Map
-        ? auth.profile.get('id')
-        : auth.profile.id,
-      refreshToken: auth.refreshToken,
-    }
-
     try {
+      const data = {
+          userId: auth.profile instanceof Map
+            ? auth.profile.get('id')
+            : auth.profile.id,
+          refreshToken: auth.refreshToken,
+        }
+
       const response = yield call(api.auth.token, data)
       if (!response) {
         return
@@ -294,7 +289,7 @@ function* tokenLoop(auth) {
 
     } catch (error) {
       yield put({ type: REJECTED })
-      logout()
+      yield call(logout)
       return
     }
   }
