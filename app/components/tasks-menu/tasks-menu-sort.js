@@ -56,7 +56,7 @@ export default class TasksMenuSort extends Component {
     }
 
     if (important) {
-      return ICONS.SORT_IMPORTANT
+      return ICONS.SORT_BOLD
     }
 
     if (incomplete) {
@@ -129,8 +129,8 @@ export default class TasksMenuSort extends Component {
             <MenuBoxItem
               active={important}
               type="important"
-              icon={ICONS.IMPORTANT_SQUARE}
-              iconScale={0.64}
+              icon={ICONS.BOLD}
+              iconScale={1.33}
               onChange={this.handleSortAlgorithmToggle} />
             <MenuBoxItem
               title="Sort by Bold"
