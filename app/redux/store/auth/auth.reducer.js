@@ -13,19 +13,20 @@ export default typeToReducer({
   },
 
   [AUTH.LOGIN]: {
-    FULFILLED: (state, action) => 
+    FULFILLED: (state, action) =>
       state.merge({
         isLogged: true,
         accessToken: action.payload.accessToken,
         refreshToken: action.payload.refreshToken,
         expiresIn: action.payload.expiresIn,
+        firebaseToken: action.payload.firebaseToken,
         profile: new Profile(action.payload.profile)
       }),
   },
 
   [AUTH.LOGOUT]: () => new AuthStore(),
 
-  [AUTH.UPDATE_PROFILE]: (state, action) => 
+  [AUTH.UPDATE_PROFILE]: (state, action) =>
     state.setIn('profile', new Profile(action.profile)),
 
 }, new AuthStore())

@@ -21,6 +21,7 @@ import { fetchTree } from 'redux/store/tree/tree.actions'
 import * as authActions from 'redux/store/auth/auth.actions'
 import * as authSelectors from 'redux/store/auth/auth.selectors'
 import api from 'redux/utils/api'
+import firebase from 'redux/utils/firebase'
 
 const AUTH = authActions.AUTH
 const MIN_TOKEN_LIFESPAN = 300 * 1000
@@ -54,6 +55,7 @@ export function* authFlow() {
   let auth = yield select(state => authSelectors.getAuth(state))
 
   while (true) { // eslint-disable-line
+
     // login or register
     if (!auth) {
       const {login, register} = yield race({
@@ -181,8 +183,9 @@ export function* resetPassword(action) {
 
 // ------ HELPER FUNCTIONS ----------------------------------------------------
 
-function setAuthToken(accessToken) {
+function* setTokens({ accessToken, firebaseToken }) {
   api.setApiToken(accessToken)
+  yield call(firebase.signIn, firebaseToken)
 }
 
 function* authorizeUser(authApiCall, action) {
@@ -209,11 +212,11 @@ function* authorizeUser(authApiCall, action) {
     // call server
     const auth = yield call(authApiCall, requestBody)
 
+    // save auth data to persistentStore & client
+    yield call(setTokens, auth)
+
     // dispatch action with auth data
     yield put({ type: FULFILLED, payload: auth })
-
-    // save auth data to persistentStore & client
-    setAuthToken(auth.accessToken)
 
     // hide loader
     yield put(hideLoader())
@@ -245,14 +248,12 @@ function* authorizeUser(authApiCall, action) {
   }
 }
 
-function cleanStore() {
-  // clean
-  api.clearApiToken()
-}
-
 function* logout() {
   // clean
-  cleanStore()
+  api.clearApiToken()
+
+  // Sign out from firebase
+  yield call(firebase.signOut)
 
   // redirect
   const redirectAction = push('/sign-in')
@@ -271,15 +272,17 @@ function* tokenLoop(auth) {
             ? auth.profile.get('id')
             : auth.profile.id,
           refreshToken: auth.refreshToken,
-        }
+      }
 
       const response = yield call(api.auth.token, data)
       if (!response) {
         return
       }
 
+      // Set access token and firebase token
+      yield call(setTokens, response)
+
       yield put({ type: FULFILLED, payload: response })
-      setAuthToken(response.accessToken)
 
       // redirect
       const redirectAction = push('/user/tasks')
