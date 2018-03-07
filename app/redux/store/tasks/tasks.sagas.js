@@ -1,5 +1,7 @@
-import { call, put, select, fork } from 'redux-saga/effects'
+import { normalize } from 'normalizr'
+import { cancelled, take, call, put, select, fork } from 'redux-saga/effects'
 import {
+  createLoadActions,
   fetch,
   mainUndo,
 } from 'redux/store/common.sagas'
@@ -13,8 +15,37 @@ import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'
 import * as taskSelectors from 'redux/store/tasks/tasks.selectors'
 import * as tagsSelectors from 'redux/store/tags/tags.selectors'
 import search from 'redux/services/search'
+import firebase from 'redux/utils/firebase'
 
 const TASKS = taskActions.TASKS
+
+export function* initTasksData() {
+  const channel = firebase.getTasksChannel()
+  return yield fork(syncTasksChannel, channel)
+}
+
+function* syncTasksChannel(channel) {
+  const { FULFILLED } = createLoadActions(TASKS.FIREBASE)
+
+  try {
+
+    while (true) { // eslint-disable-line
+      const data = yield take(channel)
+
+      // Prepare data
+      const tasks = data.docs.map(doc => doc.data())
+      const normalizeData = normalize(tasks, schema.taskList)
+
+      // Dispatch action
+      yield put({ type: FULFILLED, payload: normalizeData })
+    }
+
+  } finally {
+    if (yield cancelled()) {
+      channel.close()
+    }
+  }
+}
 
 export function* fetchTasks() {
   const isArchivedTasks = yield select(state => appStateSelectors.getArchivedTasksVisibility(state))

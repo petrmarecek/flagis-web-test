@@ -1,6 +1,6 @@
 import { push } from 'react-router-redux'
 import { delay } from 'redux-saga'
-import { call, put, race, take, select } from 'redux-saga/effects'
+import { all, fork, cancel, call, put, race, take, select } from 'redux-saga/effects'
 import { NotificationManager } from 'react-notifications'
 import { REHYDRATE } from 'redux-persist'
 import { Map } from 'immutable'
@@ -17,6 +17,7 @@ import {
   fetchTagsRelations
 } from 'redux/store/tags/tags.actions'
 import { fetchTasks } from 'redux/store/tasks/tasks.actions'
+import { initTasksData } from 'redux/store/tasks/tasks.sagas'
 import { fetchTree } from 'redux/store/tree/tree.actions'
 import * as authActions from 'redux/store/auth/auth.actions'
 import * as authSelectors from 'redux/store/auth/auth.selectors'
@@ -26,7 +27,7 @@ import firebase from 'redux/utils/firebase'
 const AUTH = authActions.AUTH
 const MIN_TOKEN_LIFESPAN = 300 * 1000
 
-export function* initData() {
+export function* initDataFlow() {
 
   while (true) { // eslint-disable-line
     const loginActions = createLoadActions(AUTH.LOGIN)
@@ -37,12 +38,18 @@ export function* initData() {
       token: take(tokenActions.FULFILLED),
     })
 
+    // Init data from firestore
+    const { tasksSyncing } = yield all({
+      tasksSyncing: fork(initTasksData),
+    })
+
     yield put(fetchTags())
     yield put(fetchTagsRelations())
     yield put(fetchTasks())
     yield put(fetchTree())
 
-    take(AUTH.LOGOUT)
+    yield take(AUTH.LOGOUT)
+    yield cancel(tasksSyncing)
   }
 }
 

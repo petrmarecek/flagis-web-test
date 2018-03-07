@@ -22,7 +22,7 @@ export default function* root() {
   yield all([
     // auth
     fork(auth.authFlow),
-    fork(auth.initData),
+    fork(auth.initDataFlow),
     takeLatest(AUTH.CONTROL_REDIRECT_SIGN_IN, auth.controlRedirectSignIn),
     takeLatest(AUTH.CONTROL_REDIRECT_TASKS, auth.controlRedirectTasks),
     takeLatest(AUTH.CHANGE_PASSWORD, auth.changePassword),

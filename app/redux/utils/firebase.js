@@ -1,18 +1,20 @@
 import firebase from 'firebase'
+import 'firebase/firestore'
+import { config } from 'redux/data/firebase'
+import { eventChannel } from 'redux-saga'
 
 // Initialize Firebase
-const config = {
-  apiKey: "AIzaSyDFw-G0nAvPxD3Sw9wi2SnKIOxSTQGyVUY",
-  authDomain: "flagis-development.firebaseapp.com",
-  databaseURL: "https://flagis-development.firebaseio.com",
-  projectId: "flagis-development",
-  storageBucket: "flagis-development.appspot.com",
-  messagingSenderId: "153227018743"
-}
-
 firebase.initializeApp(config)
+// Firestore
+const db = firebase.firestore()
 
 export default {
+
+  getTasksChannel: () => {
+    const ref = db.collection('tasks')
+
+    return eventChannel(emit => ref.onSnapshot(emit))
+  },
 
   signIn: token => firebase.auth().signInWithCustomToken(token),
 
