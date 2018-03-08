@@ -105,7 +105,8 @@ class UndoBox extends Component {
             icon={ICONS.ARROW_UNDO}
             width={22}
             height={20}
-            color="#fff" />
+            color="#fff"
+            onClick={this.handleUndo}/>
           <Title >
             {title[undoBox.name]}
           </Title>
