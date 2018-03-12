@@ -13,3 +13,7 @@ export const getEmail = (state) => {
 export const getNewRefreshToken = (state) => {
   return state.getIn(['auth', 'newRefreshToken'])
 }
+
+export const getUserId = (state) => {
+  return state.getIn(['auth', 'profile', 'id'])
+}

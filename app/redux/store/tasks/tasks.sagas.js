@@ -12,6 +12,7 @@ import * as taskMenuActions from 'redux/store/tasks-menu/tasks-menu.action'
 import api from 'redux/utils/api'
 import schema from 'redux/data/schema'
 import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'
+import * as authSelectors from 'redux/store/auth/auth.selectors'
 import * as taskSelectors from 'redux/store/tasks/tasks.selectors'
 import * as tagsSelectors from 'redux/store/tags/tags.selectors'
 import search from 'redux/services/search'
@@ -20,7 +21,8 @@ import firebase from 'redux/utils/firebase'
 const TASKS = taskActions.TASKS
 
 export function* initTasksData() {
-  const channel = firebase.getTasksChannel()
+  const userId = yield select(state => authSelectors.getUserId(state))
+  const channel = firebase.getTasksChannel(userId)
   return yield fork(syncTasksChannel, channel)
 }
 

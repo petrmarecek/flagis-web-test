@@ -10,8 +10,10 @@ const db = firebase.firestore()
 
 export default {
 
-  getTasksChannel: () => {
+  getTasksChannel: userId => {
     const ref = db.collection('tasks')
+      .where('createdById', '==', userId)
+      .where('isTrashed', '==', false)
 
     return eventChannel(emit => ref.onSnapshot(emit))
   },
