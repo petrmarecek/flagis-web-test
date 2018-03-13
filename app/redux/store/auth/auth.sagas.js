@@ -30,6 +30,7 @@ const MIN_TOKEN_LIFESPAN = 300 * 1000
 export function* initDataFlow() {
 
   while (true) { // eslint-disable-line
+    const initTime = new Date().toISOString()
     const loginActions = createLoadActions(AUTH.LOGIN)
     const tokenActions = createLoadActions(AUTH.REFRESH_TOKEN)
 
@@ -38,15 +39,15 @@ export function* initDataFlow() {
       token: take(tokenActions.FULFILLED),
     })
 
-    // Init data from firestore
-    const { tasksSyncing } = yield all({
-      tasksSyncing: fork(initTasksData),
-    })
-
     yield put(fetchTags())
     yield put(fetchTagsRelations())
     yield put(fetchTasks())
     yield put(fetchTree())
+
+    // Init data from firestore
+    const { tasksSyncing } = yield all({
+      tasksSyncing: fork(initTasksData, initTime),
+    })
 
     yield take(AUTH.LOGOUT)
     yield cancel(tasksSyncing)

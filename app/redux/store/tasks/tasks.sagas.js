@@ -20,9 +20,9 @@ import firebase from 'redux/utils/firebase'
 
 const TASKS = taskActions.TASKS
 
-export function* initTasksData() {
+export function* initTasksData(initTime) {
   const userId = yield select(state => authSelectors.getUserId(state))
-  const channel = firebase.getTasksChannel(userId)
+  const channel = firebase.getTasksChannel(userId, initTime)
   return yield fork(syncTasksChannel, channel)
 }
 
