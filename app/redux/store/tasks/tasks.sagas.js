@@ -230,13 +230,17 @@ export function* setIncomplete(action) {
 }
 
 export function* setOrder(action) {
-  const task = action.payload.task
-  const order = action.payload.order
-
   try {
     // call server
+    const taskId = action.payload.task.id
+    const order = action.payload.order
     const update = { order }
-    yield* updateTask(task.id, update)
+
+    // call server
+    const updatedTask = yield call(api.tasks.update, taskId, update)
+
+    // update task in the search index
+    search.tasks.updateItem(updatedTask)
 
   } catch(err) {
     // TODO: revert
