@@ -19,6 +19,10 @@ export default typeToReducer({
     FULFILLED: (state, action) => saveTasks(action.payload, state)
   },
 
+  [TASKS.FIREBASE]: {
+    FULFILLED: (state, action) => saveTasks(action.payload, state)
+  },
+
   [TASKS.FETCH_ARCHIVED]: {
     FULFILLED: (state, action) => saveTasks(action.payload, state)
   },
@@ -50,6 +54,9 @@ export default typeToReducer({
 
   [TASKS.REPLACE]: (state, action) =>
     saveTasks(action.payload, state),
+
+  [TASKS.MOVE]: (state, action) =>
+    state.setIn(['tasks', action.payload.taskId, 'order'], action.payload.order),
 
   [TASKS.MOVE_TIME_LINE]: (state, action) => {
     if (action.payload.orderTimeLine) {

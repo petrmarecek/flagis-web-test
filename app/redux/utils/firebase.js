@@ -13,8 +13,6 @@ export default {
   getTasksChannel: (userId, initTime) => {
     const ref = db.collection('tasks')
       .where('createdById', '==', userId)
-      .where('isTrashed', '==', false)
-      .where('isArchived', '==', false)
       .where('updatedAt', '>', initTime)
 
     return eventChannel(emit => ref.onSnapshot(emit))

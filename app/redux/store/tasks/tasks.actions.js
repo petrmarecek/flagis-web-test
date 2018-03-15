@@ -143,9 +143,12 @@ export const setField = (task, fieldName, fieldValue) => ({
   payload: { task, fieldName, fieldValue },
 })
 
-export const moveTask = move => ({
+export const moveTask = (taskId, order) => ({
   type: TASKS.MOVE,
-  payload: move,
+  payload: {
+    taskId,
+    order,
+  },
 })
 
 export const moveTimeLineTask = (taskId, dueDate, orderTimeLine) => ({

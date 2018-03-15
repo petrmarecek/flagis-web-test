@@ -76,6 +76,7 @@ class TaskListContainer extends Component {
   state = {
     dueDate: null,
     orderTimeLine: null,
+    order: null,
   }
 
   constructor(props) {
@@ -142,29 +143,30 @@ class TaskListContainer extends Component {
     }
 
     // Default user sorting
-    this.props.moveTask(move)
+    const order = computeOrder(tasks, move)
+    if (!order) {
+      return
+    }
+
+    this.setState({ order })
+    this.props.moveTask(sourceTaskId, order)
   }
 
   dropTask = drop => {
-    const { dropIndex, dropTask, targetSection } = drop
-    const tasks = this.props.tasks.items
+    const { dropTask, targetSection } = drop
+    const { dueDate, orderTimeLine, order } = this.state
 
     // Sort by Due Date
     if (targetSection) {
-      this.props.setDueDateTimeLine(dropTask, this.state.dueDate)
+      this.props.setDueDateTimeLine(dropTask, dueDate)
       if (this.state.orderTimeLine) {
-        this.props.setOrderTimeLine(dropTask, this.state.orderTimeLine)
+        this.props.setOrderTimeLine(dropTask, orderTimeLine)
       }
       return
     }
 
     // Default user sorting
-    const newOrder = computeOrder(tasks, dropIndex)
-    if (!newOrder) {
-      return
-    }
-
-    this.props.setOrder(dropTask, newOrder)
+    this.props.setOrder(dropTask, order)
   }
 
   handleTaskSelect = (task, event) => {

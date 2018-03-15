@@ -17,6 +17,7 @@ import * as taskSelectors from 'redux/store/tasks/tasks.selectors'
 import * as tagsSelectors from 'redux/store/tags/tags.selectors'
 import search from 'redux/services/search'
 import firebase from 'redux/utils/firebase'
+import dateUtil from 'redux/utils/date'
 
 const TASKS = taskActions.TASKS
 
@@ -179,10 +180,9 @@ export function* cancelArchiveTasks(action) {
 
   try {
     // call server
-    const newOrder = Date.now()
     const update = {
       isArchived: false,
-      order: newOrder,
+      order: dateUtil.getMilliseconds(),
     }
     for (const taskId of newTasksList) {
       // update task (change isArchived: false)

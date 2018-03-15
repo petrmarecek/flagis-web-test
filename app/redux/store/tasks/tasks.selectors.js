@@ -86,6 +86,13 @@ function loadTasks(ids, state) {
     return task.set('tags', tags)
   })
 
+  tasks.sort((a, b) => {
+    if (a.order > b.order) return -1;
+    if (a.order < b.order) return 1;
+
+    return 0;
+  })
+
   // apply date range filter
   if (state.getIn(['tasksMenu', 'filters', 'range'])) {
     tasks = filterByDateRange(state.getIn(['tasksMenu', 'filters', 'range']), tasks)
@@ -120,18 +127,15 @@ function loadTasks(ids, state) {
     const tasksDueDate = tasks.filter(task => task.dueDate)
     const tasksOthers = tasks.filter(task => !task.dueDate)
 
-    // Sort by dueDate and orderTimeLine
+    // Sort by dueDate
     tasksDueDate.sort((a, b) => {
       if (moment(a.dueDate) < moment(b.dueDate)) return -1;
       if (moment(a.dueDate) > moment(b.dueDate)) return 1;
 
-      if (a.orderTimeLine > b.orderTimeLine) return -1;
-      if (a.orderTimeLine < b.orderTimeLine) return 1;
-
       return 0;
     })
 
-    // Sort othersTasks by orderTimeLine
+    // Sort by orderTimeLine
     tasksOthers.sort((a, b) => {
       if (a.orderTimeLine > b.orderTimeLine) return -1;
       if (a.orderTimeLine < b.orderTimeLine) return 1;

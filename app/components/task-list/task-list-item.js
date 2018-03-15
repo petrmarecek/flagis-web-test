@@ -138,7 +138,6 @@ const taskTarget = {
 
     const dragSource = monitor.getItem()
     const drop = {
-      dropIndex: dragSource.index,
       dropTask: dragSource.task,
       targetSection: props.section,
     }

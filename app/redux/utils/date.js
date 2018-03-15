@@ -19,5 +19,9 @@ export default {
     }
 
     return moment(dateStr)
-  }
-} 
+  },
+
+  getMilliseconds() {
+    return new Date().valueOf()
+  },
+}

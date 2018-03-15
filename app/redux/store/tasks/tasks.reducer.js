@@ -75,21 +75,6 @@ export default typeToReducer({
   [TASKS.DESELECT]: state => state
     .updateIn(['selection'], set => set.clear()),
 
-  [TASKS.MOVE]: (state, action) => {
-    const move = action.payload
-
-    return state.updateIn(['items'], list => {
-
-      // Find index of hovered task & compute index for dragged one
-      const targetTaskIndex = list.indexOf(move.targetTaskId)
-
-      // Move taskId within the list
-      return list
-        .filter(taskId => taskId !== move.sourceTaskId)
-        .insert(targetTaskIndex, move.sourceTaskId)
-    })
-  },
-
   [TASKS.SET_COMPLETE]: (state, action) => state
     .updateIn(['completed'], list => list.unshift(action.payload.taskId)),
 
