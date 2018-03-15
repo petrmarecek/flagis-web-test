@@ -46,9 +46,6 @@ export default typeToReducer({
   [TASKS.SET_IMPORTANT]: (state, action) =>
     state.setIn(['tasks', action.payload.task.id, 'isImportant'], action.payload.isImportant),
 
-  [TASKS.SET_ORDER]: (state, action) =>
-    state.setIn(['tasks', action.payload.task.id, 'order'], action.payload.order),
-
   [TASKS.SET_FIELD]: (state, action) =>
     state.setIn(['tasks', action.payload.task.id, action.payload.fieldName], action.payload.fieldValue),
 
