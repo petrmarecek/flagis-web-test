@@ -19,11 +19,11 @@ export default typeToReducer({
     FULFILLED: (state, action) => saveTasks(action.payload, state)
   },
 
-  [TASKS.FIREBASE]: {
+  [TASKS.FETCH_ARCHIVED]: {
     FULFILLED: (state, action) => saveTasks(action.payload, state)
   },
 
-  [TASKS.FETCH_ARCHIVED]: {
+  [TASKS.FIREBASE]: {
     FULFILLED: (state, action) => saveTasks(action.payload, state)
   },
 

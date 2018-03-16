@@ -1,4 +1,5 @@
 import { normalize } from 'normalizr'
+import { List } from 'immutable'
 import { cancelled, take, call, put, select, fork } from 'redux-saga/effects'
 import {
   createLoadActions,
@@ -39,9 +40,42 @@ function* syncTasksChannel(channel) {
       const tasks = data.docs.map(doc => doc.data())
       const normalizeData = normalize(tasks, schema.taskList)
 
+      // Get ids list of active, uncompleted, completed, archived and trashed task
+      tasks.forEach(task => {
+        const { id, isCompleted, isArchived, isTrashed  } = task
+
+        // active tasks
+        if (!isArchived && !isTrashed) {
+          normalizeData.items = List(normalizeData.items).push(id)
+        }
+
+        // Uncompleted tasks
+        if (!isCompleted && !isArchived && !isTrashed) {
+          normalizeData.uncompleted = List(normalizeData.uncompleted).push(id)
+        }
+
+        // Completed tasks
+        if (isCompleted && !isArchived && !isTrashed) {
+          normalizeData.completed = List(normalizeData.completed).push(id)
+        }
+
+        // Archived tasks
+        if (isCompleted && isArchived && !isTrashed) {
+          normalizeData.archived = List(normalizeData.archived).push(id)
+        }
+
+        // Trashed tasks
+        if (isTrashed) {
+          normalizeData.trashed = List(normalizeData.trashed).push(id)
+        }
+      })
+
       // Dispatch action
       yield put({ type: FULFILLED, payload: normalizeData })
     }
+
+  } catch(err) {
+    console.error(err)
 
   } finally {
     if (yield cancelled()) {

@@ -52,6 +52,30 @@ export default typeToReducer({
     }
   },
 
+  // Update lists for tasks
+  [TASKS.FIREBASE]: {
+    FULFILLED: (state, action) => {
+      // Data from firestore
+      const { items, uncompleted, completed, archived, trashed } = action.payload
+
+      // Get lists from store of tasks
+      const storeItems = state.getIn(['items'])
+      const storeCompleted = state.getIn(['completed'])
+      const storeArchived = state.getIn(['archived', 'items'])
+
+      // Get new lists
+      const newItems = updateTasks(storeItems, items, [archived, trashed])
+      const newCompleted = updateTasks(storeCompleted , completed, [uncompleted, archived, trashed])
+      const newArchived = updateTasks(storeArchived , archived, [completed, trashed])
+
+      // Set new lists
+      return state
+        .setIn(['items'], newItems)
+        .setIn(['completed'], newCompleted)
+        .setIn(['archived', 'items'], newArchived)
+    }
+  },
+
   // New set of tags was selected, remove the current one
   [TAGS.SET_ACTIVE_TAGS]: (state, action) => {
     const isArchivedTasks = action.payload.isArchivedTasks
@@ -125,4 +149,18 @@ function completedTasks(tasks) {
   }
 
   return completedTasksList
+}
+
+function updateTasks(storeList, unionList, filterLists) {
+  if (unionList) {
+    storeList = storeList.toSet().union(unionList.toSet()).toList()
+  }
+
+  filterLists.forEach(filterList => {
+    if (filterList) {
+      storeList = storeList.filter(id => filterList.indexOf(id) < 0)
+    }
+  })
+
+  return storeList
 }
