@@ -73,6 +73,8 @@ export default typeToReducer({
   },
 
   // ------ Tasks -------------------------------------------------------------
+  [TASKS.FIREBASE_TAGS_RELATIONS]: (state, action) => updateTagsRelations(action.payload, state),
+
   [TASKS.ADD_TAG]: (state, action) => state
     .updateIn(['all', 'items'], list => list.toSet().union(new Set([action.payload.tag.id])).toList()),
 
@@ -102,4 +104,25 @@ function saveTagsRelations(payload, state) {
   }, {})
 
   return state.mergeIn(['relations'], Map(relations))
+}
+
+// Update tags relations
+function updateTagsRelations(payload, state) {
+  const tasks = payload
+  let relations = Map()
+
+  tasks.forEach(task => {
+    const { id, tags } = task
+
+    // Relations of tasks and tags
+    tags.forEach(tag => {
+      relations = relations.updateIn([tag], set => {
+        return set
+          ? set.add(id)
+          : Set([id])
+      })
+    })
+  })
+
+  return state.mergeIn(['relations'], relations)
 }

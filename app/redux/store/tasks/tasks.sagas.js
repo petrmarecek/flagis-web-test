@@ -16,6 +16,7 @@ import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'
 import * as authSelectors from 'redux/store/auth/auth.selectors'
 import * as taskSelectors from 'redux/store/tasks/tasks.selectors'
 import * as tagsSelectors from 'redux/store/tags/tags.selectors'
+import * as entitiesSelectors from 'redux/store/entities/entities.selectors'
 import search from 'redux/services/search'
 import firebase from 'redux/utils/firebase'
 import dateUtil from 'redux/utils/date'
@@ -42,7 +43,7 @@ function* syncTasksChannel(channel) {
 
       // Get ids list of active, uncompleted, completed, archived and trashed task
       tasks.forEach(task => {
-        const { id, isCompleted, isArchived, isTrashed  } = task
+        const { id, isCompleted, isArchived, isTrashed } = task
 
         // active tasks
         if (!isArchived && !isTrashed) {
@@ -70,8 +71,12 @@ function* syncTasksChannel(channel) {
         }
       })
 
-      // Dispatch action
+      // Save changes to store entities
       yield put({ type: FULFILLED, payload: normalizeData })
+
+      // Update tag relations in store
+      const entitiesTasks = yield select(state => entitiesSelectors.getActiveEntitiesTasks(state))
+      yield put({ type: TASKS.FIREBASE_TAGS_RELATIONS, payload: entitiesTasks })
     }
 
   } catch(err) {
