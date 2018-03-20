@@ -1,7 +1,6 @@
 import React from 'react'
 import { Switch, Route } from 'react-router-dom'
 
-// import HomePage from 'containers/HomePage/Loadable';
 import LandingPage from 'containers/landing-page/loadable'
 import SignIn from 'containers/sign-in'
 import SignUp from 'containers/sign-up'

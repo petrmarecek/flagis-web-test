@@ -61,6 +61,10 @@ export function* authFlow() {
 
   // Get auth information
   let auth = yield select(state => authSelectors.getAuth(state))
+  if (!auth.isLogged) {
+    auth = null
+    cleanStore()
+  }
 
   while (true) { // eslint-disable-line
 
@@ -256,9 +260,14 @@ function* authorizeUser(authApiCall, action) {
   }
 }
 
-function* logout() {
+function cleanStore() {
   // clean
   api.clearApiToken()
+}
+
+function* logout() {
+  // clean
+  cleanStore()
 
   // Sign out from firebase
   yield call(firebase.signOut)
@@ -276,10 +285,10 @@ function* tokenLoop(auth) {
 
     try {
       const data = {
-          userId: auth.profile instanceof Map
-            ? auth.profile.get('id')
-            : auth.profile.id,
-          refreshToken: auth.refreshToken,
+        userId: auth.profile instanceof Map
+          ? auth.profile.get('id')
+          : auth.profile.id,
+        refreshToken: auth.refreshToken,
       }
 
       const response = yield call(api.auth.token, data)
@@ -301,6 +310,7 @@ function* tokenLoop(auth) {
     } catch (error) {
       yield put({ type: REJECTED })
       yield call(logout)
+
       return
     }
   }
