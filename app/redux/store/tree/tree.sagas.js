@@ -3,9 +3,10 @@ import { push } from 'react-router-redux'
 import intersection from 'lodash/intersection'
 import includes from 'lodash/includes'
 import { NotificationManager } from 'react-notifications'
+import { errorMessages } from 'utils/messages'
+import constants from 'utils/constants'
 import { Map } from 'immutable'
 
-import consts from 'redux/data/consts'
 import {
   createLoadActions,
   fetch,
@@ -223,9 +224,9 @@ export function* dropTreeItem(action) {
 
   if (isParentColision) {
     NotificationManager.error(
-      'Cannot perform this move tree validation failed. Tag duplication found in the result tree path.',
+      errorMessages.treeItems.duplicatePathConflict,
       'Move conflict',
-      consts.NOTIFICATION_ERROR_DURATION
+      constants.NOTIFICATION_ERROR_DURATION
     )
     return
   }
@@ -236,9 +237,9 @@ export function* dropTreeItem(action) {
     const sourceTagId = treeItemToTag(storeData.treeEntities, sourceItemId)
     if (includes(siblingsTagsIds, sourceTagId)) {
       NotificationManager.error(
-        'Cannot perform this move tree validation failed. The same tag found on the same tree level.',
+        errorMessages.treeItems.duplicateLevelConflict,
         'Move conflict',
-        consts.NOTIFICATION_ERROR_DURATION
+        constants.NOTIFICATION_ERROR_DURATION
       )
       return
     }

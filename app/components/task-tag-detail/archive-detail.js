@@ -4,6 +4,8 @@ import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import commonUtils from 'redux/utils/common'
 import { NotificationManager } from 'react-notifications'
+import { successMessages } from 'utils/messages'
+import constants from 'utils/constants'
 import { List } from 'immutable'
 import cx from 'classnames'
 import { findDOMNode } from 'react-dom'
@@ -198,7 +200,11 @@ class ArchiveDetail extends Component {
       nonArchive.entitiesTasks,
       selectedTasks
     )
-    NotificationManager.success('Task return to the main list as completed task', 'Success', 3000)
+    NotificationManager.success(
+      successMessages.tasks.cancelArchive,
+      'Success',
+      constants.NOTIFICATION_SUCCESS_DURATION
+    )
   }
 
   // Delete task

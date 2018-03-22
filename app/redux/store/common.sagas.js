@@ -1,6 +1,8 @@
 import { call, put, take, spawn, race } from 'redux-saga/effects'
 import { delay } from 'redux-saga'
 import { NotificationManager } from 'react-notifications'
+import { errorMessages } from 'utils/messages'
+import constants from 'utils/constants'
 
 import * as appStateActions from 'redux/store/app-state/app-state.actions'
 import { logout } from 'redux/store/auth/auth.actions'
@@ -66,7 +68,11 @@ export function* fetch(actionType, fetchDef) {
     // TODO: After fix in backend delete logout
     // logout if access token is invalid
     if (err.response.status === 500) {
-      NotificationManager.info('Your session has expired.', 20000)
+      NotificationManager.error(
+        errorMessages.sessionExpired,
+        'Error',
+        constants.NOTIFICATION_ERROR_DURATION
+      )
       yield put(logout())
     } else {
       console.error('Cannot fetch data.', err)

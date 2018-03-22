@@ -4,6 +4,8 @@ import cx from 'classnames'
 import { OrderedSet } from 'immutable'
 import { connect } from 'react-redux'
 import { NotificationManager } from 'react-notifications'
+import { successMessages } from 'utils/messages'
+import constants from 'utils/constants'
 
 import { getAuth } from 'redux/store/auth/auth.selectors'
 import { showDialog } from 'redux/store/app-state/app-state.actions'
@@ -135,7 +137,11 @@ class TasksMenuContainer extends Component {
       archive.entitiesTasks,
       archive.selectedTasks
     )
-    NotificationManager.success('Completed tasks archived', 'Success', 3000)
+    NotificationManager.success(
+      successMessages.multiSelect.archive,
+      'Success',
+      constants.NOTIFICATION_SUCCESS_DURATION
+    )
   }
 
   handleSelectAllTasks = () => {

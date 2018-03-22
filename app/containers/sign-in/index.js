@@ -28,6 +28,18 @@ import Loader from 'components/elements/loader'
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
 
+import styled from 'styled-components'
+
+const Notification = styled.div`
+  position: fixed;
+  pointer-events: none;
+  bottom: 0;
+  right: 0;
+  padding: 0 26px 46px 0;
+  z-index: 999999;
+  overflow: none;
+`;
+
 class SignIn extends Component {
 
   static contextTypes = {
@@ -147,7 +159,9 @@ class SignIn extends Component {
           </div>
         </div>
         <div className="floating-components">
-          <NotificationContainer />
+          <Notification >
+            <NotificationContainer />
+          </Notification>
         </div>
       </div>
     )

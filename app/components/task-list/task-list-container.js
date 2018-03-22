@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import debounce from 'lodash/debounce'
 import { NotificationManager } from 'react-notifications'
+import { successMessages } from 'utils/messages'
+import constants from 'utils/constants'
 
 import { getArchivedTasksVisibility } from 'redux/store/app-state/app-state.selectors'
 import { getNewRefreshToken } from 'redux/store/auth/auth.selectors'
@@ -205,7 +207,11 @@ class TaskListContainer extends Component {
       archive.entitiesTasks,
       archive.selectedTasks
     )
-    NotificationManager.success('Task archived', 'Success', 3000)
+    NotificationManager.success(
+      successMessages.tasks.archive,
+      'Success',
+      constants.NOTIFICATION_SUCCESS_DURATION
+    )
   }
 
   handleCancelArchiveTasks = taskId => {
@@ -225,7 +231,11 @@ class TaskListContainer extends Component {
       nonArchive.entitiesTasks,
       nonArchive.selectedTasks
     )
-    NotificationManager.success('Task return as completed task', 'Success', 3000)
+    NotificationManager.success(
+      successMessages.tasks.cancelArchive,
+      'Success',
+      constants.NOTIFICATION_SUCCESS_DURATION
+    )
   }
 
   getTaskList() {

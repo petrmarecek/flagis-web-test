@@ -7,6 +7,8 @@ import { List } from 'immutable'
 import cx from 'classnames'
 import { findDOMNode } from 'react-dom'
 import { connect } from 'react-redux'
+import { successMessages } from 'utils/messages'
+import constants from 'utils/constants'
 
 import {
   showDialog,
@@ -247,7 +249,11 @@ class TaskDetail extends Component {
       archive.entitiesTasks,
       selectedTasks
     )
-    NotificationManager.success('Task archived', 'Success', 3000)
+    NotificationManager.success(
+      successMessages.tasks.archive,
+      'Success',
+      constants.NOTIFICATION_SUCCESS_DURATION
+    )
   }
 
   // Subject

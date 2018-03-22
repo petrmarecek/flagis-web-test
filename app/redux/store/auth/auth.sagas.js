@@ -4,6 +4,8 @@ import { all, fork, cancel, call, put, race, take, select } from 'redux-saga/eff
 import { NotificationManager } from 'react-notifications'
 import { REHYDRATE } from 'redux-persist'
 import { Map } from 'immutable'
+import { errorMessages, successMessages } from 'utils/messages'
+import constants from 'utils/constants'
 
 import { createLoadActions } from 'redux/store/common.sagas'
 import {
@@ -25,7 +27,6 @@ import api from 'redux/utils/api'
 import firebase from 'redux/utils/firebase'
 
 const AUTH = authActions.AUTH
-const MIN_TOKEN_LIFESPAN = 300 * 1000
 
 export function* initDataFlow() {
 
@@ -122,24 +123,23 @@ export function* controlRedirectTasks() {
 
 export function* changePassword(action) {
   try {
-    const SUCCESS_MESSAGE_DURATION = 3000
-
     yield call(api.users.password, action.payload)
     yield put(deselectError('changePassword'))
     yield put(hideLoader())
 
-    NotificationManager.success('Password was changed.', 'Success', SUCCESS_MESSAGE_DURATION)
+    NotificationManager.success(
+      successMessages.changePassword,
+      'Success',
+      constants.NOTIFICATION_SUCCESS_DURATION
+    )
 
   } catch (err) {
-    yield put(setError('changePassword', 'Incorrect old password'))
+    yield put(setError('changePassword', errorMessages.changePassword.badRequest))
     yield put(hideLoader())
-    // TODO: handle error
   }
 }
 
 export function* emailResetPassword(action) {
-  const SUCCESS_MESSAGE_DURATION = 8000
-
   try {
 
     yield call(api.users.emailResetPassword, action.payload)
@@ -147,9 +147,9 @@ export function* emailResetPassword(action) {
     yield put(changeLocation('/sign-in'))
 
     NotificationManager.success(
-      `If Flagis account exists for ${action.payload.email}, an e-mail will be sent with further instructions.`,
+      successMessages.emailResetPassword(action.payload.email),
       'Success',
-      SUCCESS_MESSAGE_DURATION,
+      constants.NOTIFICATION_SUCCESS_DURATION,
     )
 
   } catch (err) {
@@ -157,17 +157,14 @@ export function* emailResetPassword(action) {
     yield put(changeLocation('/sign-in'))
 
     NotificationManager.success(
-      `If Flagis account exists for ${action.payload.email}, an e-mail will be sent with further instructions.`,
+      successMessages.emailResetPassword(action.payload.email),
       'Success',
-      SUCCESS_MESSAGE_DURATION,
+      constants.NOTIFICATION_SUCCESS_DURATION,
     )
-    // TODO: handle error
   }
 }
 
 export function* resetPassword(action) {
-  const SUCCESS_MESSAGE_DURATION = 8000
-
   try {
 
     yield call(api.users.resetPassword, action.payload)
@@ -175,9 +172,9 @@ export function* resetPassword(action) {
     yield put(changeLocation('/sign-in'))
 
     NotificationManager.success(
-      'Password has successfully been changed.',
+      successMessages.changePassword,
       'Success',
-      SUCCESS_MESSAGE_DURATION
+      constants.NOTIFICATION_SUCCESS_DURATION,
     )
 
   } catch (err) {
@@ -185,11 +182,10 @@ export function* resetPassword(action) {
     yield put(changeLocation('/sign-in'))
 
     NotificationManager.error(
-      'Link is expired. Please ask for a new one.',
+      errorMessages.resetPassword.linkExpired,
       'Error',
-      SUCCESS_MESSAGE_DURATION
+      constants.NOTIFICATION_ERROR_DURATION
     )
-    // TODO: handle error
   }
 }
 
@@ -244,14 +240,14 @@ function* authorizeUser(authApiCall, action) {
 
     if (action.type === 'AUTH/LOGIN') {
       if (error.response.data.type === 'PasswordResetRequired') {
-        yield put(setError('signIn', 'Please, reset your password. Click on the Forgot your password?'))
+        yield put(setError('signIn', errorMessages.signIn.passwordResetRequired))
       } else {
-        yield put(setError('signIn', 'Incorrect E-mail or Password'))
+        yield put(setError('signIn', errorMessages.signIn.unauthorized))
       }
     }
 
     if (action.type === 'AUTH/SIGN_UP') {
-      yield put(setError('signUp', 'This E-mail is already in use'))
+      yield put(setError('signUp', errorMessages.signUp.conflict))
     }
 
     yield put(hideLoader())
@@ -305,7 +301,7 @@ function* tokenLoop(auth) {
       const redirectAction = push('/user/tasks')
       yield put(redirectAction)
 
-      yield call(delay, response.expiresIn - MIN_TOKEN_LIFESPAN)
+      yield call(delay, response.expiresIn - constants.MIN_TOKEN_LIFESPAN)
 
     } catch (error) {
       yield put({ type: REJECTED })

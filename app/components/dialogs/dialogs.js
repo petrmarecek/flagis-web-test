@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { NotificationManager } from 'react-notifications'
+import { errorMessages } from 'utils/messages'
+import constants from 'utils/constants'
 
 import { hideDialog } from 'redux/store/app-state/app-state.actions'
 import {
@@ -189,16 +191,22 @@ class Dialogs extends Component {
     const isTagsRelations = tagsRelations.has(tagId)
 
     if (isReferenced) {
-      NotificationManager.error('The target tag cannot be deleted because it is referenced '
-        + 'in the filter tree. Please delete the referencing tree item first.', 'Delete conflict', 10000)
+      NotificationManager.error(
+        errorMessages.tags.referenceDeleteConflict,
+        'Delete conflict',
+        constants.NOTIFICATION_ERROR_DURATION
+      )
       return
     }
 
     if (isTagsRelations) {
       if (tagsRelations.getIn([tagId]).size > 0) {
-        NotificationManager.error('The target tag cannot be deleted because it has '
-          + 'relations in tasks list. Please delete the relations first.', 'Delete conflict', 10000)
-        return
+        NotificationManager.error(
+          errorMessages.tags.relationDeleteConflict,
+          'Delete conflict',
+          constants.NOTIFICATION_ERROR_DURATION
+        )
+       return
       }
     }
 
