@@ -10,7 +10,7 @@ import {
 import api from 'redux/utils/api'
 import schema from 'redux/data/schema'
 import search from 'redux/services/search'
-import { NotificationManager } from 'react-notifications'
+import { toast } from 'react-toastify'
 import { errorMessages } from 'utils/messages'
 import constants from 'utils/constants'
 import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'
@@ -77,11 +77,10 @@ export function* createTag(action) {
     // add the tag to store
     yield put(tagActions.addTag(tag))
   } catch(err) {
-    NotificationManager.error(
-      errorMessages.tags.createConflict,
-      'Create conflict',
-      constants.NOTIFICATION_ERROR_DURATION
-    )
+    toast.error(errorMessages.tags.createConflict, {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: constants.NOTIFICATION_ERROR_DURATION,
+    })
   }
 }
 

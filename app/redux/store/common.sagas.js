@@ -1,6 +1,6 @@
 import { call, put, take, spawn, race } from 'redux-saga/effects'
 import { delay } from 'redux-saga'
-import { NotificationManager } from 'react-notifications'
+import { toast } from 'react-toastify'
 import { errorMessages } from 'utils/messages'
 import constants from 'utils/constants'
 
@@ -68,11 +68,10 @@ export function* fetch(actionType, fetchDef) {
     // TODO: After fix in backend delete logout
     // logout if access token is invalid
     if (err.response.status === 500) {
-      NotificationManager.error(
-        errorMessages.sessionExpired,
-        'Error',
-        constants.NOTIFICATION_ERROR_DURATION
-      )
+      toast.error(errorMessages.sessionExpired, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: constants.NOTIFICATION_ERROR_DURATION,
+      })
       yield put(logout())
     } else {
       console.error('Cannot fetch data.', err)

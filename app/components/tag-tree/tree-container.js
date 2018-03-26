@@ -44,7 +44,7 @@ import {
 } from 'redux/store/tree/tree.selectors'
 import { computeTreeOrder } from 'redux/utils/redux-helper'
 import debounce from 'lodash/debounce'
-import { NotificationManager } from 'react-notifications'
+import { toast } from 'react-toastify'
 import { infoMessages } from 'utils/messages'
 import constants from 'utils/constants'
 
@@ -158,11 +158,10 @@ class TreeContainer extends React.Component {
       // Show tag detail
       this.props.selectTag(treeItem.tag.id)
       this.props.setDetail('tag')
-      NotificationManager.info(
-        infoMessages.treeItems.edit,
-        '',
-        constants.NOTIFICATION_INFO_DURATION
-      )
+      toast.info(infoMessages.treeItems.edit, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: constants.NOTIFICATION_INFO_DURATION,
+      })
       return
     }
 

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import debounce from 'lodash/debounce'
-import { NotificationManager } from 'react-notifications'
+import { toast } from 'react-toastify'
 import { successMessages } from 'utils/messages'
 import constants from 'utils/constants'
 
@@ -207,11 +207,10 @@ class TaskListContainer extends Component {
       archive.entitiesTasks,
       archive.selectedTasks
     )
-    NotificationManager.success(
-      successMessages.tasks.archive,
-      'Success',
-      constants.NOTIFICATION_SUCCESS_DURATION
-    )
+    toast.success(successMessages.tasks.archive, {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+    })
   }
 
   handleCancelArchiveTasks = taskId => {
@@ -231,11 +230,10 @@ class TaskListContainer extends Component {
       nonArchive.entitiesTasks,
       nonArchive.selectedTasks
     )
-    NotificationManager.success(
-      successMessages.tasks.cancelArchive,
-      'Success',
-      constants.NOTIFICATION_SUCCESS_DURATION
-    )
+    toast.success(successMessages.tasks.cancelArchive, {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+    })
   }
 
   getTaskList() {

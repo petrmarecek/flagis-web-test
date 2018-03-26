@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
-import { NotificationManager } from 'react-notifications'
+import { toast } from 'react-toastify'
 import { List } from 'immutable'
 import cx from 'classnames'
 import { findDOMNode } from 'react-dom'
@@ -249,11 +249,10 @@ class TaskDetail extends Component {
       archive.entitiesTasks,
       selectedTasks
     )
-    NotificationManager.success(
-      successMessages.tasks.archive,
-      'Success',
-      constants.NOTIFICATION_SUCCESS_DURATION
-    )
+    toast.success(successMessages.tasks.archive, {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+    })
   }
 
   // Subject

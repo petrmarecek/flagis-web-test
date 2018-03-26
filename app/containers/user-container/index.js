@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import cx from 'classnames'
 import { connect } from 'react-redux'
-import { NotificationContainer } from 'react-notifications'
+import { ToastContainer, style } from 'react-toastify'
 import HTML5Backend from 'react-dnd-html5-backend'
 import { DragDropContext } from 'react-dnd'
 
 import { controlRedirectSignIn } from 'redux/store/auth/auth.actions'
+import { getAppStateItem } from 'redux/store/app-state/app-state.selectors'
 
 import Dialogs from 'components/dialogs/dialogs'
 import UndoBox from 'components/elements/undo-box'
@@ -18,18 +19,6 @@ import TagPage from 'containers/tag-page'
 import ArchivePage from 'containers/archive-page'
 import AccountPage from 'containers/account-page'
 
-import styled from 'styled-components'
-
-const Notification = styled.div`
-  position: fixed;
-  pointer-events: none;
-  bottom: 0;
-  right: 0;
-  padding: 0 26px 46px 0;
-  z-index: 999999;
-  overflow: none;
-`;
-
 class UserContainer extends Component {
   static propTypes = {
     controlRedirectSignIn: PropTypes.func,
@@ -37,10 +26,38 @@ class UserContainer extends Component {
       pathname: PropTypes.string.isRequired,
     }).isRequired,
     match: PropTypes.any,
+    undoBox: PropTypes.object,
   }
 
   componentWillMount() {
     this.props.controlRedirectSignIn()
+  }
+
+  componentDidMount() {
+    style({
+      BOTTOM_RIGHT: {
+        bottom: '30px',
+        right: '25px'
+      }
+    })
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (newProps.undoBox !== null) {
+      style({
+        BOTTOM_RIGHT: {
+          bottom: '90px',
+          right: '25px'
+        }
+      })
+    } else {
+      style({
+        BOTTOM_RIGHT: {
+          bottom: '30px',
+          right: '25px'
+        }
+      })
+    }
   }
 
   render() {
@@ -66,17 +83,17 @@ class UserContainer extends Component {
         </div>
         <div className="floating-components">
           <FloatingComponents />
-          <Notification >
-            <NotificationContainer />
-            <UndoBox />
-          </Notification>
+          <ToastContainer />
+          <UndoBox />
         </div>
       </div>
     )
   }
 }
 
-const mapStateToProps = () => ({})
+const mapStateToProps = state => ({
+  undoBox: getAppStateItem(state, 'undoBox')
+})
 const mapDispatchToProps = { controlRedirectSignIn }
 
 export default DragDropContext(HTML5Backend)(

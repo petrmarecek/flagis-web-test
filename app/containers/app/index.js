@@ -9,8 +9,6 @@ import ResetPassword from 'containers/reset-password'
 import UserContainer from 'containers/user-container'
 import NotFoundPage from 'containers/not-found-page/loadable'
 
-import 'assets/vendor/react-notifications/react-notifications.css'
-
 export default function App() {
   return (
     <div>
@@ -24,5 +22,5 @@ export default function App() {
         <Route component={NotFoundPage} />
       </Switch>
     </div>
-  );
+  )
 }

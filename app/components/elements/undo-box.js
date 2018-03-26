@@ -12,16 +12,17 @@ import Icon from 'components/icons/icon'
 import styled from 'styled-components'
 
 const UndoContainer = styled.div`
-  position: relative;
-  float: right;
-  margin-top: 10px;
+  z-index: 10000;
+  position: fixed;
+  bottom: 50px;
+  right: 30px;
   display: flex;
   height: 45px;
   color: #fff;
+  cursor: pointer;
   border-radius: 5px;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
-  pointer-events: auto;
 `;
 
 const Info = styled.div`
@@ -54,7 +55,6 @@ const Button = styled.div`
   -webkit-border-radius: 0 5px 5px 0;
   -moz-border-radius: 0 5px 5px 0;
   border-left: 1px solid #8c9da9;
-  cursor: pointer;
 `;
 
 class UndoBox extends Component {
@@ -99,19 +99,20 @@ class UndoBox extends Component {
     }
 
     return (
-      <UndoContainer innerRef={comp => {this.container = comp}}>
+      <UndoContainer
+        innerRef={comp => {this.container = comp}}
+        onClick={this.handleUndo} >
         <Info>
           <Icon
             icon={ICONS.ARROW_UNDO}
             width={22}
             height={20}
-            color="#fff"
-            onClick={this.handleUndo}/>
+            color="#fff" />
           <Title >
             {title[undoBox.name]}
           </Title>
         </Info>
-        <Button onClick={this.handleUndo}>
+        <Button>
           Undo
         </Button>
       </UndoContainer>

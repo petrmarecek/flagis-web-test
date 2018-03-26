@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { List } from 'immutable'
 import { Field, reduxForm } from 'redux-form/immutable'
-import { NotificationContainer } from 'react-notifications'
+import { ToastContainer, style } from 'react-toastify'
 
 import {
   deselectError,
@@ -27,18 +27,6 @@ import Loader from 'components/elements/loader'
 
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
-
-import styled from 'styled-components'
-
-const Notification = styled.div`
-  position: fixed;
-  pointer-events: none;
-  bottom: 0;
-  right: 0;
-  padding: 0 26px 46px 0;
-  z-index: 999999;
-  overflow: none;
-`;
 
 class SignIn extends Component {
 
@@ -65,6 +53,15 @@ class SignIn extends Component {
 
   componentWillMount() {
     this.props.controlRedirectTasks()
+  }
+
+  componentDidMount() {
+    style({
+      BOTTOM_RIGHT: {
+        bottom: '30px',
+        right: '25px'
+      }
+    })
   }
 
   componentWillReceiveProps(nextProps) {
@@ -159,9 +156,7 @@ class SignIn extends Component {
           </div>
         </div>
         <div className="floating-components">
-          <Notification >
-            <NotificationContainer />
-          </Notification>
+          <ToastContainer />
         </div>
       </div>
     )

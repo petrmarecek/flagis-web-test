@@ -1,7 +1,7 @@
 import { push } from 'react-router-redux'
 import { delay } from 'redux-saga'
 import { all, fork, cancel, call, put, race, take, select } from 'redux-saga/effects'
-import { NotificationManager } from 'react-notifications'
+import { toast } from 'react-toastify'
 import { REHYDRATE } from 'redux-persist'
 import { Map } from 'immutable'
 import { errorMessages, successMessages } from 'utils/messages'
@@ -127,11 +127,10 @@ export function* changePassword(action) {
     yield put(deselectError('changePassword'))
     yield put(hideLoader())
 
-    NotificationManager.success(
-      successMessages.changePassword,
-      'Success',
-      constants.NOTIFICATION_SUCCESS_DURATION
-    )
+    toast.success(successMessages.changePassword, {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+    })
 
   } catch (err) {
     yield put(setError('changePassword', errorMessages.changePassword.badRequest))
@@ -141,26 +140,31 @@ export function* changePassword(action) {
 
 export function* emailResetPassword(action) {
   try {
-
     yield call(api.users.emailResetPassword, action.payload)
     yield put(hideLoader())
     yield put(changeLocation('/sign-in'))
 
-    NotificationManager.success(
-      successMessages.emailResetPassword(action.payload.email),
-      'Success',
-      constants.NOTIFICATION_SUCCESS_DURATION,
-    )
+    // delay for render sign-in component
+    yield delay(100)
+
+    // show notification after redirect to sign-in
+    toast.success(successMessages.emailResetPassword(action.payload.email), {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+    })
 
   } catch (err) {
     yield put(hideLoader())
     yield put(changeLocation('/sign-in'))
 
-    NotificationManager.success(
-      successMessages.emailResetPassword(action.payload.email),
-      'Success',
-      constants.NOTIFICATION_SUCCESS_DURATION,
-    )
+    // delay for render sign-in component
+    yield delay(100)
+
+    // show notification after redirect to sign-in
+    toast.success(successMessages.emailResetPassword(action.payload.email), {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+    })
   }
 }
 
@@ -171,21 +175,27 @@ export function* resetPassword(action) {
     yield put(hideLoader())
     yield put(changeLocation('/sign-in'))
 
-    NotificationManager.success(
-      successMessages.changePassword,
-      'Success',
-      constants.NOTIFICATION_SUCCESS_DURATION,
-    )
+    // delay for render sign-in component
+    yield delay(100)
+
+    // show notification after redirect to sign-in
+    toast.success(successMessages.changePassword, {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+    })
 
   } catch (err) {
     yield put(hideLoader())
     yield put(changeLocation('/sign-in'))
 
-    NotificationManager.error(
-      errorMessages.resetPassword.linkExpired,
-      'Error',
-      constants.NOTIFICATION_ERROR_DURATION
-    )
+    // delay for render sign-in component
+    yield delay(100)
+
+    // show notification after redirect to sign-in
+    toast.error(errorMessages.resetPassword.linkExpired, {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: constants.NOTIFICATION_ERROR_DURATION,
+    })
   }
 }
 

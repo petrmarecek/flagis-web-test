@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import cx from 'classnames'
 import { OrderedSet } from 'immutable'
 import { connect } from 'react-redux'
-import { NotificationManager } from 'react-notifications'
+import { toast } from 'react-toastify'
 import { successMessages } from 'utils/messages'
 import constants from 'utils/constants'
 
@@ -137,11 +137,10 @@ class TasksMenuContainer extends Component {
       archive.entitiesTasks,
       archive.selectedTasks
     )
-    NotificationManager.success(
-      successMessages.multiSelect.archive,
-      'Success',
-      constants.NOTIFICATION_SUCCESS_DURATION
-    )
+    toast.success(successMessages.multiSelect.cancelArchive, {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+    })
   }
 
   handleSelectAllTasks = () => {

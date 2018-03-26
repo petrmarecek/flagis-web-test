@@ -2,7 +2,7 @@ import { call, put, select } from 'redux-saga/effects'
 import { push } from 'react-router-redux'
 import intersection from 'lodash/intersection'
 import includes from 'lodash/includes'
-import { NotificationManager } from 'react-notifications'
+import { toast } from 'react-toastify'
 import { errorMessages } from 'utils/messages'
 import constants from 'utils/constants'
 import { Map } from 'immutable'
@@ -223,11 +223,10 @@ export function* dropTreeItem(action) {
     : intersection([targetTag, ...targetParentsTags], [sourceTag, ...sourceChildTags]).length !== 0
 
   if (isParentColision) {
-    NotificationManager.error(
-      errorMessages.treeItems.duplicatePathConflict,
-      'Move conflict',
-      constants.NOTIFICATION_ERROR_DURATION
-    )
+    toast.error(errorMessages.treeItems.duplicatePathConflict, {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: constants.NOTIFICATION_ERROR_DURATION,
+    })
     return
   }
 
@@ -236,11 +235,10 @@ export function* dropTreeItem(action) {
     const siblingsTagsIds = treeItemsToTags(storeData.treeEntities, findChildren(storeData.treeMap, targetParentId))
     const sourceTagId = treeItemToTag(storeData.treeEntities, sourceItemId)
     if (includes(siblingsTagsIds, sourceTagId)) {
-      NotificationManager.error(
-        errorMessages.treeItems.duplicateLevelConflict,
-        'Move conflict',
-        constants.NOTIFICATION_ERROR_DURATION
-      )
+      toast.error(errorMessages.treeItems.duplicateLevelConflict, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: constants.NOTIFICATION_ERROR_DURATION,
+      })
       return
     }
   }

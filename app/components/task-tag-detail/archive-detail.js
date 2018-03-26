@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import commonUtils from 'redux/utils/common'
-import { NotificationManager } from 'react-notifications'
+import { toast } from 'react-toastify'
 import { successMessages } from 'utils/messages'
 import constants from 'utils/constants'
 import { List } from 'immutable'
@@ -200,11 +200,10 @@ class ArchiveDetail extends Component {
       nonArchive.entitiesTasks,
       selectedTasks
     )
-    NotificationManager.success(
-      successMessages.tasks.cancelArchive,
-      'Success',
-      constants.NOTIFICATION_SUCCESS_DURATION
-    )
+    toast.success(successMessages.tasks.cancelArchive, {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+    })
   }
 
   // Delete task

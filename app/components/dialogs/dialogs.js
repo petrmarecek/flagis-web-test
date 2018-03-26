@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { NotificationManager } from 'react-notifications'
+import { toast } from 'react-toastify'
 import { errorMessages } from 'utils/messages'
 import constants from 'utils/constants'
 
@@ -191,21 +191,19 @@ class Dialogs extends Component {
     const isTagsRelations = tagsRelations.has(tagId)
 
     if (isReferenced) {
-      NotificationManager.error(
-        errorMessages.tags.referenceDeleteConflict,
-        'Delete conflict',
-        constants.NOTIFICATION_ERROR_DURATION
-      )
+      toast.error(errorMessages.tags.referenceDeleteConflict, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: constants.NOTIFICATION_ERROR_DURATION,
+      })
       return
     }
 
     if (isTagsRelations) {
       if (tagsRelations.getIn([tagId]).size > 0) {
-        NotificationManager.error(
-          errorMessages.tags.relationDeleteConflict,
-          'Delete conflict',
-          constants.NOTIFICATION_ERROR_DURATION
-        )
+        toast.error(errorMessages.tags.relationDeleteConflict, {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: constants.NOTIFICATION_ERROR_DURATION,
+        })
        return
       }
     }
