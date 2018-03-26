@@ -184,10 +184,6 @@
         border-bottom: 1px solid #D7E3EC;
         cursor: pointer;
 
-        .important & {
-            font-weight: bold;
-        }
-
         .archived & {
             cursor: default;
         }
@@ -195,6 +191,10 @@
 
     &__bold-label {
         margin: 0 0 0 3px;
+
+        .important & {
+            font-weight: bold;
+        }
     }
 
     &__bold-content {
