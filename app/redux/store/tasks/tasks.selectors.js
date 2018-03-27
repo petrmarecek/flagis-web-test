@@ -127,15 +127,18 @@ function loadTasks(ids, state) {
     const tasksDueDate = tasks.filter(task => task.dueDate)
     const tasksOthers = tasks.filter(task => !task.dueDate)
 
-    // Sort by dueDate
+    // Sort tasks with dueDate by dueDate and orderTimeLine
     tasksDueDate.sort((a, b) => {
       if (moment(a.dueDate) < moment(b.dueDate)) return -1;
       if (moment(a.dueDate) > moment(b.dueDate)) return 1;
 
+      if (a.orderTimeLine > b.orderTimeLine) return -1;
+      if (a.orderTimeLine < b.orderTimeLine) return 1;
+
       return 0;
     })
 
-    // Sort by orderTimeLine
+    // Sort tasks without dueDate by orderTimeLine
     tasksOthers.sort((a, b) => {
       if (a.orderTimeLine > b.orderTimeLine) return -1;
       if (a.orderTimeLine < b.orderTimeLine) return 1;
