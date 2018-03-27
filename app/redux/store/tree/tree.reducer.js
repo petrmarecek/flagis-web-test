@@ -83,10 +83,10 @@ export default typeToReducer({
     const move = action.payload
     return state.updateIn(['itemsByParent', null], list => {
 
-      // Find  of hovered task & compute index for dragged one
+      // Find of hovered item & compute index for dragged one
       const targetSectionIndex = list.indexOf(move.targetSectionId)
 
-      // Move taskId within the list
+      // Move itemId within the list
       return list
         .filter(sectionId => sectionId !== move.sourceSectionId)
         .insert(targetSectionIndex, move.sourceSectionId)
@@ -133,12 +133,12 @@ function moveItem(state, move) {
           : result.setIn([move.target.id], List([move.source.id]))
 
       case 'TOP': {
-        const target = getTarget(map, move.target.id)
+        const target = getTarget(result, move.target.id)
         return result.updateIn([target.parentId], list => list.splice(target.index, 0, move.source.id))
       }
 
       case 'BOTTOM': {
-        const target = getTarget(map, move.target.id)
+        const target = getTarget(result, move.target.id)
         return result.updateIn([target.parentId], list => list.splice(target.index + 1, 0, move.source.id))
       }
 

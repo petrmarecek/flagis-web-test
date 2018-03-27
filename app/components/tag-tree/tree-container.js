@@ -42,7 +42,7 @@ import {
   getAddControlParentId,
   getSections,
 } from 'redux/store/tree/tree.selectors'
-import { computeTreeOrder } from 'redux/utils/redux-helper'
+import { computeTreeSectionOrder } from 'redux/utils/redux-helper'
 import debounce from 'lodash/debounce'
 import { toast } from 'react-toastify'
 import { infoMessages } from 'utils/messages'
@@ -95,9 +95,8 @@ class TreeContainer extends React.Component {
   handleDropSection = (drop) => {
     const { dropIndex, sourceSection} = drop
     const sections = this.props.sections
-    const isSection = true
 
-    const newOrder = computeTreeOrder(sections, dropIndex, isSection)
+    const newOrder = computeTreeSectionOrder(sections, dropIndex)
     if (newOrder === null) {
       return
     }

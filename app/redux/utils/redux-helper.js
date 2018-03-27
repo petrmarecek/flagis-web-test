@@ -37,7 +37,7 @@ export function computeOrder(tasks, move) {
   return nextItemsOrder + ((prevItemsOrder - nextItemsOrder) / 2)
 }
 
-export function computeTreeOrder(items, dropIndex, isSection) {
+export function computeTreeSectionOrder(items, dropIndex) {
 
   // Moving just one task
   if (items.size === 1) {
@@ -62,9 +62,44 @@ export function computeTreeOrder(items, dropIndex, isSection) {
 
   // Moved in the middle
   const prevItemsOrder = itemsArray[dropIndex - 1].order
-  const nextItemsOrder = isSection
-    ? itemsArray[dropIndex + 1].order
-    : itemsArray[dropIndex].order
+  const nextItemsOrder = itemsArray[dropIndex + 1].order
+
+  return prevItemsOrder + ((nextItemsOrder - prevItemsOrder) / 2)
+}
+
+export function computeTreeItemOrder(items, dropIndex, direction, sourceParentId, targetParentId) {
+
+  // Moving just one task
+  if (items.size === 1 && sourceParentId === targetParentId) {
+    return null
+  }
+
+  const itemsArray = items.toArray()
+
+  // Moved to the top
+  if (dropIndex === 0) {
+
+    // Subtract an hour to the order
+    const hourInMs = 60 * 60 * 1000
+    const nextItemsOrder = itemsArray[dropIndex].order
+    return new Date(nextItemsOrder - hourInMs).getTime()
+  }
+
+  // Moved to the end
+  if (dropIndex === (itemsArray.length - 1)) {
+    // Subtract an hour to the order
+    const hourInMs = 60 * 60 * 1000
+    const nextItemsOrder = itemsArray[dropIndex].order
+    return new Date(nextItemsOrder + hourInMs).getTime()
+  }
+
+  // Moved in the middle
+  let prevItemsOrder = itemsArray[dropIndex].order
+  let nextItemsOrder = itemsArray[dropIndex + 1].order
+  if (direction === 'TOP') {
+    prevItemsOrder = itemsArray[dropIndex - 1].order
+    nextItemsOrder = itemsArray[dropIndex].order
+  }
 
   return prevItemsOrder + ((nextItemsOrder - prevItemsOrder) / 2)
 }

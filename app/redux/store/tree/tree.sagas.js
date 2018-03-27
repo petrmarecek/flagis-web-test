@@ -23,7 +23,7 @@ import * as entitiesSelectors from 'redux/store/entities/entities.selectors'
 import * as routingSelectors from 'redux/store/routing/routing.selectors'
 import api from 'redux/utils/api'
 import schema from 'redux/data/schema'
-import { computeTreeOrder } from 'redux/utils/redux-helper'
+import { computeTreeItemOrder } from 'redux/utils/redux-helper'
 
 const TREE = treeActions.TREE
 
@@ -249,9 +249,9 @@ export function* dropTreeItem(action) {
     if (action.payload.dropPosition !== 'MIDDLE') {
       const targetPosition = storeData.treeMap.get(targetParentId).indexOf(targetItemId)
       const children = yield select(state => treeSelectors.getTree(state, targetParentId))
-      const isSection = false
+      const direction = action.payload.dropPosition
 
-      order = computeTreeOrder(children, targetPosition, isSection)
+      order = computeTreeItemOrder(children, targetPosition, direction, sourceParentId, targetParentId)
     }
 
     const update = {
