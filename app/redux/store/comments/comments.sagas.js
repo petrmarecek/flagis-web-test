@@ -1,10 +1,47 @@
-import { call, put } from 'redux-saga/effects'
-import { fetch } from 'redux/store/common.sagas'
+import {call, cancelled, fork, put, select, take} from 'redux-saga/effects'
+import { normalize } from 'normalizr'
+
+import * as authSelectors from 'redux/store/auth/auth.selectors'
 import * as actions from 'redux/store/comments/comments.action'
+import { fetch, createLoadActions } from 'redux/store/common.sagas'
 import api from 'redux/utils/api'
 import schema from 'redux/data/schema'
+import firebase from 'redux/utils/firebase'
 
 const COMMENTS = actions.COMMENTS
+
+export function* initCommentsData(initTime) {
+  const userId = yield select(state => authSelectors.getUserId(state))
+  const channel = firebase.getCommentsChannel(userId, initTime)
+  return yield fork(syncCommentsChannel, channel)
+}
+
+function* syncCommentsChannel(channel) {
+  const { FULFILLED } = createLoadActions(COMMENTS.FIREBASE)
+
+  try {
+
+    while (true) { // eslint-disable-line
+      const data = yield take(channel)
+
+      // Prepare data
+      const comments = data.docs.map(doc => doc.data())
+      const normalizeData = normalize(comments, schema.commentList)
+
+      // Save changes to store entities
+      yield put({ type: FULFILLED, payload: normalizeData })
+
+    }
+
+  } catch(err) {
+    console.error(err)
+
+  } finally {
+    if (yield cancelled()) {
+      channel.close()
+    }
+  }
+}
 
 export function* fetchComment(action) {
   yield* fetch(COMMENTS.FETCH, {

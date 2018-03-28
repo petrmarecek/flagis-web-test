@@ -152,6 +152,10 @@ export default typeToReducer({
     FULFILLED: (state, action) => saveComments(action.payload, state)
   },
 
+  [COMMENTS.FIREBASE]: {
+    FULFILLED: (state, action) => saveComments(action.payload, state)
+  },
+
   [COMMENTS.ADD]: (state, action) => saveComments(action.payload, state),
 
   [COMMENTS.DELETE]: (state, action) =>
@@ -160,6 +164,10 @@ export default typeToReducer({
   // ------ Attachments -----------------------------------------------------
 
   [ATTACHMENTS.FETCH]: {
+    FULFILLED: (state, action) => saveAttachments(action.payload, state)
+  },
+
+  [ATTACHMENTS.FIREBASE]: {
     FULFILLED: (state, action) => saveAttachments(action.payload, state)
   },
 

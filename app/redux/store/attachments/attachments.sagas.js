@@ -1,10 +1,47 @@
-import { call, put } from 'redux-saga/effects'
-import { fetch } from 'redux/store/common.sagas'
+import {call, cancelled, fork, put, select, take} from 'redux-saga/effects'
+import { normalize } from 'normalizr'
+
+import * as authSelectors from 'redux/store/auth/auth.selectors'
 import * as actions from 'redux/store/attachments/attachments.action'
+import { fetch, createLoadActions } from 'redux/store/common.sagas'
 import api from 'redux/utils/api'
 import schema from 'redux/data/schema'
+import firebase from 'redux/utils/firebase'
 
 const ATTACHMENTS = actions.ATTACHMENTS
+
+export function* initAttachmentsData(initTime) {
+  const userId = yield select(state => authSelectors.getUserId(state))
+  const channel = firebase.getAttachmentsChannel(userId, initTime)
+  return yield fork(syncCommentsChannel, channel)
+}
+
+function* syncCommentsChannel(channel) {
+  const { FULFILLED } = createLoadActions(ATTACHMENTS.FIREBASE)
+
+  try {
+
+    while (true) { // eslint-disable-line
+      const data = yield take(channel)
+
+      // Prepare data
+      const attachments = data.docs.map(doc => doc.data())
+      const normalizeData = normalize(attachments, schema.attachmentList)
+
+      // Save changes to store entities
+      yield put({ type: FULFILLED, payload: normalizeData })
+
+    }
+
+  } catch(err) {
+    console.error(err)
+
+  } finally {
+    if (yield cancelled()) {
+      channel.close()
+    }
+  }
+}
 
 export function* fetchAttachment(action) {
   yield* fetch(ATTACHMENTS.FETCH, {

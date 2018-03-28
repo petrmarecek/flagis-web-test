@@ -2,6 +2,7 @@ import schema from '../../data/schema'
 
 export const COMMENTS = {
   FETCH: 'COMMENT/FETCH',
+  FIREBASE: 'COMMENT/FIREBASE',
   CREATE: 'COMMENT/CREATE',
   ADD: 'COMMENT/ADD',
   DELETE: 'COMMENT/DELETE',

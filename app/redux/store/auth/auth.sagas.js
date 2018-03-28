@@ -20,6 +20,8 @@ import {
 } from 'redux/store/tags/tags.actions'
 import { fetchTasks } from 'redux/store/tasks/tasks.actions'
 import { initTasksData } from 'redux/store/tasks/tasks.sagas'
+import { initAttachmentsData } from 'redux/store/attachments/attachments.sagas'
+import { initCommentsData } from 'redux/store/comments/comments.sagas'
 import { fetchTree } from 'redux/store/tree/tree.actions'
 import * as authActions from 'redux/store/auth/auth.actions'
 import * as authSelectors from 'redux/store/auth/auth.selectors'
@@ -46,12 +48,16 @@ export function* initDataFlow() {
     yield put(fetchTree())
 
     // Init data from firestore
-    const { tasksSyncing } = yield all({
+    const { tasksSyncing, attachmentsSyncing, commentsSyncing } = yield all({
       tasksSyncing: fork(initTasksData, initTime),
+      attachmentsSyncing: fork(initAttachmentsData, initTime),
+      commentsSyncing: fork(initCommentsData, initTime),
     })
 
     yield take(AUTH.LOGOUT)
     yield cancel(tasksSyncing)
+    yield cancel(attachmentsSyncing)
+    yield cancel(commentsSyncing)
   }
 }
 

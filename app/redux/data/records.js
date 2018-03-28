@@ -184,12 +184,10 @@ export const TreeStore = Record({
 
 export const CommentStore = Record({
   isFetching: false,
-  items: List(),
 })
 
 export const AttachmentStore = Record({
   isFetching: false,
-  items: List(),
 })
 
 export const MultiSelectStore = Record({
