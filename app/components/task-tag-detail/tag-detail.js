@@ -2,6 +2,9 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { findDOMNode } from 'react-dom'
 import { connect } from 'react-redux'
+import { toast } from 'react-toastify'
+import { errorMessages } from 'utils/messages'
+import constants from 'utils/constants'
 
 import {
   deselectTags,
@@ -12,6 +15,7 @@ import {
   getCurrentTag,
   getNextTag,
   getPreviousTag,
+  getTagsTitle,
 } from 'redux/store/tags/tags.selectors'
 
 import commonUtils from 'redux/utils/common'
@@ -38,9 +42,11 @@ class TagDetail extends Component {
     nextTag: PropTypes.object,
     previousTag: PropTypes.object,
     showDialog: PropTypes.func,
+    titles: PropTypes.object,
   }
 
   state = {
+    title: this.props.tag !== null ? this.props.tag.title : null,
     description: this.props.tag.description === null ? '' : this.props.tag.description
   }
 
@@ -135,7 +141,26 @@ class TagDetail extends Component {
 
   // Subject
   handleTitleChange = event => {
+    const originalTitle = this.props.tag.title
     const title = event.target.value
+    const titles = this.props.titles
+
+    if (originalTitle === title) {
+      return
+    }
+
+    // Validation of title conflict
+    if (titles.includes(title)) {
+      toast.error(errorMessages.tags.titleConflict, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: constants.NOTIFICATION_ERROR_DURATION,
+      })
+
+      this.setState({ title: originalTitle })
+      return
+    }
+
+    this.setState({ title })
     this.props.updateTag(this.props.tag, title, 'title')
   }
 
@@ -184,7 +209,7 @@ class TagDetail extends Component {
     })
 
     // resolve other properties
-    const tagTitle = this.props.tag !== null ? this.props.tag.title : null
+    const tagTitle = this.state.title
     const colorIndex = this.getColorIndex()
     const tagColor = getTagColor(colorIndex)
 
@@ -280,6 +305,7 @@ const mapStateToProps = state => ({
   tag: getCurrentTag(state),
   nextTag: getNextTag(state),
   previousTag: getPreviousTag(state),
+  titles: getTagsTitle(state)
 })
 
 const mapDispatchToProps = {

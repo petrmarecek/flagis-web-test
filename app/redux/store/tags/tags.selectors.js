@@ -126,6 +126,10 @@ export const getActiveTagsId = state => {
   return state.getIn(['tags', 'activeTags']).map(tagId => ({ id: tagId }))
 }
 
+export const getTagsTitle = state => {
+  return state.getIn(['tags', 'all', 'items']).map(tagId => state.getIn(['entities', 'tags', tagId]).title)
+}
+
 export const getTagsItems = state => state.getIn(['tags', 'all', 'items'])
 
 export const getActiveTagsIds = state => state.getIn(['tags', 'activeTags'])

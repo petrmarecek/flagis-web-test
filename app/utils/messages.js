@@ -19,6 +19,7 @@ export const errorMessages = {
 
   tags: {
     createConflict: 'This tag has already been created.',
+    titleConflict: 'This title has already been used.',
     referenceDeleteConflict: 'The target tag cannot be deleted because it is referenced ' +
     'in the filter tree. Please delete the referencing tree item first.',
     relationDeleteConflict: 'The target tag cannot be deleted because it has relations ' +
