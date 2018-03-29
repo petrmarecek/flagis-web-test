@@ -53,7 +53,7 @@ export function* initDataFlow() {
       tasksSyncing: fork(initTasksData, initTime),
       attachmentsSyncing: fork(initAttachmentsData, initTime),
       commentsSyncing: fork(initCommentsData, initTime),
-      tagsSyncing: fork(initTagsData, initTime),
+      tagsSyncing: fork(initTagsData),
     })
 
     yield take(AUTH.LOGOUT)

@@ -19,9 +19,9 @@ import firebase from 'redux/utils/firebase'
 
 const TAGS = tagActions.TAGS
 
-export function* initTagsData(initTime) {
+export function* initTagsData() {
   const userId = yield select(state => authSelectors.getUserId(state))
-  const channel = firebase.getTagsChannel(userId, initTime)
+  const channel = firebase.getTagsChannel(userId)
   return yield fork(syncTagsChannel, channel)
 }
 

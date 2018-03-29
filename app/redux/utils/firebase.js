@@ -34,10 +34,9 @@ export default {
     return eventChannel(emit => ref.onSnapshot(emit))
   },
 
-  getTagsChannel: (userId, initTime) => {
+  getTagsChannel: (userId) => {
     const ref = db.collection('tags')
       .where('createdById', '==', userId)
-      .where('updatedAt', '>', initTime)
 
     return eventChannel(emit => ref.onSnapshot(emit))
   },
