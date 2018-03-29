@@ -10,6 +10,7 @@ import * as appStateActions from 'redux/store/app-state/app-state.actions'
 import * as tagsActions from 'redux/store/tags/tags.actions'
 import * as taskActions from 'redux/store/tasks/tasks.actions'
 import * as taskMenuActions from 'redux/store/tasks-menu/tasks-menu.action'
+import * as taskMenuSelectors from 'redux/store/tasks-menu/tasks-menu.selectors'
 import api from 'redux/utils/api'
 import schema from 'redux/data/schema'
 import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'
@@ -40,6 +41,8 @@ function* syncTasksChannel(channel) {
       // Prepare data
       const tasks = data.docs.map(doc => doc.data())
       const normalizeData = normalize(tasks, schema.taskList)
+      const storeItems = yield select(state => taskSelectors.getTasksItems(state))
+      const storeArchivedItems = yield select(state => taskSelectors.getArchivedTasksItems(state))
 
       // Get ids list of active, uncompleted, completed, archived and trashed task
       tasks.forEach(task => {
@@ -48,6 +51,14 @@ function* syncTasksChannel(channel) {
         // active tasks
         if (!isArchived && !isTrashed) {
           normalizeData.items = List(normalizeData.items).push(id)
+
+          if (!storeItems.includes(id)) {
+            // Add new task to search
+            search.tasks.addItem(task)
+          } else {
+            // Update task in search
+            search.tasks.updateItem(task)
+          }
         }
 
         // Uncompleted tasks
@@ -63,11 +74,20 @@ function* syncTasksChannel(channel) {
         // Archived tasks
         if (isCompleted && isArchived && !isTrashed) {
           normalizeData.archived = List(normalizeData.archived).push(id)
+
+          if (!storeArchivedItems.includes(id)) {
+            // Add new archived task to search
+            search.tasks.addItem(task)
+          } else {
+            // Update archived task in search
+            search.tasks.updateItem(task)
+          }
         }
 
         // Trashed tasks
         if (isTrashed) {
           normalizeData.trashed = List(normalizeData.trashed).push(id)
+          search.tasks.removeItem({ id })
         }
       })
 
@@ -110,6 +130,11 @@ export function* fetchTasks() {
   // Initialize search service
   search.tasks.resetIndex()
   search.tasks.addItems(result)
+
+  // Reset full text search
+  const text = yield select(state => taskMenuSelectors.getTaskMenuFiltersItem(state, 'searchText'))
+  yield put(taskMenuActions.changeSearchText(''))
+  yield put(taskMenuActions.changeSearchText(text))
 }
 
 export function* fetchArchivedTasks() {
@@ -134,6 +159,11 @@ export function* fetchArchivedTasks() {
   // Initialize search service
   search.tasks.resetIndex()
   search.tasks.addItems(result)
+
+  // Reset full text search
+  const text = yield select(state => taskMenuSelectors.getTaskMenuFiltersItem(state, 'searchText'))
+  yield put(taskMenuActions.changeSearchText(''))
+  yield put(taskMenuActions.changeSearchText(text))
 }
 
 export function* createTask(action) {

@@ -42,7 +42,7 @@ export default typeToReducer({
     state.setIn(['filters', 'noTags'], !state.filters.noTags),
 
   [TASKS_MENU.CHANGE_SEARCH_TEXT_FILTER]: (state, action) =>
-    state.setIn(['filters', 'searchText'], action.value),
+    state.setIn(['filters', 'searchText'], action.payload.value),
 
   [TASKS_MENU.ADD_ACTIVE_FILTER]: (state, action) =>
     state.updateIn(['filters', 'active'], list => list.push(action.payload.filter)),

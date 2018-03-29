@@ -178,7 +178,7 @@ function loadTasks(ids, state) {
 function loadArchiveTasks(ids, state) {
   // apply search filter
   if (state.getIn(['tasksMenu', 'filters', 'searchText'])) {
-    const foundIds = search.getIn(['tasks']).get(state.getIn(['tasksMenu', 'filters', 'searchText'])).map(item => item.ref)
+    const foundIds = search.tasks.get(state.getIn(['tasksMenu', 'filters', 'searchText'])).map(item => item.ref)
     ids = intersection(ids, foundIds)
   }
 

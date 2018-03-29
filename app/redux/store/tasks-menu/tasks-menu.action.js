@@ -48,7 +48,9 @@ export const toggleNoTagsFilter = () => ({
 
 export const changeSearchText = value => ({
   type: TASKS_MENU.CHANGE_SEARCH_TEXT_FILTER,
-  value
+  payload: {
+    value
+  }
 })
 
 export const addActiveFilter = filter => ({

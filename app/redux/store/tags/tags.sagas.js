@@ -37,6 +37,10 @@ function* syncTagsChannel(channel) {
       const tags = data.docs.map(doc => doc.data())
       const normalizeData = normalize(tags, schema.tagList)
 
+      // Reset search for tags
+      search.tags.resetIndex()
+      search.tags.addItems(tags)
+
       // Save changes to store entities
       yield put({ type: FULFILLED, payload: normalizeData })
 
