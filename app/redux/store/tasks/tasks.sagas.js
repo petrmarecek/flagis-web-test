@@ -52,6 +52,7 @@ function* syncTasksChannel(channel) {
         if (!isArchived && !isTrashed) {
           normalizeData.items = List(normalizeData.items).push(id)
 
+          // Update search
           if (!storeItems.includes(id)) {
             // Add new task to search
             search.tasks.addItem(task)
@@ -75,6 +76,7 @@ function* syncTasksChannel(channel) {
         if (isCompleted && isArchived && !isTrashed) {
           normalizeData.archived = List(normalizeData.archived).push(id)
 
+          // Update search
           if (!storeArchivedItems.includes(id)) {
             // Add new archived task to search
             search.tasks.addItem(task)

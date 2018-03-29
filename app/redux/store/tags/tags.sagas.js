@@ -9,6 +9,7 @@ import * as authSelectors from 'redux/store/auth/auth.selectors'
 import * as appStateActions from 'redux/store/app-state/app-state.actions'
 import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'
 import * as tagActions from 'redux/store/tags/tags.actions'
+import * as tagSelectors from 'redux/store/tags/tags.selectors'
 import { TASKS } from 'redux/store/tasks/tasks.actions'
 import { deselectPath } from 'redux/store/tree/tree.actions'
 import { fetch, mainUndo, createLoadActions } from 'redux/store/common.sagas'
@@ -19,9 +20,9 @@ import firebase from 'redux/utils/firebase'
 
 const TAGS = tagActions.TAGS
 
-export function* initTagsData() {
+export function* initTagsData(initTime) {
   const userId = yield select(state => authSelectors.getUserId(state))
-  const channel = firebase.getTagsChannel(userId)
+  const channel = firebase.getTagsChannel(userId, initTime)
   return yield fork(syncTagsChannel, channel)
 }
 
@@ -36,10 +37,21 @@ function* syncTagsChannel(channel) {
       // Prepare data
       const tags = data.docs.map(doc => doc.data())
       const normalizeData = normalize(tags, schema.tagList)
+      const storeItems = yield select(state => tagSelectors.getTagsItems(state))
 
-      // Reset search for tags
-      search.tags.resetIndex()
-      search.tags.addItems(tags)
+      tags.forEach(tag => {
+        const { id } = tag
+
+        // Update search
+        if (!storeItems.includes(id)) {
+          // Add new tag to search
+          search.tags.addItem(tag)
+        } else {
+          // Update tag in search
+          search.tags.updateItem(tag)
+        }
+        // TODO: Delete tags form search
+      })
 
       // Save changes to store entities
       yield put({ type: FULFILLED, payload: normalizeData })
