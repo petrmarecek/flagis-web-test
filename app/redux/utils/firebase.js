@@ -34,6 +34,14 @@ export default {
     return eventChannel(emit => ref.onSnapshot(emit))
   },
 
+  getTagsChannel: (userId, initTime) => {
+    const ref = db.collection('tags')
+      .where('createdById', '==', userId)
+      .where('updatedAt', '>', initTime)
+
+    return eventChannel(emit => ref.onSnapshot(emit))
+  },
+
   signIn: token => firebase.auth().signInWithCustomToken(token),
 
   signOut: () => firebase.auth().signOut(),

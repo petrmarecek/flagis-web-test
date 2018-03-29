@@ -21,6 +21,19 @@ export default typeToReducer({
     }
   },
 
+  // Update lists for tasks
+  [TAGS.FIREBASE]: {
+    FULFILLED: (state, action) => {
+      const items = List(action.payload.result)
+      const storeItems = state.getIn(['all', 'items'])
+
+      // Get new lists ids of tags
+      const newItems = updateTags(storeItems, items)
+
+      return state.setIn(['all', 'items'], newItems)
+    }
+  },
+
   [TAGS.SET_ACTIVE_TAGS]: (state, action) =>
     state.setIn(['activeTags'], List(action.payload.tagIds)),
 
@@ -125,4 +138,12 @@ function updateTagsRelations(payload, state) {
   })
 
   return state.mergeIn(['relations'], relations)
+}
+
+function updateTags(storeList, unionList) {
+  if (unionList.size !== 0) {
+    storeList = storeList.toSet().union(unionList.toSet()).toList()
+  }
+
+  return storeList
 }

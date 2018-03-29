@@ -113,6 +113,13 @@ export default typeToReducer({
     }
   },
 
+  [TAGS.FIREBASE]: {
+    FULFILLED: (state, action) => {
+      const tags = convertToImmutable(action.payload.entities.tags || {}, records.Tag)
+      return state.mergeIn(['tags'], tags)
+    }
+  },
+
   [TAGS.ADD]: (state, action) =>
     state.setIn(['tags', action.payload.tag.id], new records.Tag(action.payload.tag)),
 

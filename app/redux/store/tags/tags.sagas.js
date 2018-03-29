@@ -1,19 +1,56 @@
-import { put, call, select } from 'redux-saga/effects'
-import * as tagActions from 'redux/store/tags/tags.actions'
-import { TASKS } from 'redux/store/tasks/tasks.actions'
-import { deselectPath } from 'redux/store/tree/tree.actions'
-import * as appStateActions from 'redux/store/app-state/app-state.actions'
-import {
-  fetch,
-  mainUndo
-} from 'redux/store/common.sagas'
-import api from 'redux/utils/api'
-import schema from 'redux/data/schema'
-import search from 'redux/services/search'
+import { put, call, select, cancelled, fork, take } from 'redux-saga/effects'
+import { normalize } from 'normalizr'
+
 import { toast } from 'react-toastify'
 import { errorMessages } from 'utils/messages'
 import constants from 'utils/constants'
+
+import * as authSelectors from 'redux/store/auth/auth.selectors'
+import * as appStateActions from 'redux/store/app-state/app-state.actions'
 import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'
+import * as tagActions from 'redux/store/tags/tags.actions'
+import { TASKS } from 'redux/store/tasks/tasks.actions'
+import { deselectPath } from 'redux/store/tree/tree.actions'
+import { fetch, mainUndo, createLoadActions } from 'redux/store/common.sagas'
+import api from 'redux/utils/api'
+import schema from 'redux/data/schema'
+import search from 'redux/services/search'
+import firebase from 'redux/utils/firebase'
+
+const TAGS = tagActions.TAGS
+
+export function* initTagsData(initTime) {
+  const userId = yield select(state => authSelectors.getUserId(state))
+  const channel = firebase.getTagsChannel(userId, initTime)
+  return yield fork(syncTagsChannel, channel)
+}
+
+function* syncTagsChannel(channel) {
+  const { FULFILLED } = createLoadActions(TAGS.FIREBASE)
+
+  try {
+
+    while (true) { // eslint-disable-line
+      const data = yield take(channel)
+
+      // Prepare data
+      const tags = data.docs.map(doc => doc.data())
+      const normalizeData = normalize(tags, schema.tagList)
+
+      // Save changes to store entities
+      yield put({ type: FULFILLED, payload: normalizeData })
+
+    }
+
+  } catch(err) {
+    console.error(err)
+
+  } finally {
+    if (yield cancelled()) {
+      channel.close()
+    }
+  }
+}
 
 export function* fetchTags() {
   const result = yield* fetch(tagActions.TAGS.FETCH, {
