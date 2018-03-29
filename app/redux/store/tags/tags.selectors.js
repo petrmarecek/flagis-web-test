@@ -1,5 +1,6 @@
 import search from 'redux/services/search'
 import intersection from 'lodash/intersection'
+import { List } from "immutable"
 
 // ------ Helpers -------------------------------------------------------------
 
@@ -23,15 +24,7 @@ export const compareTagByTitle = (tagA, tagB) => {
   }
 }
 
-// ------ Selectors -------------------------------------------------------------
-
-export const getTags = state => ({
-  isFetching: state.getIn(['tags', 'all', 'isFetching']),
-  items: state.getIn(['tags', 'all', 'items']).map(tagId => state.getIn(['entities', 'tags', tagId]))
-})
-
-export const getVisibleTags = state => {
-  let ids = state.getIn(['tags', 'all', 'items']).toArray()
+function loadTags(ids, state) {
 
   // apply search filter
   if (state.getIn(['tags', 'search'])) {
@@ -39,10 +32,22 @@ export const getVisibleTags = state => {
     ids = intersection(ids, foundIds)
   }
 
-  return {
+  return ids
+    .map(tagId => state.getIn(['entities', 'tags', tagId]))
+    .sort(compareTagByTitle)
+}
+
+// ------ Selectors -------------------------------------------------------------
+export const getTags = state => ({
+  isFetching: state.getIn(['tags', 'all', 'isFetching']),
+  items: state.getIn(['tags', 'all', 'items']).map(tagId => state.getIn(['entities', 'tags', tagId]))
+})
+
+export const getVisibleTags = state => {
+  return ({
     isFetching: state.getIn(['tags', 'all', 'isFetching']),
-    items: ids.map(tagId => state.getIn(['entities', 'tags', tagId])).sort(compareTagByTitle)
-  }
+    items: loadTags(state.getIn(['tags', 'all', 'items']).toArray(), state)
+  })
 }
 
 export const getTag = (state, tagId) => state.getIn(['entities', 'tags']).get(tagId)
@@ -75,12 +80,15 @@ export const getNextTag = state => {
     return null
   }
 
-  let nextIndex = state.getIn(['tags', 'all', 'items']).indexOf(tagId) + 1
+  let tags = loadTags(state.getIn(['tags', 'all', 'items']).toArray(), state)
+  tags = List(tags.map(tag => tag.id))
+
+  let nextIndex = tags.indexOf(tagId) + 1
   if (nextIndex === sizeListOfTags) {
     nextIndex = 0
   }
 
-  const nextTagId = state.getIn(['tags', 'all', 'items']).get(nextIndex)
+  const nextTagId = tags.get(nextIndex)
   return state.getIn(['entities', 'tags']).get(nextTagId)
 }
 
@@ -99,12 +107,15 @@ export const getPreviousTag = state => {
     return null
   }
 
-  let prevIndex = state.getIn(['tags', 'all', 'items']).indexOf(tagId) - 1
+  let tags = loadTags(state.getIn(['tags', 'all', 'items']).toArray(), state)
+  tags = List(tags.map(tag => tag.id))
+
+  let prevIndex = tags.indexOf(tagId) - 1
   if (prevIndex < 0) {
     prevIndex = sizeListOfTags - 1
   }
 
-  const prevTagId = state.getIn(['tags', 'all', 'items']).get(prevIndex)
+  const prevTagId = tags.get(prevIndex)
   return state.getIn(['entities', 'tags']).get(prevTagId)
 }
 
