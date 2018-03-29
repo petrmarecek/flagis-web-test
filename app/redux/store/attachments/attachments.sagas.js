@@ -13,10 +13,10 @@ const ATTACHMENTS = actions.ATTACHMENTS
 export function* initAttachmentsData(initTime) {
   const userId = yield select(state => authSelectors.getUserId(state))
   const channel = firebase.getAttachmentsChannel(userId, initTime)
-  return yield fork(syncCommentsChannel, channel)
+  return yield fork(syncAttachmentsChannel, channel)
 }
 
-function* syncCommentsChannel(channel) {
+function* syncAttachmentsChannel(channel) {
   const { FULFILLED } = createLoadActions(ATTACHMENTS.FIREBASE)
 
   try {
