@@ -1,35 +1,62 @@
-import React from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import AttachmentListItem from 'components/attachment-list/attachment-list-item'
+import { Scrollbars } from 'react-custom-scrollbars'
 
-const AttachmentList = props => {
-  return (
-    <div className="attachment-list-container">
-      {!props.attachments.isFetching &&
-        <ul className="attachment-list">
-        {!props.disabled && props.attachments.items.map(attachment => (
-          <AttachmentListItem
-            key={attachment.id}
-            attachment={attachment}
-            attachmentDelete={props.attachmentDelete}/>
-        ))}
-        {props.disabled && props.attachments.items.map(attachment => (
-          <AttachmentListItem
-            key={attachment.id}
-            attachment={attachment}
-            attachmentDelete={props.attachmentDelete}
-            disabled/>
-        ))}
-        </ul>
-      }
-    </div>
-  )
-}
+class AttachmentList extends Component {
+  static propTypes = {
+    attachments: PropTypes.object,
+    attachmentDelete: PropTypes.func,
+    disabled: PropTypes.bool,
+  }
 
-AttachmentList.propTypes = {
-  attachments: PropTypes.object,
-  attachmentDelete: PropTypes.func,
-  disabled: PropTypes.bool,
+  componentDidMount() {
+    // Scroll auto bottom
+    this.refs.scrollbars.scrollToBottom()
+  }
+
+  componentDidUpdate(prevProps) {
+    const prevNumberAttachments = prevProps.attachments.items.size
+    const numberAttachments = this.props.attachments.items.size
+
+    // Add new attachment
+    if (numberAttachments === (prevNumberAttachments + 1)) {
+      // Scroll auto bottom
+      this.refs.scrollbars.scrollToBottom()
+    }
+  }
+
+  render() {
+    const scrollStyle = {
+      height: `calc(100vh - 390px)`
+    }
+
+    return (
+      <Scrollbars
+        ref="scrollbars"
+        style={scrollStyle} >
+        <div className="attachment-list-container">
+          {!this.props.attachments.isFetching &&
+          <ul className="attachment-list">
+            {!this.props.disabled && this.props.attachments.items.map(attachment => (
+              <AttachmentListItem
+                key={attachment.id}
+                attachment={attachment}
+                attachmentDelete={this.props.attachmentDelete}/>
+            ))}
+            {this.props.disabled && this.props.attachments.items.map(attachment => (
+              <AttachmentListItem
+                key={attachment.id}
+                attachment={attachment}
+                attachmentDelete={this.props.attachmentDelete}
+                disabled/>
+            ))}
+          </ul>
+          }
+        </div>
+      </Scrollbars>
+    )
+  }
 }
 
 export default AttachmentList

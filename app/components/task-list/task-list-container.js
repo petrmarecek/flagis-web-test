@@ -238,8 +238,8 @@ class TaskListContainer extends Component {
 
   getTaskList() {
     const offset = this.props.isVisibleArchivedTasks
-      ? 152
-      : 192
+      ? 154
+      : 194
 
     const scrollStyle = {
       height: `calc(100vh - ${offset}px)`,
@@ -252,8 +252,7 @@ class TaskListContainer extends Component {
       <div>
         {!this.props.tasks.isFetching && this.props.tasks.items.length === 0 && !this.props.sort.dueDate &&
         <div className="empty-list">No task found</div>}
-        <ShadowScrollbar
-          style={scrollStyle}>
+        <ShadowScrollbar style={scrollStyle}>
           <TaskList
             listType={this.props.tasks.type}
             tasks={this.props.tasks.items}
