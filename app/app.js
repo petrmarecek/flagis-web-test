@@ -11,16 +11,11 @@ import 'babel-polyfill';
 // Import all the third party stuff
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { ConnectedRouter } from 'react-router-redux';
 import createHistory from 'history/createBrowserHistory';
 import 'sanitize.css/sanitize.css';
 
-// Import root app
-import App from 'containers/app';
-
-// Import Language Provider
-import LanguageProvider from 'containers/language-provider';
+// Import root app-render
+import AppRender from 'app-render';
 
 // Load the favicon, the manifest.json file and the .htaccess file
 /* eslint-disable import/no-unresolved, import/extensions */
@@ -54,13 +49,10 @@ const MOUNT_NODE = document.getElementById('app');
 
 const render = (messages) => {
   ReactDOM.render(
-    <Provider store={store}>
-      <LanguageProvider messages={messages}>
-        <ConnectedRouter history={history}>
-          <App />
-        </ConnectedRouter>
-      </LanguageProvider>
-    </Provider>,
+    <AppRender
+      store={store}
+      message={messages}
+      history={history} />,
     MOUNT_NODE
   );
 };

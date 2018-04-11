@@ -65,7 +65,6 @@ export function* initDataFlow() {
 }
 
 export function* authFlow() {
-
   // Wait to load from persist store
   yield take(REHYDRATE)
 
@@ -239,7 +238,7 @@ function* authorizeUser(authApiCall, action) {
     // call server
     const auth = yield call(authApiCall, requestBody)
 
-    // save auth data to persistentStore & client
+    // set access token and firebase token
     yield call(setTokens, auth)
 
     // dispatch action with auth data
@@ -284,7 +283,7 @@ function* logout() {
   // clean
   cleanStore()
 
-  // Sign out from firebase
+  // sign out from firebase
   yield call(firebase.signOut)
 
   // redirect
@@ -311,7 +310,7 @@ function* tokenLoop(auth) {
         return
       }
 
-      // Set access token and firebase token
+      // set access token and firebase token
       yield call(setTokens, response)
 
       yield put({ type: FULFILLED, payload: response })

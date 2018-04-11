@@ -68,31 +68,5 @@ export default function configureStore(initialState = {}, history) {
     });
   }
 
-  // auth store to persist storage
-  const persistConfig = {
-    storage: localforage,
-    whitelist: ['auth'],
-    transforms: [immutableTransform({
-      records: [auth],
-      whitelist: ['auth'],
-    })],
-  }
-
-  // get access token and set to api
-  getStoredState(persistConfig, (err, restoredState) => {
-    if (typeof restoredState === 'object'
-      && typeof restoredState.auth === 'object'
-      && restoredState.auth.accessToken) {
-      api.setApiToken(restoredState.auth.accessToken)
-    }
-
-    if (err) {
-      // eslint-disable-next-line no-warning-comments
-      // TODO
-    }
-  })
-
-  persistStore(store, persistConfig)
-
   return store
 }
