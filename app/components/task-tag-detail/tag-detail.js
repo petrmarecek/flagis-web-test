@@ -46,7 +46,7 @@ class TagDetail extends Component {
   }
 
   state = {
-    title: this.props.tag !== null ? this.props.tag.title : null,
+    title: this.props.tag === null ? null : this.props.tag.title,
     description: this.props.tag.description === null ? '' : this.props.tag.description
   }
 
@@ -61,8 +61,24 @@ class TagDetail extends Component {
   }
 
   componentWillReceiveProps(newProps) {
-    if (this.props.tag.id !== newProps.tag.id) {
-      this.setState({ description: newProps.tag.description === null ? '' : newProps.tag.description })
+    const prevId = this.props.tag.id
+    const prevTitle = this.props.tag.title
+    const prevDescription = this.props.tag.description
+    const { id, description, title } = newProps.tag
+
+    if (prevId !== id) {
+      this.setState({
+        title: newProps.tag === null ? null : title,
+        description: description === null ? '' : description
+      })
+    }
+
+    if (prevTitle !== title) {
+      this.setState({ title: newProps.tag  === null ? null : title })
+    }
+
+    if (prevDescription !== description) {
+      this.setState({ description: description === null ? '' : description })
     }
   }
 

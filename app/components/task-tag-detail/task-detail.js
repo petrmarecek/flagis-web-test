@@ -130,25 +130,33 @@ class TaskDetail extends Component {
     if (!newProps.task) {
       return
     }
+    const prevId = this.props.task.id
+    const prevDescription = this.props.task.description
+    const { id, description }  = newProps.task
+    const initTime = dateUtil.getDateToISOString()
 
-    if (this.props.task.id !== newProps.task.id) {
-      const { id, description }  = newProps.task
-      const initTime = dateUtil.getDateToISOString()
-
+    if (prevId !== id) {
       // Load attachments
       this.props.fetchAttachment(id)
       // Set listener for attachments of current task
       this.props.attachmentsFirebaseListener(id, initTime, false)
       // Cancel listener for attachments of previous task
-      this.props.attachmentsFirebaseListener(this.props.task.id, initTime, true)
+      this.props.attachmentsFirebaseListener(prevId, initTime, true)
 
       // Load comments
       this.props.fetchComment(id)
       // Set listener for comments of current task
       this.props.commentsFirebaseListener(id, initTime, false)
       // Cancel listener for comments of previous task
-      this.props.commentsFirebaseListener(this.props.task.id, initTime, true)
+      this.props.commentsFirebaseListener(prevId, initTime, true)
 
+      this.setState({
+        description: description === null ? '' : description,
+        animation: false
+      })
+    }
+
+    if (prevDescription !== description) {
       this.setState({
         description: description === null ? '' : description,
         animation: false
