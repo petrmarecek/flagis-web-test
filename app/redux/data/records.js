@@ -264,7 +264,8 @@ export const Comment = Record({
   content: null,
   author: null,
   taskId: null,
-  createdById: null
+  createdById: null,
+  isDeleted: null,
 })
 
 export const Attachment = Record({
@@ -279,4 +280,5 @@ export const Attachment = Record({
   mimeType: null,
   client: null,
   isWritable: false,
+  isDeleted: null,
 })

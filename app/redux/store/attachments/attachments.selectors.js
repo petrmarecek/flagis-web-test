@@ -2,9 +2,12 @@ import { List } from 'immutable'
 import moment from "moment/moment";
 
 function loadAttachments(state) {
-  const taskId = state.getIn(['tasks', 'selection']).last()
-  const entitiesAttachments = state.getIn(['entities', 'attachments']).filter(attachment => attachment.taskId === taskId)
   let attachments = List()
+  const taskId = state.getIn(['tasks', 'selection']).last()
+  const entitiesAttachments = state
+    .getIn(['entities', 'attachments'])
+    .filter(attachment => attachment.taskId === taskId)
+    .filter(attachment => !attachment.isDeleted)
 
   // Get values from map without keys
   entitiesAttachments.forEach(attachment => {

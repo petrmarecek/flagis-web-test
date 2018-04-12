@@ -2,9 +2,12 @@ import { List } from 'immutable'
 import moment from 'moment'
 
 function loadComments(state) {
-  const taskId = state.getIn(['tasks', 'selection']).last()
-  const entitiesComments = state.getIn(['entities', 'comments']).filter(comment => comment.taskId === taskId)
   let comments = List()
+  const taskId = state.getIn(['tasks', 'selection']).last()
+  const entitiesComments = state
+    .getIn(['entities', 'comments'])
+    .filter(comment => comment.taskId === taskId)
+    .filter(comment => !comment.isDeleted)
 
   // Get values from map without keys
   entitiesComments.forEach(comment => {

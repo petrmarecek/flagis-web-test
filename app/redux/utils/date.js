@@ -24,4 +24,8 @@ export default {
   getMilliseconds() {
     return new Date().valueOf()
   },
+
+  getDateToISOString() {
+    return new Date().toISOString()
+  },
 }

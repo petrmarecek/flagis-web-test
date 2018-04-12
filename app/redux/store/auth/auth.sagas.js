@@ -20,21 +20,20 @@ import {
 } from 'redux/store/tags/tags.actions'
 import { fetchTasks } from 'redux/store/tasks/tasks.actions'
 import { initTasksData } from 'redux/store/tasks/tasks.sagas'
-import { initAttachmentsData } from 'redux/store/attachments/attachments.sagas'
-import { initCommentsData } from 'redux/store/comments/comments.sagas'
 import { initTagsData } from 'redux/store/tags/tags.sagas'
 import { fetchTree } from 'redux/store/tree/tree.actions'
 import * as authActions from 'redux/store/auth/auth.actions'
 import * as authSelectors from 'redux/store/auth/auth.selectors'
 import api from 'redux/utils/api'
 import firebase from 'redux/utils/firebase'
+import dateUtil from 'redux/utils/date'
 
 const AUTH = authActions.AUTH
 
 export function* initDataFlow() {
 
   while (true) { // eslint-disable-line
-    const initTime = new Date().toISOString()
+    const initTime = dateUtil.getDateToISOString()
     const loginActions = createLoadActions(AUTH.LOGIN)
     const tokenActions = createLoadActions(AUTH.REFRESH_TOKEN)
 
@@ -49,17 +48,13 @@ export function* initDataFlow() {
     yield put(fetchTree())
 
     // Init data from firestore
-    const { tasksSyncing, attachmentsSyncing, commentsSyncing, tagsSyncing } = yield all({
+    const { tasksSyncing, tagsSyncing } = yield all({
       tasksSyncing: fork(initTasksData, initTime),
-      attachmentsSyncing: fork(initAttachmentsData, initTime),
-      commentsSyncing: fork(initCommentsData, initTime),
       tagsSyncing: fork(initTagsData, initTime),
     })
 
     yield take(AUTH.LOGOUT)
     yield cancel(tasksSyncing)
-    yield cancel(attachmentsSyncing)
-    yield cancel(commentsSyncing)
     yield cancel(tagsSyncing)
   }
 }

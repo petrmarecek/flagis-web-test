@@ -1,7 +1,6 @@
-import {call, cancelled, fork, put, select, take} from 'redux-saga/effects'
+import {call, cancelled, cancel, fork, put, take} from 'redux-saga/effects'
 import { normalize } from 'normalizr'
 
-import * as authSelectors from 'redux/store/auth/auth.selectors'
 import * as actions from 'redux/store/comments/comments.action'
 import { fetch, createLoadActions } from 'redux/store/common.sagas'
 import api from 'redux/utils/api'
@@ -10,9 +9,8 @@ import firebase from 'redux/utils/firebase'
 
 const COMMENTS = actions.COMMENTS
 
-export function* initCommentsData(initTime) {
-  const userId = yield select(state => authSelectors.getUserId(state))
-  const channel = firebase.getCommentsChannel(userId, initTime)
+export function* initCommentsData(taskId, initTime) {
+  const channel = firebase.getCommentsChannel(taskId, initTime)
   return yield fork(syncCommentsChannel, channel)
 }
 
@@ -49,6 +47,15 @@ export function* fetchComment(action) {
     args: [action.payload],
     schema: schema.commentList
   })
+}
+
+export function* commentsFirebaseListener(action) {
+  const { taskId, initTime, cancelListener } = action.payload
+  const commentsSyncing = yield fork(initCommentsData, taskId, initTime)
+
+  if (cancelListener) {
+    yield cancel(commentsSyncing)
+  }
 }
 
 export function* createComment(action) {

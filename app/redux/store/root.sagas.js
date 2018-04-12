@@ -82,11 +82,13 @@ export default function* root() {
 
     // comments
     takeLatest(COMMENTS.FETCH, comment.fetchComment),
+    takeEvery(COMMENTS.FIREBASE_LISTENER, comment.commentsFirebaseListener),
     takeEvery(COMMENTS.CREATE, comment.createComment),
     takeEvery(COMMENTS.DELETE, comment.deleteComment),
 
     // attachments
     takeLatest(ATTACHMENTS.FETCH, attachment.fetchAttachment),
+    takeEvery(ATTACHMENTS.FIREBASE_LISTENER, attachment.attachmentsFirebaseListener),
     takeEvery(ATTACHMENTS.CREATE, attachment.createAttachment),
     takeEvery(ATTACHMENTS.DELETE, attachment.deleteAttachment),
 

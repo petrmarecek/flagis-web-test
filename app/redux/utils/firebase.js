@@ -18,17 +18,17 @@ export default {
     return eventChannel(emit => ref.onSnapshot(emit))
   },
 
-  getCommentsChannel: (userId, initTime) => {
+  getCommentsChannel: (taskId, initTime) => {
     const ref = db.collection('comments')
-      .where('createdById', '==', userId)
+      .where('taskId', '==', taskId)
       .where('updatedAt', '>', initTime)
 
     return eventChannel(emit => ref.onSnapshot(emit))
   },
 
-  getAttachmentsChannel: (userId, initTime) => {
+  getAttachmentsChannel: (taskId, initTime) => {
     const ref = db.collection('attachments')
-      .where('createdById', '==', userId)
+      .where('taskId', '==', taskId)
       .where('updatedAt', '>', initTime)
 
     return eventChannel(emit => ref.onSnapshot(emit))

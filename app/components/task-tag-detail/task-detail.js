@@ -41,6 +41,7 @@ import { getEntitiesTasks } from 'redux/store/entities/entities.selectors'
 
 import {
   fetchAttachment,
+  attachmentsFirebaseListener,
   createAttachment,
   deleteAttachment
 } from 'redux/store/attachments/attachments.action'
@@ -48,6 +49,7 @@ import { getAttachments } from 'redux/store/attachments/attachments.selectors'
 
 import {
   fetchComment,
+  commentsFirebaseListener,
   createComment,
 } from 'redux/store/comments/comments.action'
 import { getComments } from 'redux/store/comments/comments.selectors'
@@ -91,6 +93,8 @@ class TaskDetail extends Component {
     setDate: PropTypes.func,
     attachments: PropTypes.object,
     fetchAttachment: PropTypes.func,
+    attachmentsFirebaseListener: PropTypes.func,
+    commentsFirebaseListener: PropTypes.func,
     createAttachment: PropTypes.func,
     deleteAttachment: PropTypes.func,
     setDescription: PropTypes.func,
@@ -105,10 +109,18 @@ class TaskDetail extends Component {
   }
 
   componentDidMount() {
+    const { id } = this.props.task
+    const initTime = dateUtil.getDateToISOString()
+
     // Load attachments
-    this.props.fetchAttachment(this.props.task.id)
+    this.props.fetchAttachment(id)
+    // Set listener for attachments
+    this.props.attachmentsFirebaseListener(id, initTime, false)
+
     // Load comments
-    this.props.fetchComment(this.props.task.id)
+    this.props.fetchComment(id)
+    // Set listener for comments
+    this.props.commentsFirebaseListener(id, initTime, false)
 
     document.getElementById('user-container').addEventListener('click', this.handleClickOutSide, false)
     document.addEventListener('keydown', this.handleKeyDown, false)
@@ -120,16 +132,39 @@ class TaskDetail extends Component {
     }
 
     if (this.props.task.id !== newProps.task.id) {
-      this.props.fetchComment(newProps.task.id)
-      this.props.fetchAttachment(newProps.task.id)
+      const { id, description }  = newProps.task
+      const initTime = dateUtil.getDateToISOString()
+
+      // Load attachments
+      this.props.fetchAttachment(id)
+      // Set listener for attachments of current task
+      this.props.attachmentsFirebaseListener(id, initTime, false)
+      // Cancel listener for attachments of previous task
+      this.props.attachmentsFirebaseListener(this.props.task.id, initTime, true)
+
+      // Load comments
+      this.props.fetchComment(id)
+      // Set listener for comments of current task
+      this.props.commentsFirebaseListener(id, initTime, false)
+      // Cancel listener for comments of previous task
+      this.props.commentsFirebaseListener(this.props.task.id, initTime, true)
+
       this.setState({
-        description: newProps.task.description === null ? '' : newProps.task.description,
+        description: description === null ? '' : description,
         animation: false
       })
     }
   }
 
   componentWillUnmount() {
+    const { id } = this.props.task
+    const initTime = dateUtil.getDateToISOString()
+
+    // Cancel listener for attachments
+    this.props.attachmentsFirebaseListener(id, initTime, true)
+    // Cancel listener for comments
+    this.props.commentsFirebaseListener(id, initTime, true)
+
     document.getElementById('user-container').removeEventListener('click', this.handleClickOutSide, false)
     document.removeEventListener('keydown', this.handleKeyDown, false)
   }
@@ -677,6 +712,8 @@ const mapDispatchToProps = {
   setDate,
   setDescription,
   fetchAttachment,
+  attachmentsFirebaseListener,
+  commentsFirebaseListener,
   createAttachment,
   deleteAttachment,
   fetchComment,

@@ -1,7 +1,6 @@
-import {call, cancelled, fork, put, select, take} from 'redux-saga/effects'
+import {call, cancelled, cancel, fork, put, take} from 'redux-saga/effects'
 import { normalize } from 'normalizr'
 
-import * as authSelectors from 'redux/store/auth/auth.selectors'
 import * as actions from 'redux/store/attachments/attachments.action'
 import { fetch, createLoadActions } from 'redux/store/common.sagas'
 import api from 'redux/utils/api'
@@ -10,9 +9,8 @@ import firebase from 'redux/utils/firebase'
 
 const ATTACHMENTS = actions.ATTACHMENTS
 
-export function* initAttachmentsData(initTime) {
-  const userId = yield select(state => authSelectors.getUserId(state))
-  const channel = firebase.getAttachmentsChannel(userId, initTime)
+function* initAttachmentsData(taskId, initTime) {
+  const channel = firebase.getAttachmentsChannel(taskId, initTime)
   return yield fork(syncAttachmentsChannel, channel)
 }
 
@@ -49,6 +47,15 @@ export function* fetchAttachment(action) {
     args: [action.payload],
     schema: schema.attachmentList
   })
+}
+
+export function* attachmentsFirebaseListener(action) {
+  const { taskId, initTime, cancelListener } = action.payload
+  const attachmentsSyncing = yield fork(initAttachmentsData, taskId, initTime)
+
+  if (cancelListener) {
+    yield cancel(attachmentsSyncing)
+  }
 }
 
 export function* createAttachment(action) {
