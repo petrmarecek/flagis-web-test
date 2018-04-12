@@ -89,6 +89,7 @@ function* syncTasksChannel(channel) {
         // Trashed tasks
         if (isTrashed) {
           normalizeData.trashed = List(normalizeData.trashed).push(id)
+          // Delete task from search
           search.tasks.removeItem({ id })
         }
       })

@@ -226,6 +226,7 @@ export const Tag = Record({
   colorIndex: null,
   description: null,
   createdById: null,
+  isDeleted: null,
 })
 
 export const TagInfo = Record({

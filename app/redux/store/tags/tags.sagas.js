@@ -17,6 +17,7 @@ import api from 'redux/utils/api'
 import schema from 'redux/data/schema'
 import search from 'redux/services/search'
 import firebase from 'redux/utils/firebase'
+import {List} from "immutable";
 
 const TAGS = tagActions.TAGS
 
@@ -50,12 +51,17 @@ function* syncTagsChannel(channel) {
           // Update tag in search
           search.tags.updateItem(tag)
         }
-        // TODO: Delete tags form search
+
+        // Tags si deleted
+        if (tag.isDeleted) {
+          normalizeData.deleted = List(normalizeData.deleted).push(id)
+          // Delete tag from search
+          search.tags.removeItem({ id })
+        }
       })
 
       // Save changes to store entities
       yield put({ type: FULFILLED, payload: normalizeData })
-
     }
 
   } catch(err) {
