@@ -137,7 +137,7 @@ function updateTagsRelations(payload, state) {
     })
   })
 
-  return state.mergeIn(['relations'], relations)
+  return state.setIn(['relations'], relations)
 }
 
 // Update tags items
