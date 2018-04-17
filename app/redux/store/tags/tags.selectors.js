@@ -75,13 +75,12 @@ export const getNextTag = state => {
     return null
   }
 
-  const sizeListOfTags = state.getIn(['tags', 'all', 'items']).size
+  let tags = loadTags(state.getIn(['tags', 'all', 'items']).toArray(), state)
+  tags = List(tags.map(tag => tag.id))
+  const sizeListOfTags = tags.size
   if (sizeListOfTags === 1) {
     return null
   }
-
-  let tags = loadTags(state.getIn(['tags', 'all', 'items']).toArray(), state)
-  tags = List(tags.map(tag => tag.id))
 
   let nextIndex = tags.indexOf(tagId) + 1
   if (nextIndex === sizeListOfTags) {
@@ -102,13 +101,12 @@ export const getPreviousTag = state => {
     return null
   }
 
-  const sizeListOfTags = state.getIn(['tags', 'all', 'items']).size
+  let tags = loadTags(state.getIn(['tags', 'all', 'items']).toArray(), state)
+  tags = List(tags.map(tag => tag.id))
+  const sizeListOfTags = tags.size
   if (sizeListOfTags === 1) {
     return null
   }
-
-  let tags = loadTags(state.getIn(['tags', 'all', 'items']).toArray(), state)
-  tags = List(tags.map(tag => tag.id))
 
   let prevIndex = tags.indexOf(tagId) - 1
   if (prevIndex < 0) {
