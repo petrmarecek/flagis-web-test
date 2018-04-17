@@ -2,7 +2,6 @@ import { List } from 'immutable'
 import typeToReducer from 'type-to-reducer'
 
 import { AUTH } from 'redux/store/auth/auth.actions'
-import { TAGS } from 'redux/store/tags/tags.actions'
 import { TASKS } from 'redux/store/tasks/tasks.actions'
 import { TaskStore } from 'redux/data/records'
 

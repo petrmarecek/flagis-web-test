@@ -5,16 +5,12 @@
 import { createStore, applyMiddleware, compose } from 'redux'
 import { fromJS } from 'immutable';
 import { routerMiddleware } from 'react-router-redux'
-import { persistStore, autoRehydrate, getStoredState } from 'redux-persist-immutable'
-import immutableTransform from 'redux-persist-transform-immutable'
+import { autoRehydrate } from 'redux-persist-immutable'
 import normalizrMiddleware from 'redux/utils/normalizr-middleware'
 import createSagaMiddleware from 'redux-saga'
 
 import createReducer from 'redux/store/root.reducer'
 import sagas from 'redux/store/root.sagas'
-import { AuthStore as auth } from './data/records'
-import localforage from 'localforage'
-import api from './utils/api'
 
 const sagaMiddleware = createSagaMiddleware();
 
