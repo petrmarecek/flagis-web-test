@@ -73,7 +73,6 @@ export default function* root() {
     takeLatest(TAGS.FETCH, tag.fetchTags),
     takeEvery(TAGS.CREATE, tag.createTag),
     takeLatest(TAGS.SELECT_ACTIVE_TAGS, tag.selectActiveTags),
-    takeLatest(TAGS.SET_ACTIVE_TAGS, tag.setActiveTags),
     takeLatest(TAGS.UPDATE, tag.update),
     takeEvery(TAGS.DELETE, tag.deleteTag),
     takeEvery(TAGS.UNDO_DELETE, tag.undoDeleteTag),

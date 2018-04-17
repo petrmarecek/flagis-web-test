@@ -92,38 +92,6 @@ export function* selectActiveTags(action) {
   yield put(tagActions.setActiveTags(action.payload.tagIds, isArchivedTasks))
 }
 
-/**
- * Fetch new task set when tags are selected
- * @param {Object} action Redux action
- */
-export function* setActiveTags(action) {
-  // Fetch new set
-  const isArchivedTasks = action.payload.isArchivedTasks
-  const tagIds = action.payload.tagIds
-  let fetchAction = TASKS.FETCH
-  let actionArgs = [{
-    isArchived: false,
-    isTrashed: false,
-    tags: tagIds,
-  }]
-
-  if (isArchivedTasks) {
-    fetchAction = TASKS.FETCH_ARCHIVED
-    actionArgs = [{
-      isArchived: true,
-      isCompleted: true,
-      isTrashed: false,
-      tags: tagIds,
-    }]
-  }
-
-  yield* fetch(fetchAction, {
-    method: api.tasks.search,
-    args: actionArgs,
-    schema: schema.taskList
-  })
-}
-
 export function* createTag(action) {
   try {
     // call server and create a new tag

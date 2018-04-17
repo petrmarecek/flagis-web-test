@@ -76,20 +76,6 @@ export default typeToReducer({
     }
   },
 
-  // New set of tags was selected, remove the current one
-  [TAGS.SET_ACTIVE_TAGS]: (state, action) => {
-    const isArchivedTasks = action.payload.isArchivedTasks
-
-    if (isArchivedTasks) {
-      return state
-        .setIn(['archived', 'items'], List())
-    }
-
-    return state
-      .setIn(['items'], List())
-      .setIn(['completed'], List())
-  },
-
   [TASKS.SELECT]: (state, action) => state
     .setIn(['selection'], action.payload.taskList),
 

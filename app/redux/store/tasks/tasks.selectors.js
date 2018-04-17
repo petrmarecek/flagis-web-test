@@ -86,6 +86,7 @@ function loadTasks(ids, state) {
     return task.set('tags', tags)
   })
 
+  // sort task by order
   tasks.sort((a, b) => {
     if (a.order > b.order) return -1;
     if (a.order < b.order) return 1;
@@ -93,9 +94,20 @@ function loadTasks(ids, state) {
     return 0;
   })
 
+  // apply tag search
+  const activeTags = state.getIn(['tags', 'activeTags'])
+  if (activeTags.size !== 0) {
+    const tags = activeTags.map(tagId => {
+      return state.getIn(['entities', 'tags']).get(tagId)
+    }).toList()
+
+    tasks = findTasksByTags(tasks, tags)
+  }
+
   // apply date range filter
-  if (state.getIn(['tasksMenu', 'filters', 'range'])) {
-    tasks = filterByDateRange(state.getIn(['tasksMenu', 'filters', 'range']), tasks)
+  const range = state.getIn(['tasksMenu', 'filters', 'range'])
+  if (range) {
+    tasks = filterByDateRange(range, tasks)
   }
 
   // apply important filter
@@ -182,7 +194,7 @@ function loadArchiveTasks(ids, state) {
     ids = intersection(ids, foundIds)
   }
 
-  const tasks = ids.map(taskId => {
+  let tasks = ids.map(taskId => {
     const task = state.getIn(['entities', 'tasks']).get(taskId)
     const tags = task.tags.map(tagId => state.getIn(['entities', 'tags']).get(tagId))
     return task.set('tags', tags)
@@ -194,6 +206,16 @@ function loadArchiveTasks(ids, state) {
     if(a.archivedAt < b.archivedAt) return 1;
     return 0;
   })
+
+  // apply tag search
+  const activeTags = state.getIn(['tags', 'activeTags'])
+  if (activeTags.size !== 0) {
+    const tags = activeTags.map(tagId => {
+      return state.getIn(['entities', 'tags']).get(tagId)
+    }).toList()
+
+    tasks = findTasksByTags(tasks, tags)
+  }
 
   return tasks
 }
@@ -339,4 +361,32 @@ function getSelectedTaskId(state) {
   }
 
   return taskList.last()
+}
+
+/**
+ * Find tasks by active tags
+ * @param {Array} tasks Array of tasks entities
+ * @param {List} tags List of tags entities
+ * @returns {Array} entities Array of tasks
+ */
+
+export function findTasksByTags(tasks, tags) {
+  const entities = []
+
+  tasks.forEach(task => {
+    let includes = true
+
+    tags.forEach(tag => {
+      if (!task.tags.includes(tag)) {
+        includes = false
+      }
+    })
+
+    if (includes) {
+      entities.push(task)
+    }
+
+  })
+
+  return entities
 }

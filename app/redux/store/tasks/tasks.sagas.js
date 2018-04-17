@@ -119,13 +119,12 @@ export function* fetchTasks() {
     yield put(appStateActions.hideArchivedTasks())
   }
 
-  const activeTags = yield select(state => tagsSelectors.getActiveTagsIds(state))
   const result = yield* fetch(TASKS.FETCH, {
     method: api.tasks.search,
     args: [{
       isArchived: false,
       isTrashed: false,
-      tags: activeTags,
+      tags: [],
     }],
     schema: schema.taskList
   })
@@ -147,14 +146,13 @@ export function* fetchArchivedTasks() {
     yield put(appStateActions.visibleArchivedTasks())
   }
 
-  const activeTags = yield select(state => tagsSelectors.getActiveTagsIds(state))
   const result = yield* fetch(TASKS.FETCH_ARCHIVED, {
     method: api.tasks.search,
     args: [{
       isArchived: true,
       isCompleted: true,
       isTrashed: false,
-      tags: activeTags,
+      tags: [],
     }],
     schema: schema.taskList
   })
@@ -484,29 +482,6 @@ export function* removeTag(action) {
     yield call(api.tasks.setTags, taskId, tags)
     yield put(tagsActions.deleteTagsRelations(action.payload.tag.id, action.payload.taskId))
 
-    // Refresh task list if add tag that it set as active
-    const activeTags = yield select(tagsSelectors.getActiveTagsIds)
-    const tagId = action.payload.tag.id
-
-    if (activeTags.includes(tagId)) {
-      yield put(taskActions.deselectTasks())
-      yield* fetch(TASKS.FETCH, {
-        method: api.tasks.search,
-        args: [{
-          isArchived: false,
-          isTrashed: false,
-          tags: activeTags,
-        }],
-        schema: schema.taskList
-      })
-    }
-
-    // Remove from current list if it does not match filter anymore
-    // const activeTags = yield select(tagsSelectors.getActiveTagsIds)
-    // if (activeTags.includes(action.payload.tag.id)) {
-    //   yield put(taskActions.removeTaskFromLists(taskId))
-    // }
-
   } catch(err) {
     console.error(err)
     // TODO: revert to original state
@@ -552,20 +527,6 @@ function* saveTaskTagRelation(taskId, tag) {
 
     // Send them to server
     const resultTagList = yield call(() => api.tasks.setTags(taskId, tags))
-
-    const activeTags = yield select(state => tagsSelectors.getActiveTagsIds(state))
-    const tagId = tag.id
-    if (activeTags.includes(tagId)) {
-      yield* fetch(TASKS.FETCH, {
-        method: api.tasks.search,
-        args: [{
-          isArchived: false,
-          isTrashed: false,
-          tags: activeTags,
-        }],
-        schema: schema.taskList
-      })
-    }
 
     // If we added a new task --> replace instance with the server one
     if (tag.isNew) {
