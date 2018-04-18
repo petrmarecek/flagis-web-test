@@ -323,6 +323,12 @@ class TaskListItem extends Component {
         listType={this.props.listType} />
     ))
 
+    const now = moment()
+    const dueDate = this.props.task.dueDate
+    const dueDateFormat = dateUtils.formatDate(dueDate)
+    const fromNow = this.props.task.dueDate ? moment(dueDate).fromNow() : ''
+    const description = this.props.task.description === null ? '' : this.props.task.description
+
     // init classes
     const taskListItemClasses = classnames({
       'task-item': true,
@@ -331,6 +337,7 @@ class TaskListItem extends Component {
       'selected': this.props.isSelected,
       'completed': this.props.task.isCompleted && this.props.listType !== 'archived',
       'important': this.props.task.isImportant,
+      'due-date': dueDate !== null,
     })
 
     const isCompletedTaskColor = this.props.task.isCompleted
@@ -343,12 +350,6 @@ class TaskListItem extends Component {
       'task-item__subject': true,
       'task-item__subject--description': this.props.task.description
     })
-
-    const now = moment()
-    const dueDate = this.props.task.dueDate
-    const dueDateFormat = dateUtils.formatDate(dueDate)
-    const fromNow = this.props.task.dueDate ? moment(dueDate).fromNow() : ''
-    const description = this.props.task.description === null ? '' : this.props.task.description
 
     const dueDateClass = classnames({
       'task-item__due-date': true,
