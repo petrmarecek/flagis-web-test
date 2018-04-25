@@ -54,18 +54,8 @@ export default typeToReducer({
   // Update lists for tasks
   [TASKS.FIREBASE]: {
     FULFILLED: (state, action) => {
-      // Data from firestore
-      const { items, uncompleted, completed, archived, trashed } = action.payload
-
-      // Get lists from store of tasks
-      const storeItems = state.getIn(['items'])
-      const storeCompleted = state.getIn(['completed'])
-      const storeArchived = state.getIn(['archived', 'items'])
-
-      // Get new lists
-      const newItems = updateTasks(storeItems, items, [archived, trashed])
-      const newCompleted = updateTasks(storeCompleted , completed, [uncompleted, archived, trashed])
-      const newArchived = updateTasks(storeArchived , archived, [completed, trashed])
+      // Get new lists for tasks store
+      const { newItems, newCompleted, newArchived } = updateTasksListsFromFirestore(state, action)
 
       // Set new lists
       return state
@@ -136,16 +126,82 @@ function completedTasks(tasks) {
   return completedTasksList
 }
 
-function updateTasks(storeList, unionList, filterLists) {
-  if (unionList) {
-    storeList = storeList.toSet().union(unionList.toSet()).toList()
+function updateTasksListsFromFirestore(state, action) {
+  const task = action.payload.entities.tasks
+  const resultId = action.payload.result
+  const { id, isCompleted, isArchived, isTrashed } = task[resultId]
+
+  let newItems = state.getIn(['items'])
+  let newCompleted = state.getIn(['completed'])
+  let newArchived = state.getIn(['archived', 'items'])
+
+  // Uncompleted task
+  if (!isCompleted && !isArchived && !isTrashed) {
+    if (!newItems.includes(id)) {
+      newItems = newItems.push(id)
+    }
+
+    if (newArchived.includes(id)) {
+      newArchived = newArchived.filter(taskId => taskId !== id)
+    }
+
+    if (newCompleted.includes(id)) {
+      newCompleted = newCompleted.filter(taskId => taskId !== id)
+    }
+
+    return { newItems, newCompleted, newArchived }
   }
 
-  filterLists.forEach(filterList => {
-    if (filterList) {
-      storeList = storeList.filter(id => filterList.indexOf(id) < 0)
+  // Completed task
+  if (isCompleted && !isArchived && !isTrashed) {
+    if (!newItems.includes(id)) {
+      newItems = newItems.push(id)
     }
-  })
 
-  return storeList
+    if (!newCompleted.includes(id)) {
+      newCompleted = newCompleted.push(id)
+    }
+
+    if (newArchived.includes(id)) {
+      newArchived = newArchived.filter(taskId => taskId !== id)
+    }
+
+    return { newItems, newCompleted, newArchived }
+  }
+
+  // Archived task
+  if (isCompleted && isArchived && !isTrashed) {
+    if (!newArchived.includes(id)) {
+      newArchived = newArchived.push(id)
+    }
+
+    if (newItems.includes(id)) {
+      newItems = newItems.filter(taskId => taskId !== id)
+    }
+
+    if (newCompleted.includes(id)) {
+      newCompleted = newCompleted.filter(taskId => taskId !== id)
+    }
+
+    return { newItems, newCompleted, newArchived }
+  }
+
+  // Trashed task
+  if (isTrashed) {
+    if (newItems.includes(id)) {
+      newItems = newItems.filter(taskId => taskId !== id)
+    }
+
+    if (newCompleted.includes(id)) {
+      newCompleted = newCompleted.filter(taskId => taskId !== id)
+    }
+
+    if (newArchived.includes(id)) {
+      newArchived = newArchived.filter(taskId => taskId !== id)
+    }
+
+    return { newItems, newCompleted, newArchived }
+  }
+
+  return { newItems, newCompleted, newArchived }
 }

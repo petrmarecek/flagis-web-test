@@ -1,6 +1,5 @@
 import { normalize } from 'normalizr'
-import { List } from 'immutable'
-import { cancelled, take, call, put, select, fork } from 'redux-saga/effects'
+import { all, cancelled, take, call, put, select, fork } from 'redux-saga/effects'
 import {
   createLoadActions,
   fetch,
@@ -23,86 +22,48 @@ import dateUtil from 'redux/utils/date'
 
 const TASKS = taskActions.TASKS
 
-export function* initTasksData(initTime) {
-  const userId = yield select(state => authSelectors.getUserId(state))
-  const channel = firebase.getTasksChannel(userId, initTime)
-  return yield fork(syncTasksChannel, channel)
+function* saveChangeFromFirestore(change) {
+  const { FULFILLED } = createLoadActions(TASKS.FIREBASE)
+  const task = change.doc.data()
+
+  // Prepare data
+  const normalizeData = normalize(task, schema.task)
+  const entitiesTasks = yield select(state => entitiesSelectors.getActiveEntitiesTasks(state))
+  const storeItems = yield select(state => taskSelectors.getTasksItems(state))
+  const storeArchivedItems = yield select(state => taskSelectors.getArchivedTasksItems(state))
+  const { id, isTrashed } = task
+
+  // Update search
+  if (!isTrashed) {
+    if (!storeItems.includes(id) || !storeArchivedItems.includes(id)) {
+      // Add new task to search
+      search.tasks.addItem(task)
+    } else {
+      // Update task in search
+      search.tasks.updateItem(task)
+    }
+  } else {
+    // Delete task from search
+    search.tasks.removeItem({ id })
+  }
+
+  // Save changes to store
+  yield put({type: FULFILLED, payload: normalizeData})
+
+  // Update tag relations in store
+  yield put({ type: TASKS.FIREBASE_TAGS_RELATIONS, payload: entitiesTasks })
 }
 
 function* syncTasksChannel(channel) {
-  const { FULFILLED } = createLoadActions(TASKS.FIREBASE)
+  const { REJECTED } = createLoadActions(TASKS.FIREBASE)
 
   try {
-
     while (true) { // eslint-disable-line
-      const data = yield take(channel)
-
-      // Prepare data
-      const tasks = data.docs.map(doc => doc.data())
-      const normalizeData = normalize(tasks, schema.taskList)
-      const storeItems = yield select(state => taskSelectors.getTasksItems(state))
-      const storeArchivedItems = yield select(state => taskSelectors.getArchivedTasksItems(state))
-
-      // Get ids list of active, uncompleted, completed, archived and trashed task
-      tasks.forEach(task => {
-        const { id, isCompleted, isArchived, isTrashed } = task
-
-        // active tasks
-        if (!isArchived && !isTrashed) {
-          normalizeData.items = List(normalizeData.items).push(id)
-
-          // Update search
-          if (!storeItems.includes(id)) {
-            // Add new task to search
-            search.tasks.addItem(task)
-          } else {
-            // Update task in search
-            search.tasks.updateItem(task)
-          }
-        }
-
-        // Uncompleted tasks
-        if (!isCompleted && !isArchived && !isTrashed) {
-          normalizeData.uncompleted = List(normalizeData.uncompleted).push(id)
-        }
-
-        // Completed tasks
-        if (isCompleted && !isArchived && !isTrashed) {
-          normalizeData.completed = List(normalizeData.completed).push(id)
-        }
-
-        // Archived tasks
-        if (isCompleted && isArchived && !isTrashed) {
-          normalizeData.archived = List(normalizeData.archived).push(id)
-
-          // Update search
-          if (!storeArchivedItems.includes(id)) {
-            // Add new archived task to search
-            search.tasks.addItem(task)
-          } else {
-            // Update archived task in search
-            search.tasks.updateItem(task)
-          }
-        }
-
-        // Trashed tasks
-        if (isTrashed) {
-          normalizeData.trashed = List(normalizeData.trashed).push(id)
-          // Delete task from search
-          search.tasks.removeItem({ id })
-        }
-      })
-
-      // Save changes to store entities
-      yield put({ type: FULFILLED, payload: normalizeData })
-
-      // Update tag relations in store
-      const entitiesTasks = yield select(state => entitiesSelectors.getActiveEntitiesTasks(state))
-      yield put({ type: TASKS.FIREBASE_TAGS_RELATIONS, payload: entitiesTasks })
+      const snapshot = yield take(channel)
+      yield all(snapshot.docChanges.map(change => call(saveChangeFromFirestore, change)))
     }
-
   } catch(err) {
-    console.error(err)
+    yield put({ type: REJECTED, err })
 
   } finally {
     if (yield cancelled()) {
@@ -164,6 +125,12 @@ export function* fetchArchivedTasks() {
   const text = yield select(state => taskMenuSelectors.getTaskMenuFiltersItem(state, 'searchText'))
   yield put(taskMenuActions.changeSearchText(''))
   yield put(taskMenuActions.changeSearchText(text))
+}
+
+export function* initTasksData(initTime) {
+  const userId = yield select(state => authSelectors.getUserId(state))
+  const channel = firebase.getTasksChannel(userId, initTime)
+  return yield fork(syncTasksChannel, channel)
 }
 
 export function* createTask(action) {
