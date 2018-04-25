@@ -55,13 +55,14 @@ export default typeToReducer({
   [TASKS.FIREBASE]: {
     FULFILLED: (state, action) => {
       // Get new lists for tasks store
-      const { newItems, newCompleted, newArchived } = updateTasksListsFromFirestore(state, action)
+      const { newItems, newCompleted, newArchived, newSelection } = updateTasksListsFromFirestore(state, action)
 
       // Set new lists
       return state
         .setIn(['items'], newItems)
         .setIn(['completed'], newCompleted)
         .setIn(['archived', 'items'], newArchived)
+        .setIn(['selection'], newSelection)
     }
   },
 
@@ -134,6 +135,7 @@ function updateTasksListsFromFirestore(state, action) {
   let newItems = state.getIn(['items'])
   let newCompleted = state.getIn(['completed'])
   let newArchived = state.getIn(['archived', 'items'])
+  let newSelection = state.getIn(['selection'])
 
   // Uncompleted task
   if (!isCompleted && !isArchived && !isTrashed) {
@@ -149,30 +151,38 @@ function updateTasksListsFromFirestore(state, action) {
       newCompleted = newCompleted.filter(taskId => taskId !== id)
     }
 
-    return { newItems, newCompleted, newArchived }
+    return { newItems, newCompleted, newArchived, newSelection }
   }
 
   // Completed task
   if (isCompleted && !isArchived && !isTrashed) {
-    if (!newItems.includes(id)) {
-      newItems = newItems.push(id)
-    }
-
     if (!newCompleted.includes(id)) {
       newCompleted = newCompleted.push(id)
+    }
+
+    if (!newItems.includes(id)) {
+      newItems = newItems.push(id)
+
+      if (newSelection.includes(id)) {
+        newSelection = newSelection.filter(taskId => taskId !== id)
+      }
     }
 
     if (newArchived.includes(id)) {
       newArchived = newArchived.filter(taskId => taskId !== id)
     }
 
-    return { newItems, newCompleted, newArchived }
+    return { newItems, newCompleted, newArchived, newSelection }
   }
 
   // Archived task
   if (isCompleted && isArchived && !isTrashed) {
     if (!newArchived.includes(id)) {
       newArchived = newArchived.push(id)
+
+      if (newSelection.includes(id)) {
+        newSelection = newSelection.filter(taskId => taskId !== id)
+      }
     }
 
     if (newItems.includes(id)) {
@@ -183,7 +193,7 @@ function updateTasksListsFromFirestore(state, action) {
       newCompleted = newCompleted.filter(taskId => taskId !== id)
     }
 
-    return { newItems, newCompleted, newArchived }
+    return { newItems, newCompleted, newArchived, newSelection }
   }
 
   // Trashed task
@@ -200,8 +210,12 @@ function updateTasksListsFromFirestore(state, action) {
       newArchived = newArchived.filter(taskId => taskId !== id)
     }
 
-    return { newItems, newCompleted, newArchived }
+    if (newSelection.includes(id)) {
+      newSelection = newSelection.filter(taskId => taskId !== id)
+    }
+
+    return { newItems, newCompleted, newArchived, newSelection }
   }
 
-  return { newItems, newCompleted, newArchived }
+  return { newItems, newCompleted, newArchived, newSelection }
 }

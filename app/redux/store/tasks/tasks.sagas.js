@@ -6,19 +6,23 @@ import {
   mainUndo,
 } from 'redux/store/common.sagas'
 import * as appStateActions from 'redux/store/app-state/app-state.actions'
-import * as tagsActions from 'redux/store/tags/tags.actions'
 import * as taskActions from 'redux/store/tasks/tasks.actions'
+import * as tagsActions from 'redux/store/tags/tags.actions'
 import * as taskMenuActions from 'redux/store/tasks-menu/tasks-menu.action'
+import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'
+import * as authSelectors from 'redux/store/auth/auth.selectors'
+import * as entitiesSelectors from 'redux/store/entities/entities.selectors'
+import * as taskSelectors from 'redux/store/tasks/tasks.selectors'
 import * as taskMenuSelectors from 'redux/store/tasks-menu/tasks-menu.selectors'
 import api from 'redux/utils/api'
 import schema from 'redux/data/schema'
-import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'
-import * as authSelectors from 'redux/store/auth/auth.selectors'
-import * as taskSelectors from 'redux/store/tasks/tasks.selectors'
-import * as entitiesSelectors from 'redux/store/entities/entities.selectors'
 import search from 'redux/services/search'
 import firebase from 'redux/utils/firebase'
 import dateUtil from 'redux/utils/date'
+
+import { toast } from 'react-toastify'
+import { successMessages } from 'utils/messages'
+import constants from 'utils/constants'
 
 const TASKS = taskActions.TASKS
 
@@ -28,21 +32,63 @@ function* saveChangeFromFirestore(change) {
 
   // Prepare data
   const normalizeData = normalize(task, schema.task)
-  const entitiesTasks = yield select(state => entitiesSelectors.getActiveEntitiesTasks(state))
   const storeItems = yield select(state => taskSelectors.getTasksItems(state))
   const storeArchivedItems = yield select(state => taskSelectors.getArchivedTasksItems(state))
-  const { id, isTrashed } = task
+  const isDetailVisible = yield select(state => appStateSelectors.getTaskTagDetail(state))
+  const { id, isArchived, isTrashed } = task
 
-  // Update search
-  if (!isTrashed) {
-    if (!storeItems.includes(id) || !storeArchivedItems.includes(id)) {
-      // Add new task to search
-      search.tasks.addItem(task)
-    } else {
-      // Update task in search
-      search.tasks.updateItem(task)
+  // Return task from archive
+  if (!isArchived && !isTrashed && !storeItems.includes(id) && storeArchivedItems.includes(id)) {
+    // Show notification
+    toast.success(successMessages.tasks.cancelArchive, {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+    })
+
+    // Close archive detail
+    if (isDetailVisible.archive) {
+      yield put(appStateActions.deselectDetail('archive'))
     }
-  } else {
+
+    // Update task in search
+    search.tasks.updateItem(task)
+  }
+
+  // Move task to archive
+  if (isArchived && !isTrashed && !storeArchivedItems.includes(id) && storeItems.includes(id)) {
+    // Show notification
+    toast.success(successMessages.tasks.archive, {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+    })
+
+    // Close detail
+    if (isDetailVisible.task) {
+      yield put(appStateActions.deselectDetail('task'))
+    }
+
+    // Update task in search
+    search.tasks.updateItem(task)
+  }
+
+  // New task
+  if (!storeItems.includes(id) && !storeArchivedItems.includes(id)) {
+    // Add new task to search
+    search.tasks.addItem(task)
+  }
+
+  // Delete task
+  if (isTrashed) {
+    // Close detail
+    if (isDetailVisible.task) {
+      yield put(appStateActions.deselectDetail('task'))
+    }
+
+    // Close archive detail
+    if (isDetailVisible.archive) {
+      yield put(appStateActions.deselectDetail('archive'))
+    }
+
     // Delete task from search
     search.tasks.removeItem({ id })
   }
@@ -51,6 +97,7 @@ function* saveChangeFromFirestore(change) {
   yield put({type: FULFILLED, payload: normalizeData})
 
   // Update tag relations in store
+  const entitiesTasks = yield select(state => entitiesSelectors.getActiveEntitiesTasks(state))
   yield put({ type: TASKS.FIREBASE_TAGS_RELATIONS, payload: entitiesTasks })
 }
 

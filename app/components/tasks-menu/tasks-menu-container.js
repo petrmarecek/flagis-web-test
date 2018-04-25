@@ -137,7 +137,7 @@ class TasksMenuContainer extends Component {
       archive.entitiesTasks,
       archive.selectedTasks
     )
-    toast.success(successMessages.multiSelect.cancelArchive, {
+    toast.success(successMessages.multiSelect.archive, {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
     })
