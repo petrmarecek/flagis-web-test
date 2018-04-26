@@ -1,4 +1,4 @@
-import {call, cancelled, cancel, fork, put, take} from 'redux-saga/effects'
+import { all, call, cancelled, cancel, fork, put, take } from 'redux-saga/effects'
 import { normalize } from 'normalizr'
 
 import * as actions from 'redux/store/comments/comments.action'
@@ -9,30 +9,27 @@ import firebase from 'redux/utils/firebase'
 
 const COMMENTS = actions.COMMENTS
 
-export function* initCommentsData(taskId, initTime) {
-  const channel = firebase.getCommentsChannel(taskId, initTime)
-  return yield fork(syncCommentsChannel, channel)
+function* saveChangeFromFirestore(change) {
+  const { FULFILLED } = createLoadActions(COMMENTS.FIREBASE)
+  const comment = change.doc.data()
+
+  // Prepare data
+  const normalizeData = normalize(comment, schema.comment)
+
+  // Save changes to store entities
+  yield put({ type: FULFILLED, payload: normalizeData })
 }
 
 function* syncCommentsChannel(channel) {
-  const { FULFILLED } = createLoadActions(COMMENTS.FIREBASE)
+  const { REJECTED } = createLoadActions(COMMENTS.FIREBASE)
 
   try {
-
     while (true) { // eslint-disable-line
-      const data = yield take(channel)
-
-      // Prepare data
-      const comments = data.docs.map(doc => doc.data())
-      const normalizeData = normalize(comments, schema.commentList)
-
-      // Save changes to store entities
-      yield put({ type: FULFILLED, payload: normalizeData })
-
+      const snapshot = yield take(channel)
+      yield all(snapshot.docChanges.map(change => call(saveChangeFromFirestore, change)))
     }
-
   } catch(err) {
-    console.error(err)
+    yield put({ type: REJECTED, err })
 
   } finally {
     if (yield cancelled()) {
@@ -47,6 +44,11 @@ export function* fetchComment(action) {
     args: [action.payload],
     schema: schema.commentList
   })
+}
+
+export function* initCommentsData(taskId, initTime) {
+  const channel = firebase.getCommentsChannel(taskId, initTime)
+  return yield fork(syncCommentsChannel, channel)
 }
 
 export function* commentsFirebaseListener(action) {

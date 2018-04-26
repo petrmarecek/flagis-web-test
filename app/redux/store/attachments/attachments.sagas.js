@@ -1,4 +1,4 @@
-import {call, cancelled, cancel, fork, put, take} from 'redux-saga/effects'
+import { all, call, cancelled, cancel, fork, put, take } from 'redux-saga/effects'
 import { normalize } from 'normalizr'
 
 import * as actions from 'redux/store/attachments/attachments.action'
@@ -9,30 +9,27 @@ import firebase from 'redux/utils/firebase'
 
 const ATTACHMENTS = actions.ATTACHMENTS
 
-function* initAttachmentsData(taskId, initTime) {
-  const channel = firebase.getAttachmentsChannel(taskId, initTime)
-  return yield fork(syncAttachmentsChannel, channel)
+function* saveChangeFromFirestore(change) {
+  const { FULFILLED } = createLoadActions(ATTACHMENTS.FIREBASE)
+  const attachment = change.doc.data()
+
+  // Prepare data
+  const normalizeData = normalize(attachment, schema.attachment)
+
+  // Save changes to store entities
+  yield put({ type: FULFILLED, payload: normalizeData })
 }
 
 function* syncAttachmentsChannel(channel) {
-  const { FULFILLED } = createLoadActions(ATTACHMENTS.FIREBASE)
+  const { REJECTED } = createLoadActions(ATTACHMENTS.FIREBASE)
 
   try {
-
     while (true) { // eslint-disable-line
-      const data = yield take(channel)
-
-      // Prepare data
-      const attachments = data.docs.map(doc => doc.data())
-      const normalizeData = normalize(attachments, schema.attachmentList)
-
-      // Save changes to store entities
-      yield put({ type: FULFILLED, payload: normalizeData })
-
+      const snapshot = yield take(channel)
+      yield all(snapshot.docChanges.map(change => call(saveChangeFromFirestore, change)))
     }
-
   } catch(err) {
-    console.error(err)
+    yield put({ type: REJECTED, err })
 
   } finally {
     if (yield cancelled()) {
@@ -47,6 +44,11 @@ export function* fetchAttachment(action) {
     args: [action.payload],
     schema: schema.attachmentList
   })
+}
+
+function* initAttachmentsData(taskId, initTime) {
+  const channel = firebase.getAttachmentsChannel(taskId, initTime)
+  return yield fork(syncAttachmentsChannel, channel)
 }
 
 export function* attachmentsFirebaseListener(action) {
