@@ -1,7 +1,7 @@
 import { all, put, select } from 'redux-saga/effects'
 import { push } from 'react-router-redux'
 import * as treeActions from 'redux/store/tree/tree.actions'
-import * as tasksMenuActions from 'redux/store/tasks-menu/tasks-menu.action'
+import * as tasksMenuActions from 'redux/store/tasks-menu/tasks-menu.actions'
 import * as taskActions from 'redux/store/tasks/tasks.actions'
 import * as appStateActions from 'redux/store/app-state/app-state.actions'
 import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'

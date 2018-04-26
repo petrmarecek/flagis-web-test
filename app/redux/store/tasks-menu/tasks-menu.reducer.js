@@ -1,7 +1,7 @@
 import typeToReducer from 'type-to-reducer'
 
 import { AUTH } from '../auth/auth.actions'
-import { TASKS_MENU } from './tasks-menu.action'
+import { TASKS_MENU } from './tasks-menu.actions'
 import { TasksMenuStore } from '../../data/records'
 
 export default typeToReducer({

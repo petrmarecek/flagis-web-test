@@ -1,5 +1,5 @@
 import { put, select } from 'redux-saga/effects'
-import * as taskMenuActions from 'redux/store/tasks-menu/tasks-menu.action'
+import * as taskMenuActions from 'redux/store/tasks-menu/tasks-menu.actions'
 import * as taskMenuSelectros from 'redux/store/tasks-menu/tasks-menu.selectors'
 
 export function* changeRangeFilter(action) {

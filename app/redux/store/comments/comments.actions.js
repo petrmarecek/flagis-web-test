@@ -3,7 +3,6 @@ import schema from '../../data/schema'
 export const COMMENTS = {
   FETCH: 'COMMENT/FETCH',
   FIREBASE: 'COMMENT/FIREBASE',
-  FIREBASE_LISTENER: 'COMMENT/FIREBASE_LISTENER',
   CREATE: 'COMMENT/CREATE',
   ADD: 'COMMENT/ADD',
   DELETE: 'COMMENT/DELETE',
@@ -12,15 +11,6 @@ export const COMMENTS = {
 export const fetchComment = taskId => ({
   type: COMMENTS.FETCH,
   payload: taskId
-})
-
-export const commentsFirebaseListener = (taskId, initTime, cancelListener) => ({
-  type: COMMENTS.FIREBASE_LISTENER,
-  payload: {
-    taskId,
-    initTime,
-    cancelListener
-  }
 })
 
 export const createComment = comment => ({

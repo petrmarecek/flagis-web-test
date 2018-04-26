@@ -1,13 +1,17 @@
-import { all, call, cancelled, cancel, fork, put, take } from 'redux-saga/effects'
+import { all, select, call, cancelled, cancel, fork, put, take } from 'redux-saga/effects'
 import { normalize } from 'normalizr'
 
-import * as actions from 'redux/store/attachments/attachments.action'
+import * as appStateActions from 'redux/store/app-state/app-state.actions'
+import * as attachmentActions from 'redux/store/attachments/attachments.actions'
+import * as taskSelectors from 'redux/store/tasks/tasks.selectors'
 import { fetch, createLoadActions } from 'redux/store/common.sagas'
 import api from 'redux/utils/api'
 import schema from 'redux/data/schema'
 import firebase from 'redux/utils/firebase'
+import dateUtil from 'redux/utils/date'
 
-const ATTACHMENTS = actions.ATTACHMENTS
+const APP_STATE = appStateActions.APP_STATE
+const ATTACHMENTS = attachmentActions.ATTACHMENTS
 
 function* saveChangeFromFirestore(change) {
   const { FULFILLED } = createLoadActions(ATTACHMENTS.FIREBASE)
@@ -46,17 +50,24 @@ export function* fetchAttachment(action) {
   })
 }
 
-function* initAttachmentsData(taskId, initTime) {
-  const channel = firebase.getAttachmentsChannel(taskId, initTime)
-  return yield fork(syncAttachmentsChannel, channel)
-}
+export function* initAttachmentsData() {
+  while (true) { // eslint-disable-line
+    let detail = (yield take(APP_STATE.SET_DETAIL)).payload.detail
 
-export function* attachmentsFirebaseListener(action) {
-  const { taskId, initTime, cancelListener } = action.payload
-  const attachmentsSyncing = yield fork(initAttachmentsData, taskId, initTime)
+    if (detail === 'task') {
+      const initTime = dateUtil.getDateToISOString()
+      const taskId = yield select(state => taskSelectors.getSelectionTasks(state).first())
 
-  if (cancelListener) {
-    yield cancel(attachmentsSyncing)
+      // Start syncing task attachments with firestore
+      const channel = firebase.getAttachmentsChannel(taskId, initTime)
+      const attachmentsSyncing = yield fork(syncAttachmentsChannel, channel)
+
+      // Wait for cancel
+      detail = yield take(APP_STATE.DESELECT_DETAIL)
+
+      // Cancel syncing
+      yield cancel(attachmentsSyncing)
+    }
   }
 }
 
@@ -75,7 +86,7 @@ export function* createAttachment(action) {
     }
     const attachment = yield call(api.attachments.create, taskId, data)
 
-    yield put(actions.addAttachment(attachment))
+    yield put(attachmentActions.addAttachment(attachment))
 
   } catch(err) {
     console.error('Cannot create comment.', err)

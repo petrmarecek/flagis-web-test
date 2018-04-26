@@ -42,7 +42,7 @@ import {
   hideMenuSort,
   visibleMenuOption,
   hideMenuOption,
-} from 'redux/store/tasks-menu/tasks-menu.action'
+} from 'redux/store/tasks-menu/tasks-menu.actions'
 import { getTasksMenu } from 'redux/store/tasks-menu/tasks-menu.selectors'
 import { archiveCompletedTasks } from 'redux/utils/component-helper'
 

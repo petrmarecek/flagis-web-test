@@ -1,6 +1,6 @@
 import typeToReducer from 'type-to-reducer'
 
-import { MULTI_SELECT } from './multi-select.action'
+import { MULTI_SELECT } from './multi-select.actions'
 import { MultiSelectStore } from '../../data/records'
 
 export default typeToReducer({

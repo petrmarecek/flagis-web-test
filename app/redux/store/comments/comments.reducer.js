@@ -1,5 +1,5 @@
 import typeToReducer from 'type-to-reducer'
-import { COMMENTS } from './comments.action'
+import { COMMENTS } from './comments.actions'
 import { CommentStore } from '../../data/records'
 
 export default typeToReducer({

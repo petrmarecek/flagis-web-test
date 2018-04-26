@@ -43,7 +43,7 @@ import {
   addToList,
   deleteFromList,
   clearLists,
-} from 'redux/store/multi-select/multi-select.action'
+} from 'redux/store/multi-select/multi-select.actions'
 import {
   getMultiSelectAddTags,
   getMultiSelectRemoveTags,

@@ -3,11 +3,11 @@ import { all, fork, takeLatest, takeEvery } from 'redux-saga/effects'
 import { AUTH } from './auth/auth.actions'
 import { APP_STATE } from './app-state/app-state.actions'
 import { TASKS } from './tasks/tasks.actions'
-import { TASKS_MENU } from './tasks-menu/tasks-menu.action'
+import { TASKS_MENU } from './tasks-menu/tasks-menu.actions'
 import { TREE } from './tree/tree.actions'
 import { TAGS } from './tags/tags.actions'
-import { COMMENTS } from './comments/comments.action'
-import { ATTACHMENTS } from './attachments/attachments.action'
+import { COMMENTS } from './comments/comments.actions'
+import { ATTACHMENTS } from './attachments/attachments.actions'
 
 import * as auth from './auth/auth.sagas'
 import * as task from './tasks/tasks.sagas'
@@ -81,13 +81,13 @@ export default function* root() {
 
     // comments
     takeLatest(COMMENTS.FETCH, comment.fetchComment),
-    takeEvery(COMMENTS.FIREBASE_LISTENER, comment.commentsFirebaseListener),
+    fork(comment.initCommentsData),
     takeEvery(COMMENTS.CREATE, comment.createComment),
     takeEvery(COMMENTS.DELETE, comment.deleteComment),
 
     // attachments
     takeLatest(ATTACHMENTS.FETCH, attachment.fetchAttachment),
-    takeEvery(ATTACHMENTS.FIREBASE_LISTENER, attachment.attachmentsFirebaseListener),
+    fork(attachment.initAttachmentsData),
     takeEvery(ATTACHMENTS.CREATE, attachment.createAttachment),
     takeEvery(ATTACHMENTS.DELETE, attachment.deleteAttachment),
 

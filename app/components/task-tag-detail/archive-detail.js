@@ -33,9 +33,9 @@ import {
 
 import { getEntitiesTasks } from 'redux/store/entities/entities.selectors'
 
-import { fetchComment} from '../../redux/store/comments/comments.action'
+import { fetchComment} from '../../redux/store/comments/comments.actions'
 import { getComments } from './../../redux/store/comments/comments.selectors'
-import { fetchAttachment} from '../../redux/store/attachments/attachments.action'
+import { fetchAttachment} from '../../redux/store/attachments/attachments.actions'
 import { getAttachments } from './../../redux/store/attachments/attachments.selectors'
 
 import {

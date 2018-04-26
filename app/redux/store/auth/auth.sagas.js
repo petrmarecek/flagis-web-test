@@ -7,23 +7,16 @@ import { Map } from 'immutable'
 import { errorMessages, successMessages } from 'utils/messages'
 import constants from 'utils/constants'
 
-import { createLoadActions } from 'redux/store/common.sagas'
-import {
-  setError,
-  deselectError,
-  hideLoader,
-  changeLocation,
-} from 'redux/store/app-state/app-state.actions'
-import {
-  fetchTags,
-  fetchTagsRelations
-} from 'redux/store/tags/tags.actions'
-import { fetchTasks } from 'redux/store/tasks/tasks.actions'
+import * as authActions from 'redux/store/auth/auth.actions'
+import * as appStateActions from 'redux/store/app-state/app-state.actions'
+import * as taskActions from 'redux/store/tasks/tasks.actions'
+import * as tagActions from 'redux/store/tags/tags.actions'
+import * as treeActions from 'redux/store/tree/tree.actions'
+import * as authSelectors from 'redux/store/auth/auth.selectors'
+import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'
 import { initTasksData } from 'redux/store/tasks/tasks.sagas'
 import { initTagsData } from 'redux/store/tags/tags.sagas'
-import { fetchTree } from 'redux/store/tree/tree.actions'
-import * as authActions from 'redux/store/auth/auth.actions'
-import * as authSelectors from 'redux/store/auth/auth.selectors'
+import { createLoadActions } from 'redux/store/common.sagas'
 import api from 'redux/utils/api'
 import firebase from 'redux/utils/firebase'
 import dateUtil from 'redux/utils/date'
@@ -42,10 +35,10 @@ export function* initDataFlow() {
       token: take(tokenActions.FULFILLED),
     })
 
-    yield put(fetchTags())
-    yield put(fetchTagsRelations())
-    yield put(fetchTasks())
-    yield put(fetchTree())
+    yield put(tagActions.fetchTags())
+    yield put(tagActions.fetchTagsRelations())
+    yield put(taskActions.fetchTasks())
+    yield put(treeActions.fetchTree())
 
     // Init data from firestore
     const { tasksSyncing, tagsSyncing } = yield all({
@@ -56,6 +49,12 @@ export function* initDataFlow() {
     yield take(AUTH.LOGOUT)
     yield cancel(tasksSyncing)
     yield cancel(tagsSyncing)
+
+    // Cancel snapshot for comments and attachments from firestore
+    const isTaskDetailVisible = yield select(state => appStateSelectors.getTaskTagDetail(state).task)
+    if (isTaskDetailVisible) {
+      yield put(appStateActions.deselectDetail('task'))
+    }
   }
 }
 
@@ -127,8 +126,8 @@ export function* controlRedirectTasks() {
 export function* changePassword(action) {
   try {
     yield call(api.users.password, action.payload)
-    yield put(deselectError('changePassword'))
-    yield put(hideLoader())
+    yield put(appStateActions.deselectError('changePassword'))
+    yield put(appStateActions.hideLoader())
 
     toast.success(successMessages.changePassword, {
       position: toast.POSITION.BOTTOM_RIGHT,
@@ -136,16 +135,16 @@ export function* changePassword(action) {
     })
 
   } catch (err) {
-    yield put(setError('changePassword', errorMessages.changePassword.badRequest))
-    yield put(hideLoader())
+    yield put(appStateActions.setError('changePassword', errorMessages.changePassword.badRequest))
+    yield put(appStateActions.hideLoader())
   }
 }
 
 export function* emailResetPassword(action) {
   try {
     yield call(api.users.emailResetPassword, action.payload)
-    yield put(hideLoader())
-    yield put(changeLocation('/sign-in'))
+    yield put(appStateActions.hideLoader())
+    yield put(appStateActions.changeLocation('/sign-in'))
 
     // delay for render sign-in component
     yield delay(100)
@@ -157,8 +156,8 @@ export function* emailResetPassword(action) {
     })
 
   } catch (err) {
-    yield put(hideLoader())
-    yield put(changeLocation('/sign-in'))
+    yield put(appStateActions.hideLoader())
+    yield put(appStateActions.changeLocation('/sign-in'))
 
     // delay for render sign-in component
     yield delay(100)
@@ -175,8 +174,8 @@ export function* resetPassword(action) {
   try {
 
     yield call(api.users.resetPassword, action.payload)
-    yield put(hideLoader())
-    yield put(changeLocation('/sign-in'))
+    yield put(appStateActions.hideLoader())
+    yield put(appStateActions.changeLocation('/sign-in'))
 
     // delay for render sign-in component
     yield delay(100)
@@ -188,8 +187,8 @@ export function* resetPassword(action) {
     })
 
   } catch (err) {
-    yield put(hideLoader())
-    yield put(changeLocation('/sign-in'))
+    yield put(appStateActions.hideLoader())
+    yield put(appStateActions.changeLocation('/sign-in'))
 
     // delay for render sign-in component
     yield delay(100)
@@ -240,7 +239,7 @@ function* authorizeUser(authApiCall, action) {
     yield put({ type: FULFILLED, payload: auth })
 
     // hide loader
-    yield put(hideLoader())
+    yield put(appStateActions.hideLoader())
 
     // redirect
     const redirectAction = push('/user/tasks')
@@ -253,17 +252,17 @@ function* authorizeUser(authApiCall, action) {
 
     if (action.type === 'AUTH/LOGIN') {
       if (error.response.data.type === 'PasswordResetRequired') {
-        yield put(setError('signIn', errorMessages.signIn.passwordResetRequired))
+        yield put(appStateActions.setError('signIn', errorMessages.signIn.passwordResetRequired))
       } else {
-        yield put(setError('signIn', errorMessages.signIn.unauthorized))
+        yield put(appStateActions.setError('signIn', errorMessages.signIn.unauthorized))
       }
     }
 
     if (action.type === 'AUTH/SIGN_UP') {
-      yield put(setError('signUp', errorMessages.signUp.conflict))
+      yield put(appStateActions.setError('signUp', errorMessages.signUp.conflict))
     }
 
-    yield put(hideLoader())
+    yield put(appStateActions.hideLoader())
 
     return null
   }

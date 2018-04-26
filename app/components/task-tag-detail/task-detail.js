@@ -41,17 +41,15 @@ import { getEntitiesTasks } from 'redux/store/entities/entities.selectors'
 
 import {
   fetchAttachment,
-  attachmentsFirebaseListener,
   createAttachment,
   deleteAttachment
-} from 'redux/store/attachments/attachments.action'
+} from 'redux/store/attachments/attachments.actions'
 import { getAttachments } from 'redux/store/attachments/attachments.selectors'
 
 import {
   fetchComment,
-  commentsFirebaseListener,
   createComment,
-} from 'redux/store/comments/comments.action'
+} from 'redux/store/comments/comments.actions'
 import { getComments } from 'redux/store/comments/comments.selectors'
 
 import {
@@ -93,8 +91,6 @@ class TaskDetail extends Component {
     setDate: PropTypes.func,
     attachments: PropTypes.object,
     fetchAttachment: PropTypes.func,
-    attachmentsFirebaseListener: PropTypes.func,
-    commentsFirebaseListener: PropTypes.func,
     createAttachment: PropTypes.func,
     deleteAttachment: PropTypes.func,
     setDescription: PropTypes.func,
@@ -110,17 +106,10 @@ class TaskDetail extends Component {
 
   componentDidMount() {
     const { id } = this.props.task
-    const initTime = dateUtil.getDateToISOString()
-
     // Load attachments
     this.props.fetchAttachment(id)
-    // Set listener for attachments
-    this.props.attachmentsFirebaseListener(id, initTime, false)
-
     // Load comments
     this.props.fetchComment(id)
-    // Set listener for comments
-    this.props.commentsFirebaseListener(id, initTime, false)
 
     document.getElementById('user-container').addEventListener('click', this.handleClickOutSide, false)
     document.addEventListener('keydown', this.handleKeyDown, false)
@@ -133,22 +122,12 @@ class TaskDetail extends Component {
     const prevId = this.props.task.id
     const prevDescription = this.props.task.description
     const { id, description }  = newProps.task
-    const initTime = dateUtil.getDateToISOString()
 
     if (prevId !== id) {
       // Load attachments
       this.props.fetchAttachment(id)
-      // Set listener for attachments of current task
-      this.props.attachmentsFirebaseListener(id, initTime, false)
-      // Cancel listener for attachments of previous task
-      this.props.attachmentsFirebaseListener(prevId, initTime, true)
-
       // Load comments
       this.props.fetchComment(id)
-      // Set listener for comments of current task
-      this.props.commentsFirebaseListener(id, initTime, false)
-      // Cancel listener for comments of previous task
-      this.props.commentsFirebaseListener(prevId, initTime, true)
 
       this.setState({
         description: description === null ? '' : description,
@@ -165,14 +144,6 @@ class TaskDetail extends Component {
   }
 
   componentWillUnmount() {
-    const { id } = this.props.task
-    const initTime = dateUtil.getDateToISOString()
-
-    // Cancel listener for attachments
-    this.props.attachmentsFirebaseListener(id, initTime, true)
-    // Cancel listener for comments
-    this.props.commentsFirebaseListener(id, initTime, true)
-
     document.getElementById('user-container').removeEventListener('click', this.handleClickOutSide, false)
     document.removeEventListener('keydown', this.handleKeyDown, false)
   }
@@ -720,8 +691,6 @@ const mapDispatchToProps = {
   setDate,
   setDescription,
   fetchAttachment,
-  attachmentsFirebaseListener,
-  commentsFirebaseListener,
   createAttachment,
   deleteAttachment,
   fetchComment,

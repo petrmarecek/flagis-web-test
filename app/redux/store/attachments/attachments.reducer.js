@@ -1,5 +1,5 @@
 import typeToReducer from 'type-to-reducer'
-import { ATTACHMENTS } from './attachments.action'
+import { ATTACHMENTS } from './attachments.actions'
 import { AttachmentStore } from '../../data/records'
 
 export default typeToReducer({

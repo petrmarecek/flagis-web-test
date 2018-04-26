@@ -5,8 +5,8 @@ import { AUTH } from 'redux/store/auth/auth.actions'
 import { TASKS } from 'redux/store/tasks/tasks.actions'
 import { TREE } from 'redux/store/tree/tree.actions'
 import { TAGS } from 'redux/store/tags/tags.actions'
-import { COMMENTS } from 'redux/store/comments/comments.action'
-import { ATTACHMENTS } from 'redux/store/attachments/attachments.action'
+import { COMMENTS } from 'redux/store/comments/comments.actions'
+import { ATTACHMENTS } from 'redux/store/attachments/attachments.actions'
 import * as records from 'redux/data/records'
 
 export default typeToReducer({
