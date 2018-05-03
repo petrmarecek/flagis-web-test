@@ -29,6 +29,16 @@ export default typeToReducer({
     },
   },
 
+  [TREE.FIREBASE]: {
+    FULFILLED: (state, action) => {
+      const { newItemsById, newItemsByParent } = updateTagTreeItemsListsFromFirestore(state, action)
+
+      return state
+        .set('itemsById', newItemsById)
+        .set('itemsByParent', newItemsByParent)
+    },
+  },
+
   [TREE.SHOW_ADD_CONTROL]: (state, action) =>
     state.set('addControlParentId', action.payload.parentTreeItemId),
 
@@ -48,9 +58,7 @@ export default typeToReducer({
     return state
       .setIn(['itemsById', itemId], new TreeRecord({ id: itemId }))
       .updateIn(['itemsByParent', item.parentId], list => list
-        ? Number.isInteger(item.position)
-          ? list.insert(item.position, itemId)
-          : list.push(itemId)
+        ? list.push(itemId)
         : List([itemId]))
   },
 
@@ -146,4 +154,38 @@ function moveItem(state, move) {
         throw new Error('Unknown drop position.')
     }
   })
+}
+
+function updateTagTreeItemsListsFromFirestore(state, action) {
+  const treeItem = action.payload.entities.treeItem
+  const resultId = action.payload.result
+  const { id, parentId, isDeleted } = treeItem[resultId]
+
+  let newItemsById = state.getIn(['itemsById'])
+  let newItemsByParent = state.getIn(['itemsByParent'])
+
+  // New treeItem
+  if (!isDeleted) {
+    if (!newItemsById.has(id)) {
+      newItemsById = newItemsById.setIn([id], new TreeRecord({ id }))
+    }
+
+    newItemsByParent = newItemsByParent.updateIn([parentId], list => list
+      ? !list.includes(id)
+        ? list.push(id)
+        : list
+      : List([id]))
+
+    return { newItemsById, newItemsByParent }
+  }
+
+  // Delete treeItem
+  if (isDeleted) {
+    newItemsById = newItemsById.deleteIn([id])
+    newItemsByParent = newItemsByParent.updateIn([parentId], list => list.filter(treeItemId => treeItemId !== id))
+
+    return { newItemsById, newItemsByParent }
+  }
+
+  return { newItemsById, newItemsByParent }
 }

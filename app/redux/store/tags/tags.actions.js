@@ -35,11 +35,10 @@ export const selectActiveTags = tagIds => ({
   },
 })
 
-export const setActiveTags = (tagIds, isArchivedTasks) => ({
+export const setActiveTags = tagIds => ({
   type: TAGS.SET_ACTIVE_TAGS,
   payload: {
-    tagIds,
-    isArchivedTasks,
+    tagIds
   },
 })
 

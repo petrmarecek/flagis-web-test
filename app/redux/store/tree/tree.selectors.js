@@ -33,24 +33,31 @@ export const getTreeStore = state => state.getIn(['tree'])
 
 export const getTree = (state, parentId = null) => {
 
-  const sectionIds = state.getIn(['tree', 'itemsByParent']).get(parentId)
-  if (!sectionIds) {
+  const itemIds = state.getIn(['tree', 'itemsByParent']).get(parentId)
+  if (!itemIds) {
     return List()
   }
 
-  const sections = sectionIds.map(childId => {
-    const section = state.getIn(['entities', 'treeItems']).get(childId)
-    if (!section) {
-      return section
-    }
-
-    return section
-      .set('collapsed', state.getIn(['tree', 'collapsedItems']).has(childId))
-      .set('childItems', getTree(state, childId))
-      .set('tag', state.getIn(['entities', 'tags']).get(section.tagId))
+  let items = itemIds.map(childId => {
+    return state.getIn(['entities', 'treeItems']).get(childId)
   })
 
-  return sections
+  // sort treeItems by order
+  items = items.sort((a, b) => {
+    if (a.order < b.order) return -1;
+    if (a.order > b.order) return 1;
+
+    return 0;
+  })
+
+  return items.map(item => {
+    const { id, tagId } = item
+
+    return item
+      .set('collapsed', state.getIn(['tree', 'collapsedItems']).has(id))
+      .set('childItems', getTree(state, id))
+      .set('tag', state.getIn(['entities', 'tags']).get(tagId))
+  })
 }
 
 export const getFetchTree = (state) => {

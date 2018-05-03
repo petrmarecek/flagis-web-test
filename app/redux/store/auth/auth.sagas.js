@@ -16,6 +16,7 @@ import * as authSelectors from 'redux/store/auth/auth.selectors'
 import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'
 import { initTasksData } from 'redux/store/tasks/tasks.sagas'
 import { initTagsData } from 'redux/store/tags/tags.sagas'
+import { initTagTreeItemsData } from 'redux/store/tree/tree.sagas'
 import { createLoadActions } from 'redux/store/common.sagas'
 import api from 'redux/utils/api'
 import firebase from 'redux/utils/firebase'
@@ -41,14 +42,16 @@ export function* initDataFlow() {
     yield put(treeActions.fetchTree())
 
     // Init data from firestore
-    const { tasksSyncing, tagsSyncing } = yield all({
+    const { tasksSyncing, tagsSyncing, tagTreeItemsSyncing } = yield all({
       tasksSyncing: fork(initTasksData, initTime),
       tagsSyncing: fork(initTagsData, initTime),
+      tagTreeItemsSyncing: fork(initTagTreeItemsData, initTime),
     })
 
     yield take(AUTH.LOGOUT)
     yield cancel(tasksSyncing)
     yield cancel(tagsSyncing)
+    yield cancel(tagTreeItemsSyncing)
 
     // Cancel snapshot for comments and attachments from firestore
     const isTaskDetailVisible = yield select(state => appStateSelectors.getTaskTagDetail(state).task)

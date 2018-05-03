@@ -1,4 +1,5 @@
-import { call, put, select } from 'redux-saga/effects'
+import { normalize } from 'normalizr'
+import { all, take, cancelled, fork, call, put, select } from 'redux-saga/effects'
 import { push } from 'react-router-redux'
 import intersection from 'lodash/intersection'
 import includes from 'lodash/includes'
@@ -12,20 +13,76 @@ import {
   fetch,
   mainUndo,
 } from 'redux/store/common.sagas'
-import * as treeActions from 'redux/store/tree/tree.actions'
-import * as treeSelectors from 'redux/store/tree/tree.selectors'
-import { deselectTasks } from 'redux/store/tasks/tasks.actions'
-import * as tagActions from 'redux/store/tags/tags.actions'
-import * as tagsSelectors from 'redux/store/tags/tags.selectors'
 import * as appStateActions from 'redux/store/app-state/app-state.actions'
-import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'
+import * as taskActions from 'redux/store/tasks/tasks.actions'
+import * as tagActions from 'redux/store/tags/tags.actions'
+import * as treeActions from 'redux/store/tree/tree.actions'
+import * as authSelectors from 'redux/store/auth/auth.selectors'
+import * as tagSelectors from 'redux/store/tags/tags.selectors'
+import * as treeSelectors from 'redux/store/tree/tree.selectors'
 import * as entitiesSelectors from 'redux/store/entities/entities.selectors'
 import * as routingSelectors from 'redux/store/routing/routing.selectors'
+import { computeTreeItemOrder } from 'redux/utils/redux-helper'
 import api from 'redux/utils/api'
 import schema from 'redux/data/schema'
-import { computeTreeItemOrder } from 'redux/utils/redux-helper'
+import firebase from 'redux/utils/firebase'
 
 const TREE = treeActions.TREE
+
+function* saveChangeFromFirestore(change) {
+  const { FULFILLED } = createLoadActions(TREE.FIREBASE)
+  const treeItem = change.doc.data()
+
+  // Prepare data
+  const normalizeData = normalize(treeItem, schema.treeItem)
+  const storeAddControlParentId = yield select(state => treeSelectors.getAddControlParentId(state))
+  const storeSelection = yield select(state => treeSelectors.getSelectionTree(state))
+  let storeActiveTags = yield select(state => tagSelectors.getActiveTagsIds(state))
+  const { id, isDeleted, tagId } = treeItem
+
+  // Delete treeItem
+  if (isDeleted) {
+    // Hide add control panel
+    if (storeAddControlParentId === id) {
+      yield put(treeActions.hideTreeItemAddControl())
+    }
+
+    // Deselect path
+    if (storeSelection.includes(id)) {
+      yield put(treeActions.deselectPath())
+    }
+
+    // Remove treeItem from tagSearch
+    if (storeActiveTags.includes(tagId)) {
+      storeActiveTags = storeActiveTags.filter(activeId => activeId !== tagId)
+      yield put(tagActions.setActiveTags(storeActiveTags))
+    }
+
+  }
+
+  //TODO: Delete treeItem -> Hide add control panel and deselect tags
+
+  // Save changes to store
+  yield put({type: FULFILLED, payload: normalizeData})
+}
+
+function* syncTagTreeItemsChannel(channel) {
+  const { REJECTED } = createLoadActions(TREE.FIREBASE)
+
+  try {
+    while (true) { // eslint-disable-line
+      const snapshot = yield take(channel)
+      yield all(snapshot.docChanges.map(change => call(saveChangeFromFirestore, change)))
+    }
+  } catch(err) {
+    yield put({ type: REJECTED, err })
+
+  } finally {
+    if (yield cancelled()) {
+      channel.close()
+    }
+  }
+}
 
 export function* fetchTree() {
   yield* fetch(TREE.FETCH, {
@@ -33,6 +90,12 @@ export function* fetchTree() {
     args: [],
     schema: schema.treeList
   })
+}
+
+export function* initTagTreeItemsData(initTime) {
+  const userId = yield select(state => authSelectors.getUserId(state))
+  const channel = firebase.getTagTreeItemsChannel(userId, initTime)
+  return yield fork(syncTagTreeItemsChannel, channel)
 }
 
 export function* createTreeItem(action) {
@@ -62,7 +125,7 @@ export function* createTreeItem(action) {
 }
 
 export function* selectPath(action) {
-  yield put(deselectTasks())
+  yield put(taskActions.deselectTasks())
 
   const location = yield select(state => routingSelectors.getRoutingPathname(state))
   if (location !== '/user/tasks') {
@@ -71,9 +134,8 @@ export function* selectPath(action) {
     }
   }
 
-  const isArchivedTasks = yield select(state => appStateSelectors.getArchivedTasksVisibility(state))
   const relatedTagIds = action.payload.map(treeItem => treeItem.tagId)
-  yield put(tagActions.setActiveTags(relatedTagIds, isArchivedTasks))
+  yield put(tagActions.setActiveTags(relatedTagIds))
 }
 
 export function* updateTreeItem(action) {
@@ -108,13 +170,12 @@ export function* updateTreeItem(action) {
     // update tags in global search if tree item is selected
     if (treeStore.selection.includes(originalTreeItem.id)) {
       const newTagId = result.tag.id
-      const isArchivedTasks = yield select(state => appStateSelectors.getArchivedTasksVisibility(state))
-      let activeTags = yield select(state => tagsSelectors.getActiveTagsIds(state))
+      let activeTags = yield select(state => tagSelectors.getActiveTagsIds(state))
 
       // replace old tag by new tag id
       activeTags = activeTags.update(activeTags.indexOf(originalTreeItem.tagId), () => newTagId)
 
-      yield put(tagActions.setActiveTags(activeTags, isArchivedTasks))
+      yield put(tagActions.setActiveTags(activeTags))
     }
 
   } catch (e) {
@@ -129,10 +190,8 @@ export function* updateTreeItem(action) {
 }
 
 export function* deleteTreeItem(action) {
-  // Get position of delete item
-  const itemsByParent = yield select(state => treeSelectors.getTreeItemsByParent(state))
-  const position = itemsByParent.get(action.payload.originalData.parentId).indexOf(action.payload.originalData.id)
 
+  // Call server
   yield* fetch(TREE.DELETE, {
     method: api.tree.delete,
     args: [action.payload.originalData.id],
@@ -140,11 +199,12 @@ export function* deleteTreeItem(action) {
     payload: action.payload
   })
 
-  action.payload.originalData.position = position
+  // Set action for undo
   const title = action.payload.originalData.isSection
     ? 'treeGroupDelete'
     : 'treeItemDelete'
   yield* mainUndo(action, title)
+
   // delete all child items on client
   yield* deleteChildItems(action.payload.originalData)
 }
@@ -163,10 +223,12 @@ export function* undoDeleteTreeItem(action) {
       const item = stack.shift()
       // get new id of old item
       parentId = mapId.get(item.parentId)
+
       // title for section or tag-item
       const title = item.isSection
         ? item.title
-        : yield select(state => tagsSelectors.getTag(state, item.tagId).title)
+        : yield select(state => tagSelectors.getTag(state, item.tagId).title)
+
       // data for server
       const createData = {
         title: title,
@@ -176,10 +238,6 @@ export function* undoDeleteTreeItem(action) {
 
       // call server
       const treeItem = yield call(api.tree.create, createData)
-
-      if (Number.isInteger(item.position)) {
-        treeItem.position = item.position
-      }
 
       // add tree item to the store
       yield put(treeActions.addTreeItem(treeItem))

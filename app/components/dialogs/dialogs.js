@@ -94,7 +94,6 @@ class Dialogs extends Component {
     selectTasks: PropTypes.array,
     multiSelectAddEntitiesTags: PropTypes.object,
     multiSelectRemoveEntitiesTags: PropTypes.object,
-    isVisibleArchivedTasks: PropTypes.bool,
   }
 
   componentDidMount() {
@@ -214,12 +213,11 @@ class Dialogs extends Component {
     this.props.deleteTag(tag)
 
     // Delete tag from activeTags if the tag in activeTags
-    const isArchivedTasks = this.props.isVisibleArchivedTasks
     const activeTags = this.props.activeTags
     const tagIds = activeTags.includes(tagId)
       ? activeTags.filter(id => id !== tagId)
       : activeTags
-    this.props.setActiveTags(tagIds, isArchivedTasks)
+    this.props.setActiveTags(tagIds)
   }
 
   // add-remove-tags-dialog
@@ -371,7 +369,6 @@ const mapStateToProps = state => ({
   multiSelectRemoveTags: getMultiSelectRemoveTagsIds(state),
   multiSelectRemoveEntitiesTags: getMultiSelectRemoveTags(state),
   selectTasks: getSelectTasks(state),
-  isVisibleArchivedTasks: getArchivedTasksVisibility(state),
 })
 
 const mapDispatchToProps = {

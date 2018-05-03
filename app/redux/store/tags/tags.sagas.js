@@ -85,9 +85,8 @@ export function* initTagsData(initTime) {
 }
 
 export function* selectActiveTags(action) {
-  const isArchivedTasks = yield select(state => appStateSelectors.getArchivedTasksVisibility(state))
   yield put(deselectPath())
-  yield put(tagActions.setActiveTags(action.payload.tagIds, isArchivedTasks))
+  yield put(tagActions.setActiveTags(action.payload.tagIds))
 }
 
 export function* createTag(action) {

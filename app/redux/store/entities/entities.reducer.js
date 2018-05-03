@@ -86,6 +86,10 @@ export default typeToReducer({
     FULFILLED: (state, action) => saveTree(action.payload, state)
   },
 
+  [TREE.FIREBASE]: {
+    FULFILLED: (state, action) => saveTree(action.payload, state)
+  },
+
   [TREE.UPDATE]: {
     PENDING: (state, action) => state
       .setIn(['treeItems', action.payload.treeItem.id, 'title'], action.payload.title),
