@@ -6,10 +6,7 @@ import { errorMessages } from 'utils/messages'
 import constants from 'utils/constants'
 
 import { hideDialog } from 'redux/store/app-state/app-state.actions'
-import {
-  getCurrentDialog,
-  getArchivedTasksVisibility,
-} from 'redux/store/app-state/app-state.selectors'
+import { getCurrentDialog } from 'redux/store/app-state/app-state.selectors'
 import {
   updateTreeItemTitle,
   deleteTreeItem,
