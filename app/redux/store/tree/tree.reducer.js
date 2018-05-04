@@ -87,20 +87,6 @@ export default typeToReducer({
 
   [TREE.MOVE_TREE_ITEM]: (state, action) => moveItem(state, action.payload),
 
-  [TREE.MOVE_SECTION]: (state, action) => {
-    const move = action.payload
-    return state.updateIn(['itemsByParent', null], list => {
-
-      // Find of hovered item & compute index for dragged one
-      const targetSectionIndex = list.indexOf(move.targetSectionId)
-
-      // Move itemId within the list
-      return list
-        .filter(sectionId => sectionId !== move.sourceSectionId)
-        .insert(targetSectionIndex, move.sourceSectionId)
-    })
-  },
-
   [AUTH.LOGOUT]: () => new TreeStore()
 
 }, new TreeStore())

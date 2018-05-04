@@ -96,9 +96,12 @@ export const moveTreeItem = data => ({
   payload: data,
 })
 
-export const moveSection = move => ({
+export const moveSection = (sectionId, order) => ({
   type: TREE.MOVE_SECTION,
-  payload: move,
+  payload: {
+    sectionId,
+    order
+  },
 })
 
 export const dropSection = (section, order) => ({

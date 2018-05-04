@@ -78,6 +78,7 @@ class TreeContainer extends React.Component {
 
   state = {
     showAddControl: false,
+    order: null,
     top: 0,
   }
 
@@ -89,19 +90,23 @@ class TreeContainer extends React.Component {
   moveSection = move => this.debouncedMoveSection(move)
 
   invokeMove(move) {
-    this.props.moveSection(move)
-  }
-
-  handleDropSection = (drop) => {
-    const { dropIndex, sourceSection} = drop
+    const { sourceSectionId } = move
     const sections = this.props.sections
 
-    const newOrder = computeTreeSectionOrder(sections, dropIndex)
-    if (newOrder === null) {
+    const order = computeTreeSectionOrder(sections, move)
+    if (order === null) {
       return
     }
 
-    this.props.dropSection(sourceSection, newOrder)
+    this.setState({ order })
+    this.props.moveSection(sourceSectionId, order)
+  }
+
+  handleDropSection = drop => {
+    const { sourceSection } = drop
+    const { order } = this.state
+
+    this.props.dropSection(sourceSection, order)
   }
 
   handleAddTreeItem = parentTreeItemId => {

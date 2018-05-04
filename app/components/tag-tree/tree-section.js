@@ -78,7 +78,8 @@ const TreeSectionDragDrop = {
 
       const move = {
         sourceSectionId: dragSource.section.id,
-        targetSectionId: props.section.id,
+        targetIndex: hoverIndex,
+        direction: dragIndex < hoverIndex ? 'DOWN' : 'UP',
       }
 
       props.onMoveSection(move)
@@ -93,7 +94,6 @@ const TreeSectionDragDrop = {
 
       const dragSource = monitor.getItem()
       const drop = {
-        dropIndex: dragSource.index,
         sourceSection: dragSource.section,
       }
       props.onDropSection(drop)
