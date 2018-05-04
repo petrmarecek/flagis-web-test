@@ -156,11 +156,18 @@ function updateTagTreeItemsListsFromFirestore(state, action) {
       newItemsById = newItemsById.setIn([id], new TreeRecord({ id }))
     }
 
+    // Remove child from parent
+    newItemsByParent.forEach((value, key) => {
+      if (value.includes(id)) {
+        newItemsByParent = newItemsByParent.updateIn([key], list => list.filter(treeItemId => treeItemId !== id))
+      }
+    })
+
+    // Set child for new parent
     newItemsByParent = newItemsByParent.updateIn([parentId], list => list
-      ? !list.includes(id)
-        ? list.push(id)
-        : list
-      : List([id]))
+      ? list.push(id)
+      : List([id])
+    )
 
     return { newItemsById, newItemsByParent }
   }
