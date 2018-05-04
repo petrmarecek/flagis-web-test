@@ -70,9 +70,19 @@ export const getSections = state => {
     return null
   }
 
-  return sectionIds.map(id => {
+  let sections = sectionIds.map(id => {
     return state.getIn(['entities', 'treeItems']).get(id)
   })
+
+  // sort sections by order
+  sections = sections.sort((a, b) => {
+    if (a.order < b.order) return -1;
+    if (a.order > b.order) return 1;
+
+    return 0;
+  })
+
+  return sections
 }
 
 export const getTreeItemsByParent = (state) => {
