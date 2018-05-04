@@ -5,8 +5,11 @@ import { eventChannel } from 'redux-saga'
 
 // Initialize Firebase
 firebase.initializeApp(config)
+
 // Firestore
 const db = firebase.firestore()
+const settings = { timestampsInSnapshots: true }
+db.settings(settings)
 
 export default {
 
