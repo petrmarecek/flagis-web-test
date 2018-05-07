@@ -26,6 +26,7 @@ function* saveChangeFromFirestore(change) {
   // Prepare data
   const normalizeData = normalize(tag, schema.tag)
   const storeItems = yield select(state => tagSelectors.getTagsItems(state))
+  const isDetailVisible = yield select(state => appStateSelectors.getTaskTagDetail(state))
 
   const { id, isDeleted } = tag
 
@@ -40,6 +41,12 @@ function* saveChangeFromFirestore(change) {
 
   // Delete tag
   if (isDeleted) {
+
+    // Close tag detail
+    if (isDetailVisible.tag) {
+      yield put(appStateActions.deselectDetail('tag'))
+    }
+
     // Delete tag from search
     search.tags.removeItem({ id })
   }
