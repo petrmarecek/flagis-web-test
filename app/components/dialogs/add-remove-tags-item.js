@@ -1,11 +1,24 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import commonUtils from 'redux/utils/common'
+import styled from 'styled-components'
 
 import { getTagColor } from 'redux/utils/component-helper'
 
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
+
+const TagItem = styled.li`
+  margin: 10px 0 0 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+`;
+
+const TagTitle = styled.div`
+  margin: 0 0 0 5px;
+`;
 
 export default class AddRemoveTagsItem extends Component {
 
@@ -121,18 +134,17 @@ export default class AddRemoveTagsItem extends Component {
     const tagColor = getTagColor(colorIndex)
 
     return (
-      <li className="add-remove-tags-dialog__tag-item" onClick={this.handleClicked}>
+      <TagItem onClick={this.handleClicked}>
         <Icon
           icon={this.state.type}
           width={28}
           height={15}
           scale={1.36}
-          color={tagColor}
-          className="add-remove-tags-dialog__tag-icon"/>
-        <div className="add-remove-tags-dialog__tag-title">
+          color={tagColor} />
+        <TagTitle>
           {tag.title}
-        </div>
-      </li>
+        </TagTitle>
+      </TagItem>
     )
   }
 }

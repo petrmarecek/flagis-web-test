@@ -40,7 +40,10 @@ function loadTags(ids, state) {
 // ------ Selectors -------------------------------------------------------------
 export const getTags = state => ({
   isFetching: state.getIn(['tags', 'all', 'isFetching']),
-  items: state.getIn(['tags', 'all', 'items']).map(tagId => state.getIn(['entities', 'tags', tagId]))
+  items: state
+    .getIn(['tags', 'all', 'items'])
+    .map(tagId => state.getIn(['entities', 'tags', tagId]))
+    .sort(compareTagByTitle)
 })
 
 export const getVisibleTags = state => {
