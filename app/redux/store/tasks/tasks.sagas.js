@@ -336,28 +336,8 @@ export function* setOrderTimeLine(action) {
   try {
     // call server
     const taskId = action.payload.task.id
-    const orderTimeLine = action.payload.orderTimeLine
-    const update = { orderTimeLine }
-
-    // call server
-    const updatedTask = yield call(api.tasks.update, taskId, update)
-
-    // update task in the search index
-    search.tasks.updateItem(updatedTask)
-
-  } catch(err) {
-    // TODO: revert
-    // We need to both revert Task.order field and position within loaded list
-  }
-}
-
-export function* setDueDateTimeLine(action) {
-
-  try {
-    // call server
-    const taskId = action.payload.task.id
-    const dueDate = action.payload.dueDate
-    const update = { dueDate }
+    const { dueDate, orderTimeLine } = action.payload
+    const update = { dueDate, orderTimeLine }
 
     // call server
     const updatedTask = yield call(api.tasks.update, taskId, update)

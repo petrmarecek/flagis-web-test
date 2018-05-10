@@ -160,9 +160,10 @@ class TaskListContainer extends Component {
 
     // Sort by Due Date
     if (targetSection) {
-      this.props.setDueDateTimeLine(dropTask, dueDate)
       if (this.state.orderTimeLine) {
-        this.props.setOrderTimeLine(dropTask, orderTimeLine)
+        this.props.setOrderTimeLine(dropTask, dueDate, orderTimeLine)
+      } else {
+        this.props.setOrderTimeLine(dropTask, dueDate, dropTask.orderTimeLine)
       }
       return
     }

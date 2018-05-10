@@ -36,7 +36,6 @@ export default function* root() {
     takeLatest(TASKS.SET_DATE, task.setDate),
     takeLatest(TASKS.SET_ORDER, task.setOrder),
     takeLatest(TASKS.SET_ORDER_TIME_LINE, task.setOrderTimeLine),
-    takeLatest(TASKS.SET_DUE_DATE_TIME_LINE, task.setDueDateTimeLine),
     takeLatest(TASKS.SET_DESCRIPTION, task.setDescription),
     takeLatest(TASKS.SET_SUBJECT, task.setSubject),
     takeEvery(TASKS.CREATE, task.createTask),
