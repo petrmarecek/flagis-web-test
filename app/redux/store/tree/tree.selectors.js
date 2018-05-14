@@ -97,8 +97,12 @@ export const getAddControlParentId = (state) => {
   return state.getIn(['tree', 'addControlParentId'])
 }
 
-export const getTagsReferences = (state) =>
-  state.getIn(['entities', 'treeItems']).map(treeItem => treeItem.tagId).toSet()
+export const getTagsReferences = (state) => {
+  const treeItems = state.getIn(['tree', 'itemsById'])
+  const treeItemsEntities = treeItems.map(treeItem => state.getIn(['entities', 'treeItems', treeItem.id]))
+
+  return treeItemsEntities.map(treeItem => treeItem.tagId).toSet()
+}
 
 /**
  * Returns tag ids which cannot be selected in tag autocomplete

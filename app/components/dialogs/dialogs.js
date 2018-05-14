@@ -12,8 +12,7 @@ import {
   deleteTreeItem,
 } from 'redux/store/tree/tree.actions'
 import {
-  addTaskTag,
-  removeTag,
+  addRemoveTaskTags,
   deleteTask,
   deselectTasks,
 } from 'redux/store/tasks/tasks.actions'
@@ -86,8 +85,7 @@ class Dialogs extends Component {
     multiSelectOtherTags: PropTypes.object,
     multiSelectAddTags: PropTypes.object,
     multiSelectRemoveTags: PropTypes.object,
-    addTaskTag: PropTypes.func,
-    removeTag: PropTypes.func,
+    addRemoveTaskTags: PropTypes.func,
     selectTasks: PropTypes.array,
     multiSelectAddEntitiesTags: PropTypes.object,
     multiSelectRemoveEntitiesTags: PropTypes.object,
@@ -232,21 +230,24 @@ class Dialogs extends Component {
 
   handleAddRemoveTagsSubmit = () => {
     const tasks = this.props.selectTasks
-    const addTags = this.props.multiSelectAddEntitiesTags
-    const removeTags = this.props.multiSelectRemoveEntitiesTags
 
     for (const task of tasks) {
+      let addTags = this.props.multiSelectAddEntitiesTags
+      let removeTags = this.props.multiSelectRemoveEntitiesTags
+
       for (const tag of addTags) {
-        if (!task.tags.includes(tag)) {
-          this.props.addTaskTag(task.id, tag)
+        if (task.tags.includes(tag)) {
+          addTags = addTags.filter(addTag => addTag !== tag)
         }
       }
 
       for (const tag of removeTags) {
-        if (task.tags.includes(tag)) {
-          this.props.removeTag(task.id, tag)
+        if (!task.tags.includes(tag)) {
+          removeTags = removeTags.filter(removeTag => removeTag !== tag)
         }
       }
+
+      this.props.addRemoveTaskTags(task.id, addTags, removeTags)
     }
 
     this.props.clearLists()
@@ -380,8 +381,7 @@ const mapDispatchToProps = {
   addToList,
   deleteFromList,
   clearLists,
-  addTaskTag,
-  removeTag,
+  addRemoveTaskTags,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dialogs)

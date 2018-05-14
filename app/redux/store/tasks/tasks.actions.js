@@ -24,8 +24,11 @@ export const TASKS = {
   SET_SUBJECT: 'TASK/SET_SUBJECT',
   MOVE: 'TASK/MOVE',
   MOVE_TIME_LINE: 'TASK/MOVE_TIME_LINE',
-  ADD_TAG: 'TASK/ADD_TAG',
-  REMOVE_TAG: 'TASK/REMOVE_TAG',
+  ADD_TASK_TAG: 'TASK/ADD_TASK_TAG',
+  REMOVE_TASK_TAG: 'TASK/REMOVE_TASK_TAG',
+  ADD_REMOVE_TASK_TAGS: 'TASK/ADD_REMOVE_TASK_TAGS',
+  ADD_TASK_TAG_STORE: 'TASK/ADD_TASK_TAG_STORE',
+  REMOVE_TASK_TAG_STORE: 'TASK/REMOVE_TASK_TAG_STORE',
   DELETE: 'TASK/DELETE',
   UNDO_DELETE: 'UNDO_TASK/DELETE',
   SET_FIELD: 'TASK/SET_FIELD',
@@ -172,15 +175,40 @@ export const addTask = task => ({
 })
 
 export const addTaskTag = (taskId, tag) => ({
-  type: TASKS.ADD_TAG,
+  type: TASKS.ADD_TASK_TAG,
   payload: {
     taskId,
     tag
   }
 })
 
-export const removeTag = (taskId, tag) => ({
-  type: TASKS.REMOVE_TAG,
+export const removeTaskTag = (taskId, tag) => ({
+  type: TASKS.REMOVE_TASK_TAG,
+  payload: {
+    taskId,
+    tag
+  }
+})
+
+export const addRemoveTaskTags = (taskId, addTags, removeTags) => ({
+  type: TASKS.ADD_REMOVE_TASK_TAGS,
+  payload: {
+    taskId,
+    addTags,
+    removeTags
+  }
+})
+
+export const addTaskTagStore = (taskId, tag) => ({
+  type: TASKS.ADD_TASK_TAG_STORE,
+  payload: {
+    taskId,
+    tag
+  }
+})
+
+export const removeTaskTagStore = (taskId, tag) => ({
+  type: TASKS.REMOVE_TASK_TAG_STORE,
   payload: {
     taskId,
     tag

@@ -23,7 +23,7 @@ import {
   setArchiveTasks,
   deselectTasks,
   setSubject,
-  removeTag,
+  removeTaskTag,
   setDate,
   setDescription,
 } from 'redux/store/tasks/tasks.actions'
@@ -86,7 +86,7 @@ class TaskDetail extends Component {
     deselectDetail: PropTypes.func,
     deselectTasks: PropTypes.func,
     setSubject: PropTypes.func,
-    removeTag: PropTypes.func,
+    removeTaskTag: PropTypes.func,
     showDialog: PropTypes.func,
     setDate: PropTypes.func,
     attachments: PropTypes.object,
@@ -276,7 +276,7 @@ class TaskDetail extends Component {
 
   // Tags
   handleTagDeleted = tagInfo => {
-    this.props.removeTag(this.props.task.id, tagInfo)
+    this.props.removeTaskTag(this.props.task.id, tagInfo)
   }
 
   // Delete task
@@ -686,7 +686,7 @@ const mapDispatchToProps = {
   deselectDetail,
   deselectTasks,
   setSubject,
-  removeTag,
+  removeTaskTag,
   showDialog,
   setDate,
   setDescription,

@@ -84,7 +84,10 @@ export default typeToReducer({
   // ------ Tasks -------------------------------------------------------------
   [TASKS.FIREBASE_TAGS_RELATIONS]: (state, action) => updateTagsRelations(action.payload, state),
 
-  [TASKS.ADD_TAG]: (state, action) => state
+  [TASKS.ADD_TASK_TAG]: (state, action) => state
+    .updateIn(['all', 'items'], list => list.toSet().union(new Set([action.payload.tag.id])).toList()),
+
+  [TASKS.ADD_TASK_TAG_STORE]: (state, action) => state
     .updateIn(['all', 'items'], list => list.toSet().union(new Set([action.payload.tag.id])).toList()),
 
   // ------ Tree --------------------------------------------------------------

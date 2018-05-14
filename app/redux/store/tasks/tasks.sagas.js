@@ -458,22 +458,25 @@ export function* undoDeleteTask(action) {
   }
 }
 
-export function* removeTag(action) {
-  const taskId = action.payload.taskId
+export function* removeTaskTag(action) {
+  const { taskId, tag } = action.payload
 
   try {
+    // Update store
+    yield put(taskActions.removeTaskTagStore(taskId, tag))
+    yield put(tagsActions.deleteTagsRelations(tag.id, taskId))
+
     // Find current list of tags
     const tagList = yield select(state => taskSelectors.getTaskTags(state, taskId))
 
     // Remove the target tag
     const tags = tagList
-      .filter(tagId => tagId !== action.payload.tag.id)
+      .filter(tagId => tagId !== tag.id)
       .map(tagId => ({ id: tagId }))
       .toJS()
 
-    // Update list on the server & relations
+    // Update list on the server
     yield call(api.tasks.setTags, taskId, tags)
-    yield put(tagsActions.deleteTagsRelations(action.payload.tag.id, action.payload.taskId))
 
   } catch(err) {
     console.error(err)
@@ -482,21 +485,56 @@ export function* removeTag(action) {
 }
 
 export function* addTaskTag(action) {
+  const { taskId, tag } = action.payload
+
   try {
-    const taskId = action.payload.taskId
-    const tag = action.payload.tag
+    // Update store
+    yield put(tagsActions.addTagsRelations(tag.id, taskId))
 
     // Save relation on server (don't block rest of saga)
     yield fork(saveTaskTagRelation, taskId, tag)
+  } catch(err) {
+    console.error(err)
+    // TODO: revert to original state
+  }
+}
 
-    // Add relation
-    yield put(tagsActions.addTagsRelations(tag.id, taskId))
+export function* addRemoveTaskTags(action) {
+  const { taskId, addTags, removeTags } = action.payload
+
+  try {
+    // Find current list of tags
+    let tags = yield select(state => taskSelectors.getTaskTags(state, taskId))
+
+    for (const tag of addTags) {
+      // Update store
+      yield put(taskActions.addTaskTagStore(taskId, tag))
+      yield put(tagsActions.addTagsRelations(tag.id, taskId))
+
+      // Add tag to current tags of task
+      tags = tags.push(tag.id)
+    }
+
+    for (const tag of removeTags) {
+      // Update store
+      yield put(taskActions.removeTaskTagStore(taskId, tag))
+      yield put(tagsActions.deleteTagsRelations(tag.id, taskId))
+
+      // Remove tag from current tags of task
+      tags = tags.filter(tagId => tagId !== tag.id)
+    }
+
+    tags = tags.map(tagId => ({ id: tagId })).toJS()
+
+    // Update list on the server
+    yield call(api.tasks.setTags, taskId, tags)
 
   } catch(err) {
     console.error(err)
     // TODO: revert to original state
   }
 }
+
 
 // ------ HELPER FUNCTIONS ----------------------------------------------------
 
