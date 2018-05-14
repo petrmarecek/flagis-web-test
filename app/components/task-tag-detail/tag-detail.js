@@ -26,6 +26,7 @@ import {
   deselectDetail
 } from 'redux/store/app-state/app-state.actions'
 
+import DetailMenu from 'components/task-tag-detail/detail-menu'
 import ContentEditable from 'components/common/content-editable'
 import Icon from 'components/icons/icon'
 import {ICONS} from 'components/icons/icon-constants'
@@ -83,7 +84,7 @@ class TagDetail extends Component {
   }
 
   // Back to tag list
-  handleToggleTaskList = () => {
+  handleToggleTagList = () => {
     this.props.deselectTags()
   }
 
@@ -234,33 +235,11 @@ class TagDetail extends Component {
         ref="detail"
         className="detail"
         onClick={this.handleAddEventListener}>
-        <div className="detail-menu">
-          <div className="detail-menu__left">
-            <Icon
-              icon={ICONS.DETAIL_BACK}
-              width={37}
-              height={18}
-              color="#8C9DA9"
-              hoverColor="#00FFC7"
-              onClick={this.handleToggleTaskList}/>
-          </div>
-          <div className="detail-menu__right">
-            <Icon
-              icon={ICONS.DETAIL_PREVIOUS}
-              width={11}
-              height={17}
-              color="#8C9DA9"
-              hoverColor="#00FFC7"
-              onClick={this.handlePreviousTag}/>
-            <Icon
-              icon={ICONS.DETAIL_NEXT}
-              width={11}
-              height={17}
-              color="#8C9DA9"
-              hoverColor="#00FFC7"
-              onClick={this.handleNextTag}/>
-          </div>
-        </div>
+
+        <DetailMenu
+          back={this.handleToggleTagList}
+          previous={this.handlePreviousTag}
+          next={this.handleNextTag} />
 
         <div className="detail-inner">
           <div className="detail-content detail-content__top">

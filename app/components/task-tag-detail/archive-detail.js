@@ -45,6 +45,7 @@ import {
 
 import dateUtil from './../../redux/utils/date'
 
+import DetailMenu from 'components/task-tag-detail/detail-menu'
 import CommentList from '../comment-list/comment-list'
 import ContentEditable from '../common/content-editable'
 import AttachmentList from '../attachment-list/attachment-list'
@@ -291,33 +292,11 @@ class ArchiveDetail extends Component {
         ref="detail"
         className="detail"
         onClick={this.handleAddEventListener}>
-        <div className="detail-menu">
-          <div className="detail-menu__left">
-            <Icon
-              icon={ICONS.DETAIL_BACK}
-              width={37}
-              height={18}
-              color="#8C9DA9"
-              hoverColor="#00FFC7"
-              onClick={this.handleToggleTaskList}/>
-          </div>
-          <div className="detail-menu__right">
-            <Icon
-              icon={ICONS.DETAIL_PREVIOUS}
-              width={11}
-              height={17}
-              color="#8C9DA9"
-              hoverColor="#00FFC7"
-              onClick={this.handlePreviousTask}/>
-            <Icon
-              icon={ICONS.DETAIL_NEXT}
-              width={11}
-              height={17}
-              color="#8C9DA9"
-              hoverColor="#00FFC7"
-              onClick={this.handleNextTask}/>
-          </div>
-        </div>
+
+        <DetailMenu
+          back={this.handleToggleTaskList}
+          previous={this.handlePreviousTask}
+          next={this.handleNextTask} />
 
         <div
           ref="container"
