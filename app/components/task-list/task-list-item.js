@@ -122,11 +122,19 @@ const taskTarget = {
       targetSection: props.section,
       targetDueDate: props.task.dueDate,
       targetIndex: hoverIndex,
+      bottom: hoverClientY > hoverMiddleY,
       direction: dragIndex < hoverIndex ? 'DOWN' : 'UP',
     }
 
     props.moveTask(move)
-    dragSource.index = hoverIndex
+    // Set index and section
+    if ((dragSource.section !== props.section) && (hoverClientY > hoverMiddleY)) {
+      // Dragging upwards to other section
+      dragSource.index = hoverIndex + 1
+    } else {
+      // Dragging upwards in current section
+      dragSource.index = hoverIndex
+    }
     dragSource.section = props.section
   },
 

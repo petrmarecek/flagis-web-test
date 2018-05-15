@@ -112,7 +112,7 @@ export function computeTreeItemOrder(items, dropIndex, direction, sourceParentId
 }
 
 export function computeTimeLine(tasks, move) {
-  const {sourceSection, sourceDueDate, targetSection, targetDueDate, targetIndex, direction} = move
+  const { sourceSection, sourceDueDate, targetSection, targetDueDate, targetIndex, bottom, direction } = move
   const sectionTasks = getTimeLineByDueDate(tasks)[targetSection]
 
   // Move to the same section
@@ -160,12 +160,22 @@ export function computeTimeLine(tasks, move) {
   if (targetIndex === 0) {
     const nextTask = sectionTasks[0]
     const nextOrderTimeLine = nextTask.orderTimeLine
-    const orderTimeLine = new Date(nextOrderTimeLine + 1000).getTime()
+    let orderTimeLine = new Date(nextOrderTimeLine + 1000).getTime()
     const nextDueDate = nextTask.dueDate
 
     if (targetSection === 'noDueDatesTasks') {
       return {
         dueDate: null,
+        orderTimeLine
+      }
+    }
+
+    // Dragging upwards to other section
+    if ((sourceSection !== targetSection) && bottom) {
+      orderTimeLine = new Date(nextOrderTimeLine - 1000).getTime()
+
+      return {
+        dueDate: moment(nextDueDate),
         orderTimeLine
       }
     }
