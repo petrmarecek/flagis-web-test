@@ -26,14 +26,14 @@ export default class ShadowScrollbar extends Component {
         <Scrollbars
           ref="scrollbars"
           renderThumbVertical={scrollProps => <div {...scrollProps} style={verticalStyle} />}
-          onDrag={this.handleDrag}
+          onDragEnter={this.handleDrag}
           onUpdate={this.handleUpdate}
           {...props}/>
       )
       : (
         <Scrollbars
           ref="scrollbars"
-          onDrag={this.handleDrag}
+          onDragEnter={this.handleDrag}
           onUpdate={this.handleUpdate}
           {...props}/>
       )
@@ -61,7 +61,7 @@ export default class ShadowScrollbar extends Component {
 
     // Scroll to top
     if (conditionX && conditionTopY) {
-        scrollbars.view.scrollTop -= 10
+      scrollbars.view.scrollTop -= 10
     }
 
     // Scroll to bottom
