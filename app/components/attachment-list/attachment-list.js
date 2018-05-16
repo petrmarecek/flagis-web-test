@@ -28,7 +28,8 @@ class AttachmentList extends Component {
 
   render() {
     const scrollStyle = {
-      height: `calc(100vh - 390px)`
+      height: `calc(100vh - 390px)`,
+      overflow: 'hidden'
     }
 
     return (

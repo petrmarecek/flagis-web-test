@@ -33,6 +33,7 @@ class TagListContainer extends Component {
       shadowHeight: 20,
       boxShadowTop: 'inset 0 20px 20px -10px rgba(231, 236, 237, 1)',
       boxShadowBottom: 'inset 0 -20px 20px -10px  rgba(231, 236, 237, 1)',
+      overflow: 'hidden'
     }
 
     return (

@@ -26,7 +26,8 @@ class CommentList extends Component {
 
   render() {
     const scrollStyle = {
-      height: `calc(100vh - 232px)`
+      height: `calc(100vh - 232px)`,
+      overflow: 'hidden'
     }
 
     return (

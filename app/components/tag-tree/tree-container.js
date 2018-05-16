@@ -200,6 +200,7 @@ class TreeContainer extends React.Component {
       shadowHeight: 30,
       boxShadowTop: 'inset 0 30px 30px -15px rgba(41, 48, 52, 1)',
       boxShadowBottom: 'inset 0 -30px 30px -15px  rgba(41, 48, 52, 1)',
+      overflow: 'hidden'
     }
     const verticalStyle = {
       backgroundColor: 'rgba(255, 255, 255, 0.4)',
