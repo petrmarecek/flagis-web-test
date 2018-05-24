@@ -1,38 +1,18 @@
 import { List } from 'immutable'
+import { createSelector } from 'reselect'
+import search from 'redux/services/search'
 import moment from 'moment'
 import intersection from 'lodash/intersection'
-import search from 'redux/services/search'
+import {
+  getTaskDetail,
+  getTaskArchiveDetail,
+  getArchivedTasksVisibility
+} from '../app-state/app-state.selectors'
+import { getEntitiesTasks, getEntitiesTags } from '../entities/entities.selectors'
+import { getActiveTagsIds } from '../tags/tags.selectors'
+import { getRoutingPathname } from '../routing/routing.selectors'
 
-export const getCurrentTaskTags = state => {
-  const selectedTaskId = getSelectedTaskId(state)
-  if (!selectedTaskId) {
-    return List()
-  }
-
-  return state.getIn(['entities', 'tasks', selectedTaskId, 'tags'])
-}
-
-export const getTaskTags = (state, taskId) => {
-  return state.getIn(['entities', 'tasks', taskId, 'tags'])
-}
-
-export const getSelectTasksTags = (state) => {
-  const selectTasks = state.getIn(['tasks', 'selection'])
-  return selectTasks.map(taskId => {
-    const tagsList = getTaskTags(state, taskId)
-
-    if (tagsList.size === 0) {
-      return List()
-    }
-
-    return tagsList
-  }).toList()
-}
-
-export const getSelectTasks = (state) => {
-  const selectTasks = state.getIn(['tasks', 'selection'])
-  return loadTasks(selectTasks.toArray(), state)
-}
+// ------ Helper functions ----------------------------------------------------
 
 /**
  * Filters tasks by date range
@@ -40,6 +20,7 @@ export const getSelectTasks = (state) => {
  * @param {Array} tasks List of tasks to filter
  * @returns {Array} Result list of task
  */
+
 function filterByDateRange(range, tasks) {
   const now = moment()
   const today = now.dayOfYear()
@@ -68,21 +49,22 @@ function filterByDateRange(range, tasks) {
 
 /**
  * Loads task entities for given task IDs
- * @param {Array} ids Array of task ids
- * @param {Object} state Redux state
+ * @param {Object} ids Array of tasks
+ * @param {Object} data Object of tasksItems, tasksMenu, entitiesTasks, entitiesTags, activeTagsIds
  * @returns {Array} List of tasks
  */
 
-function loadTasks(ids, state) {
+function loadTasks(ids, data) {
+
   // apply search filter
-  if (state.getIn(['tasksMenu', 'filters', 'searchText'])) {
-    const foundIds = search.tasks.get(state.getIn(['tasksMenu', 'filters', 'searchText'])).map(item => item.ref)
+  if (data.tasksMenu.getIn(['filters', 'searchText'])) {
+    const foundIds = search.tasks.get(data.tasksMenu.getIn(['filters', 'searchText'])).map(item => item.ref)
     ids = intersection(ids, foundIds)
   }
 
   let tasks = ids.map(taskId => {
-    const task = state.getIn(['entities', 'tasks']).get(taskId)
-    const tags = task.tags.map(tagId => state.getIn(['entities', 'tags']).get(tagId))
+    const task = data.entitiesTasks.get(taskId)
+    const tags = task.tags.map(tagId => data.entitiesTags.get(tagId))
     return task.set('tags', tags)
   })
 
@@ -95,38 +77,38 @@ function loadTasks(ids, state) {
   })
 
   // apply tag search
-  const activeTags = state.getIn(['tags', 'activeTags'])
+  const activeTags = data.activeTagsIds
   if (activeTags.size !== 0) {
     const tags = activeTags.map(tagId => {
-      return state.getIn(['entities', 'tags']).get(tagId)
+      return data.entitiesTags.get(tagId)
     }).toList()
 
     tasks = findTasksByTags(tasks, tags)
   }
 
   // apply date range filter
-  const range = state.getIn(['tasksMenu', 'filters', 'range'])
+  const range = data.tasksMenu.getIn(['filters', 'range'])
   if (range) {
     tasks = filterByDateRange(range, tasks)
   }
 
   // apply important filter
-  if (state.getIn(['tasksMenu', 'filters', 'important'])) {
+  if (data.tasksMenu.getIn(['filters', 'important'])) {
     tasks = tasks.filter(task => task.isImportant)
   }
 
   // apply unimportant filter
-  if (state.getIn(['tasksMenu', 'filters', 'unimportant'])) {
+  if (data.tasksMenu.getIn(['filters', 'unimportant'])) {
     tasks = tasks.filter(task => !task.isImportant)
   }
 
   // apply no tags filter
-  if (state.getIn(['tasksMenu', 'filters', 'noTags'])) {
+  if (data.tasksMenu.getIn(['filters', 'noTags'])) {
     tasks = tasks.filter(task => task.tags.size === 0)
   }
 
   // apply sort alphabetically
-  if (state.getIn(['tasksMenu', 'sort', 'alphabet'])) {
+  if (data.tasksMenu.getIn(['sort', 'alphabet'])) {
     tasks.sort((a, b) => {
       if(a.subject.toLowerCase() < b.subject.toLowerCase()) return -1;
       if(a.subject.toLowerCase() > b.subject.toLowerCase()) return 1;
@@ -135,7 +117,7 @@ function loadTasks(ids, state) {
   }
 
   // apply sort by due date
-  if (state.getIn(['tasksMenu', 'sort', 'dueDate'])) {
+  if (data.tasksMenu.getIn(['sort', 'dueDate'])) {
     const tasksDueDate = tasks.filter(task => task.dueDate)
     const tasksOthers = tasks.filter(task => !task.dueDate)
 
@@ -162,7 +144,7 @@ function loadTasks(ids, state) {
   }
 
   // apply sort by importance
-  if (state.getIn(['tasksMenu', 'sort', 'important'])) {
+  if (data.tasksMenu.getIn(['sort', 'important'])) {
     const tasksImportant = tasks.filter(task => task.isImportant)
     const tasksUnimportant = tasks.filter(task => !task.isImportant)
 
@@ -170,7 +152,7 @@ function loadTasks(ids, state) {
   }
 
   // apply sort incomplete
-  if (state.getIn(['tasksMenu', 'sort', 'incomplete'])) {
+  if (data.tasksMenu.getIn(['sort', 'incomplete'])) {
     const tasksIncomplete = tasks.filter(task => !task.isCompleted)
     const tasksComplete = tasks.filter(task => task.isCompleted)
 
@@ -182,21 +164,21 @@ function loadTasks(ids, state) {
 
 /**
  * Loads task entities for given task IDs (only archived tasks)
- * @param {Array} ids Array of task ids
- * @param {Object} state Redux state
+ * @param {Object} ids Array of tasks
+ * @param {Object} data Object of archivedTasksItems, tasksMenu, entitiesTasks, entitiesTags, activeTagsIds
  * @returns {Array} List of tasks
  */
 
-function loadArchiveTasks(ids, state) {
+function loadArchiveTasks(ids, data) {
   // apply search filter
-  if (state.getIn(['tasksMenu', 'filters', 'searchText'])) {
-    const foundIds = search.tasks.get(state.getIn(['tasksMenu', 'filters', 'searchText'])).map(item => item.ref)
+  if (data.tasksMenu.getIn(['filters', 'searchText'])) {
+    const foundIds = search.tasks.get(data.tasksMenu.getIn(['filters', 'searchText'])).map(item => item.ref)
     ids = intersection(ids, foundIds)
   }
 
   let tasks = ids.map(taskId => {
-    const task = state.getIn(['entities', 'tasks']).get(taskId)
-    const tags = task.tags.map(tagId => state.getIn(['entities', 'tags']).get(tagId))
+    const task = data.entitiesTasks.get(taskId)
+    const tags = task.tags.map(tagId => data.entitiesTags.get(tagId))
     return task.set('tags', tags)
   })
 
@@ -208,10 +190,10 @@ function loadArchiveTasks(ids, state) {
   })
 
   // apply tag search
-  const activeTags = state.getIn(['tags', 'activeTags'])
+  const activeTags = data.activeTagsIds
   if (activeTags.size !== 0) {
     const tags = activeTags.map(tagId => {
-      return state.getIn(['entities', 'tags']).get(tagId)
+      return data.entitiesTags.get(tagId)
     }).toList()
 
     tasks = findTasksByTags(tasks, tags)
@@ -220,147 +202,18 @@ function loadArchiveTasks(ids, state) {
   return tasks
 }
 
-export const getTasks = state => {
-  const archived = state.getIn(['route', 'location', 'pathname']) === '/user/archive'
+/**
+ * Return last selected task
+ * @param {List} selectionTasks List of selected tasks
+ * @returns {String} id of task
+ */
 
-  if (archived) {
-    return ({
-      isFetching: state.getIn(['tasks', 'archived', 'isFetching']),
-      items: loadArchiveTasks(state.getIn(['tasks', 'archived', 'items']).toArray(), state),
-      type: 'archived',
-    })
-  }
-
-  return ({
-    isFetching: state.getIn(['tasks', 'isFetching']),
-    items: loadTasks(state.getIn(['tasks', 'items']).toArray(), state),
-    type: 'main',
-  })
-}
-
-export const getCompletedTasks = state => ({
-  items: loadTasks(state.getIn(['tasks', 'completed']).toArray(), state)
-})
-
-export const getTasksId = state => {
-  const archived = state.getIn(['route', 'location', 'pathname']) === '/user/archive'
-
-  if (archived) {
-    const tasks = loadArchiveTasks(state.getIn(['tasks', 'archived', 'items']).toArray(), state)
-    return List(tasks.map(task => task.id))
-  }
-
-  const tasks = loadTasks(state.getIn(['tasks', 'items']).toArray(), state)
-  return List(tasks.map(task => task.id))
-
-}
-
-export const getTasksItems = state => {
-  return state.getIn(['tasks', 'items'])
-}
-
-export const getCompletedTasksItems = state => {
-  return state.getIn(['tasks', 'completed'])
-}
-
-export const getArchivedTasksItems = state => {
-  return state.getIn(['tasks', 'archived', 'items'])
-}
-
-export const getSelectionTasks = state => {
-  return state.getIn(['tasks', 'selection'])
-}
-
-export const getCompletedTasksId = state => {
-  const tasks = loadTasks(state.getIn(['tasks', 'completed']).toArray(), state)
-  return List(tasks.map(task => task.id))
-}
-
-export const getCurrentTask = state => {
-  const selectedTaskId = getSelectedTaskId(state)
-  if (!selectedTaskId) {
+function getSelectedTaskId(selectionTasks) {
+  if (selectionTasks.size === 0) {
     return null
   }
 
-  const task = state.getIn(['entities', 'tasks']).get(selectedTaskId)
-  return task.setIn(['tags'], task.getIn(['tags']).map(tagId => state.getIn(['entities', 'tags', tagId])))
-}
-
-export const getNextTask = state => {
-  if (!state.getIn(['appState', 'taskTagDetail', 'task']) && !state.getIn(['appState', 'taskTagDetail', 'archive'])) {
-    return null
-  }
-
-  const selectedTaskId = getSelectedTaskId(state)
-  if (!selectedTaskId) {
-    return null
-  }
-
-  // Tasks after filtering and sorting
-  let typeTask = loadTasks(state.getIn(['tasks', 'items']).toArray(), state)
-  typeTask = List(typeTask.map(task => task.id))
-  if (state.getIn(['appState', 'archivedTasks', 'isVisible'])) {
-    typeTask = List(loadArchiveTasks(state.getIn(['tasks', 'archived', 'items']).toArray(), state))
-    typeTask = List(typeTask.map(task => task.id))
-  }
-
-  const sizeListOfTasks = typeTask.size
-  if (sizeListOfTasks === 1) {
-    return null
-  }
-
-  let nextIndex = typeTask.indexOf(selectedTaskId) + 1
-  if (nextIndex === sizeListOfTasks) {
-    nextIndex = 0
-  }
-
-  const nextTaskId = typeTask.get(nextIndex)
-  const nextTask = state.getIn(['entities', 'tasks']).get(nextTaskId)
-  return nextTask.setIn(['tags'], nextTask.getIn(['tags']).map(tagId => state.getIn(['entities', 'tags', tagId])))
-}
-
-export const getPreviousTask = state => {
-  if (!state.getIn(['appState', 'taskTagDetail', 'task']) && !state.getIn(['appState', 'taskTagDetail', 'archive'])) {
-    return null
-  }
-
-  const selectedTaskId = getSelectedTaskId(state)
-  if (!selectedTaskId) {
-    return null
-  }
-
-  // Tasks after filtering and sorting
-  let typeTask = loadTasks(state.getIn(['tasks', 'items']).toArray(), state)
-  typeTask = List(typeTask.map(task => task.id))
-  if (state.getIn(['appState', 'archivedTasks', 'isVisible'])) {
-    typeTask = List(loadArchiveTasks(state.getIn(['tasks', 'archived', 'items']).toArray(), state))
-    typeTask = List(typeTask.map(task => task.id))
-  }
-
-  const sizeListOfTasks = typeTask.size
-  if (sizeListOfTasks === 1) {
-    return null
-  }
-
-  let prevIndex = typeTask.indexOf(selectedTaskId) - 1
-  if (prevIndex < 0) {
-    prevIndex = sizeListOfTasks - 1
-  }
-
-  const nextTaskId = typeTask.get(prevIndex)
-  const nextTask = state.getIn(['entities', 'tasks']).get(nextTaskId)
-  return nextTask.setIn(['tags'], nextTask.getIn(['tags']).map(tagId => state.getIn(['entities', 'tags', tagId])))
-}
-
-// ------ Helper functions ----------------------------------------------------
-
-function getSelectedTaskId(state) {
-  const taskList = state.getIn(['tasks', 'selection'])
-  if (taskList.size === 0) {
-    return null
-  }
-
-  return taskList.last()
+  return selectionTasks.last()
 }
 
 /**
@@ -370,7 +223,7 @@ function getSelectedTaskId(state) {
  * @returns {Array} entities Array of tasks
  */
 
-export function findTasksByTags(tasks, tags) {
+function findTasksByTags(tasks, tags) {
   const entities = []
 
   tasks.forEach(task => {
@@ -389,4 +242,276 @@ export function findTasksByTags(tasks, tags) {
   })
 
   return entities
+}
+
+// ------ Selectors ----------------------------------------------------
+
+// Local selectors
+const getTasksIsFetching = state => state.getIn(['tasks', 'isFetching'])
+const getArchivedTasksIsFetching = state => state.getIn(['tasks', 'archived', 'isFetching'])
+const getTasksMenu = state => state.getIn(['tasksMenu'])
+
+// Export selectors
+export const getTasksItems = state => state.getIn(['tasks', 'items'])
+export const getArchivedTasksItems = state => state.getIn(['tasks', 'archived', 'items'])
+export const getTaskTags = (state, taskId) => state.getIn(['entities', 'tasks', taskId, 'tags'])
+export const getCompletedTasksItems = state => state.getIn(['tasks', 'completed'])
+export const getSelectionTasks = state => state.getIn(['tasks', 'selection'])
+
+// ------ Reselect selectors ----------------------------------------------------
+
+export const getTasks = createSelector(
+  getRoutingPathname,
+  getArchivedTasksIsFetching,
+  getArchivedTasksItems,
+  getTasksIsFetching,
+  getTasksItems,
+  getTasksMenu,
+  getEntitiesTasks,
+  getEntitiesTags,
+  getActiveTagsIds,
+  (pathName,
+   archivedTasksIsFetching,
+   archivedTasksItems,
+   tasksIsFetching,
+   tasksItems,
+   tasksMenu,
+   entitiesTasks,
+   entitiesTags,
+   activeTagsIds) => {
+
+    const archived = pathName === '/user/archive'
+    const data = { tasksMenu, entitiesTasks, entitiesTags, activeTagsIds }
+
+    if (archived) {
+      return ({
+        isFetching: archivedTasksIsFetching,
+        items: loadArchiveTasks(archivedTasksItems.toArray(), data),
+        type: 'archived',
+      })
+    }
+
+    return ({
+      isFetching: tasksIsFetching,
+      items: loadTasks(tasksItems.toArray(), data),
+      type: 'main',
+    })
+  }
+)
+
+export const getCompletedTasks = createSelector(
+  getCompletedTasksItems,
+  getTasksMenu,
+  getEntitiesTasks,
+  getEntitiesTags,
+  getActiveTagsIds,
+  (completedTasksItems, tasksMenu, entitiesTasks, entitiesTags, activeTagsIds) => {
+
+    const data = { tasksMenu, entitiesTasks, entitiesTags, activeTagsIds }
+
+    return ({
+      items: loadTasks(completedTasksItems.toArray(), data)
+    })
+  }
+)
+
+export const getCurrentTaskTags = createSelector(
+  getEntitiesTasks,
+  getSelectionTasks,
+  (entitiesTasks, selectionTasks) => {
+
+    const selectedTaskId = getSelectedTaskId(selectionTasks)
+    if (!selectedTaskId) {
+      return List()
+    }
+
+    return entitiesTasks.getIn([selectedTaskId, 'tags'])
+  }
+)
+
+export const getSelectTasks = createSelector(
+  getSelectionTasks,
+  getTasksMenu,
+  getEntitiesTasks,
+  getEntitiesTags,
+  getActiveTagsIds,
+  (selectionTasks, tasksMenu, entitiesTasks, entitiesTags, activeTagsIds) => {
+
+    const data = { tasksMenu, entitiesTasks, entitiesTags, activeTagsIds }
+    return loadTasks(selectionTasks.toArray(), data)
+  }
+)
+
+export const getTasksId = createSelector(
+  getRoutingPathname,
+  getArchivedTasksItems,
+  getTasksItems,
+  getTasksMenu,
+  getEntitiesTasks,
+  getEntitiesTags,
+  getActiveTagsIds,
+  (pathName, archivedTasksItems, tasksItems, tasksMenu, entitiesTasks, entitiesTags, activeTagsIds) => {
+
+    const archived = pathName === '/user/archive'
+    const data = { tasksMenu, entitiesTasks, entitiesTags, activeTagsIds }
+
+    if (archived) {
+      const tasks = loadArchiveTasks(archivedTasksItems.toArray(), data)
+      return List(tasks.map(task => task.id))
+    }
+
+    const tasks = loadTasks(tasksItems.toArray(), data)
+    return List(tasks.map(task => task.id))
+
+  }
+)
+
+export const getCompletedTasksId = createSelector(
+  getCompletedTasksItems,
+  getTasksMenu,
+  getEntitiesTasks,
+  getEntitiesTags,
+  getActiveTagsIds,
+  (completedTasksItems, tasksMenu, entitiesTasks, entitiesTags, activeTagsIds) => {
+
+    const data = { tasksMenu, entitiesTasks, entitiesTags, activeTagsIds }
+    const tasks = loadTasks(completedTasksItems.toArray(), data)
+    return List(tasks.map(task => task.id))
+  }
+)
+
+export const getCurrentTask = createSelector(
+  getEntitiesTasks,
+  getEntitiesTags,
+  getSelectionTasks,
+  (entitiesTasks, entitiesTags, selectionTasks) => {
+
+    const selectedTaskId = getSelectedTaskId(selectionTasks)
+    if (!selectedTaskId) {
+      return null
+    }
+
+    const task = entitiesTasks.get(selectedTaskId)
+    return task.setIn(['tags'], task.getIn(['tags']).map(tagId => entitiesTags.getIn([tagId])))
+  }
+)
+
+export const getNextTask = createSelector(
+  getTaskDetail,
+  getTaskArchiveDetail,
+  getSelectionTasks,
+  getArchivedTasksVisibility,
+  getArchivedTasksItems,
+  getTasksItems,
+  getTasksMenu,
+  getEntitiesTasks,
+  getEntitiesTags,
+  getActiveTagsIds,
+  (isTaskDetail,
+   isTaskArchiveDetail,
+   selectionTasks,
+   isArchivedTasksVisible,
+   archivedTasksItems,
+   tasksItems,
+   tasksMenu,
+   entitiesTasks,
+   entitiesTags,
+   activeTagsIds) => {
+
+    const selectedTaskId = getSelectedTaskId(selectionTasks)
+    if (!selectedTaskId) {
+      return null
+    }
+
+    // Tasks after filtering and sorting
+    const data = { tasksMenu, entitiesTasks, entitiesTags, activeTagsIds }
+    let typeTask = loadTasks(tasksItems.toArray(), data)
+    typeTask = List(typeTask.map(task => task.id))
+    if (isArchivedTasksVisible) {
+      typeTask = List(loadArchiveTasks(archivedTasksItems.toArray(), data))
+      typeTask = List(typeTask.map(task => task.id))
+    }
+
+    const sizeListOfTasks = typeTask.size
+    if (sizeListOfTasks === 1) {
+      return null
+    }
+
+    let nextIndex = typeTask.indexOf(selectedTaskId) + 1
+    if (nextIndex === sizeListOfTasks) {
+      nextIndex = 0
+    }
+
+    const nextTaskId = typeTask.get(nextIndex)
+    const nextTask = entitiesTasks.get(nextTaskId)
+    return nextTask.setIn(['tags'], nextTask.getIn(['tags']).map(tagId => entitiesTags.getIn([tagId])))
+  }
+)
+
+export const getPreviousTask = createSelector(
+  getTaskDetail,
+  getTaskArchiveDetail,
+  getSelectionTasks,
+  getArchivedTasksVisibility,
+  getArchivedTasksItems,
+  getTasksItems,
+  getTasksMenu,
+  getEntitiesTasks,
+  getEntitiesTags,
+  getActiveTagsIds,
+  (isTaskDetail,
+   isTaskArchiveDetail,
+   selectionTasks,
+   isArchivedTasksVisible,
+   archivedTasksItems,
+   tasksItems,
+   tasksMenu,
+   entitiesTasks,
+   entitiesTags,
+   activeTagsIds) => {
+    if (!isTaskDetail && !isTaskArchiveDetail) {
+      return null
+    }
+
+    const selectedTaskId = getSelectedTaskId(selectionTasks)
+    if (!selectedTaskId) {
+      return null
+    }
+
+    // Tasks after filtering and sorting
+    const data = { tasksMenu, entitiesTasks, entitiesTags, activeTagsIds }
+    let typeTask = loadTasks(tasksItems.toArray(), data)
+    typeTask = List(typeTask.map(task => task.id))
+    if (isArchivedTasksVisible) {
+      typeTask = List(loadArchiveTasks(archivedTasksItems.toArray(), data))
+      typeTask = List(typeTask.map(task => task.id))
+    }
+
+    const sizeListOfTasks = typeTask.size
+    if (sizeListOfTasks === 1) {
+      return null
+    }
+
+    let prevIndex = typeTask.indexOf(selectedTaskId) - 1
+    if (prevIndex < 0) {
+      prevIndex = sizeListOfTasks - 1
+    }
+
+    const nextTaskId = typeTask.get(prevIndex)
+    const nextTask = entitiesTasks.get(nextTaskId)
+    return nextTask.setIn(['tags'], nextTask.getIn(['tags']).map(tagId => entitiesTags.getIn([tagId])))
+  }
+)
+
+export const getSelectTasksTags = (state) => {
+  const selectTasks = state.getIn(['tasks', 'selection'])
+  return selectTasks.map(taskId => {
+    const tagsList = getTaskTags(state, taskId)
+
+    if (tagsList.size === 0) {
+      return List()
+    }
+
+    return tagsList
+  }).toList()
 }

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import shallowCompare from 'react-addons-shallow-compare'
 import PropTypes from 'prop-types'
 import { DragSource, DropTarget } from 'react-dnd'
 import { findDOMNode } from 'react-dom'
@@ -196,6 +197,10 @@ class TaskListItem extends Component {
   constructor(props) {
     super(props)
     this.sortedTags = this.getSortedTags(props)
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState)
   }
 
   componentDidMount() {

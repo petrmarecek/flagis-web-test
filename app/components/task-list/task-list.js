@@ -175,7 +175,7 @@ export default class TaskList extends Component {
 
   render() {
     // children items
-    const { tasks, isVisibleArchivedTasks} = this.props
+    const { tasks, isVisibleArchivedTasks } = this.props
     const dueDateSort = this.props.sort.dueDate
     const taskItems = this.getTaskItemsList(tasks)
 

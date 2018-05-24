@@ -199,7 +199,6 @@ export const MultiSelectStore = Record({
 export const Task = Record({
   id: null,
   createdAt: null,
-  updatedAt: null,
   subject: null,
   description: null,
   startDate: null,

@@ -54,6 +54,14 @@ export const getTaskTagDetail = state => {
   return state.getIn(['appState', 'taskTagDetail'])
 }
 
+export const getTaskDetail = state => {
+  return state.getIn(['appState', 'taskTagDetail', 'task'])
+}
+
+export const getTaskArchiveDetail = state => {
+  return state.getIn(['appState', 'taskTagDetail', 'archive'])
+}
+
 export const getLoader = state => {
   return state.getIn(['appState', 'loader', 'isVisible'])
 }
