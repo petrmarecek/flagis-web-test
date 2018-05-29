@@ -1,27 +1,33 @@
-export const getMultiSelectAddTags = state => {
-  return state.getIn(['multiSelect', 'tasks', 'addTags']).map(tagId => state.getIn(['entities', 'tags', tagId]))
-}
+import { getEntitiesTags } from '../entities/entities.selectors'
+import { createSelector } from 'reselect'
 
-export const getMultiSelectAddTagsIds = state => {
-  return state.getIn(['multiSelect', 'tasks', 'addTags'])
-}
+// ------ Selectors -------------------------------------------------------------
 
-export const getMultiSelectRemoveTags = state => {
-  return state.getIn(['multiSelect', 'tasks', 'removeTags']).map(tagId => state.getIn(['entities', 'tags', tagId]))
-}
+// Export selectors
+export const getMultiSelectActiveTags = state => state.getIn(['multiSelect', 'tasks', 'activeTags'])
+export const getMultiSelectInactiveTags = state => state.getIn(['multiSelect', 'tasks', 'inactiveTags'])
+export const getMultiSelectOtherTags = state => state.getIn(['multiSelect', 'tasks', 'otherTags'])
+export const getMultiSelectAddTagsIds = state => state.getIn(['multiSelect', 'tasks', 'addTags'])
+export const getMultiSelectRemoveTagsIds = state => state.getIn(['multiSelect', 'tasks', 'removeTags'])
 
-export const getMultiSelectRemoveTagsIds = state => {
-  return state.getIn(['multiSelect', 'tasks', 'removeTags'])
-}
+// ------ Reselect selectors ----------------------------------------------------
 
-export const getMultiSelectActiveTags = state => {
-  return state.getIn(['multiSelect', 'tasks', 'activeTags'])
-}
+export const getMultiSelectAddTags = createSelector(
+  getMultiSelectAddTagsIds,
+  getEntitiesTags,
+  (multiSelectAddTagsIds, entitiesTags) => {
 
-export const getMultiSelectInactiveTags = state => {
-  return state.getIn(['multiSelect', 'tasks', 'inactiveTags'])
-}
+    return multiSelectAddTagsIds.map(tagId => entitiesTags.getIn([tagId]))
+  }
+)
 
-export const getMultiSelectOtherTags = state => {
-  return state.getIn(['multiSelect', 'tasks', 'otherTags'])
-}
+export const getMultiSelectRemoveTags = createSelector(
+  getMultiSelectRemoveTagsIds,
+  getEntitiesTags,
+  (multiSelectRemoveTagsIds, entitiesTags) => {
+
+    return multiSelectRemoveTagsIds.map(tagId => entitiesTags.getIn([tagId]))
+  }
+)
+
+
