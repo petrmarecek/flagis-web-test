@@ -2,7 +2,7 @@ import { List } from 'immutable'
 import moment from 'moment/moment'
 import { getSelectionTasks } from '../tasks/tasks.selectors'
 import { getEntitiesAttachments } from '../entities/entities.selectors'
-import {createSelector} from 'reselect'
+import { createSelector } from 'reselect'
 
 // ------ Helper functions ----------------------------------------------------
 
@@ -40,19 +40,19 @@ function loadAttachments(data) {
 // ------ Selectors -------------------------------------------------------------
 
 // Local selectors
-const getAttachmentIsFetching = state => state.getIn(['attachments', 'isFetching'])
+const getAttachmentsIsFetching = state => state.getIn(['attachments', 'isFetching'])
 
 // ------ Reselect selectors ----------------------------------------------------
 
 export const getAttachments = createSelector(
-  getAttachmentIsFetching,
+  getAttachmentsIsFetching,
   getSelectionTasks,
   getEntitiesAttachments,
-  (attachmentIsFetching, selectionTasks, entitiesAttachments) => {
+  (attachmentsIsFetching, selectionTasks, entitiesAttachments) => {
     const data = { selectionTasks, entitiesAttachments }
 
     return ({
-      isFetching: attachmentIsFetching,
+      isFetching: attachmentsIsFetching,
       items: loadAttachments(data)
     })
   }

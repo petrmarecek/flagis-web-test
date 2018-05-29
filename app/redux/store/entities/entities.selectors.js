@@ -7,6 +7,8 @@ export const getEntitiesTreeItems = state => state.getIn(['entities', 'treeItems
 
 export const getEntitiesAttachments = state => state.getIn(['entities', 'attachments'])
 
+export const getEntitiesComments = state => state.getIn(['entities', 'comments'])
+
 export const getActiveEntitiesTasks = state => {
   const tasks = state.getIn(['entities', 'tasks'])
 
