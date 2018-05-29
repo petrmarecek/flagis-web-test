@@ -1,3 +1,4 @@
-export const getRoutingPathname = state => {
-  return state.getIn(['route', 'location', 'pathname'])
-}
+// ------ Selectors -------------------------------------------------------------
+
+// Export selectors
+export const getRoutingPathname = state => state.getIn(['route', 'location', 'pathname'])

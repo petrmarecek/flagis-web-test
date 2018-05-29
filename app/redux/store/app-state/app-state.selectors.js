@@ -20,6 +20,7 @@ export const getArchivedTasksVisibility = state => state.getIn(['appState', 'arc
 export const getTaskTagDetail = state => state.getIn(['appState', 'taskTagDetail'])
 export const getTaskDetail = state => state.getIn(['appState', 'taskTagDetail', 'task'])
 export const getTaskArchiveDetail = state => state.getIn(['appState', 'taskTagDetail', 'archive'])
+export const getTagDetail = state => state.getIn(['appState', 'taskTagDetail', 'tag'])
 export const getLoader = state => state.getIn(['appState', 'loader', 'isVisible'])
 
 // ------ Reselect selectors ----------------------------------------------------
