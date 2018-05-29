@@ -49,22 +49,23 @@ function filterByDateRange(range, tasks) {
 
 /**
  * Loads task entities for given task IDs
- * @param {Object} ids Array of tasks
+ * @param {Array} ids Array of tasks
  * @param {Object} data Object of tasksItems, tasksMenu, entitiesTasks, entitiesTags, activeTagsIds
- * @returns {Array} List of tasks
+ * @returns {Array} array of tasks
  */
 
 function loadTasks(ids, data) {
+  const { tasksMenu, entitiesTasks, entitiesTags, activeTagsIds } = data
 
   // apply search filter
-  if (data.tasksMenu.getIn(['filters', 'searchText'])) {
-    const foundIds = search.tasks.get(data.tasksMenu.getIn(['filters', 'searchText'])).map(item => item.ref)
+  if (tasksMenu.getIn(['filters', 'searchText'])) {
+    const foundIds = search.tasks.get(tasksMenu.getIn(['filters', 'searchText'])).map(item => item.ref)
     ids = intersection(ids, foundIds)
   }
 
   let tasks = ids.map(taskId => {
-    const task = data.entitiesTasks.get(taskId)
-    const tags = task.tags.map(tagId => data.entitiesTags.get(tagId))
+    const task = entitiesTasks.get(taskId)
+    const tags = task.tags.map(tagId => entitiesTags.get(tagId))
     return task.set('tags', tags)
   })
 
@@ -77,38 +78,38 @@ function loadTasks(ids, data) {
   })
 
   // apply tag search
-  const activeTags = data.activeTagsIds
+  const activeTags = activeTagsIds
   if (activeTags.size !== 0) {
     const tags = activeTags.map(tagId => {
-      return data.entitiesTags.get(tagId)
+      return entitiesTags.get(tagId)
     }).toList()
 
     tasks = findTasksByTags(tasks, tags)
   }
 
   // apply date range filter
-  const range = data.tasksMenu.getIn(['filters', 'range'])
+  const range = tasksMenu.getIn(['filters', 'range'])
   if (range) {
     tasks = filterByDateRange(range, tasks)
   }
 
   // apply important filter
-  if (data.tasksMenu.getIn(['filters', 'important'])) {
+  if (tasksMenu.getIn(['filters', 'important'])) {
     tasks = tasks.filter(task => task.isImportant)
   }
 
   // apply unimportant filter
-  if (data.tasksMenu.getIn(['filters', 'unimportant'])) {
+  if (tasksMenu.getIn(['filters', 'unimportant'])) {
     tasks = tasks.filter(task => !task.isImportant)
   }
 
   // apply no tags filter
-  if (data.tasksMenu.getIn(['filters', 'noTags'])) {
+  if (tasksMenu.getIn(['filters', 'noTags'])) {
     tasks = tasks.filter(task => task.tags.size === 0)
   }
 
   // apply sort alphabetically
-  if (data.tasksMenu.getIn(['sort', 'alphabet'])) {
+  if (tasksMenu.getIn(['sort', 'alphabet'])) {
     tasks.sort((a, b) => {
       if(a.subject.toLowerCase() < b.subject.toLowerCase()) return -1;
       if(a.subject.toLowerCase() > b.subject.toLowerCase()) return 1;
@@ -117,7 +118,7 @@ function loadTasks(ids, data) {
   }
 
   // apply sort by due date
-  if (data.tasksMenu.getIn(['sort', 'dueDate'])) {
+  if (tasksMenu.getIn(['sort', 'dueDate'])) {
     const tasksDueDate = tasks.filter(task => task.dueDate)
     const tasksOthers = tasks.filter(task => !task.dueDate)
 
@@ -144,7 +145,7 @@ function loadTasks(ids, data) {
   }
 
   // apply sort by importance
-  if (data.tasksMenu.getIn(['sort', 'important'])) {
+  if (tasksMenu.getIn(['sort', 'important'])) {
     const tasksImportant = tasks.filter(task => task.isImportant)
     const tasksUnimportant = tasks.filter(task => !task.isImportant)
 
@@ -152,7 +153,7 @@ function loadTasks(ids, data) {
   }
 
   // apply sort incomplete
-  if (data.tasksMenu.getIn(['sort', 'incomplete'])) {
+  if (tasksMenu.getIn(['sort', 'incomplete'])) {
     const tasksIncomplete = tasks.filter(task => !task.isCompleted)
     const tasksComplete = tasks.filter(task => task.isCompleted)
 
@@ -164,21 +165,23 @@ function loadTasks(ids, data) {
 
 /**
  * Loads task entities for given task IDs (only archived tasks)
- * @param {Object} ids Array of tasks
+ * @param {Array} ids Array of tasks
  * @param {Object} data Object of archivedTasksItems, tasksMenu, entitiesTasks, entitiesTags, activeTagsIds
- * @returns {Array} List of tasks
+ * @returns {Array} array of tasks
  */
 
 function loadArchiveTasks(ids, data) {
+  const { tasksMenu, entitiesTasks, entitiesTags, activeTagsIds } = data
+
   // apply search filter
-  if (data.tasksMenu.getIn(['filters', 'searchText'])) {
-    const foundIds = search.tasks.get(data.tasksMenu.getIn(['filters', 'searchText'])).map(item => item.ref)
+  if (tasksMenu.getIn(['filters', 'searchText'])) {
+    const foundIds = search.tasks.get(tasksMenu.getIn(['filters', 'searchText'])).map(item => item.ref)
     ids = intersection(ids, foundIds)
   }
 
   let tasks = ids.map(taskId => {
-    const task = data.entitiesTasks.get(taskId)
-    const tags = task.tags.map(tagId => data.entitiesTags.get(tagId))
+    const task = entitiesTasks.get(taskId)
+    const tags = task.tags.map(tagId => entitiesTags.get(tagId))
     return task.set('tags', tags)
   })
 
@@ -190,10 +193,10 @@ function loadArchiveTasks(ids, data) {
   })
 
   // apply tag search
-  const activeTags = data.activeTagsIds
+  const activeTags = activeTagsIds
   if (activeTags.size !== 0) {
     const tags = activeTags.map(tagId => {
-      return data.entitiesTags.get(tagId)
+      return entitiesTags.get(tagId)
     }).toList()
 
     tasks = findTasksByTags(tasks, tags)
