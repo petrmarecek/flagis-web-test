@@ -1,5 +1,15 @@
-export const getAuth = (state) => {
-  return state.getIn(['auth'])
+// ------ Selectors -------------------------------------------------------------
+
+// Export selectors
+export const getAuth = state => state.getIn(['auth'])
+export const getNewRefreshToken = state => state.getIn(['auth', 'newRefreshToken'])
+
+export const getUserId = state => {
+  if (!state.getIn(['auth', 'profile'])) {
+    return null
+  }
+
+  return state.getIn(['auth', 'profile', 'id'])
 }
 
 export const getEmail = (state) => {
@@ -8,12 +18,4 @@ export const getEmail = (state) => {
   }
 
   return state.getIn(['auth', 'profile', 'email'])
-}
-
-export const getNewRefreshToken = (state) => {
-  return state.getIn(['auth', 'newRefreshToken'])
-}
-
-export const getUserId = (state) => {
-  return state.getIn(['auth', 'profile', 'id'])
 }
