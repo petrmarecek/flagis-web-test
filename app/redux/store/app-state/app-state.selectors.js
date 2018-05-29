@@ -1,7 +1,7 @@
 import { getEntitiesTags } from '../entities/entities.selectors'
 import { createSelector } from 'reselect'
 
-// ------ Selectors ----------------------------------------------------
+// ------ Selectors -------------------------------------------------------------
 
 // Local selectors
 const getTagHintsVisibleTags = state => state.getIn(['appState', 'tagHints', 'visibleTags'])

@@ -244,7 +244,7 @@ function findTasksByTags(tasks, tags) {
   return entities
 }
 
-// ------ Selectors ----------------------------------------------------
+// ------ Selectors -------------------------------------------------------------
 
 // Local selectors
 const getTasksIsFetching = state => state.getIn(['tasks', 'isFetching'])

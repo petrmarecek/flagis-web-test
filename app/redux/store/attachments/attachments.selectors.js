@@ -1,16 +1,28 @@
 import { List } from 'immutable'
-import moment from "moment/moment";
+import moment from 'moment/moment'
+import { getSelectionTasks } from '../tasks/tasks.selectors'
+import { getEntitiesAttachments } from '../entities/entities.selectors'
+import {createSelector} from 'reselect'
 
-function loadAttachments(state) {
+// ------ Helper functions ----------------------------------------------------
+
+/**
+ * Loads attachments entities
+ * @param {Object} data Object of selectionTasks and entitiesAttachments
+ * @returns {List} list of attachments
+ */
+
+function loadAttachments(data) {
+  const { selectionTasks, entitiesAttachments } = data
   let attachments = List()
-  const taskId = state.getIn(['tasks', 'selection']).last()
-  const entitiesAttachments = state
-    .getIn(['entities', 'attachments'])
+
+  const taskId = selectionTasks.last()
+  const entitiesAttachmentsItems = entitiesAttachments
     .filter(attachment => attachment.taskId === taskId)
     .filter(attachment => !attachment.isDeleted)
 
   // Get values from map without keys
-  entitiesAttachments.forEach(attachment => {
+  entitiesAttachmentsItems.forEach(attachment => {
     attachments = attachments.push(attachment)
   })
 
@@ -25,7 +37,23 @@ function loadAttachments(state) {
   return attachments
 }
 
-export const getAttachments = state => ({
-  isFetching: state.getIn(['attachments', 'isFetching']),
-  items: loadAttachments(state)
-})
+// ------ Selectors -------------------------------------------------------------
+
+// Local selectors
+const getAttachmentIsFetching = state => state.getIn(['attachments', 'isFetching'])
+
+// ------ Reselect selectors ----------------------------------------------------
+
+export const getAttachments = createSelector(
+  getAttachmentIsFetching,
+  getSelectionTasks,
+  getEntitiesAttachments,
+  (attachmentIsFetching, selectionTasks, entitiesAttachments) => {
+    const data = { selectionTasks, entitiesAttachments }
+
+    return ({
+      isFetching: attachmentIsFetching,
+      items: loadAttachments(data)
+    })
+  }
+)
