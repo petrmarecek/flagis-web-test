@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 
-class AddTreeItemSectionForm extends Component {
+class AddTreeItemSectionForm extends PureComponent {
 
   static propTypes = {
     onCancel: PropTypes.func,
@@ -26,7 +26,7 @@ class AddTreeItemSectionForm extends Component {
         event.preventDefault()
         this.handleSubmit()
         return
-      default: 
+      default:
         return
     }
   }

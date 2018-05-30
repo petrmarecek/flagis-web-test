@@ -1,8 +1,8 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import TreeSection from 'components/tag-tree/tree-section'
 
-export default class Tree extends Component {
+export default class Tree extends PureComponent {
 
   static propTypes = {
     treeItems: PropTypes.object,

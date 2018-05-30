@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import onClickOutside from 'react-onclickoutside'
 import classnames from 'classnames'
@@ -8,7 +8,7 @@ import { hintsClickOutside, tagHintSelected } from 'redux/store/app-state/app-st
 import { getTagHints } from 'redux/store/app-state/app-state.selectors'
 import commonUtils from 'redux/utils/common'
 
-class TagsHints extends Component {
+class TagsHints extends PureComponent {
 
   static propTypes = {
     onItemSelected: PropTypes.func,

@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import commonUtils from 'redux/utils/common'
 
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
 
-export default class TagAutocompleteItem extends React.Component {
+export default class TagAutocompleteItem extends PureComponent {
 
   static propTypes = {
     onDelete: PropTypes.func,

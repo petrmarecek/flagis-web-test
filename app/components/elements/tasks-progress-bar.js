@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import velocity from 'velocity-animate'
 import { connect } from 'react-redux'
@@ -8,7 +8,7 @@ import {
   getCompletedTasksId,
 } from 'redux/store/tasks/tasks.selectors'
 
-class TasksProgressBar extends Component {
+class TasksProgressBar extends PureComponent {
 
   static propTypes = {
     tasksCount: PropTypes.number,

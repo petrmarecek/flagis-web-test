@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -53,7 +53,7 @@ import Loader from '../elements/loader'
 import Icon from '../icons/icon'
 import {ICONS} from '../icons/icon-constants'
 
-class ArchiveDetail extends Component {
+class ArchiveDetail extends PureComponent {
 
   constructor(props) {
     super(props)

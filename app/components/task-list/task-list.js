@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import TaskListItem from 'components/task-list/task-list-item'
 import moment from 'moment'
 import { getTimeLineByDueDate } from 'redux/utils/component-helper'
 
-export default class TaskList extends Component {
+export default class TaskList extends PureComponent {
 
   static propTypes = {
     selectedTasks: PropTypes.object,
@@ -34,9 +34,6 @@ export default class TaskList extends Component {
     const daysOfMonth = now.daysInMonth()
     const add = dayOfMonth === daysOfMonth ? 2 : 1
     const daysToNewMonth = (daysOfMonth - dayOfMonth) + add
-
-
-
     const date = {
       today: now,
       tomorrow: now.clone().add(1, 'days'),

@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
 
-class AttachmentListItem extends Component {
+class AttachmentListItem extends PureComponent {
 
   static propTypes = {
     attachment: PropTypes.object,

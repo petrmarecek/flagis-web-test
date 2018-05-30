@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
@@ -10,7 +10,7 @@ import TagTreeContent from 'components/contents/tag-tree-content'
 import TasksContent from 'components/contents/tasks-content'
 import TaskDetailContent from 'components/contents/task-detail-content'
 
-class TaskPage extends React.Component {
+class TaskPage extends PureComponent {
 
   static propTypes = {
     detail: PropTypes.object,

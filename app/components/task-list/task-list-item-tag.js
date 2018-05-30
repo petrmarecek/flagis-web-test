@@ -1,8 +1,8 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import utils from 'redux/utils/common'
 
-class TaskListItemTag extends Component {
+class TaskListItemTag extends PureComponent {
 
   static propTypes = {
     model: PropTypes.object,

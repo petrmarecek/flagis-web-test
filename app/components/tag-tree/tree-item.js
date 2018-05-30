@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import { Set } from 'immutable'
@@ -104,7 +104,7 @@ const TreeItemDragDrop = {
   }
 }
 
-class TreeItem extends Component {
+class TreeItem extends PureComponent {
 
   static propTypes = {
     addControlParentId: PropTypes.string,

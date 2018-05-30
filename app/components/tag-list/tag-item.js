@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import velocity from 'velocity-animate'
@@ -8,7 +8,7 @@ import { getTagColor } from '../../redux/utils/component-helper'
 import { ICONS } from "../icons/icon-constants"
 import Icon from '../icons/icon'
 
-export default class TagItem extends Component {
+export default class TagItem extends PureComponent {
 
   static propTypes = {
     tag: PropTypes.object,

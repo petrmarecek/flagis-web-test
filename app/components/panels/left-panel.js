@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
@@ -6,7 +6,7 @@ import { resizeLeftPanel } from 'redux/store/app-state/app-state.actions'
 import { getLeftPanel } from 'redux/store/app-state/app-state.selectors'
 import ResizeHandle from 'components/elements/resize-handle'
 
-class LeftPanel extends Component {
+class LeftPanel extends PureComponent {
 
   static propTypes = {
     children: PropTypes.object.isRequired,

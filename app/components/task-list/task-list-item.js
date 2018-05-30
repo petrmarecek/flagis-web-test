@@ -1,5 +1,4 @@
-import React, { Component } from 'react'
-import shallowCompare from 'react-addons-shallow-compare'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { DragSource, DropTarget } from 'react-dnd'
 import { findDOMNode } from 'react-dom'
@@ -169,7 +168,7 @@ function collectDropTarget(connect, monitor) {
   }
 }
 
-class TaskListItem extends Component {
+class TaskListItem extends PureComponent {
 
   static propTypes = {
     onClick: PropTypes.func,
@@ -197,10 +196,6 @@ class TaskListItem extends Component {
   constructor(props) {
     super(props)
     this.sortedTags = this.getSortedTags(props)
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
   }
 
   componentDidMount() {

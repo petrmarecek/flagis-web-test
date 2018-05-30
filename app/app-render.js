@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 
 import { getStoredState, persistStore } from 'redux-persist-immutable'
@@ -37,7 +37,7 @@ getStoredState(persistConfig, (err, restoredState) => {
   }
 })
 
-export default class AppRender extends Component {
+export default class AppRender extends PureComponent {
   static propTypes = {
     store: PropTypes.any.isRequired,
     message: PropTypes.any.isRequired,

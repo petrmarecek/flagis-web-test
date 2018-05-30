@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { compose } from 'recompose'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
@@ -15,7 +15,7 @@ import { validateResetPassword } from 'redux/utils/validate'
 import InputField from 'components/forms/input-field'
 import Loader from 'components/elements/loader'
 
-class ResetPassword extends Component {
+class ResetPassword extends PureComponent {
 
   static contextTypes = {
     router: PropTypes.object.isRequired

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import cx from 'classnames'
 import { OrderedSet } from 'immutable'
@@ -53,7 +53,7 @@ import TasksMenuSort from 'components/tasks-menu//tasks-menu-sort'
 import TasksMenuOptions from 'components/tasks-menu//tasks-menu-options'
 import TasksMenuMultiSelect from 'components/tasks-menu/tasks-menu-multi-select'
 
-class TasksMenuContainer extends Component {
+class TasksMenuContainer extends PureComponent {
 
   static propTypes = {
     tasksId: PropTypes.object,

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import velocity from 'velocity-animate'
 
@@ -8,7 +8,7 @@ import MenuBoxItem from 'components/elements/menux-box/menu-box-item'
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
 
-export default class TasksMenuSort extends Component {
+export default class TasksMenuSort extends PureComponent {
 
   static propTypes = {
     onToggleSortAlgorithm: PropTypes.func,

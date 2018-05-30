@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import cx from 'classnames'
 
@@ -7,7 +7,7 @@ import TagAutocompleteInput from 'components/elements/tag-autocomplete/tag-autoc
 import Icon from 'components/icons/icon'
 import { ICONS } from 'components/icons/icon-constants'
 
-export default class TagAutocomplete extends Component {
+export default class TagAutocomplete extends PureComponent {
 
   static propTypes = {
     id: PropTypes.string.isRequired,

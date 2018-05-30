@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
@@ -24,7 +24,7 @@ import commonUtils from 'redux/utils/common'
 const HINTS_TOP_OFFSET = -30
 const HINTS_LEFT_OFFSET = 115
 
-class TagAutocompleteInput extends Component {
+class TagAutocompleteInput extends PureComponent {
 
   static propTypes = {
     id: PropTypes.string,

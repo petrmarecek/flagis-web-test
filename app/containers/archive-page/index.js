@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
@@ -10,7 +10,7 @@ import TagTreeContent from 'components/contents/tag-tree-content'
 import ArchiveContent from 'components/contents/archive-content'
 import ArchiveDetailContent from 'components/contents/archive-detail-content'
 
-class ArchivePage extends React.Component {
+class ArchivePage extends PureComponent {
 
   static propTypes = {
     archiveDetail: PropTypes.object,

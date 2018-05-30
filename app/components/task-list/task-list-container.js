@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import debounce from 'lodash/debounce'
@@ -46,7 +46,7 @@ import ShadowScrollbar from 'components/elements/shadow-scrollbar'
 import TaskList from 'components/task-list/task-list'
 import moment from 'moment'
 
-class TaskListContainer extends Component {
+class TaskListContainer extends PureComponent {
 
   static propTypes = {
     tasks: PropTypes.object,

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -68,7 +68,7 @@ import Loader from 'components/elements/loader'
 import Icon from 'components/icons/icon'
 import {ICONS} from 'components/icons/icon-constants'
 
-class TaskDetail extends Component {
+class TaskDetail extends PureComponent {
 
   static propTypes = {
     task: PropTypes.object,

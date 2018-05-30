@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import filepicker from 'filepicker-js'
 
@@ -7,7 +7,7 @@ import Icon from 'components/icons/icon'
 
 filepicker.setKey('A7hMFRb7XS6KIA4fg4DChz')
 
-class FilePicker extends Component {
+class FilePicker extends PureComponent {
 
   static propTypes = {
     onFileUploaded: PropTypes.func,

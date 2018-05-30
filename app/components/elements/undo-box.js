@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import velocity from 'velocity-animate'
 import { connect } from 'react-redux'
@@ -57,7 +57,7 @@ const Button = styled.div`
   border-left: 1px solid #8c9da9;
 `;
 
-class UndoBox extends Component {
+class UndoBox extends PureComponent {
 
   static propTypes = {
     undoBox: PropTypes.object,

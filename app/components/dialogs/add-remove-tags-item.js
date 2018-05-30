@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import commonUtils from 'redux/utils/common'
 import styled from 'styled-components'
@@ -20,7 +20,7 @@ const TagTitle = styled.div`
   margin: 0 0 0 5px;
 `;
 
-export default class AddRemoveTagsItem extends Component {
+export default class AddRemoveTagsItem extends PureComponent {
 
   static propTypes = {
     tag: PropTypes.object,

@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import cx from 'classnames'
 
 import Icon from '../../icons/icon'
 
-export default class MenuBoxItem extends Component {
+export default class MenuBoxItem extends PureComponent {
 
   static propTypes = {
     icon: PropTypes.object,

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { List } from 'immutable'
@@ -10,7 +10,7 @@ import TagAutocomplete from 'components/elements/tag-autocomplete/tag-autocomple
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
 
-class MainSearch extends Component {
+class MainSearch extends PureComponent {
 
   static propTypes = {
     tags: PropTypes.object.isRequired,

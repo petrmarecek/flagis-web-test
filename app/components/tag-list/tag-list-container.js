@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
@@ -13,7 +13,7 @@ import {
 import { selectTag } from 'redux/store/tags/tags.actions'
 import { setDetail } from 'redux/store/app-state/app-state.actions'
 
-class TagListContainer extends Component {
+class TagListContainer extends PureComponent {
 
   static propTypes = {
     tags: PropTypes.object.isRequired,

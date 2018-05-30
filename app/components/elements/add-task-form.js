@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import { connect } from 'react-redux'
@@ -12,7 +12,7 @@ import { getTasksMenu } from 'redux/store/tasks-menu/tasks-menu.selectors'
 import { getActiveTagsId } from 'redux/store/tags/tags.selectors'
 import cx from "classnames"
 
-class AddTaskForm extends Component {
+class AddTaskForm extends PureComponent {
 
   static propTypes = {
     createTask: PropTypes.func.isRequired,

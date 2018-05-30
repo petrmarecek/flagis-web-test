@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import cx from 'classnames'
 
 const EventListenerMode = { capture: true }
 
-export default class ResizeHandle extends Component {
+export default class ResizeHandle extends PureComponent {
 
   static propTypes = {
     onResize: PropTypes.func.isRequired,
@@ -49,7 +49,7 @@ export default class ResizeHandle extends Component {
     })
 
     return (
-      <div 
+      <div
         ref="handle"
         className={css}
         onMouseDownCapture={this.handleMouseDown}

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
@@ -7,7 +7,7 @@ import { createTag } from 'redux/store/tags/tags.actions'
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
 
-class AddTagForm extends Component {
+class AddTagForm extends PureComponent {
 
   static propTypes = {
     createTag: PropTypes.func.isRequired,

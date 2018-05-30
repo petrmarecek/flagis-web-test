@@ -1,5 +1,5 @@
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
@@ -15,7 +15,7 @@ import MainImg3x from 'assets/img/img@3x.png'
 import { controlRedirectTasks } from 'redux/store/auth/auth.actions'
 import NavigationLanding from 'components/navigation/navigation-landing'
 
-class LandingPage extends Component {
+class LandingPage extends PureComponent {
 
   static contextTypes = {
     router: PropTypes.object.isRequired

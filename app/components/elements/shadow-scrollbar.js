@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { findDOMNode } from 'react-dom'
 import { Scrollbars } from 'react-custom-scrollbars'
 
-export default class ShadowScrollbar extends Component {
+export default class ShadowScrollbar extends PureComponent {
 
   constructor(props, ...rest) {
     super(props, ...rest)

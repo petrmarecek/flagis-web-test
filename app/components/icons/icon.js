@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import velocity from 'velocity-animate'
 import 'velocity-animate/velocity.ui'
 
-export default class Icon extends Component {
+export default class Icon extends PureComponent {
 
   static propTypes = {
     icon: PropTypes.object.isRequired,

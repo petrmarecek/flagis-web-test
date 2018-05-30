@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
 
@@ -101,7 +101,7 @@ const TreeSectionDragDrop = {
   }
 }
 
-class TreeSection extends Component {
+class TreeSection extends PureComponent {
 
   static propTypes = {
     addControlParentId: PropTypes.string,

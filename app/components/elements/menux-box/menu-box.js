@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { findDOMNode } from 'react-dom'
 import velocity from 'velocity-animate'
 
-export default class MenuBox extends Component {
+export default class MenuBox extends PureComponent {
 
   static propTypes = {
     className: PropTypes.string,

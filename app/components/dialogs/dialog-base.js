@@ -1,6 +1,6 @@
-import React, { Component } from 'react' // eslint-disable-line
+import React, { PureComponent } from 'react' // eslint-disable-line
 
-export default class DialogBase extends Component {
+export default class DialogBase extends PureComponent {
   centerDialog() {
     const dialog = this.refs.dialogWin
     dialog.style.top = `${((window.innerHeight / 2) - (dialog.offsetHeight / 2)) - 60}px`

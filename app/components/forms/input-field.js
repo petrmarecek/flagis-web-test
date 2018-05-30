@@ -1,8 +1,8 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import cx from 'classnames'
 
-export default class InputField extends Component {
+export default class InputField extends PureComponent {
 
   static propTypes = {
     id: PropTypes.string.isRequired,

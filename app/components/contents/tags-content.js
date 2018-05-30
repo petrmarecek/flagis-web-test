@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
@@ -9,7 +9,7 @@ import TagList from 'components/tag-list/tag-list-container'
 import SearchBox from 'components/elements/search-box'
 import AddTagForm from 'components/elements/add-tag-form'
 
-class TagsContent extends Component {
+class TagsContent extends PureComponent {
 
   static propTypes = {
     updateTagSearch: PropTypes.func.isRequired,

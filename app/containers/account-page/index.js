@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { List } from 'immutable'
@@ -23,7 +23,7 @@ import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
 import {compose} from "recompose";
 
-class AccountPage extends Component {
+class AccountPage extends PureComponent {
 
   static contextTypes = {
     router: PropTypes.object.isRequired,

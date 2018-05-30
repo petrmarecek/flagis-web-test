@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { findDOMNode } from 'react-dom'
 import velocity from 'velocity-animate'
@@ -9,7 +9,7 @@ import FileDownload from 'components/elements/file-download/index'
 
 import config from '../../config/index'
 
-export default class TasksMenuMultiSelect extends Component {
+export default class TasksMenuMultiSelect extends PureComponent {
 
   static propTypes = {
     onAddRemoveTags: PropTypes.func,

@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import CommentListItem from 'components/comment-list/comment-list-item'
 import { Scrollbars } from 'react-custom-scrollbars'
 
-class CommentList extends Component {
+class CommentList extends PureComponent {
   static propTypes = {
     comments: PropTypes.object,
   }

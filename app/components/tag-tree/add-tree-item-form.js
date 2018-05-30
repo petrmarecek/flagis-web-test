@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
 
@@ -7,7 +7,7 @@ import Icon from 'components/icons/icon'
 import TagAutocompleteInput from 'components/elements/tag-autocomplete/tag-autocomplete-input'
 import AddTreeItemSectionForm from 'components/tag-tree/add-tree-item-section-form'
 
-export default class AddTreeItemForm extends Component {
+export default class AddTreeItemForm extends PureComponent {
 
   static propTypes = {
     parentId: PropTypes.string,

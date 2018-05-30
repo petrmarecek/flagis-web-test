@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { findDOMNode } from 'react-dom'
 import { connect } from 'react-redux'
@@ -31,7 +31,7 @@ import ContentEditable from 'components/common/content-editable'
 import Icon from 'components/icons/icon'
 import {ICONS} from 'components/icons/icon-constants'
 
-class TagDetail extends Component {
+class TagDetail extends PureComponent {
 
   static propTypes = {
     tag: PropTypes.object,

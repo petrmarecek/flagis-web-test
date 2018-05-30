@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import cx from 'classnames'
 import { connect } from 'react-redux'
@@ -17,7 +17,7 @@ import {
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
 
-class NavigationRight extends Component {
+class NavigationRight extends PureComponent {
 
   static propTypes = {
     location: PropTypes.object.isRequired,

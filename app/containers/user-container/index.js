@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { Switch, Route } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import cx from 'classnames'
@@ -19,7 +19,7 @@ import TagPage from 'containers/tag-page'
 import ArchivePage from 'containers/archive-page'
 import AccountPage from 'containers/account-page'
 
-class UserContainer extends Component {
+class UserContainer extends PureComponent {
   static propTypes = {
     controlRedirectSignIn: PropTypes.func,
     location: PropTypes.shape({

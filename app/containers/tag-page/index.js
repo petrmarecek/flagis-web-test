@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
@@ -10,7 +10,7 @@ import LeftPanel from 'components/panels/left-panel'
 import CenterPanel from 'components/panels/center-panel'
 import TagTreeContent from 'components/contents/tag-tree-content'
 
-class TagPage extends Component {
+class TagPage extends PureComponent {
 
   static propTypes = {
     detail: PropTypes.object,

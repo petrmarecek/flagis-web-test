@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { compose } from 'recompose'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
@@ -16,7 +16,7 @@ import NavigationLanding from 'components/navigation/navigation-landing'
 import InputField from 'components/forms/input-field'
 import Loader from 'components/elements/loader'
 
-class EmailResetPassword extends Component {
+class EmailResetPassword extends PureComponent {
 
   static contextTypes = {
     router: PropTypes.object.isRequired

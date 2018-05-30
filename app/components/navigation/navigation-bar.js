@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
@@ -10,7 +10,7 @@ import MainSearch from 'components/elements/main-search'
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
 
-class NavigationBar extends Component {
+class NavigationBar extends PureComponent {
 
   static propTypes = {
     defaultDisplay: PropTypes.func,

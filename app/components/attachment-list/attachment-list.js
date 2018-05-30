@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import AttachmentListItem from 'components/attachment-list/attachment-list-item'
 import { Scrollbars } from 'react-custom-scrollbars'
 
-class AttachmentList extends Component {
+class AttachmentList extends PureComponent {
   static propTypes = {
     attachments: PropTypes.object,
     attachmentDelete: PropTypes.func,

@@ -1,11 +1,11 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import cx from 'classnames'
 
 import AddTreeItemForm from 'components/tag-tree/add-tree-item-form'
 import TreeItem from 'components/tag-tree/tree-item'
 
-export default class TreeItemList extends Component {
+export default class TreeItemList extends PureComponent {
 
   static propTypes = {
     addControlParentId: PropTypes.string,

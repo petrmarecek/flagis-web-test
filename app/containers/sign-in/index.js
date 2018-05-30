@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { compose } from 'recompose'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
@@ -28,7 +28,7 @@ import Loader from 'components/elements/loader'
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
 
-class SignIn extends Component {
+class SignIn extends PureComponent {
 
   static contextTypes = {
     router: PropTypes.object.isRequired

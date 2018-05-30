@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
@@ -48,7 +48,7 @@ import { toast } from 'react-toastify'
 import { infoMessages } from 'utils/messages'
 import constants from 'utils/constants'
 
-class TreeContainer extends React.Component {
+class TreeContainer extends PureComponent {
 
   static propTypes = {
     addControlParentId: PropTypes.string,

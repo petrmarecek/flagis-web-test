@@ -1,8 +1,8 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 
-export default class FileDownloadForm extends Component {
+export default class FileDownloadForm extends PureComponent {
 
   static propTypes = {
     method: PropTypes.string,

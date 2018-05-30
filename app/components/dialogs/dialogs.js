@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { toast } from 'react-toastify'
@@ -56,7 +56,7 @@ import UpdateTreeItemDialog from './update-tree-item-dialog'
 import ConfirmTreeItemTagDeleteDialog from './confirm-tree-item-tag-delete-dialog'
 import AddRemoveTagsDialog from './add-remove-tags-dialog'
 
-class Dialogs extends Component {
+class Dialogs extends PureComponent {
 
   static propTypes = {
     currentDialog: PropTypes.object,

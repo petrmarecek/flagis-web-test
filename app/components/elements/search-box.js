@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
 
-export default class SearchBox extends Component {
+export default class SearchBox extends PureComponent {
 
   static propTypes = {
     onChange: PropTypes.func.isRequired,
