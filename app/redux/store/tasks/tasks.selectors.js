@@ -506,15 +506,19 @@ export const getPreviousTask = createSelector(
   }
 )
 
-export const getSelectTasksTags = (state) => {
-  const selectTasks = state.getIn(['tasks', 'selection'])
-  return selectTasks.map(taskId => {
-    const tagsList = getTaskTags(state, taskId)
+export const getSelectTasksTags = createSelector(
+  getSelectionTasks,
+  getEntitiesTasks,
+  (selectionTasks, entitiesTasks) => {
 
-    if (tagsList.size === 0) {
-      return List()
-    }
+    return selectionTasks.map(taskId => {
+      const tagsList = entitiesTasks.getIn([taskId, 'tags'])
 
-    return tagsList
-  }).toList()
-}
+      if (tagsList.size === 0) {
+        return List()
+      }
+
+      return tagsList
+    }).toList()
+  }
+)
