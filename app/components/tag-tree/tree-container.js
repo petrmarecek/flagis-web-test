@@ -37,7 +37,7 @@ import {
 } from 'redux/store/tree/tree.actions'
 import {
   getTree,
-  getFetchTree,
+  getTreeItemsIsFetching,
   getSelectionTree,
   getAddControlParentId,
   getSections,
@@ -263,7 +263,7 @@ class TreeContainer extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  isFetching: getFetchTree(state),
+  isFetching: getTreeItemsIsFetching(state),
   isNewRefreshToken: getNewRefreshToken(state),
   tree: getTree(state),
   sections: getSections(state),
