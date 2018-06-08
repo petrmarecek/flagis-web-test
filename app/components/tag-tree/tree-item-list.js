@@ -8,7 +8,16 @@ import TreeItem from 'components/tag-tree/tree-item'
 export default class TreeItemList extends PureComponent {
 
   static propTypes = {
+    // Data
+    treeItem: PropTypes.object.isRequired,
+    parents: PropTypes.array.isRequired,
     addControlParentId: PropTypes.string,
+    parentTagRelations: PropTypes.object,
+    selection: PropTypes.object.isRequired,
+    tagsRelations: PropTypes.object.isRequired,
+    archivedTasks: PropTypes.bool,
+
+    // Handlers
     onAddChild: PropTypes.func.isRequired,
     onAddControlCancel: PropTypes.func.isRequired,
     onCollapse: PropTypes.func.isRequired,
@@ -17,12 +26,6 @@ export default class TreeItemList extends PureComponent {
     onTreeItemEdit: PropTypes.func.isRequired,
     onTreeItemDelete: PropTypes.func.isRequired,
     onTreeItemSelected: PropTypes.func.isRequired,
-    parents: PropTypes.array.isRequired,
-    parentTagRelations: PropTypes.object,
-    selection: PropTypes.object.isRequired,
-    tagsRelations: PropTypes.object.isRequired,
-    treeItem: PropTypes.object.isRequired,
-    archivedTasks: PropTypes.bool,
   }
 
   render() {

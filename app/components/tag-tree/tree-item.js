@@ -1,12 +1,11 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
-import { Set } from 'immutable'
 import { DragSource, DropTarget } from 'react-dnd'
 import { findDOMNode } from 'react-dom'
 import includes from 'lodash/includes'
 
-import { getTagColor } from 'redux/utils/component-helper'
+import { getTagColor, getTagRelations } from 'redux/utils/component-helper'
 
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
@@ -104,13 +103,21 @@ const TreeItemDragDrop = {
   }
 }
 
-class TreeItem extends PureComponent {
+class TreeItem extends Component {
 
   static propTypes = {
+    // Data
+    treeItem: PropTypes.object,
+    parents: PropTypes.array.isRequired,
+    parentTagRelations: PropTypes.object,
+    selection: PropTypes.object,
+    tagsRelations: PropTypes.object,
+    archivedTasks: PropTypes.bool,
     addControlParentId: PropTypes.string,
-    connectDragSource: PropTypes.func.isRequired,
-    connectDropTarget: PropTypes.func.isRequired,
     isOver: PropTypes.bool.isRequired,
+    isDragging: PropTypes.bool.isRequired,
+
+    // Handlers
     onAddChild: PropTypes.func,
     onAddControlCancel: PropTypes.func,
     onDrop: PropTypes.func.isRequired,
@@ -119,17 +126,48 @@ class TreeItem extends PureComponent {
     onTreeItemEdit: PropTypes.func,
     onTreeItemDelete: PropTypes.func,
     onTreeItemSelected: PropTypes.func,
-    parents: PropTypes.array.isRequired,
-    parentTagRelations: PropTypes.object,
-    selection: PropTypes.object,
-    tagsRelations: PropTypes.object,
-    treeItem: PropTypes.object,
-    treeItems: PropTypes.object,
-    archivedTasks: PropTypes.bool,
+
+    // Drag and Drop
+    connectDragSource: PropTypes.func.isRequired,
+    connectDropTarget: PropTypes.func.isRequired,
   }
 
   state = {
     dropPosition: null,
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    // props and state
+    const {
+      treeItem,
+      selection,
+      addControlParentId,
+      isOver,
+      tagsRelations,
+      parentTagRelations
+    } = this.props
+    const { dropPosition } = this.state
+    const tagRelations = getTagRelations(tagsRelations, parentTagRelations, treeItem.tagId).size
+
+    // nextProps and nextState
+    const nextTreeItem = nextProps.treeItem
+    const nextSelection = nextProps.selection
+    const nextAddControlParentId = nextProps.addControlParentId
+    const nextIsOver = nextProps.isOver
+    const nextTagsRelations = nextProps.tagsRelations
+    const nextParentTagRelations = nextProps.parentTagRelations
+    const nextDropPosition = nextState.dropPosition
+    const nextTagRelations = getTagRelations(nextTagsRelations, nextParentTagRelations, nextTreeItem.tagId).size
+
+    return !treeItem.equals(nextTreeItem)
+      || (tagRelations !== nextTagRelations)
+      || ((dropPosition !== nextDropPosition) || (isOver !== nextIsOver))
+      || (!selection.equals(nextSelection)
+        && (nextSelection.includes(treeItem.id) || selection.includes(treeItem.id)))
+      || ((addControlParentId !== nextAddControlParentId)
+        && ((nextAddControlParentId === treeItem.id)
+          || (addControlParentId === treeItem.id)
+          || (nextTreeItem.childItems.size > 0)))
   }
 
   // Propagates selection to the top
@@ -157,16 +195,6 @@ class TreeItem extends PureComponent {
     this.props.onAddChild(this.props.treeItem.id)
   }
 
-  getCurrentItemChildren() {
-    const currentTreeItemId = this.props.treeItem.id
-    return this.getChildren(currentTreeItemId)
-  }
-
-  getChildren(parentId) {
-    const children = this.props.treeItems.filter((treeItem) => treeItem.parentId === parentId)
-    return children.length === 1 ? children[0].items : []
-  }
-
   handleEditIconClicked = event => {
     event.stopPropagation()
     this.props.onTreeItemEdit(this.props.treeItem.toJS())
@@ -178,10 +206,9 @@ class TreeItem extends PureComponent {
   }
 
   getColorIndex() {
-    const colorIndex = this.props.treeItem.tag.colorIndex === null
+    return this.props.treeItem.tag.colorIndex === null
       ? commonUtils.computeIntHash(this.props.treeItem.tag.title, 10)
       : this.props.treeItem.tag.colorIndex
-    return colorIndex
   }
 
   renderArrowIcon(children) {
@@ -209,26 +236,18 @@ class TreeItem extends PureComponent {
       : null
   }
 
-  getTagRelations() {
-
-    // Get relations for current tag
-    const currentTagRelations = this.props.tagsRelations.get(this.props.treeItem.tagId)
-    if (!currentTagRelations) {
-      return Set()
-    }
-
-    // If it is a nested tag --> intersect with parent tags
-    return this.props.parentTagRelations
-      ? currentTagRelations.intersect(this.props.parentTagRelations || Set())
-      : currentTagRelations
-  }
-
   render() {
     const colorIndex = this.getColorIndex()
     const tagColor = getTagColor(colorIndex)
 
-    const currentTagRelations = this.getTagRelations()
-    const { connectDragSource, connectDropTarget, isOver } = this.props
+    const {
+      connectDragSource,
+      connectDropTarget,
+      isOver, tagsRelations,
+      parentTagRelations,
+      treeItem
+    } = this.props
+    const currentTagRelations = getTagRelations(tagsRelations, parentTagRelations, treeItem.tagId)
     const parents = [...this.props.parents, this.props.treeItem.id]
 
     // init classes

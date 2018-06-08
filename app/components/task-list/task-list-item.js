@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { DragSource, DropTarget } from 'react-dnd'
 import { findDOMNode } from 'react-dom'
@@ -14,6 +14,7 @@ import Icon from 'components/icons/icon'
 
 import TaskListItemTag from 'components/task-list/task-list-item-tag'
 
+// Drag and Drop
 const ItemTypes = {
   TASK: 'task'
 }
@@ -168,25 +169,32 @@ function collectDropTarget(connect, monitor) {
   }
 }
 
-class TaskListItem extends PureComponent {
+
+// TaskListItem
+class TaskListItem extends Component {
 
   static propTypes = {
-    onClick: PropTypes.func,
-    onCompleteClick: PropTypes.func,
+    // Data
+    task: PropTypes.object,
+    noTaskFound: PropTypes.bool,
+    listType: PropTypes.string.isRequired,
     isSelected: PropTypes.bool,
+    section: PropTypes.string,
     isDragging: PropTypes.bool,
     sort: PropTypes.object,
-    task: PropTypes.object,
-    connectDragSource: PropTypes.func.isRequired,
-    connectDropTarget: PropTypes.func.isRequired,
+
+    // Handlers
+    onClick: PropTypes.func,
+    onCompleteClick: PropTypes.func,
     moveTask: PropTypes.func.isRequired,
     dropTask: PropTypes.func.isRequired,
     onTagClick: PropTypes.func,
-    listType: PropTypes.string.isRequired,
     setArchiveTasks: PropTypes.func,
     cancelArchiveTasks: PropTypes.func,
-    section: PropTypes.string,
-    noTaskFound: PropTypes.bool,
+
+    // Drag and Drop
+    connectDropTarget: PropTypes.func.isRequired,
+    connectDragSource: PropTypes.func.isRequired,
   }
 
   state = {
@@ -196,6 +204,20 @@ class TaskListItem extends PureComponent {
   constructor(props) {
     super(props)
     this.sortedTags = this.getSortedTags(props)
+  }
+
+  shouldComponentUpdate(nextProps) {
+    // props
+    const { task, isSelected, isDragging } = this.props
+
+    // nextProps
+    const nextTask = nextProps.task
+    const nextIsSelected = nextProps.isSelected
+    const nextIsDragging = nextProps.isDragging
+
+    return (task.size >= 2 ? !task.equals(nextTask) : task === nextTask)
+      || (isSelected !== nextIsSelected)
+      || (isDragging !== nextIsDragging)
   }
 
   componentDidMount() {

@@ -20,10 +20,9 @@ class TaskListItemTag extends PureComponent {
   }
 
   getColorIndex() {
-    const colorIndex = this.props.model.colorIndex === null
+    return this.props.model.colorIndex === null
       ? utils.computeIntHash(this.props.model.title, 10)
       : this.props.model.colorIndex
-    return colorIndex
   }
 
   render() {

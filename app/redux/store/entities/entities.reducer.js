@@ -108,8 +108,9 @@ export default typeToReducer({
   [TREE.MOVE_SECTION]: (state, action) =>
     state.setIn(['treeItems', action.payload.sectionId, 'order'], action.payload.order),
 
-  [TREE.MOVE_TREE_ITEM]: (state, action) =>
-    state.setIn(['treeItems', action.payload.source.id, 'order'], action.payload.order),
+  [TREE.MOVE_TREE_ITEM]: (state, action) => state
+    .setIn(['treeItems', action.payload.source.id, 'order'], action.payload.order)
+    .setIn(['treeItems', action.payload.source.id, 'parentId'], action.payload.targetParentId),
 
   // ------ Tags --------------------------------------------------------------
 

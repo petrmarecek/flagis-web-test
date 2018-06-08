@@ -1,4 +1,4 @@
-import { List } from 'immutable'
+import { List, Set } from 'immutable'
 import moment from 'moment'
 
 export function getSelectionInfo(event, task, selectedTasks) {
@@ -135,6 +135,20 @@ export function getTimeLineByDueDate(tasks) {
     laterTasks,
     noDueDatesTasks
   }
+}
+
+export function getTagRelations(relations, parentRelations, tagId) {
+
+  // Get relations for current tag
+  const currentTagRelations = relations.get(tagId)
+  if (!currentTagRelations) {
+    return Set()
+  }
+
+  // If it is a nested tag --> intersect with parent tags
+  return parentRelations
+    ? currentTagRelations.intersect(parentRelations || Set())
+    : currentTagRelations
 }
 
 const color = {

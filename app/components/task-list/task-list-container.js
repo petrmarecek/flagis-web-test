@@ -49,29 +49,30 @@ import moment from 'moment'
 class TaskListContainer extends PureComponent {
 
   static propTypes = {
+    // Data
     tasks: PropTypes.object,
     isNewRefreshToken: PropTypes.bool,
     tasksId: PropTypes.object,
     completedTasks: PropTypes.object,
     archivedTasks: PropTypes.object,
     entitiesTasks: PropTypes.object,
+    selectedTags: PropTypes.object,
+    selectedTasks: PropTypes.object,
+    isVisibleArchivedTasks: PropTypes.bool,
+    sort: PropTypes.object,
+
+    // Actions
     selectTask: PropTypes.func,
     setComplete: PropTypes.func,
     setIncomplete: PropTypes.func,
-    fetchTasks: PropTypes.func,
     setOrder: PropTypes.func,
     setOrderTimeLine: PropTypes.func,
-    setDueDateTimeLine: PropTypes.func,
     moveTask: PropTypes.func,
     moveTimeLineTask: PropTypes.func,
-    selectActiveTags: PropTypes.func.isRequired,
-    selectedTags: PropTypes.object,
-    selectedTasks: PropTypes.object,
+    selectActiveTags: PropTypes.func,
     deselectTasks: PropTypes.func,
-    sort: PropTypes.object,
     setArchiveTasks: PropTypes.func,
     cancelArchiveTasks: PropTypes.func,
-    isVisibleArchivedTasks: PropTypes.bool,
   }
 
   state = {

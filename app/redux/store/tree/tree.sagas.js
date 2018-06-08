@@ -324,6 +324,7 @@ export function* dropTreeItem(action) {
       position: action.payload.dropPosition,
       source: action.payload.dragSource,
       target: action.payload.dragTarget,
+      targetParentId,
       order
     }))
   } catch (err) {

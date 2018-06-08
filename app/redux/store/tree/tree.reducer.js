@@ -48,9 +48,6 @@ export default typeToReducer({
   [APP_STATE.HIDE_TAG_HINTS]: state =>
     state.set('addControlParentId', null),
 
-  [TREE.TOGGLE_MENU]: (state, action) => state
-    .setIn(['items', action.payload, 'childVisible'], !state.items.get(action.payload).childVisible),
-
   [TREE.ADD]: (state, action) => {
     const itemId = action.payload.result
     const item = action.payload.entities.treeItem[itemId]

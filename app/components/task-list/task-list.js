@@ -7,19 +7,22 @@ import { getTimeLineByDueDate } from 'redux/utils/component-helper'
 export default class TaskList extends PureComponent {
 
   static propTypes = {
+    // Data
+    tasks: PropTypes.array,
+    listType: PropTypes.string,
     selectedTasks: PropTypes.object,
+    selectedTags: PropTypes.object,
+    isVisibleArchivedTasks: PropTypes.bool,
+    sort: PropTypes.object,
+
+    // Handlers
     onCompleteClick: PropTypes.func,
     onTaskSelect: PropTypes.func,
-    tasks: PropTypes.array,
-    selectedTags: PropTypes.object,
     moveTask: PropTypes.func,
     dropTask: PropTypes.func,
-    onTagClick: PropTypes.func.isRequired,
-    listType: PropTypes.string,
-    sort: PropTypes.object,
+    onTagClick: PropTypes.func,
     setArchiveTasks: PropTypes.func,
     cancelArchiveTasks: PropTypes.func,
-    isVisibleArchivedTasks: PropTypes.bool,
   }
 
   isSelected(taskId) {

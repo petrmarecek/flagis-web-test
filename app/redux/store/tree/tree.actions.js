@@ -39,11 +39,6 @@ export const fetchTree = () => ({
   type: TREE.FETCH
 })
 
-export const toggleMenu = itemId => ({
-  type: TREE.TOGGLE_MENU,
-  payload: itemId
-})
-
 export const showTreeItemAddControl = parentTreeItemId => ({
   type: TREE.SHOW_ADD_CONTROL,
   payload: {

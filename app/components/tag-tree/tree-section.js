@@ -104,7 +104,17 @@ const TreeSectionDragDrop = {
 class TreeSection extends PureComponent {
 
   static propTypes = {
+    // Data
+    section: PropTypes.object,
     addControlParentId: PropTypes.string,
+    selection: PropTypes.object,
+    tagsRelations: PropTypes.object,
+    archivedTasks: PropTypes.bool,
+    maxWidth: PropTypes.number,
+    isDragging: PropTypes.bool,
+    index: PropTypes.number,
+
+    // Handlers
     onAddChild: PropTypes.func,
     onAddControlCancel: PropTypes.func,
     onCollapse: PropTypes.func,
@@ -113,17 +123,12 @@ class TreeSection extends PureComponent {
     onTreeItemDelete: PropTypes.func,
     onTreeItemSelected: PropTypes.func,
     onDrop: PropTypes.func.isRequired,
-    section: PropTypes.object,
-    selection: PropTypes.object,
-    tagsRelations: PropTypes.object,
-    archivedTasks: PropTypes.bool,
-    maxWidth: PropTypes.number,
-    isDragging: PropTypes.bool,
-    connectDragSource: PropTypes.func.isRequired,
-    connectDropTarget: PropTypes.func.isRequired,
     onMoveSection: PropTypes.func.isRequired,
     onDropSection: PropTypes.func.isRequired,
-    index: PropTypes.number,
+
+    // Drag and Drop
+    connectDragSource: PropTypes.func.isRequired,
+    connectDropTarget: PropTypes.func.isRequired,
   }
 
   handleAddChildClicked = event => {

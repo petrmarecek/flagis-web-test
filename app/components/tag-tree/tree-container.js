@@ -25,7 +25,6 @@ import { deselectTasks} from 'redux/store/tasks/tasks.actions'
 import { selectTag } from 'redux/store/tags/tags.actions'
 import { getTagsRelations } from 'redux/store/tags/tags.selectors'
 import {
-  toggleMenu,
   showTreeItemAddControl,
   hideTreeItemAddControl,
   createTreeItem,
@@ -51,22 +50,25 @@ import constants from 'utils/constants'
 class TreeContainer extends PureComponent {
 
   static propTypes = {
+    // Data
     addControlParentId: PropTypes.string,
-    collapse: PropTypes.func,
-    dropTreeItem: PropTypes.func,
-    createTreeItem: PropTypes.func,
-    hideTreeItemAddControl: PropTypes.func,
     isFetching: PropTypes.bool,
     isNewRefreshToken: PropTypes.bool,
     selection: PropTypes.object,
-    selectPath: PropTypes.func,
-    showDialog: PropTypes.func,
-    showTreeItemAddControl: PropTypes.func,
     tagsRelations: PropTypes.object,
     tree: PropTypes.object,
     sections: PropTypes.object,
     leftPanel: PropTypes.object,
     archivedTasks: PropTypes.bool,
+
+    // Actions
+    collapse: PropTypes.func,
+    dropTreeItem: PropTypes.func,
+    createTreeItem: PropTypes.func,
+    hideTreeItemAddControl: PropTypes.func,
+    selectPath: PropTypes.func,
+    showDialog: PropTypes.func,
+    showTreeItemAddControl: PropTypes.func,
     moveSection: PropTypes.func,
     dropSection: PropTypes.func,
     selectTag: PropTypes.func,
@@ -193,6 +195,7 @@ class TreeContainer extends PureComponent {
   }
 
   render() {
+
     const leftPanel = this.props.leftPanel
     const style = { width: leftPanel.width }
     const scrollStyle = {
@@ -275,7 +278,6 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  toggleMenu,
   showTreeItemAddControl,
   hideTreeItemAddControl,
   createTreeItem,
