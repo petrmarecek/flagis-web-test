@@ -61,7 +61,7 @@ function* syncTagsChannel(channel) {
   try {
     while (true) { // eslint-disable-line
       const snapshot = yield take(channel)
-      yield all(snapshot.docChanges.map(change => call(saveChangeFromFirestore, change)))
+      yield all(snapshot.docChanges().map(change => call(saveChangeFromFirestore, change)))
     }
   } catch(err) {
     yield put({ type: REJECTED, err })
