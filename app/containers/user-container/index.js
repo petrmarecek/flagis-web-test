@@ -17,6 +17,7 @@ import FloatingComponents from 'components/floating/floating-components'
 import TaskPage from 'containers/task-page'
 import TagPage from 'containers/tag-page'
 import ArchivePage from 'containers/archive-page'
+import ContactPage from 'containers/contact-page'
 import AccountPage from 'containers/account-page'
 
 class UserContainer extends PureComponent {
@@ -75,6 +76,7 @@ class UserContainer extends PureComponent {
             <Route path={`${this.props.match.path}/tasks`} component={TaskPage} />
             <Route path={`${this.props.match.path}/tags`} component={TagPage} />
             <Route path={`${this.props.match.path}/archive`} component={ArchivePage} />
+            <Route path={`${this.props.match.path}/contacts`} component={ContactPage} />
             <Route path={`${this.props.match.path}/account`} component={AccountPage} />
           </Switch>
         </div>

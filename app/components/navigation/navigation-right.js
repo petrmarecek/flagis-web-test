@@ -49,6 +49,13 @@ class NavigationRight extends PureComponent {
     this.props.changeLocation('/user/archive')
   }
 
+  handleClickContacts = () => {
+    this.props.hideArchivedTasks()
+    this.props.deselectTags()
+    this.props.deselectTasks()
+    this.props.changeLocation('/user/contacts')
+  }
+
   handleClickAccount = () => {
     this.props.hideArchivedTasks()
     this.props.deselectTags()
@@ -81,6 +88,12 @@ class NavigationRight extends PureComponent {
       'nav-button--active': isAccountActive,
     })
 
+    const isContactsActive = this.props.location.pathname === '/user/contacts'
+    const contactsButtonClassName = cx({
+      'nav-button': true,
+      'nav-button--active': isContactsActive,
+    })
+
     return (
       <div className="nav-button-container">
         <div className={tasksButtonClassName} onClick={this.handleClickTasks}>
@@ -104,6 +117,14 @@ class NavigationRight extends PureComponent {
             width={28}
             height={24}
             scale={1.6}
+            color="#fff" />
+        </div>
+        <div className={contactsButtonClassName} onClick={this.handleClickContacts}>
+          <Icon
+            icon={ICONS.CONTACTS}
+            width={25}
+            height={19}
+            scale={0.83}
             color="#fff" />
         </div>
         <div className={accountButtonClassName} onClick={this.handleClickAccount}>

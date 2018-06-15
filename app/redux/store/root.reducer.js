@@ -13,10 +13,11 @@ import auth from 'redux/store/auth/auth.reducer'
 import entities from 'redux/store/entities/entities.reducer'
 import tasksMenu from 'redux/store/tasks-menu/tasks-menu.reducer'
 import tasks from 'redux/store/tasks/tasks.reducer'
-import tree from 'redux/store/tree/tree.reducer'
-import tags from 'redux/store/tags/tags.reducer'
 import comments from 'redux/store/comments/comments.reducer'
 import attachments from 'redux/store/attachments/attachments.reducer'
+import tree from 'redux/store/tree/tree.reducer'
+import tags from 'redux/store/tags/tags.reducer'
+import contacts from 'redux/store/contacts/contacts.reducer'
 import multiSelect from 'redux/store/multi-select/multi-select.reducer'
 
 /*
@@ -62,6 +63,7 @@ export default function createReducer(injectedReducers) {
     multiSelect,
     tree,
     tags,
+    contacts,
     form: formReducer,
     route: routeReducer,
     language: languageProviderReducer,

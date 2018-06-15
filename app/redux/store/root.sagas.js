@@ -8,6 +8,7 @@ import { TREE } from './tree/tree.actions'
 import { TAGS } from './tags/tags.actions'
 import { COMMENTS } from './comments/comments.actions'
 import { ATTACHMENTS } from './attachments/attachments.actions'
+import { CONTACTS } from './contacts/contacts.actions'
 
 import * as auth from './auth/auth.sagas'
 import * as task from './tasks/tasks.sagas'
@@ -17,9 +18,23 @@ import * as tree from './tree/tree.sagas'
 import * as appState from './app-state/app-state.sagas'
 import * as comment from './comments/comments.sagas'
 import * as attachment from './attachments/attachments.sagas'
+import * as contact from './contacts/contacts.sagas'
 
 export default function* root() {
   yield all([
+    // app-state
+    takeEvery(APP_STATE.DEFAULT_DISPLAY, appState.defaultDisplay),
+    takeEvery(APP_STATE.CHANGE_LOCATION, appState.changeLocation),
+    takeLatest(APP_STATE.TAG_AUTOCOMPLETE_FOCUS, appState.handleAutocompleteFocus),
+    takeLatest(APP_STATE.TAG_AUTOCOMPLETE_BLUR, appState.handleAutocompleteBlur),
+    takeEvery(APP_STATE.TAG_AUTOCOMPLETE_GO_PREV, appState.handleAutocompleteGoPrev),
+    takeEvery(APP_STATE.TAG_AUTOCOMPLETE_GO_NEXT, appState.handleAutocompleteGoNext),
+    takeEvery(APP_STATE.TAG_AUTOCOMPLETE_TEXT_CHANGED, appState.handleAutocompleteTextChange),
+    takeLatest(APP_STATE.TAG_AUTOCOMPLETE_POSITION_CHANGED, appState.handleAutocompletePositionChange),
+    takeEvery(APP_STATE.TAG_AUTOCOMPLETE_SUBMIT, appState.handleAutocompleteSubmit),
+    takeEvery(APP_STATE.TAG_HINTS_SELECT, appState.selectHint),
+    takeLatest(APP_STATE.TAG_HINTS_OUTSIDE_CLICK, appState.handleHintsOutsideClick),
+
     // auth
     fork(auth.authFlow),
     fork(auth.initDataFlow),
@@ -52,6 +67,18 @@ export default function* root() {
     takeEvery(TASKS.DELETE, task.deleteTask),
     takeEvery(TASKS.UNDO_DELETE, task.undoDeleteTask),
 
+    // comments
+    takeLatest(COMMENTS.FETCH, comment.fetchComment),
+    fork(comment.initCommentsData),
+    takeEvery(COMMENTS.CREATE, comment.createComment),
+    takeEvery(COMMENTS.DELETE, comment.deleteComment),
+
+    // attachments
+    takeLatest(ATTACHMENTS.FETCH, attachment.fetchAttachment),
+    fork(attachment.initAttachmentsData),
+    takeEvery(ATTACHMENTS.CREATE, attachment.createAttachment),
+    takeEvery(ATTACHMENTS.DELETE, attachment.deleteAttachment),
+
     // task-menu
     takeEvery(TASKS_MENU.CHANGE_RANGE_FILTER, taskMenu.changeRangeFilter),
     takeEvery(TASKS_MENU.TOGGLE_IMPORTANT_FILTER, taskMenu.toggleImportantFilter),
@@ -80,28 +107,7 @@ export default function* root() {
     takeLatest(TAGS.FETCH_TAGS_RELATIONS, tag.fetchTagsRelations),
 
     // comments
-    takeLatest(COMMENTS.FETCH, comment.fetchComment),
-    fork(comment.initCommentsData),
-    takeEvery(COMMENTS.CREATE, comment.createComment),
-    takeEvery(COMMENTS.DELETE, comment.deleteComment),
-
-    // attachments
-    takeLatest(ATTACHMENTS.FETCH, attachment.fetchAttachment),
-    fork(attachment.initAttachmentsData),
-    takeEvery(ATTACHMENTS.CREATE, attachment.createAttachment),
-    takeEvery(ATTACHMENTS.DELETE, attachment.deleteAttachment),
-
-    // app-state
-    takeEvery(APP_STATE.DEFAULT_DISPLAY, appState.defaultDisplay),
-    takeEvery(APP_STATE.CHANGE_LOCATION, appState.changeLocation),
-    takeLatest(APP_STATE.TAG_AUTOCOMPLETE_FOCUS, appState.handleAutocompleteFocus),
-    takeLatest(APP_STATE.TAG_AUTOCOMPLETE_BLUR, appState.handleAutocompleteBlur),
-    takeEvery(APP_STATE.TAG_AUTOCOMPLETE_GO_PREV, appState.handleAutocompleteGoPrev),
-    takeEvery(APP_STATE.TAG_AUTOCOMPLETE_GO_NEXT, appState.handleAutocompleteGoNext),
-    takeEvery(APP_STATE.TAG_AUTOCOMPLETE_TEXT_CHANGED, appState.handleAutocompleteTextChange),
-    takeLatest(APP_STATE.TAG_AUTOCOMPLETE_POSITION_CHANGED, appState.handleAutocompletePositionChange),
-    takeEvery(APP_STATE.TAG_AUTOCOMPLETE_SUBMIT, appState.handleAutocompleteSubmit),
-    takeEvery(APP_STATE.TAG_HINTS_SELECT, appState.selectHint),
-    takeLatest(APP_STATE.TAG_HINTS_OUTSIDE_CLICK, appState.handleHintsOutsideClick),
+    takeLatest(CONTACTS.FETCH, contact.fetchContacts),
+    takeEvery(CONTACTS.CREATE, contact.createContact),
   ])
 }

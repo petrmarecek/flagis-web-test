@@ -37,6 +37,13 @@ attachment.define({
   items: new schema.Array(attachment)
 })
 
+const contact = new schema.Entity('contacts', {}, { idAttribute: 'id' })
+const contactList = new schema.Array(comment)
+
+contact.define({
+  items: new schema.Array(comment)
+})
+
 export default {
   tag,
   tagList,
@@ -49,4 +56,6 @@ export default {
   commentList,
   attachment,
   attachmentList,
+  contact,
+  contactList,
 }

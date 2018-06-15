@@ -22,16 +22,16 @@ const CenterPanel = Record({
   isResizing: false,
 })
 
+export const Position = Record({
+  top: 0,
+  left: 0,
+})
+
 export const Profile = Record({
   id: null,
   email: null,
   firstName: null,
   lastName: null,
-})
-
-export const Position = Record({
-  top: 0,
-  left: 0,
 })
 
 export const HintsContext = Record({
@@ -53,6 +53,7 @@ export const TaskTagDetail = Record({
   task: false,
   archive: false,
   tag: false,
+  contact: false,
 })
 
 export const TagHints = Record({
@@ -116,22 +117,6 @@ export const TasksOptions = Record({
 
 // ------ Stores --------------------------------------------------------------
 
-export const AuthStore = Record({
-  isLogged: false,
-  accessToken: null,
-  expiresIn: null,
-  refreshToken: null,
-  newRefreshToken: false,
-  firebaseToken: null,
-  profile: null,
-}, 'auth')
-
-export const TasksMenuStore = Record({
-  filters: new TasksFilters(),
-  sort: new TasksSort(),
-  options: new TasksOptions(),
-})
-
 export const AppStateStore = Record({
   loader: new Visibility(),
   leftPanel: new LeftPanel(),
@@ -148,12 +133,45 @@ export const AppStateStore = Record({
   signUp: new Error(),
 })
 
+export const AuthStore = Record({
+  isLogged: false,
+  accessToken: null,
+  expiresIn: null,
+  refreshToken: null,
+  newRefreshToken: false,
+  firebaseToken: null,
+  profile: null,
+}, 'auth')
+
+export const EntitiesStore = Record({
+  tasks: Map(),
+  tags: Map(),
+  treeItems: Map(),
+  comments: Map(),
+  attachments: Map(),
+  contacts: Map(),
+})
+
 export const TaskStore = Record({
   isFetching: false,
   items: List(),
   completed: List(),
   archived: new ListRecord(),
   selection: OrderedSet(),
+})
+
+export const CommentStore = Record({
+  isFetching: false,
+})
+
+export const AttachmentStore = Record({
+  isFetching: false,
+})
+
+export const TasksMenuStore = Record({
+  filters: new TasksFilters(),
+  sort: new TasksSort(),
+  options: new TasksOptions(),
 })
 
 export const TagStore = Record({
@@ -165,14 +183,6 @@ export const TagStore = Record({
   relations: Map(),
 })
 
-export const EntitiesStore = Record({
-  tasks: Map(),
-  tags: Map(),
-  treeItems: Map(),
-  comments: Map(),
-  attachments: Map(),
-})
-
 export const TreeStore = Record({
   isFetching: false,
   addControlParentId: null,
@@ -182,12 +192,10 @@ export const TreeStore = Record({
   collapsedItems: Set(),
 })
 
-export const CommentStore = Record({
+export const ContactStore = Record({
   isFetching: false,
-})
-
-export const AttachmentStore = Record({
-  isFetching: false,
+  search: '',
+  current: null,
 })
 
 export const MultiSelectStore = Record({
@@ -214,6 +222,32 @@ export const Task = Record({
   isTrashed: null,
   trashedAt: null,
   tags: List(),
+})
+
+export const Comment = Record({
+  id: null,
+  createdAt: null,
+  updatedAt: null,
+  content: null,
+  author: null,
+  taskId: null,
+  createdById: null,
+  isDeleted: null,
+})
+
+export const Attachment = Record({
+  id: null,
+  createdAt: null,
+  updatedAt: null,
+  taskId: null,
+  createdById: null,
+  url: null,
+  fileName: null,
+  //size: null,
+  mimeType: null,
+  client: null,
+  isWritable: false,
+  isDeleted: null,
 })
 
 export const Tag = Record({
@@ -256,28 +290,10 @@ export const TreeItem = Record({
   tag: null
 })
 
-export const Comment = Record({
+export const Contacts = Record({
   id: null,
+  email: null,
+  nickname: null,
   createdAt: null,
   updatedAt: null,
-  content: null,
-  author: null,
-  taskId: null,
-  createdById: null,
-  isDeleted: null,
-})
-
-export const Attachment = Record({
-  id: null,
-  createdAt: null,
-  updatedAt: null,
-  taskId: null,
-  createdById: null,
-  url: null,
-  fileName: null,
-  //size: null,
-  mimeType: null,
-  client: null,
-  isWritable: false,
-  isDeleted: null,
 })

@@ -7,6 +7,7 @@ import { TREE } from 'redux/store/tree/tree.actions'
 import { TAGS } from 'redux/store/tags/tags.actions'
 import { COMMENTS } from 'redux/store/comments/comments.actions'
 import { ATTACHMENTS } from 'redux/store/attachments/attachments.actions'
+import { CONTACTS } from 'redux/store/contacts/contacts.actions'
 import * as records from 'redux/data/records'
 
 export default typeToReducer({
@@ -191,6 +192,14 @@ export default typeToReducer({
   [ATTACHMENTS.DELETE]: (state, action) =>
     state.deleteIn(['attachments', action.payload.attachmentId]),
 
+  // ------ Contacts ----------------------------------------------------------
+
+  [CONTACTS.FETCH]: {
+    FULFILLED: (state, action) => saveContacts(action.payload, state)
+  },
+
+  [CONTACTS.ADD]: (state, action) => saveContacts(action.payload, state),
+
 }, new records.EntitiesStore())
 
 function updateReferencingTreeItems(state, tagId, tagFieldName, tagFieldValue) {
@@ -263,6 +272,14 @@ function saveAttachments(payload, state) {
 
   return state
     .mergeIn(['attachments'], attachments)
+}
+
+function saveContacts(payload, state) {
+  const rawContacts = payload.entities.contacts || {}
+  const contacts = convertToImmutable(rawContacts, records.Contacts)
+
+  return state
+    .mergeIn(['contacts'], contacts)
 }
 
 function convertToImmutable(entities, record) {

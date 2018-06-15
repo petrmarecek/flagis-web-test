@@ -141,4 +141,14 @@ export default {
       .delete(`tasks/${taskId}/attachments/${attachmentId}`)
       .then(res => res.data)
   },
+
+  contacts: {
+    create: (data) => api
+      .post('contacts', data)
+      .then(res => res.data),
+
+    get: () => api
+      .get('contacts')
+      .then(res => res.data),
+  },
 }
