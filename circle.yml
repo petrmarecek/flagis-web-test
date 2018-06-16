@@ -15,7 +15,7 @@ deployment:
     heroku:
       appname: flagis-web-development
 
-#  production:
-#    branch: master
-#    heroku:
-#      appname: flagis-web-staging
+ production:
+   branch: master
+   heroku:
+     appname: flagis-web-staging
