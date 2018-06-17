@@ -43,7 +43,7 @@ const configs = {
   },
   production: {
     isProduction: true,
-    apiURL: 'https://flagis-api-production.herokuapp.com',
+    apiURL: 'https://flagis-api-development.herokuapp.com',
     firebase: firebaseProduction,
   }
 }
