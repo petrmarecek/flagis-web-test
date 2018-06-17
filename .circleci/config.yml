@@ -16,8 +16,7 @@ jobs:
           npm run build
 
   deploy_dev:
-    docker:
-    - image: circleci/node:10
+    machine: true
     environment:
       NODE_ENV: development
     steps:
@@ -35,8 +34,7 @@ jobs:
           docker push registry.heroku.com/flagis-web-ci-demo/web
 
   deploy_staging:
-    docker:
-    - image: circleci/node:10
+    machine: true
     environment:
       NODE_ENV: staging
     steps:
@@ -58,6 +56,9 @@ workflows:
   build_and_deploy_dev:
     jobs:
       - build
+          filters:
+            branches:
+              only: development
       - deploy_dev:
           requires:
             - build
@@ -68,6 +69,9 @@ workflows:
   build_and_deploy_staging:
     jobs:
       - build
+          filters:
+            branches:
+              only: master
       - deploy_staging:
           requires:
             - build
