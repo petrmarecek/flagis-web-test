@@ -25,11 +25,11 @@ jobs:
     - run:
         name: Build Docker Image
         command: |
-          docker build -t registry.heroku.com/flagis-web-ci-demo/web .
+          docker build -t registry.heroku.com/flagis-web-development/web .
     - run:
         name: Push to Heroku Container Registry
         command: |
-          docker push registry.heroku.com/flagis-web-ci-demo/web
+          docker push registry.heroku.com/flagis-web-development/web
 
 workflows:
   version: 2
