@@ -1,7 +1,9 @@
-FROM node:10.0.0
+FROM node:10-alpine
 
 WORKDIR /home/node/app
 COPY . /home/node/app
 USER node
+
+ENV NODE_ENV production
 
 CMD ["node", "server"]
