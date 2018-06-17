@@ -4,7 +4,6 @@ jobs:
   build:
     docker:
     - image: circleci/node:10
-    working_directory: ~/
     steps:
     - checkout
     - run:
@@ -19,7 +18,6 @@ jobs:
   deploy_dev:
     docker:
     - image: circleci/node:10
-    working_directory: ~/
     environment:
       NODE_ENV: development
     steps:
@@ -39,7 +37,6 @@ jobs:
   deploy_staging:
     docker:
     - image: circleci/node:10
-    working_directory: ~/
     environment:
       NODE_ENV: staging
     steps:
