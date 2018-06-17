@@ -1,0 +1,75 @@
+version: 2
+
+jobs:
+  build:
+    docker:
+    - image: circleci/node:10
+    machine:
+      docker_layer_caching: true
+    working_directory: ~/
+    steps:
+    - checkout
+    - run:
+        name: Install dependencies
+        command: |
+          npm install
+    - run:
+        name: Run webpack
+        command: |
+          npm run build
+
+  deploy_dev:
+    environment:
+      NODE_ENV: development
+    steps:
+    - run:
+        name: Login to Heroku container registry
+        command: |
+          docker login --username=$HEROKU_USER --password=$HEROKU_TOKEN registry.heroku.com
+    - run:
+        name: Build Docker image
+        command: |
+          docker build -t registry.heroku.com/flagis-web-ci-demo/web .
+    - run:
+        name: Push to Heroku container registry
+        command: |
+          docker push registry.heroku.com/flagis-web-ci-demo/web
+
+  deploy_staging:
+    environment:
+      NODE_ENV: staging
+    steps:
+    - run:
+        name: Login to Heroku container registry
+        command: |
+          docker login --username=$HEROKU_USER --password=$HEROKU_TOKEN registry.heroku.com
+    - run:
+        name: Build Docker image
+        command: |
+          docker build -t registry.heroku.com/flagis-web-staging/web .
+    - run:
+        name: Push to Heroku container registry
+        command: |
+          docker push registry.heroku.com/flagis-web-staging/web
+
+workflows:
+  version: 2
+  build_and_deploy_dev:
+    jobs:
+      - build
+      - deploy_dev:
+          requires:
+            - build
+          filters:
+            branches:
+              only: development
+
+  build_and_deploy_staging:
+    jobs:
+      - build
+      - deploy_staging:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
