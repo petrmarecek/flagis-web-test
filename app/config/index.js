@@ -16,14 +16,14 @@ const firebaseStaging = {
   messagingSenderId: '631732520892',
 }
 
-const firebaseProduction = {
-  apiKey: 'AIzaSyBmGwTlxWhlBvYbO76kHyHYd3waP8uP6ZA',
-  authDomain: 'flagis-production.firebaseapp.com',
-  databaseURL: 'https://flagis-production.firebaseio.com',
-  projectId: 'flagis-production',
-  storageBucket: 'flagis-production.appspot.com',
-  messagingSenderId: '393046658091',
-}
+// const firebaseProduction = {
+//   apiKey: 'AIzaSyBmGwTlxWhlBvYbO76kHyHYd3waP8uP6ZA',
+//   authDomain: 'flagis-production.firebaseapp.com',
+//   databaseURL: 'https://flagis-production.firebaseio.com',
+//   projectId: 'flagis-production',
+//   storageBucket: 'flagis-production.appspot.com',
+//   messagingSenderId: '393046658091',
+// }
 
 const configs = {
   development: {
@@ -44,7 +44,7 @@ const configs = {
   production: {
     isProduction: true,
     apiURL: 'https://flagis-api-development.herokuapp.com',
-    firebase: firebaseProduction,
+    firebase: firebaseDevelopment,
   }
 }
 
