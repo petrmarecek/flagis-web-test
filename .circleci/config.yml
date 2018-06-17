@@ -4,6 +4,8 @@ jobs:
   build_dev:
     docker:
     - image: circleci/node:10
+      environment:
+        NODE_ENV: production
     steps:
     - checkout
     - setup_remote_docker:
@@ -15,7 +17,7 @@ jobs:
     - run:
         name: Run Webpack
         command: |
-          npm run build
+          NODE_ENV=production npm run build
     - run:
         name: Login to Heroku Container Registry
         command: |
