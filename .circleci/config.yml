@@ -55,26 +55,26 @@ workflows:
   version: 2
   build_and_deploy_dev:
     jobs:
-      - build
-          filters:
-            branches:
-              only: development
-      - deploy_dev:
-          requires:
-            - build
-          filters:
-            branches:
-              only: development
+    - build:
+        filters:
+          branches:
+            only: development
+    - deploy_dev:
+        requires:
+          - build
+        filters:
+          branches:
+            only: development
 
   build_and_deploy_staging:
     jobs:
-      - build
-          filters:
-            branches:
-              only: master
-      - deploy_staging:
-          requires:
-            - build
-          filters:
-            branches:
-              only: master
+    - build:
+        filters:
+          branches:
+            only: master
+    - deploy_staging:
+        requires:
+        - build
+        filters:
+          branches:
+            only: master
