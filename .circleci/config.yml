@@ -103,5 +103,7 @@ workflows:
     jobs:
     - build_prod:
         filters:
+          branches:
+            ignore: /.*/
           tags:
-            only: /.*/
+            only: /^v.*/
