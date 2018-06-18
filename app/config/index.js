@@ -1,3 +1,5 @@
+const compileEnv = process.env.COMPILE_ENV || 'development'
+
 const firebaseDevelopment = {
   apiKey: 'AIzaSyDFw-G0nAvPxD3Sw9wi2SnKIOxSTQGyVUY',
   authDomain: 'flagis-development.firebaseapp.com',
@@ -16,14 +18,14 @@ const firebaseStaging = {
   messagingSenderId: '631732520892',
 }
 
-// const firebaseProduction = {
-//   apiKey: 'AIzaSyBmGwTlxWhlBvYbO76kHyHYd3waP8uP6ZA',
-//   authDomain: 'flagis-production.firebaseapp.com',
-//   databaseURL: 'https://flagis-production.firebaseio.com',
-//   projectId: 'flagis-production',
-//   storageBucket: 'flagis-production.appspot.com',
-//   messagingSenderId: '393046658091',
-// }
+const firebaseProduction = {
+  apiKey: 'AIzaSyBmGwTlxWhlBvYbO76kHyHYd3waP8uP6ZA',
+  authDomain: 'flagis-production.firebaseapp.com',
+  databaseURL: 'https://flagis-production.firebaseio.com',
+  projectId: 'flagis-production',
+  storageBucket: 'flagis-production.appspot.com',
+  messagingSenderId: '393046658091',
+}
 
 const configs = {
   development: {
@@ -43,9 +45,9 @@ const configs = {
   },
   production: {
     isProduction: true,
-    apiURL: 'https://flagis-api-development.herokuapp.com',
-    firebase: firebaseDevelopment,
+    apiURL: 'https://flagis-api-production.herokuapp.com',
+    firebase: firebaseProduction,
   }
 }
 
-export default configs[process.env.NODE_ENV || 'development']
+export default configs[compileEnv]

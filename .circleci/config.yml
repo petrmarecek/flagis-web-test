@@ -4,8 +4,6 @@ jobs:
   build_dev:
     docker:
     - image: circleci/node:10
-      environment:
-        NODE_ENV: production
     steps:
     - checkout
     - setup_remote_docker:
@@ -17,7 +15,7 @@ jobs:
     - run:
         name: Run Webpack
         command: |
-          NODE_ENV=production npm run build
+          NODE_ENV=production COMPILE_ENV=development npm run build
     - run:
         name: Login to Heroku Container Registry
         command: |
@@ -31,6 +29,62 @@ jobs:
         command: |
           docker push registry.heroku.com/flagis-web-development/web
 
+  build_staging:
+    docker:
+    - image: circleci/node:10
+    steps:
+    - checkout
+    - setup_remote_docker:
+        docker_layer_caching: true
+    - run:
+        name: Install Dependencies
+        command: |
+          NODE_ENV=development npm install
+    - run:
+        name: Run Webpack
+        command: |
+          NODE_ENV=production COMPILE_ENV=staging npm run build
+    - run:
+        name: Login to Heroku Container Registry
+        command: |
+          docker login --username=$HEROKU_USER --password=$HEROKU_TOKEN registry.heroku.com
+    - run:
+        name: Build Docker Image
+        command: |
+          docker build -t registry.heroku.com/flagis-web-staging/web .
+    - run:
+        name: Push to Heroku Container Registry
+        command: |
+          docker push registry.heroku.com/flagis-web-staging/web
+
+  build_prod:
+    docker:
+    - image: circleci/node:10
+    steps:
+    - checkout
+    - setup_remote_docker:
+        docker_layer_caching: true
+    - run:
+        name: Install Dependencies
+        command: |
+          NODE_ENV=development npm install
+    - run:
+        name: Run Webpack
+        command: |
+          NODE_ENV=production COMPILE_ENV=production npm run build
+    - run:
+        name: Login to Heroku Container Registry
+        command: |
+          docker login --username=$HEROKU_USER --password=$HEROKU_TOKEN registry.heroku.com
+    - run:
+        name: Build Docker Image
+        command: |
+          docker build -t registry.heroku.com/flagis-web-production/web .
+    - run:
+        name: Push to Heroku Container Registry
+        command: |
+          docker push registry.heroku.com/flagis-web-production/web
+
 workflows:
   version: 2
   workflow_dev:
@@ -39,3 +93,15 @@ workflows:
         filters:
           branches:
             only: development
+  workflow_staging:
+    jobs:
+    - build_staging:
+        filters:
+          branches:
+            only: master
+  workflow_prod:
+    jobs:
+    - build_prod:
+        filters:
+          tags:
+            only: /.*/
