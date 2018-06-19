@@ -230,7 +230,7 @@ class TreeItem extends Component {
             width={10}
             height={12}
             scale={0.85}
-            color="#fff"
+            color={["#fff"]}
             onClick={this.handleCollapse}/>
         </span>
       : null
@@ -287,7 +287,7 @@ class TreeItem extends Component {
                 icon={ICONS.TAG}
                 width={20}
                 height={11}
-                color={tagColor}/>
+                color={[tagColor]}/>
             </span>}
             {this.props.treeItem.childItems.size > 0 &&
             <span className="tree-item__main-icon">
@@ -295,7 +295,7 @@ class TreeItem extends Component {
                 icon={ICONS.TAG_MULTI}
                 width={20}
                 height={12}
-                color={tagColor}/>
+                color={[tagColor, tagColor]}/>
             </span>}
             <span className="tree-item__main-icon" />
             <span className="tree-item__title" style={styleWidth}>{this.props.treeItem.tag.title}</span>
@@ -311,8 +311,8 @@ class TreeItem extends Component {
                     width={12}
                     height={13}
                     scale={0.5}
-                    color="#fff"
-                    hoverColor="#ff8181"
+                    color={["#fff", "#fff", "#fff", "#fff"]}
+                    hoverColor={["#ff8181", "#ff8181", "#ff8181", "#ff8181"]}
                     onClick={this.handleDeleteIconClicked}/>
                 </span>
                 <span title="Go to edit tag">
@@ -322,7 +322,7 @@ class TreeItem extends Component {
                     width={11}
                     height={11}
                     scale={0.73}
-                    color="#fff"
+                    color={["#fff"]}
                     onClick={this.handleEditIconClicked}/>
                 </span>
                 <span title="Add sub filter">
@@ -332,7 +332,7 @@ class TreeItem extends Component {
                     width={12}
                     height={12}
                     scale={0.38}
-                    color="#fff"
+                    color={["#fff"]}
                     onClick={this.handleAddChildClicked}/>
                 </span>
               </div>

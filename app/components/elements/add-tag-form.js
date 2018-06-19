@@ -65,7 +65,7 @@ class AddTagForm extends PureComponent {
             width={16}
             height={16}
             scale={0.55}
-            color={plusColor}/>
+            color={[plusColor]}/>
         </div>
         <div className="add-tag__subject-container">
           <input

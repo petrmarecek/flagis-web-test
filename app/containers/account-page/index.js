@@ -81,7 +81,7 @@ class AccountPage extends PureComponent {
             icon={ICONS.ERROR}
             width={12}
             height={14}
-            color="red"/>
+            color={["red"]}/>
         </li>
       )
     })
@@ -100,7 +100,7 @@ class AccountPage extends PureComponent {
               width={19}
               height={20}
               scale={0.9}
-              color="#a9a9a9"/>
+              color={["#a9a9a9"]}/>
             <p className="account-page__email">{email}</p>
             <p className="account-page__text" onClick={this.handleLogout}>Log out</p>
             <Icon
@@ -109,7 +109,7 @@ class AccountPage extends PureComponent {
               width={20}
               height={20}
               scale={1.25}
-              color="#282f34"
+              color={["#282f34"]}
               onClick={this.handleLogout}/>
           </div>
           <Icon
@@ -118,7 +118,7 @@ class AccountPage extends PureComponent {
             width={20}
             height={20}
             scale={0.52}
-            color="#a9a9a9"/>
+            color={["#a9a9a9"]}/>
           <form className="common-form" method="post">
             <div className="form-fields">
               <div className="form-error">

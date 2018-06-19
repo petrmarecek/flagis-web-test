@@ -36,8 +36,8 @@ export default class TagAutocompleteItem extends PureComponent {
           width={11}
           height={11}
           scale={0.78}
-          color="#fff"
-          hoverColor="#eee"
+          color={["#fff"]}
+          hoverColor={["#eee"]}
           onClick={this.handleDelete}/>
       </li>
     )

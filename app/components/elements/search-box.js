@@ -35,7 +35,7 @@ export default class SearchBox extends PureComponent {
           icon={ICONS.MAGNIFIER}
           width={17}
           height={18}
-          color="#8C9DA9"/>
+          color={["#8C9DA9"]}/>
         <input id="search" type="text" name="search" className="search__input"
           placeholder='Full text search' autoComplete="off"
           value={this.props.value}

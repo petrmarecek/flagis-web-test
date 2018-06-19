@@ -29,7 +29,7 @@ const MainLoader = () => (
     <Logo>
       <Icon
         icon={ICONS.LOGO}
-        color='#282f34'
+        color={['#282f34']}
         width={65}
         height={32} />
     </Logo>

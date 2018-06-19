@@ -107,7 +107,7 @@ class UndoBox extends PureComponent {
             icon={ICONS.ARROW_UNDO}
             width={22}
             height={20}
-            color="#fff" />
+            color={["#fff"]} />
           <Title >
             {title[undoBox.name]}
           </Title>

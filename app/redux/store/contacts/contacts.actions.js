@@ -1,3 +1,5 @@
+import schema from '../../data/schema'
+
 export const CONTACTS = {
   FETCH: 'CONTACTS/FETCH',
   CREATE: 'CONTACTS/CREATE',
@@ -16,8 +18,10 @@ export const createContact = email => ({
 
 export const addContact = contact => ({
   type: CONTACTS.ADD,
-  payload: { contact },
+  payload: contact ,
+  meta: { schema: schema.contact }
 })
+
 
 export const updateContactSearch = search => ({
   type: CONTACTS.UPDATE_SEARCH,

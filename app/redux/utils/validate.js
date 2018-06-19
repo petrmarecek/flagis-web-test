@@ -111,3 +111,15 @@ export const validateResetPassword = values => {
 
   return errors
 }
+
+export const validateEmail = values => {
+  const errors = {}
+
+  if (!values.email) {
+    errors.email = messages.requiredEmail
+  } else if (!isEmail(values.email)) {
+    errors.email = messages.badEmail
+  }
+
+  return errors
+}

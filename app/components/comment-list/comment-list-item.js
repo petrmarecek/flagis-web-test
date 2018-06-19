@@ -18,7 +18,7 @@ const CommentListItem = props => {
         width={15}
         height={14}
         scale={0.57}
-        color="#8C9DA9"/>
+        color={["#8C9DA9"]}/>
       <div className="comment__author">{props.comment.author}</div>
       <div className="comment__date">{dateText}</div>
       <div className="comment__content">{props.comment.content}</div>

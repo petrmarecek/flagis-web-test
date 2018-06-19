@@ -166,7 +166,7 @@ class TreeSection extends PureComponent {
             width={13}
             height={15}
             scale={1.07}
-            color="#fff"
+            color={["#fff"]}
             onClick={this.handleCollapse}/>
         </span>
 
@@ -216,7 +216,7 @@ class TreeSection extends PureComponent {
                 icon={ICONS.PENCIL}
                 width={15}
                 height={15}
-                color="#fff"
+                color={["#fff"]}
                 onClick={this.handleEditIconClicked}/>
             </span>
           </span>
@@ -245,7 +245,7 @@ class TreeSection extends PureComponent {
             width={15}
             height={15}
             scale={0.52}
-            color="#fff"
+            color={["#fff"]}
             title="Edit"
             onClick={this.handleAddChildClicked}/>
         </span>}

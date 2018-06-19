@@ -10,8 +10,8 @@ export default class Icon extends PureComponent {
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
     scale: PropTypes.number,
-    color: PropTypes.string,
-    hoverColor: PropTypes.string,
+    color: PropTypes.array,
+    hoverColor: PropTypes.array,
     className: PropTypes.string,
     onClick: PropTypes.func,
     title: PropTypes.string,
@@ -82,7 +82,7 @@ export default class Icon extends PureComponent {
           {this.props.icon.map((d,key) => (
             <path
               key={key}
-              fill={this.state.color}
+              fill={this.state.color ? this.state.color[key] : ''}
               d={d}/>
           ))}
         </g>

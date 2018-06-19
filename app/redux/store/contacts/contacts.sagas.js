@@ -7,10 +7,10 @@ import schema from 'redux/data/schema'
 
 const CONTACTS = contactsActions.CONTACTS
 
-export function* fetchContacts(action) {
+export function* fetchContacts() {
   yield* fetch(CONTACTS.FETCH, {
-    method: api.contact.get,
-    args: [action.payload],
+    method: api.contacts.get,
+    args: [],
     schema: schema.contactList
   })
 }
@@ -18,11 +18,12 @@ export function* fetchContacts(action) {
 export function* createContact(action) {
   try {
     const email = action.payload.email
-    const contact = yield call(api.contact.create, email)
+    const data = { email }
+    const contact = yield call(api.contacts.create, data)
 
     yield put(contactsActions.addContact(contact))
 
   } catch(err) {
-    console.error('Cannot create contact.', err)
+    console.error(err)
   }
 }

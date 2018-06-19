@@ -52,7 +52,7 @@ export default class AddRemoveTagsDialog extends DialogBase {
           icon={ICONS.CROSS_SIMPLE}
           width={14}
           height={14}
-          color="#293034"
+          color={["#293034"]}
           className="dialog__close"
           onClick={this.props.onHide} />
         <div className="dialog__title">Add/remove tags on selected tasks</div>

@@ -86,7 +86,7 @@ export default class AddTreeItemForm extends PureComponent {
             icon={ICONS.TAG}
             width={20}
             height={11}
-            color="#91a19a"/>
+            color={["#91a19a"]}/>
         </span>
         <div className="input-container">
           <TagAutocompleteInput

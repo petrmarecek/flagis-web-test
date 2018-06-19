@@ -38,7 +38,7 @@ attachment.define({
 })
 
 const contact = new schema.Entity('contacts', {}, { idAttribute: 'id' })
-const contactList = new schema.Array(comment)
+const contactList = new schema.Array(contact)
 
 contact.define({
   items: new schema.Array(comment)

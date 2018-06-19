@@ -257,7 +257,7 @@ class TreeContainer extends PureComponent {
               width={15}
               height={15}
               scale={0.52}
-              color="#fff"/>
+              color={["#fff"]}/>
           </div>
         </div>
       </div>

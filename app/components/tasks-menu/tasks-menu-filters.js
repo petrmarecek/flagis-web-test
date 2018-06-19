@@ -64,8 +64,8 @@ export default class TasksMenuFilters extends PureComponent {
           icon={ICONS.FILTER}
           width={23}
           height={25}
-          color={iconColor}
-          hoverColor="#282f34" />
+          color={[iconColor]}
+          hoverColor={["#282f34"]} />
         {menu.isVisible &&
         <MenuBox
           className="tasks-menu-box"

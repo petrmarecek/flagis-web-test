@@ -92,7 +92,7 @@ export default class TagAutocomplete extends PureComponent {
               width={11}
               height={11}
               scale={0.78}
-              color="#8c9da9" />
+              color={["#8c9da9"]} />
           </li>}
           <li key="search" className={cssSearch}>
             <TagAutocompleteInput

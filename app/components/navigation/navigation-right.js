@@ -8,6 +8,7 @@ import {
   fetchArchivedTasks,
   deselectTasks
 } from 'redux/store/tasks/tasks.actions'
+import { fetchContacts } from 'redux/store/contacts/contacts.actions'
 import { deselectTags } from 'redux/store/tags/tags.actions'
 import {
   hideArchivedTasks,
@@ -23,6 +24,7 @@ class NavigationRight extends PureComponent {
     location: PropTypes.object.isRequired,
     fetchTasks: PropTypes.func,
     fetchArchivedTasks: PropTypes.func,
+    fetchContacts: PropTypes.func,
     deselectTasks: PropTypes.func.isRequired,
     deselectTags: PropTypes.func.isRequired,
     hideArchivedTasks: PropTypes.func,
@@ -53,6 +55,7 @@ class NavigationRight extends PureComponent {
     this.props.hideArchivedTasks()
     this.props.deselectTags()
     this.props.deselectTasks()
+    this.props.fetchContacts()
     this.props.changeLocation('/user/contacts')
   }
 
@@ -94,6 +97,8 @@ class NavigationRight extends PureComponent {
       'nav-button--active': isContactsActive,
     })
 
+    const color = "#fff"
+
     return (
       <div className="nav-button-container">
         <div className={tasksButtonClassName} onClick={this.handleClickTasks}>
@@ -101,7 +106,7 @@ class NavigationRight extends PureComponent {
             icon={ICONS.TASKS}
             width={25}
             height={20}
-            color="#fff" />
+            color={[color]} />
         </div>
         <div className={tagsButtonClassName} onClick={this.handleClickTags}>
           <Icon
@@ -109,7 +114,7 @@ class NavigationRight extends PureComponent {
             width={33}
             height={20}
             scale={1.6}
-            color="#fff" />
+            color={[color]} />
         </div>
         <div className={archiveButtonClassName} onClick={this.handleClickArchive}>
           <Icon
@@ -117,7 +122,7 @@ class NavigationRight extends PureComponent {
             width={28}
             height={24}
             scale={1.6}
-            color="#fff" />
+            color={[color]} />
         </div>
         <div className={contactsButtonClassName} onClick={this.handleClickContacts}>
           <Icon
@@ -125,7 +130,7 @@ class NavigationRight extends PureComponent {
             width={25}
             height={19}
             scale={0.83}
-            color="#fff" />
+            color={[color]} />
         </div>
         <div className={accountButtonClassName} onClick={this.handleClickAccount}>
           <Icon
@@ -133,7 +138,7 @@ class NavigationRight extends PureComponent {
             width={23}
             height={24}
             scale={1.09}
-            color="#fff" />
+            color={[color]} />
         </div>
       </div>
     )
@@ -147,6 +152,7 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = {
   fetchTasks,
   fetchArchivedTasks,
+  fetchContacts,
   deselectTasks,
   deselectTags,
   hideArchivedTasks,

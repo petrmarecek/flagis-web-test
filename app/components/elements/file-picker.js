@@ -28,7 +28,7 @@ class FilePicker extends PureComponent {
           icon={ICONS.PIN}
           width={23}
           height={26}
-          color="#8C9DA9"
+          color={["#8C9DA9"]}
           onClick={this.handleClick}/>
         <button className="attachment-add__button" onClick={this.handleClick}>Add attachment</button>
       </div>

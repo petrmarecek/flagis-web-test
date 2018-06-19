@@ -26,7 +26,7 @@ class AttachmentListItem extends PureComponent {
           width={18}
           height={18}
           scale={0.56}
-          color="#8C9DA9"/>
+          color={["#8C9DA9"]}/>
         {!this.props.disabled &&
         <Icon
           className="attachment__remove"
@@ -34,8 +34,8 @@ class AttachmentListItem extends PureComponent {
           width={11}
           height={11}
           scale={0.78}
-          color="#8c9da9"
-          hoverColor="#282f34"
+          color={["#8c9da9"]}
+          hoverColor={["#282f34"]}
           onClick={this.handleDelete}/>}
         <div className="attachment__filename">
           <a href={this.props.attachment.url} target="_blank">{this.props.attachment.fileName}</a>

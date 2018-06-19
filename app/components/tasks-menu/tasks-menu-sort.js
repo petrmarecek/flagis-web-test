@@ -79,7 +79,7 @@ export default class TasksMenuSort extends PureComponent {
           icon={icon}
           width={24}
           height={24}
-          color="#282f34" />
+          color={["#282f34"]} />
         {menu.isVisible &&
         <MenuBox
           className="tasks-menu-box"

@@ -60,8 +60,8 @@ export default class TasksMenuOptions extends PureComponent {
           width={7}
           height={25}
           scale={1.08}
-          color={iconColor}
-          hoverColor="#282f34" />
+          color={[iconColor]}
+          hoverColor={["#282f34"]} />
         {menu.isVisible &&
         <MenuBox
           className="tasks-menu-box"

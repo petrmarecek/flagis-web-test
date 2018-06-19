@@ -140,7 +140,7 @@ export default class AddRemoveTagsItem extends PureComponent {
           width={28}
           height={15}
           scale={1.36}
-          color={tagColor} />
+          color={[tagColor]} />
         <TagTitle>
           {tag.title}
         </TagTitle>

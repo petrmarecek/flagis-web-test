@@ -317,6 +317,7 @@
     "react-test-renderer": "^16.4.0",
     "rimraf": "^2.6.2",
     "shelljs": "^0.8.2",
+    "standard-version": "^4.4.0",
     "style-loader": "^0.21.0",
     "url-loader": "^1.0.1",
     "webpack": "^3.11.0",

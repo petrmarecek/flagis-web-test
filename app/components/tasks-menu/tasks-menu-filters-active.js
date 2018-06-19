@@ -58,8 +58,8 @@ export default class TasksMenuFiltersActive extends PureComponent {
           icon={ICONS.CROSS_SIMPLE}
           width={14}
           height={14}
-          color="#8c9ea9"
-          hoverColor="#282f34"
+          color={["#8c9ea9"]}
+          hoverColor={["#282f34"]}
           onClick={this.handleDelete}/>
       </div>
     )

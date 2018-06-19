@@ -250,7 +250,7 @@ class TagDetail extends PureComponent {
                 width={37}
                 height={20}
                 scale={1.81}
-                color={tagColor}/>
+                color={[tagColor]}/>
               <span onClick={this.handleRemoveEventListener}>
                 <ContentEditable
                   ref="subject"
@@ -266,7 +266,7 @@ class TagDetail extends PureComponent {
                 width={23}
                 height={26}
                 scale={1}
-                color="#ff8181"
+                color={["#ff8181", "#ff8181", "#ff8181", "#ff8181"]}
                 onClick={this.handleDelete}/>
             </div>
           </div>

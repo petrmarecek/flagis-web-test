@@ -87,7 +87,7 @@ class SignUp extends PureComponent {
             icon={ICONS.ERROR}
             width={12}
             height={14}
-            color="red"/>
+            color={["red"]}/>
         </li>
       )
     })

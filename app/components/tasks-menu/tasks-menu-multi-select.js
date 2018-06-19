@@ -101,8 +101,8 @@ export default class TasksMenuMultiSelect extends PureComponent {
           width={59}
           height={23}
           scale={1.3}
-          color="#8C9DA9"
-          hoverColor="#293034"
+          color={["#8C9DA9"]}
+          hoverColor={["#293034"]}
           className="multi-select__items"
           onClick={this.props.onAddRemoveTags}/>
         }
@@ -111,16 +111,16 @@ export default class TasksMenuMultiSelect extends PureComponent {
           width={26}
           height={26}
           scale={0.46}
-          color="#8C9DA9"
-          hoverColor="#293034"
+          color={["#8C9DA9"]}
+          hoverColor={["#293034"]}
           className="multi-select__items"
           onClick={this.handleDownload}/>
         <Icon
           icon={ICONS.TRASH}
           width={23}
           height={26}
-          color="#8C9DA9"
-          hoverColor="#FF6A6A"
+          color={["#8C9DA9", "#8C9DA9", "#8C9DA9", "#8C9DA9"]}
+          hoverColor={["#FF6A6A", "#FF6A6A", "#FF6A6A", "#FF6A6A"]}
           className="multi-select__items"
           onClick={this.props.onDelete}/>
         <FileDownload

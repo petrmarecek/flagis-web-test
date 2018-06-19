@@ -44,7 +44,7 @@ class MainSearch extends PureComponent {
           width={19}
           height={25}
           scale={1.25}
-          color="#8c9ea9"/>
+          color={["#8c9ea9"]}/>
         <TagAutocomplete
           id="search"
           context={null}

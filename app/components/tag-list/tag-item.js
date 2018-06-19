@@ -52,7 +52,7 @@ export default class TagItem extends PureComponent {
               width={37}
               height={20}
               scale={1.81}
-              color={tagColor}/>
+              color={[tagColor]}/>
           </div>
           <div className="tag-item__title">{this.props.tag.title}</div>
         </div>

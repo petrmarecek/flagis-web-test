@@ -112,7 +112,7 @@ class AddTaskForm extends PureComponent {
             icon={ICONS.PLUS}
             width={29}
             height={29}
-            color={plusColor}/>
+            color={[plusColor]}/>
         </div>
         <div className="add-task__subject-container">
           <input

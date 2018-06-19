@@ -325,7 +325,7 @@ class TaskListItem extends Component {
       ? (<Icon
         className="task-item__archive"
         icon={iconsArchive}
-        color={isArchivedTaskColor}
+        color={[isArchivedTaskColor]}
         width={24}
         height={27}
         scale={0.926}
@@ -334,7 +334,7 @@ class TaskListItem extends Component {
       : (<Icon
         className="task-item__archive"
         icon={iconsArchive}
-        color={isArchivedTaskColor}
+        color={[isArchivedTaskColor]}
         width={24}
         height={27}
         scale={0.926}
@@ -408,8 +408,8 @@ class TaskListItem extends Component {
           <Icon
             className="task-item__completed"
             icon={ICONS.TASK_CHECKED}
-            color={isCompletedTaskColor}
-            hoverColor="#00FFC7"
+            color={[isCompletedTaskColor]}
+            hoverColor={["#00FFC7"]}
             width={22}
             height={21}
             onClick={this.handleCompleteClicked}/>}

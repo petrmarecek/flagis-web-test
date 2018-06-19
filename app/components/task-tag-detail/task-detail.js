@@ -410,7 +410,7 @@ class TaskDetail extends PureComponent {
       ? (<Icon
         className="detail-subject__archive"
         icon={ICONS.ARCHIVE}
-        color="#8c9ea9"
+        color={["#8c9ea9"]}
         width={24}
         height={25}
         scale={0.926}
@@ -419,7 +419,7 @@ class TaskDetail extends PureComponent {
       : (<Icon
         className="detail-subject__archive"
         icon={ICONS.ARCHIVE}
-        color="#8c9ea9"
+        color={["#8c9ea9"]}
         width={24}
         height={25}
         scale={0.926}
@@ -480,8 +480,8 @@ class TaskDetail extends PureComponent {
                 <Icon
                   className="detail-subject__completed"
                   icon={ICONS.TASK_CHECKED}
-                  color={isCompletedTaskColor}
-                  hoverColor={isCompletedTaskHoverColor}
+                  color={[isCompletedTaskColor]}
+                  hoverColor={[isCompletedTaskHoverColor]}
                   width={22}
                   height={21}
                   onClick={this.handleCompleteClicked}/>
@@ -515,7 +515,7 @@ class TaskDetail extends PureComponent {
                 width={23}
                 height={26}
                 scale={1}
-                color="#ff8181"
+                color={["#ff8181", "#ff8181", "#ff8181", "#ff8181"]}
                 onClick={this.handleDelete}/>
             </div>
           </div>
@@ -621,7 +621,7 @@ class TaskDetail extends PureComponent {
                 <div className="comment-add__icon-comment">
                   <Icon
                     icon={ICONS.COMMENT}
-                    color="#8C9DA9"
+                    color={["#8C9DA9"]}
                     width={26}
                     height={23} />
                 </div>

@@ -307,7 +307,7 @@ class ArchiveDetail extends PureComponent {
                 <Icon
                   className="detail-subject__archive"
                   icon={ICONS.NON_ARCHIVE}
-                  color="#282f34"
+                  color={["#282f34"]}
                   width={24}
                   height={27}
                   scale={0.926}
@@ -331,7 +331,7 @@ class ArchiveDetail extends PureComponent {
                 width={23}
                 height={26}
                 scale={1}
-                color="#ff8181"
+                color={["#ff8181", "#ff8181", "#ff8181", "#ff8181"]}
                 onClick={this.handleDelete}/>
             </div>
           </div>

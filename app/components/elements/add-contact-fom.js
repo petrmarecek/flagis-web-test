@@ -4,11 +4,15 @@ import { connect } from 'react-redux'
 import { compose, withStateHandlers } from 'recompose'
 
 import { createContact } from 'redux/store/contacts/contacts.actions'
+import { afterSubmitContacts } from 'redux/utils/form-submit'
 
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
 
+import AddField from 'components/forms/add-field'
 import styled from 'styled-components'
+import { Field, reduxForm } from 'redux-form/immutable'
+import { validateEmail } from '../../redux/utils/validate'
 
 const AddFormContainer = styled.form`
   margin-bottom: 6px;
@@ -36,42 +40,15 @@ const SubjectContainer = styled.div`
   padding: 0;
 `;
 
-const Subject = styled.input`
-  &::-webkit-input-placeholder {
-        color: #d7e3ec;
-  }
-  &:-moz-placeholder { /!* Firefox 18- *!/
-      color: #d7e3ec;
-  }
-
-  &::-moz-placeholder { /!* Firefox 19+ *!/
-      color: #d7e3ec;
-  }
-
-  &:-ms-input-placeholder {
-      color: #d7e3ec;
-  }
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  width: 100%;
-  border: none;
-  font-size: 16px;
-  height: 50px;
-  padding: 5px 0 5px 10px;
-`;
-
 const AddContactForm = props => {
 
   const {
-    ondHandleFocus,
-    ondHandleBlur,
-    onHandleSubmit,
-    onHandleSubjectChanged,
-    subject
+    handleSubmit,
+    onSubmit,
+    email,
   } = props
 
-  const addButtonDisabled = !subject.trim()
+  const addButtonDisabled = !email.trim()
   const plusColor = addButtonDisabled
     ? '#d7e3ec'
     : '#44FFB1'
@@ -79,36 +56,33 @@ const AddContactForm = props => {
   return (
     <AddFormContainer
       autoComplete="off"
-      onSubmit={onHandleSubmit}>
+      onSubmit={handleSubmit((values) => onSubmit(values))}>
       <Submit
-        onClick={onHandleSubmit}
+        onClick={handleSubmit((values) => onSubmit(values))}
         disabled={addButtonDisabled}>
         <Icon
           icon={ICONS.PLUS}
           width={29}
           height={29}
-          color={plusColor}/>
+          color={[plusColor]}/>
       </Submit>
       <SubjectContainer>
-        <Subject
+        <Field
+          id="email"
+          name="email"
           type="text"
-          name="subject"
           placeholder="Add new contact"
-          value={subject}
-          onChange={onHandleSubjectChanged}
-          onFocus={ondHandleFocus}
-          onBlur={ondHandleBlur} />
+          component={AddField} />
       </SubjectContainer>
     </AddFormContainer>
   )
 }
 
 AddContactForm.propTypes = {
-  ondHandleFocus: PropTypes.func,
-  ondHandleBlur: PropTypes.func,
-  onHandleSubmit: PropTypes.func,
+  handleSubmit: PropTypes.func,
+  onSubmit: PropTypes.func,
   onHandleSubjectChanged: PropTypes.func,
-  subject: PropTypes.string,
+  email: PropTypes.string,
 }
 
 const mapStateToProps = () => ({})
@@ -117,26 +91,24 @@ const mapDispatchToProps = { createContact }
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withStateHandlers(
-    () => ({
-      subject: '',
-      focused: false,
-    }),
+    () => ({ email: '' }),
     {
-      ondHandleFocus: () => () => ({ focused: true }),
-      ondHandleBlur: () => () => ({ focused: false }),
-      onHandleSubjectChanged: () => event => ({ subject: event.target.value }),
-      onHandleSubmit: ({ subject }, props) => event => {
-        event.preventDefault()
+      onSubmit: (state, props) => value => {
 
-        if (subject.trim().length === 0) {
+        if (value.email.trim().length === 0) {
           return
         }
 
         // dispatch action
-        //props.createTag(subject)
+        props.createContact(value.email)
 
         // reset form
-        return { subject: '' }
+        value.email = ''
       }
-  })
+  }),
+  reduxForm({
+    form: 'addContactForm',
+    validate: validateEmail,
+    onSubmitSuccess: afterSubmitContacts,
+  }),
 )(AddContactForm)
