@@ -200,6 +200,16 @@ export default typeToReducer({
 
   [CONTACTS.ADD]: (state, action) => saveContacts(action.payload, state),
 
+  [CONTACTS.UPDATE]: (state, action) => {
+
+    const contactId = action.payload.contact.id
+    const fieldName = action.payload.type
+    const fieldValue = action.payload.data
+
+    // Update contact itself
+    return state.setIn(['contacts', contactId, fieldName], fieldValue)
+  },
+
 }, new records.EntitiesStore())
 
 function updateReferencingTreeItems(state, tagId, tagFieldName, tagFieldValue) {

@@ -54,7 +54,7 @@ export function* initDataFlow() {
     yield cancel(tagTreeItemsSyncing)
 
     // Cancel snapshot for comments and attachments from firestore
-    const isTaskDetailVisible = yield select(state => appStateSelectors.getTaskTagDetail(state).task)
+    const isTaskDetailVisible = yield select(state => appStateSelectors.getDetail(state).task)
     if (isTaskDetailVisible) {
       yield put(appStateActions.deselectDetail('task'))
     }

@@ -25,10 +25,10 @@ export default typeToReducer({
     state.setIn(['archivedTasks', 'isVisible'], false),
 
   [APP_STATE.SET_DETAIL]: (state, action) =>
-    state.setIn(['taskTagDetail', action.payload.detail], true),
+    state.setIn(['detail', action.payload.detail], true),
 
   [APP_STATE.DESELECT_DETAIL]: (state, action) =>
-    state.setIn(['taskTagDetail', action.payload.detail], false),
+    state.setIn(['detail', action.payload.detail], false),
 
   [APP_STATE.SET_ERROR]: (state, action) => state
     .setIn([action.payload.type, 'error'], true)

@@ -26,7 +26,7 @@ function* saveChangeFromFirestore(change) {
   // Prepare data
   const normalizeData = normalize(tag, schema.tag)
   const storeItems = yield select(state => tagSelectors.getTagsItems(state))
-  const isDetailVisible = yield select(state => appStateSelectors.getTaskTagDetail(state))
+  const isDetailVisible = yield select(state => appStateSelectors.getDetail(state))
 
   const { id, isDeleted } = tag
 
@@ -116,7 +116,7 @@ export function* createTag(action) {
 }
 
 export function* deselectTags() {
-  const isTagDetail = yield select(state => appStateSelectors.getTaskTagDetail(state).tag)
+  const isTagDetail = yield select(state => appStateSelectors.getDetail(state).tag)
 
   if (isTagDetail) {
     yield put(appStateActions.deselectDetail('tag'))

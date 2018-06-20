@@ -49,7 +49,7 @@ export const Visibility = Record({
   isVisible: false,
 })
 
-export const TaskTagDetail = Record({
+export const Detail = Record({
   task: false,
   archive: false,
   tag: false,
@@ -123,7 +123,7 @@ export const AppStateStore = Record({
   centerPanel: new CenterPanel(),
   multiSelect: new Visibility(),
   archivedTasks: new Visibility(),
-  taskTagDetail: new TaskTagDetail(),
+  detail: new Detail(),
   undoBox: null,
   currentDialog: null,
   tagAutocompletes: new TagAutocompleteMap(),
@@ -294,6 +294,7 @@ export const Contacts = Record({
   id: null,
   email: null,
   nickname: null,
+  description: null,
   createdAt: null,
   updatedAt: null,
 })

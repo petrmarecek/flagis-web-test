@@ -26,7 +26,7 @@ import {
   deselectDetail
 } from 'redux/store/app-state/app-state.actions'
 
-import DetailMenu from 'components/task-tag-detail/detail-menu'
+import DetailMenu from 'components/detail/detail-menu'
 import ContentEditable from 'components/common/content-editable'
 import Icon from 'components/icons/icon'
 import {ICONS} from 'components/icons/icon-constants'

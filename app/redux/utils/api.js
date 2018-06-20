@@ -150,5 +150,9 @@ export default {
     get: () => api
       .get('contacts')
       .then(res => res.data),
+
+    update: (userId, update) => api
+      .patch(`contacts/${userId}`, update)
+      .then(res => res.data),
   },
 }

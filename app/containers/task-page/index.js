@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
-import { getTaskTagDetail } from 'redux/store/app-state/app-state.selectors'
+import { getDetail } from 'redux/store/app-state/app-state.selectors'
 
 import LeftPanel from 'components/panels/left-panel'
 import CenterPanel from 'components/panels/center-panel'
@@ -44,7 +44,7 @@ class TaskPage extends PureComponent {
 }
 
 const mapStateToProps = state => ({
-  detail: getTaskTagDetail(state),
+  detail: getDetail(state),
 })
 
 const mapDispatchToProps = {}

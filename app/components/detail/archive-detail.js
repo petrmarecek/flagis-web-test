@@ -45,7 +45,7 @@ import {
 
 import dateUtil from './../../redux/utils/date'
 
-import DetailMenu from 'components/task-tag-detail/detail-menu'
+import DetailMenu from 'components/detail/detail-menu'
 import CommentList from '../comment-list/comment-list'
 import ContentEditable from '../common/content-editable'
 import AttachmentList from '../attachment-list/attachment-list'
@@ -337,7 +337,7 @@ class ArchiveDetail extends PureComponent {
           </div>
 
           <div className="detail-content detail-content__center">
-            <div className="detail-content__options-attachment">
+            <div className="detail-content__properties">
               <div className={taskOptionsDetail}>
                 <div className="detail-content__date">
                   <span className="detail-content__date-label">

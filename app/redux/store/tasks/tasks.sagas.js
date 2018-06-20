@@ -34,7 +34,7 @@ function* saveChangeFromFirestore(change) {
   const normalizeData = normalize(task, schema.task)
   const storeItems = yield select(state => taskSelectors.getTasksItems(state))
   const storeArchivedItems = yield select(state => taskSelectors.getArchivedTasksItems(state))
-  const isDetailVisible = yield select(state => appStateSelectors.getTaskTagDetail(state))
+  const isDetailVisible = yield select(state => appStateSelectors.getDetail(state))
   const { id, isArchived, isTrashed } = task
 
   // Return task from archive
@@ -396,8 +396,8 @@ export function* selectAllTask() {
 
 export function* deselectTasks() {
   const isMultiSelectVisible = yield select(state => appStateSelectors.getMultiSelectVisibility(state))
-  const isTaskDetail = yield select(state => appStateSelectors.getTaskTagDetail(state).task)
-  const isArchiveDetail = yield select(state => appStateSelectors.getTaskTagDetail(state).archive)
+  const isTaskDetail = yield select(state => appStateSelectors.getDetail(state).task)
+  const isArchiveDetail = yield select(state => appStateSelectors.getDetail(state).archive)
 
   if (isMultiSelectVisible) {
     yield put(appStateActions.hideMultiSelect())

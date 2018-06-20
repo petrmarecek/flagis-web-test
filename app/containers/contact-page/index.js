@@ -3,13 +3,13 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { compose, withHandlers } from 'recompose'
 
-import { getTaskTagDetail } from 'redux/store/app-state/app-state.selectors'
+import { getDetail } from 'redux/store/app-state/app-state.selectors'
 
 import LeftPanel from 'components/panels/left-panel'
 import CenterPanel from 'components/panels/center-panel'
 import TagTreeContent from 'components/contents/tag-tree-content'
 import ContactContent from 'components/contents/contact-content'
-import ContactDetailContent from 'components/contents/contact-detail-content'
+import DetailContent from 'components/contents/detail-content'
 
 const ContactPage = ({ onGetContent }) => {
   const content = onGetContent()
@@ -32,7 +32,7 @@ ContactPage.propTypes = {
 }
 
 const mapStateToProps = state => ({
-  detail: getTaskTagDetail(state),
+  detail: getDetail(state),
 })
 
 const mapDispatchToProps = {}
@@ -42,7 +42,7 @@ export default compose(
     onGetContent: props => () => {
       if (props.detail.contact) {
         return (
-          <ContactDetailContent/>
+          <DetailContent/>
         )
       } else {
         return (

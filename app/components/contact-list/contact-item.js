@@ -21,7 +21,7 @@ const ContactItem = ({ contact, onHandleClick }) => {
     color: ['#8C9DA9', '#fff'],
   }
 
-  if (contact.nickname === 'null null') {
+  if (!isUser) {
     icon = {
       icon: ICONS.CONTACT_NOT_EXIST,
       height: 21,
@@ -31,10 +31,14 @@ const ContactItem = ({ contact, onHandleClick }) => {
     }
   }
 
+  const handleClick = () => {
+    onHandleClick(contact.id)
+  }
+
   return(
     <ContactItemStyle
       key={contact.id}
-      onClick={onHandleClick}>
+      onClick={handleClick}>
       <ContactItemContainer>
         <ContactItemIcon>
           <Icon

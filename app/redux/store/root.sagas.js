@@ -106,8 +106,10 @@ export default function* root() {
     takeEvery(TAGS.DESELECT, tag.deselectTags),
     takeLatest(TAGS.FETCH_TAGS_RELATIONS, tag.fetchTagsRelations),
 
-    // comments
+    // contacts
     takeLatest(CONTACTS.FETCH, contact.fetchContacts),
     takeEvery(CONTACTS.CREATE, contact.createContact),
+    takeLatest(CONTACTS.DESELECT, contact.deselectContacts),
+    takeLatest(CONTACTS.UPDATE, contact.updateContacts),
   ])
 }

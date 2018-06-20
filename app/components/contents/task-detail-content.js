@@ -1,5 +1,5 @@
 import React from 'react'
-import TaskDetail from 'components/task-tag-detail/task-detail'
+import TaskDetail from 'components/detail/task-detail'
 
 const TaskDetailContent = () => {
   return (

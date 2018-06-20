@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { setDetail } from 'redux/store/app-state/app-state.actions'
+import { selectContact } from 'redux/store/contacts/contacts.actions'
 import { getContacts } from 'redux/store/contacts/contacts.selectors'
 import { compose, branch, renderComponent, withHandlers } from 'recompose'
 
@@ -32,7 +34,10 @@ const mapStateToProps = state => ({
   contacts: getContacts(state)
 })
 
-const mapDispatchToProps = {}
+const mapDispatchToProps = {
+  setDetail,
+  selectContact,
+}
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
@@ -41,6 +46,9 @@ export default compose(
     renderComponent(Loader)
   ),
   withHandlers({
-    onHandleClick: props => event => event
+    onHandleClick: props => id => {
+      props.selectContact(id)
+      props.setDetail('contact')
+    }
   })
 )(ContactList)

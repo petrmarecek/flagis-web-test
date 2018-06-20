@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
-import { getTaskTagDetail } from 'redux/store/app-state/app-state.selectors'
+import { getDetail } from 'redux/store/app-state/app-state.selectors'
 
 import TagsContent from 'components/contents/tags-content'
 import TagDetailContent from 'components/contents/tag-detail-content'
@@ -44,7 +44,7 @@ class TagPage extends PureComponent {
 }
 
 const mapStateToProps = state => ({
-  detail: getTaskTagDetail(state),
+  detail: getDetail(state),
 })
 
 const mapDispatchToProps = {}
