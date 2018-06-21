@@ -34,7 +34,7 @@ const DetailMenu = props => {
       <LeftMenu>
         <Icon
           icon={ICONS.DETAIL_BACK}
-          width={37}
+          width={23}
           height={18}
           color={["#8C9DA9"]}
           hoverColor={["#00FFC7"]}
