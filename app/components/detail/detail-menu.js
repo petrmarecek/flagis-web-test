@@ -3,30 +3,7 @@ import PropTypes from 'prop-types'
 
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
-
-import styled from 'styled-components'
-
-const Menu = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  height: 42px;
-`;
-
-const LeftMenu = styled.div`
-  flex: 1;
-  margin-left: 8px;
-`;
-
-const RightMenu = styled.div`
-  flex: 1;
-  text-align: right;
-  margin-right: 5px;
-  
-  svg {
-    margin-left: 20px;
-  }
-`;
+import { Menu, LeftMenu, RightMenu } from './styles'
 
 const DetailMenu = props => {
   return (

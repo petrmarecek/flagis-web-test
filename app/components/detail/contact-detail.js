@@ -14,77 +14,12 @@ import {
   DetailContentCenter,
   DetailContentSubject,
   DetailSubject,
+  DetailContentPropertiesContact,
+  DetailContentDescriptionContact,
+  DetailContentContactData,
+  DetailContentContactDataLabel,
+  DetailContentContactDataContent,
 } from './styles'
-
-import styled from 'styled-components'
-
-const DetailContentProperties = styled.div`
-  flex: 3;
-  margin: 0 25px 0 13px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-start;
-`;
-
-const DetailContentDescription = styled.div`
-  flex: 3;
-  margin-right: 22px;
-
-  textarea {
-    &::-webkit-input-placeholder {
-      color: #8c9da9;
-    }
-    &:-moz-placeholder { /!* Firefox 18- *!/
-      color: #8c9da9;
-    }
-    
-    &::-moz-placeholder { /!* Firefox 19+ *!/
-      color: #8c9da9;
-    }
-    
-    &:-ms-input-placeholder {
-      color: #8c9da9;
-    }
-    
-    font-family: 'Source Sans Pro', 'Segoe UI', sans-serif;
-    font-weight: 300;
-    background-color: #fff;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    color: #293034;
-    width: 100%;
-    padding: 15px;
-    border: 1px solid #D7E3EC;
-    font-size: 14px;
-    resize: vertical;
-    min-height: 190px;
-    max-height: 100%;
-    height: auto;
-  }
-`;
-
-const DetailContentContactData = styled.div`
-  position: relative;
-  color: #8c9da9;
-  font-size: 14px;
-  padding: 0 0 2px 0;
-  margin: 10px 0;
-  border-bottom: 1px solid #D7E3EC;
-  cursor: default;
-`;
-
-const DetailContentContactDataLabel = styled.span`
-  margin: 0 0 0 3px;
-`;
-
-const DetailContentContactDataContent = styled.div`
-  margin: 0 5px 2px 0;
-  float: right;
-  font-size: 18px;
-  color: #293034;
-`;
-
 
 const ContactDetail = props => {
 
@@ -149,7 +84,7 @@ const ContactDetail = props => {
         </DetailContentTop>
 
         <DetailContentCenter>
-          <DetailContentProperties>
+          <DetailContentPropertiesContact>
             <DetailContentContactData>
               <DetailContentContactDataLabel>
                 Start date
@@ -164,15 +99,15 @@ const ContactDetail = props => {
                 Not existing user
               </DetailContentContactDataLabel>
             </DetailContentContactData>}
-          </DetailContentProperties>
+          </DetailContentPropertiesContact>
 
-          <DetailContentDescription>
+          <DetailContentDescriptionContact>
             <textarea
               value={description}
               placeholder="Add a Description"
               onChange={onHandleDescriptionChange}
               onBlur={onHandleDescriptionUpdate} />
-          </DetailContentDescription>
+          </DetailContentDescriptionContact>
         </DetailContentCenter>
       </DetailInner>
     </DetailStyle>
