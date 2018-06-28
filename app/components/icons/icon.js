@@ -44,8 +44,8 @@ export default class Icon extends PureComponent {
   }
 
   componentWillReceiveProps(newProps) {
-    if (newProps !== this.props.color) {
-      this.setState({color: newProps.color})
+    if (newProps.color !== this.props.color) {
+      this.setState({ color: newProps.color })
     }
   }
 

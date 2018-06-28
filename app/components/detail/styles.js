@@ -1,25 +1,26 @@
 import styled from 'styled-components'
+import { boxSizing } from '../common/styled-component-mixins'
 
 // Detail
 const DetailStyle = styled.div`
   ::-webkit-scrollbar {
-        width: 5px;
+    width: 5px;
   }
 
   ::-webkit-scrollbar-track {
-      border-radius: 10px;
-      -webkit-box-shadow: inset 0 0 3px rgba(0,0,0,0.3);
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 3px rgba(0,0,0,0.3);
   }
 
   ::-webkit-scrollbar-thumb {
-      border-radius: 10px;
-      background-color: darkgrey;
+    border-radius: 10px;
+    background-color: darkgrey;
   }
 `;
 
 const DetailInner = styled.div`
   background-color: #fff;
-  position: absolute;u
+  position: absolute;
   top: 42px;
   bottom: 0;
   left: 0;
@@ -30,12 +31,9 @@ const DetailInner = styled.div`
 `;
 
 const DetailContentTop = styled.div`
+  ${boxSizing}
   display: flex;
   flex-wrap: wrap;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  
   flex-grow: 100;
   min-height: 48px;
   justify-content: flex-start;
@@ -44,19 +42,6 @@ const DetailContentTop = styled.div`
   z-index: 1;
   padding: 0 12px;
   margin-bottom: 21px;
-  
-  &:before {
-    content: "";
-    position: absolute;
-    z-index:-1;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #f6f8f9;
-    .transform(scaleX(0));
-    .transform-origin(0 50%);
-  }
   
   &:after {
     content: "";
@@ -69,9 +54,7 @@ const DetailContentTop = styled.div`
 `;
 
 const DetailContentSubject = styled.div`
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
+  ${boxSizing}
   flex: 12;
   min-width: 30%;
   padding: 11px 10px 11px 0;
@@ -80,6 +63,14 @@ const DetailContentSubject = styled.div`
 const DetailSubject = styled.div`
   position: relative;
   z-index: 30;
+`;
+
+const DetailSubjectIcon = styled.div`
+  position: absolute;
+  left: 5px;
+  top: 0;
+  margin: 2px 5px;
+  padding: ${props => props.isUser ? '2px 0 0 0' : '0'};
 `;
 
 const DetailContentCenter = styled.div`
@@ -126,39 +117,6 @@ const DetailContentPropertiesContact = styled.div`
 const DetailContentDescriptionContact = styled.div`
   flex: 3;
   margin-right: 22px;
-
-  textarea {
-    &::-webkit-input-placeholder {
-      color: #8c9da9;
-    }
-    &:-moz-placeholder { /!* Firefox 18- *!/
-      color: #8c9da9;
-    }
-    
-    &::-moz-placeholder { /!* Firefox 19+ *!/
-      color: #8c9da9;
-    }
-    
-    &:-ms-input-placeholder {
-      color: #8c9da9;
-    }
-    
-    font-family: 'Source Sans Pro', 'Segoe UI', sans-serif;
-    font-weight: 300;
-    background-color: #fff;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    color: #293034;
-    width: 100%;
-    padding: 15px;
-    border: 1px solid #D7E3EC;
-    font-size: 14px;
-    resize: vertical;
-    min-height: 190px;
-    max-height: 100%;
-    height: auto;
-  }
 `;
 
 const DetailContentContactData = styled.div`
@@ -187,9 +145,10 @@ export {
   DetailStyle,
   DetailInner,
   DetailContentTop,
-  DetailContentCenter,
   DetailContentSubject,
   DetailSubject,
+  DetailSubjectIcon,
+  DetailContentCenter,
 
   // Detail menu
   Menu,

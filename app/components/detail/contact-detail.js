@@ -1,9 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { compose, withStateHandlers, lifecycle } from 'recompose'
+import { withHandlers } from 'recompose'
 
 import DetailMenu from './detail-menu'
 import ContentEditable from '../common/content-editable'
+import MarkdownEditable from '../common/markdown-editable'
 import Icon from '../icons/icon'
 import {ICONS} from '../icons/icon-constants'
 
@@ -11,9 +12,10 @@ import {
   DetailStyle,
   DetailInner,
   DetailContentTop,
-  DetailContentCenter,
   DetailContentSubject,
   DetailSubject,
+  DetailSubjectIcon,
+  DetailContentCenter,
   DetailContentPropertiesContact,
   DetailContentDescriptionContact,
   DetailContentContactData,
@@ -25,31 +27,29 @@ const ContactDetail = props => {
 
   const {
     contact,
-    nickname,
-    description,
     onHandleToggleContactList,
     onHandlePreviousContact,
     onHandleNextContact,
-    onHandleDescriptionChange,
     onHandleDescriptionUpdate,
     onHandleNicknameUpdate,
   } = props
 
   const isUser = contact.nickname !== 'null null'
+  const description = contact.description === null ? 'Add description' : contact.description
+  const nickname = contact.nickname === 'null null' ? 'Add username' : contact.nickname
+
   let icon = {
     icon: ICONS.CONTACT_EXIST,
-    height: 21,
-    width: 21,
-    scale: 1,
+    height: 23,
+    width: 28,
     color: ['#8C9DA9', '#fff'],
   }
 
   if (!isUser) {
     icon = {
       icon: ICONS.CONTACT_NOT_EXIST,
-      height: 21,
-      width: 25,
-      scale: 0.92,
+      height: 23,
+      width: 28,
       color: ['#8C9DA9', '#fff', '#FF6A6A'],
     }
   }
@@ -64,13 +64,13 @@ const ContactDetail = props => {
         <DetailContentTop>
           <DetailContentSubject>
             <DetailSubject>
-              <Icon
-                className='detail-subject__completed'
-                icon={icon.icon}
-                width={icon.width}
-                height={icon.height}
-                scale={icon.scale}
-                color={icon.color}/>
+              <DetailSubjectIcon isUser={isUser}>
+                <Icon
+                  icon={icon.icon}
+                  width={icon.width}
+                  height={icon.height}
+                  color={icon.color} />
+              </DetailSubjectIcon>
               <span>
                 <ContentEditable
                   className='detail-subject__content'
@@ -102,11 +102,9 @@ const ContactDetail = props => {
           </DetailContentPropertiesContact>
 
           <DetailContentDescriptionContact>
-            <textarea
-              value={description}
-              placeholder="Add a Description"
-              onChange={onHandleDescriptionChange}
-              onBlur={onHandleDescriptionUpdate} />
+            <MarkdownEditable
+              text={description}
+              onUpdate={onHandleDescriptionUpdate} />
           </DetailContentDescriptionContact>
         </DetailContentCenter>
       </DetailInner>
@@ -116,59 +114,32 @@ const ContactDetail = props => {
 
 ContactDetail.propTypes = {
   contact: PropTypes.object,
-  nickname: PropTypes.string,
-  description: PropTypes.string,
   onHandleToggleContactList: PropTypes.func,
   onHandleNextContact: PropTypes.func,
   onHandlePreviousContact: PropTypes.func,
-  onHandleDescriptionChange: PropTypes.func,
   onHandleDescriptionUpdate: PropTypes.func,
   onHandleContactDescriptionUpdate: PropTypes.func,
   onHandleNicknameUpdate: PropTypes.func,
   onHandleContactNicknameUpdate: PropTypes.func,
 }
 
-export default compose(
-  withStateHandlers(
-    ({ contact }) => ({
-      nickname: contact.nickname === 'null null' ? 'Add username' : contact.nickname,
-      description: contact.description === null ? '' : contact.description
-    }),
-    {
-      onHandleDescriptionChange: () => event => ({ description: event.target.value }),
-      onHandleDescriptionUpdate: ({ description }, props) => () => {
-        const data = {contact: props.contact, description}
-        props.onHandleContactDescriptionUpdate(data)
-      },
-      onHandleNicknameUpdate: (state, props) => event => {
-        const nickname = event.target.value
-        const data = { contact: props.contact, nickname }
-
-        props.onHandleContactNicknameUpdate(data)
-      }
+export default withHandlers({
+  onHandleDescriptionUpdate: props => event => {
+    const description = event.target.value
+    if (description === props.contact.description || description === 'Add description') {
+      return
     }
-  ),
-  lifecycle({
-    componentWillReceiveProps(newProps) {
-      const prevId = this.props.contact.id
-      const prevNickname = this.props.contact.nickname
-      const prevDescription = this.props.contact.description
-      const { id, nickname, description } = newProps.contact
 
-      if (prevId !== id) {
-        this.setState({
-          nickname: nickname === 'null null' ? 'Add username' : nickname,
-          description: description === null ? '' : description
-        })
-      }
-
-      if (prevNickname !== nickname) {
-        this.setState({ nickname: nickname === 'null null' ? 'Add username' : nickname })
-      }
-
-      if (prevDescription !== description) {
-        this.setState({ description: description === null ? '' : description })
-      }
+    const data = { contact: props.contact, description }
+    props.onHandleContactDescriptionUpdate(data)
+  },
+  onHandleNicknameUpdate: props => event => {
+    const nickname = event.target.value
+    if (nickname === props.contact.nickname || nickname === 'Add username') {
+      return
     }
-  })
-)(ContactDetail)
+
+    const data = { contact: props.contact, nickname }
+    props.onHandleContactNicknameUpdate(data)
+  }
+})(ContactDetail)

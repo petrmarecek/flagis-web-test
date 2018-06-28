@@ -26,7 +26,7 @@ export const ContactItemIcon = styled.div`
 `;
 
 export const ContactItemTitle = styled.div`
-  margin-left: ${props => props.isUser ? '4px' : '0'};
+  margin-left: ${props => props.isUser ? '7px' : '0'};
   display: flex;
   align-items: center;
   height: 100%;

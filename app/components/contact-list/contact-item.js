@@ -17,19 +17,21 @@ const ContactItem = ({ contact, onHandleClick }) => {
     icon: ICONS.CONTACT_EXIST,
     height: 21,
     width: 21,
-    scale: 1,
     color: ['#8C9DA9', '#fff'],
   }
 
   if (!isUser) {
     icon = {
       icon: ICONS.CONTACT_NOT_EXIST,
-      height: 21,
-      width: 25,
-      scale: 0.92,
+      height: 23,
+      width: 28,
       color: ['#8C9DA9', '#fff', '#FF6A6A'],
     }
   }
+
+  const title = isUser
+    ? contact.nickname
+    : contact.email
 
   const handleClick = () => {
     onHandleClick(contact.id)
@@ -45,10 +47,9 @@ const ContactItem = ({ contact, onHandleClick }) => {
             icon={icon.icon}
             width={icon.width}
             height={icon.height}
-            scale={icon.scale}
-            color={icon.color}/>
+            color={icon.color} />
         </ContactItemIcon>
-        <ContactItemTitle isUser={isUser}>{contact.email}</ContactItemTitle>
+        <ContactItemTitle isUser={isUser}>{title}</ContactItemTitle>
       </ContactItemContainer>
     </ContactItemStyle>
   )

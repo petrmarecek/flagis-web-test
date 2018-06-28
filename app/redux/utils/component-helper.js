@@ -1,5 +1,6 @@
 import { List, Set } from 'immutable'
 import moment from 'moment'
+import showdown from 'showdown'
 
 export function getSelectionInfo(event, task, selectedTasks) {
   let isMultiSelection = false
@@ -172,4 +173,9 @@ const color = {
 
 export function getTagColor(index) {
   return color[index]
+}
+
+export function markdownToHTML(markdown) {
+  const converter = new showdown.Converter()
+  return converter.makeHtml(markdown)
 }
