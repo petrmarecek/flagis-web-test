@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { compose, withHandlers } from 'recompose'
 import { connect } from 'react-redux'
 import { updateContactSearch } from 'redux/store/contacts/contacts.actions'
+import { getContactsSearch } from 'redux/store/contacts/contacts.selectors'
 
 import SearchBox from 'components/elements/search-box'
 import AddContactForm from '../elements/add-contact-fom'
@@ -58,7 +59,10 @@ ContactContent.propTypes = {
   onHandleSearchChange: PropTypes.func,
 }
 
-const mapStateToProps = () => ({})
+const mapStateToProps = state => ({
+  search: getContactsSearch(state)
+})
+
 const mapDispatchToProps = { updateContactSearch }
 
 export default compose(

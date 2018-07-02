@@ -3,7 +3,7 @@ import lunr from 'lunr'
 const createTasksIndex = () => lunr(function () {
   this.ref('id')
   this.field('subject', { boost: 10 })
-  // this.field('description', { boost: 5 })
+  this.field('description', { boost: 5 })
 
   this.pipeline.remove(lunr.stopWordFilter);
   this.pipeline.remove(lunr.trimmer);
@@ -13,7 +13,16 @@ const createTasksIndex = () => lunr(function () {
 const createTagsIndex = () => lunr(function () {
   this.ref('id')
   this.field('title', { boost: 10 })
-  this.field('description')
+
+  this.pipeline.remove(lunr.stopWordFilter);
+  this.pipeline.remove(lunr.trimmer);
+  this.pipeline.remove(lunr.stemmer);
+})
+
+const createContactsIndex = () => lunr(function () {
+  this.ref('id')
+  this.field('nickname', { boost: 10 })
+  this.field('email', { boost: 10 })
 
   this.pipeline.remove(lunr.stopWordFilter);
   this.pipeline.remove(lunr.trimmer);
@@ -55,4 +64,5 @@ class SearchService {
 export default {
   tasks: new SearchService(createTasksIndex),
   tags: new SearchService(createTagsIndex),
+  contacts: new SearchService(createContactsIndex),
 }

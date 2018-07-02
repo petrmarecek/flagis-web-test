@@ -2,6 +2,7 @@ import { List } from 'immutable'
 import { getContactDetail } from '../app-state/app-state.selectors'
 import { getEntitiesContacts } from '../entities/entities.selectors'
 import { createSelector } from 'reselect'
+import search from 'redux/services/search'
 
 // ------ Helper functions ----------------------------------------------------
 
@@ -27,22 +28,24 @@ export const compareContactByEmail = (contactA, contactB) => {
 }
 
 /**
- * Loads tags entities for given tags IDs
- * @param {Object} ids Array of tags
- * @param {Object} data Object of tagsSearch and entitiesTags
- * @returns {Array} array of tags
+ * Loads contacts entities
+ * @param {Object} data Object of contactSearch and entitiesContact
+ * @returns {Array} array of contact
  */
 
 function loadContact(data) {
-  const { entitiesContacts } = data
+  const { contactsSearch, entitiesContacts } = data
+  let entities = entitiesContacts.toArray()
 
-  /*// apply search filter
-  if (tagsSearch) {
-    const foundIds = search.tags.get(tagsSearch).map(item => item.ref)
-    ids = intersection(ids, foundIds)
-  }*/
+  // apply search filter
+  if (contactsSearch) {
+    entities = search.contacts
+      .get(contactsSearch)
+      .map(item => item.ref)
+      .map(contactId => entitiesContacts.getIn([contactId]))
+  }
 
-  return entitiesContacts.sort(compareContactByEmail).toArray()
+  return entities.sort(compareContactByEmail)
 }
 
 // ------ Selectors -------------------------------------------------------------
@@ -51,13 +54,17 @@ function loadContact(data) {
 const getContactsIsFetching = state => state.getIn(['contacts', 'isFetching'])
 const getCurrentContactId = state => state.getIn(['contacts', 'current'])
 
+// Export selectors
+export const getContactsSearch = state => state.getIn(['contacts', 'search'])
+
 // ------ Reselect selectors ----------------------------------------------------
 
 export const getContacts = createSelector(
   getContactsIsFetching,
+  getContactsSearch,
   getEntitiesContacts,
-  (contactsIsFetching, entitiesContacts) => {
-    const data = { entitiesContacts }
+  (contactsIsFetching, contactsSearch, entitiesContacts) => {
+    const data = { contactsSearch, entitiesContacts }
 
     return ({
       isFetching: contactsIsFetching,
@@ -82,8 +89,9 @@ export const getCurrentContact = createSelector(
 export const getNextContact = createSelector(
   getContactDetail,
   getCurrentContactId,
+  getContactsSearch,
   getEntitiesContacts,
-  (isContactDetail, contactId, entitiesContacts) => {
+  (isContactDetail, contactId, contactsSearch, entitiesContacts) => {
 
     if (!isContactDetail) {
       return null
@@ -93,7 +101,7 @@ export const getNextContact = createSelector(
       return null
     }
 
-    const data = { entitiesContacts }
+    const data = { contactsSearch, entitiesContacts }
     let contacts = loadContact(data)
     contacts = List(contacts.map(contact => contact.id))
     const sizeListOfContacts = contacts.size
@@ -114,8 +122,9 @@ export const getNextContact = createSelector(
 export const getPreviousContact = createSelector(
   getContactDetail,
   getCurrentContactId,
+  getContactsSearch,
   getEntitiesContacts,
-  (isContactDetail, contactId, entitiesContacts) => {
+  (isContactDetail, contactId, contactsSearch, entitiesContacts) => {
 
     if (!isContactDetail) {
       return null
@@ -125,7 +134,7 @@ export const getPreviousContact = createSelector(
       return null
     }
 
-    const data = { entitiesContacts }
+    const data = { contactsSearch, entitiesContacts }
     let contacts = loadContact(data)
     contacts = List(contacts.map(contact => contact.id))
     const sizeListOfContacts = contacts.size

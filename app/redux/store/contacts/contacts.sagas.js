@@ -5,16 +5,21 @@ import * as appStateActions from 'redux/store/app-state/app-state.actions'
 import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'
 import { fetch } from 'redux/store/common.sagas'
 import api from 'redux/utils/api'
+import search from 'redux/services/search'
 import schema from 'redux/data/schema'
 
 const CONTACTS = contactsActions.CONTACTS
 
 export function* fetchContacts() {
-  yield* fetch(CONTACTS.FETCH, {
+  const result = yield* fetch(CONTACTS.FETCH, {
     method: api.contacts.get,
     args: [],
     schema: schema.contactList
   })
+
+  // Initialize search service
+  search.contacts.resetIndex()
+  search.contacts.addItems(result)
 }
 
 export function* createContact(action) {
@@ -22,6 +27,9 @@ export function* createContact(action) {
     const email = action.payload.email
     const data = { email }
     const contact = yield call(api.contacts.create, data)
+
+    // add the contact to the search index
+    search.contacts.addItem(contact)
 
     yield put(contactsActions.addContact(contact))
 
