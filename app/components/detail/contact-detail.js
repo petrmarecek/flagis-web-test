@@ -9,7 +9,6 @@ import Icon from '../icons/icon'
 import {ICONS} from '../icons/icon-constants'
 
 import {
-  DetailStyle,
   DetailInner,
   DetailContentTop,
   DetailContentSubject,
@@ -27,12 +26,17 @@ const ContactDetail = props => {
 
   const {
     contact,
+    onHandleRemoveEventListener,
     onHandleToggleContactList,
     onHandlePreviousContact,
     onHandleNextContact,
     onHandleDescriptionUpdate,
     onHandleNicknameUpdate,
   } = props
+
+  if (!contact) {
+    return <div>Detail not found</div>
+  }
 
   const isUser = contact.nickname !== 'null null'
   const description = contact.description === null ? 'Add description' : contact.description
@@ -55,7 +59,7 @@ const ContactDetail = props => {
   }
 
   return (
-    <DetailStyle>
+    <div>
       <DetailMenu
         back={onHandleToggleContactList}
         previous={onHandlePreviousContact}
@@ -71,7 +75,7 @@ const ContactDetail = props => {
                   height={icon.height}
                   color={icon.color} />
               </DetailSubjectIcon>
-              <span>
+              <span onClick={onHandleRemoveEventListener}>
                 <ContentEditable
                   className='detail-subject__content'
                   html={nickname}
@@ -102,18 +106,21 @@ const ContactDetail = props => {
           </DetailContentPropertiesContact>
 
           <DetailContentDescriptionContact>
-            <MarkdownEditable
-              text={description}
-              onUpdate={onHandleDescriptionUpdate} />
+            <span onClick={onHandleRemoveEventListener}>
+              <MarkdownEditable
+                text={description}
+                onUpdate={onHandleDescriptionUpdate} />
+            </span>
           </DetailContentDescriptionContact>
         </DetailContentCenter>
       </DetailInner>
-    </DetailStyle>
+    </div>
   )
 }
 
 ContactDetail.propTypes = {
   contact: PropTypes.object,
+  onHandleRemoveEventListener: PropTypes.func,
   onHandleToggleContactList: PropTypes.func,
   onHandleNextContact: PropTypes.func,
   onHandlePreviousContact: PropTypes.func,
@@ -141,5 +148,5 @@ export default withHandlers({
 
     const data = { contact: props.contact, nickname }
     props.onHandleContactNicknameUpdate(data)
-  }
+  },
 })(ContactDetail)

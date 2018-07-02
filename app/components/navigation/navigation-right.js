@@ -8,12 +8,9 @@ import {
   fetchArchivedTasks,
   deselectTasks
 } from 'redux/store/tasks/tasks.actions'
-import { fetchContacts } from 'redux/store/contacts/contacts.actions'
 import { deselectTags } from 'redux/store/tags/tags.actions'
-import {
-  hideArchivedTasks,
-  changeLocation,
-} from 'redux/store/app-state/app-state.actions'
+import { fetchContacts, deselectContacts } from 'redux/store/contacts/contacts.actions'
+import { hideArchivedTasks, changeLocation } from 'redux/store/app-state/app-state.actions'
 
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
@@ -27,26 +24,30 @@ class NavigationRight extends PureComponent {
     fetchContacts: PropTypes.func,
     deselectTasks: PropTypes.func.isRequired,
     deselectTags: PropTypes.func.isRequired,
+    deselectContacts: PropTypes.func.isRequired,
     hideArchivedTasks: PropTypes.func,
     changeLocation: PropTypes.func,
   }
 
   handleClickTasks = () => {
-    this.props.deselectTags()
     this.props.deselectTasks()
+    this.props.deselectTags()
+    this.props.deselectContacts()
     this.props.fetchTasks()
     this.props.changeLocation('/user/tasks')
   }
 
   handleClickTags = () => {
-    this.props.hideArchivedTasks()
     this.props.deselectTasks()
+    this.props.hideArchivedTasks()
+    this.props.deselectContacts()
     this.props.changeLocation('/user/tags')
   }
 
   handleClickArchive = () => {
-    this.props.deselectTags()
     this.props.deselectTasks()
+    this.props.deselectTags()
+    this.props.deselectContacts()
     this.props.fetchArchivedTasks()
     this.props.changeLocation('/user/archive')
   }
@@ -63,6 +64,7 @@ class NavigationRight extends PureComponent {
     this.props.hideArchivedTasks()
     this.props.deselectTags()
     this.props.deselectTasks()
+    this.props.deselectContacts()
     this.props.changeLocation('/user/account')
   }
 
@@ -155,7 +157,9 @@ const mapDispatchToProps = {
   fetchContacts,
   deselectTasks,
   deselectTags,
+  deselectContacts,
   hideArchivedTasks,
   changeLocation
 }
+
 export default connect(mapStateToProps, mapDispatchToProps)(NavigationRight)
