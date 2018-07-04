@@ -6,6 +6,14 @@ const boxSizing = css`
   box-sizing: border-box;
 `;
 
+const transition = value => css`
+  -webkit-transition: ${value};
+  -moz-transition: ${value};
+  -o-transition: ${value};
+  -ms-transition: ${value};
+  transition: ${value};
+`;
+
 const placeholder = css`
   &::-webkit-input-placeholder {
     color: ${props => props.placeholderColor ? props.placeholderColor : '#8c9da9'};
@@ -25,5 +33,6 @@ const placeholder = css`
 
 export {
   boxSizing,
+  transition,
   placeholder,
 }

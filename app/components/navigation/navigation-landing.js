@@ -3,9 +3,9 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import Logo from 'assets/img/logo.svg'
 
-const NavigationLanding = props => {
-  const signInBtnDisabled = props.location.pathname === '/sign-in'
-  const signUpBtnDisabled = props.location.pathname === '/sign-up'
+const NavigationLanding = ({ location }) => {
+  const signInBtnDisabled = location.pathname === '/sign-in'
+  const signUpBtnDisabled = location.pathname === '/sign-up'
 
   return (
     <nav className="navbar-landing">
@@ -17,8 +17,18 @@ const NavigationLanding = props => {
         </div>
 
         <div className="navbar-landing__link-up">
-          <Link className="form-link form-link__button-in" to="/sign-in" disabled={signInBtnDisabled}>Sign in</Link>
-          <Link className="form-link form-link__button-up" to="/sign-up" disabled={signUpBtnDisabled}>Sign up for Free</Link>
+          <Link
+            className="form-link form-link__button-in"
+            to="/sign-in"
+            disabled={signInBtnDisabled}>
+            Sign in
+          </Link>
+          <Link
+            className="form-link form-link__button-up"
+            to="/sign-up"
+            disabled={signUpBtnDisabled}>
+            Sign up for Free
+          </Link>
         </div>
       </div>
     </nav>

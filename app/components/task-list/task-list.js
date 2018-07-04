@@ -13,6 +13,7 @@ export default class TaskList extends PureComponent {
     selectedTasks: PropTypes.object,
     selectedTags: PropTypes.object,
     isVisibleArchivedTasks: PropTypes.bool,
+    timeLine: PropTypes.bool,
     sort: PropTypes.object,
 
     // Handlers
@@ -54,6 +55,7 @@ export default class TaskList extends PureComponent {
         task={task}
         moveTask={this.props.moveTask}
         dropTask={this.props.dropTask}
+        timeLine={null}
         sort={null}
         section={section}
         noTaskFound/>
@@ -83,6 +85,7 @@ export default class TaskList extends PureComponent {
               moveTask={this.props.moveTask}
               dropTask={this.props.dropTask}
               onTagClick={this.props.onTagClick}
+              timeLine={this.props.timeLine}
               sort={this.props.sort}
               setArchiveTasks={this.props.setArchiveTasks}
               section={section}/>
@@ -105,6 +108,7 @@ export default class TaskList extends PureComponent {
               moveTask={this.props.moveTask}
               dropTask={this.props.dropTask}
               onTagClick={this.props.onTagClick}
+              timeLine={this.props.timeLine}
               sort={this.props.sort}
               cancelArchiveTasks={this.props.cancelArchiveTasks}
               section={section}/>
@@ -117,7 +121,7 @@ export default class TaskList extends PureComponent {
   }
 
   getTaskItemsList(tasks) {
-    if (this.props.sort.dueDate && !this.props.isVisibleArchivedTasks) {
+    if (this.props.timeLine && !this.props.isVisibleArchivedTasks) {
       // Due date sorting algorithm is activated
       const timeLineTasks = getTimeLineByDueDate(tasks)
       const tasksRender = {
@@ -176,7 +180,7 @@ export default class TaskList extends PureComponent {
   render() {
     // children items
     const { tasks, isVisibleArchivedTasks } = this.props
-    const dueDateSort = this.props.sort.dueDate
+    const timeLine = this.props.timeLine
     const taskItems = this.getTaskItemsList(tasks)
 
     return (
@@ -186,12 +190,12 @@ export default class TaskList extends PureComponent {
           {taskItems}
         </ul>}
 
-        {!dueDateSort && !isVisibleArchivedTasks &&
+        {!timeLine && !isVisibleArchivedTasks &&
         <ul ref="list" className="task-items">
           {taskItems}
         </ul>}
 
-        {dueDateSort && !isVisibleArchivedTasks &&
+        {timeLine && !isVisibleArchivedTasks &&
         <ul className="time-line">
           {taskItems.previousDaysTasks &&
           <li className="time-line__list">

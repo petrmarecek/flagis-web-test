@@ -157,6 +157,7 @@ export const TaskStore = Record({
   items: List(),
   completed: List(),
   archived: new ListRecord(),
+  timeLine: false,
   selection: OrderedSet(),
 })
 

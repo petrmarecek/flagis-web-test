@@ -27,6 +27,7 @@ import {
   getTasksItems,
   getCompletedTasksItems,
   getArchivedTasksItems,
+  getTimeLine,
   getSelectionTasks,
   getTasks,
 } from 'redux/store/tasks/tasks.selectors'
@@ -59,6 +60,7 @@ class TaskListContainer extends PureComponent {
     selectedTags: PropTypes.object,
     selectedTasks: PropTypes.object,
     isVisibleArchivedTasks: PropTypes.bool,
+    timeLine: PropTypes.bool,
     sort: PropTypes.object,
 
     // Actions
@@ -265,6 +267,7 @@ class TaskListContainer extends PureComponent {
             moveTask={this.moveTask}
             dropTask={this.dropTask}
             onTagClick={this.handleTagClick}
+            timeLine={this.props.timeLine}
             sort={this.props.sort}
             setArchiveTasks={this.handleSetArchiveTasks}
             cancelArchiveTasks={this.handleCancelArchiveTasks}
@@ -294,6 +297,7 @@ const mapStateToProps = state => ({
   entitiesTasks: getEntitiesTasks(state),
   selectedTasks: getSelectionTasks(state),
   selectedTags: getActiveTagsIds(state),
+  timeLine: getTimeLine(state),
   sort: getTasksMenuSort(state),
   isVisibleArchivedTasks: getArchivedTasksVisibility(state),
 })

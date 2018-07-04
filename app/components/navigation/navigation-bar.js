@@ -1,65 +1,72 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
+import { compose, withHandlers } from 'recompose'
 import { connect } from 'react-redux'
-
-import { defaultDisplay } from 'redux/store/app-state/app-state.actions'
 
 import NavigationRight from 'components/navigation/navigation-right'
 import MainSearch from 'components/elements/main-search'
-
-import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
+import { ICONS } from 'components/icons/icon-constants'
 
-class NavigationBar extends PureComponent {
+import { defaultDisplay } from 'redux/store/app-state/app-state.actions'
 
-  static propTypes = {
-    defaultDisplay: PropTypes.func,
-    location: PropTypes.object.isRequired,
-  }
+import {
+  Navbar,
+  NavbarLeft,
+  NavbarLogo,
+  NavbarCenter,
+  NavbarRight,
+} from './styles'
 
-  handleClick = () => {
-    this.props.defaultDisplay()
-  }
+const NavigationBar = ({ location, onHandleClick, mainSearch }) => {
+  const search = mainSearch()
 
-  mainSearch = () => {
-    const isAccountPage = this.props.location.pathname === '/user/account'
-    const isTagPage = this.props.location.pathname === '/user/tags'
-    if (!isAccountPage && !isTagPage) {
-      return (
-        <MainSearch />
-      )
-    } else {
-      return null
-    }
-  }
-
-  render() {
-    const mainSearch = this.mainSearch()
-
-    return (
-      <nav className="navbar navbar--full">
-        <div
-          className="navbar__left"
-          title="Default display">
+  return (
+    <Navbar>
+      <NavbarLeft title="Default display">
+        <NavbarLogo>
           <Icon
             className="navbar__logo"
             icon={ICONS.LOGO}
             width={65}
             height={32}
-            onClick={this.handleClick}/>
-        </div>
-        <div className="navbar__center">
-          {mainSearch}
-        </div>
-        <div className="navbar__right">
-          <NavigationRight location={this.props.location} />
-        </div>
-      </nav>
-    )
-  }
+            color={['#fff', '#00FFC7']}
+            onClick={onHandleClick} />
+        </NavbarLogo>
+      </NavbarLeft>
+      <NavbarCenter>
+        {search}
+      </NavbarCenter>
+      <NavbarRight>
+        <NavigationRight location={location} />
+      </NavbarRight>
+    </Navbar>
+  )
+
+}
+
+NavigationBar.propTypes = {
+  location: PropTypes.object.isRequired,
+  onHandleClick: PropTypes.func,
+  mainSearch: PropTypes.func,
 }
 
 const mapStateToProps = () => ({})
 const mapDispatchToProps = { defaultDisplay }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NavigationBar)
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withHandlers({
+    onHandleClick: props => () => props.defaultDisplay(),
+    mainSearch: props => () => {
+      const isAccountPage = props.location.pathname === '/user/account'
+      const isTagPage = props.location.pathname === '/user/tags'
+
+      if (isAccountPage || isTagPage) {
+        return null
+      } else {
+        return <MainSearch/>
+      }
+    }
+  })
+)(NavigationBar)

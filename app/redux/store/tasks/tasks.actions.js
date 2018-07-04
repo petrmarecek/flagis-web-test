@@ -6,6 +6,8 @@ export const TASKS = {
   CREATE: 'TASK/CREATE',
   FIREBASE: 'TASK/FIREBASE',
   FIREBASE_TAGS_RELATIONS: 'TASK/FIREBASE_TAGS_RELATIONS',
+  SET_TIME_LINE: 'TASK/SET_TIME_LINE',
+  CANCEL_TIME_LINE: 'TASK/CANCEL_TIME_LINE',
   SELECT: 'TASK/SELECT',
   SELECT_ALL: 'TASK/SELECT_ALL',
   DESELECT: 'TASK/DESELECT',
@@ -46,6 +48,14 @@ export const fetchArchivedTasks = () => ({
 export const createTask = taskWithTags => ({
   type: TASKS.CREATE,
   payload: taskWithTags,
+})
+
+export const setTimeLine = () => ({
+  type: TASKS.SET_TIME_LINE,
+})
+
+export const cancelTimeLine = () => ({
+  type: TASKS.CANCEL_TIME_LINE,
 })
 
 export const selectTask = (taskList, isMultiSelect) => ({

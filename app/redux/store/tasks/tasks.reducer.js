@@ -66,6 +66,12 @@ export default typeToReducer({
     }
   },
 
+  [TASKS.SET_TIME_LINE]: state => state
+    .setIn(['timeLine'], true),
+
+  [TASKS.CANCEL_TIME_LINE]: state => state
+    .setIn(['timeLine'], false),
+
   [TASKS.SELECT]: (state, action) => state
     .setIn(['selection'], action.payload.taskList),
 

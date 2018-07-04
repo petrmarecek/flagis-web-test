@@ -55,7 +55,7 @@ function filterByDateRange(range, tasks) {
  */
 
 function loadTasks(ids, data) {
-  const { tasksMenu, entitiesTasks, entitiesTags, activeTagsIds } = data
+  const { tasksMenu, timeLine, entitiesTasks, entitiesTags, activeTagsIds } = data
 
   // apply search filter
   if (tasksMenu.getIn(['filters', 'searchText'])) {
@@ -117,8 +117,8 @@ function loadTasks(ids, data) {
     })
   }
 
-  // apply sort by due date
-  if (tasksMenu.getIn(['sort', 'dueDate'])) {
+  // apply time line
+  if (timeLine) {
     const tasksDueDate = tasks.filter(task => task.dueDate)
     const tasksOthers = tasks.filter(task => !task.dueDate)
 
@@ -255,6 +255,7 @@ const getArchivedTasksIsFetching = state => state.getIn(['tasks', 'archived', 'i
 const getTasksMenu = state => state.getIn(['tasksMenu'])
 
 // Export selectors
+export const getTimeLine = state => state.getIn(['tasks', 'timeLine'])
 export const getTasksItems = state => state.getIn(['tasks', 'items'])
 export const getArchivedTasksItems = state => state.getIn(['tasks', 'archived', 'items'])
 export const getTaskTags = (state, taskId) => state.getIn(['entities', 'tasks', taskId, 'tags'])
@@ -270,6 +271,7 @@ export const getTasks = createSelector(
   getTasksIsFetching,
   getTasksItems,
   getTasksMenu,
+  getTimeLine,
   getEntitiesTasks,
   getEntitiesTags,
   getActiveTagsIds,
@@ -279,12 +281,13 @@ export const getTasks = createSelector(
    tasksIsFetching,
    tasksItems,
    tasksMenu,
+   timeLine,
    entitiesTasks,
    entitiesTags,
    activeTagsIds) => {
 
     const archived = pathName === '/user/archive'
-    const data = { tasksMenu, entitiesTasks, entitiesTags, activeTagsIds }
+    const data = { tasksMenu, timeLine, entitiesTasks, entitiesTags, activeTagsIds }
 
     if (archived) {
       return ({
@@ -305,12 +308,13 @@ export const getTasks = createSelector(
 export const getCompletedTasks = createSelector(
   getCompletedTasksItems,
   getTasksMenu,
+  getTimeLine,
   getEntitiesTasks,
   getEntitiesTags,
   getActiveTagsIds,
-  (completedTasksItems, tasksMenu, entitiesTasks, entitiesTags, activeTagsIds) => {
+  (completedTasksItems, tasksMenu, timeLine, entitiesTasks, entitiesTags, activeTagsIds) => {
 
-    const data = { tasksMenu, entitiesTasks, entitiesTags, activeTagsIds }
+    const data = { tasksMenu, timeLine, entitiesTasks, entitiesTags, activeTagsIds }
 
     return ({
       items: loadTasks(completedTasksItems.toArray(), data)
@@ -335,12 +339,13 @@ export const getCurrentTaskTags = createSelector(
 export const getSelectTasks = createSelector(
   getSelectionTasks,
   getTasksMenu,
+  getTimeLine,
   getEntitiesTasks,
   getEntitiesTags,
   getActiveTagsIds,
-  (selectionTasks, tasksMenu, entitiesTasks, entitiesTags, activeTagsIds) => {
+  (selectionTasks, tasksMenu, timeLine, entitiesTasks, entitiesTags, activeTagsIds) => {
 
-    const data = { tasksMenu, entitiesTasks, entitiesTags, activeTagsIds }
+    const data = { tasksMenu, timeLine, entitiesTasks, entitiesTags, activeTagsIds }
     return loadTasks(selectionTasks.toArray(), data)
   }
 )
@@ -350,13 +355,14 @@ export const getTasksId = createSelector(
   getArchivedTasksItems,
   getTasksItems,
   getTasksMenu,
+  getTimeLine,
   getEntitiesTasks,
   getEntitiesTags,
   getActiveTagsIds,
-  (pathName, archivedTasksItems, tasksItems, tasksMenu, entitiesTasks, entitiesTags, activeTagsIds) => {
+  (pathName, archivedTasksItems, tasksItems, tasksMenu, timeLine, entitiesTasks, entitiesTags, activeTagsIds) => {
 
     const archived = pathName === '/user/archive'
-    const data = { tasksMenu, entitiesTasks, entitiesTags, activeTagsIds }
+    const data = { tasksMenu, timeLine, entitiesTasks, entitiesTags, activeTagsIds }
 
     if (archived) {
       const tasks = loadArchiveTasks(archivedTasksItems.toArray(), data)
@@ -372,12 +378,13 @@ export const getTasksId = createSelector(
 export const getCompletedTasksId = createSelector(
   getCompletedTasksItems,
   getTasksMenu,
+  getTimeLine,
   getEntitiesTasks,
   getEntitiesTags,
   getActiveTagsIds,
-  (completedTasksItems, tasksMenu, entitiesTasks, entitiesTags, activeTagsIds) => {
+  (completedTasksItems, tasksMenu, timeLine, entitiesTasks, entitiesTags, activeTagsIds) => {
 
-    const data = { tasksMenu, entitiesTasks, entitiesTags, activeTagsIds }
+    const data = { tasksMenu, timeLine, entitiesTasks, entitiesTags, activeTagsIds }
     const tasks = loadTasks(completedTasksItems.toArray(), data)
     return List(tasks.map(task => task.id))
   }
@@ -407,6 +414,7 @@ export const getNextTask = createSelector(
   getArchivedTasksItems,
   getTasksItems,
   getTasksMenu,
+  getTimeLine,
   getEntitiesTasks,
   getEntitiesTags,
   getActiveTagsIds,
@@ -417,6 +425,7 @@ export const getNextTask = createSelector(
    archivedTasksItems,
    tasksItems,
    tasksMenu,
+   timeLine,
    entitiesTasks,
    entitiesTags,
    activeTagsIds) => {
@@ -427,7 +436,7 @@ export const getNextTask = createSelector(
     }
 
     // Tasks after filtering and sorting
-    const data = { tasksMenu, entitiesTasks, entitiesTags, activeTagsIds }
+    const data = { tasksMenu, timeLine, entitiesTasks, entitiesTags, activeTagsIds }
     let typeTask = loadTasks(tasksItems.toArray(), data)
     typeTask = List(typeTask.map(task => task.id))
     if (isArchivedTasksVisible) {
@@ -459,6 +468,7 @@ export const getPreviousTask = createSelector(
   getArchivedTasksItems,
   getTasksItems,
   getTasksMenu,
+  getTimeLine,
   getEntitiesTasks,
   getEntitiesTags,
   getActiveTagsIds,
@@ -469,6 +479,7 @@ export const getPreviousTask = createSelector(
    archivedTasksItems,
    tasksItems,
    tasksMenu,
+   timeLine,
    entitiesTasks,
    entitiesTags,
    activeTagsIds) => {
@@ -482,7 +493,7 @@ export const getPreviousTask = createSelector(
     }
 
     // Tasks after filtering and sorting
-    const data = { tasksMenu, entitiesTasks, entitiesTags, activeTagsIds }
+    const data = { tasksMenu, timeLine, entitiesTasks, entitiesTags, activeTagsIds }
     let typeTask = loadTasks(tasksItems.toArray(), data)
     typeTask = List(typeTask.map(task => task.id))
     if (isArchivedTasksVisible) {
