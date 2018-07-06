@@ -31,7 +31,7 @@ const DetailInner = styled.div`
 `;
 
 const DetailContentTop = styled.div`
-  ${boxSizing}
+  ${boxSizing('border-box')}
   display: flex;
   flex-wrap: wrap;
   flex-grow: 100;
@@ -54,7 +54,7 @@ const DetailContentTop = styled.div`
 `;
 
 const DetailContentSubject = styled.div`
-  ${boxSizing}
+  ${boxSizing('border-box')}
   flex: 12;
   min-width: 30%;
   padding: 11px 10px 11px 0;

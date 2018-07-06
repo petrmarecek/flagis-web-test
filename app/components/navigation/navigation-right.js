@@ -116,7 +116,6 @@ export default compose(
       props.deselectTasks()
       props.deselectTags()
       props.deselectContacts()
-      props.fetchTasks()
       props.changeLocation('/user/tasks')
     },
     onHandleClickTimeLine: props => () => {
@@ -124,7 +123,6 @@ export default compose(
       props.deselectTasks()
       props.deselectTags()
       props.deselectContacts()
-      props.fetchTasks()
       props.setTimeLine()
       props.changeLocation('/user/tasks')
     },

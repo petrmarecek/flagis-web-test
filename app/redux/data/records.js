@@ -105,7 +105,6 @@ export const TasksFilters = Record({
 export const TasksSort = Record({
   menu: new Visibility(),
   defaultSort: true,
-  dueDate: false,
   alphabet: false,
   important: false,
   incomplete: false,

@@ -1,9 +1,9 @@
 import { css } from 'styled-components'
 
-const boxSizing = css`
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
+const boxSizing = value => css`
+  -webkit-box-sizing: ${value};
+  -moz-box-sizing: ${value};
+  box-sizing: ${value};
 `;
 
 const transition = value => css`
@@ -12,6 +12,21 @@ const transition = value => css`
   -o-transition: ${value};
   -ms-transition: ${value};
   transition: ${value};
+`;
+
+const transform = value => css`
+  -webkit-transform: ${value};
+  -moz-transform: ${value};
+  -o-transform: ${value};
+  -ms-transform: ${value};
+  transform: ${value};
+`;
+
+const userSelect = value => css`
+  -webkit-user-select: ${value};
+  -moz-user-select: ${value};
+  -ms-user-select: ${value};
+  user-select: ${value};
 `;
 
 const placeholder = css`
@@ -31,8 +46,41 @@ const placeholder = css`
   }
 `;
 
+// fonts
+const fontMain = css`
+  font-family: 'Source Sans Pro', 'Segoe UI', sans-serif;
+  font-weight: 400;
+`;
+
+const fontSub = css`
+  font-family: 'Source Sans Pro', 'Segoe UI', sans-serif;
+  font-weight: 300;
+`;
+
+
+const fontBold = css`
+  font-family: 'Source Sans Pro', 'Segoe UI', sans-serif;
+  font-weight: 600;
+`;
+
+const fontIconMdi = css`
+  font: normal normal normal 24px/1 MaterialDesignIcons;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transform: translate(0, 0);
+`;
+
 export {
   boxSizing,
   transition,
+  transform,
+  userSelect,
   placeholder,
+
+  // fonts
+  fontMain,
+  fontSub,
+  fontBold,
+  fontIconMdi,
 }

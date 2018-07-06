@@ -1,54 +1,52 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
-import cx from 'classnames'
-
 import Icon from '../../icons/icon'
+import { compose, withHandlers } from 'recompose'
+import { MenuBoxItemIcon, MenuBoxItemTitle } from './styles'
 
-export default class MenuBoxItem extends PureComponent {
-
-  static propTypes = {
-    icon: PropTypes.object,
-    iconScale: PropTypes.number,
-    title: PropTypes.string,
-    active: PropTypes.bool,
-    onChange: PropTypes.func,
-    type: PropTypes.string,
-  }
-
-  handleClick = () => {
-    if (this.props.active) {
-      return
-    }
-
-    if (this.props.type) {
-      this.props.onChange(this.props.type)
-      return
-    }
-
-    this.props.onChange()
-  }
-
-  render() {
-    const { icon, iconScale, title, active } = this.props
-
-    const menuBoxItemClass = cx({
-      'menu-box-group__icon': icon,
-      'menu-box-group__title': title,
-      'active': active,
-    })
-
-    return (
-      <div className={menuBoxItemClass} >
-        {icon &&
+const MenuBoxItem = ({ icon, iconScale, title, active, onHandleClick }) => (
+  <div>
+      {icon &&
+      <MenuBoxItemIcon active={active}>
         <Icon
           icon={icon}
           width={16}
           height={16}
           scale={iconScale}
-          onClick={this.handleClick} />}
-        {title &&
-        <span onClick={this.handleClick}>{title}</span>}
-      </div>
-    )
-  }
+          onClick={onHandleClick} />
+      </MenuBoxItemIcon>}
+    {title &&
+    <MenuBoxItemTitle
+      active={active}
+      onClick={onHandleClick}>
+        {title}
+      </MenuBoxItemTitle>}
+  </div>
+)
+
+MenuBoxItem.propTypes = {
+  icon: PropTypes.object,
+  iconScale: PropTypes.number,
+  title: PropTypes.string,
+  active: PropTypes.bool,
+  type: PropTypes.string,
+  onChange: PropTypes.func,
+  onHandleClick: PropTypes.func,
 }
+
+export default compose(
+  withHandlers({
+    onHandleClick: props => () => {
+      if (props.active) {
+        return
+      }
+
+      if (props.type) {
+        props.onChange(props.type)
+        return
+      }
+
+      props.onChange()
+    }
+  })
+)(MenuBoxItem)

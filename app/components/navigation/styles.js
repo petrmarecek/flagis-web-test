@@ -3,7 +3,7 @@ import { boxSizing } from '../common/styled-component-mixins'
 
 // NavigationBar
 const Navbar = styled.nav`
-  ${boxSizing}
+  ${boxSizing('border-box')}
   background-color: #293034;
   position: fixed;
   height: 60px;
@@ -40,7 +40,7 @@ const NavButtonContainer = styled.div`
 `;
 
 const NavButton = styled.div`
-  ${boxSizing}
+  ${boxSizing('border-box')}
   color: white;
   display: flex;
   align-items: center;

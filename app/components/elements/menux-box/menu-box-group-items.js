@@ -1,13 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { MenuBoxGroup } from './styles'
 
-const MenuBoxGroupItems = props => {
-  return (
-    <div className="menu-box-group">
-      {props.children}
-    </div>
-  )
-}
+const MenuBoxGroupItems = ({ children }) => (
+  <MenuBoxGroup>
+    {children}
+  </MenuBoxGroup>
+)
 
 MenuBoxGroupItems.propTypes = {
   children: PropTypes.any,

@@ -64,7 +64,6 @@ export default class TasksMenuOptions extends PureComponent {
           hoverColor={["#282f34"]} />
         {menu.isVisible &&
         <MenuBox
-          className="tasks-menu-box"
           animation="transition.fadeIn"
           menuIcon={this.refs.options}
           clickOutsideMenu={this.handleClick}>

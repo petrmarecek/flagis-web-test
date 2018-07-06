@@ -25,14 +25,14 @@ export default class TasksMenuMultiSelect extends PureComponent {
 
     // Add listener for close menu
     document.getElementsByClassName('page-overflow-fix')[0].addEventListener("click", this.handleClick, false)
-    document.getElementsByClassName('navbar')[0].addEventListener("click", this.handleClick, false)
+    document.getElementById('navbar').addEventListener("click", this.handleClick, false)
     document.addEventListener('keydown', this.handleKeyDown, false)
   }
 
   componentWillUnmount() {
     // Remove listener for close menu
     document.getElementsByClassName('page-overflow-fix')[0].removeEventListener("click", this.handleClick, false)
-    document.getElementsByClassName('navbar')[0].addEventListener("click", this.handleClick, false)
+    document.getElementById('navbar').addEventListener("click", this.handleClick, false)
     document.removeEventListener('keydown', this.handleKeyDown, false)
   }
 

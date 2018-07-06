@@ -3,7 +3,7 @@ import { boxSizing } from './styled-component-mixins'
 
 // ------ Local styles ----------------------------------------------------
 const styles = css`
-  ${boxSizing}
+  ${boxSizing('border-box')}
   font-family: 'Source Sans Pro', 'Segoe UI', sans-serif;
   font-weight: 300;
   width: 100%;

@@ -14,7 +14,6 @@ export default typeToReducer({
     .setIn(['filters', 'searchText'], '')
     .updateIn(['filters', 'active'], list => list.clear())
     .setIn(['sort', 'defaultSort'], true)
-    .setIn(['sort', 'dueDate'], false)
     .setIn(['sort', 'alphabet'], false)
     .setIn(['sort', 'important'], false)
     .setIn(['sort', 'incomplete'], false),
@@ -71,7 +70,6 @@ export default typeToReducer({
 
     return state
       .setIn(['sort', 'defaultSort'], false)
-      .setIn(['sort', 'dueDate'], false)
       .setIn(['sort', 'alphabet'], false)
       .setIn(['sort', 'important'], false)
       .setIn(['sort', 'incomplete'], false)

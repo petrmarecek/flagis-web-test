@@ -254,7 +254,7 @@ class TaskListContainer extends PureComponent {
 
     return (
       <div>
-        {!this.props.tasks.isFetching && this.props.tasks.items.length === 0 && !this.props.sort.dueDate &&
+        {!this.props.tasks.isFetching && this.props.tasks.items.length === 0 && !this.props.timeLine &&
         <div className="empty-list">No task found</div>}
         <ShadowScrollbar style={scrollStyle}>
           <TaskList

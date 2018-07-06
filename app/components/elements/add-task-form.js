@@ -8,6 +8,7 @@ import Icon from 'components/icons/icon'
 
 import commonUtils from 'redux/utils/common'
 import { createTask } from 'redux/store/tasks/tasks.actions'
+import { getTimeLine } from 'redux/store/tasks/tasks.selectors'
 import { getTasksMenu } from 'redux/store/tasks-menu/tasks-menu.selectors'
 import { getActiveTagsId } from 'redux/store/tags/tags.selectors'
 import cx from "classnames"
@@ -18,6 +19,7 @@ class AddTaskForm extends PureComponent {
     createTask: PropTypes.func.isRequired,
     tags: PropTypes.object,
     tasksMenu: PropTypes.object,
+    timeLine: PropTypes.bool,
   }
 
   state = {
@@ -39,14 +41,14 @@ class AddTaskForm extends PureComponent {
   }
 
   handleAddTask = () => {
-    const tasksMenu = this.props.tasksMenu
+    const { tasksMenu, timeLine } = this.props
 
     if (!AddTaskForm.isNotEmpty(this.state.subject))
       return
 
     // due date sorting algorithm is activated
     const now = moment()
-    const dueDate = tasksMenu.sort.dueDate || tasksMenu.filters.range
+    const dueDate = timeLine || tasksMenu.filters.range
       ? now.startOf('day').set({
         'hour': 23,
         'minute': 45,
@@ -134,6 +136,7 @@ class AddTaskForm extends PureComponent {
 const mapStateToProps = state => ({
   tags: getActiveTagsId(state),
   tasksMenu: getTasksMenu(state),
+  timeLine: getTimeLine(state),
 })
 const actionCreators = { createTask }
 export default connect(mapStateToProps, actionCreators)(AddTaskForm)

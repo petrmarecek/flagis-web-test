@@ -22,7 +22,7 @@ const NavigationBar = ({ location, onHandleClick, mainSearch }) => {
   const search = mainSearch()
 
   return (
-    <Navbar>
+    <Navbar id='navbar'>
       <NavbarLeft title="Default display">
         <NavbarLogo>
           <Icon
