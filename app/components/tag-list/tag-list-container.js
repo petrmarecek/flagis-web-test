@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import TagItem from 'components/tag-list/tag-item'
-import Loader from 'components/elements/loader'
-import ShadowScrollbar from 'components/elements/shadow-scrollbar'
+import Loader from 'components/common/loader'
+import ShadowScrollbar from 'components/common/shadow-scrollbar'
 
 import {
   getVisibleTags,

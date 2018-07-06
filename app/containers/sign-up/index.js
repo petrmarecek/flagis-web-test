@@ -21,8 +21,8 @@ import {
 import { validateSignUp } from 'redux/utils/validate'
 
 import NavigationLanding from 'components/navigation/navigation-landing'
-import InputField from 'components/forms/input-field'
-import Loader from 'components/elements/loader'
+import InputField from 'components/common/input-field'
+import Loader from 'components/common/loader'
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
 

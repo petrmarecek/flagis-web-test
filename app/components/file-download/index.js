@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import FileDownloadForm from './file-download-form';
+import FileDownloadForm from './file-download-form'
 
 const FileDownload = props => {
   const { downloadUrl, queryParams } = props

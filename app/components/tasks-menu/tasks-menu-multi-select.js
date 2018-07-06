@@ -5,7 +5,7 @@ import velocity from 'velocity-animate'
 
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
-import FileDownload from 'components/elements/file-download/index'
+import FileDownload from 'components/file-download/index'
 
 import config from '../../config/index'
 

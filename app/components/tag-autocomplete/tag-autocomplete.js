@@ -2,8 +2,8 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import cx from 'classnames'
 
-import TagAutocompleteItem from 'components/elements/tag-autocomplete/tag-autocomplete-item'
-import TagAutocompleteInput from 'components/elements/tag-autocomplete/tag-autocomplete-input'
+import TagAutocompleteItem from 'components/tag-autocomplete/tag-autocomplete-item'
+import TagAutocompleteInput from 'components/tag-autocomplete/tag-autocomplete-input'
 import Icon from 'components/icons/icon'
 import { ICONS } from 'components/icons/icon-constants'
 

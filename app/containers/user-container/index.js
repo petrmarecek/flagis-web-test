@@ -11,7 +11,7 @@ import { controlRedirectSignIn } from 'redux/store/auth/auth.actions'
 import { getAppStateItem } from 'redux/store/app-state/app-state.selectors'
 
 import Dialogs from 'components/dialogs/dialogs'
-import UndoBox from 'components/elements/undo-box'
+import UndoBox from 'components/common/undo-box'
 import NavigationBar from 'components/navigation/navigation-bar'
 import FloatingComponents from 'components/floating/floating-components'
 import TaskPage from 'containers/task-page'

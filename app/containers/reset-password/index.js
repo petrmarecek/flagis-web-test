@@ -12,8 +12,8 @@ import {
 } from 'redux/store/auth/auth.actions'
 import { validateResetPassword } from 'redux/utils/validate'
 
-import InputField from 'components/forms/input-field'
-import Loader from 'components/elements/loader'
+import InputField from 'components/common/input-field'
+import Loader from 'components/common/loader'
 
 class ResetPassword extends PureComponent {
 

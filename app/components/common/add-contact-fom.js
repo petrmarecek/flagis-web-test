@@ -9,7 +9,7 @@ import { afterSubmitContacts } from 'redux/utils/form-submit'
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
 
-import AddField from 'components/forms/add-field'
+import AddField from 'components/common/add-field'
 import styled from 'styled-components'
 import { Field, reduxForm } from 'redux-form/immutable'
 import { validateEmail } from '../../redux/utils/validate'

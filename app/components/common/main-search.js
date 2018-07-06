@@ -5,7 +5,7 @@ import { List } from 'immutable'
 
 import { getActiveTags } from 'redux/store/tags/tags.selectors'
 import { selectActiveTags } from 'redux/store/tags/tags.actions'
-import TagAutocomplete from 'components/elements/tag-autocomplete/tag-autocomplete'
+import TagAutocomplete from 'components/tag-autocomplete/tag-autocomplete'
 
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'

@@ -16,8 +16,8 @@ import {
 import { validateChangePassword } from 'redux/utils/validate'
 import { afterSubmit } from 'redux/utils/form-submit'
 import { getEmail } from 'redux/store/auth/auth.selectors'
-import InputField from 'components/forms/input-field'
-import Loader from 'components/elements/loader'
+import InputField from 'components/common/input-field'
+import Loader from 'components/common/loader'
 
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'

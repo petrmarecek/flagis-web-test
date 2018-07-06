@@ -7,7 +7,7 @@ import { getContacts } from 'redux/store/contacts/contacts.selectors'
 import { compose, branch, renderComponent, withHandlers } from 'recompose'
 
 import ContactItem from './contact-item'
-import Loader from '../elements/loader'
+import Loader from '../common/loader'
 
 const ContactList = ({ contacts, onHandleClick }) => {
 

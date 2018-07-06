@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Icon from '../../icons/icon'
+import Icon from '../icons/icon'
 import { compose, withHandlers } from 'recompose'
 import { MenuBoxItemIcon, MenuBoxItemTitle } from './styles'
 

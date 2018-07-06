@@ -11,7 +11,7 @@ import { Provider } from 'react-redux'
 import LanguageProvider from 'containers/language-provider'
 import { ConnectedRouter } from 'react-router-redux'
 import App from 'containers/app'
-import MainLoader from 'components/elements/main-loader'
+import MainLoader from 'components/common/main-loader'
 
 // auth store to persist storage
 const persistConfig = {

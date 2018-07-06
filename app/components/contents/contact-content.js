@@ -5,8 +5,8 @@ import { connect } from 'react-redux'
 import { updateContactSearch } from 'redux/store/contacts/contacts.actions'
 import { getContactsSearch } from 'redux/store/contacts/contacts.selectors'
 
-import SearchBox from 'components/elements/search-box'
-import AddContactForm from '../elements/add-contact-fom'
+import SearchBox from 'components/common/search-box'
+import AddContactForm from '../common/add-contact-fom'
 import ContactList from '../contact-list'
 
 import styled from 'styled-components'

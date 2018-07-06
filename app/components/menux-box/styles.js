@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { userSelect, transition, transform, fontMain } from '../../common/styled-component-mixins'
+import { userSelect, transition, transform, fontMain } from '../common/styled-component-mixins'
 
 const MenuBoxContainer = styled.div`
   position: absolute;

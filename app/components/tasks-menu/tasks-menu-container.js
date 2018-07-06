@@ -47,7 +47,7 @@ import {
 import { getTasksMenu } from 'redux/store/tasks-menu/tasks-menu.selectors'
 import { archiveCompletedTasks } from 'redux/utils/component-helper'
 
-import SearchBox from 'components/elements/search-box'
+import SearchBox from 'components/common/search-box'
 import TasksMenuFilters from 'components/tasks-menu/tasks-menu-filters'
 import TasksMenuFiltersActive from 'components/tasks-menu/tasks-menu-filters-active'
 import TasksMenuSort from 'components/tasks-menu//tasks-menu-sort'

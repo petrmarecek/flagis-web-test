@@ -1,8 +1,8 @@
 import React from 'react'
 import TaskListContainer from 'components/task-list/task-list-container'
 import TasksMenuContainer from 'components/tasks-menu/tasks-menu-container'
-import AddTaskForm from 'components/elements/add-task-form'
-import TasksProgressBar from 'components/elements/tasks-progress-bar'
+import AddTaskForm from 'components/common/add-task-form'
+import TasksProgressBar from 'components/common/tasks-progress-bar'
 
 const TasksContent = () => {
   return (

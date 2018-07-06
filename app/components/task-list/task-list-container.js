@@ -42,8 +42,8 @@ import {
   computeTimeLine,
 } from 'redux/utils/redux-helper'
 
-import Loader from 'components/elements/loader'
-import ShadowScrollbar from 'components/elements/shadow-scrollbar'
+import Loader from 'components/common/loader'
+import ShadowScrollbar from 'components/common/shadow-scrollbar'
 import TaskList from 'components/task-list/task-list'
 import moment from 'moment'
 

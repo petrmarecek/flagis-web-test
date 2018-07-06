@@ -6,8 +6,8 @@ import { updateTagSearch } from 'redux/store/tags/tags.actions'
 import { getTagsSearch } from 'redux/store/tags/tags.selectors'
 
 import TagList from 'components/tag-list/tag-list-container'
-import SearchBox from 'components/elements/search-box'
-import AddTagForm from 'components/elements/add-tag-form'
+import SearchBox from 'components/common/search-box'
+import AddTagForm from 'components/common/add-tag-form'
 
 class TagsContent extends PureComponent {
 

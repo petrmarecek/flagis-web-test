@@ -49,7 +49,7 @@ import DetailMenu from 'components/detail/detail-menu'
 import CommentList from '../comment-list/comment-list'
 import ContentEditable from '../common/content-editable'
 import AttachmentList from '../attachment-list/attachment-list'
-import Loader from '../elements/loader'
+import Loader from '../common/loader'
 import Icon from '../icons/icon'
 import {ICONS} from '../icons/icon-constants'
 

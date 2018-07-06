@@ -59,12 +59,12 @@ import {
 import dateUtil from 'redux/utils/date'
 
 import DetailMenu from 'components/detail/detail-menu'
-import TagAutocomplete from 'components/elements/tag-autocomplete/tag-autocomplete'
+import TagAutocomplete from 'components/tag-autocomplete/tag-autocomplete'
 import ContentEditable from 'components/common/content-editable'
-import FilePicker from 'components/elements/file-picker'
+import FilePicker from 'components/common/file-picker'
 import AttachmentList from 'components/attachment-list/attachment-list'
 import CommentList from 'components/comment-list/comment-list'
-import Loader from 'components/elements/loader'
+import Loader from 'components/common/loader'
 import Icon from 'components/icons/icon'
 import {ICONS} from 'components/icons/icon-constants'
 

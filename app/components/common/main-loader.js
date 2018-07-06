@@ -1,5 +1,5 @@
 import React from 'react'
-import Loader from 'components/elements/loader'
+import Loader from 'components/common/loader'
 import Icon from 'components/icons/icon'
 import {ICONS} from 'components/icons/icon-constants'
 import styled from 'styled-components'

@@ -2,9 +2,9 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import velocity from 'velocity-animate'
 
-import MenuBox from 'components/elements/menux-box/menu-box'
-import MenuBoxGroupItems from 'components/elements/menux-box/menu-box-group-items'
-import MenuBoxItem from 'components/elements/menux-box/menu-box-item'
+import MenuBox from 'components/menux-box/menu-box'
+import MenuBoxGroupItems from 'components/menux-box/menu-box-group-items'
+import MenuBoxItem from 'components/menux-box/menu-box-item'
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
 

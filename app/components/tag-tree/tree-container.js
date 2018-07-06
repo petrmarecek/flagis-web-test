@@ -4,11 +4,11 @@ import { connect } from 'react-redux'
 
 import AddTreeItemForm from 'components/tag-tree/add-tree-item-form'
 import Tree from 'components/tag-tree/tree'
-import Loader from 'components/elements/loader'
+import Loader from 'components/common/loader'
 
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
-import ShadowScrollbar from 'components/elements/shadow-scrollbar'
+import ShadowScrollbar from 'components/common/shadow-scrollbar'
 
 import {
   showDialog,

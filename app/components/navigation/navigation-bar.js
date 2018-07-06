@@ -4,7 +4,7 @@ import { compose, withHandlers } from 'recompose'
 import { connect } from 'react-redux'
 
 import NavigationRight from 'components/navigation/navigation-right'
-import MainSearch from 'components/elements/main-search'
+import MainSearch from 'components/common/main-search'
 import Icon from 'components/icons/icon'
 import { ICONS } from 'components/icons/icon-constants'
 

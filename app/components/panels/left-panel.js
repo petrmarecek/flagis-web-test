@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 
 import { resizeLeftPanel } from 'redux/store/app-state/app-state.actions'
 import { getLeftPanel } from 'redux/store/app-state/app-state.selectors'
-import ResizeHandle from 'components/elements/resize-handle'
+import ResizeHandle from 'components/common/resize-handle'
 
 class LeftPanel extends PureComponent {
 

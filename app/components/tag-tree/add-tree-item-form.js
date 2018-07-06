@@ -4,7 +4,7 @@ import classnames from 'classnames'
 
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
-import TagAutocompleteInput from 'components/elements/tag-autocomplete/tag-autocomplete-input'
+import TagAutocompleteInput from 'components/tag-autocomplete/tag-autocomplete-input'
 import AddTreeItemSectionForm from 'components/tag-tree/add-tree-item-section-form'
 
 export default class AddTreeItemForm extends PureComponent {
