@@ -8,6 +8,7 @@ import HTML5Backend from 'react-dnd-html5-backend'
 import { DragDropContext } from 'react-dnd'
 
 import { controlRedirectSignIn } from 'redux/store/auth/auth.actions'
+import { getAccountContent } from 'redux/store/account/account.selectors'
 import { getAppStateItem } from 'redux/store/app-state/app-state.selectors'
 
 import Dialogs from 'components/dialogs/dialogs'
@@ -23,6 +24,7 @@ import AccountPage from 'containers/account-page'
 class UserContainer extends PureComponent {
   static propTypes = {
     controlRedirectSignIn: PropTypes.func,
+    accountContent: PropTypes.string,
     location: PropTypes.shape({
       pathname: PropTypes.string.isRequired,
     }).isRequired,
@@ -62,10 +64,17 @@ class UserContainer extends PureComponent {
   }
 
   render() {
+    const content = this.props.accountContent
     const isAccountPage = this.props.location.pathname === '/user/account'
+    let isTransparentBackground = false
+
+    if (isAccountPage && content !== 'archivedTasks' && content !== 'contactsList') {
+      isTransparentBackground = true
+    }
+
     const backgroundCss = cx({
-      'page-overflow-fix': !isAccountPage,
-      'page-overflow-fix page-overflow-fix--transparent': isAccountPage,
+      'page-overflow-fix': true,
+      'page-overflow-fix--transparent': isTransparentBackground,
     })
 
     return (
@@ -94,7 +103,8 @@ class UserContainer extends PureComponent {
 }
 
 const mapStateToProps = state => ({
-  undoBox: getAppStateItem(state, 'undoBox')
+  undoBox: getAppStateItem(state, 'undoBox'),
+  accountContent: getAccountContent(state),
 })
 const mapDispatchToProps = { controlRedirectSignIn }
 

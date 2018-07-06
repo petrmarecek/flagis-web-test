@@ -2,11 +2,14 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import velocity from 'velocity-animate'
 
-import MenuBox from 'components/menux-box/menu-box'
-import MenuBoxGroupItems from 'components/menux-box/menu-box-group-items'
-import MenuBoxItem from 'components/menux-box/menu-box-item'
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
+import {
+  MenuBoxContainer,
+  MenuBoxGroup,
+  MenuBoxItemIcon,
+  MenuBoxItemTitle,
+} from './styles'
 
 export default class TasksMenuOptions extends PureComponent {
 
@@ -63,30 +66,30 @@ export default class TasksMenuOptions extends PureComponent {
           color={[iconColor]}
           hoverColor={["#282f34"]} />
         {menu.isVisible &&
-        <MenuBox
+        <MenuBoxContainer
           animation="transition.fadeIn"
           menuIcon={this.refs.options}
           clickOutsideMenu={this.handleClick}>
-          <MenuBoxGroupItems>
-            <MenuBoxItem
+          <MenuBoxGroup>
+            <MenuBoxItemIcon
               icon={ICONS.SELECT}
               iconScale={1.06}
               onChange={this.props.onSelectAllTasks} />
-            <MenuBoxItem
+            <MenuBoxItemTitle
               title="Select all tasks"
               onChange={this.props.onSelectAllTasks} />
-          </MenuBoxGroupItems>
+          </MenuBoxGroup>
           {!isVisibleArchivedTasks &&
-          <MenuBoxGroupItems>
-            <MenuBoxItem
+          <MenuBoxGroup>
+            <MenuBoxItemIcon
               icon={ICONS.ARCHIVE}
               iconScale={0.59}
               onChange={this.props.onArchiveCompletedTasks} />
-            <MenuBoxItem
+            <MenuBoxItemTitle
               title="Archive completed tasks"
               onChange={this.props.onArchiveCompletedTasks} />
-          </MenuBoxGroupItems>}
-        </MenuBox>}
+          </MenuBoxGroup>}
+        </MenuBoxContainer>}
       </div>
     )
   }

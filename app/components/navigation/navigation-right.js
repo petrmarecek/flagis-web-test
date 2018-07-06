@@ -143,21 +143,3 @@ export default compose(
     },
   })
 )(NavigationRight)
-
-/*handleClickArchive = () => {
-    this.props.deselectTasks()
-    this.props.cancelTimeLine()
-    this.props.deselectTags()
-    this.props.deselectContacts()
-    this.props.fetchArchivedTasks()
-    this.props.changeLocation('/user/archive')
-  }*/
-
-/*handleClickContacts = () => {
-  this.props.hideArchivedTasks()
-  this.props.cancelTimeLine()
-  this.props.deselectTags()
-  this.props.deselectTasks()
-  this.props.fetchContacts()
-  this.props.changeLocation('/user/contacts')
-}*/

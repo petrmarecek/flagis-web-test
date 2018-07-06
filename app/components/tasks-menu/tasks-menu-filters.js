@@ -2,11 +2,14 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import velocity from 'velocity-animate'
 
-import MenuBox from 'components/menux-box/menu-box'
-import MenuBoxGroupItems from 'components/menux-box/menu-box-group-items'
-import MenuBoxItem from 'components/menux-box/menu-box-item'
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
+import {
+  MenuBoxContainer,
+  MenuBoxGroup,
+  MenuBoxItemIcon,
+  MenuBoxItemTitle,
+} from './styles'
 
 
 export default class TasksMenuFilters extends PureComponent {
@@ -67,59 +70,59 @@ export default class TasksMenuFilters extends PureComponent {
           color={[iconColor]}
           hoverColor={["#282f34"]} />
         {menu.isVisible &&
-        <MenuBox
+        <MenuBoxContainer
           animation="transition.fadeIn"
           menuIcon={this.refs.filters}
           clickOutsideMenu={this.handleClick}>
-          <MenuBoxGroupItems>
-            <MenuBoxItem
+          <MenuBoxGroup>
+            <MenuBoxItemIcon
               active={range === 'today' || range === 'week' || range === 'month'}
               icon={ICONS.CALENDAR}
               iconScale={1.14}
               onChange={() => this.handleRangeFilterChange('today')} />
-            <MenuBoxItem
+            <MenuBoxItemTitle
               title="Today"
               active={range === 'today'}
               onChange={() => this.handleRangeFilterChange('today')} />
             <span>|</span>
-            <MenuBoxItem
+            <MenuBoxItemTitle
               title="This week"
               active={range === 'week'}
               onChange={() => this.handleRangeFilterChange('week')} />
             <span>|</span>
-            <MenuBoxItem
+            <MenuBoxItemTitle
               title="This month"
               active={range === 'month'}
               onChange={() => this.handleRangeFilterChange('month')} />
-          </MenuBoxGroupItems>
-          <MenuBoxGroupItems>
-            <MenuBoxItem
+          </MenuBoxGroup>
+          <MenuBoxGroup>
+            <MenuBoxItemIcon
               active={important || unimportant}
               icon={ICONS.BOLD}
               iconScale={1.33}
               onChange={this.props.onToggleImportantFilter} />
-            <MenuBoxItem
+            <MenuBoxItemTitle
               title="Bold"
               active={important}
               onChange={this.props.onToggleImportantFilter} />
             <span>|</span>
-            <MenuBoxItem
+            <MenuBoxItemTitle
               title="Normal"
               active={unimportant}
               onChange={this.props.onToggleUnimportantFilter} />
-          </MenuBoxGroupItems>
-          <MenuBoxGroupItems>
-            <MenuBoxItem
+          </MenuBoxGroup>
+          <MenuBoxGroup>
+            <MenuBoxItemIcon
               active={noTags}
               icon={ICONS.NO_TAGS}
               iconScale={1}
               onChange={this.props.onToggleNoTagsFilter} />
-            <MenuBoxItem
+            <MenuBoxItemTitle
               title="No tags"
               active={noTags}
               onChange={this.props.onToggleNoTagsFilter} />
-          </MenuBoxGroupItems>
-        </MenuBox>}
+          </MenuBoxGroup>
+        </MenuBoxContainer>}
       </div>
     )
   }

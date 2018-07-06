@@ -3,12 +3,15 @@ import PropTypes from 'prop-types'
 import velocity from 'velocity-animate'
 import { compose, withHandlers, lifecycle } from 'recompose'
 
-import MenuBox from 'components/menux-box/menu-box'
-import MenuBoxGroupItems from 'components/menux-box/menu-box-group-items'
-import MenuBoxItem from 'components/menux-box/menu-box-item'
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
-import { TasksMenuItem } from './styles'
+import {
+  TasksMenuItem,
+  MenuBoxContainer,
+  MenuBoxGroup,
+  MenuBoxItemIcon,
+  MenuBoxItemTitle,
+} from './styles'
 
 const TasksMenuSort = ({ tasksMenu, onHandleClick, onHandleSortAlgorithmToggle  }) => {
 
@@ -48,63 +51,63 @@ const TasksMenuSort = ({ tasksMenu, onHandleClick, onHandleSortAlgorithmToggle  
         color={[iconColor]}
         hoverColor={["#282f34"]} />
       {menu.isVisible &&
-      <MenuBox
+      <MenuBoxContainer
         animation="transition.fadeIn"
         menuIcon={this.sort}
         clickOutsideMenu={onHandleClick}>
-        <MenuBoxGroupItems>
-          <MenuBoxItem
+        <MenuBoxGroup>
+          <MenuBoxItemIcon
             active={defaultSort}
             type="defaultSort"
             icon={ICONS.SORT_DEFAULT}
             iconScale={0.66}
             onChange={onHandleSortAlgorithmToggle} />
-          <MenuBoxItem
+          <MenuBoxItemTitle
             title="Default user sorting"
             type="defaultSort"
             active={defaultSort}
             onChange={onHandleSortAlgorithmToggle} />
-        </MenuBoxGroupItems>
-        <MenuBoxGroupItems>
-          <MenuBoxItem
+        </MenuBoxGroup>
+        <MenuBoxGroup>
+          <MenuBoxItemIcon
             active={alphabet}
             type="alphabet"
             icon={ICONS.ALPHABET}
             iconWidth={1.14}
             onChange={onHandleSortAlgorithmToggle} />
-          <MenuBoxItem
+          <MenuBoxItemTitle
             title="Sort alphabetically"
             type="alphabet"
             active={alphabet}
             onChange={onHandleSortAlgorithmToggle} />
-        </MenuBoxGroupItems>
-        <MenuBoxGroupItems>
-          <MenuBoxItem
+        </MenuBoxGroup>
+        <MenuBoxGroup>
+          <MenuBoxItemIcon
             active={important}
             type="important"
             icon={ICONS.BOLD}
             iconScale={1.33}
             onChange={onHandleSortAlgorithmToggle} />
-          <MenuBoxItem
+          <MenuBoxItemTitle
             title="Sort by Bold"
             type="important"
             active={important}
             onChange={onHandleSortAlgorithmToggle} />
-        </MenuBoxGroupItems>
-        <MenuBoxGroupItems>
-          <MenuBoxItem
+        </MenuBoxGroup>
+        <MenuBoxGroup>
+          <MenuBoxItemIcon
             active={incomplete}
             type="incomplete"
             icon={ICONS.TASK_CHECKED}
             iconScale={0.73}
             onChange={onHandleSortAlgorithmToggle} />
-          <MenuBoxItem
+          <MenuBoxItemTitle
             title="Sort incompleted"
             type="incomplete"
             active={incomplete}
             onChange={onHandleSortAlgorithmToggle} />
-        </MenuBoxGroupItems>
-      </MenuBox>}
+        </MenuBoxGroup>
+      </MenuBoxContainer>}
     </TasksMenuItem>
   )
 }

@@ -265,7 +265,7 @@ export const getSelectionTasks = state => state.getIn(['tasks', 'selection'])
 // ------ Reselect selectors ----------------------------------------------------
 
 export const getTasks = createSelector(
-  getRoutingPathname,
+  getArchivedTasksVisibility,
   getArchivedTasksIsFetching,
   getArchivedTasksItems,
   getTasksIsFetching,
@@ -275,7 +275,7 @@ export const getTasks = createSelector(
   getEntitiesTasks,
   getEntitiesTags,
   getActiveTagsIds,
-  (pathName,
+  (isArchivedTasksVisible,
    archivedTasksIsFetching,
    archivedTasksItems,
    tasksIsFetching,
@@ -286,7 +286,7 @@ export const getTasks = createSelector(
    entitiesTags,
    activeTagsIds) => {
 
-    const archived = pathName === '/user/archive'
+    const archived = isArchivedTasksVisible
     const data = { tasksMenu, timeLine, entitiesTasks, entitiesTags, activeTagsIds }
 
     if (archived) {
@@ -351,7 +351,7 @@ export const getSelectTasks = createSelector(
 )
 
 export const getTasksId = createSelector(
-  getRoutingPathname,
+  getArchivedTasksVisibility,
   getArchivedTasksItems,
   getTasksItems,
   getTasksMenu,
@@ -359,9 +359,9 @@ export const getTasksId = createSelector(
   getEntitiesTasks,
   getEntitiesTags,
   getActiveTagsIds,
-  (pathName, archivedTasksItems, tasksItems, tasksMenu, timeLine, entitiesTasks, entitiesTags, activeTagsIds) => {
+  (isArchivedTasksVisible, archivedTasksItems, tasksItems, tasksMenu, timeLine, entitiesTasks, entitiesTags, activeTagsIds) => {
 
-    const archived = pathName === '/user/archive'
+    const archived = isArchivedTasksVisible
     const data = { tasksMenu, timeLine, entitiesTasks, entitiesTags, activeTagsIds }
 
     if (archived) {

@@ -3,12 +3,11 @@ import PropTypes from 'prop-types'
 import { findDOMNode } from 'react-dom'
 import velocity from 'velocity-animate'
 import { compose, withHandlers, lifecycle } from 'recompose'
-import { MenuBoxContainer } from './styles'
 
-const MenuBox = ({ children }) => (
-  <MenuBoxContainer id='menuBox'>
+const MenuBox = ({ className, children }) => (
+  <div className={className} id='menuBox'>
     {children}
-  </MenuBoxContainer>
+  </div>
 )
 
 MenuBox.propTypes = {

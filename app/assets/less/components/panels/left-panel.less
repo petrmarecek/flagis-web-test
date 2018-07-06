@@ -15,6 +15,7 @@
 @cl-tx-folder: #fff;
 @cl-tx-folder-active: #fff;
 @cl-bg-panel: #293034;
+@cl-bg-panel-account: #fff;
 @cl-tx-section: #fff;
 @cl-tx-add-section: #fff;
 @cl-bg-section: #fff;
@@ -167,6 +168,11 @@
     left: 0;
     z-index: 100;
     .box-sizing(border-box);
+
+    &--account {
+        background-color: @cl-bg-panel-account;
+        border-right: 1px solid black;
+    }
 
     .loader {
         margin: 0 auto;

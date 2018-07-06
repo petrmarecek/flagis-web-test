@@ -1,207 +1,144 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { List } from 'immutable'
-import { Field, reduxForm } from 'redux-form/immutable'
-
-import { deselectError, visibleLoader } from 'redux/store/app-state/app-state.actions'
+import { compose, withHandlers } from 'recompose'
 import {
-  getAppStateItem,
-  getLoader,
-} from 'redux/store/app-state/app-state.selectors'
-import {
-  changePassword,
-  logout,
-} from 'redux/store/auth/auth.actions'
-import { validateChangePassword } from 'redux/utils/validate'
-import { afterSubmit } from 'redux/utils/form-submit'
-import { getEmail } from 'redux/store/auth/auth.selectors'
-import InputField from 'components/common/input-field'
-import Loader from 'components/common/loader'
+  deselectTasks,
+  cancelTimeLine,
+  fetchArchivedTasks,
+} from '../../redux/store/tasks/tasks.actions'
+import { changePassword, logout } from 'redux/store/auth/auth.actions'
+import { deselectTags } from '../../redux/store/tags/tags.actions'
+import { fetchContacts, deselectContacts } from '../../redux/store/contacts/contacts.actions'
+import { setContent } from '../../redux/store/account/account.actions'
+import { hideArchivedTasks } from '../../redux/store/app-state/app-state.actions'
+import { getDetail } from '../../redux/store/app-state/app-state.selectors'
+import { getAccountContent } from '../../redux/store/account/account.selectors'
 
-import { ICONS } from 'components/icons/icon-constants'
-import Icon from 'components/icons/icon'
-import {compose} from "recompose";
+import LeftPanel from 'components/panels/left-panel'
+import AccountMenu from 'components/account-menu/'
+import CenterPanel from 'components/panels/center-panel'
+import ArchiveContent from 'components/contents/archive-content'
+import ContactContent from 'components/contents/contact-content'
+import ArchiveDetailContent from 'components/contents/archive-detail-content'
+import DetailContent from 'components/contents/detail-content'
+import ChangePassword from 'components/common/change-password'
 
-class AccountPage extends PureComponent {
+const AccountPage = props => {
 
-  static contextTypes = {
-    router: PropTypes.object.isRequired,
+  const {
+    content,
+    detail,
+    onHandleSetContent,
+    onHandleArchivedTasks,
+    onHandleContacts,
+    onHandleLogOut
+  } = props
+
+  const getArchivedContent = () => {
+    if (detail.archive) {
+      return (
+        <ArchiveDetailContent />
+      )
+    }
+
+    onHandleArchivedTasks()
+    return (
+      <ArchiveContent />
+    )
   }
 
-  static propTypes = {
-    changePassword: PropTypes.func.isRequired,
-    handleSubmit: PropTypes.func.isRequired,
-    deselectError: PropTypes.func.isRequired,
-    visibleLoader: PropTypes.func.isRequired,
-    logout: PropTypes.func.isRequired,
-    errorChangePassword: PropTypes.object,
-    email: PropTypes.string,
-    loader: PropTypes.bool,
+  const getContactsContent = () => {
+    if (detail.contact) {
+      return (
+        <DetailContent/>
+      )
+    }
+
+    onHandleContacts()
+    return (
+      <ContactContent/>
+    )
   }
 
-  state = {
-    errorMessage: List(),
-  }
+  const getContent = () => {
+    switch (content) {
+      case 'archivedTasks':
+        return getArchivedContent()
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.errorChangePassword.error) {
-      this.setState((state) => ({
-        errorMessage: state.errorMessage.push(nextProps.errorChangePassword.message)
-      }))
-      this.props.deselectError('changePassword')
+      case 'contactsList':
+        return getContactsContent()
+
+      case 'changePassword':
+        return <ChangePassword/>
+
+      default:
+        return <div>Account content</div>
     }
   }
 
-  handleLogout = event => {
-    event.preventDefault()
-    this.props.logout()
-  }
+  return (
+    <div>
+      <LeftPanel>
+        <AccountMenu
+          content={content}
+          onChange={onHandleSetContent}
+          onLogOut={onHandleLogOut} />
+      </LeftPanel>
+      <CenterPanel>
+        {getContent()}
+      </CenterPanel>
+    </div>
+  )
+}
 
-  onSubmit = values => {
-    this.setState((state) => ({
-      errorMessage: state.errorMessage.clear()
-    }))
-    this.props.visibleLoader()
-    this.props.changePassword({
-      oldPassword: values.oldPassword,
-      newPassword: values.newPassword,
-    })
-  }
-
-  renderErrorMessage = () => {
-    const error = this.state.errorMessage.map((string, i) => {
-      return (
-        <li key={i} className="error-list-item">
-          <div key={i} className="error-list-item__text">
-            {string}
-          </div>
-          <Icon
-            className="error-list-item__icon"
-            icon={ICONS.ERROR}
-            width={12}
-            height={14}
-            color={["red"]}/>
-        </li>
-      )
-    })
-    return error
-  }
-
-  render() {
-    const email = this.props.email
-    return (
-      <div className="form-window">
-        <div className="form-window-body">
-          <div className="account-page">
-            <Icon
-              className="account-page__icon"
-              icon={ICONS.ACCOUNT}
-              width={19}
-              height={20}
-              scale={0.9}
-              color={["#a9a9a9"]}/>
-            <p className="account-page__email">{email}</p>
-            <p className="account-page__text" onClick={this.handleLogout}>Log out</p>
-            <Icon
-              className="account-page__log-out"
-              icon={ICONS.LOG_OUT}
-              width={20}
-              height={20}
-              scale={1.25}
-              color={["#282f34"]}
-              onClick={this.handleLogout}/>
-          </div>
-          <Icon
-            className="account-page__lock"
-            icon={ICONS.LOCK}
-            width={20}
-            height={20}
-            scale={0.52}
-            color={["#a9a9a9"]}/>
-          <form className="common-form" method="post">
-            <div className="form-fields">
-              <div className="form-error">
-                <ul className="error-list">
-                  {this.renderErrorMessage()}
-                </ul>
-              </div>
-              <div className="form-row">
-                <div className="field-control">
-                  <Field
-                    id="oldPassword"
-                    name="oldPassword"
-                    type="password"
-                    label="Old password"
-                    component={InputField}/>
-                </div>
-              </div>
-              <div className="form-row">
-                <div className="field-control">
-                  <Field
-                    id="newPassword"
-                    name="newPassword"
-                    type="password"
-                    label="New password"
-                    component={InputField}/>
-                </div>
-              </div>
-              <div className="form-row">
-                <div className="field-control">
-                  <Field
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    type="password"
-                    label="Password confirmation"
-                    component={InputField}/>
-                </div>
-              </div>
-              <div className="form-row form-button-row">
-                <div className="field-label-offset">
-                  <div className="field-control">
-                    <input
-                      type="submit"
-                      className="btn-default"
-                      value="Change password"
-                      onClick={this.props.handleSubmit((values) => this.onSubmit(values))}/>
-                  </div>
-                </div>
-              </div>
-            </div>
-            {this.props.loader &&
-            <div className="common-form__loader">
-              <Loader />
-            </div>
-            }
-          </form>
-        </div>
-      </div>
-    )
-  }
+AccountPage.propTypes = {
+  content: PropTypes.string,
+  detail: PropTypes.object,
+  onHandleSetContent: PropTypes.func,
+  onHandleArchivedTasks: PropTypes.func,
+  onHandleContacts: PropTypes.func,
+  onHandleLogOut: PropTypes.func,
 }
 
 const mapStateToProps = state => ({
-  errorChangePassword: getAppStateItem(state, 'changePassword'),
-  email: getEmail(state),
-  loader: getLoader(state),
+  content: getAccountContent(state),
+  detail: getDetail(state),
 })
+
 const mapDispatchToProps = {
+  setContent,
+  deselectTasks,
+  cancelTimeLine,
+  deselectTags,
+  deselectContacts,
+  fetchArchivedTasks,
+  hideArchivedTasks,
+  fetchContacts,
   changePassword,
-  deselectError,
-  visibleLoader,
   logout,
 }
-const form = reduxForm({
-  form: 'changePassword',
-  validate: validateChangePassword,
-  onSubmitSuccess: afterSubmit,
-})
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
-  reduxForm({
-    form: 'changePassword',
-    validate: validateChangePassword,
-    onSubmitSuccess: afterSubmit,
-  }),
+  withHandlers({
+    onHandleSetContent: props => content => props.setContent(content),
+    onHandleArchivedTasks: props => () => {
+      props.deselectTasks()
+      props.cancelTimeLine()
+      props.deselectTags()
+      props.deselectContacts()
+      props.fetchArchivedTasks()
+    },
+    onHandleContacts: props => () => {
+      props.hideArchivedTasks()
+      props.deselectTasks()
+      props.cancelTimeLine()
+      props.deselectTags()
+      props.fetchContacts()
+    },
+    onHandleLogOut: props => () => {
+      props.logout()
+    },
+  })
 )(AccountPage)

@@ -1,9 +1,11 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
+import cx from 'classnames'
 import { connect } from 'react-redux'
 
 import { resizeLeftPanel } from 'redux/store/app-state/app-state.actions'
 import { getLeftPanel } from 'redux/store/app-state/app-state.selectors'
+import { getRoutingPathname } from 'redux/store/routing/routing.selectors'
 import ResizeHandle from 'components/common/resize-handle'
 
 class LeftPanel extends PureComponent {
@@ -12,6 +14,7 @@ class LeftPanel extends PureComponent {
     children: PropTypes.object.isRequired,
     resizeLeftPanel: PropTypes.func.isRequired,
     leftPanel: PropTypes.object,
+    location: PropTypes.string,
   }
 
   handleResize = position => {
@@ -19,14 +22,20 @@ class LeftPanel extends PureComponent {
   }
 
   render() {
-    const leftPanel = this.props.leftPanel
+    const { leftPanel, location } = this.props
+    const account = location === '/user/account'
     const style = { width: leftPanel.width }
+
+    const leftPanelCss = cx({
+      'left-panel': true,
+      'left-panel--account': account,
+    })
 
     return (
       <div
         ref="elem"
-        className="left-panel" style={style}>
-        <ResizeHandle right onResize={this.handleResize} />
+        className={leftPanelCss} style={style}>
+        {!account && <ResizeHandle right onResize={this.handleResize} />}
         {this.props.children}
       </div>
     )
@@ -35,6 +44,7 @@ class LeftPanel extends PureComponent {
 
 const mapStateToProps = state => ({
   leftPanel: getLeftPanel(state),
+  location: getRoutingPathname(state),
 })
 
 const actionCreators = {

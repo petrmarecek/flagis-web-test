@@ -174,6 +174,10 @@ export const TasksMenuStore = Record({
   options: new TasksOptions(),
 })
 
+export const MultiSelectStore = Record({
+  tasks: new MultiSelectTasks(),
+})
+
 export const TagStore = Record({
   search: '',
   byId: Map(),
@@ -198,8 +202,8 @@ export const ContactStore = Record({
   current: null,
 })
 
-export const MultiSelectStore = Record({
-  tasks: new MultiSelectTasks(),
+export const AccountStore = Record({
+  content: null,
 })
 
 // ------ Entities ------------------------------------------------------------

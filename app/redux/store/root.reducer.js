@@ -11,14 +11,15 @@ import languageProviderReducer from 'containers/language-provider/reducer';
 import appState from 'redux/store/app-state/app-state.reducer'
 import auth from 'redux/store/auth/auth.reducer'
 import entities from 'redux/store/entities/entities.reducer'
-import tasksMenu from 'redux/store/tasks-menu/tasks-menu.reducer'
 import tasks from 'redux/store/tasks/tasks.reducer'
 import comments from 'redux/store/comments/comments.reducer'
 import attachments from 'redux/store/attachments/attachments.reducer'
+import tasksMenu from 'redux/store/tasks-menu/tasks-menu.reducer'
+import multiSelect from 'redux/store/multi-select/multi-select.reducer'
 import tree from 'redux/store/tree/tree.reducer'
 import tags from 'redux/store/tags/tags.reducer'
 import contacts from 'redux/store/contacts/contacts.reducer'
-import multiSelect from 'redux/store/multi-select/multi-select.reducer'
+import account from 'redux/store/account/account.reducer'
 
 /*
  * routeReducer
@@ -64,6 +65,7 @@ export default function createReducer(injectedReducers) {
     tree,
     tags,
     contacts,
+    account,
     form: formReducer,
     route: routeReducer,
     language: languageProviderReducer,
