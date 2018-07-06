@@ -27,6 +27,7 @@ import {
   getSelectionTasks,
   getTasksId,
   getCompletedTasksId,
+  getTimeLine,
 } from 'redux/store/tasks/tasks.selectors'
 import {
   changeRangeFilter,
@@ -86,6 +87,7 @@ class TasksMenuContainer extends PureComponent {
     visibleMenuOption: PropTypes.func,
     hideMenuOption: PropTypes.func,
     selectAllTask: PropTypes.func,
+    timeLine: PropTypes.bool,
   }
 
   // Filters
@@ -162,6 +164,7 @@ class TasksMenuContainer extends PureComponent {
   render() {
     const isMultiSelect = this.props.multiSelect
     const isVisibleArchivedTasks = this.props.isVisibleArchivedTasks
+    const isTimeLine = this.props.timeLine
     const activeFilters = this.props.tasksMenu.filters.active.map((filter, key) => (
       <TasksMenuFiltersActive
         key={key}
@@ -212,7 +215,7 @@ class TasksMenuContainer extends PureComponent {
           hideMenuOption={this.props.hideMenuOption}
           tasksMenu={this.props.tasksMenu} />}
 
-        {!isVisibleArchivedTasks && !isMultiSelect &&
+        {!isVisibleArchivedTasks && !isMultiSelect && !isTimeLine &&
         <TasksMenuSort
           onToggleSortAlgorithm={this.handleSortAlgorithmToggle}
           visibleMenuSort={this.props.visibleMenuSort}
@@ -255,6 +258,7 @@ const mapStateToProps = state => ({
   activeTags: getActiveTagsIds(state),
   auth: getAuth(state),
   isVisibleArchivedTasks: getArchivedTasksVisibility(state),
+  timeLine: getTimeLine(state),
 })
 const mapDispatchToProps = {
   changeRangeFilter,
