@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { withStateHandlers } from 'recompose'
 import { markdownToHTML } from '../../redux/utils/component-helper'
 import styled, { css } from 'styled-components'
-import { boxSizing } from './styled-component-mixins'
+import { boxSizing } from '../styled-components-mixins/'
 
 const styles = css`
   ${boxSizing('border-box')}

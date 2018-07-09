@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { boxSizing } from '../common/styled-component-mixins'
+import { boxSizing } from '../styled-components-mixins/'
 
 // Detail
 const DetailStyle = styled.div`

@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import MenuBox from 'components/menux-box/menu-box'
 import MenuBoxGroupItems from 'components/menux-box/menu-box-group-items'
 import MenuBoxItem from 'components/menux-box/menu-box-item'
-import { boxSizing, transition, fontMain, transform, userSelect } from '../common/styled-component-mixins'
+import { boxSizing, transition, fontMain, transform, userSelect } from '../styled-components-mixins/'
 
 const TasksMenuItem = styled.div`
   ${boxSizing('border-box')}

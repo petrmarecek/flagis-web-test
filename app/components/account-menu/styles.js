@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import MenuBoxGroupItems from 'components/menux-box/menu-box-group-items'
 import MenuBoxItem from 'components/menux-box/menu-box-item'
-import { fontMain, userSelect } from '../common/styled-component-mixins'
+import { fontMain, userSelect } from '../styled-components-mixins/'
 
 const MenuBoxContainer = styled.div`
   font-size: 15px;
