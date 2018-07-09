@@ -40,6 +40,7 @@ export default function* root() {
     fork(auth.initDataFlow),
     takeLatest(AUTH.CONTROL_REDIRECT_SIGN_IN, auth.controlRedirectSignIn),
     takeLatest(AUTH.CONTROL_REDIRECT_TASKS, auth.controlRedirectTasks),
+    takeLatest(AUTH.CHANGE_NAME, auth.changeName),
     takeLatest(AUTH.CHANGE_PASSWORD, auth.changePassword),
     takeLatest(AUTH.EMAIL_RESET_PASSWORD, auth.emailResetPassword),
     takeLatest(AUTH.RESET_PASSWORD, auth.resetPassword),

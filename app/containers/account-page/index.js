@@ -22,6 +22,7 @@ import ArchiveContent from 'components/contents/archive-content'
 import ContactContent from 'components/contents/contact-content'
 import ArchiveDetailContent from 'components/contents/archive-detail-content'
 import DetailContent from 'components/contents/detail-content'
+import EditProfile from 'components/common/edit-profile'
 import ChangePassword from 'components/common/change-password'
 
 const AccountPage = props => {
@@ -69,11 +70,14 @@ const AccountPage = props => {
       case 'contactsList':
         return getContactsContent()
 
+      case 'editProfile':
+        return <EditProfile/>
+
       case 'changePassword':
         return <ChangePassword/>
 
       default:
-        return <div>Account content</div>
+        return <EditProfile/>
     }
   }
 

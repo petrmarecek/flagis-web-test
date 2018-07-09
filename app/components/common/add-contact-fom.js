@@ -12,7 +12,7 @@ import Icon from 'components/icons/icon'
 import AddField from 'components/common/add-field'
 import styled from 'styled-components'
 import { Field, reduxForm } from 'redux-form/immutable'
-import { validateEmail } from '../../redux/utils/validate'
+import { validateAddContact } from '../../redux/utils/validate'
 
 const AddFormContainer = styled.form`
   margin-bottom: 6px;
@@ -108,7 +108,7 @@ export default compose(
   }),
   reduxForm({
     form: 'addContactForm',
-    validate: validateEmail,
+    validate: validateAddContact,
     onSubmitSuccess: afterSubmitContacts,
   }),
 )(AddContactForm)

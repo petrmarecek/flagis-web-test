@@ -122,6 +122,7 @@ export const AppStateStore = Record({
   currentDialog: null,
   tagAutocompletes: new TagAutocompleteMap(),
   tagHints: new TagHints(),
+  changeName: new Error(),
   changePassword: new Error(),
   signIn: new Error(),
   signUp: new Error(),
@@ -198,7 +199,7 @@ export const ContactStore = Record({
 })
 
 export const AccountStore = Record({
-  content: null,
+  content: 'editProfile',
 })
 
 // ------ Entities ------------------------------------------------------------

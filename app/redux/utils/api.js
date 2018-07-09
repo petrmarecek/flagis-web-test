@@ -31,6 +31,10 @@ export default {
       .post('users', userData)
       .then(res => res.data),
 
+    update: userData => api
+      .patch('users', userData)
+      .then(res => res.data),
+
     password: userData => api
       .put('users/password', userData)
       .then(res => res.data),

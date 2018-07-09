@@ -33,7 +33,9 @@ export const errorMessages = {
     'The same tag found on the same tree level.',
   },
 
-  sessionExpired: 'Your session has expired.'
+  sessionExpired: 'Your session has expired.',
+
+  somethingWrong: 'Sorry, something went wrong. Please try again.',
 }
 
 export const successMessages = {
@@ -51,6 +53,8 @@ export const successMessages = {
   },
 
   changePassword: 'Password has successfully been changed.',
+
+  changeName: 'Name has successfully been changed.',
 }
 
 export const infoMessages = {

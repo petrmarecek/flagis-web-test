@@ -5,6 +5,7 @@ export const AUTH = {
   LOGIN: 'AUTH/LOGIN',
   LOGOUT: 'AUTH/LOGOUT',
   UPDATE_PROFILE: 'AUTH/UPDATE_PROFILE',
+  CHANGE_NAME: 'AUTH/CHANGE_NAME',
   CHANGE_PASSWORD: 'AUTH/CHANGE_PASSWORD',
   EMAIL_RESET_PASSWORD: 'AUTH/EMAIL_RESET_PASSWORD',
   RESET_PASSWORD: 'AUTH/RESET_PASSWORD',
@@ -29,6 +30,16 @@ export const login = userData => ({
   payload: userData
 })
 
+export const updateProfile = profile => ({
+  type: AUTH.UPDATE_PROFILE,
+  payload: { profile }
+})
+
+export const changeName = userData => ({
+  type: AUTH.CHANGE_NAME,
+  payload: userData
+})
+
 export const changePassword = userData => ({
   type: AUTH.CHANGE_PASSWORD,
   payload: userData
@@ -44,4 +55,6 @@ export const resetPassword = userData => ({
   payload: userData
 })
 
-export const logout = () => ({ type: AUTH.LOGOUT })
+export const logout = () => ({
+  type: AUTH.LOGOUT
+})

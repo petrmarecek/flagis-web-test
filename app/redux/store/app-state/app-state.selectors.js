@@ -14,6 +14,7 @@ export const getTagHintsVisibility = state => state.getIn(['appState', 'tagHints
 export const getTagHintsSelectOnly = state => state.getIn(['appState', 'tagHints', 'isSelectOnly'])
 export const getTagAutocompletes = state => state.getIn(['appState', 'tagAutocompletes'])
 export const getAppStateItem = (state, type) => state.getIn(['appState', type])
+export const getChangeNameForm = state => state.getIn(['appState', 'changeName'])
 export const getChangePasswordForm = state => state.getIn(['appState', 'changePassword'])
 export const getMultiSelectVisibility = state => state.getIn(['appState', 'multiSelect', 'isVisible'])
 export const getCurrentDialog = state => state.getIn(['appState', 'currentDialog'])

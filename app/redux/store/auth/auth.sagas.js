@@ -126,6 +126,24 @@ export function* controlRedirectTasks() {
   }
 }
 
+export function* changeName(action) {
+  try {
+    const profile = yield call(api.users.update, action.payload)
+    yield put(authActions.updateProfile(profile))
+    yield put(appStateActions.deselectError('changeName'))
+    yield put(appStateActions.hideLoader())
+
+    toast.success(successMessages.changeName, {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+    })
+
+  } catch (err) {
+    yield put(appStateActions.setError('changeName', errorMessages.somethingWrong))
+    yield put(appStateActions.hideLoader())
+  }
+}
+
 export function* changePassword(action) {
   try {
     yield call(api.users.password, action.payload)

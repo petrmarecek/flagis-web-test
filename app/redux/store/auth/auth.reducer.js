@@ -27,6 +27,6 @@ export default typeToReducer({
   [AUTH.LOGOUT]: () => new AuthStore(),
 
   [AUTH.UPDATE_PROFILE]: (state, action) =>
-    state.setIn('profile', new Profile(action.profile)),
+    state.setIn(['profile'], new Profile(action.payload.profile))
 
 }, new AuthStore())
