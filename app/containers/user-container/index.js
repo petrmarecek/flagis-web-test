@@ -1,14 +1,12 @@
 import React, { PureComponent } from 'react'
 import { Switch, Route } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import cx from 'classnames'
 import { connect } from 'react-redux'
 import { ToastContainer, style } from 'react-toastify'
 import HTML5Backend from 'react-dnd-html5-backend'
 import { DragDropContext } from 'react-dnd'
 
 import { controlRedirectSignIn } from 'redux/store/auth/auth.actions'
-import { getAccountContent } from 'redux/store/account/account.selectors'
 import { getAppStateItem } from 'redux/store/app-state/app-state.selectors'
 
 import Dialogs from 'components/dialogs/dialogs'
@@ -24,7 +22,6 @@ import AccountPage from 'containers/account-page'
 class UserContainer extends PureComponent {
   static propTypes = {
     controlRedirectSignIn: PropTypes.func,
-    accountContent: PropTypes.string,
     location: PropTypes.shape({
       pathname: PropTypes.string.isRequired,
     }).isRequired,
@@ -64,23 +61,10 @@ class UserContainer extends PureComponent {
   }
 
   render() {
-    const content = this.props.accountContent
-    const isAccountPage = this.props.location.pathname === '/user/account'
-    let isTransparentBackground = false
-
-    if (isAccountPage && content !== 'archivedTasks' && content !== 'contactsList') {
-      isTransparentBackground = true
-    }
-
-    const backgroundCss = cx({
-      'page-overflow-fix': true,
-      'page-overflow-fix--transparent': isTransparentBackground,
-    })
-
     return (
       <div id="user-container">
         <NavigationBar location={this.props.location} />
-        <div className={backgroundCss}>
+        <div className='page-overflow-fix'>
           <Switch>
             <Route path={`${this.props.match.path}/tasks`} component={TaskPage} />
             <Route path={`${this.props.match.path}/tags`} component={TagPage} />
@@ -104,7 +88,6 @@ class UserContainer extends PureComponent {
 
 const mapStateToProps = state => ({
   undoBox: getAppStateItem(state, 'undoBox'),
-  accountContent: getAccountContent(state),
 })
 const mapDispatchToProps = { controlRedirectSignIn }
 

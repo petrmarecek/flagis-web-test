@@ -18,10 +18,6 @@ const LeftPanel = Record({
   width: 290,
 })
 
-const CenterPanel = Record({
-  isResizing: false,
-})
-
 export const Position = Record({
   top: 0,
   left: 0,
@@ -119,7 +115,6 @@ export const TasksOptions = Record({
 export const AppStateStore = Record({
   loader: new Visibility(),
   leftPanel: new LeftPanel(),
-  centerPanel: new CenterPanel(),
   multiSelect: new Visibility(),
   archivedTasks: new Visibility(),
   detail: new Detail(),

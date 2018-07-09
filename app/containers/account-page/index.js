@@ -77,6 +77,10 @@ const AccountPage = props => {
     }
   }
 
+  const centerPanelStyle = (content === 'archivedTasks' || content === 'contactsList')
+      ? {}
+      : { margin: '10px 10px 0 10px', backgroundColor: '#fff' }
+
   return (
     <div>
       <LeftPanel>
@@ -85,7 +89,7 @@ const AccountPage = props => {
           onChange={onHandleSetContent}
           onLogOut={onHandleLogOut} />
       </LeftPanel>
-      <CenterPanel>
+      <CenterPanel style={centerPanelStyle}>
         {getContent()}
       </CenterPanel>
     </div>
