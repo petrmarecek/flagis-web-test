@@ -7,6 +7,7 @@ import { getContacts } from 'redux/store/contacts/contacts.selectors'
 import { compose, branch, renderComponent, withHandlers } from 'recompose'
 
 import ContactItem from './contact-item'
+import ShadowScrollbar from '../common/shadow-scrollbar'
 import Loader from '../common/loader'
 
 const ContactList = ({ contacts, onHandleClick }) => {
@@ -17,12 +18,24 @@ const ContactList = ({ contacts, onHandleClick }) => {
     )
   }
 
-  return contacts.items.map(contact => (
-    <ContactItem
-      key={contact.id}
-      contact={contact}
-      onHandleClick={onHandleClick} />
-  ))
+  const scrollStyle = {
+    height: `calc(100vh - 152px)`,
+    shadowHeight: 20,
+    boxShadowTop: 'inset 0 20px 20px -10px rgba(231, 236, 237, 1)',
+    boxShadowBottom: 'inset 0 -20px 20px -10px  rgba(231, 236, 237, 1)',
+    overflow: 'hidden'
+  }
+
+  return (
+    <ShadowScrollbar style={scrollStyle}>
+      {contacts.items.map(contact => (
+        <ContactItem
+          key={contact.id}
+          contact={contact}
+          onHandleClick={onHandleClick} />
+      ))}
+    </ShadowScrollbar>
+  )
 }
 
 ContactList.propTypes = {

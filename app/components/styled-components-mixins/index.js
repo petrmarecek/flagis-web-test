@@ -18,6 +18,12 @@ const boxSizing = value => css`
   box-sizing: ${value};
 `;
 
+const boxShadow = value => css`
+  -webkit-box-shadow: ${value};
+  -moz-box-shadow: ${value};
+  box-shadow: ${value};
+`;
+
 const transition = value => css`
   -webkit-transition: ${value};
   -moz-transition: ${value};
@@ -41,20 +47,20 @@ const userSelect = value => css`
   user-select: ${value};
 `;
 
-const placeholder = css`
+const placeholderColor = value => css`
   &::-webkit-input-placeholder {
-    color: ${props => props.placeholderColor ? props.placeholderColor : '#8c9da9'};
+    color: ${value};
   }
   &:-moz-placeholder { /!* Firefox 18- *!/
-    color: ${props => props.placeholderColor ? props.placeholderColor : '#8c9da9'};
+    color: ${value};
   }
   
   &::-moz-placeholder { /!* Firefox 19+ *!/
-    color: #${props => props.placeholderColor ? props.placeholderColor : '#8c9da9'};
+    color: ${value};
   }
   
   &:-ms-input-placeholder {
-    color: ${props => props.placeholderColor ? props.placeholderColor : '#8c9da9'};
+    color: ${value};
   }
 `;
 
@@ -85,10 +91,11 @@ const fontIconMdi = css`
 
 export {
   boxSizing,
+  boxShadow,
   transition,
   transform,
   userSelect,
-  placeholder,
+  placeholderColor,
 
   // fonts
   fontMain,

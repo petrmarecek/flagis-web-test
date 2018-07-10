@@ -14,7 +14,7 @@ export const ContactItemContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  height: 50px;
+  height: 30px;
 `;
 
 export const ContactItemIcon = styled.div`

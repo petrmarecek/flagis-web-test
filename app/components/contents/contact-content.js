@@ -24,10 +24,10 @@ const ContactTopMenu= styled.div`
 const CenterPanelScroll = styled.div`
   position: absolute;
   top: 0;
-  bottom: 30px;
+  bottom: 10px;
   left: 0;
   right: 0;
-  top: 104px;
+  top: 84px;
 `;
 
 const ContactListStyle = styled.div`
