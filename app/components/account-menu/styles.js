@@ -5,16 +5,18 @@ import { fontMain, userSelect } from '../styled-components-mixins/'
 
 const MenuBoxContainer = styled.div`
   font-size: 15px;
-  margin: 55px 35px 0 35px;
+  margin: 45px 28px 0 28px;
 `;
 
-const MenuBoxGroup = styled(MenuBoxGroupItems)`
+const MenuBoxGroup = styled.div`
+  padding: 0;
+`;
+
+const MenuBoxGroupItem = styled(MenuBoxGroupItems)`
   ${fontMain}
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  height: 100%;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
   
   &:hover {
     span {
@@ -25,10 +27,16 @@ const MenuBoxGroup = styled(MenuBoxGroupItems)`
       fill: #44FFB1;
     }
   }
+  
+  &:last-of-type {
+    margin-bottom: 14px; 
+  }
 `;
 
 const MenuBoxItemIcon = styled(MenuBoxItem)`
-  margin: 0 11px 0 22px;
+  flex-grow: 3;
+  padding: 10px 0 10px 2px;
+  cursor: pointer;
   pointer-events: ${props => props.active ? 'none' : 'auto'};
 
   path {
@@ -38,21 +46,23 @@ const MenuBoxItemIcon = styled(MenuBoxItem)`
 
 const MenuBoxItemTitle = styled(MenuBoxItem)`
   ${userSelect('none')};
+  flex-grow: 3;
   cursor: pointer;
-  margin: 0 8px;
-  padding: 0;
-  font-weight: ${props => props.active ? 'bold' : 'none'} ;
+  width: 100%;
+  font-weight: ${props => props.active ? 'bold' : 'normal'};
   pointer-events: ${props => props.active ? 'none' : 'auto'};
+  padding: 10px 0 10px 15px;
 `;
 
 const MenuBoxLine = styled.div`
   border-top: 1px solid #D7E3EC;
-  margin-bottom: 40px;
+  margin-bottom: 14px;
 `;
 
 export {
   MenuBoxContainer,
   MenuBoxGroup,
+  MenuBoxGroupItem,
   MenuBoxItemIcon,
   MenuBoxItemTitle,
   MenuBoxLine,

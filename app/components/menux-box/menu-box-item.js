@@ -4,18 +4,17 @@ import Icon from '../icons/icon'
 import { compose, withHandlers } from 'recompose'
 
 const MenuBoxItem = ({ className, icon, iconScale, title, onHandleClick }) => (
-  <div>
+  <div
+    className={className}
+    onClick={onHandleClick}>
     {icon &&
-    <div className={className}>
       <Icon
         icon={icon}
         width={16}
         height={16}
-        scale={iconScale}
-        onClick={onHandleClick} />
-    </div>}
+        scale={iconScale} />}
     {title &&
-    <span className={className} onClick={onHandleClick}>{title}</span>}
+    <span>{title}</span>}
   </div>
 )
 

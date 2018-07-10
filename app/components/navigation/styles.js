@@ -18,7 +18,7 @@ const NavbarLeft = styled.div`
 `;
 
 const NavbarLogo = styled.span`
-  margin: 15px 35px 11px 29px;
+  margin: 15px 35px 11px 0;
 `;
 
 const NavbarCenter = styled.div`
