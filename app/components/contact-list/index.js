@@ -32,7 +32,7 @@ const ContactList = ({ contacts, onHandleClick }) => {
         <ContactItem
           key={contact.id}
           contact={contact}
-          onHandleClick={onHandleClick} />
+          onClick={onHandleClick} />
       ))}
     </ShadowScrollbar>
   )

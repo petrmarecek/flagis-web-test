@@ -91,7 +91,7 @@ const ContactDetail = props => {
           <DetailContentPropertiesContact>
             <DetailContentContactData>
               <DetailContentContactDataLabel>
-                Start date
+                E-Mail
               </DetailContentContactDataLabel>
               <DetailContentContactDataContent>
                 {contact.email}
@@ -100,7 +100,7 @@ const ContactDetail = props => {
             {!isUser &&
             <DetailContentContactData>
               <DetailContentContactDataLabel>
-                Not existing user
+                Non-existing user
               </DetailContentContactDataLabel>
             </DetailContentContactData>}
           </DetailContentPropertiesContact>
