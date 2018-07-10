@@ -9,7 +9,7 @@ import { deselectError, visibleLoader } from 'redux/store/app-state/app-state.ac
 import { getChangePasswordForm, getLoader } from 'redux/store/app-state/app-state.selectors'
 import { changePassword } from 'redux/store/auth/auth.actions'
 import { validateChangePassword } from 'redux/utils/validate'
-import { afterSubmit } from 'redux/utils/form-submit'
+import { afterSubmitChangePassword } from 'redux/utils/form-submit'
 
 import InputField from 'components/common/input-field'
 import Loader from 'components/common/loader'
@@ -59,7 +59,7 @@ const ChangePassword = props => {
               id="oldPassword"
               name="oldPassword"
               type="password"
-              label="Old password"
+              label="Old Password"
               component={InputField}/>
           </FormRow>
           <FormRow>
@@ -67,7 +67,7 @@ const ChangePassword = props => {
               id="newPassword"
               name="newPassword"
               type="password"
-              label="New password"
+              label="New Password"
               component={InputField}/>
           </FormRow>
           <FormRow>
@@ -75,7 +75,7 @@ const ChangePassword = props => {
               id="confirmPassword"
               name="confirmPassword"
               type="password"
-              label="Password confirmation"
+              label="Confirmation"
               component={InputField}/>
           </FormRow>
           <FormRow >
@@ -119,7 +119,7 @@ export default compose(
   reduxForm({
     form: 'changePassword',
     validate: validateChangePassword,
-    onSubmitSuccess: afterSubmit,
+    onSubmitSuccess: afterSubmitChangePassword,
   }),
   withStateHandlers(
     () => ({

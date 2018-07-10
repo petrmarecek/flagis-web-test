@@ -9,7 +9,7 @@ import { deselectError, visibleLoader } from 'redux/store/app-state/app-state.ac
 import { getChangeNameForm, getLoader } from 'redux/store/app-state/app-state.selectors'
 import { changeName } from 'redux/store/auth/auth.actions'
 import { validateChangeName } from 'redux/utils/validate'
-import { afterSubmit } from 'redux/utils/form-submit'
+import { afterSubmitChangeName } from 'redux/utils/form-submit'
 
 import InputField from 'components/common/input-field'
 import Loader from 'components/common/loader'
@@ -111,7 +111,7 @@ export default compose(
   reduxForm({
     form: 'changeName',
     validate: validateChangeName,
-    onSubmitSuccess: afterSubmit,
+    onSubmitSuccess: afterSubmitChangeName,
   }),
   withStateHandlers(
     () => ({
