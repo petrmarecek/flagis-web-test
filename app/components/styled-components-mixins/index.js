@@ -24,6 +24,12 @@ const boxShadow = value => css`
   box-shadow: ${value};
 `;
 
+const borderRadius = value => css`
+  -webkit-border-radius: ${value};
+  -moz-border-radius: ${value};
+  border-radius: ${value};
+`;
+
 const transition = value => css`
   -webkit-transition: ${value};
   -moz-transition: ${value};
@@ -92,6 +98,7 @@ const fontIconMdi = css`
 export {
   boxSizing,
   boxShadow,
+  borderRadius,
   transition,
   transform,
   userSelect,

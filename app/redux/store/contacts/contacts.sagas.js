@@ -66,20 +66,20 @@ export function* updateContacts(action) {
   }
 }
 
-/*export function* deleteContact(action) {
-  yield* fetch(CONTACTS.DELETE, {
+export function* deleteContact(action) {
+  /*yield* fetch(CONTACTS.DELETE, {
     method: api.contacts.delete,
     args: [action.payload.originalData.id],
     schema: null,
-  })
+  })*/
 
   yield* mainUndo(action, 'contactDelete')
 
-  // delete tag from the search index
-  search.contacts.removeItem({ id: action.payload })
-}*/
+  /*// delete tag from the search index
+  search.contacts.removeItem({ id: action.payload })*/
+}
 
-export function* undoDeleteContact(action) {
+export function undoDeleteContact(action) {
   const createData = { email: action.payload.email }
-  yield put(contactsActions.createContact(createData))
+  /*yield put(contactsActions.createContact(createData))*/
 }
