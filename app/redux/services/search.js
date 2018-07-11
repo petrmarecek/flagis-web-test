@@ -52,6 +52,10 @@ class SearchService {
     this.index.remove(item)
   }
 
+  removeItems(items) {
+    items.forEach(item => this.removeItem({ id: item.id }))
+  }
+
   resetIndex() {
     this.index = this.createIndex()
   }

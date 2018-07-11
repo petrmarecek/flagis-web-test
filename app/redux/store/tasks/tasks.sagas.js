@@ -165,7 +165,7 @@ export function* fetchArchivedTasks() {
   })
 
   // Initialize search service
-  search.tasks.resetIndex()
+  search.tasks.removeItems(result)
   search.tasks.addItems(result)
 
   // Reset full text search

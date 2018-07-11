@@ -10,7 +10,6 @@ import {
 } from '../app-state/app-state.selectors'
 import { getEntitiesTasks, getEntitiesTags } from '../entities/entities.selectors'
 import { getActiveTagsIds } from '../tags/tags.selectors'
-import { getRoutingPathname } from '../routing/routing.selectors'
 
 // ------ Helper functions ----------------------------------------------------
 
