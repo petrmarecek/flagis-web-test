@@ -260,7 +260,9 @@ class TagDetail extends PureComponent {
                   onChange={this.handleTitleChange} />
               </span>
             </div>
-            <div className="detail-content__delete">
+            <div
+              className="detail-content__delete"
+              onClick={this.handleRemoveEventListener} >
               <Icon
                 icon={ICONS.TRASH}
                 width={23}

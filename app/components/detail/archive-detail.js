@@ -124,6 +124,11 @@ class ArchiveDetail extends PureComponent {
     }
   }
 
+  handleRemoveEventListener = event => {
+    event.stopPropagation()
+    document.removeEventListener("keydown", this.handleKeyDown, false)
+  }
+
   handleAddEventListener = () => {
     document.addEventListener("keydown", this.handleKeyDown, false)
   }
@@ -324,7 +329,9 @@ class ArchiveDetail extends PureComponent {
                 {tags}
               </ul>
             </div>
-            <div className="detail-content__delete">
+            <div
+              className="detail-content__delete"
+              onClick={this.handleRemoveEventListener} >
               <Icon
                 className="btn-icon"
                 icon={ICONS.TRASH}

@@ -87,7 +87,7 @@ const ContactDetail = props => {
               </span>
             </DetailSubject>
           </DetailContentSubject>
-          <DetailContentDeleteIcon>
+          <DetailContentDeleteIcon onClick={onHandleRemoveEventListener}>
             <Icon
               icon={ICONS.TRASH}
               width={23}

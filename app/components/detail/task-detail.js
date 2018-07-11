@@ -509,7 +509,9 @@ class TaskDetail extends PureComponent {
                 selectedTags={bindingData.tags}
                 onTagDeleted={this.handleTagDeleted} />
             </div>
-            <div className="detail-content__delete">
+            <div
+              className="detail-content__delete"
+              onClick={this.handleRemoveEventListener} >
               <Icon
                 icon={ICONS.TRASH}
                 width={23}
