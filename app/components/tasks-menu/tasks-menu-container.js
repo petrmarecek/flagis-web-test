@@ -198,7 +198,7 @@ class TasksMenuContainer extends PureComponent {
           isVisibleArchivedTasks={isVisibleArchivedTasks}
           deselectTasks={this.props.deselectTasks} />}
 
-        {!isMultiSelect &&
+        {!isVisibleArchivedTasks && !isMultiSelect &&
         <div className="filter-active">
           {activeFilters}
         </div>}

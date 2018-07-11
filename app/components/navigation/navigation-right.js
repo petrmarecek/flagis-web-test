@@ -139,7 +139,7 @@ export default compose(
       props.deselectTasks()
       props.deselectTags()
       props.deselectContacts()
-      props.changeLocation('/user/account')
+      props.changeLocation('/user/account/edit-profile')
     },
   })
 )(NavigationRight)

@@ -198,10 +198,6 @@ export const ContactStore = Record({
   current: null,
 })
 
-export const AccountStore = Record({
-  content: 'editProfile',
-})
-
 // ------ Entities ------------------------------------------------------------
 
 export const Task = Record({

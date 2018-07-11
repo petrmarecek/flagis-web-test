@@ -23,19 +23,19 @@ class LeftPanel extends PureComponent {
 
   render() {
     const { leftPanel, location } = this.props
-    const account = location === '/user/account'
+    const isAccountPage = location.includes('/user/account')
     const style = { width: leftPanel.width }
 
     const leftPanelCss = cx({
       'left-panel': true,
-      'left-panel--account': account,
+      'left-panel--white-background': isAccountPage,
     })
 
     return (
       <div
         ref="elem"
         className={leftPanelCss} style={style}>
-        {!account && <ResizeHandle right onResize={this.handleResize} />}
+        {!isAccountPage && <ResizeHandle right onResize={this.handleResize} />}
         {this.props.children}
       </div>
     )

@@ -1,12 +1,9 @@
 import React from 'react'
 import Detail from 'components/detail'
 
-const DetailContent = () => {
-  return (
-    <div>
-      <Detail />
-    </div>
-  )
-}
+const DetailContent = () => (
+  <Detail />
+)
+
 
 export default DetailContent

@@ -19,7 +19,6 @@ import multiSelect from 'redux/store/multi-select/multi-select.reducer'
 import tree from 'redux/store/tree/tree.reducer'
 import tags from 'redux/store/tags/tags.reducer'
 import contacts from 'redux/store/contacts/contacts.reducer'
-import account from 'redux/store/account/account.reducer'
 
 /*
  * routeReducer
@@ -65,7 +64,6 @@ export default function createReducer(injectedReducers) {
     tree,
     tags,
     contacts,
-    account,
     form: formReducer,
     route: routeReducer,
     language: languageProviderReducer,

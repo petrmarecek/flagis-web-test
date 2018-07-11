@@ -1,6 +1,21 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { ICONS } from '../icons/icon-constants'
+
+import {connect} from 'react-redux'
+import {compose, withHandlers} from 'recompose'
+
+import { logout } from 'redux/store/auth/auth.actions'
+import { hideArchivedTasks, changeLocation } from 'redux/store/app-state/app-state.actions'
+import {
+  fetchArchivedTasks,
+  deselectTasks,
+  cancelTimeLine
+} from 'redux/store/tasks/tasks.actions'
+import { deselectTags } from 'redux/store/tags/tags.actions'
+import { fetchContacts, deselectContacts } from 'redux/store/contacts/contacts.actions'
+import { getRoutingPathname } from 'redux/store/routing/routing.selectors'
+
 import {
   MenuBoxContainer,
   MenuBoxGroup,
@@ -10,7 +25,16 @@ import {
   MenuBoxLine,
 } from './styles';
 
-const AccountMenu = ({ content, onChange, onLogOut }) => {
+const AccountMenu = props => {
+
+  const {
+    location,
+    onHandleClickArchive,
+    onHandleClickContacts,
+    onHandleClickEditProfile,
+    onHandleClickChangePassword,
+    onHandleClickLogOut,
+  } = props
 
   return (
       <MenuBoxContainer>
@@ -19,27 +43,27 @@ const AccountMenu = ({ content, onChange, onLogOut }) => {
             <MenuBoxItemIcon
               icon={ICONS.ARCHIVED}
               iconScale={0.94}
-              active={content === 'archivedTasks'}
+              active={location === '/user/account/archive'}
               type='archivedTasks'
-              onChange={onChange} />
+              onChange={onHandleClickArchive} />
             <MenuBoxItemTitle
               title="Archived Tasks"
-              active={content === 'archivedTasks'}
+              active={location === '/user/account/archive'}
               type='archivedTasks'
-              onChange={onChange} />
+              onChange={onHandleClickArchive} />
           </MenuBoxGroupItem>
           <MenuBoxGroupItem>
             <MenuBoxItemIcon
               icon={ICONS.CONTACTS}
               iconScale={0.53}
-              active={content === 'contactsList'}
+              active={location === '/user/account/contacts'}
               type='contactsList'
-              onChange={onChange} />
+              onChange={onHandleClickContacts} />
             <MenuBoxItemTitle
               title="Contact List"
-              active={content === 'contactsList'}
+              active={location === '/user/account/contacts'}
               type='contactsList'
-              onChange={onChange} />
+              onChange={onHandleClickContacts} />
           </MenuBoxGroupItem>
         </MenuBoxGroup>
 
@@ -50,27 +74,27 @@ const AccountMenu = ({ content, onChange, onLogOut }) => {
             <MenuBoxItemIcon
               icon={ICONS.ACCOUNT}
               iconScale={0.72}
-              active={content === 'editProfile'}
+              active={location === '/user/account/edit-profile'}
               type='editProfile'
-              onChange={onChange} />
+              onChange={onHandleClickEditProfile} />
             <MenuBoxItemTitle
               title="Edit My Profile"
-              active={content === 'editProfile'}
+              active={location === '/user/account/edit-profile'}
               type='editProfile'
-              onChange={onChange} />
+              onChange={onHandleClickEditProfile} />
           </MenuBoxGroupItem>
           <MenuBoxGroupItem>
             <MenuBoxItemIcon
               icon={ICONS.LOCK}
               iconScale={0.42}
-              active={content === 'changePassword'}
+              active={location === '/user/account/change-password'}
               type='changePassword'
-              onChange={onChange} />
+              onChange={onHandleClickChangePassword} />
             <MenuBoxItemTitle
               title="Change Password"
-              active={content === 'changePassword'}
+              active={location === '/user/account/change-password'}
               type='changePassword'
-              onChange={onChange} />
+              onChange={onHandleClickChangePassword} />
           </MenuBoxGroupItem>
         </MenuBoxGroup>
 
@@ -81,10 +105,10 @@ const AccountMenu = ({ content, onChange, onLogOut }) => {
             <MenuBoxItemIcon
               icon={ICONS.LOG_OUT}
               iconScale={1}
-              onChange={onLogOut} />
+              onChange={onHandleClickLogOut} />
             <MenuBoxItemTitle
               title="Log Out"
-              onChange={onLogOut} />
+              onChange={onHandleClickLogOut} />
           </MenuBoxGroupItem>
         </MenuBoxGroup>
       </MenuBoxContainer>
@@ -92,9 +116,52 @@ const AccountMenu = ({ content, onChange, onLogOut }) => {
 }
 
 AccountMenu.propTypes = {
-  content: PropTypes.string,
-  onChange: PropTypes.func,
-  onLogOut: PropTypes.func,
+  location: PropTypes.string,
+  onHandleClickArchive: PropTypes.func,
+  onHandleClickContacts: PropTypes.func,
+  onHandleClickEditProfile: PropTypes.func,
+  onHandleClickChangePassword: PropTypes.func,
+  onHandleClickLogOut: PropTypes.func,
 }
 
-export default AccountMenu
+const mapStateToProps = state => ({
+  location: getRoutingPathname(state),
+})
+
+const mapDispatchToProps = {
+  fetchArchivedTasks,
+  deselectTasks,
+  cancelTimeLine,
+  deselectTags,
+  fetchContacts,
+  deselectContacts,
+  hideArchivedTasks,
+  changeLocation,
+  logout
+}
+
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withHandlers({
+    onHandleClickArchive: props => () => {
+      props.deselectTasks()
+      props.cancelTimeLine()
+      props.deselectTags()
+      props.deselectContacts()
+      props.fetchArchivedTasks()
+      props.changeLocation('/user/account/archive')
+    },
+    onHandleClickContacts: props => () => {
+      props.hideArchivedTasks()
+      props.deselectTasks()
+      props.cancelTimeLine()
+      props.deselectTags()
+      props.fetchContacts()
+      props.changeLocation('/user/account/contacts')
+    },
+    onHandleClickEditProfile: props => () => props.changeLocation('/user/account/edit-profile'),
+    onHandleClickChangePassword: props => () => props.changeLocation('/user/account/change-password'),
+    onHandleClickLogOut: props => () => props.logout(),
+  })
+)(AccountMenu)
+

@@ -1,51 +1,51 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { compose, withHandlers } from 'recompose'
 
-import { getDetail } from 'redux/store/app-state/app-state.selectors'
+import { getTaskArchiveDetail } from 'redux/store/app-state/app-state.selectors'
 
 import LeftPanel from 'components/panels/left-panel'
+import AccountMenu from 'components/account-menu/'
 import CenterPanel from 'components/panels/center-panel'
-import TagTreeContent from 'components/contents/tag-tree-content'
 import ArchiveContent from 'components/contents/archive-content'
 import ArchiveDetailContent from 'components/contents/archive-detail-content'
 
-class ArchivePage extends PureComponent {
+const ArchivePage = ({ onGetContent }) => (
+  <div>
+    <LeftPanel>
+      <AccountMenu />
+    </LeftPanel>
+    <CenterPanel>
+      {onGetContent()}
+    </CenterPanel>
+  </div>
+)
 
-  static propTypes = {
-    archiveDetail: PropTypes.object,
-  }
 
-  getContent() {
-    if (this.props.archiveDetail.archive) {
-      return (
-        <ArchiveDetailContent />
-      )
-    }
-
-    return (
-      <ArchiveContent />
-    )
-  }
-
-  render() {
-    const content = this.getContent()
-    return (
-      <div>
-        <LeftPanel>
-          <TagTreeContent />
-        </LeftPanel>
-        <CenterPanel>
-          {content}
-        </CenterPanel>
-      </div>
-    )
-  }
+ArchivePage.propTypes = {
+  onGetContent: PropTypes.func,
 }
 
 const mapStateToProps = state => ({
-  archiveDetail: getDetail(state)
+  archiveDetail: getTaskArchiveDetail(state)
 })
 
 const mapDispatchToProps = {}
-export default connect(mapStateToProps, mapDispatchToProps)(ArchivePage)
+
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withHandlers({
+    onGetContent: props => () => {
+      if (props.archiveDetail) {
+        return (
+          <ArchiveDetailContent/>
+        )
+      } else {
+        return (
+          <ArchiveContent/>
+        )
+      }
+    }
+  })
+)(ArchivePage)
