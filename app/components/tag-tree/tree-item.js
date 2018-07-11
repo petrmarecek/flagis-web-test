@@ -112,7 +112,6 @@ class TreeItem extends Component {
     parentTagRelations: PropTypes.object,
     selection: PropTypes.object,
     tagsRelations: PropTypes.object,
-    archivedTasks: PropTypes.bool,
     addControlParentId: PropTypes.string,
     isOver: PropTypes.bool.isRequired,
     isDragging: PropTypes.bool.isRequired,
@@ -299,8 +298,7 @@ class TreeItem extends Component {
             </span>}
             <span className="tree-item__main-icon" />
             <span className="tree-item__title" style={styleWidth}>{this.props.treeItem.tag.title}</span>
-            {!this.props.archivedTasks &&
-            <span className="tree-item__relations">{currentTagRelations.size}</span>}
+            <span className="tree-item__relations">{currentTagRelations.size}</span>
             <span className="tree-item__actions">
               <div>
                 {this.renderArrowIcon(this.props.treeItem.childItems)}
@@ -354,8 +352,7 @@ class TreeItem extends Component {
           parentTagRelations={currentTagRelations}
           selection={this.props.selection}
           tagsRelations={this.props.tagsRelations}
-          treeItem={this.props.treeItem}
-          archivedTasks={this.props.archivedTasks}/>
+          treeItem={this.props.treeItem} />
       </li>
     )
   }

@@ -15,7 +15,6 @@ export default class TreeItemList extends PureComponent {
     parentTagRelations: PropTypes.object,
     selection: PropTypes.object.isRequired,
     tagsRelations: PropTypes.object.isRequired,
-    archivedTasks: PropTypes.bool,
 
     // Handlers
     onAddChild: PropTypes.func.isRequired,
@@ -55,8 +54,7 @@ export default class TreeItemList extends PureComponent {
             parentTagRelations={this.props.parentTagRelations}
             selection={this.props.selection}
             tagsRelations={this.props.tagsRelations}
-            treeItem={treeItem}
-            archivedTasks={this.props.archivedTasks}/>
+            treeItem={treeItem} />
         ))}
         {this.props.addControlParentId === this.props.treeItem.id && (
           <AddTreeItemForm

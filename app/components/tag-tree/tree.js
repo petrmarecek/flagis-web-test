@@ -10,7 +10,6 @@ export default class Tree extends PureComponent {
     addControlParentId: PropTypes.string,
     selection: PropTypes.object,
     tagsRelations: PropTypes.object,
-    archivedTasks: PropTypes.bool,
     maxWidth: PropTypes.number,
 
     // Handlers
@@ -46,7 +45,6 @@ export default class Tree extends PureComponent {
             onCollapse={this.props.onCollapse}
             onDrop={this.props.onDrop}
             tagsRelations={this.props.tagsRelations}
-            archivedTasks={this.props.archivedTasks}
             maxWidth={this.props.maxWidth}
             onMoveSection={this.props.onMoveSection}
             onDropSection={this.props.onDropSection} />

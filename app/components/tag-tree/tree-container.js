@@ -13,13 +13,9 @@ import ShadowScrollbar from 'components/common/shadow-scrollbar'
 import {
   showDialog,
   setDetail,
-  hideArchivedTasks,
   changeLocation
 } from 'redux/store/app-state/app-state.actions'
-import {
-  getLeftPanel,
-  getArchivedTasksVisibility,
-} from 'redux/store/app-state/app-state.selectors'
+import { getLeftPanel } from 'redux/store/app-state/app-state.selectors'
 import { getNewRefreshToken } from 'redux/store/auth/auth.selectors'
 import { deselectTasks} from 'redux/store/tasks/tasks.actions'
 import { selectTag } from 'redux/store/tags/tags.actions'
@@ -59,7 +55,6 @@ class TreeContainer extends PureComponent {
     tree: PropTypes.object,
     sections: PropTypes.object,
     leftPanel: PropTypes.object,
-    archivedTasks: PropTypes.bool,
 
     // Actions
     collapse: PropTypes.func,
@@ -73,7 +68,6 @@ class TreeContainer extends PureComponent {
     dropSection: PropTypes.func,
     selectTag: PropTypes.func,
     setDetail: PropTypes.func,
-    hideArchivedTasks: PropTypes.func,
     changeLocation: PropTypes.func,
     deselectTasks: PropTypes.func,
   }
@@ -157,7 +151,6 @@ class TreeContainer extends PureComponent {
 
     if (treeItem.parentId) {
       // Redirect to tag content
-      this.props.hideArchivedTasks()
       this.props.deselectTasks()
       this.props.changeLocation('/user/tags')
 
@@ -234,7 +227,6 @@ class TreeContainer extends PureComponent {
                   onCollapse={this.handleCollapse}
                   onDrop={this.handleDrop}
                   tagsRelations={this.props.tagsRelations}
-                  archivedTasks={this.props.archivedTasks}
                   maxWidth={leftPanel.width}
                   onMoveSection={this.moveSection}
                   onDropSection={this.handleDropSection} />
@@ -274,7 +266,6 @@ const mapStateToProps = state => ({
   addControlParentId: getAddControlParentId(state),
   tagsRelations: getTagsRelations(state),
   leftPanel: getLeftPanel(state),
-  archivedTasks: getArchivedTasksVisibility(state),
 })
 
 const mapDispatchToProps = {
@@ -289,7 +280,6 @@ const mapDispatchToProps = {
   dropSection,
   selectTag,
   setDetail,
-  hideArchivedTasks,
   changeLocation,
   deselectTasks
 }

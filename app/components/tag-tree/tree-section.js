@@ -109,7 +109,6 @@ class TreeSection extends PureComponent {
     addControlParentId: PropTypes.string,
     selection: PropTypes.object,
     tagsRelations: PropTypes.object,
-    archivedTasks: PropTypes.bool,
     maxWidth: PropTypes.number,
     isDragging: PropTypes.bool,
     index: PropTypes.number,
@@ -236,8 +235,7 @@ class TreeSection extends PureComponent {
           selection={this.props.selection}
           parents={parents}
           parentTagRelations={null}
-          treeItem={this.props.section}
-          archivedTasks={this.props.archivedTasks}/>
+          treeItem={this.props.section} />
         {!this.props.section.collapsed &&
         <span className="tree-section__icon add-subtag" title="Add filter" >
           <Icon
