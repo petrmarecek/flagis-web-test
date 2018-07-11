@@ -14,6 +14,7 @@ import {
   DetailContentSubject,
   DetailSubject,
   DetailSubjectIcon,
+  DetailContentDeleteIcon,
   DetailContentCenter,
   DetailContentPropertiesContact,
   DetailContentDescriptionContact,
@@ -32,6 +33,7 @@ const ContactDetail = props => {
     onHandleNextContact,
     onHandleDescriptionUpdate,
     onHandleNicknameUpdate,
+    onHandleDelete,
   } = props
 
   if (!contact) {
@@ -85,6 +87,15 @@ const ContactDetail = props => {
               </span>
             </DetailSubject>
           </DetailContentSubject>
+          <DetailContentDeleteIcon>
+            <Icon
+              icon={ICONS.TRASH}
+              width={23}
+              height={26}
+              scale={1}
+              color={["#ff8181", "#ff8181", "#ff8181", "#ff8181"]}
+              onClick={onHandleDelete} />
+          </DetailContentDeleteIcon>
         </DetailContentTop>
 
         <DetailContentCenter>
@@ -128,6 +139,8 @@ ContactDetail.propTypes = {
   onHandleContactDescriptionUpdate: PropTypes.func,
   onHandleNicknameUpdate: PropTypes.func,
   onHandleContactNicknameUpdate: PropTypes.func,
+  onHandleDelete: PropTypes.func,
+  onHandleContactDelete: PropTypes.func,
 }
 
 export default withHandlers({
@@ -149,4 +162,5 @@ export default withHandlers({
     const data = { contact: props.contact, nickname }
     props.onHandleContactNicknameUpdate(data)
   },
+  onHandleDelete: props => () => props.onHandleContactDelete(props.contact)
 })(ContactDetail)

@@ -6,6 +6,7 @@ import { compose, lifecycle, withHandlers } from 'recompose'
 
 import ContactDetail from './contact-detail'
 
+import { showDialog } from 'redux/store/app-state/app-state.actions'
 import { getDetail } from 'redux/store/app-state/app-state.selectors'
 import {
   selectContact,
@@ -33,6 +34,7 @@ const Detail = props => {
     onHandlePreviousContact,
     onHandleContactDescriptionUpdate,
     onHandleContactNicknameUpdate,
+    onHandleContactDelete,
   } = props
 
   if (detail.contact) {
@@ -47,7 +49,8 @@ const Detail = props => {
           onHandleNextContact={onHandleNextContact}
           onHandlePreviousContact={onHandlePreviousContact}
           onHandleContactDescriptionUpdate={onHandleContactDescriptionUpdate}
-          onHandleContactNicknameUpdate={onHandleContactNicknameUpdate} />
+          onHandleContactNicknameUpdate={onHandleContactNicknameUpdate}
+          onHandleContactDelete={onHandleContactDelete} />
       </DetailStyle>
     )
   }
@@ -69,6 +72,7 @@ Detail.propTypes = {
   onHandlePreviousContact: PropTypes.func,
   onHandleContactDescriptionUpdate: PropTypes.func,
   onHandleContactNicknameUpdate: PropTypes.func,
+  onHandleContactDelete: PropTypes.func,
 }
 
 const mapStateToProps = state => ({
@@ -84,6 +88,7 @@ const mapDispatchToProps = {
   selectContact,
   deselectContacts,
   updateContact,
+  showDialog,
 }
 
 export default compose(
@@ -109,6 +114,8 @@ export default compose(
       props.updateContact(data.contact, data.description, 'description'),
     onHandleContactNicknameUpdate: props => data =>
       props.updateContact(data.contact, data.nickname, 'nickname'),
+    onHandleContactDelete: props => contact =>
+      props.showDialog('contact-delete-confirm', { contact }),
   }),
   withHandlers({
     onHandleKeyDown: props => event => {

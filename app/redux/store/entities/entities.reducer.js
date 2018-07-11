@@ -210,6 +210,11 @@ export default typeToReducer({
     return state.setIn(['contacts', contactId, fieldName], fieldValue)
   },
 
+  [CONTACTS.DELETE]: {
+    FULFILLED: (state, action) => state
+      .deleteIn(['contacts', action.payload])
+  },
+
 }, new records.EntitiesStore())
 
 function updateReferencingTreeItems(state, tagId, tagFieldName, tagFieldValue) {

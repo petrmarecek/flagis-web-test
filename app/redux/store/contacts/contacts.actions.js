@@ -8,6 +8,8 @@ export const CONTACTS = {
   DESELECT: 'CONTACTS/DESELECT',
   UPDATE: 'CONTACTS/UPDATE',
   UPDATE_SEARCH: 'CONTACTS/UPDATE_SEARCH',
+  DELETE: 'CONTACTS/DELETE',
+  UNDO_DELETE: 'UNDO_CONTACTS/DELETE',
 }
 
 export const fetchContacts = () => ({
@@ -42,4 +44,9 @@ export const updateContact = (contact, data, type) => ({
 export const updateContactSearch = search => ({
   type: CONTACTS.UPDATE_SEARCH,
   payload: { search }
+})
+
+export const deleteContact = originalData => ({
+  type: CONTACTS.DELETE,
+  payload: { originalData }
 })

@@ -16,6 +16,7 @@ import {
   deleteTask,
   deselectTasks,
 } from 'redux/store/tasks/tasks.actions'
+import { deselectContacts, deleteContact } from 'redux/store/contacts/contacts.actions'
 import {
   getSelectTasks,
   getSelectTasksTags,
@@ -52,6 +53,7 @@ import {
 
 import ConfirmTaskDeleteDialog from './confirm-task-delete-dialog'
 import ConfirmTagDeleteDialog from './confirm-tag-delete-dialog'
+import ConfirmContactDeleteDialog from './confirm-contact-delete-dialog'
 import UpdateTreeItemDialog from './update-tree-item-dialog'
 import ConfirmTreeItemTagDeleteDialog from './confirm-tree-item-tag-delete-dialog'
 import AddRemoveTagsDialog from './add-remove-tags-dialog'
@@ -89,6 +91,8 @@ class Dialogs extends PureComponent {
     selectTasks: PropTypes.array,
     multiSelectAddEntitiesTags: PropTypes.object,
     multiSelectRemoveEntitiesTags: PropTypes.object,
+    deselectContacts: PropTypes.func,
+    deleteContact: PropTypes.func,
   }
 
   componentDidMount() {
@@ -215,6 +219,13 @@ class Dialogs extends PureComponent {
     this.props.setActiveTags(tagIds)
   }
 
+  // confirm-contact-delete-dialog
+  handleContactDelete = contact => {
+    this.props.hideDialog()
+    this.props.deselectContacts()
+    this.props.deleteContact(contact)
+  }
+
   // add-remove-tags-dialog
   handleAddToList = (item, typeList) => {
     this.props.addToList(item, typeList)
@@ -308,6 +319,17 @@ class Dialogs extends PureComponent {
         )
       }
 
+      case 'contact-delete-confirm': {
+        return (
+          <ConfirmContactDeleteDialog
+            data={currentDialog.data}
+            onHide={this.props.hideDialog}
+            onDelete={this.handleContactDelete}
+            windowHeight={window.innerHeight}
+            windowWidth={window.innerWidth} />
+        )
+      }
+
       case 'add-remove-tags': {
         return (
           <AddRemoveTagsDialog
@@ -382,6 +404,8 @@ const mapDispatchToProps = {
   deleteFromList,
   clearLists,
   addRemoveTaskTags,
+  deselectContacts,
+  deleteContact,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dialogs)

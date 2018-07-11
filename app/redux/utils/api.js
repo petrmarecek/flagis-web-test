@@ -158,5 +158,9 @@ export default {
     update: (userId, update) => api
       .patch(`contacts/${userId}`, update)
       .then(res => res.data),
+
+    delete: contactId => api
+      .delete(`contacts/${contactId}`)
+      .then(res => res.data),
   },
 }

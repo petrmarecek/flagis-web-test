@@ -73,6 +73,15 @@ const DetailSubjectIcon = styled.div`
   padding: ${props => props.isUser ? '2px 0 0 0' : '0'};
 `;
 
+const DetailContentDeleteIcon = styled.div`
+  ${boxSizing('border-box')}
+  flex: 1;
+  max-width: 3%;
+  text-align: right;
+  padding-right: 6px;
+  padding-top: 10px;
+`;
+
 const DetailContentCenter = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -148,6 +157,7 @@ export {
   DetailContentSubject,
   DetailSubject,
   DetailSubjectIcon,
+  DetailContentDeleteIcon,
   DetailContentCenter,
 
   // Detail menu
