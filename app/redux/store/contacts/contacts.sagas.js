@@ -3,7 +3,7 @@ import { call, put, select } from 'redux-saga/effects'
 import * as contactsActions from 'redux/store/contacts/contacts.actions'
 import * as appStateActions from 'redux/store/app-state/app-state.actions'
 import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'
-import { fetch, mainUndo } from 'redux/store/common.sagas'
+import { fetch } from 'redux/store/common.sagas' // add mainUndo
 import api from 'redux/utils/api'
 import search from 'redux/services/search'
 import schema from 'redux/data/schema'
@@ -66,20 +66,20 @@ export function* updateContacts(action) {
   }
 }
 
-export function* deleteContact(action) {
-  /*yield* fetch(CONTACTS.DELETE, {
+/*export function* deleteContact(action) {
+  yield* fetch(CONTACTS.DELETE, {
     method: api.contacts.delete,
     args: [action.payload.originalData.id],
     schema: null,
-  })*/
+  })
 
   yield* mainUndo(action, 'contactDelete')
 
-  /*// delete tag from the search index
-  search.contacts.removeItem({ id: action.payload })*/
+  !// delete tag from the search index
+  search.contacts.removeItem({ id: action.payload })
 }
 
-export function undoDeleteContact(action) {
+export function* undoDeleteContact(action) {
   const createData = { email: action.payload.email }
-  /*yield put(contactsActions.createContact(createData))*/
-}
+  yield put(contactsActions.createContact(createData))
+}*/
