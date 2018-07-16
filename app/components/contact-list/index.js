@@ -12,7 +12,7 @@ import Loader from '../common/loader'
 
 const ContactList = ({ contacts, onHandleClick }) => {
 
-  if (contacts.items.size === 0) {
+  if (contacts.items.length === 0) {
     return (
       <div className="empty-list">No contacts found</div>
     )

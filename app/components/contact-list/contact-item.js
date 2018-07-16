@@ -14,7 +14,6 @@ import {ICONS} from '../icons/icon-constants'
 import velocity from 'velocity-animate'
 
 const ContactItem = ({ contact, onHandleClick }) => {
-  const isUser = contact.nickname !== 'null null'
   let icon = {
     icon: ICONS.CONTACT_EXIST,
     height: 21,
@@ -22,7 +21,7 @@ const ContactItem = ({ contact, onHandleClick }) => {
     color: ['#8C9DA9', '#fff'],
   }
 
-  if (!isUser) {
+  if (!contact.isUser) {
     icon = {
       icon: ICONS.CONTACT_NOT_EXIST,
       height: 23,
@@ -31,7 +30,7 @@ const ContactItem = ({ contact, onHandleClick }) => {
     }
   }
 
-  const title = isUser
+  const title = contact.nickname !== ''
     ? contact.nickname
     : contact.email
 
@@ -48,7 +47,7 @@ const ContactItem = ({ contact, onHandleClick }) => {
             height={icon.height}
             color={icon.color} />
         </ContactItemIcon>
-        <ContactItemTitle isUser={isUser}>{title}</ContactItemTitle>
+        <ContactItemTitle isUser={contact.isUser}>{title}</ContactItemTitle>
       </ContactItemContainer>
     </ContactItemStyle>
   )

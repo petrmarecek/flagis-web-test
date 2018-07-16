@@ -1,5 +1,6 @@
 import styled from 'styled-components'
-import { boxSizing } from '../styled-components-mixins/'
+import { boxSizing, markdownStyles } from '../styled-components-mixins/'
+import MarkdownEditable from '../common/markdown-editable'
 
 // Detail
 const DetailStyle = styled.div`
@@ -128,6 +129,27 @@ const DetailContentDescriptionContact = styled.div`
   margin-right: 22px;
 `;
 
+const MarkdownEditableContainer = styled(MarkdownEditable)`
+  ${boxSizing('border-box')}
+  ${markdownStyles}
+  font-family: 'Source Sans Pro', 'Segoe UI', sans-serif;
+  font-weight: 300;
+  width: 100%;
+  padding: 15px;
+  background-color: #fff;
+  border: 1px solid #D7E3EC;
+  font-size: 14px;
+  min-height: 190px;
+  max-height: 100%;
+  height: auto;
+  resize: vertical;
+  color: ${props => props.text === 'Add description' ? '#8c9da9' : '#293034'};
+  
+  p {
+    margin: ${props => props.text === 'Add description' ? '0' : '1em 0'};
+  }
+`;
+
 const DetailContentContactData = styled.div`
   position: relative;
   color: #8c9da9;
@@ -168,6 +190,7 @@ export {
   // Contact detail
   DetailContentPropertiesContact,
   DetailContentDescriptionContact,
+  MarkdownEditableContainer,
   DetailContentContactData,
   DetailContentContactDataLabel,
   DetailContentContactDataContent,

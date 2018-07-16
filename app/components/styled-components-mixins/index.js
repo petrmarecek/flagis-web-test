@@ -1,4 +1,5 @@
 import { css } from 'styled-components'
+import { markdownStyles } from './markdown-styles'
 import {
   Form,
   FormBody,
@@ -110,7 +111,10 @@ export {
   fontBold,
   fontIconMdi,
 
-  //forms
+  // markdown
+  markdownStyles,
+
+  // forms
   Form,
   FormBody,
   FormBodyFields,

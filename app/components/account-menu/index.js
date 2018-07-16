@@ -159,8 +159,18 @@ export default compose(
       props.fetchContacts()
       props.changeLocation('/user/account/contacts')
     },
-    onHandleClickEditProfile: props => () => props.changeLocation('/user/account/edit-profile'),
-    onHandleClickChangePassword: props => () => props.changeLocation('/user/account/change-password'),
+    onHandleClickEditProfile: props => () => {
+      props.hideArchivedTasks()
+      props.deselectTasks()
+      props.deselectContacts()
+      props.changeLocation('/user/account/edit-profile')
+    },
+    onHandleClickChangePassword: props => () => {
+      props.hideArchivedTasks()
+      props.deselectTasks()
+      props.deselectContacts()
+      props.changeLocation('/user/account/change-password')
+    },
     onHandleClickLogOut: props => () => props.logout(),
   })
 )(AccountMenu)

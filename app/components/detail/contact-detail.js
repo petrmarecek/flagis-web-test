@@ -4,7 +4,6 @@ import { withHandlers } from 'recompose'
 
 import DetailMenu from './detail-menu'
 import ContentEditable from '../common/content-editable'
-import MarkdownEditable from '../common/markdown-editable'
 import Icon from '../icons/icon'
 import {ICONS} from '../icons/icon-constants'
 
@@ -18,6 +17,7 @@ import {
   DetailContentCenter,
   DetailContentPropertiesContact,
   DetailContentDescriptionContact,
+  MarkdownEditableContainer,
   DetailContentContactData,
   DetailContentContactDataLabel,
   DetailContentContactDataContent,
@@ -40,10 +40,8 @@ const ContactDetail = props => {
     return <div>Detail not found</div>
   }
 
-  const isUser = contact.nickname !== 'null null'
   const description = contact.description === null ? 'Add description' : contact.description
-  const nickname = contact.nickname === 'null null' ? 'Add username' : contact.nickname
-
+  const nickname = contact.nickname === '' ? 'Add username' : contact.nickname
   let icon = {
     icon: ICONS.CONTACT_EXIST,
     height: 23,
@@ -51,7 +49,7 @@ const ContactDetail = props => {
     color: ['#8C9DA9', '#fff'],
   }
 
-  if (!isUser) {
+  if (!contact.isUser) {
     icon = {
       icon: ICONS.CONTACT_NOT_EXIST,
       height: 23,
@@ -70,7 +68,7 @@ const ContactDetail = props => {
         <DetailContentTop>
           <DetailContentSubject>
             <DetailSubject>
-              <DetailSubjectIcon isUser={isUser}>
+              <DetailSubjectIcon isUser={contact.isUser}>
                 <Icon
                   icon={icon.icon}
                   width={icon.width}
@@ -108,7 +106,7 @@ const ContactDetail = props => {
                 {contact.email}
               </DetailContentContactDataContent>
             </DetailContentContactData>
-            {!isUser &&
+            {!contact.isUser &&
             <DetailContentContactData>
               <DetailContentContactDataLabel>
                 Non-existing user
@@ -118,7 +116,7 @@ const ContactDetail = props => {
 
           <DetailContentDescriptionContact>
             <span onClick={onHandleRemoveEventListener}>
-              <MarkdownEditable
+              <MarkdownEditableContainer
                 text={description}
                 onUpdate={onHandleDescriptionUpdate} />
             </span>
@@ -146,7 +144,7 @@ ContactDetail.propTypes = {
 export default withHandlers({
   onHandleDescriptionUpdate: props => event => {
     const description = event.target.value
-    if (description === props.contact.description || description === 'Add description') {
+    if (description === props.contact.description) {
       return
     }
 
