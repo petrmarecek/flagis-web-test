@@ -33,7 +33,7 @@ const ContactDetail = props => {
     onHandleNext,
     onHandleNicknameUpdate,
     onHandleDelete,
-    onHandleContactDescriptionUpdate,
+    onHandleDescriptionUpdate,
   } = props
 
   if (!contact) {
@@ -42,6 +42,11 @@ const ContactDetail = props => {
 
   const description = contact.description === null ? 'Add description' : contact.description
   const nickname = contact.nickname === '' ? 'Add username' : contact.nickname
+  const scrollStyle = {
+    height: 'calc(100vh - 232px)',
+    overflow: 'hidden',
+  }
+
   let icon = {
     icon: ICONS.CONTACT_EXIST,
     height: 23,
@@ -118,7 +123,8 @@ const ContactDetail = props => {
             <span onClick={onHandleRemoveEventListener}>
               <MarkdownEditableContainer
                 text={description}
-                onUpdate={onHandleContactDescriptionUpdate} />
+                scrollStyle={scrollStyle}
+                onUpdate={onHandleDescriptionUpdate} />
             </span>
           </DetailContentDescriptionContact>
         </DetailContentCenter>
@@ -133,8 +139,8 @@ ContactDetail.propTypes = {
   onHandleContactNicknameUpdate: PropTypes.func,
   onHandleDelete: PropTypes.func,
   onHandleContactDelete: PropTypes.func,
-  onHandleContactDescriptionUpdate: PropTypes.func,
   onHandleDescriptionUpdate: PropTypes.func,
+  onHandleContactDescriptionUpdate: PropTypes.func,
   onHandleRemoveEventListener: PropTypes.func,
   onHandleToggleList: PropTypes.func,
   onHandleNext: PropTypes.func,
@@ -152,13 +158,13 @@ export default withHandlers({
     props.onHandleContactNicknameUpdate(data)
   },
   onHandleDelete: props => () => props.onHandleContactDelete(props.contact),
-  onHandleContactDescriptionUpdate: props => event => {
+  onHandleDescriptionUpdate: props => event => {
     const description = event.target.value
     if (description === props.contact.description || description === 'Add description' || description === '') {
       return
     }
 
-    const data = { item: props.contact, description }
-    props.onHandleDescriptionUpdate(data)
+    const data = { contact: props.contact, description }
+    props.onHandleContactDescriptionUpdate(data)
   },
 })(ContactDetail)

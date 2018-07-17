@@ -2,36 +2,40 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { withStateHandlers } from 'recompose'
 import { markdownToHTML } from '../../redux/utils/component-helper'
+import { Scrollbars } from 'react-custom-scrollbars'
 
 /* eslint-disable react/no-danger */
 
-const MarkdownEditable = ({ className, text, editable, onHandleClick, onHandleUpdateText }) => {
+const MarkdownEditable = props => {
+  const { text, className, scrollStyle, editable, onHandleClick, onHandleUpdateText } = props
+  const defaultValue = text === 'Add description' ? '' : text
 
-  const markdown = markdownToHTML(text)
-
-  let resultComponent = (
+  return (
     <div
       className={className}
-      dangerouslySetInnerHTML={{__html: markdown}}
-      onClick={onHandleClick} />
-  )
+      onClick={onHandleClick}>
+      {!editable &&
+      <Scrollbars style={{...scrollStyle}}>
+        <div
+          id='markdown-html'
+          className='markdown__html'
+          dangerouslySetInnerHTML={{__html: markdownToHTML(text)}} />
+      </Scrollbars>}
 
-  if (editable) {
-    resultComponent = (
+      {editable &&
       <textarea
         autoFocus
-        defaultValue={text}
-        className={className}
-        onBlur={onHandleUpdateText} />
-    )
-  }
-
-  return resultComponent
+        className='markdown__edit'
+        defaultValue={defaultValue}
+        onBlur={onHandleUpdateText} />}
+    </div>
+  )
 }
 
 MarkdownEditable.propTypes = {
-  className: PropTypes.string,
   text: PropTypes.string,
+  className: PropTypes.string,
+  scrollStyle: PropTypes.object,
   editable: PropTypes.bool,
   onHandleClick: PropTypes.func,
   onHandleUpdateText: PropTypes.func,

@@ -35,7 +35,7 @@ const TagDetail = props => {
     onHandleTitleUpdate,
     onHandleSetColor,
     onHandleDelete,
-    onHandleTagDescriptionUpdate,
+    onHandleDescriptionUpdate,
     onHandleRemoveEventListener,
     onHandleToggleList,
     onHandleNext,
@@ -43,13 +43,18 @@ const TagDetail = props => {
   } = props
 
   if (!tag) {
-    return (<div className="detail-dialog-scroll-area" />)
+    return <div>Detail not found</div>
   }
 
   const getColorIndex = () => {
     return tag.colorIndex === null
       ? commonUtils.computeIntHash(tag.title, 10)
       : tag.colorIndex
+  }
+
+  const scrollStyle = {
+    height: 'calc(100vh - 294px)',
+    overflow: 'hidden',
   }
 
   const colorIndex = getColorIndex()
@@ -118,7 +123,8 @@ const TagDetail = props => {
             <span onClick={onHandleRemoveEventListener}>
               <MarkdownEditableContainer
                 text={description}
-                onUpdate={onHandleTagDescriptionUpdate} />
+                scrollStyle={scrollStyle}
+                onUpdate={onHandleDescriptionUpdate} />
             </span>
           </DetailContentDescriptionTag>
         </DetailContentCenter>
@@ -136,8 +142,8 @@ TagDetail.propTypes = {
   onHandleTagSetColor: PropTypes.func,
   onHandleDelete: PropTypes.func,
   onHandleTagDelete: PropTypes.func,
-  onHandleTagDescriptionUpdate: PropTypes.func,
   onHandleDescriptionUpdate: PropTypes.func,
+  onHandleTagDescriptionUpdate: PropTypes.func,
   onHandleRemoveEventListener: PropTypes.func,
   onHandleToggleList: PropTypes.func,
   onHandleNext: PropTypes.func,
@@ -171,13 +177,13 @@ export default withHandlers({
     props.onHandleTagSetColor(data)
   },
   onHandleDelete: props => () => props.onHandleTagDelete(props.tag),
-  onHandleTagDescriptionUpdate: props => event => {
+  onHandleDescriptionUpdate: props => event => {
     const description = event.target.value
     if (description === props.tag.description || description === 'Add description' || description === '') {
       return
     }
 
-    const data = { item: props.tag, description }
-    props.onHandleDescriptionUpdate(data)
+    const data = { tag: props.tag, description }
+    props.onHandleTagDescriptionUpdate(data)
   },
 })(TagDetail)

@@ -45,12 +45,13 @@ const Detail = props => {
     onHandleTagTitleUpdate,
     onHandleTagSetColor,
     onHandleTagDelete,
+    onHandleTagDescriptionUpdate,
 
     contact,
     onHandleContactNicknameUpdate,
     onHandleContactDelete,
+    onHandleContactDescriptionUpdate,
 
-    onHandleDescriptionUpdate,
     onHandleAddEventListener,
     onHandleRemoveEventListener,
     onHandleToggleList,
@@ -77,7 +78,7 @@ const Detail = props => {
         onHandleTagTitleUpdate={onHandleTagTitleUpdate}
         onHandleTagSetColor={onHandleTagSetColor}
         onHandleTagDelete={onHandleTagDelete}
-        onHandleDescriptionUpdate={onHandleDescriptionUpdate} />}
+        onHandleTagDescriptionUpdate={onHandleTagDescriptionUpdate} />}
 
       {detail.archive &&
       <ArchiveDetail />}
@@ -91,7 +92,7 @@ const Detail = props => {
         onHandlePrevious={onHandlePrevious}
         onHandleContactNicknameUpdate={onHandleContactNicknameUpdate}
         onHandleContactDelete={onHandleContactDelete}
-        onHandleDescriptionUpdate={onHandleDescriptionUpdate} />}
+        onHandleContactDescriptionUpdate={onHandleContactDescriptionUpdate} />}
 
     </DetailStyle>
   )
@@ -105,12 +106,13 @@ Detail.propTypes = {
   onHandleTagTitleUpdate: PropTypes.func,
   onHandleTagSetColor: PropTypes.func,
   onHandleTagDelete: PropTypes.func,
+  onHandleTagDescriptionUpdate: PropTypes.func,
 
   contact: PropTypes.object,
   onHandleContactNicknameUpdate: PropTypes.func,
   onHandleContactDelete: PropTypes.func,
+  onHandleContactDescriptionUpdate: PropTypes.func,
 
-  onHandleDescriptionUpdate: PropTypes.func,
   onHandleKeyDown: PropTypes.func,
   onHandleAddEventListener: PropTypes.func,
   onHandleRemoveEventListener: PropTypes.func,
@@ -220,14 +222,15 @@ export default compose(
       props.updateTag(data.tag, data.index, 'colorIndex'),
     onHandleTagDelete: props => tag =>
       props.showDialog('tag-delete-confirm', { tag }),
+    onHandleTagDescriptionUpdate: props => data =>
+      props.updateTag(data.tag, data.description, 'description'),
 
     onHandleContactNicknameUpdate: props => data =>
       props.updateContact(data.contact, data.nickname, 'nickname'),
     onHandleContactDelete: props => contact =>
       props.showDialog('contact-delete-confirm', { contact }),
-
-    onHandleDescriptionUpdate: props => data =>
-      props.updateTag(data.item, data.description, 'description'),
+    onHandleContactDescriptionUpdate: props => data =>
+      props.updateContact(data.contact, data.description, 'description'),
   }),
   withHandlers({
     onHandleKeyDown: props => event => {

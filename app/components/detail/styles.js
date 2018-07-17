@@ -79,7 +79,6 @@ const DetailContentDeleteIcon = styled.div`
 const DetailContentCenter = styled.div`
   display: flex;
   flex-wrap: wrap;
-  
   flex-shrink: 100;
   height: 100%;
   margin-bottom: 22px;
@@ -190,22 +189,32 @@ const DetailContentContactDataContent = styled.div`
 // Markdown
 const MarkdownEditableContainer = styled(MarkdownEditable)`
   ${boxSizing('border-box')}
-  ${markdownStyles}
-  font-family: 'Source Sans Pro', 'Segoe UI', sans-serif;
-  font-weight: 300;
-  width: 100%;
-  padding: 15px;
+  padding: 15px 2px 15px 15px;
   background-color: #fff;
   border: 1px solid #D7E3EC;
+  width: 100%;
+  height: 100%;
   font-size: 14px;
-  min-height: 190px;
-  max-height: 100%;
-  height: auto;
-  resize: vertical;
-  color: ${props => props.text === 'Add description' ? '#8c9da9' : '#293034'};
   
-  p {
-    margin: ${props => props.text === 'Add description' ? '0' : '1em 0'};
+  .markdown__html {
+    ${markdownStyles}
+    padding-right: 13px;
+    color: ${props => props.text === 'Add description' ? '#8c9da9' : '#293034'};
+    
+    p {
+      margin: ${props => props.text === 'Add description' ? '0' : '1em 0'};
+    }
+  }
+  
+  .markdown__edit {
+    font-family: 'Source Sans Pro', 'Segoe UI', sans-serif;
+    font-weight: 300;
+    border: none;
+    padding-right: 13px;
+    resize: none;
+    width: 100%;
+    height: 100%;
+    color: '#293034';
   }
 `;
 
