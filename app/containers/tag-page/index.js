@@ -1,51 +1,51 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { compose, withHandlers } from 'recompose'
 
-import { getDetail } from 'redux/store/app-state/app-state.selectors'
+import { getTagDetail } from 'redux/store/app-state/app-state.selectors'
 
 import TagsContent from 'components/contents/tags-content'
-import TagDetailContent from 'components/contents/tag-detail-content'
+import DetailContent from 'components/contents/detail-content'
 import LeftPanel from 'components/panels/left-panel'
 import CenterPanel from 'components/panels/center-panel'
 import TagTreeContent from 'components/contents/tag-tree-content'
 
-class TagPage extends PureComponent {
+const TagPage = ({ onGetContent }) => (
+  <div>
+    <LeftPanel>
+      <TagTreeContent/>
+    </LeftPanel>
+    <CenterPanel>
+      {onGetContent()}
+    </CenterPanel>
+  </div>
+)
 
-  static propTypes = {
-    detail: PropTypes.object,
-  }
 
-  getContent() {
-    if (this.props.detail.tag) {
-      return (
-        <TagDetailContent />
-      )
-    }
-
-    return (
-      <TagsContent />
-    )
-  }
-
-  render() {
-    const content = this.getContent()
-    return (
-      <div>
-        <LeftPanel>
-          <TagTreeContent />
-        </LeftPanel>
-        <CenterPanel>
-          {content}
-        </CenterPanel>
-      </div>
-    )
-  }
+TagPage.propTypes = {
+  onGetContent: PropTypes.func,
 }
 
 const mapStateToProps = state => ({
-  detail: getDetail(state),
+  tagDetail: getTagDetail(state),
 })
 
 const mapDispatchToProps = {}
-export default connect(mapStateToProps, mapDispatchToProps)(TagPage)
+
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withHandlers({
+    onGetContent: props => () => {
+      if (props.tagDetail) {
+        return (
+          <DetailContent/>
+        )
+      } else {
+        return (
+          <TagsContent/>
+        )
+      }
+    }
+  })
+)(TagPage)

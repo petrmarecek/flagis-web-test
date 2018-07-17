@@ -67,19 +67,32 @@ export function* updateContacts(action) {
 }
 
 export function* deleteContact(action) {
-  yield* fetch(CONTACTS.DELETE, {
-    method: api.contacts.delete,
-    args: [action.payload.originalData.id],
-    schema: null,
-  })
+  const originalContact = action.payload.originalData
 
-  yield* mainUndo(action, 'contactDelete')
+  try {
+    yield* fetch(CONTACTS.DELETE, {
+      method: api.contacts.delete,
+      args: [originalContact.id],
+      schema: null,
+    })
 
-  // delete tag from the search index
-  search.contacts.removeItem({ id: action.payload })
+    yield* mainUndo(action, 'contactDelete')
+
+    // delete contact from the search index
+    search.contacts.removeItem({ id: action.payload })
+
+  } catch(err) {
+    // log error
+    console.error('Error occured during contact delete', err)
+
+    // add the contact to the search index
+    search.contacts.addItem(originalContact)
+
+    yield put(contactsActions.addContact(originalContact))
+  }
 }
 
 export function* undoDeleteContact(action) {
-  const createData = { email: action.payload.email }
+  const createData = action.payload.email
   yield put(contactsActions.createContact(createData))
 }

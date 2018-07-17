@@ -12,9 +12,9 @@ import {
   DetailContentTop,
   DetailContentSubject,
   DetailSubject,
-  DetailSubjectIcon,
   DetailContentDeleteIcon,
   DetailContentCenter,
+  DetailSubjectIconContact,
   DetailContentPropertiesContact,
   DetailContentDescriptionContact,
   MarkdownEditableContainer,
@@ -28,12 +28,12 @@ const ContactDetail = props => {
   const {
     contact,
     onHandleRemoveEventListener,
-    onHandleToggleContactList,
-    onHandlePreviousContact,
-    onHandleNextContact,
-    onHandleDescriptionUpdate,
+    onHandleToggleList,
+    onHandlePrevious,
+    onHandleNext,
     onHandleNicknameUpdate,
     onHandleDelete,
+    onHandleContactDescriptionUpdate,
   } = props
 
   if (!contact) {
@@ -61,20 +61,20 @@ const ContactDetail = props => {
   return (
     <div>
       <DetailMenu
-        back={onHandleToggleContactList}
-        previous={onHandlePreviousContact}
-        next={onHandleNextContact} />
+        back={onHandleToggleList}
+        previous={onHandlePrevious}
+        next={onHandleNext} />
       <DetailInner>
         <DetailContentTop>
           <DetailContentSubject>
             <DetailSubject>
-              <DetailSubjectIcon isUser={contact.isUser}>
+              <DetailSubjectIconContact isUser={contact.isUser}>
                 <Icon
                   icon={icon.icon}
                   width={icon.width}
                   height={icon.height}
                   color={icon.color} />
-              </DetailSubjectIcon>
+              </DetailSubjectIconContact>
               <span onClick={onHandleRemoveEventListener}>
                 <ContentEditable
                   className='detail-subject__content'
@@ -118,7 +118,7 @@ const ContactDetail = props => {
             <span onClick={onHandleRemoveEventListener}>
               <MarkdownEditableContainer
                 text={description}
-                onUpdate={onHandleDescriptionUpdate} />
+                onUpdate={onHandleContactDescriptionUpdate} />
             </span>
           </DetailContentDescriptionContact>
         </DetailContentCenter>
@@ -129,36 +129,36 @@ const ContactDetail = props => {
 
 ContactDetail.propTypes = {
   contact: PropTypes.object,
-  onHandleRemoveEventListener: PropTypes.func,
-  onHandleToggleContactList: PropTypes.func,
-  onHandleNextContact: PropTypes.func,
-  onHandlePreviousContact: PropTypes.func,
-  onHandleDescriptionUpdate: PropTypes.func,
-  onHandleContactDescriptionUpdate: PropTypes.func,
   onHandleNicknameUpdate: PropTypes.func,
   onHandleContactNicknameUpdate: PropTypes.func,
   onHandleDelete: PropTypes.func,
   onHandleContactDelete: PropTypes.func,
+  onHandleContactDescriptionUpdate: PropTypes.func,
+  onHandleDescriptionUpdate: PropTypes.func,
+  onHandleRemoveEventListener: PropTypes.func,
+  onHandleToggleList: PropTypes.func,
+  onHandleNext: PropTypes.func,
+  onHandlePrevious: PropTypes.func,
 }
 
 export default withHandlers({
-  onHandleDescriptionUpdate: props => event => {
-    const description = event.target.value
-    if (description === props.contact.description) {
-      return
-    }
-
-    const data = { contact: props.contact, description }
-    props.onHandleContactDescriptionUpdate(data)
-  },
   onHandleNicknameUpdate: props => event => {
     const nickname = event.target.value
-    if (nickname === props.contact.nickname || nickname === 'Add username') {
+    if (nickname === props.contact.nickname || nickname === 'Add username' || nickname === '') {
       return
     }
 
     const data = { contact: props.contact, nickname }
     props.onHandleContactNicknameUpdate(data)
   },
-  onHandleDelete: props => () => props.onHandleContactDelete(props.contact)
+  onHandleDelete: props => () => props.onHandleContactDelete(props.contact),
+  onHandleContactDescriptionUpdate: props => event => {
+    const description = event.target.value
+    if (description === props.contact.description || description === 'Add description' || description === '') {
+      return
+    }
+
+    const data = { item: props.contact, description }
+    props.onHandleDescriptionUpdate(data)
+  },
 })(ContactDetail)

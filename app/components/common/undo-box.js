@@ -116,7 +116,7 @@ export default compose(
           break
 
         case 'contactDelete':
-          props.activeUndo('UNDO_CONTACT/DELETE')
+          props.activeUndo('UNDO_CONTACTS/DELETE')
           break
 
         default:

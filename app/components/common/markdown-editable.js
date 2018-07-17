@@ -20,6 +20,7 @@ const MarkdownEditable = ({ className, text, editable, onHandleClick, onHandleUp
     resultComponent = (
       <textarea
         autoFocus
+        defaultValue={text}
         className={className}
         onBlur={onHandleUpdateText} />
     )
@@ -27,7 +28,6 @@ const MarkdownEditable = ({ className, text, editable, onHandleClick, onHandleUp
 
   return resultComponent
 }
-
 
 MarkdownEditable.propTypes = {
   className: PropTypes.string,

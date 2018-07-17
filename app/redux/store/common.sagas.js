@@ -103,7 +103,8 @@ function* onUndo(action, name) {
     undoAction: take(act =>
       act.type === 'TASK/DELETE' ||
       act.type === 'TAGS/DELETE' ||
-      act.type === 'TREE/DELETE'
+      act.type === 'TREE/DELETE' ||
+      act.type === 'CONTACTS/DELETE'
     ),
     timeout: call(delay, 8000),
   })

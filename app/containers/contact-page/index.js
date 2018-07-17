@@ -14,7 +14,7 @@ import DetailContent from 'components/contents/detail-content'
 const ContactPage = ({ onGetContent }) => (
   <div>
     <LeftPanel>
-      <AccountMenu />
+      <AccountMenu/>
     </LeftPanel>
     <CenterPanel>
       {onGetContent()}
@@ -32,6 +32,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {}
+
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withHandlers({

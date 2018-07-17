@@ -90,7 +90,6 @@ export default class ContentEditable extends Component {
         className={this.props.className}
         onBlur={this.emitChange}
         contentEditable="true"
-        onKeyPress={this.onKeyPress}
         dangerouslySetInnerHTML={{__html: this.props.html}}/>
     )
   }

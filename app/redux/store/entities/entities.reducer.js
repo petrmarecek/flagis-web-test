@@ -155,8 +155,7 @@ export default typeToReducer({
   },
 
   [TAGS.DELETE]: {
-    FULFILLED: (state, action) => state
-      .deleteIn(['tags', action.payload])
+    FULFILLED: (state, action) => state.deleteIn(['tags', action.payload])
   },
   // ------ Auth --------------------------------------------------------------
 
@@ -210,10 +209,8 @@ export default typeToReducer({
     return state.setIn(['contacts', contactId, fieldName], fieldValue)
   },
 
-  [CONTACTS.DELETE]: {
-    FULFILLED: (state, action) => state
-      .deleteIn(['contacts', action.payload])
-  },
+  [CONTACTS.DELETE]: (state, action) =>
+    state.deleteIn(['contacts', action.payload.originalData.id]),
 
 }, new records.EntitiesStore())
 

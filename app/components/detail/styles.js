@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { boxSizing, markdownStyles } from '../styled-components-mixins/'
 import MarkdownEditable from '../common/markdown-editable'
+import Icon from '../icons/icon'
 
 // Detail
 const DetailStyle = styled.div`
@@ -66,14 +67,6 @@ const DetailSubject = styled.div`
   z-index: 30;
 `;
 
-const DetailSubjectIcon = styled.div`
-  position: absolute;
-  left: 5px;
-  top: 0;
-  margin: 2px 5px;
-  padding: ${props => props.isUser ? '2px 0 0 0' : '0'};
-`;
-
 const DetailContentDeleteIcon = styled.div`
   ${boxSizing('border-box')}
   flex: 1;
@@ -90,6 +83,7 @@ const DetailContentCenter = styled.div`
   flex-shrink: 100;
   height: 100%;
   margin-bottom: 22px;
+  flex-direction: ${props => props.column ? 'column' : 'row'};
 `;
 
 // Detail menu
@@ -115,7 +109,50 @@ const RightMenu = styled.div`
   }
 `;
 
+// Tag detail
+const DetailSubjectTagColor = styled(Icon)`
+  position: absolute;
+  pointer-events: none;
+  left: 4px;
+  top: 3px;
+`;
+
+const DetailContentTagColor = styled.div`
+  margin: 0 17px;
+`;
+
+const DetailTagColorSelector = styled.div`
+  color: #8C9DA9;
+  font-size: 14px;
+`;
+
+const DetailTagColorSelectorLabel = styled.div`
+  display: block;
+  margin: 0 0 11px 0;
+`;
+
+const DetailTagColorSelectorOptions = styled.ul`
+  &:after {
+    display: block;
+    content: "";
+    clear: both;
+  }
+`;
+
+const DetailContentDescriptionTag = styled.div`
+  margin: 0 17px;
+  height: calc(100% - 69px);
+`;
+
 // Contact detail
+const DetailSubjectIconContact = styled.div`
+  position: absolute;
+  left: 5px;
+  top: 0;
+  margin: 2px 5px;
+  padding: ${props => props.isUser ? '2px 0 0 0' : '0'};
+`;
+
 const DetailContentPropertiesContact = styled.div`
   flex: 3;
   margin: 0 25px 0 13px;
@@ -127,27 +164,6 @@ const DetailContentPropertiesContact = styled.div`
 const DetailContentDescriptionContact = styled.div`
   flex: 3;
   margin-right: 22px;
-`;
-
-const MarkdownEditableContainer = styled(MarkdownEditable)`
-  ${boxSizing('border-box')}
-  ${markdownStyles}
-  font-family: 'Source Sans Pro', 'Segoe UI', sans-serif;
-  font-weight: 300;
-  width: 100%;
-  padding: 15px;
-  background-color: #fff;
-  border: 1px solid #D7E3EC;
-  font-size: 14px;
-  min-height: 190px;
-  max-height: 100%;
-  height: auto;
-  resize: vertical;
-  color: ${props => props.text === 'Add description' ? '#8c9da9' : '#293034'};
-  
-  p {
-    margin: ${props => props.text === 'Add description' ? '0' : '1em 0'};
-  }
 `;
 
 const DetailContentContactData = styled.div`
@@ -171,6 +187,28 @@ const DetailContentContactDataContent = styled.div`
   color: #293034;
 `;
 
+// Markdown
+const MarkdownEditableContainer = styled(MarkdownEditable)`
+  ${boxSizing('border-box')}
+  ${markdownStyles}
+  font-family: 'Source Sans Pro', 'Segoe UI', sans-serif;
+  font-weight: 300;
+  width: 100%;
+  padding: 15px;
+  background-color: #fff;
+  border: 1px solid #D7E3EC;
+  font-size: 14px;
+  min-height: 190px;
+  max-height: 100%;
+  height: auto;
+  resize: vertical;
+  color: ${props => props.text === 'Add description' ? '#8c9da9' : '#293034'};
+  
+  p {
+    margin: ${props => props.text === 'Add description' ? '0' : '1em 0'};
+  }
+`;
+
 export {
   // Detail
   DetailStyle,
@@ -178,7 +216,6 @@ export {
   DetailContentTop,
   DetailContentSubject,
   DetailSubject,
-  DetailSubjectIcon,
   DetailContentDeleteIcon,
   DetailContentCenter,
 
@@ -187,11 +224,22 @@ export {
   LeftMenu,
   RightMenu,
 
+  // Tag detail
+  DetailSubjectTagColor,
+  DetailContentTagColor,
+  DetailTagColorSelector,
+  DetailTagColorSelectorLabel,
+  DetailTagColorSelectorOptions,
+  DetailContentDescriptionTag,
+
   // Contact detail
+  DetailSubjectIconContact,
   DetailContentPropertiesContact,
   DetailContentDescriptionContact,
-  MarkdownEditableContainer,
   DetailContentContactData,
   DetailContentContactDataLabel,
   DetailContentContactDataContent,
+
+  // Markdown
+  MarkdownEditableContainer,
 }
