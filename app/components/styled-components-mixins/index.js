@@ -47,6 +47,14 @@ const transform = value => css`
   transform: ${value};
 `;
 
+const transformOrigin = value => css`
+  -webkit-transform-origin: ${value};
+  -moz-transform-origin: ${value};
+  -o-transform-origin: ${value};
+  -ms-transform-origin: ${value};
+  transform-origin: ${value};
+`;
+
 const userSelect = value => css`
   -webkit-user-select: ${value};
   -moz-user-select: ${value};
@@ -102,6 +110,7 @@ export {
   borderRadius,
   transition,
   transform,
+  transformOrigin,
   userSelect,
   placeholderColor,
 

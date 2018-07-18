@@ -96,7 +96,7 @@ const TagDetail = props => {
               </span>
             </DetailSubject>
           </DetailContentSubject>
-          <DetailContentDeleteIcon onClick={onHandleRemoveEventListener} >
+          <DetailContentDeleteIcon onClick={onHandleRemoveEventListener}>
             <Icon
               icon={ICONS.TRASH}
               width={23}
@@ -173,7 +173,7 @@ export default withHandlers({
     props.onHandleTagTitleUpdate(data)
   },
   onHandleSetColor: props => index => {
-    const data = {tag: props.tag, index }
+    const data = { tag: props.tag, index }
     props.onHandleTagSetColor(data)
   },
   onHandleDelete: props => () => props.onHandleTagDelete(props.tag),

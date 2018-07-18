@@ -1,51 +1,50 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { compose, withHandlers } from 'recompose'
 
-import { getDetail } from 'redux/store/app-state/app-state.selectors'
+import { getTaskDetail } from 'redux/store/app-state/app-state.selectors'
 
 import LeftPanel from 'components/panels/left-panel'
 import CenterPanel from 'components/panels/center-panel'
 import TagTreeContent from 'components/contents/tag-tree-content'
+import DetailContent from 'components/contents/detail-content'
 import TasksContent from 'components/contents/tasks-content'
-import TaskDetailContent from 'components/contents/task-detail-content'
 
-class TaskPage extends PureComponent {
+const TaskPage = ({ onGetContent }) => (
+  <div>
+    <LeftPanel>
+      <TagTreeContent/>
+    </LeftPanel>
+    <CenterPanel>
+      {onGetContent()}
+    </CenterPanel>
+  </div>
+)
 
-  static propTypes = {
-    detail: PropTypes.object,
-  }
-
-  getContent() {
-    if (this.props.detail.task) {
-      return (
-        <TaskDetailContent />
-      )
-    }
-
-    return (
-      <TasksContent />
-    )
-  }
-
-  render() {
-    const content = this.getContent()
-    return (
-      <div>
-        <LeftPanel>
-          <TagTreeContent />
-        </LeftPanel>
-        <CenterPanel>
-          {content}
-        </CenterPanel>
-      </div>
-    )
-  }
+TaskPage.propTypes = {
+  onGetContent: PropTypes.func,
 }
 
 const mapStateToProps = state => ({
-  detail: getDetail(state),
+  taskDetail: getTaskDetail(state),
 })
 
 const mapDispatchToProps = {}
-export default connect(mapStateToProps, mapDispatchToProps)(TaskPage)
+
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withHandlers({
+    onGetContent: props => () => {
+      if (props.taskDetail) {
+        return (
+          <DetailContent/>
+        )
+      } else {
+        return (
+          <TasksContent/>
+        )
+      }
+    }
+  })
+)(TaskPage)

@@ -1,8 +1,15 @@
 import styled, { css } from 'styled-components'
-import { boxSizing, markdownStyles, placeholderColor } from '../styled-components-mixins/'
 import ContentEditable from '../common/content-editable'
 import MarkdownEditable from '../common/markdown-editable'
 import Icon from '../icons/icon'
+import {
+  boxSizing,
+  markdownStyles,
+  placeholderColor,
+  transition,
+  transform,
+  transformOrigin,
+} from '../styled-components-mixins/'
 
 // Detail
 const DetailStyle = styled.div`
@@ -46,6 +53,20 @@ const DetailContentTop = styled.div`
   padding: 0 12px;
   margin-bottom: 21px;
   
+  :before {
+    content: "";
+    position: absolute;
+    z-index:-1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: ${props => props.archived ? '#c1cad0' : '#f6f8f9'};
+    ${transform(props => props.completed ? 'scaleX(1)' : 'scaleX(0)')}
+    ${transformOrigin('0 50%')}
+    ${transition(props => props.animation ? 'transform 500ms ease-out' : 'none')}
+  }
+  
   &:after {
     content: "";
     position: absolute;
@@ -68,6 +89,14 @@ const DetailSubject = styled.div`
   z-index: 30;
 `;
 
+const DetailContentTagAutocomplete = styled.div`
+  ${boxSizing('border-box')}
+  flex: 7;
+  padding-right: 10px;
+  min-width: 25%;
+  padding-top: 12px;
+`;
+
 const DetailContentDeleteIcon = styled.div`
   ${boxSizing('border-box')}
   flex: 1;
@@ -84,6 +113,114 @@ const DetailContentCenter = styled.div`
   height: 100%;
   margin-bottom: 22px;
   flex-direction: ${props => props.column ? 'column' : 'row'};
+`;
+
+const DetailContentProperties = styled.div`
+  flex: 3;
+  margin: 0 25px 0 13px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-start;
+`;
+
+const DetailContentOptions = styled.div`
+  margin: 6px 0 10px;
+`;
+
+const DetailContentDate = styled.div`
+  position: relative;
+`;
+
+const DetailContentDateLabel = styled.div`
+  position: absolute;
+  top: 10px;
+  left: 3px;
+  z-index: 1;
+  color: #8c9da9;
+  font-size: 14px;
+  pointer-events: none;
+`;
+
+const DetailContentDatePicker = styled.div`
+  z-index: 2;
+  .react-datepicker__input-container {
+    input {
+      text-align: right;
+      font-size: 15px;
+      background-color: @cl-bg-input;
+    }
+  }
+  
+  .react-datepicker-wrapper {
+    width: 100%;
+  }
+  
+  .react-datepicker-popper {
+    z-index: 2;
+    
+    .react-datepicker {
+      .border-radius(5px 0 5px 5px);
+
+      .react-datepicker__header {
+        .border-radius(5px 0 0 0);
+      }
+      
+      .react-datepicker__today-button {
+        .border-radius(0 0 5px 5px);
+      }
+      
+      .react-datepicker__time-container {
+        .border-radius(0 5px 5px 0);
+        
+        .react-datepicker__header {
+          .border-radius(0 5px 0 0);
+        }
+        
+        .react-datepicker__time{
+          .border-radius(0 0 5px 0);
+        }
+      }
+    }
+  }
+`;
+
+const DetailContentImportant = styled.div`
+  position: relative;
+  color: #8c9da9;
+  font-size: 14px;
+  padding: 0 0 2px 0;
+  margin: 10px 0 0 0;
+  border-bottom: 1px solid #D7E3EC;
+  cursor: ${props => props.archived ? 'default' : 'pointer'};
+`;
+
+const DetailContentImportantLabel = styled.div`
+  margin: 0 0 0 3px;
+  font-weight: ${props => props.important ? 'bold' : 'normal'};
+`;
+
+const DetailContentImportantContent = styled.div`
+  margin: -15px 5px 0 0;
+  float: right;
+  
+  span {
+    font-weight: bold;
+  }
+`;
+
+const DetailContentAttachments = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+`;
+
+const DetailContentComments = styled.div`
+  flex: 4;
+  margin-right: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `;
 
 // Detail menu
@@ -115,12 +252,16 @@ const ContentEditableContainer = css`
   line-height: 22px;
   font-size: 18px;
   outline: none !important;
-  margin-left: 45px;
   padding-top: 3px;
-  color: #293034;
   max-height: 134px;
   overflow-y: auto;
   overflow-x: hidden;
+  color: ${props => (props.completed && !props.archived) ? '#D7E3EC' : '#293034'};
+  margin-left: ${props => props.completed ? '85px' : '45px'};
+  text-decoration: ${props => (props.completed || props.archived) ? 'line-through' : 'none'};
+  font-weight: ${props => props.important ? 'bold' : 'normal'};
+  ${transition(props => props.animation ? 'margin 500ms ease-out, color 500ms ease-out' : 'none')};
+  pointer-events: ${props => props.archived ? 'none' : 'auto'};
   
   :empty:before {
     color: #8c9da9;
@@ -161,6 +302,31 @@ const MarkdownEditableContainer = styled(MarkdownEditable)`
     height: 100%;
     color: '#293034';
   }
+`;
+
+// Task detail
+const DetailSubjectTaskCompleted = styled(Icon)`
+  position: absolute;
+  left: 5px;
+  top: 0;
+  margin: 2px 5px;
+`;
+
+const DetailSubjectTaskArchived = styled(Icon)`
+  position: absolute;
+  left: ${props => props.archived ? '5px' : '40px'};
+  top: ${props => props.archived ? '-1px' : '0'};
+  top: 0;
+  margin: 0 5px;
+`;
+
+const DetailSubjectTaskContentEditable = styled(ContentEditable)`
+  ${ContentEditableContainer}
+`;
+
+const DetailContentDescriptionTask = styled.div`
+  flex: 6;
+  margin-right: 22px;
 `;
 
 // Tag detail
@@ -216,14 +382,6 @@ const DetailSubjectContactContentEditable = styled(ContentEditable)`
   ${ContentEditableContainer}
 `;
 
-const DetailContentPropertiesContact = styled.div`
-  flex: 3;
-  margin: 0 25px 0 13px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-start;
-`;
-
 const DetailContentDescriptionContact = styled.div`
   flex: 3;
   margin-right: 22px;
@@ -257,13 +415,30 @@ export {
   DetailContentTop,
   DetailContentSubject,
   DetailSubject,
+  DetailContentTagAutocomplete,
   DetailContentDeleteIcon,
   DetailContentCenter,
+  DetailContentProperties,
+  DetailContentOptions,
+  DetailContentDate,
+  DetailContentDateLabel,
+  DetailContentDatePicker,
+  DetailContentImportant,
+  DetailContentImportantLabel,
+  DetailContentImportantContent,
+  DetailContentAttachments,
+  DetailContentComments,
 
   // Detail menu
   Menu,
   LeftMenu,
   RightMenu,
+
+  // Task detail
+  DetailSubjectTaskCompleted,
+  DetailSubjectTaskArchived,
+  DetailSubjectTaskContentEditable,
+  DetailContentDescriptionTask,
 
   // Tag detail
   DetailSubjectTagColor,
@@ -277,7 +452,6 @@ export {
   // Contact detail
   DetailSubjectIconContact,
   DetailSubjectContactContentEditable,
-  DetailContentPropertiesContact,
   DetailContentDescriptionContact,
   DetailContentContactData,
   DetailContentContactDataLabel,

@@ -13,9 +13,9 @@ import {
   DetailSubject,
   DetailContentDeleteIcon,
   DetailContentCenter,
+  DetailContentProperties,
   DetailSubjectIconContact,
   DetailSubjectContactContentEditable,
-  DetailContentPropertiesContact,
   DetailContentDescriptionContact,
   MarkdownEditableContainer,
   DetailContentContactData,
@@ -101,7 +101,7 @@ const ContactDetail = props => {
         </DetailContentTop>
 
         <DetailContentCenter>
-          <DetailContentPropertiesContact>
+          <DetailContentProperties>
             <DetailContentContactData>
               <DetailContentContactDataLabel>
                 E-Mail
@@ -116,7 +116,7 @@ const ContactDetail = props => {
                 Non-existing user
               </DetailContentContactDataLabel>
             </DetailContentContactData>}
-          </DetailContentPropertiesContact>
+          </DetailContentProperties>
 
           <DetailContentDescriptionContact>
             <span onClick={onHandleRemoveEventListener}>

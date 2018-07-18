@@ -22,7 +22,6 @@ const TagPage = ({ onGetContent }) => (
   </div>
 )
 
-
 TagPage.propTypes = {
   onGetContent: PropTypes.func,
 }

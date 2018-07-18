@@ -4,13 +4,33 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { compose, lifecycle, withHandlers } from 'recompose'
 import { DetailStyle } from './styles'
-
-import TaskDetail from './task-detail'
-import TagDetail from './tag-detail'
-import ArchiveDetail from './archive-detail'
-import ContactDetail from './contact-detail'
+import { toast } from 'react-toastify'
+import { successMessages } from 'utils/messages'
+import constants from 'utils/constants'
+import { List } from 'immutable'
 
 import { deselectDetail, showDialog } from 'redux/store/app-state/app-state.actions'
+import {
+  selectTask,
+  requestToggleImportant,
+  setComplete,
+  setIncomplete,
+  setArchiveTasks,
+  deselectTasks,
+  setSubject,
+  removeTaskTag,
+  setDate,
+  setDescription,
+} from 'redux/store/tasks/tasks.actions'
+import {
+  fetchAttachment,
+  createAttachment,
+  deleteAttachment
+} from 'redux/store/attachments/attachments.actions'
+import {
+  fetchComment,
+  createComment,
+} from 'redux/store/comments/comments.actions'
 import {
   deselectTags,
   selectTag,
@@ -21,8 +41,18 @@ import {
   deselectContacts,
   updateContact
 } from 'redux/store/contacts/contacts.actions'
-
 import { getDetail } from 'redux/store/app-state/app-state.selectors'
+import {
+  getTasksItems,
+  getCompletedTasksItems,
+  getArchivedTasksItems,
+  getSelectionTasks,
+  getCurrentTask,
+  getNextTask,
+  getPreviousTask,
+} from 'redux/store/tasks/tasks.selectors'
+import { getAttachments } from 'redux/store/attachments/attachments.selectors'
+import { getComments } from 'redux/store/comments/comments.selectors'
 import {
   getCurrentTag,
   getNextTag,
@@ -34,11 +64,34 @@ import {
   getNextContact,
   getPreviousContact
 } from 'redux/store/contacts/contacts.selectors'
+import { getEntitiesTasks } from 'redux/store/entities/entities.selectors'
+import { getSelectionInfo, setArchive } from 'redux/utils/component-helper'
+
+import TaskDetail from './task-detail'
+import TagDetail from './tag-detail'
+import ArchiveDetail from './archive-detail'
+import ContactDetail from './contact-detail'
 
 const Detail = props => {
 
   const {
     detail,
+
+    task,
+    attachments,
+    comments,
+    onHandleTaskSetComplete,
+    onHandleTaskSetIncomplete,
+    onHandleTaskArchive,
+    onHandleTaskSubjectUpdate,
+    onHandleTaskTagDeleted,
+    onHandleTaskDelete,
+    onHandleTaskDateChanged,
+    onHandleTaskToggleImportant,
+    onHandleTaskDescriptionUpdate,
+    onHandleTaskAttachmentDelete,
+    onHandleTaskFileUploaded,
+    onHandleTaskAddComment,
 
     tag,
     titles,
@@ -65,7 +118,26 @@ const Detail = props => {
       onClick={onHandleAddEventListener}>
 
       {detail.task &&
-      <TaskDetail />}
+      <TaskDetail
+        task={task}
+        attachments={attachments}
+        comments={comments}
+        onHandleRemoveEventListener={onHandleRemoveEventListener}
+        onHandleToggleList={onHandleToggleList}
+        onHandleTaskNext={onHandleNext}
+        onHandleTaskPrevious={onHandlePrevious}
+        onHandleTaskSetComplete={onHandleTaskSetComplete}
+        onHandleTaskArchive={onHandleTaskArchive}
+        onHandleTaskSetIncomplete={onHandleTaskSetIncomplete}
+        onHandleTaskSubjectUpdate={onHandleTaskSubjectUpdate}
+        onHandleTaskTagDeleted={onHandleTaskTagDeleted}
+        onHandleTaskDelete={onHandleTaskDelete}
+        onHandleTaskDateChanged={onHandleTaskDateChanged}
+        onHandleTaskToggleImportant={onHandleTaskToggleImportant}
+        onHandleTaskDescriptionUpdate={onHandleTaskDescriptionUpdate}
+        onHandleTaskAttachmentDelete={onHandleTaskAttachmentDelete}
+        onHandleTaskFileUploaded={onHandleTaskFileUploaded}
+        onHandleTaskAddComment={onHandleTaskAddComment} />}
 
       {detail.tag &&
       <TagDetail
@@ -101,6 +173,22 @@ const Detail = props => {
 Detail.propTypes = {
   detail: PropTypes.object,
 
+  task: PropTypes.object,
+  attachments: PropTypes.object,
+  comments: PropTypes.object,
+  onHandleTaskSetComplete: PropTypes.func,
+  onHandleTaskSetIncomplete: PropTypes.func,
+  onHandleTaskArchive: PropTypes.func,
+  onHandleTaskSubjectUpdate: PropTypes.func,
+  onHandleTaskTagDeleted: PropTypes.func,
+  onHandleTaskDelete: PropTypes.func,
+  onHandleTaskDateChanged: PropTypes.func,
+  onHandleTaskToggleImportant: PropTypes.func,
+  onHandleTaskDescriptionUpdate: PropTypes.func,
+  onHandleTaskAttachmentDelete: PropTypes.func,
+  onHandleTaskFileUploaded: PropTypes.func,
+  onHandleTaskAddComment: PropTypes.func,
+
   tag: PropTypes.object,
   titles: PropTypes.object,
   onHandleTagTitleUpdate: PropTypes.func,
@@ -125,6 +213,17 @@ Detail.propTypes = {
 const mapStateToProps = state => ({
   detail: getDetail(state),
 
+  task: getCurrentTask(state),
+  comments: getComments(state),
+  attachments: getAttachments(state),
+  nextTask: getNextTask(state),
+  previousTask: getPreviousTask(state),
+  tasks: getTasksItems(state),
+  selectedTasks: getSelectionTasks(state),
+  completedTasks: getCompletedTasksItems(state),
+  archivedTasks: getArchivedTasksItems(state),
+  entitiesTasks: getEntitiesTasks(state),
+
   tag: getCurrentTag(state),
   titles: getTagsTitle(state),
   nextTag: getNextTag(state),
@@ -136,6 +235,22 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
+  selectTask,
+  deselectTasks,
+  setComplete,
+  setIncomplete,
+  setArchiveTasks,
+  setSubject,
+  removeTaskTag,
+  setDate,
+  requestToggleImportant,
+  setDescription,
+  fetchAttachment,
+  createAttachment,
+  deleteAttachment,
+  fetchComment,
+  createComment,
+
   selectTag,
   deselectTags,
   updateTag,
@@ -153,6 +268,7 @@ export default compose(
   withHandlers({
     onHandleToggleList: props => () => {
       if (props.detail.task) {
+        props.deselectTasks()
         return
       }
 
@@ -169,6 +285,14 @@ export default compose(
     },
     onHandleNext: props => () => {
       if (props.detail.task) {
+        if (!props.nextTask) {
+          return
+        }
+
+        const selectionInfo = getSelectionInfo(null, props.nextTask, props.selectedTasks)
+        props.fetchAttachment(props.nextTask.id)
+        props.fetchComment(props.nextTask.id)
+        props.selectTask(selectionInfo.newSelectedTasks, selectionInfo.isMultiSelection)
         return
       }
 
@@ -193,6 +317,14 @@ export default compose(
     },
     onHandlePrevious: props => () => {
       if (props.detail.task) {
+        if (!props.previousTask) {
+          return
+        }
+
+        const selectionInfo = getSelectionInfo(null, props.previousTask, props.selectedTasks)
+        props.fetchAttachment(props.previousTask.id)
+        props.fetchComment(props.previousTask.id)
+        props.selectTask(selectionInfo.newSelectedTasks, selectionInfo.isMultiSelection)
         return
       }
 
@@ -214,6 +346,47 @@ export default compose(
       }
 
       props.selectContact(props.previousContact.id)
+    },
+
+    onHandleTaskSetComplete: props => data => props.setComplete(data),
+    onHandleTaskSetIncomplete: props => data => props.setIncomplete(data),
+    onHandleTaskSubjectUpdate: props => data => props.setSubject(data.task, data.subject),
+    onHandleTaskTagDeleted: props => data => props.removeTaskTag(data.task.id, data.tagInfo),
+    onHandleTaskDateChanged: props => data => props.setDate(data.task, data.date, data.typeDate),
+    onHandleTaskToggleImportant: props => data => props.requestToggleImportant(data),
+    onHandleTaskDescriptionUpdate: props => data => props.setDescription(data.task, data.description),
+    onHandleTaskAttachmentDelete: props => data => props.deleteAttachment(data.task.id, data.attachmentId),
+    onHandleTaskFileUploaded: props => data => props.createAttachment(data),
+    onHandleTaskAddComment: props => data => props.createComment(data),
+    onHandleTaskArchive: props => data => {
+      const taskId = data
+      const tasks = props.tasks
+      const completedTasks = props.completedTasks
+      const archivedTasks = props.archivedTasks
+      const entitiesTasks = props.entitiesTasks
+      const selectedTasks = props.selectedTasks
+
+      const archive = setArchive(taskId, tasks, completedTasks, archivedTasks, entitiesTasks)
+
+      props.deselectTasks()
+      props.setArchiveTasks(
+        archive.newArchiveTasksList,
+        archive.tasks,
+        archive.completedTasks,
+        archive.archivedTasks,
+        archive.entitiesTasks,
+        selectedTasks
+      )
+      toast.success(successMessages.tasks.archive, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+      })
+    },
+    onHandleTaskDelete: props => data => {
+      let newTaskDelete = List()
+      newTaskDelete = newTaskDelete.push(data)
+
+      props.showDialog('task-delete-confirm', { tasks: newTaskDelete })
     },
 
     onHandleTagTitleUpdate: props => data =>
@@ -285,6 +458,14 @@ export default compose(
   }),
   lifecycle({
     componentDidMount() {
+      if (this.props.detail.task) {
+        const { id } = this.props.task
+        // Load attachments
+        this.props.fetchAttachment(id)
+        // Load comments
+        this.props.fetchComment(id)
+      }
+
       document.getElementById('user-container').addEventListener('click', this.props.onHandleClickOutSide, false)
       document.addEventListener('keydown', this.props.onHandleKeyDown, false)
     },
