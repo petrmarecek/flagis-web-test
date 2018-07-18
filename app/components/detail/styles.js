@@ -1,5 +1,6 @@
-import styled from 'styled-components'
-import { boxSizing, markdownStyles } from '../styled-components-mixins/'
+import styled, { css } from 'styled-components'
+import { boxSizing, markdownStyles, placeholderColor } from '../styled-components-mixins/'
+import ContentEditable from '../common/content-editable'
 import MarkdownEditable from '../common/markdown-editable'
 import Icon from '../icons/icon'
 
@@ -108,12 +109,71 @@ const RightMenu = styled.div`
   }
 `;
 
+// Content editable
+const ContentEditableContainer = css`
+  ${boxSizing('border-box')}
+  line-height: 22px;
+  font-size: 18px;
+  outline: none !important;
+  margin-left: 45px;
+  padding-top: 3px;
+  color: #293034;
+  max-height: 134px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  
+  :empty:before {
+    color: #8c9da9;
+    content: attr(data-placeholder);
+  }
+`;
+
+// Markdown editable
+const MarkdownEditableContainer = styled(MarkdownEditable)`
+  ${boxSizing('border-box')}
+  padding: 15px 2px 15px 15px;
+  background-color: #fff;
+  border: 1px solid #D7E3EC;
+  width: 100%;
+  height: 100%;
+  font-size: 14px;
+  
+  .markdown__html {
+    ${markdownStyles}
+    padding-right: 13px;
+    
+    :empty:before {
+      color: #8c9da9;
+      display: block;
+      padding: 2px;
+      content: attr(data-placeholder);
+    }
+  }
+  
+  .markdown__edit {
+    ${placeholderColor('#8c9da9')}
+    font-family: 'Source Sans Pro', 'Segoe UI', sans-serif;
+    font-weight: 300;
+    border: none;
+    padding-right: 13px;
+    resize: none;
+    width: 100%;
+    height: 100%;
+    color: '#293034';
+  }
+`;
+
 // Tag detail
 const DetailSubjectTagColor = styled(Icon)`
   position: absolute;
   pointer-events: none;
   left: 4px;
   top: 3px;
+`;
+
+const DetailSubjectTagContentEditable = styled(ContentEditable)`
+  ${ContentEditableContainer}
+  margin-left: 50px;
 `;
 
 const DetailContentTagColor = styled.div`
@@ -152,6 +212,10 @@ const DetailSubjectIconContact = styled.div`
   padding: ${props => props.isUser ? '2px 0 0 0' : '0'};
 `;
 
+const DetailSubjectContactContentEditable = styled(ContentEditable)`
+  ${ContentEditableContainer}
+`;
+
 const DetailContentPropertiesContact = styled.div`
   flex: 3;
   margin: 0 25px 0 13px;
@@ -186,38 +250,6 @@ const DetailContentContactDataContent = styled.div`
   color: #293034;
 `;
 
-// Markdown
-const MarkdownEditableContainer = styled(MarkdownEditable)`
-  ${boxSizing('border-box')}
-  padding: 15px 2px 15px 15px;
-  background-color: #fff;
-  border: 1px solid #D7E3EC;
-  width: 100%;
-  height: 100%;
-  font-size: 14px;
-  
-  .markdown__html {
-    ${markdownStyles}
-    padding-right: 13px;
-    color: ${props => props.text === 'Add description' ? '#8c9da9' : '#293034'};
-    
-    p {
-      margin: ${props => props.text === 'Add description' ? '0' : '1em 0'};
-    }
-  }
-  
-  .markdown__edit {
-    font-family: 'Source Sans Pro', 'Segoe UI', sans-serif;
-    font-weight: 300;
-    border: none;
-    padding-right: 13px;
-    resize: none;
-    width: 100%;
-    height: 100%;
-    color: '#293034';
-  }
-`;
-
 export {
   // Detail
   DetailStyle,
@@ -235,6 +267,7 @@ export {
 
   // Tag detail
   DetailSubjectTagColor,
+  DetailSubjectTagContentEditable,
   DetailContentTagColor,
   DetailTagColorSelector,
   DetailTagColorSelectorLabel,
@@ -243,6 +276,7 @@ export {
 
   // Contact detail
   DetailSubjectIconContact,
+  DetailSubjectContactContentEditable,
   DetailContentPropertiesContact,
   DetailContentDescriptionContact,
   DetailContentContactData,

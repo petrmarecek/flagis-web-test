@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import { withHandlers } from 'recompose'
 
 import DetailMenu from './detail-menu'
-import ContentEditable from '../common/content-editable'
 import Icon from '../icons/icon'
 import {ICONS} from '../icons/icon-constants'
 
@@ -15,6 +14,7 @@ import {
   DetailContentDeleteIcon,
   DetailContentCenter,
   DetailSubjectIconContact,
+  DetailSubjectContactContentEditable,
   DetailContentPropertiesContact,
   DetailContentDescriptionContact,
   MarkdownEditableContainer,
@@ -40,13 +40,8 @@ const ContactDetail = props => {
     return <div>Detail not found</div>
   }
 
-  const nickname = (contact.nickname === null || contact.nickname === '')
-    ? 'Add username'
-    : contact.nickname
-  const description = (contact.description === null || contact.description === '')
-    ? 'Add description'
-    : contact.description
-
+  const nickname = contact.nickname === null ? '' : contact.nickname
+  const description = contact.description === null ? '' : contact.description
   const scrollStyle = {
     height: 'calc(100vh - 232px)',
     overflow: 'hidden',
@@ -86,8 +81,7 @@ const ContactDetail = props => {
                   color={icon.color} />
               </DetailSubjectIconContact>
               <span onClick={onHandleRemoveEventListener}>
-                <ContentEditable
-                  className='detail-subject__content'
+                <DetailSubjectContactContentEditable
                   html={nickname}
                   placeholder='Add username'
                   enforcePlainText
@@ -129,6 +123,7 @@ const ContactDetail = props => {
               <MarkdownEditableContainer
                 text={description}
                 scrollStyle={scrollStyle}
+                placeholder='Add description'
                 onUpdate={onHandleDescriptionUpdate} />
             </span>
           </DetailContentDescriptionContact>
@@ -155,7 +150,7 @@ ContactDetail.propTypes = {
 export default withHandlers({
   onHandleNicknameUpdate: props => event => {
     const nickname = event.target.value
-    if (nickname === props.contact.nickname || nickname === 'Add username') {
+    if (nickname === props.contact.nickname) {
       return
     }
 
@@ -165,7 +160,7 @@ export default withHandlers({
   onHandleDelete: props => () => props.onHandleContactDelete(props.contact),
   onHandleDescriptionUpdate: props => event => {
     const description = event.target.value
-    if (description === props.contact.description || description === 'Add description') {
+    if (description === props.contact.description) {
       return
     }
 

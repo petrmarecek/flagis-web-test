@@ -8,7 +8,6 @@ import { errorMessages } from 'utils/messages'
 import constants from 'utils/constants'
 
 import DetailMenu from 'components/detail/detail-menu'
-import ContentEditable from 'components/common/content-editable'
 import Icon from 'components/icons/icon'
 import { ICONS } from 'components/icons/icon-constants'
 
@@ -18,6 +17,7 @@ import {
   DetailContentSubject,
   DetailSubject,
   DetailSubjectTagColor,
+  DetailSubjectTagContentEditable,
   DetailContentDeleteIcon,
   DetailContentCenter,
   DetailContentTagColor,
@@ -59,9 +59,7 @@ const TagDetail = props => {
 
   const colorIndex = getColorIndex()
   const tagColor = getTagColor(colorIndex)
-  const description = (tag.description === null || tag.description === '')
-    ? 'Add description'
-    : tag.description
+  const description = tag.description === null ? '' : tag.description
   const colors = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
   const colorItems = colors.map(index => {
     const colorClass = `color-selector__item cl-${index}`
@@ -91,8 +89,7 @@ const TagDetail = props => {
                 scale={1.81}
                 color={[tagColor]}/>
               <span onClick={onHandleRemoveEventListener}>
-                <ContentEditable
-                  className="detail-subject__content detail-subject__content--tag"
+                <DetailSubjectTagContentEditable
                   html={tag.title}
                   enforcePlainText
                   onChange={onHandleTitleUpdate} />
@@ -126,6 +123,7 @@ const TagDetail = props => {
               <MarkdownEditableContainer
                 text={description}
                 scrollStyle={scrollStyle}
+                placeholder='Add description'
                 onUpdate={onHandleDescriptionUpdate} />
             </span>
           </DetailContentDescriptionTag>
@@ -181,7 +179,7 @@ export default withHandlers({
   onHandleDelete: props => () => props.onHandleTagDelete(props.tag),
   onHandleDescriptionUpdate: props => event => {
     const description = event.target.value
-    if (description === props.tag.description || description === 'Add description') {
+    if (description === props.tag.description) {
       return
     }
 

@@ -7,8 +7,7 @@ import { Scrollbars } from 'react-custom-scrollbars'
 /* eslint-disable react/no-danger */
 
 const MarkdownEditable = props => {
-  const { text, className, scrollStyle, editable, onHandleClick, onHandleUpdateText } = props
-  const defaultValue = text === 'Add description' ? '' : text
+  const { text, placeholder, className, scrollStyle, editable, onHandleClick, onHandleUpdateText } = props
 
   return (
     <div
@@ -19,6 +18,7 @@ const MarkdownEditable = props => {
         <div
           id='markdown-html'
           className='markdown__html'
+          data-placeholder={placeholder}
           dangerouslySetInnerHTML={{__html: markdownToHTML(text)}} />
       </Scrollbars>}
 
@@ -26,7 +26,8 @@ const MarkdownEditable = props => {
       <textarea
         autoFocus
         className='markdown__edit'
-        defaultValue={defaultValue}
+        placeholder={placeholder}
+        defaultValue={text}
         onBlur={onHandleUpdateText} />}
     </div>
   )
@@ -34,6 +35,7 @@ const MarkdownEditable = props => {
 
 MarkdownEditable.propTypes = {
   text: PropTypes.string,
+  placeholder: PropTypes.string,
   className: PropTypes.string,
   scrollStyle: PropTypes.object,
   editable: PropTypes.bool,

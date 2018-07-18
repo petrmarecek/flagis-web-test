@@ -37,6 +37,10 @@ const markdownStyles = css`
     margin: 15px 0;
   }
   
+  p:first-child { 
+    margin: 2px
+  }
+  
   table {
     border-collapse: collapse;
     width: 100%;
