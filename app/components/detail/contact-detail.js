@@ -40,8 +40,13 @@ const ContactDetail = props => {
     return <div>Detail not found</div>
   }
 
-  const description = contact.description === null ? 'Add description' : contact.description
-  const nickname = contact.nickname === '' ? 'Add username' : contact.nickname
+  const nickname = (contact.nickname === null || contact.nickname === '')
+    ? 'Add username'
+    : contact.nickname
+  const description = (contact.description === null || contact.description === '')
+    ? 'Add description'
+    : contact.description
+
   const scrollStyle = {
     height: 'calc(100vh - 232px)',
     overflow: 'hidden',
@@ -150,7 +155,7 @@ ContactDetail.propTypes = {
 export default withHandlers({
   onHandleNicknameUpdate: props => event => {
     const nickname = event.target.value
-    if (nickname === props.contact.nickname || nickname === 'Add username' || nickname === '') {
+    if (nickname === props.contact.nickname || nickname === 'Add username') {
       return
     }
 
@@ -160,7 +165,7 @@ export default withHandlers({
   onHandleDelete: props => () => props.onHandleContactDelete(props.contact),
   onHandleDescriptionUpdate: props => event => {
     const description = event.target.value
-    if (description === props.contact.description || description === 'Add description' || description === '') {
+    if (description === props.contact.description || description === 'Add description') {
       return
     }
 

@@ -59,7 +59,9 @@ const TagDetail = props => {
 
   const colorIndex = getColorIndex()
   const tagColor = getTagColor(colorIndex)
-  const description = (tag.description === null || tag.description === '') ? 'Add description' : tag.description
+  const description = (tag.description === null || tag.description === '')
+    ? 'Add description'
+    : tag.description
   const colors = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
   const colorItems = colors.map(index => {
     const colorClass = `color-selector__item cl-${index}`
@@ -179,7 +181,7 @@ export default withHandlers({
   onHandleDelete: props => () => props.onHandleTagDelete(props.tag),
   onHandleDescriptionUpdate: props => event => {
     const description = event.target.value
-    if (description === props.tag.description || description === 'Add description' || description === '') {
+    if (description === props.tag.description || description === 'Add description') {
       return
     }
 
