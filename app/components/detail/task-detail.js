@@ -4,6 +4,7 @@ import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { List } from 'immutable'
 import { withHandlers } from 'recompose'
+import commonUtils from '../../redux/utils/common'
 
 import dateUtil from 'redux/utils/date'
 
@@ -25,6 +26,7 @@ import {
   DetailSubjectTaskArchived,
   DetailSubjectTaskContentEditable,
   DetailContentTagAutocomplete,
+  DetailContentTagAutocompleteTags,
   DetailContentDeleteIcon,
   DetailContentCenter,
   DetailContentProperties,
@@ -86,6 +88,7 @@ const TaskDetail = props => {
         context: null,
         isCompleted: false,
         isImportant: false,
+        isArchived: false,
       }
     }
 
@@ -100,12 +103,29 @@ const TaskDetail = props => {
       description: task.description,
       context: { source: 'task-detail', parentId: task.id },
       isCompleted: task.isCompleted,
-      isImportant: task.isImportant
+      isImportant: task.isImportant,
+      isArchived: task.isArchived,
     }
+  }
+
+  const getColorIndex = tag => {
+    return tag.colorIndex === null
+      ? commonUtils.computeIntHash(tag.title, 10)
+      : tag.colorIndex
   }
 
   const bindingData = getBindingData()
   const description = bindingData.description === null ? '' : bindingData.description
+  const tags = bindingData.tags.map(tag => {
+    const colorIndex = getColorIndex(tag)
+    const tagClasses = `tag cl-${colorIndex}`
+
+    return (
+      <li key={tag.id} className={tagClasses}>
+        <span className="tag__title">{tag.title}</span>
+      </li>
+    )
+  })
   const iconAnimation = {
     action: 'transition.expandIn',
     duration: 1000,
@@ -128,43 +148,53 @@ const TaskDetail = props => {
         previous={onHandlePrevious}
         next={onHandleNext} />
 
-      <DetailInner>
+      <DetailInner archived={bindingData.isArchived}>
         <DetailContentTop
           completed={bindingData.isCompleted}
           important={bindingData.isImportant}
+          archived={bindingData.isArchived}
           animation={animation} >
           <DetailContentSubject>
             <DetailSubject>
-                <DetailSubjectTaskCompleted
-                  icon={ICONS.TASK_CHECKED}
-                  color={[isCompletedTaskColor]}
-                  hoverColor={[isCompletedTaskHoverColor]}
-                  width={22}
-                  height={21}
-                  onClick={onHandleComplete}/>
-                {bindingData.isCompleted && animation &&
-                <DetailSubjectTaskArchived
-                  className="detail-subject__archive"
-                  icon={ICONS.ARCHIVE}
-                  color={["#8c9ea9"]}
-                  width={24}
-                  height={25}
-                  scale={0.926}
-                  animation={iconAnimation}
-                  onClick={onHandleArchive}/>}
-                {bindingData.isCompleted && !animation &&
-                <DetailSubjectTaskArchived
-                  className="detail-subject__archive"
-                  icon={ICONS.ARCHIVE}
-                  color={["#8c9ea9"]}
-                  width={24}
-                  height={25}
-                  scale={0.926}
-                  onClick={onHandleArchive}/>}
+              {!bindingData.isArchived &&
+              <DetailSubjectTaskCompleted
+                icon={ICONS.TASK_CHECKED}
+                color={[isCompletedTaskColor]}
+                hoverColor={[isCompletedTaskHoverColor]}
+                width={22}
+                height={21}
+                onClick={onHandleComplete}/>}
+              {bindingData.isCompleted && animation && !bindingData.isArchived &&
+              <DetailSubjectTaskArchived
+                icon={ICONS.ARCHIVE}
+                color={["#8c9ea9"]}
+                width={24}
+                height={25}
+                scale={0.926}
+                animation={iconAnimation}
+                onClick={onHandleArchive} />}
+              {bindingData.isCompleted && !animation && !bindingData.isArchived &&
+              <DetailSubjectTaskArchived
+                icon={ICONS.ARCHIVE}
+                color={["#8c9ea9"]}
+                width={24}
+                height={25}
+                scale={0.926}
+                onClick={onHandleArchive} />}
+              {bindingData.isArchived &&
+              <DetailSubjectTaskArchived
+                archived
+                icon={ICONS.NON_ARCHIVE}
+                color={["#282f34"]}
+                width={24}
+                height={27}
+                scale={0.926}
+                onClick={onHandleArchive} />}
                 <span onClick={onHandleRemoveEventListener}>
                   <DetailSubjectTaskContentEditable
                     completed={bindingData.isCompleted}
                     important={bindingData.isImportant}
+                    archived={bindingData.isArchived}
                     animation={animation}
                     html={bindingData.subject}
                     enforcePlainText
@@ -173,6 +203,9 @@ const TaskDetail = props => {
             </DetailSubject>
           </DetailContentSubject>
           <DetailContentTagAutocomplete onClick={onHandleRemoveEventListener}>
+            {bindingData.isArchived &&
+            <DetailContentTagAutocompleteTags>{tags}</DetailContentTagAutocompleteTags>}
+            {!bindingData.isArchived &&
             <TagAutocomplete
               id="task"
               parentId={bindingData.id}
@@ -181,9 +214,11 @@ const TaskDetail = props => {
               focusOnDelete
               placeholder="Add tags"
               selectedTags={bindingData.tags}
-              onTagDeleted={onHandleTagDeleted} />
+              onTagDeleted={onHandleTagDeleted} />}
           </DetailContentTagAutocomplete>
-          <DetailContentDeleteIcon onClick={onHandleRemoveEventListener} >
+          <DetailContentDeleteIcon
+            archived={bindingData.isArchived}
+            onClick={onHandleRemoveEventListener} >
             <Icon
               icon={ICONS.TRASH}
               width={23}
@@ -261,7 +296,7 @@ const TaskDetail = props => {
               <AttachmentList
                 attachments={attachments}
                 attachmentDelete={onHandleAttachmentDelete} />}
-              <FilePicker onFileUploaded={onHandleFileUploaded} />
+              {!bindingData.isArchived && <FilePicker onFileUploaded={onHandleFileUploaded}/>}
             </DetailContentAttachments>
           </DetailContentProperties>
           <DetailContentDescriptionTask>
@@ -278,6 +313,7 @@ const TaskDetail = props => {
             <Loader />}
             {!comments.isFetching &&
             <CommentList comments={comments} />}
+            {!bindingData.isArchived &&
             <div className="comment-add">
               <div className="comment-add__icon-comment">
                 <Icon
@@ -295,7 +331,7 @@ const TaskDetail = props => {
                   placeholder="Add comment"
                   onClick={onHandleRemoveEventListener} />
               </div>
-            </div>
+            </div>}
           </DetailContentComments>
         </DetailContentCenter>
       </DetailInner>
@@ -352,7 +388,7 @@ export default withHandlers({
   },
   onHandleArchive: props => event => {
     event.stopPropagation()
-    props.onHandleTaskArchive(props.task.id)
+    props.onHandleTaskArchive(props.task)
   },
   onHandleSubjectUpdate: props => event => {
     const subject = event.target.value

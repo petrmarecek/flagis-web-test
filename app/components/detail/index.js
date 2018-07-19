@@ -1,5 +1,4 @@
 import React from 'react'
-import { findDOMNode } from 'react-dom'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { compose, lifecycle, withHandlers } from 'recompose'
@@ -21,6 +20,7 @@ import {
   setComplete,
   setIncomplete,
   setArchiveTasks,
+  cancelArchiveTasks,
   deselectTasks,
   setSubject,
   removeTaskTag,
@@ -70,11 +70,14 @@ import {
   getPreviousContact
 } from 'redux/store/contacts/contacts.selectors'
 import { getEntitiesTasks } from 'redux/store/entities/entities.selectors'
-import { getSelectionInfo, setArchive } from 'redux/utils/component-helper'
+import {
+  getSelectionInfo,
+  setArchive,
+  cancelArchive,
+} from 'redux/utils/component-helper'
 
 import TaskDetail from './task-detail'
 import TagDetail from './tag-detail'
-import ArchiveDetail from './archive-detail'
 import ContactDetail from './contact-detail'
 
 const Detail = props => {
@@ -110,7 +113,6 @@ const Detail = props => {
     onHandleContactDelete,
     onHandleContactDescriptionUpdate,
 
-    onHandleAddEventListener,
     onHandleRemoveEventListener,
     onHandleToggleList,
     onHandleNext,
@@ -118,11 +120,8 @@ const Detail = props => {
   } = props
 
   return (
-    <DetailStyle
-      innerRef={comp => { this.detail = comp }}
-      onClick={onHandleAddEventListener}>
-
-      {detail.task &&
+    <DetailStyle>
+      {(detail.task || detail.archive) &&
       <TaskDetail
         task={task}
         animation={detail.animation}
@@ -131,7 +130,7 @@ const Detail = props => {
         onHandleRemoveEventListener={onHandleRemoveEventListener}
         onHandleToggleList={onHandleToggleList}
         onHandleNext={onHandleNext}
-        onHandlekPrevious={onHandlePrevious}
+        onHandlePrevious={onHandlePrevious}
         onHandleTaskSetComplete={onHandleTaskSetComplete}
         onHandleTaskArchive={onHandleTaskArchive}
         onHandleTaskSetIncomplete={onHandleTaskSetIncomplete}
@@ -158,9 +157,6 @@ const Detail = props => {
         onHandleTagDelete={onHandleTagDelete}
         onHandleTagDescriptionUpdate={onHandleTagDescriptionUpdate} />}
 
-      {detail.archive &&
-      <ArchiveDetail />}
-
       {detail.contact &&
       <ContactDetail
         contact={contact}
@@ -171,7 +167,6 @@ const Detail = props => {
         onHandleContactNicknameUpdate={onHandleContactNicknameUpdate}
         onHandleContactDelete={onHandleContactDelete}
         onHandleContactDescriptionUpdate={onHandleContactDescriptionUpdate} />}
-
     </DetailStyle>
   )
 }
@@ -208,7 +203,6 @@ Detail.propTypes = {
   onHandleContactDescriptionUpdate: PropTypes.func,
 
   onHandleKeyDown: PropTypes.func,
-  onHandleAddEventListener: PropTypes.func,
   onHandleRemoveEventListener: PropTypes.func,
   onHandleClickOutSide: PropTypes.func,
   onHandleToggleList: PropTypes.func,
@@ -246,6 +240,7 @@ const mapDispatchToProps = {
   setComplete,
   setIncomplete,
   setArchiveTasks,
+  cancelArchiveTasks,
   setSubject,
   removeTaskTag,
   setDate,
@@ -275,7 +270,7 @@ export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withHandlers({
     onHandleToggleList: props => () => {
-      if (props.detail.task) {
+      if (props.detail.task || props.detail.archive) {
         props.deselectAnimation()
         props.deselectTasks()
         return
@@ -286,14 +281,10 @@ export default compose(
         return
       }
 
-      if (props.detail.archive) {
-        return
-      }
-
       props.deselectContacts()
     },
     onHandleNext: props => () => {
-      if (props.detail.task) {
+      if (props.detail.task || props.detail.archive) {
         if (!props.nextTask) {
           return
         }
@@ -315,10 +306,6 @@ export default compose(
         return
       }
 
-      if (props.detail.archive) {
-        return
-      }
-
       if (!props.nextContact) {
         return
       }
@@ -326,7 +313,7 @@ export default compose(
       props.selectContact(props.nextContact.id)
     },
     onHandlePrevious: props => () => {
-      if (props.detail.task) {
+      if (props.detail.task || props.detail.archive) {
         if (!props.previousTask) {
           return
         }
@@ -345,10 +332,6 @@ export default compose(
         }
 
         props.selectTag(props.previousTag.id)
-        return
-      }
-
-      if (props.detail.archive) {
         return
       }
 
@@ -376,15 +359,33 @@ export default compose(
     onHandleTaskFileUploaded: props => data => props.createAttachment(data),
     onHandleTaskAddComment: props => data => props.createComment(data),
     onHandleTaskArchive: props => data => {
-      const taskId = data
+      const taskId = data.id
       const tasks = props.tasks
+      const isArchived = data.isArchived
       const completedTasks = props.completedTasks
       const archivedTasks = props.archivedTasks
       const entitiesTasks = props.entitiesTasks
       const selectedTasks = props.selectedTasks
 
-      const archive = setArchive(taskId, tasks, completedTasks, archivedTasks, entitiesTasks)
+      if (isArchived) {
+        const nonArchive = cancelArchive(taskId, tasks, completedTasks, archivedTasks, entitiesTasks)
+        props.deselectTasks()
+        props.cancelArchiveTasks(
+          nonArchive.newTasks,
+          nonArchive.tasks,
+          nonArchive.completedTasks,
+          nonArchive.archivedTasks,
+          nonArchive.entitiesTasks,
+          selectedTasks
+        )
+        toast.success(successMessages.tasks.cancelArchive, {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+        })
+        return
+      }
 
+      const archive = setArchive(taskId, tasks, completedTasks, archivedTasks, entitiesTasks)
       props.deselectTasks()
       props.setArchiveTasks(
         archive.newArchiveTasksList,
@@ -455,22 +456,20 @@ export default compose(
     },
   }),
   withHandlers({
-    onHandleClickOutSide: props => event => {
-      const detail = findDOMNode(this.detail)
-
-      if (!detail.contains(event.target)) {
-        document.removeEventListener('keydown', props.onHandleKeyDown, false)
-      }
-    }
-  }),
-  withHandlers({
-    onHandleAddEventListener: props => () => {
-      document.getElementById('user-container').addEventListener('click', props.onHandleClickOutSide, false)
-      document.addEventListener('keydown', props.onHandleKeyDown, false)
-    },
     onHandleRemoveEventListener: props => event => {
       event.stopPropagation()
       document.removeEventListener('keydown', props.onHandleKeyDown, false)
+    },
+    onHandleClickOutSide: props => event => {
+      const detail = document.getElementById('center-panel')
+
+      if (!detail.contains(event.target)) {
+        document.removeEventListener('keydown', props.onHandleKeyDown, false)
+        return
+      }
+
+      document.getElementById('user-container').addEventListener('click', props.onHandleClickOutSide, false)
+      document.addEventListener('keydown', props.onHandleKeyDown, false)
     }
   }),
   lifecycle({

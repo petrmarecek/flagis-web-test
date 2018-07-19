@@ -9,7 +9,7 @@ import LeftPanel from 'components/panels/left-panel'
 import AccountMenu from 'components/account-menu/'
 import CenterPanel from 'components/panels/center-panel'
 import ArchiveContent from 'components/contents/archive-content'
-import ArchiveDetailContent from 'components/contents/archive-detail-content'
+import DetailContent from 'components/contents/detail-content'
 
 const ArchivePage = ({ onGetContent }) => (
   <div>
@@ -39,7 +39,7 @@ export default compose(
     onGetContent: props => () => {
       if (props.archiveDetail) {
         return (
-          <ArchiveDetailContent/>
+          <DetailContent/>
         )
       } else {
         return (

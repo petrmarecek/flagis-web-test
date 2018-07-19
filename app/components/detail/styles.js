@@ -29,6 +29,7 @@ const DetailStyle = styled.div`
 `;
 
 const DetailInner = styled.div`
+  pointer-events: ${props => props.archived ? 'none' : 'auto'};
   background-color: #fff;
   position: absolute;
   top: 42px;
@@ -97,8 +98,15 @@ const DetailContentTagAutocomplete = styled.div`
   padding-top: 12px;
 `;
 
+const DetailContentTagAutocompleteTags = styled.div`
+  flex: 5;
+  height: 22px;
+  float: right;
+`;
+
 const DetailContentDeleteIcon = styled.div`
   ${boxSizing('border-box')}
+  pointer-events: auto;
   flex: 1;
   max-width: 3%;
   text-align: right;
@@ -257,7 +265,7 @@ const ContentEditableContainer = css`
   overflow-y: auto;
   overflow-x: hidden;
   color: ${props => (props.completed && !props.archived) ? '#D7E3EC' : '#293034'};
-  margin-left: ${props => props.completed ? '85px' : '45px'};
+  margin-left: ${props => (props.completed && !props.archived) ? '85px' : '45px'};
   text-decoration: ${props => (props.completed || props.archived) ? 'line-through' : 'none'};
   font-weight: ${props => props.important ? 'bold' : 'normal'};
   ${transition(props => props.animation ? 'margin 500ms ease-out, color 500ms ease-out' : 'none')};
@@ -314,6 +322,7 @@ const DetailSubjectTaskCompleted = styled(Icon)`
 
 const DetailSubjectTaskArchived = styled(Icon)`
   position: absolute;
+  pointer-events: auto;
   left: ${props => props.archived ? '5px' : '40px'};
   top: ${props => props.archived ? '-1px' : '0'};
   top: 0;
@@ -416,6 +425,7 @@ export {
   DetailContentSubject,
   DetailSubject,
   DetailContentTagAutocomplete,
+  DetailContentTagAutocompleteTags,
   DetailContentDeleteIcon,
   DetailContentCenter,
   DetailContentProperties,

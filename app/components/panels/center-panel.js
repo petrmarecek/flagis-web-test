@@ -5,7 +5,10 @@ import { connect } from 'react-redux'
 import { getLeftPanel } from 'redux/store/app-state/app-state.selectors'
 
 const CenterPanel = ({ leftPanel, children, style }) => (
-  <div className="center-panel" style={{ left: leftPanel.width, ...style }}>
+  <div
+    id="center-panel"
+    className="center-panel"
+    style={{ left: leftPanel.width, ...style }}>
     {children}
   </div>
 )
