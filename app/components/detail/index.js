@@ -9,7 +9,12 @@ import { successMessages } from 'utils/messages'
 import constants from 'utils/constants'
 import { List } from 'immutable'
 
-import { deselectDetail, showDialog } from 'redux/store/app-state/app-state.actions'
+import {
+  deselectDetail,
+  showDialog,
+  setAnimation,
+  deselectAnimation,
+} from 'redux/store/app-state/app-state.actions'
 import {
   selectTask,
   requestToggleImportant,
@@ -120,12 +125,13 @@ const Detail = props => {
       {detail.task &&
       <TaskDetail
         task={task}
+        animation={detail.animation}
         attachments={attachments}
         comments={comments}
         onHandleRemoveEventListener={onHandleRemoveEventListener}
         onHandleToggleList={onHandleToggleList}
-        onHandleTaskNext={onHandleNext}
-        onHandleTaskPrevious={onHandlePrevious}
+        onHandleNext={onHandleNext}
+        onHandlekPrevious={onHandlePrevious}
         onHandleTaskSetComplete={onHandleTaskSetComplete}
         onHandleTaskArchive={onHandleTaskArchive}
         onHandleTaskSetIncomplete={onHandleTaskSetIncomplete}
@@ -261,6 +267,8 @@ const mapDispatchToProps = {
 
   deselectDetail,
   showDialog,
+  setAnimation,
+  deselectAnimation,
 }
 
 export default compose(
@@ -268,6 +276,7 @@ export default compose(
   withHandlers({
     onHandleToggleList: props => () => {
       if (props.detail.task) {
+        props.deselectAnimation()
         props.deselectTasks()
         return
       }
@@ -290,6 +299,7 @@ export default compose(
         }
 
         const selectionInfo = getSelectionInfo(null, props.nextTask, props.selectedTasks)
+        props.deselectAnimation()
         props.fetchAttachment(props.nextTask.id)
         props.fetchComment(props.nextTask.id)
         props.selectTask(selectionInfo.newSelectedTasks, selectionInfo.isMultiSelection)
@@ -322,6 +332,7 @@ export default compose(
         }
 
         const selectionInfo = getSelectionInfo(null, props.previousTask, props.selectedTasks)
+        props.deselectAnimation()
         props.fetchAttachment(props.previousTask.id)
         props.fetchComment(props.previousTask.id)
         props.selectTask(selectionInfo.newSelectedTasks, selectionInfo.isMultiSelection)
@@ -348,8 +359,14 @@ export default compose(
       props.selectContact(props.previousContact.id)
     },
 
-    onHandleTaskSetComplete: props => data => props.setComplete(data),
-    onHandleTaskSetIncomplete: props => data => props.setIncomplete(data),
+    onHandleTaskSetComplete: props => data => {
+      props.setAnimation()
+      props.setComplete(data)
+    },
+    onHandleTaskSetIncomplete: props => data => {
+      props.setAnimation()
+      props.setIncomplete(data)
+    },
     onHandleTaskSubjectUpdate: props => data => props.setSubject(data.task, data.subject),
     onHandleTaskTagDeleted: props => data => props.removeTaskTag(data.task.id, data.tagInfo),
     onHandleTaskDateChanged: props => data => props.setDate(data.task, data.date, data.typeDate),
@@ -435,7 +452,7 @@ export default compose(
         default:
           return
       }
-    }
+    },
   }),
   withHandlers({
     onHandleClickOutSide: props => event => {

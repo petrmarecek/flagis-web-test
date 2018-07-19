@@ -18,6 +18,8 @@ export const APP_STATE = {
   ARCHIVED_TASKS_HIDE: 'APP-STATE/ARCHIVED_TASKS_HIDE',
 
   // Task tag detail
+  SET_ANIMATION: 'APP-STATE/SET_ANIMATION',
+  DESELECT_ANIMATION: 'APP-STATE/DESELECT_ANIMATION',
   SET_DETAIL: 'APP-STATE/SET_DETAIL',
   DESELECT_DETAIL: 'APP-STATE/DESELECT_DETAIL',
 
@@ -102,6 +104,14 @@ export const hideArchivedTasks = () => ({
 })
 
 // ------ Task tag detail -----------------------------------------------------------
+
+export const setAnimation = () => ({
+  type: APP_STATE.SET_ANIMATION,
+})
+
+export const deselectAnimation = () => ({
+  type: APP_STATE.DESELECT_ANIMATION,
+})
 
 export const setDetail = detail => ({
   type: APP_STATE.SET_DETAIL,

@@ -50,6 +50,7 @@ export const Detail = Record({
   archive: false,
   tag: false,
   contact: false,
+  animation: false,
 })
 
 export const TagHints = Record({

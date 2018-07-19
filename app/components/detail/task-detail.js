@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { List } from 'immutable'
-import { withStateHandlers } from 'recompose'
+import { withHandlers } from 'recompose'
 
 import dateUtil from 'redux/utils/date'
 
@@ -305,9 +305,9 @@ const TaskDetail = props => {
 
 TaskDetail.propTypes = {
   task: PropTypes.object,
+  animation: PropTypes.bool,
   attachments: PropTypes.object,
   comments: PropTypes.object,
-  animation: PropTypes.bool,
   onHandleComplete: PropTypes.func,
   onHandleTaskSetComplete: PropTypes.func,
   onHandleTaskSetIncomplete: PropTypes.func,
@@ -332,126 +332,113 @@ TaskDetail.propTypes = {
   onHandleDescriptionUpdate: PropTypes.func,
   onHandleAddComment: PropTypes.func,
   onHandleTaskAddComment: PropTypes.func,
+  onHandleTaskSetAnimation: PropTypes.func,
+  onHandleTaskDeselectAnimation: PropTypes.func,
   onHandleRemoveEventListener: PropTypes.func,
   onHandleToggleList: PropTypes.func,
   onHandleNext: PropTypes.func,
-  onHandleTaskNext: PropTypes.func,
   onHandlePrevious: PropTypes.func,
-  onHandleTaskPrevious: PropTypes.func,
 }
 
-export default withStateHandlers(
-  () => ({ animation: false }),
-  {
-    onHandleComplete: (state, props) => event => {
-      event.stopPropagation()
+export default withHandlers({
+  onHandleComplete: props => event => {
+    event.stopPropagation()
 
-      if (!props.task.isCompleted) {
-        props.onHandleTaskSetComplete(props.task.id)
-        return { animation: true }
-      } else {
-        props.onHandleTaskSetIncomplete(props.task.id)
-        return { animation: true }
+    if (!props.task.isCompleted) {
+      props.onHandleTaskSetComplete(props.task.id)
+    } else {
+      props.onHandleTaskSetIncomplete(props.task.id)
+    }
+  },
+  onHandleArchive: props => event => {
+    event.stopPropagation()
+    props.onHandleTaskArchive(props.task.id)
+  },
+  onHandleSubjectUpdate: props => event => {
+    const subject = event.target.value
+    if (subject === props.task.subject || subject === '') {
+      return
+    }
+
+    const data = { task: props.task, subject }
+    props.onHandleTaskSubjectUpdate(data)
+  },
+  onHandleTagDeleted: props => tagInfo => {
+    const data = { task: props.task, tagInfo }
+    props.onHandleTaskTagDeleted(data)
+  },
+  onHandleDelete: props => () => props.onHandleTaskDelete(props.task.id),
+  onHandleStartDateChanged: props => date => {
+    const data = { task: props.task, date , typeDate: 'startDate' }
+    props.onHandleTaskDateChanged(data)
+  },
+  onHandleDueDateChanged: props => date => {
+    if (date) {
+      date.set({
+        'second': 0,
+        'millisecond': 0,
+      })
+
+      if (date.hour() === 0 && date.minute() === 0) {
+        date.add(59, 's').add(999, 'ms')
       }
-    },
-    onHandleArchive: (state, props) => event => {
-      event.stopPropagation()
-      props.onHandleTaskArchive(props.task.id)
-    },
-    onHandleSubjectUpdate: (state, props) => event => {
-      const subject = event.target.value
-      if (subject === props.task.subject || subject === '') {
-        return
-      }
+    }
 
-      const data = { task: props.task, subject }
-      props.onHandleTaskSubjectUpdate(data)
-    },
-    onHandleTagDeleted: (state, props) => tagInfo => {
-      const data = { task: props.task, tagInfo }
-      props.onHandleTaskTagDeleted(data)
-    },
-    onHandleDelete: (state, props) => () => props.onHandleTaskDelete(props.task.id),
-    onHandleStartDateChanged: (state, props) => date => {
-      const data = { task: props.task, date , typeDate: 'startDate' }
-      props.onHandleTaskDateChanged(data)
-    },
-    onHandleDueDateChanged: (state, props) => date => {
-      if (date) {
-        date.set({
-          'second': 0,
-          'millisecond': 0,
-        })
+    const data = { task: props.task, date , typeDate: 'dueDate' }
+    props.onHandleTaskDateChanged(data)
+  },
+  onHandleReminderDateChanged: props => date => {
+    const data = { task: props.task, date , typeDate: 'reminderDate' }
+    props.onHandleTaskDateChanged(data)
+  },
+  onHandleToggleImportant: props => event => {
+    event.stopPropagation()
+    props.onHandleTaskToggleImportant(props.task)
+  },
+  onHandleAttachmentDelete: props => attachmentId => {
+    const data = { task: props.task, attachmentId }
+    props.onHandleTaskAttachmentDelete(data)
+  },
+  onHandleFileUploaded: props => attachment => {
+    const data = {
+      taskId: props.task.id,
+      fileName: attachment.filename,
+      client: attachment.client,
+      isWritable: attachment.isWritable,
+      mimeType: attachment.mimetype,
+      size: attachment.size,
+      url: attachment.url,
+    }
 
-        if (date.hour() === 0 && date.minute() === 0) {
-          date.add(59, 's').add(999, 'ms')
-        }
-      }
+    props.onHandleTaskFileUploaded(data)
+  },
+  onHandleDescriptionUpdate: props => event => {
+    const description = event.target.value
+    if (description === props.task.description) {
+      return
+    }
 
-      const data = { task: props.task, date , typeDate: 'dueDate' }
-      props.onHandleTaskDateChanged(data)
-    },
-    onHandleReminderDateChanged: (state, props) => date => {
-      const data = { task: props.task, date , typeDate: 'reminderDate' }
-      props.onHandleTaskDateChanged(data)
-    },
-    onHandleToggleImportant: (state, props) => event => {
-      event.stopPropagation()
-      props.onHandleTaskToggleImportant(props.task)
-    },
-    onHandleAttachmentDelete: (state, props) => attachmentId => {
-      const data = { task: props.task, attachmentId }
-      props.onHandleTaskAttachmentDelete(data)
-    },
-    onHandleFileUploaded: (state, props) => attachment => {
-      const data = {
-        taskId: props.task.id,
-        fileName: attachment.filename,
-        client: attachment.client,
-        isWritable: attachment.isWritable,
-        mimeType: attachment.mimetype,
-        size: attachment.size,
-        url: attachment.url,
-      }
+    const data = { task: props.task, description }
+    props.onHandleTaskDescriptionUpdate(data)
+  },
+  onHandleAddComment: props => event => {
+    const isSubmit = (event.which === 13 || event.type === 'click')
+    if (!isSubmit) {
+      return
+    }
 
-      props.onHandleTaskFileUploaded(data)
-    },
-    onHandleDescriptionUpdate: (state, props) => event => {
-      const description = event.target.value
-      if (description === props.task.description) {
-        return
-      }
+    event.preventDefault()
+    const value = event.target.value
+    if(value === '') {
+      return
+    }
 
-      const data = { task: props.task, description }
-      props.onHandleTaskDescriptionUpdate(data)
-    },
-    onHandleAddComment: (state, props) => event => {
-      const isSubmit = (event.which === 13 || event.type === 'click')
-      if (!isSubmit) {
-        return
-      }
+    event.target.value = ''
+    const comment = {
+      content: { content: value },
+      taskId: props.task.id
+    }
 
-      event.preventDefault()
-      const value = event.target.value
-      if(value === '') {
-        return
-      }
-
-      event.target.value = ''
-      const comment = {
-        content: { content: value },
-        taskId: props.task.id
-      }
-
-      props.onHandleTaskAddComment(comment)
-    },
-    onHandleNext: (state, props) => () => {
-      props.onHandleTaskNext()
-      return { animation: false }
-    },
-    onHandlePrevious: (state, props) => () => {
-      props.onHandleTaskPrevious()
-      return { animation: false }
-    },
-  }
-)(TaskDetail)
+    props.onHandleTaskAddComment(comment)
+  },
+})(TaskDetail)

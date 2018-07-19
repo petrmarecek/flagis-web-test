@@ -24,6 +24,12 @@ export default typeToReducer({
   [APP_STATE.ARCHIVED_TASKS_HIDE]: state =>
     state.setIn(['archivedTasks', 'isVisible'], false),
 
+  [APP_STATE.SET_ANIMATION]: state =>
+    state.setIn(['detail', 'animation'], true),
+
+  [APP_STATE.DESELECT_ANIMATION]: state =>
+    state.setIn(['detail', 'animation'], false),
+
   [APP_STATE.SET_DETAIL]: (state, action) =>
     state.setIn(['detail', action.payload.detail], true),
 
