@@ -1,51 +1,40 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
+
 import CommentListItem from 'components/comment-list/comment-list-item'
 import { Scrollbars } from 'react-custom-scrollbars'
 
-class CommentList extends PureComponent {
-  static propTypes = {
-    comments: PropTypes.object,
+import { CommentListContainer } from './styles'
+
+const CommentList = ({ comments }) => {
+  const scrollStyle = {
+    height: `calc(100vh - 232px)`,
+    overflow: 'hidden'
   }
 
-  componentDidMount() {
-    // Scroll auto bottom
-    this.refs.scrollbars.scrollToBottom()
-  }
+  return (
+    <Scrollbars
+      ref={scrollbar => {
+        if (scrollbar !== null) {
+          scrollbar.scrollToBottom()
+        }
+      }}
+      style={scrollStyle}>
+      <CommentListContainer>
+        <ul>
+          {!comments.isFetching && comments.items.map(comment => (
+            <CommentListItem
+              key={comment.id}
+              comment={comment}/>
+          ))}
+        </ul>
+      </CommentListContainer>
+    </Scrollbars>
+  )
+}
 
-  componentDidUpdate(prevProps) {
-    const prevNumberComments = prevProps.comments.items.size
-    const numberComments = this.props.comments.items.size
-
-    // Add new comment
-    if (numberComments === (prevNumberComments + 1)) {
-      // Scroll auto bottom
-      this.refs.scrollbars.scrollToBottom()
-    }
-  }
-
-  render() {
-    const scrollStyle = {
-      height: `calc(100vh - 232px)`,
-      overflow: 'hidden'
-    }
-
-    return (
-      <Scrollbars
-        ref="scrollbars"
-        style={scrollStyle}>
-        <div className="comment-list-container">
-          <ul className="comment-list">
-            {!this.props.comments.isFetching && this.props.comments.items.map(comment => (
-              <CommentListItem
-                key={comment.id}
-                comment={comment}/>
-            ))}
-          </ul>
-        </div>
-      </Scrollbars>
-    )
-  }
+CommentList.propTypes = {
+  comments: PropTypes.object,
 }
 
 export default CommentList

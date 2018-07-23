@@ -4,11 +4,12 @@ import MarkdownEditable from '../common/markdown-editable'
 import Icon from '../icons/icon'
 import {
   boxSizing,
-  markdownStyles,
   placeholderColor,
   transition,
   transform,
   transformOrigin,
+  commonInputSmall,
+  markdownStyles,
 } from '../styled-components-mixins/'
 
 // Detail
@@ -231,6 +232,28 @@ const DetailContentComments = styled.div`
   justify-content: space-between;
 `;
 
+const DetailContentCommentsAdd = styled.div`
+  display: flex;
+  margin-top: 10px;
+`;
+
+const DetailContentCommentsAddIcon = styled.div`
+  margin-right: 10px;
+  flex: 1;
+  pointer-events: none;
+`;
+
+const DetailContentCommentsAddInput = styled.div`
+  flex: 12;
+  position: relative;
+
+  input{
+    ${placeholderColor('#8c9da9')}
+    ${commonInputSmall}
+    background-color: #fff;
+  }
+`;
+
 // Detail menu
 const Menu = styled.div`
   display: flex;
@@ -438,6 +461,9 @@ export {
   DetailContentImportantContent,
   DetailContentAttachments,
   DetailContentComments,
+  DetailContentCommentsAdd,
+  DetailContentCommentsAddIcon,
+  DetailContentCommentsAddInput,
 
   // Detail menu
   Menu,

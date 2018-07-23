@@ -1,28 +1,33 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import dateUtil from 'redux/utils/date'
-
 import { ICONS } from 'components/icons/icon-constants'
-import Icon from 'components/icons/icon'
 
-const CommentListItem = props => {
-  const dateText = props.comment.id === null
+import {
+  CommentItemContainer,
+  CommentItemIcon,
+  CommentItemAuthor,
+  CommentItemDate,
+  CommentItemContent,
+} from './styles'
+
+const CommentListItem = ({ comment }) => {
+  const dateText = comment.id === null
     ? 'Not synced'
-    : dateUtil.formatDate(props.comment.createdAt)
+    : dateUtil.formatDate(comment.createdAt)
 
   return (
-    <li className="comment">
-      <Icon
-        className="comment__icon-comment"
+    <CommentItemContainer>
+      <CommentItemIcon
         icon={ICONS.COMMENT}
         width={15}
         height={14}
         scale={0.57}
         color={["#8C9DA9"]}/>
-      <div className="comment__author">{props.comment.author}</div>
-      <div className="comment__date">{dateText}</div>
-      <div className="comment__content">{props.comment.content}</div>
-    </li>
+      <CommentItemAuthor>{comment.author}</CommentItemAuthor>
+      <CommentItemDate>{dateText}</CommentItemDate>
+      <CommentItemContent>{comment.content}</CommentItemContent>
+    </CommentItemContainer>
   )
 }
 

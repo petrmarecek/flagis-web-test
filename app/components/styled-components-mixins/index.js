@@ -13,6 +13,31 @@ import {
   FormRow,
 } from './forms'
 
+// fonts
+const fontMain = css`
+  font-family: 'Source Sans Pro', 'Segoe UI', sans-serif;
+  font-weight: 400;
+`;
+
+const fontSub = css`
+  font-family: 'Source Sans Pro', 'Segoe UI', sans-serif;
+  font-weight: 300;
+`;
+
+const fontBold = css`
+  font-family: 'Source Sans Pro', 'Segoe UI', sans-serif;
+  font-weight: 600;
+`;
+
+const fontIconMdi = css`
+  font: normal normal normal 24px/1 MaterialDesignIcons;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transform: translate(0, 0);
+`;
+
+// mixins
 const boxSizing = value => css`
   -webkit-box-sizing: ${value};
   -moz-box-sizing: ${value};
@@ -79,32 +104,25 @@ const placeholderColor = value => css`
   }
 `;
 
-// fonts
-const fontMain = css`
-  font-family: 'Source Sans Pro', 'Segoe UI', sans-serif;
-  font-weight: 400;
-`;
-
-const fontSub = css`
-  font-family: 'Source Sans Pro', 'Segoe UI', sans-serif;
-  font-weight: 300;
-`;
-
-
-const fontBold = css`
-  font-family: 'Source Sans Pro', 'Segoe UI', sans-serif;
-  font-weight: 600;
-`;
-
-const fontIconMdi = css`
-  font: normal normal normal 24px/1 MaterialDesignIcons;
-  text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  transform: translate(0, 0);
+const commonInputSmall = css`
+  ${fontSub}
+  ${boxSizing('border-box')}
+  width: 100%;
+  padding: 2px;
+  font-size: 14px;
+  border: none;
+  border-bottom: 1px solid #D7E3EC;
+}
 `;
 
 export {
+  // fonts
+  fontMain,
+  fontSub,
+  fontBold,
+  fontIconMdi,
+
+  // mixins
   boxSizing,
   boxShadow,
   borderRadius,
@@ -113,12 +131,7 @@ export {
   transformOrigin,
   userSelect,
   placeholderColor,
-
-  // fonts
-  fontMain,
-  fontSub,
-  fontBold,
-  fontIconMdi,
+  commonInputSmall,
 
   // markdown
   markdownStyles,

@@ -41,6 +41,9 @@ import {
   DetailContentDescriptionTask,
   MarkdownEditableContainer,
   DetailContentComments,
+  DetailContentCommentsAdd,
+  DetailContentCommentsAddIcon,
+  DetailContentCommentsAddInput,
 } from './styles'
 
 const TaskDetail = props => {
@@ -294,6 +297,7 @@ const TaskDetail = props => {
               <Loader />}
               {!attachments.isFetching &&
               <AttachmentList
+                disabled={bindingData.isArchived}
                 attachments={attachments}
                 attachmentDelete={onHandleAttachmentDelete} />}
               {!bindingData.isArchived && <FilePicker onFileUploaded={onHandleFileUploaded}/>}
@@ -314,15 +318,15 @@ const TaskDetail = props => {
             {!comments.isFetching &&
             <CommentList comments={comments} />}
             {!bindingData.isArchived &&
-            <div className="comment-add">
-              <div className="comment-add__icon-comment">
+            <DetailContentCommentsAdd>
+              <DetailContentCommentsAddIcon>
                 <Icon
                   icon={ICONS.COMMENT}
                   color={["#8C9DA9"]}
                   width={26}
                   height={23} />
-              </div>
-              <div className="comment-add__input">
+              </DetailContentCommentsAddIcon>
+              <DetailContentCommentsAddInput>
                 <input
                   id="addComment"
                   onKeyUp={onHandleAddComment}
@@ -330,8 +334,8 @@ const TaskDetail = props => {
                   name="addComment"
                   placeholder="Add comment"
                   onClick={onHandleRemoveEventListener} />
-              </div>
-            </div>}
+              </DetailContentCommentsAddInput>
+            </DetailContentCommentsAdd>}
           </DetailContentComments>
         </DetailContentCenter>
       </DetailInner>
