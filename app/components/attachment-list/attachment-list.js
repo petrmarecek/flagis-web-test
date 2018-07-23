@@ -12,8 +12,6 @@ const AttachmentList = ({ attachments, attachmentDelete, disabled }) => {
     overflow: 'hidden'
   }
 
-  console.log(attachments)
-
   return (
     <Scrollbars
       ref={scrollbar => {
