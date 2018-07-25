@@ -22,7 +22,7 @@ class TasksProgressBar extends PureComponent {
   }
 
   componentDidMount() {
-    velocity(this.refs.elem, 'transition.fadeIn', { duration: 600 })
+   velocity(this.refs.elem, 'transition.slideRightIn', { duration: 600 })
   }
 
   componentWillReceiveProps(newProps) {
