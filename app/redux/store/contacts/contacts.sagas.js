@@ -66,6 +66,18 @@ export function* updateContacts(action) {
   }
 }
 
+export function* sendInvitationContact(action) {
+  try {
+    // call server
+    const contactId = action.payload.contactId
+    yield call(api.contacts.invitation, contactId)
+
+  } catch(err) {
+    // log error
+    console.error('Error occured during send invitation to contact', err)
+  }
+}
+
 export function* deleteContact(action) {
   const originalContact = action.payload.originalData
 

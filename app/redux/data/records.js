@@ -295,4 +295,6 @@ export const Contacts = Record({
   createdAt: null,
   updatedAt: null,
   isUser: false,
+  isEmailNotificationEnabled: true,
+  isSendInvitation: false,
 })

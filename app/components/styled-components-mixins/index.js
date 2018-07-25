@@ -87,6 +87,12 @@ const userSelect = value => css`
   user-select: ${value};
 `;
 
+const textOverflow = value => css`
+  -ms-text-overflow: ${value};
+  -o-text-overflow: ${value};
+  text-overflow: ${value};
+`;
+
 const placeholderColor = value => css`
   &::-webkit-input-placeholder {
     color: ${value};
@@ -130,6 +136,7 @@ export {
   transform,
   transformOrigin,
   userSelect,
+  textOverflow,
   placeholderColor,
   commonInputSmall,
 

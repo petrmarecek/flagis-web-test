@@ -1,6 +1,8 @@
 import styled from 'styled-components'
+import { textOverflow } from '../styled-components-mixins'
+import Icon from '../icons/icon'
 
-export const ContactItemStyle = styled.li`
+const ContactItemContainer = styled.li`
   overflow: hidden;
   list-style-type: none;
   font-size: 16px;
@@ -8,27 +10,70 @@ export const ContactItemStyle = styled.li`
   cursor: pointer;
   position: relative;
   background-color: white;
-`;
-
-export const ContactItemContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
   height: 30px;
 `;
 
-export const ContactItemIcon = styled.div`
+const ContactItemIcon = styled(Icon)`
+  position: absolute;
+  left: 15px;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
   height: 100%;
-  margin: 0 10px;
+  overflow: hidden;
 `;
 
-export const ContactItemTitle = styled.div`
-  margin-left: ${props => props.isUser ? '7px' : '0'};
+const ContactItemTitleWrapper = styled.div`
   display: flex;
   align-items: center;
   height: 100%;
-  justify-content: flex-start;
+  margin: 0 103px 0 45px;
 `;
+
+const ContactItemTitle = styled.div`
+  min-width: 0;
+  ${textOverflow('ellipsis')}
+  white-space: nowrap;
+  overflow: hidden;
+`;
+
+const ContactItemInvite = styled.div`
+  position: absolute;
+  right: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  color: #8C9DA9;
+  overflow: hidden;
+  z-index: 1;
+  
+  :hover {
+    color: #293034;
+    
+    svg {
+      path {
+        fill: #293034;
+      }
+    }
+  }
+`;
+
+const ContactItemInviteIcon = styled(Icon)`
+  margin: 0 10px 0 20px;
+`;
+
+const ContactItemInviteText = styled.div`
+  margin-right: 20px;
+  font-size: 14px;
+  font-weight: bold;
+`;
+
+export {
+  ContactItemContainer,
+  ContactItemIcon,
+  ContactItemTitleWrapper,
+  ContactItemTitle,
+  ContactItemInvite,
+  ContactItemInviteIcon,
+  ContactItemInviteText
+}

@@ -3,17 +3,19 @@ import PropTypes from 'prop-types'
 import { compose, lifecycle, withHandlers } from 'recompose'
 
 import {
-  ContactItemStyle,
   ContactItemContainer,
   ContactItemIcon,
+  ContactItemTitleWrapper,
   ContactItemTitle,
+  ContactItemInvite,
+  ContactItemInviteIcon,
+  ContactItemInviteText
 } from './styles'
 
-import Icon from '../icons/icon'
 import {ICONS} from '../icons/icon-constants'
 import velocity from 'velocity-animate'
 
-const ContactItem = ({ contact, onHandleClick }) => {
+const ContactItem = ({ contact, onHandleClickContact, onHandleClickInvitation }) => {
   let icon = {
     icon: ICONS.CONTACT_EXIST,
     height: 21,
@@ -35,33 +37,46 @@ const ContactItem = ({ contact, onHandleClick }) => {
     : contact.email
 
   return(
-    <ContactItemStyle
+    <ContactItemContainer
       id={contact.id}
       key={contact.id}
-      onClick={onHandleClick}>
-      <ContactItemContainer>
-        <ContactItemIcon>
-          <Icon
-            icon={icon.icon}
-            width={icon.width}
-            height={icon.height}
-            color={icon.color} />
-        </ContactItemIcon>
+      onClick={onHandleClickContact}>
+      <ContactItemIcon
+        icon={icon.icon}
+        width={icon.width}
+        height={icon.height}
+        color={icon.color} />
+      <ContactItemTitleWrapper>
         <ContactItemTitle isUser={contact.isUser}>{title}</ContactItemTitle>
-      </ContactItemContainer>
-    </ContactItemStyle>
+      </ContactItemTitleWrapper>
+      {!contact.isSendInvitation && !contact.isUser &&
+      <ContactItemInvite onClick={onHandleClickInvitation}>
+        <ContactItemInviteIcon
+          icon={ICONS.SEND_INVITE}
+          width={17}
+          height={16}
+          color={['#8C9DA9']} />
+        <ContactItemInviteText>Invite</ContactItemInviteText>
+      </ContactItemInvite>}
+    </ContactItemContainer>
   )
 }
 
 ContactItem.propTypes = {
   contact: PropTypes.object,
-  onHandleClick: PropTypes.func,
-  onClick: PropTypes.func,
+  onClickContact: PropTypes.func,
+  onHandleClickContact: PropTypes.func,
+  onClickInvitation: PropTypes.func,
+  onHandleClickInvitation: PropTypes.func,
 }
 
 export default compose(
   withHandlers({
-    onHandleClick: props => () => props.onClick(props.contact.id)
+    onHandleClickContact: props => () => props.onClickContact(props.contact.id),
+    onHandleClickInvitation: props => event => {
+      event.stopPropagation()
+      props.onClickInvitation(props.contact.id)
+    }
   }),
   lifecycle({
     componentDidMount() {

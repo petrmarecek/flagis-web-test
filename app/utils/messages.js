@@ -52,6 +52,10 @@ export const successMessages = {
     archive: 'Tasks have been archived.',
   },
 
+  contacts: {
+    sendInvitation: 'Invitation has been sent to the Contact.',
+  },
+
   changePassword: 'Password has successfully been changed.',
 
   changeName: 'Name has successfully been changed.',

@@ -8,6 +8,7 @@ export const CONTACTS = {
   DESELECT: 'CONTACTS/DESELECT',
   UPDATE: 'CONTACTS/UPDATE',
   UPDATE_SEARCH: 'CONTACTS/UPDATE_SEARCH',
+  SEND_INVITATION: 'CONTACTS/SEND_INVITATION',
   DELETE: 'CONTACTS/DELETE',
   UNDO_DELETE: 'UNDO_CONTACTS/DELETE',
 }
@@ -44,6 +45,11 @@ export const updateContact = (contact, data, type) => ({
 export const updateContactSearch = search => ({
   type: CONTACTS.UPDATE_SEARCH,
   payload: { search }
+})
+
+export const sendInvitationContact = contactId => ({
+  type: CONTACTS.SEND_INVITATION,
+  payload: { contactId }
 })
 
 export const deleteContact = originalData => ({

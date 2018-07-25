@@ -155,8 +155,12 @@ export default {
       .get('contacts')
       .then(res => res.data),
 
-    update: (userId, update) => api
-      .patch(`contacts/${userId}`, update)
+    update: (contactId, update) => api
+      .patch(`contacts/${contactId}`, update)
+      .then(res => res.data),
+
+    invitation: (contactId) => api
+      .post(`contacts/${contactId}/invitation`)
       .then(res => res.data),
 
     delete: contactId => api

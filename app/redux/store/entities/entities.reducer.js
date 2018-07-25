@@ -209,6 +209,9 @@ export default typeToReducer({
     return state.setIn(['contacts', contactId, fieldName], fieldValue)
   },
 
+  [CONTACTS.SEND_INVITATION]: (state, action) => state
+    .setIn(['contacts', action.payload.contactId, 'isSendInvitation'], true),
+
   [CONTACTS.DELETE]: (state, action) =>
     state.deleteIn(['contacts', action.payload.originalData.id]),
 

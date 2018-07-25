@@ -9,9 +9,9 @@ const AddFieldStyle = styled.input`
   ${boxSizing('border-box')}
   width: 100%;
   border: none;
-  font-size: 16px;
+  font-size: 18px;
   height: 30px;
-  padding: 5px 0 5px 10px;
+  padding: 5px 0 5px 17px;
   color: ${props => props.isError ? 'red' : 'black'};
 `;
 

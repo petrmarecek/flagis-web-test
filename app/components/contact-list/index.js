@@ -2,15 +2,18 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { setDetail } from 'redux/store/app-state/app-state.actions'
-import { selectContact } from 'redux/store/contacts/contacts.actions'
+import { selectContact, sendInvitationContact } from 'redux/store/contacts/contacts.actions'
 import { getContacts } from 'redux/store/contacts/contacts.selectors'
 import { compose, branch, renderComponent, withHandlers } from 'recompose'
+import { toast } from 'react-toastify'
+import { successMessages } from 'utils/messages'
+import constants from 'utils/constants'
 
 import ContactItem from './contact-item'
 import ShadowScrollbar from '../common/shadow-scrollbar'
 import Loader from '../common/loader'
 
-const ContactList = ({ contacts, onHandleClick }) => {
+const ContactList = ({ contacts, onHandleClickContact, onHandleClickInvitation }) => {
 
   if (contacts.items.length === 0) {
     return (
@@ -32,7 +35,8 @@ const ContactList = ({ contacts, onHandleClick }) => {
         <ContactItem
           key={contact.id}
           contact={contact}
-          onClick={onHandleClick} />
+          onClickContact={onHandleClickContact}
+          onClickInvitation={onHandleClickInvitation} />
       ))}
     </ShadowScrollbar>
   )
@@ -40,7 +44,8 @@ const ContactList = ({ contacts, onHandleClick }) => {
 
 ContactList.propTypes = {
   contacts: PropTypes.object,
-  onHandleClick: PropTypes.func,
+  onHandleClickContact: PropTypes.func,
+  onHandleClickInvitation: PropTypes.func,
 }
 
 const mapStateToProps = state => ({
@@ -50,6 +55,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   setDetail,
   selectContact,
+  sendInvitationContact,
 }
 
 export default compose(
@@ -59,9 +65,16 @@ export default compose(
     renderComponent(Loader)
   ),
   withHandlers({
-    onHandleClick: props => id => {
+    onHandleClickContact: props => id => {
       props.selectContact(id)
       props.setDetail('contact')
+    },
+    onHandleClickInvitation: props => id => {
+      props.sendInvitationContact(id)
+      toast.success(successMessages.contacts.sendInvitation, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+      })
     }
   })
 )(ContactList)
