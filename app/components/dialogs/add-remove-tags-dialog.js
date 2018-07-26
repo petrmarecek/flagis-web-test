@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import DialogBase from 'components/dialogs/dialog-base'
 
 import AddRemoveTagsItem from 'components/dialogs/add-remove-tags-item'
+import ShadowScrollbar from '../common/shadow-scrollbar'
 
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
@@ -46,6 +47,33 @@ export default class AddRemoveTagsDialog extends DialogBase {
   }
 
   render() {
+    const tagsItems = this.props.tags.items
+    const isScroll = this.getScrollDialog(tagsItems)
+    const scrollStyle = {
+      height: `calc(100vh - 385px)`,
+      shadowHeight: 20,
+      boxShadowTop: 'inset 0 20px 20px -10px #fafafa',
+      boxShadowBottom: 'inset 0 -20px 20px -10px #fafafa',
+      overflow: 'hidden'
+    }
+    const tags = (
+      <ul className="add-remove-tags-dialog__list">
+        {tagsItems.map((tag, key) => (
+          <AddRemoveTagsItem
+            key={key}
+            tag={tag}
+            activeTags={this.props.activeTags}
+            inactiveTags={this.props.inactiveTags}
+            otherTags={this.props.otherTags}
+            addTags={this.props.addTags}
+            removeTags={this.props.removeTags}
+            addToList={this.props.addToList}
+            deleteFromList={this.props.deleteFromList}
+            tagsLists={this.props.tagsLists}/>
+        ))}
+      </ul>
+    )
+
     return (
       <div className="dialog add-remove-tags-dialog" ref="dialogWin">
         <Icon
@@ -58,21 +86,11 @@ export default class AddRemoveTagsDialog extends DialogBase {
         <div className="dialog__title">Add/remove tags on selected tasks</div>
         <div className="dialog__line"/>
         <div className="dialog__content">
-          <ul className="add-remove-tags-dialog__list">
-            {this.props.tags.items.map((tag, key) => (
-              <AddRemoveTagsItem
-                key={key}
-                tag={tag}
-                activeTags={this.props.activeTags}
-                inactiveTags={this.props.inactiveTags}
-                otherTags={this.props.otherTags}
-                addTags={this.props.addTags}
-                removeTags={this.props.removeTags}
-                addToList={this.props.addToList}
-                deleteFromList={this.props.deleteFromList}
-                tagsLists={this.props.tagsLists}/>
-            ))}
-          </ul>
+          {!isScroll && tags}
+          {isScroll &&
+          <ShadowScrollbar style={scrollStyle}>
+            {tags}
+          </ShadowScrollbar>}
         </div>
         <div className="button-row">
           <div className="button-row__right">
