@@ -1,6 +1,7 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { compose, withHandlers } from 'recompose'
 
 import { updateTagSearch } from 'redux/store/tags/tags.actions'
 import { getTagsSearch } from 'redux/store/tags/tags.selectors'
@@ -9,38 +10,52 @@ import TagList from 'components/tag-list/tag-list-container'
 import SearchBox from 'components/common/search-box'
 import AddTagForm from 'components/common/add-tag-form'
 
+import styled from 'styled-components'
+import { userSelect } from '../styled-components-mixins'
 import { CenterPanelTop, CenterPanelScroll } from '../panels/styles'
 
-class TagsContent extends PureComponent {
+const TagTopMenu= styled.div`
+  height: 48px;
+  position: relative;
+`;
 
-  static propTypes = {
-    updateTagSearch: PropTypes.func.isRequired,
-    search: PropTypes.string,
-  }
+const TagListContainer = styled.div`
+  ${userSelect('none')}
+  margin: 0 0 10px;
+  clear: both;
 
-  handleSearchChange = search => {
-    this.props.updateTagSearch(search)
+  .loader {
+    margin: 0 auto;
+    padding-top: 1px;
+    width: 30px;
+  
+    #canvasLoader {
+      margin: 10px 0;
+    }
   }
+`;
 
-  render() {
-    return (
-      <div>
-        <CenterPanelTop>
-          <div className="tag-top-menu">
-            <SearchBox
-              onChange={this.handleSearchChange}
-              value={this.props.search} />
-          </div>
-          <AddTagForm />
-        </CenterPanelTop>
-        <CenterPanelScroll smallOffsetBottom>
-          <div className="tag-list">
-            <TagList />
-          </div>
-        </CenterPanelScroll>
-      </div>
-    )
-  }
+const TagsContent = ({ search, onHandleSearchChange }) => (
+  <div>
+    <CenterPanelTop>
+      <TagTopMenu>
+        <SearchBox
+          onChange={onHandleSearchChange}
+          value={search} />
+      </TagTopMenu>
+      <AddTagForm />
+    </CenterPanelTop>
+    <CenterPanelScroll smallOffsetBottom>
+      <TagListContainer>
+        <TagList />
+      </TagListContainer>
+    </CenterPanelScroll>
+  </div>
+)
+
+TagsContent.propTypes = {
+  search: PropTypes.string,
+  onHandleSearchChange: PropTypes.func,
 }
 
 const mapStateToProps = state => ({
@@ -49,4 +64,10 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = { updateTagSearch }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TagsContent)
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withHandlers({
+    onHandleSearchChange: props => search => props.updateTagSearch(search)
+  })
+)(TagsContent)
+

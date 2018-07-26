@@ -17,7 +17,7 @@ const ContactTopMenu= styled.div`
   position: relative;
 `;
 
-const ContactListStyle = styled.div`
+const ContactListContainer = styled.div`
   margin: 0 0 10px;
   clear: both;
 `;
@@ -33,16 +33,15 @@ const ContactContent = ({ search, onHandleSearchChange }) => (
       <AddContactForm/>
     </CenterPanelTop>
     <CenterPanelScroll>
-      <ContactListStyle>
+      <ContactListContainer>
         <ContactList/>
-      </ContactListStyle>
+      </ContactListContainer>
     </CenterPanelScroll>
   </div>
 )
 
 ContactContent.propTypes = {
   search: PropTypes.string,
-  updateContactSearch: PropTypes.func,
   onHandleSearchChange: PropTypes.func,
 }
 
