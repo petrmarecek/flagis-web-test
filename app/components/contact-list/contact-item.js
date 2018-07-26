@@ -49,7 +49,7 @@ const ContactItem = ({ contact, onHandleClickContact, onHandleClickInvitation })
       <ContactItemTitleWrapper>
         <ContactItemTitle isUser={contact.isUser}>{title}</ContactItemTitle>
       </ContactItemTitleWrapper>
-      {!contact.isSendInvitation && !contact.isUser &&
+      {!contact.isInvitation && !contact.isUser &&
       <ContactItemInvite onClick={onHandleClickInvitation}>
         <ContactItemInviteIcon
           icon={ICONS.SEND_INVITE}

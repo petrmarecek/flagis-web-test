@@ -5,7 +5,6 @@ import Icon from '../icons/icon'
 const ContactItemContainer = styled.li`
   overflow: hidden;
   list-style-type: none;
-  font-size: 16px;
   margin: 0 0 4px;
   cursor: pointer;
   position: relative;
@@ -31,9 +30,11 @@ const ContactItemTitleWrapper = styled.div`
 
 const ContactItemTitle = styled.div`
   min-width: 0;
+  height: 18px;
   ${textOverflow('ellipsis')}
   white-space: nowrap;
   overflow: hidden;
+  font-size: 16px;
 `;
 
 const ContactItemInvite = styled.div`

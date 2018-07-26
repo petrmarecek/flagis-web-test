@@ -114,9 +114,7 @@ export default compose(
     onSubmitSuccess: afterSubmitChangeName,
   }),
   withStateHandlers(
-    () => ({
-      errorMessage: List(),
-    }),
+    () => ({ errorMessage: List() }),
     {
       onSubmit: ({ errorMessage }, props) => values => {
         props.visibleLoader()

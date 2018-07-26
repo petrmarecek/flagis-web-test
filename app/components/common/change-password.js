@@ -122,9 +122,7 @@ export default compose(
     onSubmitSuccess: afterSubmitChangePassword,
   }),
   withStateHandlers(
-    () => ({
-      errorMessage: List(),
-    }),
+    () => ({ errorMessage: List() }),
     {
       onSubmit: ({ errorMessage }, props) => values => {
         props.visibleLoader()

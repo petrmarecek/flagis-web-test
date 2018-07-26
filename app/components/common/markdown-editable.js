@@ -45,11 +45,15 @@ MarkdownEditable.propTypes = {
 }
 
 export default withStateHandlers(
-  () => ({
-    editable: false,
-  }),
+  () => ({ editable: false }),
   {
-    onHandleClick: () => () => ({ editable: true }),
+    onHandleClick: () => event => {
+      if (event.target.nodeName === 'A') {
+        return { editable: false }
+      }
+
+      return { editable: true }
+    },
     onHandleUpdateText: (state, props) => event => {
       props.onUpdate(event)
       return { editable: false }

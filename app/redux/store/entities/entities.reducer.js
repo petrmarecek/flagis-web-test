@@ -210,7 +210,7 @@ export default typeToReducer({
   },
 
   [CONTACTS.SEND_INVITATION]: (state, action) => state
-    .setIn(['contacts', action.payload.contactId, 'isSendInvitation'], true),
+    .setIn(['contacts', action.payload.contactId, 'isInvitation'], true),
 
   [CONTACTS.DELETE]: (state, action) =>
     state.deleteIn(['contacts', action.payload.originalData.id]),
