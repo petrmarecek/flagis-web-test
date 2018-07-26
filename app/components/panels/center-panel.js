@@ -4,13 +4,15 @@ import { connect } from 'react-redux'
 
 import { getLeftPanel } from 'redux/store/app-state/app-state.selectors'
 
+import { CenterPanelContainer } from './styles'
+
 const CenterPanel = ({ leftPanel, children, style }) => (
-  <div
+  <CenterPanelContainer
     id="center-panel"
-    className="center-panel"
-    style={{ left: leftPanel.width, ...style }}>
+    left={leftPanel.width}
+    style={style}>
     {children}
-  </div>
+  </CenterPanelContainer>
 )
 
 CenterPanel.propTypes = {
@@ -26,3 +28,4 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {}
 
 export default connect(mapStateToProps, mapDispatchToProps)(CenterPanel)
+

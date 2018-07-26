@@ -10,24 +10,11 @@ import AddContactForm from '../common/add-contact-fom'
 import ContactList from '../contact-list'
 
 import styled from 'styled-components'
-
-const CenterPanelTop = styled.div`
-  position: relative;
-  z-index: 10;
-`;
+import { CenterPanelTop, CenterPanelScroll } from '../panels/styles'
 
 const ContactTopMenu= styled.div`
   height: 48px;
   position: relative;
-`;
-
-const CenterPanelScroll = styled.div`
-  position: absolute;
-  top: 0;
-  bottom: 10px;
-  left: 0;
-  right: 0;
-  top: 84px;
 `;
 
 const ContactListStyle = styled.div`

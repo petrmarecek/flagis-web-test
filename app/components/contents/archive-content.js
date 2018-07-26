@@ -1,25 +1,26 @@
 import React from 'react'
 import TaskListContainer from '../task-list/task-list-container'
 import TasksMenuContainer from '../tasks-menu/tasks-menu-container'
+import { CenterPanelTop, CenterPanelScroll } from "../panels/styles";
 
 const ArchiveContent = () => {
   return (
     <div>
-      <div className="center-panel__top">
+      <CenterPanelTop>
         <TasksMenuContainer />
-      </div>
+      </CenterPanelTop>
       <div className="center-panel__title">
         Archived Tasks
       </div>
-      <div
+      <CenterPanelScroll
         id="center-panel-scroll"
-        className="center-panel__scroll center-panel__scroll--small-offset center-panel__scroll--small-offset-bottom">
+        smallOffsetBottom >
         <div className="task-panel">
           <div className="task-list">
             <TaskListContainer />
           </div>
         </div>
-      </div>
+      </CenterPanelScroll>
     </div>
   )
 }

@@ -9,6 +9,8 @@ import TagList from 'components/tag-list/tag-list-container'
 import SearchBox from 'components/common/search-box'
 import AddTagForm from 'components/common/add-tag-form'
 
+import { CenterPanelTop, CenterPanelScroll } from '../panels/styles'
+
 class TagsContent extends PureComponent {
 
   static propTypes = {
@@ -23,19 +25,19 @@ class TagsContent extends PureComponent {
   render() {
     return (
       <div>
-        <div className="center-panel__top">
+        <CenterPanelTop>
           <div className="tag-top-menu">
             <SearchBox
               onChange={this.handleSearchChange}
               value={this.props.search} />
           </div>
           <AddTagForm />
-        </div>
-        <div className="center-panel__scroll center-panel__scroll--small-offset center-panel__scroll--small-offset-bottom">
+        </CenterPanelTop>
+        <CenterPanelScroll smallOffsetBottom>
           <div className="tag-list">
             <TagList />
           </div>
-        </div>
+        </CenterPanelScroll>
       </div>
     )
   }

@@ -3,15 +3,16 @@ import TaskListContainer from 'components/task-list/task-list-container'
 import TasksMenuContainer from 'components/tasks-menu/tasks-menu-container'
 import AddTaskForm from 'components/common/add-task-form'
 import TasksProgressBar from 'components/common/tasks-progress-bar'
+import { CenterPanelTop, CenterPanelScroll } from '../panels/styles'
 
 const TasksContent = () => {
   return (
     <div>
-      <div className="center-panel__top">
+      <CenterPanelTop>
         <TasksMenuContainer />
         <AddTaskForm />
-      </div>
-      <div className="center-panel__scroll center-panel__scroll--large-offset">
+      </CenterPanelTop>
+      <CenterPanelScroll largeOffsetTop>
         <div className="task-panel">
           <div className="task-panel__body">
             <div className="task-list unfinished">
@@ -19,7 +20,7 @@ const TasksContent = () => {
             </div>
           </div>
         </div>
-      </div>
+      </CenterPanelScroll>
       <TasksProgressBar />
     </div>
   )
