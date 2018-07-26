@@ -43,6 +43,8 @@ import { toast } from 'react-toastify'
 import { infoMessages } from 'utils/messages'
 import constants from 'utils/constants'
 
+import { AddSection, AddSectionText, AddSectionIcon } from './styles'
+
 class TreeContainer extends PureComponent {
 
   static propTypes = {
@@ -190,7 +192,6 @@ class TreeContainer extends PureComponent {
   render() {
 
     const leftPanel = this.props.leftPanel
-    const style = { width: leftPanel.width }
     const scrollStyle = {
       height: 'calc(100vh - 120px)',
       shadowHeight: 30,
@@ -241,17 +242,17 @@ class TreeContainer extends PureComponent {
             </div>
           </div>
         </ShadowScrollbar>
-        <div className="add-section" style={style} onClick={this.handleAddButtonClicked}>
-          <div className="add-section__text">Add new filter group</div>
-          <div className="add-section__icon-plus">
+        <AddSection onClick={this.handleAddButtonClicked}>
+          <AddSectionText>Add new filter group</AddSectionText>
+          <AddSectionIcon>
             <Icon
               icon={ICONS.PLUS}
               width={15}
               height={15}
               scale={0.52}
               color={["#fff"]}/>
-          </div>
-        </div>
+          </AddSectionIcon>
+        </AddSection>
       </div>
     )
   }
