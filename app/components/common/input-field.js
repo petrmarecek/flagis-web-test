@@ -6,7 +6,7 @@ const InputField = props => {
 
   const {
     input: { value, onChange },
-    meta: { touched, error },
+    meta: { touched, error, initial },
     label,
     id,
     type
@@ -14,9 +14,20 @@ const InputField = props => {
 
   const controlCss = cx({
     'field__control': true,
-    'field__control--with-value': Boolean(value),
+    'field__control--with-value': Boolean(value) || Boolean(initial),
     'field__control--error': Boolean(touched && error),
   })
+
+  const inputValue = () => {
+    if (value) {
+      return value
+    } else if (initial) {
+      return initial
+    }
+
+    return ''
+  }
+
 
   return (
     <div className="field">
@@ -25,7 +36,7 @@ const InputField = props => {
           id={id}
           className={controlCss}
           type={type}
-          value={value}
+          value={inputValue()}
           onChange={onChange} />
         <label className="field__label" htmlFor={id}>{label}</label>
       </div>

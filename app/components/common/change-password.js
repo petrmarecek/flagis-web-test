@@ -28,71 +28,64 @@ import {
   FormRow,
 } from '../styled-components-mixins/'
 
-const ChangePassword = props => {
-  const { errorMessage, loader, handleSubmit, onSubmit } = props
-
-  const renderErrorMessage = () =>
-    errorMessage.map((string, i) => (
-      <ErrorListItem key={i}>
-        <ErrorListItemText key={i}>
-          {string}
-        </ErrorListItemText>
-        <ErrorListItemIcon
-          icon={ICONS.ERROR}
-          width={12}
-          height={14}
-          color={["red"]}/>
-      </ErrorListItem>
-  ))
-
-  return (
-    <Form>
-      <FormBody onSubmit={handleSubmit(values => onSubmit(values))}>
-        <FormBodyFields>
-          <FormErrors>
-            <ErrorList>
-              {renderErrorMessage()}
-            </ErrorList>
-          </FormErrors>
-          <FormRow>
-            <Field
-              id="oldPassword"
-              name="oldPassword"
-              type="password"
-              label="Old Password"
-              component={InputField}/>
-          </FormRow>
-          <FormRow>
-            <Field
-              id="newPassword"
-              name="newPassword"
-              type="password"
-              label="New Password"
-              component={InputField}/>
-          </FormRow>
-          <FormRow>
-            <Field
-              id="confirmPassword"
-              name="confirmPassword"
-              type="password"
-              label="Confirmation"
-              component={InputField}/>
-          </FormRow>
-          <FormRow >
-            <input
-              type="submit"
-              className="btn-default"
-              value="Change password"/>
-          </FormRow>
-        </FormBodyFields>
-        {loader &&
-        <FormLoader>
-          <Loader />
-        </FormLoader>}
-      </FormBody>
-    </Form>
-  )
-}
+const ChangePassword = ({ errorMessage, loader, handleSubmit, onSubmit }) => (
+  <Form>
+    <FormBody onSubmit={handleSubmit(values => onSubmit(values))}>
+      <FormBodyFields>
+        <FormErrors>
+          <ErrorList>
+            {errorMessage.map((string, i) => (
+              <ErrorListItem key={i}>
+                <ErrorListItemText key={i}>
+                  {string}
+                </ErrorListItemText>
+                <ErrorListItemIcon
+                  icon={ICONS.ERROR}
+                  width={12}
+                  height={14}
+                  color={["red"]}/>
+              </ErrorListItem>
+            ))}
+          </ErrorList>
+        </FormErrors>
+        <FormRow>
+          <Field
+            id="oldPassword"
+            name="oldPassword"
+            type="password"
+            label="Old Password"
+            component={InputField}/>
+        </FormRow>
+        <FormRow>
+          <Field
+            id="newPassword"
+            name="newPassword"
+            type="password"
+            label="New Password"
+            component={InputField}/>
+        </FormRow>
+        <FormRow>
+          <Field
+            id="confirmPassword"
+            name="confirmPassword"
+            type="password"
+            label="Confirmation"
+            component={InputField}/>
+        </FormRow>
+        <FormRow >
+          <input
+            type="submit"
+            className="btn-default"
+            value="Change password"/>
+        </FormRow>
+      </FormBodyFields>
+      {loader &&
+      <FormLoader>
+        <Loader />
+      </FormLoader>}
+    </FormBody>
+  </Form>
+)
 
 ChangePassword.propTypes = {
   errorMessage: PropTypes.object,
@@ -134,7 +127,6 @@ export default compose(
         return { errorMessage: errorMessage.clear() }
       },
       onControlError: ({ errorMessage }, props) => () => {
-
         if (props.errorChangePassword.error) {
           props.deselectError('changePassword')
           return { errorMessage: errorMessage.push(props.errorChangePassword.message) }
