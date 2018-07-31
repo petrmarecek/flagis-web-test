@@ -17,9 +17,12 @@ import {
   getTagAutocompletes,
   getTagHintsRaw,
 } from 'redux/store/app-state/app-state.selectors'
-import { getTags } from 'redux/store/tags/tags.selectors'
+import { getTags, getTagsTitle } from 'redux/store/tags/tags.selectors'
 import { getCurrentTaskTags } from 'redux/store/tasks/tasks.selectors'
 import commonUtils from 'redux/utils/common'
+import { toast } from 'react-toastify'
+import { errorMessages } from 'utils/messages'
+import constants from 'utils/constants'
 
 const HINTS_TOP_OFFSET = -30
 const HINTS_LEFT_OFFSET = 115
@@ -33,6 +36,7 @@ class TagAutocompleteInput extends PureComponent {
     allowMultiSelect: PropTypes.bool,
     selectedItem: PropTypes.object,
     tags: PropTypes.object,
+    titles: PropTypes.object,
     context: PropTypes.object,
     text: PropTypes.string.isRequired,
     focus: PropTypes.number,
@@ -140,6 +144,15 @@ class TagAutocompleteInput extends PureComponent {
       return
     }
 
+    // Validation of title conflict
+    if (this.props.titles.includes(selectedItem.title.toLowerCase())) {
+      toast.error(errorMessages.tags.titleConflict, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: constants.NOTIFICATION_ERROR_DURATION,
+      })
+      return
+    }
+
     // raise submit event
     this.props.tagAutocompleteSubmit(this.props.id, this.props.context, {
       id: selectedItem.isNew ? commonUtils.clientUid() : selectedItem.id,
@@ -223,6 +236,7 @@ const mapStateToProps = (state, props) => {
     focus: autocompleteData.focus,
     tagsCount: getCurrentTaskTags(state).size,
     tags: getTags(state),
+    titles: getTagsTitle(state),
   }
 }
 

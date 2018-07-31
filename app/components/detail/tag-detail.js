@@ -161,7 +161,7 @@ export default withHandlers({
     }
 
     // Validation of title conflict
-    if (titles.includes(title)) {
+    if (titles.includes(title.toLowerCase())) {
       toast.error(errorMessages.tags.titleConflict, {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: constants.NOTIFICATION_ERROR_DURATION,

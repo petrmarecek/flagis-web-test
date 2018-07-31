@@ -106,7 +106,7 @@ export const getTagsTitle = createSelector(
   getEntitiesTags,
   (tagsItems, entitiesTags) => {
 
-    return tagsItems.map(tagId => entitiesTags.getIn([tagId]).title)
+    return tagsItems.map(tagId => entitiesTags.getIn([tagId]).title.toLowerCase())
   }
 )
 
