@@ -1,13 +1,14 @@
 import { all, put, select } from 'redux-saga/effects'
 import { push } from 'react-router-redux'
-import * as treeActions from 'redux/store/tree/tree.actions'
-import * as tasksMenuActions from 'redux/store/tasks-menu/tasks-menu.actions'
-import * as taskActions from 'redux/store/tasks/tasks.actions'
 import * as appStateActions from 'redux/store/app-state/app-state.actions'
-import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'
+import * as taskActions from 'redux/store/tasks/tasks.actions'
+import * as tasksMenuActions from 'redux/store/tasks-menu/tasks-menu.actions'
 import * as tagActions from 'redux/store/tags/tags.actions'
-import * as tagSelectors from 'redux/store/tags/tags.selectors'
+import * as treeActions from 'redux/store/tree/tree.actions'
+import * as contactActions from 'redux/store/contacts/contacts.actions'
+import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'
 import * as taskSelectors from 'redux/store/tasks/tasks.selectors'
+import * as tagSelectors from 'redux/store/tags/tags.selectors'
 import * as treeSelectors from 'redux/store/tree/tree.selectors'
 import { TagInfo, HintsContext, Position } from 'redux/data/records'
 
@@ -19,6 +20,7 @@ export function* defaultDisplay() {
 
   yield put(taskActions.deselectTasks())
   yield put(tagActions.deselectTags())
+  yield put(contactActions.deselectContacts())
   yield put(tasksMenuActions.resetTasksMenu())
   yield put(treeActions.selectPath([]))
   yield put(push('/user/tasks'))
