@@ -247,8 +247,8 @@ class TaskListContainer extends PureComponent {
     const scrollStyle = {
       height: `calc(100vh - ${offset}px)`,
       shadowHeight: 20,
-      boxShadowTop: 'inset 0 20px 20px -10px rgba(231, 236, 237, 1)',
-      boxShadowBottom: 'inset 0 -20px 20px -10px  rgba(231, 236, 237, 1)',
+      boxShadowTop: 'inset 0 10px 10px -5px rgba(231, 236, 237, 1)',
+      boxShadowBottom: 'inset 0 -10px 10px -5px  rgba(231, 236, 237, 1)',
       overflow: 'hidden'
     }
 

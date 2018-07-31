@@ -52,8 +52,8 @@ export default class AddRemoveTagsDialog extends DialogBase {
     const scrollStyle = {
       height: `calc(100vh - 385px)`,
       shadowHeight: 20,
-      boxShadowTop: 'inset 0 20px 20px -10px #fafafa',
-      boxShadowBottom: 'inset 0 -20px 20px -10px #fafafa',
+      boxShadowTop: 'inset 0 10px 10px -5px #fafafa',
+      boxShadowBottom: 'inset 0 -10px 10px -5px #fafafa',
       overflow: 'hidden'
     }
     const tags = (

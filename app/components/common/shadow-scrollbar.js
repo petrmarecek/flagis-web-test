@@ -5,15 +5,6 @@ import { Scrollbars } from 'react-custom-scrollbars'
 
 export default class ShadowScrollbar extends PureComponent {
 
-  constructor(props, ...rest) {
-    super(props, ...rest)
-    this.state = {
-      scrollTop: 0,
-      scrollHeight: 0,
-      clientHeight: 0
-    }
-  }
-
   static propTypes = {
     style: PropTypes.object,
     verticalStyle: PropTypes.object,
@@ -56,8 +47,8 @@ export default class ShadowScrollbar extends PureComponent {
     // Current position of mouse
     const { clientX, clientY } = values
     const conditionX = clientX >= left && clientX <= right
-    const conditionTopY = clientY >= top && clientY <= (top + 30)
-    const conditionBottomY = clientY >= (bottom - 30) && clientY <= bottom
+    const conditionTopY = clientY >= top && clientY <= (top + 50)
+    const conditionBottomY = clientY >= (bottom - 50) && clientY <= bottom
 
     // Scroll to top
     if (conditionX && conditionTopY) {
