@@ -108,11 +108,11 @@ export default compose(
           break
 
         case 'treeItemDelete':
-          props.activeUndo('UNDO_TAGS/DELETE')
+          props.activeUndo('UNDO_TREE/DELETE')
           break
 
         case 'treeGroupDelete':
-          props.activeUndo('UNDO_TAGS/DELETE')
+          props.activeUndo('UNDO_TREE/DELETE')
           break
 
         case 'contactDelete':

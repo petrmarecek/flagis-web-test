@@ -305,11 +305,11 @@ export function* dropTreeItem(action) {
     // Call server
     let order = Date.now()
     if (action.payload.dropPosition !== 'MIDDLE') {
-      const targetPosition = storeData.treeMap.get(targetParentId).indexOf(targetItemId)
       const children = yield select(state => treeSelectors.getTree(state, targetParentId))
       const direction = action.payload.dropPosition
+      const targetIndex = children.findIndex(item => item.id === targetItemId)
 
-      order = computeTreeItemOrder(children, targetPosition, direction, sourceParentId, targetParentId)
+      order = computeTreeItemOrder(children, { targetIndex, direction, sourceParentId, targetParentId })
     }
 
     const update = {

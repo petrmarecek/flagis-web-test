@@ -74,7 +74,8 @@ export function computeTreeSectionOrder(items, move) {
   return prevItemsOrder + ((nextItemsOrder - prevItemsOrder) / 2)
 }
 
-export function computeTreeItemOrder(items, dropIndex, direction, sourceParentId, targetParentId) {
+export function computeTreeItemOrder(items, drop) {
+  const { targetIndex, direction, sourceParentId, targetParentId } = drop
 
   // Moving just one task
   if (items.size === 1 && sourceParentId === targetParentId) {
@@ -84,28 +85,29 @@ export function computeTreeItemOrder(items, dropIndex, direction, sourceParentId
   const itemsArray = items.toArray()
 
   // Moved to the top
-  if (dropIndex === 0) {
+  if (targetIndex === 0) {
 
     // Subtract an hour to the order
     const hourInMs = 60 * 60 * 1000
-    const nextItemsOrder = itemsArray[dropIndex].order
+    const nextItemsOrder = itemsArray[targetIndex].order
     return new Date(nextItemsOrder - hourInMs).getTime()
   }
 
   // Moved to the end
-  if (dropIndex === (itemsArray.length - 1)) {
+  if (targetIndex === (itemsArray.length - 1)) {
     // Subtract an hour to the order
     const hourInMs = 60 * 60 * 1000
-    const nextItemsOrder = itemsArray[dropIndex].order
+    const nextItemsOrder = itemsArray[targetIndex].order
     return new Date(nextItemsOrder + hourInMs).getTime()
   }
 
   // Moved in the middle
-  let prevItemsOrder = itemsArray[dropIndex].order
-  let nextItemsOrder = itemsArray[dropIndex + 1].order
+  let prevItemsOrder = itemsArray[targetIndex].order
+  let nextItemsOrder = itemsArray[targetIndex + 1].order
+
   if (direction === 'TOP') {
-    prevItemsOrder = itemsArray[dropIndex - 1].order
-    nextItemsOrder = itemsArray[dropIndex].order
+    prevItemsOrder = itemsArray[targetIndex - 1].order
+    nextItemsOrder = itemsArray[targetIndex].order
   }
 
   return prevItemsOrder + ((nextItemsOrder - prevItemsOrder) / 2)

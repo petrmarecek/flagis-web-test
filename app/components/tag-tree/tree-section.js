@@ -6,7 +6,7 @@ import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
 
 import TreeItemList from 'components/tag-tree/tree-item-list'
-import {findDOMNode} from 'react-dom'
+import { findDOMNode } from 'react-dom'
 import {DragSource, DropTarget} from 'react-dnd'
 
 const TreeSectionDragDrop = {
