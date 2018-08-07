@@ -6,6 +6,7 @@ import classnames from 'classnames'
 import moment from 'moment'
 import velocity from 'velocity-animate'
 import 'velocity-animate/velocity.ui'
+import removeMd from 'remove-markdown'
 
 import dateUtils from 'redux/utils/date'
 
@@ -357,7 +358,9 @@ class TaskListItem extends Component {
     const dueDate = this.props.task.dueDate
     const dueDateFormat = dateUtils.formatDate(dueDate)
     const fromNow = this.props.task.dueDate ? moment(dueDate).fromNow() : ''
-    const description = this.props.task.description === null ? '' : this.props.task.description
+    let description = this.props.task.description === null ? '' : this.props.task.description
+    // remove markdown syntax
+    description = removeMd(description)
 
     // init classes
     const taskListItemClasses = classnames({
