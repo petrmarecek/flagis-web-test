@@ -56,7 +56,7 @@ const ContactDetail = props => {
 
   if (!contact.isUser) {
     icon = {
-      icon: ICONS.CONTACT_NOT_EXIST,
+      icon: ICONS.CONTACT_NO_EXIST,
       height: 23,
       width: 28,
       color: ['#8C9DA9', '#fff', '#FF6A6A'],

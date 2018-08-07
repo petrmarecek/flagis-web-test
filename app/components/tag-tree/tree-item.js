@@ -225,7 +225,7 @@ class TreeItem extends Component {
         title={title}>
           <Icon
             className={arrowIconClass}
-            icon={ICONS.ARROW_DOUBLE}
+            icon={ICONS.ARROW_DOUBLE_DOWN}
             width={10}
             height={12}
             scale={0.85}

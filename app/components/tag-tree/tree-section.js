@@ -161,7 +161,7 @@ class TreeSection extends PureComponent {
           title={title}>
           <Icon
             className={arrowIconClass}
-            icon={ICONS.ARROW_DOUBLE}
+            icon={ICONS.ARROW_DOUBLE_DOWN}
             width={13}
             height={15}
             scale={1.07}

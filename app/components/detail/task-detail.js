@@ -31,6 +31,10 @@ import {
   DetailContentCenter,
   DetailContentProperties,
   DetailContentOptions,
+  DetailContentAddContact,
+  DetailContentAddContactLabel,
+  DetailContentAddContactContent,
+  DetailContentAddContactIcon,
   DetailContentDate,
   DetailContentDateLabel,
   DetailContentDatePicker,
@@ -235,6 +239,20 @@ const TaskDetail = props => {
         <DetailContentCenter>
           <DetailContentProperties>
             <DetailContentOptions>
+              <DetailContentAddContact flex>
+                <DetailContentAddContactLabel changeColor>
+                  To:
+                </DetailContentAddContactLabel>
+                <DetailContentAddContactContent>
+                  Add Email
+                </DetailContentAddContactContent>
+                <DetailContentAddContactIcon
+                  icon={ICONS.CONTACTS}
+                  width={21}
+                  height={16}
+                  scale={0.7}
+                  color={["#8C9DA9"]} />
+              </DetailContentAddContact>
               <DetailContentDate>
                 <DetailContentDateLabel>
                   Start date
@@ -283,7 +301,7 @@ const TaskDetail = props => {
                     onChange={onHandleReminderDateChanged}/>
                 </DetailContentDatePicker>
               </DetailContentDate>
-              <DetailContentImportant onClick={onHandleToggleImportant}>
+              <DetailContentImportant last onClick={onHandleToggleImportant}>
                 <DetailContentImportantLabel important={bindingData.isImportant}>
                   Important
                 </DetailContentImportantLabel>

@@ -136,6 +136,58 @@ const DetailContentOptions = styled.div`
   margin: 6px 0 10px;
 `;
 
+const detailContentOptionsItem = css`
+  position: relative;
+  color: #8c9da9;
+  font-size: 14px;
+  padding: 0 0 2px 0;
+  margin: ${props => props.last ? '10px 0 0 0' : '0 0 10px 0'};
+  border-bottom: 1px solid #D7E3EC;
+  cursor: ${props => props.archived ? 'default' : 'pointer'};
+  display: ${props => props.flex ? 'flex' : 'auto'};
+`;
+
+const detailContentOptionsItemLabel = css`
+  margin: 0 0 0 3px;
+  color: ${props => props.changeColor ? '#293034' : '#8c9da9'};
+  font-weight: ${props => props.important ? 'bold' : 'normal'};
+`;
+
+const DetailContentAddContact = styled.div`
+  ${detailContentOptionsItem}
+`;
+
+const DetailContentAddContactLabel = styled.div`
+  ${detailContentOptionsItemLabel}
+`;
+
+const DetailContentAddContactContent = styled.div`
+  margin: 0 0 0 5px;
+`;
+
+const DetailContentAddContactIcon = styled(Icon)`
+  position: absolute;
+  right: 5px;
+  bottom: 2px;
+`;
+
+const DetailContentImportant = styled.div`
+  ${detailContentOptionsItem}
+`;
+
+const DetailContentImportantLabel = styled.div`
+  ${detailContentOptionsItemLabel}
+`;
+
+const DetailContentImportantContent = styled.div`
+  margin: -15px 5px 0 0;
+  float: right;
+  
+  span {
+    font-weight: bold;
+  }
+`;
+
 const DetailContentDate = styled.div`
   position: relative;
 `;
@@ -156,7 +208,7 @@ const DetailContentDatePicker = styled.div`
     input {
       text-align: right;
       font-size: 15px;
-      background-color: @cl-bg-input;
+      background-color: #fff;
     }
   }
   
@@ -190,30 +242,6 @@ const DetailContentDatePicker = styled.div`
         }
       }
     }
-  }
-`;
-
-const DetailContentImportant = styled.div`
-  position: relative;
-  color: #8c9da9;
-  font-size: 14px;
-  padding: 0 0 2px 0;
-  margin: 10px 0 0 0;
-  border-bottom: 1px solid #D7E3EC;
-  cursor: ${props => props.archived ? 'default' : 'pointer'};
-`;
-
-const DetailContentImportantLabel = styled.div`
-  margin: 0 0 0 3px;
-  font-weight: ${props => props.important ? 'bold' : 'normal'};
-`;
-
-const DetailContentImportantContent = styled.div`
-  margin: -15px 5px 0 0;
-  float: right;
-  
-  span {
-    font-weight: bold;
   }
 `;
 
@@ -453,6 +481,10 @@ export {
   DetailContentCenter,
   DetailContentProperties,
   DetailContentOptions,
+  DetailContentAddContact,
+  DetailContentAddContactLabel,
+  DetailContentAddContactContent,
+  DetailContentAddContactIcon,
   DetailContentDate,
   DetailContentDateLabel,
   DetailContentDatePicker,
