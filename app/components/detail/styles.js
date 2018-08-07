@@ -10,6 +10,7 @@ import {
   transformOrigin,
   commonInputSmall,
   markdownStyles,
+  fontMain,
 } from '../styled-components-mixins/'
 
 // Detail
@@ -339,6 +340,7 @@ const MarkdownEditableContainer = styled(MarkdownEditable)`
   font-size: 14px;
   
   .markdown__html {
+    ${fontMain}
     ${markdownStyles}
     padding-right: 13px;
     

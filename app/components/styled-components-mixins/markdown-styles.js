@@ -34,11 +34,49 @@ const markdownStyles = css`
   }
   
   p, blockquote, ul, ol, dl, li, table, pre {
+    font-size: 14px;
     margin: 15px 0;
+    line-height: 1.5;
   }
   
   p:first-child { 
     margin: 2px
+  }
+
+  ul, ol {
+    padding-left: 30px; 
+  }
+  
+  ul :first-child, ol :first-child {
+    margin-top: 0; 
+  }
+  
+  ul :last-child, ol :last-child {
+    margin-bottom: 0; 
+  }
+  
+  li {
+    margin: 5px 0;
+  }
+  
+  li :first-child {
+    margin: 0 0 5px 0;
+  }
+  
+  ul li {
+    list-style-type: disc;
+  }
+  
+  ol li {
+    list-style-type: decimal;
+  }
+  
+  strong {
+    font-weight: bold;
+  }
+  
+  em {
+    font-style: italic;
   }
   
   table {
@@ -72,13 +110,13 @@ const markdownStyles = css`
   
   code, pre {
     font-family: Monaco, monospace;
-    font-size: 14px;
+    font-size: 12px;
     border-radius: 3px;
     background-color: #e7eced;
     color: inherit;
   }
   
-  code {
+  p code {
     border: 1px solid #293034;
     margin: 0 2px;
     padding: 0 5px;
