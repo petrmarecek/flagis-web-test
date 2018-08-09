@@ -41,8 +41,7 @@ class TagListContainer extends PureComponent {
         {this.props.tags.isFetching && <Loader />}
         {!this.props.tags.isFetching && this.props.tags.items.length === 0 &&
         <div className="empty-list">No tags found</div>}
-        <ShadowScrollbar
-          style={scrollStyle}>
+        <ShadowScrollbar style={scrollStyle}>
         <ul>
           {this.props.tags.items.map(tag => (
             <TagItem

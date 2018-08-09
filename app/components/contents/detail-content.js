@@ -5,5 +5,4 @@ const DetailContent = () => (
   <Detail />
 )
 
-
 export default DetailContent
