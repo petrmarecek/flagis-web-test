@@ -44,7 +44,8 @@ import {
 import {
   selectContact,
   deselectContacts,
-  updateContact
+  updateContact,
+  sendInvitationContact
 } from 'redux/store/contacts/contacts.actions'
 import { getDetail } from 'redux/store/app-state/app-state.selectors'
 import {
@@ -112,6 +113,7 @@ const Detail = props => {
     onHandleContactNicknameUpdate,
     onHandleContactDelete,
     onHandleContactDescriptionUpdate,
+    onHandleContactSendInvitation,
 
     onHandleRemoveEventListener,
     onHandleToggleList,
@@ -166,7 +168,8 @@ const Detail = props => {
         onHandlePrevious={onHandlePrevious}
         onHandleContactNicknameUpdate={onHandleContactNicknameUpdate}
         onHandleContactDelete={onHandleContactDelete}
-        onHandleContactDescriptionUpdate={onHandleContactDescriptionUpdate} />}
+        onHandleContactDescriptionUpdate={onHandleContactDescriptionUpdate}
+        onHandleContactSendInvitation={onHandleContactSendInvitation} />}
     </DetailStyle>
   )
 }
@@ -201,6 +204,7 @@ Detail.propTypes = {
   onHandleContactNicknameUpdate: PropTypes.func,
   onHandleContactDelete: PropTypes.func,
   onHandleContactDescriptionUpdate: PropTypes.func,
+  onHandleContactSendInvitation: PropTypes.func,
 
   onHandleKeyDown: PropTypes.func,
   onHandleRemoveEventListener: PropTypes.func,
@@ -259,6 +263,7 @@ const mapDispatchToProps = {
   selectContact,
   deselectContacts,
   updateContact,
+  sendInvitationContact,
 
   deselectDetail,
   showDialog,
@@ -422,6 +427,13 @@ export default compose(
       props.showDialog('contact-delete-confirm', { contact }),
     onHandleContactDescriptionUpdate: props => data =>
       props.updateContact(data.contact, data.description, 'description'),
+    onHandleContactSendInvitation: props => data => {
+      props.sendInvitationContact(data.id)
+      toast.success(successMessages.contacts.sendInvitation, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+      })
+    }
   }),
   withHandlers({
     onHandleKeyDown: props => event => {

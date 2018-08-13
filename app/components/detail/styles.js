@@ -456,15 +456,30 @@ const DetailContentContactData = styled.div`
   padding: 0 0 2px 0;
   margin: 10px 0;
   border-bottom: 1px solid #D7E3EC;
-  cursor: default;
+  height: 22px;
+  cursor: ${props => props.button ? 'pointer' : 'default'};
+  
+  :hover {
+    color: ${props => props.button ? '#293034' : '#8c9da9'};
+    font-weight: ${props => props.button ? 'bold' : 'normal'};
+    
+    svg {
+      path {
+        fill: ${props => props.button ? '#293034' : '#8c9da9'};;
+      }
+    }
+  }
+  
 `;
 
 const DetailContentContactDataLabel = styled.span`
-  margin: 0 0 0 3px;
+  position: absolute;
+  bottom: 2px;
+  left: 3px;
 `;
 
 const DetailContentContactDataContent = styled.div`
-  margin: 0 5px 2px 0;
+  margin: 0 5px 0 0;
   float: right;
   font-size: 18px;
   color: #293034;

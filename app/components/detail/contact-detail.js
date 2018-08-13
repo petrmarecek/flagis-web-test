@@ -34,6 +34,7 @@ const ContactDetail = props => {
     onHandleNicknameUpdate,
     onHandleDelete,
     onHandleDescriptionUpdate,
+    onHandleSendInvitation,
   } = props
 
   if (!contact) {
@@ -116,6 +117,19 @@ const ContactDetail = props => {
                 Non-existing user
               </DetailContentContactDataLabel>
             </DetailContentContactData>}
+            {!contact.isUser && !contact.isInvitation &&
+            <DetailContentContactData onClick={onHandleSendInvitation} button>
+              <DetailContentContactDataLabel>
+                Invite
+              </DetailContentContactDataLabel>
+              <DetailContentContactDataContent>
+                <Icon
+                  icon={ICONS.SEND_INVITE}
+                  width={17}
+                  height={16}
+                  color={['#8C9DA9']} />
+              </DetailContentContactDataContent>
+            </DetailContentContactData>}
           </DetailContentProperties>
 
           <DetailContentDescriptionContact>
@@ -141,6 +155,8 @@ ContactDetail.propTypes = {
   onHandleContactDelete: PropTypes.func,
   onHandleDescriptionUpdate: PropTypes.func,
   onHandleContactDescriptionUpdate: PropTypes.func,
+  onHandleSendInvitation: PropTypes.func,
+  onHandleContactSendInvitation: PropTypes.func,
   onHandleRemoveEventListener: PropTypes.func,
   onHandleToggleList: PropTypes.func,
   onHandleNext: PropTypes.func,
@@ -167,4 +183,5 @@ export default withHandlers({
     const data = { contact: props.contact, description }
     props.onHandleContactDescriptionUpdate(data)
   },
+  onHandleSendInvitation: props => () => props.onHandleContactSendInvitation(props.contact),
 })(ContactDetail)
