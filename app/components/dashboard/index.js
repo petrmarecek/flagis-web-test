@@ -22,7 +22,8 @@ const Dashboard = ({ tags, tagsRelations }) => {
     return result
   }, {})
 
-  const tagColors = tags.items.reduce((result, tag) => {
+  const tagColors = tagsRelations.reduce((result, relation, key) => {
+    const tag = tags.items.find(tagItem => tagItem.id === key)
     const colorIndex = tag.colorIndex === null
       ? commonUtils.computeIntHash(tag.title, 10)
       : tag.colorIndex
