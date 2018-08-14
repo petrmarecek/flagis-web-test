@@ -106,7 +106,7 @@ export const validateSignUp = values => ({
   ...validateFirstName(values),
   ...validateLastName(values),
   ...validateEmail(values),
-  ...validatePassword(values),
+  ...validateNewPassword(values),
   ...validateConfirmPassword(values)
 })
 

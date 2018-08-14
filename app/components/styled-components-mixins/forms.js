@@ -57,6 +57,7 @@ const ErrorListItemIcon = styled(Icon)`
 
 const FormRow = styled.div`
   margin-top: 20px;
+  cursor: ${props => props.pointer ? 'pointer' : 'auto'}
 `;
 
 export {

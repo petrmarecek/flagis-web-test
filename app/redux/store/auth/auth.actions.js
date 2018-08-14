@@ -2,6 +2,7 @@ export const AUTH = {
   CONTROL_REDIRECT_SIGN_IN: 'AUTH/CONTROL_REDIRECT_SIGN_IN',
   CONTROL_REDIRECT_TASKS: 'AUTH/CONTROL_REDIRECT_TASKS',
   SIGN_UP: 'AUTH/SIGN_UP',
+  SIGN_UP_INVITATION: 'AUTH/SIGN_UP_INVITATION',
   LOGIN: 'AUTH/LOGIN',
   LOGOUT: 'AUTH/LOGOUT',
   UPDATE_PROFILE: 'AUTH/UPDATE_PROFILE',
@@ -22,6 +23,11 @@ export const controlRedirectTasks = () => ({
 
 export const signUp = userData => ({
   type: AUTH.SIGN_UP,
+  payload: userData
+})
+
+export const signUpInvitation = userData => ({
+  type: AUTH.SIGN_UP_INVITATION,
   payload: userData
 })
 

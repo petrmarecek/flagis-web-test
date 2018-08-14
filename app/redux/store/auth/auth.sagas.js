@@ -76,9 +76,10 @@ export function* authFlow() {
 
     // login or register
     if (!auth) {
-      const {login, register} = yield race({
+      const { login, register, registerInvitation } = yield race({
         login: take(AUTH.LOGIN),
         register: take(AUTH.SIGN_UP),
+        registerInvitation: take(AUTH.SIGN_UP_INVITATION),
       })
 
       if (login) {
@@ -87,6 +88,10 @@ export function* authFlow() {
 
       if (register) {
         auth = yield call(authorizeUser, api.users.create, register)
+      }
+
+      if (registerInvitation) {
+        auth = yield call(authorizeUser, api.invitation.accept, registerInvitation)
       }
 
       // if api return error on login or register
@@ -250,6 +255,15 @@ function* authorizeUser(authApiCall, action) {
       }
     }
 
+    if (action.payload.token) {
+      requestBody = {
+        token: action.payload.token,
+        password: action.payload.password,
+        firstName: action.payload.firstName,
+        lastName: action.payload.lastName,
+      }
+    }
+
     // call server
     const auth = yield call(authApiCall, requestBody)
 
@@ -279,7 +293,7 @@ function* authorizeUser(authApiCall, action) {
       }
     }
 
-    if (action.type === 'AUTH/SIGN_UP') {
+    if (action.type === 'AUTH/SIGN_UP' || action.type === 'AUTH/SIGN_UP_INVITATION') {
       yield put(appStateActions.setError('signUp', errorMessages.signUp.conflict))
     }
 
