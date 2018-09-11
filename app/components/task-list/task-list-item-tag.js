@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import utils from 'redux/utils/common'
+import { getColorIndex } from 'redux/utils/component-helper'
 
 class TaskListItemTag extends PureComponent {
 
@@ -19,14 +19,9 @@ class TaskListItemTag extends PureComponent {
     this.props.onClick(this.props.model)
   }
 
-  getColorIndex() {
-    return this.props.model.colorIndex === null
-      ? utils.computeIntHash(this.props.model.title, 10)
-      : this.props.model.colorIndex
-  }
-
   render() {
-    const colorIndex = this.getColorIndex()
+    const model = this.props.model
+    const colorIndex = getColorIndex(model.colorIndex, model.title)
     const tagClass = `tag cl-${colorIndex}`
 
     return (

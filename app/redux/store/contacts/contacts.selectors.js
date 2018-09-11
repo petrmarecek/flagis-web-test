@@ -61,6 +61,18 @@ export const getContactsSearch = state => state.getIn(['contacts', 'search'])
 
 export const getContacts = createSelector(
   getContactsIsFetching,
+  getEntitiesContacts,
+  (contactsIsFetching, entitiesContacts) => {
+
+    return ({
+      isFetching: contactsIsFetching,
+      items: entitiesContacts.sort(compareContactByEmail).toArray(),
+    })
+  }
+)
+
+export const getVisibleContacts = createSelector(
+  getContactsIsFetching,
   getContactsSearch,
   getEntitiesContacts,
   (contactsIsFetching, contactsSearch, entitiesContacts) => {
@@ -149,5 +161,13 @@ export const getPreviousContact = createSelector(
 
     const prevContactId = contacts.get(prevIndex)
     return entitiesContacts.get(prevContactId)
+  }
+)
+
+export const getContactsEmail = createSelector(
+  getEntitiesContacts,
+  (entitiesContacts) => {
+
+    return entitiesContacts.map(contact => contact.email.toLowerCase()).toList()
   }
 )

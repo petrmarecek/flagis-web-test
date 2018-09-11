@@ -5,7 +5,7 @@ import { List } from 'immutable'
 
 import { getActiveTags } from 'redux/store/tags/tags.selectors'
 import { selectActiveTags } from 'redux/store/tags/tags.actions'
-import TagAutocomplete from 'components/tag-autocomplete/tag-autocomplete'
+import Autocomplete from 'components/autocomplete'
 
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
@@ -17,7 +17,7 @@ class MainSearch extends PureComponent {
     selectActiveTags: PropTypes.func.isRequired,
   }
 
-  handleTagDeleted = tagToDelete => {
+  handleItemDelete = tagToDelete => {
 
     const tagIds = this.props.tags
       .map(tag => tag.id)
@@ -32,9 +32,13 @@ class MainSearch extends PureComponent {
   }
 
   render() {
-    const handleClearFilter = this.props.tags.size !== 0
-      ? this.handleClearFilter
-      : null
+    let handleClearFilter = null
+    let tags = null
+
+    if (this.props.tags.size !== 0) {
+     handleClearFilter = this.handleClearFilter
+     tags = this.props.tags
+    }
 
     return (
       <div className="main-search">
@@ -45,17 +49,14 @@ class MainSearch extends PureComponent {
           height={25}
           scale={1.25}
           color={["#8c9ea9"]}/>
-        <TagAutocomplete
-          id="search"
-          context={null}
-          allowMultiSelect
-          blurOnSubmit
-          className="tag-autocomplete--large"
-          focusOnDelete={false}
+        <Autocomplete
+          dataType="tags"
+          location="mainSearch"
           placeholder="Tag filter"
-          selectedTags={this.props.tags}
-          onTagDeleted={this.handleTagDeleted}
-          clearFilter={handleClearFilter} />
+          selectedItems={{ tags }}
+          parentId={null}
+          onItemDelete={this.handleItemDelete}
+          onClearFilter={handleClearFilter} />
       </div>
     )
   }

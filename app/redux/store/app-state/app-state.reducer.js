@@ -78,48 +78,4 @@ export default typeToReducer({
 
   [AUTH.LOGOUT]: () => new AppStateStore(),
 
-  // ------ TAG AUTOCOMPLETE ACTIONS --------------------------------------------------
-
-  [APP_STATE.TAG_AUTOCOMPLETE_TEXT_CHANGED]: (state, action) =>
-    state.setIn(['tagAutocompletes', action.payload.autocompleteId, 'text'], action.payload.text),
-
-  [APP_STATE.TAG_AUTOCOMPLETE_SET_FOCUS]: (state, action) =>
-    state.setIn(['tagAutocompletes', action.payload.autocompleteId, 'focus'], Date.now()),
-
-  [APP_STATE.TAG_AUTOCOMPLETE_RESET]: (state, action) =>
-    state.setIn(['tagAutocompletes', action.payload.autocompleteId], new TagAutocomplete()),
-
-  // ------ TAG HINT ACTIONS --------------------------------------------------
-
-  // // On click into tag autocomplete field
-  [APP_STATE.TAG_HINTS_SHOW]: (state, action) => {
-    const update = action.payload
-    return state.mergeIn(['tagHints'], update)
-  },
-
-  [APP_STATE.TAG_HINTS_UPDATE]: (state, action) => {
-    const update = action.payload
-    return state.mergeIn(['tagHints'], update)
-  },
-
-  // // Tag autocomplete blur
-  [APP_STATE.TAG_HINTS_HIDE]: state => state.mergeIn(['tagHints'], {
-    isVisible: false,
-    search: state.tagHints.autocompleteId === "treeUpdate" ? state.tagHints.search : '',
-    position: new Position(),
-    newItemVisible: false,
-    newItemSelected: false,
-    selectionIndex: 0,
-    selectedItem: null,
-  }),
-
-  [APP_STATE.TAG_HINTS_SELECT]: (state, action) => {
-
-    if (action.payload.autocompleteId === "treeUpdate") {
-      state = state.setIn(['tagAutocompletes', action.payload.autocompleteId, 'text'], action.payload.tag.title)
-    }
-
-    return state
-  },
-
 }, new AppStateStore())

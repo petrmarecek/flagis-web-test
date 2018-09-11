@@ -12,7 +12,6 @@ import { getAppStateItem } from 'redux/store/app-state/app-state.selectors'
 import Dialogs from 'components/dialogs/dialogs'
 import UndoBox from 'components/common/undo-box'
 import NavigationBar from 'components/navigation/navigation-bar'
-import FloatingComponents from 'components/floating/floating-components'
 import TaskPage from 'containers/task-page'
 import TagPage from 'containers/tag-page'
 import DashboardPage from 'containers/dashboard-page'
@@ -75,7 +74,7 @@ class UserContainer extends PureComponent {
           <Dialogs />
         </div>
         <div className="floating-components">
-          <FloatingComponents />
+          <div id="floating-components-hints" />
           <ToastContainer />
           <UndoBox />
         </div>

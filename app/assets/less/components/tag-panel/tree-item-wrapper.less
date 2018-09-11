@@ -4,6 +4,7 @@
 /* ------ Variables ------------------------------------------------------------------------------- */
 @cl-bg-tagitem-active: #F5F5F5;
 @cl-tx-active: #333;
+@cl-bg-tagitem-hover: #4d5457;
 
 /* ------ Component ------------------------------------------------------------------------------- */
 .tree-item-wrapper {
@@ -13,9 +14,9 @@
     position: relative;
 
     /* Change styles to show drop helper */
-    &.dragging .tag-subtree { 
+    &.dragging .tag-subtree {
         overflow: visible;
-         
+
         &.collapsed {
             display: none;
         }
@@ -26,7 +27,9 @@
     }
 
     &.selected > .tree-item {
+        .border-radius(13px);
         font-weight: bold;
         color: @cl-tx-active;
+        background-color: @cl-bg-tagitem-hover;
     }
 }

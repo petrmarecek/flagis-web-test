@@ -1,9 +1,8 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import commonUtils from 'redux/utils/common'
 import styled from 'styled-components'
 
-import { getTagColor } from 'redux/utils/component-helper'
+import { getColorIndex, getTagColor } from 'redux/utils/component-helper'
 
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
@@ -38,12 +37,6 @@ export default class AddRemoveTagsItem extends PureComponent {
 
   componentWillMount() {
     this.setState({ type: this.getTagType() })
-  }
-
-  getColorIndex() {
-    return this.props.tag.colorIndex === null
-      ? commonUtils.computeIntHash(this.props.tag.title, 10)
-      : this.props.tag.colorIndex
   }
 
   getTagType = () => {
@@ -130,7 +123,7 @@ export default class AddRemoveTagsItem extends PureComponent {
 
   render() {
     const tag = this.props.tag
-    const colorIndex = this.getColorIndex()
+    const colorIndex = getColorIndex(tag.colorIndex, tag.title)
     const tagColor = getTagColor(colorIndex)
 
     return (
@@ -140,7 +133,7 @@ export default class AddRemoveTagsItem extends PureComponent {
           width={28}
           height={15}
           scale={1.36}
-          color={[tagColor]} />
+          color={[tagColor, tagColor]} />
         <TagTitle>
           {tag.title}
         </TagTitle>

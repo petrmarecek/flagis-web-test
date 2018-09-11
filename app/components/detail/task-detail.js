@@ -4,12 +4,12 @@ import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { List } from 'immutable'
 import { withHandlers } from 'recompose'
-import commonUtils from '../../redux/utils/common'
+import { getColorIndex } from 'redux/utils/component-helper'
 
 import dateUtil from 'redux/utils/date'
 
 import DetailMenu from 'components/detail/detail-menu'
-import TagAutocomplete from 'components/tag-autocomplete/tag-autocomplete'
+import Autocomplete from 'components/autocomplete'
 import FilePicker from 'components/common/file-picker'
 import AttachmentList from 'components/attachment-list/attachment-list'
 import CommentList from 'components/comment-list/comment-list'
@@ -60,7 +60,7 @@ const TaskDetail = props => {
     onHandleComplete,
     onHandleArchive,
     onHandleSubjectUpdate,
-    onHandleTagDeleted,
+    onHandleItemDelete,
     onHandleDelete,
     onHandleStartDateChanged,
     onHandleDueDateChanged,
@@ -115,16 +115,10 @@ const TaskDetail = props => {
     }
   }
 
-  const getColorIndex = tag => {
-    return tag.colorIndex === null
-      ? commonUtils.computeIntHash(tag.title, 10)
-      : tag.colorIndex
-  }
-
   const bindingData = getBindingData()
   const description = bindingData.description === null ? '' : bindingData.description
   const tags = bindingData.tags.map(tag => {
-    const colorIndex = getColorIndex(tag)
+    const colorIndex = getColorIndex(tag.colorIndex, tag.title)
     const tagClasses = `tag cl-${colorIndex}`
 
     return (
@@ -213,15 +207,14 @@ const TaskDetail = props => {
             {bindingData.isArchived &&
             <DetailContentTagAutocompleteTags>{tags}</DetailContentTagAutocompleteTags>}
             {!bindingData.isArchived &&
-            <TagAutocomplete
-              id="task"
-              parentId={bindingData.id}
-              context={bindingData.context}
-              allowMultiSelect
-              focusOnDelete
+            <Autocomplete
+              dataType="tags"
+              location="taskDetailTags"
               placeholder="Add tags"
-              selectedTags={bindingData.tags}
-              onTagDeleted={onHandleTagDeleted} />}
+              selectedItems={{ tags: bindingData.tags.length === 0 ? null : bindingData.tags }}
+              parentId={bindingData.id}
+              onItemDelete={onHandleItemDelete}
+              isAllowUpdate />}
           </DetailContentTagAutocomplete>
           <DetailContentDeleteIcon
             archived={bindingData.isArchived}
@@ -373,7 +366,7 @@ TaskDetail.propTypes = {
   onHandleTaskArchive: PropTypes.func,
   onHandleSubjectUpdate: PropTypes.func,
   onHandleTaskSubjectUpdate: PropTypes.func,
-  onHandleTagDeleted: PropTypes.func,
+  onHandleItemDelete: PropTypes.func,
   onHandleTaskTagDeleted: PropTypes.func,
   onHandleDelete: PropTypes.func,
   onHandleTaskDelete: PropTypes.func,
@@ -421,7 +414,7 @@ export default withHandlers({
     const data = { task: props.task, subject }
     props.onHandleTaskSubjectUpdate(data)
   },
-  onHandleTagDeleted: props => tagInfo => {
+  onHandleItemDelete: props => tagInfo => {
     const data = { task: props.task, tagInfo }
     props.onHandleTaskTagDeleted(data)
   },

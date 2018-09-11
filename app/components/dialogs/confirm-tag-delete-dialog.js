@@ -1,8 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
-import utils from 'redux/utils/common'
 import DialogBase from 'components/dialogs/dialog-base'
+
+import { getColorIndex } from 'redux/utils/component-helper'
 
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
@@ -36,15 +37,9 @@ export default class ConfirmTagDeleteDialog extends DialogBase {
     this.props.onHide()
   }
 
-  getColorIndex() {
-    const colorIndex = this.props.data.tag.colorIndex === null
-      ? utils.computeIntHash(this.props.data.tag.title, 10)
-      : this.props.data.tag.colorIndex
-    return colorIndex
-  }
-
   render() {
-    const colorIndex = this.getColorIndex()
+    const tag = this.props.data.tag
+    const colorIndex = getColorIndex(tag.colorIndex, tag.title)
     const tagClass = classnames({
       tag: true,
       'tag--inline': true,

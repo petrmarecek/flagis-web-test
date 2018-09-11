@@ -12,7 +12,7 @@ import {
   ContactItemInviteText
 } from './styles'
 
-import {ICONS} from '../icons/icon-constants'
+import { ICONS } from '../icons/icon-constants'
 import velocity from 'velocity-animate'
 
 const ContactItem = ({ contact, onHandleClickContact, onHandleClickInvitation }) => {

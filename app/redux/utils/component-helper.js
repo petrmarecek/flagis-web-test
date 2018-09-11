@@ -1,6 +1,7 @@
 import { List, Set } from 'immutable'
 import moment from 'moment'
 import showdown from 'showdown'
+import commonUtils from 'redux/utils/common'
 
 export function getSelectionInfo(event, task, selectedTasks) {
   let isMultiSelection = false
@@ -150,6 +151,12 @@ export function getTagRelations(relations, parentRelations, tagId) {
   return parentRelations
     ? currentTagRelations.intersect(parentRelations || Set())
     : currentTagRelations
+}
+
+export const getColorIndex = (colorIndex, title) => {
+  return colorIndex === null
+    ? commonUtils.computeIntHash(title, 10)
+    : colorIndex
 }
 
 const color = {

@@ -74,6 +74,7 @@ export const getTags = createSelector(
       items: tagsItems
         .map(tagId => entitiesTags.getIn([tagId]))
         .sort(compareTagByTitle)
+        .toArray()
     })
   }
 )

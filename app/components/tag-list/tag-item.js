@@ -2,8 +2,7 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import velocity from 'velocity-animate'
-import commonUtils from '../../redux/utils/common'
-import { getTagColor } from '../../redux/utils/component-helper'
+import { getColorIndex, getTagColor } from '../../redux/utils/component-helper'
 
 import { ICONS } from "../icons/icon-constants"
 import Icon from '../icons/icon'
@@ -25,14 +24,9 @@ export default class TagItem extends PureComponent {
     this.props.onClick(this.props.tag.id)
   }
 
-  getColorIndex() {
-    return this.props.tag.colorIndex === null
-      ? commonUtils.computeIntHash(this.props.tag.title, 10)
-      : this.props.tag.colorIndex
-  }
-
   render() {
-    const colorIndex = this.getColorIndex()
+    const tag = this.props.tag
+    const colorIndex = getColorIndex(tag.colorIndex, tag.title)
     const tagColor = getTagColor(colorIndex)
     const tagItemClasses = classnames({
       'tag-item': true,

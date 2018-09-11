@@ -33,6 +33,10 @@ export const errorMessages = {
     'The same tag found on the same tree level.',
   },
 
+  autocomplete: {
+    createConflict: 'This item has already been created.',
+  },
+
   sessionExpired: 'Your session has expired.',
 
   somethingWrong: 'Sorry, something went wrong. Please try again.',

@@ -12,6 +12,7 @@ import * as appStateActions from 'redux/store/app-state/app-state.actions'
 import * as taskActions from 'redux/store/tasks/tasks.actions'
 import * as tagActions from 'redux/store/tags/tags.actions'
 import * as treeActions from 'redux/store/tree/tree.actions'
+import * as contactsActions from 'redux/store/contacts/contacts.actions'
 import * as authSelectors from 'redux/store/auth/auth.selectors'
 import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'
 import { initTasksData } from 'redux/store/tasks/tasks.sagas'
@@ -37,6 +38,7 @@ export function* initDataFlow() {
     })
 
     yield put(tagActions.fetchTags())
+    yield put(contactsActions.fetchContacts())
     yield put(tagActions.fetchTagsRelations())
     yield put(taskActions.fetchTasks())
     yield put(treeActions.fetchTree())

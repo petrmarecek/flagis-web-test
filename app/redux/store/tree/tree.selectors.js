@@ -1,5 +1,5 @@
 import { List } from 'immutable'
-import { getEntitiesTreeItems } from '../entities/entities.selectors'
+import { getEntitiesTags, getEntitiesTreeItems } from '../entities/entities.selectors'
 import { createSelector } from 'reselect'
 
 // ------ Helper functions ----------------------------------------------------
@@ -19,8 +19,9 @@ const getTagIdsOfAllParents = (state, treeItemId) => {
   }
 
   const parents = List([treeItem.tagId])
+  const parentTreeItem = getTreeItem(state, treeItem.parentId)
 
-  if (!treeItem.parentId) {
+  if (!parentTreeItem.parentId) {
     return parents
   }
 
@@ -147,6 +148,29 @@ export const getTagsReferences = createSelector(
 
     const treeItemsEntities = treeItemsById.map(treeItem => entitiesTreeItems.getIn([treeItem.id]))
     return treeItemsEntities.map(treeItem => treeItem.tagId).toSet()
+  }
+)
+
+export const getTagsOfTree = (state, parentId) => createSelector(
+  getTreeItemsByParent,
+  getEntitiesTreeItems,
+  getEntitiesTags,
+  (treeItemsByParent, entitiesTreeItems, entitiesTags) => {
+
+    // Tags of all parents
+    const treeItemsIdByParent = treeItemsByParent.get(parentId)
+    const parentsTagIds = getTagIdsOfAllParents(state, parentId)
+    let tags = parentsTagIds.map(tagId => entitiesTags.get(tagId)).toSet()
+
+    // Tags of all children
+    if (treeItemsIdByParent) {
+      const treeItems = treeItemsIdByParent.map(treeItemId => entitiesTreeItems.get(treeItemId))
+      const childrenTags = treeItems.map(treeItem => entitiesTags.get(treeItem.tagId)).toSet()
+      tags = tags.union(childrenTags)
+    }
+
+    // Return tags of all parents and children
+    return { tags: tags.isEmpty() ? null : tags.toList() }
   }
 )
 

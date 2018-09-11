@@ -25,15 +25,7 @@ export default function* root() {
     // app-state
     takeEvery(APP_STATE.DEFAULT_DISPLAY, appState.defaultDisplay),
     takeEvery(APP_STATE.CHANGE_LOCATION, appState.changeLocation),
-    takeLatest(APP_STATE.TAG_AUTOCOMPLETE_FOCUS, appState.handleAutocompleteFocus),
-    takeLatest(APP_STATE.TAG_AUTOCOMPLETE_BLUR, appState.handleAutocompleteBlur),
-    takeEvery(APP_STATE.TAG_AUTOCOMPLETE_GO_PREV, appState.handleAutocompleteGoPrev),
-    takeEvery(APP_STATE.TAG_AUTOCOMPLETE_GO_NEXT, appState.handleAutocompleteGoNext),
-    takeEvery(APP_STATE.TAG_AUTOCOMPLETE_TEXT_CHANGED, appState.handleAutocompleteTextChange),
-    takeLatest(APP_STATE.TAG_AUTOCOMPLETE_POSITION_CHANGED, appState.handleAutocompletePositionChange),
-    takeEvery(APP_STATE.TAG_AUTOCOMPLETE_SUBMIT, appState.handleAutocompleteSubmit),
-    takeEvery(APP_STATE.TAG_HINTS_SELECT, appState.selectHint),
-    takeLatest(APP_STATE.TAG_HINTS_OUTSIDE_CLICK, appState.handleHintsOutsideClick),
+    takeEvery(APP_STATE.HINT_SELECTED, appState.hintSelected),
 
     // auth
     fork(auth.authFlow),

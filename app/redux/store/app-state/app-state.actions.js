@@ -39,23 +39,8 @@ export const APP_STATE = {
   DIALOG_SHOW: 'APP-STATE/DIALOG_SHOW',
   DIALOG_HIDE: 'APP-STATE/DIALOG_HIDE',
 
-  // Tag hints
-  TAG_HINTS_SHOW: 'APP-STATE/TAG_HINTS_SHOW',
-  TAG_HINTS_HIDE: 'APP-STATE/TAG_HINTS_HIDE',
-  TAG_HINTS_UPDATE: 'APP-STATE/TAG_HINTS_UPDATE',
-  TAG_HINTS_SELECT: 'APP-STATE/TAG_HINTS_SELECT',
-  TAG_HINTS_OUTSIDE_CLICK: 'APP-STATE/TAG_HINTS_OUTSIDE_CLICK',
-
-  // Tag autocomplete
-  TAG_AUTOCOMPLETE_GO_PREV: 'APP-STATE/TAG_AUTOCOMPLETE_GO_PREV',
-  TAG_AUTOCOMPLETE_GO_NEXT: 'APP-STATE/TAG_AUTOCOMPLETE_GO_NEXT',
-  TAG_AUTOCOMPLETE_FOCUS: 'APP-STATE/TAG_AUTOCOMPLETE_FOCUS',
-  TAG_AUTOCOMPLETE_SET_FOCUS: 'APP-STATE/TAG_AUTOCOMPLETE_SET_FOCUS',
-  TAG_AUTOCOMPLETE_BLUR: 'APP-STATE/TAG_AUTOCOMPLETE_BLUR',
-  TAG_AUTOCOMPLETE_TEXT_CHANGED: 'APP-STATE/TAG_AUTOCOMPLETE_TEXT_CHANGED',
-  TAG_AUTOCOMPLETE_POSITION_CHANGED: 'APP-STATE/TAG_AUTOCOMPLETE_POSITION_CHANGED',
-  TAG_AUTOCOMPLETE_SUBMIT: 'APP-STATE/TAG_AUTOCOMPLETE_SUBMIT',
-  TAG_AUTOCOMPLETE_RESET: 'APP-STATE/TAG_AUTOCOMPLETE_RESET',
+  // Hints
+  HINT_SELECTED: 'APP-STATE/HINT_SELECTED',
 }
 
 // ------ Default display -----------------------------------------------------------
@@ -183,105 +168,14 @@ export const hideDialog = () => ({
   type: APP_STATE.DIALOG_HIDE,
 })
 
-// ------ Tag hints -----------------------------------------------------------------
+// ------ Hints -----------------------------------------------------------
 
-export const showTagHints = payload => ({
-  type: APP_STATE.TAG_HINTS_SHOW,
-  payload,
-})
-
-export const updateTagHints = payload => ({
-  type: APP_STATE.TAG_HINTS_UPDATE,
-  payload,
-})
-
-export const hintsClickOutside = context => ({
-  type: APP_STATE.TAG_HINTS_OUTSIDE_CLICK,
+export const hintSelected = (location, context, hint) => ({
+  type: APP_STATE.HINT_SELECTED,
   payload: {
+    location,
     context,
+    hint,
   }
 })
 
-export const hideTagHints = () => ({
-  type: APP_STATE.TAG_HINTS_HIDE,
-})
-
-export const tagHintSelected = (autocompleteId, context, tag) => ({
-  type: APP_STATE.TAG_HINTS_SELECT,
-  payload: {
-    autocompleteId,
-    context,
-    tag,
-  }
-})
-
-// ------ Tag autocomplete -----------------------------------------------------------
-
-export const tagAutocompleteGoNext = autocompleteId => ({
-  type: APP_STATE.TAG_AUTOCOMPLETE_GO_NEXT,
-  payload: {
-    autocompleteId,
-  },
-})
-
-export const tagAutocompleteGoPrev = autocompleteId => ({
-  type: APP_STATE.TAG_AUTOCOMPLETE_GO_PREV,
-  payload: {
-    autocompleteId
-  },
-})
-
-export const tagAutocompleteFocus = (autocompleteId, data) => ({
-  type: APP_STATE.TAG_AUTOCOMPLETE_FOCUS,
-  payload: {
-    autocompleteId,
-    data,
-  }
-})
-
-export const tagAutocompleteSetFocus = autocompleteId => ({
-  type: APP_STATE.TAG_AUTOCOMPLETE_SET_FOCUS,
-  payload: {
-    autocompleteId
-  },
-})
-
-export const tagAutocompleteBlur = autocompleteId => ({
-  type: APP_STATE.TAG_AUTOCOMPLETE_BLUR,
-  payload: {
-    autocompleteId
-  }
-})
-
-export const tagAutocompleteTextChanged = (autocompleteId, text, position) => ({
-  type: APP_STATE.TAG_AUTOCOMPLETE_TEXT_CHANGED,
-  payload: {
-    autocompleteId,
-    text,
-    position,
-  }
-})
-
-export const tagAutocompletePositionChanged = (autocompleteId, position) => ({
-  type: APP_STATE.TAG_AUTOCOMPLETE_POSITION_CHANGED,
-  payload: {
-    autocompleteId,
-    position,
-  }
-})
-
-export const tagAutocompleteSubmit = (autocompleteId, context, tag) => ({
-  type: APP_STATE.TAG_AUTOCOMPLETE_SUBMIT,
-  payload: {
-    autocompleteId,
-    context,
-    tag,
-  }
-})
-
-export const tagAutocompleteReset = (autocompleteId) => ({
-  type: APP_STATE.TAG_AUTOCOMPLETE_RESET,
-  payload: {
-    autocompleteId,
-  }
-})

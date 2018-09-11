@@ -1,26 +1,34 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
+import { connect } from 'react-redux'
+import { getTagsOfTree } from '../../redux/store/tree/tree.selectors'
 
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
-import TagAutocompleteInput from 'components/tag-autocomplete/tag-autocomplete-input'
+import Autocomplete from 'components/autocomplete'
 import AddTreeItemSectionForm from 'components/tag-tree/add-tree-item-section-form'
 
-export default class AddTreeItemForm extends PureComponent {
+class AddTreeItemForm extends PureComponent {
 
   static propTypes = {
     parentId: PropTypes.string,
     forbiddenTitles: PropTypes.array,
+    selectedItems: PropTypes.object,
     onCancel: PropTypes.func,
     onSubmit: PropTypes.func,
-    source: PropTypes.string,
   }
 
-  componentDidMount() {
-    if (!this.isSection()) {
-      this.refs.input.getWrappedInstance().focus()
-    }
+  state = {
+    inputRef: null
+  }
+
+  componentDidUpdate() {
+    this.state.inputRef.focus()
+  }
+
+  handleAddInputRef = ref => {
+    this.setState({ inputRef: ref })
   }
 
   handleOnBlur = () => {
@@ -76,9 +84,9 @@ export default class AddTreeItemForm extends PureComponent {
     )
   }
 
-  renderItemAddForm(parentId, selectedTags) {
+  renderItemAddForm() {
     const classObj = this.getFormClass()
-    const context = { source: 'tree', parentId }
+
     return (
       <div ref="container" className={classObj}>
         <span className="icon main">
@@ -89,16 +97,16 @@ export default class AddTreeItemForm extends PureComponent {
             color={["#91a19a"]}/>
         </span>
         <div className="input-container">
-          <TagAutocompleteInput
-            id="tree"
-            ref="input"
-            context={context}
-            allowMultiSelect={false}
+          <Autocomplete
+            dataType="tags"
+            location="tagTree"
             placeholder="Add filter"
-            onSubmit={this.handleSubmit}
-            onSubmitting={this.handleSubmitting}
-            onCancel={this.handleOnBlur}
-            selectedTags={selectedTags}/>
+            selectedItems={this.props.selectedItems}
+            parentId={this.props.parentId}
+            onAddInputRef={this.handleAddInputRef}
+            onBlurTagTree={this.handleOnBlur}
+            isWithoutItems
+            isFocusTagTree />
         </div>
       </div>)
   }
@@ -124,3 +132,9 @@ export default class AddTreeItemForm extends PureComponent {
   }
 
 }
+
+const mapStateToProps = (state, props) => ({
+  selectedItems: getTagsOfTree(state, props.parentId)(state)
+})
+
+export default connect(mapStateToProps)(AddTreeItemForm)

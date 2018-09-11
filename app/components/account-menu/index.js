@@ -13,7 +13,7 @@ import {
   cancelTimeLine
 } from 'redux/store/tasks/tasks.actions'
 import { deselectTags } from 'redux/store/tags/tags.actions'
-import { fetchContacts, deselectContacts } from 'redux/store/contacts/contacts.actions'
+import { deselectContacts } from 'redux/store/contacts/contacts.actions'
 import { getRoutingPathname } from 'redux/store/routing/routing.selectors'
 
 import {
@@ -133,7 +133,6 @@ const mapDispatchToProps = {
   deselectTasks,
   cancelTimeLine,
   deselectTags,
-  fetchContacts,
   deselectContacts,
   hideArchivedTasks,
   changeLocation,
@@ -144,9 +143,6 @@ export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withHandlers({
     onHandleClickArchive: props => () => {
-      props.deselectTasks()
-      props.cancelTimeLine()
-      props.deselectTags()
       props.deselectContacts()
       props.fetchArchivedTasks()
       props.changeLocation('/user/account/archive')
@@ -154,9 +150,6 @@ export default compose(
     onHandleClickContacts: props => () => {
       props.hideArchivedTasks()
       props.deselectTasks()
-      props.cancelTimeLine()
-      props.deselectTags()
-      props.fetchContacts()
       props.changeLocation('/user/account/contacts')
     },
     onHandleClickEditProfile: props => () => {

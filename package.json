@@ -245,6 +245,7 @@
     "moment": "^2.22.2",
     "normalizr": "^3.2.4",
     "prop-types": "^15.6.2",
+    "ramda": "^0.25.0",
     "react": "^16.4.2",
     "react-chartjs-2": "^2.7.4",
     "react-custom-scrollbars": "^4.2.1",

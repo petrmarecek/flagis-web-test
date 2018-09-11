@@ -102,7 +102,6 @@ export function* createTreeItem(action) {
   try {
 
     // hide controls for adding tree items
-    yield put(appStateActions.hideTagHints())
     yield put(treeActions.hideTreeItemAddControl())
 
     // TODO: Optimistic update
@@ -140,7 +139,6 @@ export function* selectPath(action) {
 
 export function* updateTreeItem(action) {
   // hide controls for adding tree items
-  yield put(appStateActions.hideTagHints())
   yield put(appStateActions.hideDialog())
 
   const originalTreeItem = action.payload.treeItem

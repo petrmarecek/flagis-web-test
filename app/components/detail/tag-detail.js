@@ -1,8 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { withHandlers } from 'recompose'
-import { getTagColor } from 'redux/utils/component-helper'
-import commonUtils from 'redux/utils/common'
+import { getColorIndex, getTagColor } from 'redux/utils/component-helper'
 import { toast } from 'react-toastify'
 import { errorMessages } from 'utils/messages'
 import constants from 'utils/constants'
@@ -46,18 +45,12 @@ const TagDetail = props => {
     return <div>Detail not found</div>
   }
 
-  const getColorIndex = () => {
-    return tag.colorIndex === null
-      ? commonUtils.computeIntHash(tag.title, 10)
-      : tag.colorIndex
-  }
-
   const scrollStyle = {
     height: 'calc(100vh - 294px)',
     overflow: 'hidden',
   }
 
-  const colorIndex = getColorIndex()
+  const colorIndex = getColorIndex(tag.colorIndex, tag.title)
   const tagColor = getTagColor(colorIndex)
   const description = tag.description === null ? '' : tag.description
   const colors = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]

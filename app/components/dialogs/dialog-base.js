@@ -8,8 +8,8 @@ export default class DialogBase extends PureComponent {
   }
 
   getScrollDialog(items) {
-    const sizeItem = items.size - 1
-    const dialogHeight = (sizeItem * 26) + 161
+    const lengthItems = items.length - 1
+    const dialogHeight = (lengthItems * 26) + 161
     const windowHeight = window.innerHeight - 240
     return dialogHeight >= windowHeight
   }

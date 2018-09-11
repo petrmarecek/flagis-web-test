@@ -5,12 +5,11 @@ import { DragSource, DropTarget } from 'react-dnd'
 import { findDOMNode } from 'react-dom'
 import includes from 'lodash/includes'
 
-import { getTagColor, getTagRelations } from 'redux/utils/component-helper'
+import { getColorIndex, getTagColor, getTagRelations } from 'redux/utils/component-helper'
 
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
 import TreeItemList from 'components/tag-tree/tree-item-list'
-import commonUtils from 'redux/utils/common'
 
 const ITEM_HEIGHT = 27
 const SECTION_HEIGHT = 32
@@ -204,12 +203,6 @@ class TreeItem extends Component {
     this.props.onTreeItemDelete(this.props.treeItem.toJS())
   }
 
-  getColorIndex() {
-    return this.props.treeItem.tag.colorIndex === null
-      ? commonUtils.computeIntHash(this.props.treeItem.tag.title, 10)
-      : this.props.treeItem.tag.colorIndex
-  }
-
   renderArrowIcon(children) {
 
     const arrowIconClass = classnames({
@@ -236,13 +229,15 @@ class TreeItem extends Component {
   }
 
   render() {
-    const colorIndex = this.getColorIndex()
+    const tag = this.props.treeItem.tag
+    const colorIndex = getColorIndex(tag.colorIndex, tag.title)
     const tagColor = getTagColor(colorIndex)
 
     const {
       connectDragSource,
       connectDropTarget,
-      isOver, tagsRelations,
+      isOver,
+      tagsRelations,
       parentTagRelations,
       treeItem
     } = this.props

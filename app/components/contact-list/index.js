@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { setDetail } from 'redux/store/app-state/app-state.actions'
 import { selectContact, sendInvitationContact } from 'redux/store/contacts/contacts.actions'
-import { getContacts } from 'redux/store/contacts/contacts.selectors'
+import { getVisibleContacts } from 'redux/store/contacts/contacts.selectors'
 import { compose, branch, renderComponent, withHandlers } from 'recompose'
 import { toast } from 'react-toastify'
 import { successMessages } from 'utils/messages'
@@ -49,7 +49,7 @@ ContactList.propTypes = {
 }
 
 const mapStateToProps = state => ({
-  contacts: getContacts(state)
+  contacts: getVisibleContacts(state)
 })
 
 const mapDispatchToProps = {
