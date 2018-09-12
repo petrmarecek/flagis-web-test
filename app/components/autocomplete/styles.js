@@ -1,8 +1,10 @@
 import styled from 'styled-components'
+import Icon from '../icons/icon'
 import {
   boxSizing,
   borderRadius,
   placeholderColor,
+  textOverflow,
   fontSub,
   fontMain
 } from '../styled-components-mixins'
@@ -81,8 +83,8 @@ const Input = styled.input`
   }
 `;
 
-// -------------------------------------- AutocompeleteItemTag -------------------------------------------
-const ItemTagContainer = styled.li`
+// -------------------------------------- AutocompeleteItem -------------------------------------------
+const TagContainer = styled.li`
   ${fontMain}
   ${borderRadius('12px')}
   background-color: ${props => props.tagColor};
@@ -96,19 +98,46 @@ const ItemTagContainer = styled.li`
   line-height: 23px;
 `;
 
+const ContactContainer = styled.li`
+  display: flex;
+  align-items: center;
+  float: left;
+  padding: 0 0 6px 0;
+  max-width: 120px;
+`;
+
 const Title = styled.span`
   font-size: 14px;
-  color: #fff;
+  color: ${props => props.color};
   margin-right: 8px;
+  overflow: hidden;
+  white-space: nowrap;
+  ${textOverflow('ellipsis')}
+`;
+
+const Delete = styled.span`
+  ${boxSizing('border-box')}
+  ${borderRadius('5px')}
+  float: left;
+  border: 1px solid #8c9da9;
+  padding-left: 2px;
+  height: 12px;
+  width: 12px;
+  cursor: pointer;
+`;
+
+const DeleteIcon = styled(Icon)`
+  margin-top: -7px;
 `;
 
 export {
   AutocompleteContainer,
   Clear,
   Search,
-
   Input,
-
-  ItemTagContainer,
+  TagContainer,
+  ContactContainer,
   Title,
+  Delete,
+  DeleteIcon,
 }

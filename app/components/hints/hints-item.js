@@ -5,9 +5,9 @@ import { withHandlers } from 'recompose'
 import { Hint } from './styles'
 
 const HintsItem = ({ hint, dataType, selected, onHandleMouseOver, onHandleClickItem, onHandleKeyDown }) => {
-  const itemValue = item => ({
+ const itemValue = item => ({
     tags: item.title,
-    contacts: item.email,
+    contacts: !item.nickname ? item.email : item.nickname,
   })
 
   return (

@@ -42,11 +42,6 @@ const getOverflowHeight = (positionTop, directionRender) => {
 const Hints = ({ hints, dataType, position, value, selectIndex, onHandleSubmit, onHandleMouseOver }) => {
   const hintsLength = hints[dataType].length
   const condition = hints[dataType].length === 0
-  const title = {
-    tags: condition ? 'Create a new tag' : 'Select existing',
-    contacts: condition ? 'Create a new contact' : 'Select existing'
-  }
-
   const directionRender = getDirectionRender(position.top)
   const isScroll = getScroll(hintsLength, position.top, directionRender)
   const overflowHeight = getOverflowHeight(position.top, directionRender)
@@ -58,8 +53,13 @@ const Hints = ({ hints, dataType, position, value, selectIndex, onHandleSubmit, 
     overflow: 'hidden'
   }
 
-  const getItem = {
-    tags: condition ? <Hint onClick={onHandleSubmit} selected>{value}</Hint> : hints[dataType].map((hint, i) => (
+  const title = {
+    tags: condition ? 'Create a new tag' : 'Select existing tag',
+    contacts: condition ? 'Create a new contact' : 'Select existing contact'
+  }
+  const getItem = condition
+    ? <Hint onClick={onHandleSubmit} selected>{value}</Hint>
+    : hints[dataType].map((hint, i) => (
       <HintItem
         key={hint.id}
         hint={hint}
@@ -69,15 +69,14 @@ const Hints = ({ hints, dataType, position, value, selectIndex, onHandleSubmit, 
         onSubmit={onHandleSubmit}
         onMouseOver={onHandleMouseOver} />
     ))
-  }
 
   const getRender = {
     topToBottom: (
       <HintsContainer position={{ top: position.top, left: position.left }}>
         <Title directionRender={directionRender}>{title[dataType]}</Title>
         {!isScroll
-          ? getItem[dataType]
-          : <ShadowScrollbar style={scrollStyle}>{getItem[dataType]}</ShadowScrollbar>}
+          ? getItem
+          : <ShadowScrollbar style={scrollStyle}>{getItem}</ShadowScrollbar>}
       </HintsContainer>
     ),
     bottomToTop: (
@@ -86,8 +85,8 @@ const Hints = ({ hints, dataType, position, value, selectIndex, onHandleSubmit, 
         left: position.left
       }}>
         {!isScroll
-          ? getItem[dataType]
-          : <ShadowScrollbar style={scrollStyle}>{getItem[dataType]}</ShadowScrollbar>}
+          ? getItem
+          : <ShadowScrollbar style={scrollStyle}>{getItem}</ShadowScrollbar>}
         <Title directionRender={directionRender}>{title[dataType]}</Title>
       </HintsContainer>
     )

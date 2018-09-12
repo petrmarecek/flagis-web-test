@@ -24,10 +24,10 @@ const Autocomplete = props => {
     hints,
     validationItems,
     isWithoutItems,
+    isWithoutInput,
     isAllowUpdate,
     parentId,
     onClearFilter,
-    onHideHints,
     onBlurTagTree,
     onHandleAddInputRef,
     onHandleItemDelete,
@@ -51,6 +51,7 @@ const Autocomplete = props => {
           scale={0.78}
           color={["#8c9da9"]} />
       </Clear>}
+      {!isWithoutInput &&
       <Search key="search" taskDetailTags={location === 'taskDetailTags'}>
         <AutocompleteInput
           location={location}
@@ -60,11 +61,10 @@ const Autocomplete = props => {
           isAllowUpdate={isAllowUpdate}
           placeholder={placeholder}
           parentId={parentId}
-          onHideHints={onHideHints}
           onBlurTagTree={onBlurTagTree}
           onAddInputRef={onHandleAddInputRef}
           hintSelected={onHandleHintSelected} />
-      </Search>
+      </Search>}
     </AutocompleteContainer>
   )
 }
@@ -74,13 +74,13 @@ Autocomplete.propTypes = {
   location: PropTypes.string,
   placeholder: PropTypes.string,
   isWithoutItems: PropTypes.bool,
+  isWithoutInput: PropTypes.bool,
   isFocusTagTree: PropTypes.bool,
   isAllowUpdate: PropTypes.bool,
   selectedItems: PropTypes.object,
   parentId: PropTypes.string,
   hints: PropTypes.object,
   validationItems: PropTypes.object,
-  onHideHints: PropTypes.bool,
   onBlurTagTree: PropTypes.func,
   onAddInputRef: PropTypes.func,
   onHandleAddInputRef: PropTypes.func,
@@ -94,6 +94,7 @@ Autocomplete.propTypes = {
 const mapStateToProps = (state, props) => {
   const { selectedItems, dataType } = props
   const eqA = R.eqBy(R.prop('id'))
+  // Get data of tags and contacts from store
   const storeData = {
     tags: {
       data: getTags(state).items,
@@ -104,10 +105,12 @@ const mapStateToProps = (state, props) => {
       validationItems: getContactsEmail(state)
     }
   }
+  // validationItems for create new item
   const validationItems = storeData[dataType].validationItems
   let data = storeData[dataType].data
 
   if (selectedItems[dataType] !== null) {
+    // From data for hints remove selectedItems
     data = R.symmetricDifferenceWith(eqA, storeData[dataType].data, selectedItems[dataType].toArray())
   }
 

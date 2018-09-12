@@ -27,7 +27,9 @@ export const TASKS = {
   MOVE: 'TASK/MOVE',
   MOVE_TIME_LINE: 'TASK/MOVE_TIME_LINE',
   ADD_TASK_TAG: 'TASK/ADD_TASK_TAG',
+  ADD_TASK_CONTACT: 'TASK/ADD_TASK_CONTACT',
   REMOVE_TASK_TAG: 'TASK/REMOVE_TASK_TAG',
+  REMOVE_TASK_CONTACT: 'TASK/REMOVE_TASK_CONTACT',
   ADD_REMOVE_TASK_TAGS: 'TASK/ADD_REMOVE_TASK_TAGS',
   ADD_TASK_TAG_STORE: 'TASK/ADD_TASK_TAG_STORE',
   REMOVE_TASK_TAG_STORE: 'TASK/REMOVE_TASK_TAG_STORE',
@@ -192,11 +194,27 @@ export const addTaskTag = (taskId, tag) => ({
   }
 })
 
+export const addTaskContact = (taskId, contact) => ({
+  type: TASKS.ADD_TASK_CONTACT,
+  payload: {
+    taskId,
+    contact
+  }
+})
+
 export const removeTaskTag = (taskId, tag) => ({
   type: TASKS.REMOVE_TASK_TAG,
   payload: {
     taskId,
     tag
+  }
+})
+
+export const removeTaskContact = (taskId, contact) => ({
+  type: TASKS.REMOVE_TASK_CONTACT,
+  payload: {
+    taskId,
+    contact
   }
 })
 

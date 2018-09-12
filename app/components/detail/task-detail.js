@@ -35,6 +35,7 @@ import {
   DetailContentAddContactLabel,
   DetailContentAddContactContent,
   DetailContentAddContactIcon,
+  DetailContentAutocompleteContacts,
   DetailContentDate,
   DetailContentDateLabel,
   DetailContentDatePicker,
@@ -60,7 +61,8 @@ const TaskDetail = props => {
     onHandleComplete,
     onHandleArchive,
     onHandleSubjectUpdate,
-    onHandleItemDelete,
+    onHandleTagDelete,
+    onHandleContactDelete,
     onHandleDelete,
     onHandleStartDateChanged,
     onHandleDueDateChanged,
@@ -96,6 +98,7 @@ const TaskDetail = props => {
         isCompleted: false,
         isImportant: false,
         isArchived: false,
+        contacts: List(),
       }
     }
 
@@ -112,6 +115,7 @@ const TaskDetail = props => {
       isCompleted: task.isCompleted,
       isImportant: task.isImportant,
       isArchived: task.isArchived,
+      contacts: task.contacts,
     }
   }
 
@@ -127,6 +131,11 @@ const TaskDetail = props => {
       </li>
     )
   })
+  const contacts = bindingData.contacts.map(contact => (
+      <li key={contact.id}>
+        <span className="tag__title">{!contact.nickname ? contact.email : contact.nickname}</span>
+      </li>
+  ))
   const iconAnimation = {
     action: 'transition.expandIn',
     duration: 1000,
@@ -211,9 +220,9 @@ const TaskDetail = props => {
               dataType="tags"
               location="taskDetailTags"
               placeholder="Add tags"
-              selectedItems={{ tags: bindingData.tags.length === 0 ? null : bindingData.tags }}
+              selectedItems={{ tags: bindingData.tags.size === 0 ? null : bindingData.tags }}
               parentId={bindingData.id}
-              onItemDelete={onHandleItemDelete}
+              onItemDelete={onHandleTagDelete}
               isAllowUpdate />}
           </DetailContentTagAutocomplete>
           <DetailContentDeleteIcon
@@ -232,12 +241,22 @@ const TaskDetail = props => {
         <DetailContentCenter>
           <DetailContentProperties>
             <DetailContentOptions>
-              <DetailContentAddContact flex>
+              <DetailContentAddContact onClick={onHandleRemoveEventListener}>
                 <DetailContentAddContactLabel changeColor>
                   To:
                 </DetailContentAddContactLabel>
                 <DetailContentAddContactContent>
-                  Add Email
+                  {bindingData.isArchived &&
+                  <DetailContentAutocompleteContacts>{contacts}</DetailContentAutocompleteContacts>}
+                  {!bindingData.isArchived &&
+                  <Autocomplete
+                    dataType="contacts"
+                    location="taskDetailContacts"
+                    placeholder="Add contact"
+                    selectedItems={{ contacts: bindingData.contacts.size === 0 ? null : bindingData.contacts }}
+                    parentId={bindingData.id}
+                    onItemDelete={onHandleContactDelete}
+                    isWithoutInput={bindingData.contacts.size !== 0} />}
                 </DetailContentAddContactContent>
                 <DetailContentAddContactIcon
                   icon={ICONS.CONTACTS}
@@ -366,7 +385,8 @@ TaskDetail.propTypes = {
   onHandleTaskArchive: PropTypes.func,
   onHandleSubjectUpdate: PropTypes.func,
   onHandleTaskSubjectUpdate: PropTypes.func,
-  onHandleItemDelete: PropTypes.func,
+  onHandleTagDelete: PropTypes.func,
+  onHandleContactDelete: PropTypes.func,
   onHandleTaskTagDeleted: PropTypes.func,
   onHandleDelete: PropTypes.func,
   onHandleTaskDelete: PropTypes.func,
@@ -414,11 +434,15 @@ export default withHandlers({
     const data = { task: props.task, subject }
     props.onHandleTaskSubjectUpdate(data)
   },
-  onHandleItemDelete: props => tagInfo => {
+  onHandleTagDelete: props => tagInfo => {
     const data = { task: props.task, tagInfo }
     props.onHandleTaskTagDeleted(data)
   },
   onHandleDelete: props => () => props.onHandleTaskDelete(props.task.id),
+  onHandleContactDelete: props => contactInfo => {
+    const data = { task: props.task, contactInfo }
+    props.onHandleTaskContactDeleted(data)
+  },
   onHandleStartDateChanged: props => date => {
     const data = { task: props.task, date , typeDate: 'startDate' }
     props.onHandleTaskDateChanged(data)

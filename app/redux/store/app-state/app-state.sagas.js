@@ -54,7 +54,7 @@ export function* hintSelected(action) {
     return
   }
 
-  // Hint selected within task detail context
+  // Hint(tag) selected within task detail context
   if (location === 'taskDetailTags') {
 
     // If tag is not yet defined, add it to the app
@@ -63,6 +63,18 @@ export function* hintSelected(action) {
     }
 
     yield put(taskActions.addTaskTag(parentId, hint))
+  }
+
+  // Hint(contact) selected within task detail context
+  if (location === 'taskDetailContacts') {
+
+    // If contact is not yet defined, add it to the app
+    if (isNewHint) {
+      // TODO: create new contact
+      return
+    }
+
+    yield put(taskActions.addTaskContact(parentId, hint))
   }
 }
 

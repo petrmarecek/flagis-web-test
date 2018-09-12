@@ -144,8 +144,7 @@ const detailContentOptionsItem = css`
   padding: 0 0 2px 0;
   margin: ${props => props.last ? '10px 0 0 0' : '0 0 10px 0'};
   border-bottom: 1px solid #D7E3EC;
-  cursor: ${props => props.archived ? 'default' : 'pointer'};
-  display: ${props => props.flex ? 'flex' : 'auto'};
+  display: 'auto';
 `;
 
 const detailContentOptionsItemLabel = css`
@@ -156,24 +155,35 @@ const detailContentOptionsItemLabel = css`
 
 const DetailContentAddContact = styled.div`
   ${detailContentOptionsItem}
+  cursor: 'default';
 `;
 
-const DetailContentAddContactLabel = styled.div`
+const DetailContentAddContactLabel = styled.span`
   ${detailContentOptionsItemLabel}
 `;
 
 const DetailContentAddContactContent = styled.div`
-  margin: 0 0 0 5px;
+  position: absolute;
+  left: 26px;
+  bottom: -4px;
 `;
 
 const DetailContentAddContactIcon = styled(Icon)`
   position: absolute;
   right: 5px;
   bottom: 2px;
+  pointer-events: none;
+`;
+
+const DetailContentAutocompleteContacts = styled.div`
+  flex: 5;
+  height: 22px;
+  float: right;
 `;
 
 const DetailContentImportant = styled.div`
   ${detailContentOptionsItem}
+  cursor: ${props => props.archived ? 'default' : 'pointer'};
 `;
 
 const DetailContentImportantLabel = styled.div`
@@ -502,6 +512,7 @@ export {
   DetailContentAddContactLabel,
   DetailContentAddContactContent,
   DetailContentAddContactIcon,
+  DetailContentAutocompleteContacts,
   DetailContentDate,
   DetailContentDateLabel,
   DetailContentDatePicker,

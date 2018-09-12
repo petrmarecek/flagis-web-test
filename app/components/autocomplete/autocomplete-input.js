@@ -67,8 +67,13 @@ const withAutocompleteInput = WrappedComponent => {
       const { inputRef } = this.state
       const { hints, dataType, location } = this.props
       const value = event.target.value
+      const itemValue = item => ({
+        tags: item.title,
+        contacts: item.email,
+      })
+
       const hintsData = {
-        [dataType]: hints[dataType].filter(item => item.title.startsWith(value))
+        [dataType]: hints[dataType].filter(item => itemValue(item)[dataType].startsWith(value))
       }
 
       this.setState({
@@ -121,8 +126,13 @@ const withAutocompleteInput = WrappedComponent => {
     onHandleChange = event => {
       const { hints, dataType } = this.props
       const value = event.target.value
+      const itemValue = item => ({
+        tags: item.title,
+        contacts: item.email,
+      })
+
       const hintsData = {
-        [dataType]: hints[dataType].filter(item => item.title.startsWith(value))
+        [dataType]: hints[dataType].filter(item => itemValue(item)[dataType].startsWith(value))
       }
 
       this.setState({ hintsData, value, selectIndex: 0 })
