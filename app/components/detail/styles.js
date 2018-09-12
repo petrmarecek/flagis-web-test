@@ -140,21 +140,21 @@ const DetailContentOptions = styled.div`
 const detailContentOptionsItem = css`
   position: relative;
   color: #8c9da9;
-  font-size: 14px;
   padding: 0 0 2px 0;
-  margin: ${props => props.last ? '10px 0 0 0' : '0 0 10px 0'};
   border-bottom: 1px solid #D7E3EC;
   display: 'auto';
 `;
 
 const detailContentOptionsItemLabel = css`
   margin: 0 0 0 3px;
+  font-size: 14px;
   color: ${props => props.changeColor ? '#293034' : '#8c9da9'};
   font-weight: ${props => props.important ? 'bold' : 'normal'};
 `;
 
 const DetailContentAddContact = styled.div`
   ${detailContentOptionsItem}
+  margin: 0 0 10px 0;
   cursor: 'default';
 `;
 
@@ -183,6 +183,7 @@ const DetailContentAutocompleteContacts = styled.div`
 
 const DetailContentImportant = styled.div`
   ${detailContentOptionsItem}
+  margin: 0 0 10px 0;
   cursor: ${props => props.archived ? 'default' : 'pointer'};
 `;
 
@@ -197,6 +198,23 @@ const DetailContentImportantContent = styled.div`
   span {
     font-weight: bold;
   }
+`;
+
+const DetailContentCreatedDate = styled.div`
+  ${detailContentOptionsItem}
+  margin: 10px 0 20px 0;
+  cursor: 'default';
+`;
+
+const DetailContentCreatedDateLabel = styled.div`
+  ${detailContentOptionsItemLabel}
+`;
+
+const DetailContentCreatedDateContent = styled.div`
+  margin: -15px 5px 0 0;
+  float: right;
+  font-size: 15px;
+  color: #293034;
 `;
 
 const DetailContentDate = styled.div`
@@ -519,6 +537,9 @@ export {
   DetailContentImportant,
   DetailContentImportantLabel,
   DetailContentImportantContent,
+  DetailContentCreatedDate,
+  DetailContentCreatedDateLabel,
+  DetailContentCreatedDateContent,
   DetailContentAttachments,
   DetailContentComments,
   DetailContentCommentsAdd,

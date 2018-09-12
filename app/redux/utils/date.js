@@ -13,6 +13,10 @@ export default {
     return date !== null ? moment(date).format(DEFAULT_DATE_FORMAT) : ''
   },
 
+  formatDateTime(date) {
+    return date !== null ? moment(date).format(DEFAULT_DATE_TIME_FORMAT) : ''
+  },
+
   toMoment(dateStr) {
     if (!dateStr) {
       return null

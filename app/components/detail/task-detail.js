@@ -42,6 +42,9 @@ import {
   DetailContentImportant,
   DetailContentImportantLabel,
   DetailContentImportantContent,
+  DetailContentCreatedDate,
+  DetailContentCreatedDateLabel,
+  DetailContentCreatedDateContent,
   DetailContentAttachments,
   DetailContentDescriptionTask,
   MarkdownEditableContainer,
@@ -91,6 +94,7 @@ const TaskDetail = props => {
         startDate: null,
         dueDate: null,
         reminderDate: null,
+        createdAt: null,
         subject: null,
         tags: List(),
         description: null,
@@ -108,6 +112,7 @@ const TaskDetail = props => {
       startDate: dateUtil.toMoment(task.startDate),
       dueDate: dateUtil.toMoment(task.dueDate),
       reminderDate: dateUtil.toMoment(task.reminderDate),
+      createdAt: dateUtil.formatDateTime(task.createdAt),
       subject: task.subject,
       tags: task.tags,
       description: task.description,
@@ -313,7 +318,15 @@ const TaskDetail = props => {
                     onChange={onHandleReminderDateChanged}/>
                 </DetailContentDatePicker>
               </DetailContentDate>
-              <DetailContentImportant last onClick={onHandleToggleImportant}>
+              <DetailContentCreatedDate>
+                <DetailContentCreatedDateLabel>
+                  Created date
+                </DetailContentCreatedDateLabel>
+                <DetailContentCreatedDateContent>
+                  {bindingData.createdAt}
+                </DetailContentCreatedDateContent>
+              </DetailContentCreatedDate>
+              <DetailContentImportant onClick={onHandleToggleImportant} last>
                 <DetailContentImportantLabel important={bindingData.isImportant}>
                   Important
                 </DetailContentImportantLabel>
