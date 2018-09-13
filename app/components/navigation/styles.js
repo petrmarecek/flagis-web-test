@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { boxSizing } from '../styled-components-mixins/'
 
-// NavigationBar
+// ---------------------------------- NavigationBar ----------------------------------
 const Navbar = styled.nav`
   ${boxSizing('border-box')}
   background-color: #293034;
@@ -34,7 +34,7 @@ const NavbarRight = styled.div`
   margin-right: 14px;
 `;
 
-// NavigationRight
+// ---------------------------------- NavigationRight ----------------------------------
 const NavButtonContainer = styled.div`
   display: flex;
 `;

@@ -2,7 +2,14 @@ import styled from 'styled-components'
 import MenuBox from 'components/menux-box/menu-box'
 import MenuBoxGroupItems from 'components/menux-box/menu-box-group-items'
 import MenuBoxItem from 'components/menux-box/menu-box-item'
-import { boxSizing, transition, fontMain, transform, userSelect } from '../styled-components-mixins/'
+import {
+  boxSizing,
+  transition,
+  borderRadius,
+  fontMain,
+  transform,
+  userSelect
+} from '../styled-components-mixins/'
 
 const TasksMenuItem = styled.div`
   ${boxSizing('border-box')}
@@ -15,6 +22,41 @@ const TasksMenuItem = styled.div`
   align-items: center;
 `;
 
+// ---------------------------------- TasksMenuNavigation ----------------------------------
+const NavigationContainer = styled.div`
+  display: flex;
+  ${borderRadius('5px')}
+  margin-top: 3px;
+`;
+
+const Button = styled.div`
+  ${boxSizing('border-box')}
+  ${borderRadius(props => props.radius ? props.radius : '0')}
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 20px;
+  cursor: pointer;
+  width: 35px;
+  border-width: ${props => props.first ? '1px' : '1px 1px 1px 0'};
+  border-style: solid;
+  border-color: ${props => props.active ? '#8C9DA9' : '#C1CAD0'};
+  pointer-events: ${props => props.active ? 'none' : 'auto'};
+  background-color: ${props => props.active ? '#8C9DA9' : '#E7ECED'};
+  
+  &:hover {
+    background-color: #8C9DA9;
+    border: 1px solid #8C9DA9;
+    
+    svg {
+      path {
+        fill: #fff;
+      }
+    }
+  }
+`;
+
+// ---------------------------------------- MenuBox ----------------------------------------
 const MenuBoxContainer = styled(MenuBox)`
   position: absolute;
   right: -10px;
@@ -87,6 +129,8 @@ const MenuBoxItemTitle = styled(MenuBoxItem)`
 
 export {
   TasksMenuItem,
+  NavigationContainer,
+  Button,
   MenuBoxContainer,
   MenuBoxGroup,
   MenuBoxItemIcon,

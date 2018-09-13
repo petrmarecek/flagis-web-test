@@ -7,7 +7,6 @@ import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
 
 import {
-  fetchTasks,
   deselectTasks,
   setTimeLine,
   cancelTimeLine,
@@ -25,18 +24,14 @@ const NavigationRight = props => {
     location,
     timeLine,
     onHandleClickTasks,
-    onHandleClickTimeLine,
     onHandleClickTags,
-    onHandleClickDashboard,
     onHandleClickAccount
   } = props
 
   const isTaskActive = (location.pathname === '/user/tasks' && !timeLine)
-  const isTimeLineActive = (location.pathname === '/user/tasks' && timeLine)
   const isTagsActive = location.pathname === '/user/tags'
-  const isDashboardActive = location.pathname === '/user/dashboard'
   const isAccountActive = location.pathname === '/user/account'
-  const color = "#fff"
+  const color = '#fff'
 
   return (
     <NavButtonContainer>
@@ -50,16 +45,6 @@ const NavigationRight = props => {
           color={[color]} />
       </NavButton>
       <NavButton
-        active={isTimeLineActive}
-        onClick={onHandleClickTimeLine}>
-        <Icon
-          icon={ICONS.TIME_LINE}
-          width={25}
-          height={20}
-          scale={0.83}
-          color={[color]} />
-      </NavButton>
-      <NavButton
         active={isTagsActive}
         onClick={onHandleClickTags}>
         <Icon
@@ -67,16 +52,6 @@ const NavigationRight = props => {
           width={33}
           height={20}
           scale={1.6}
-          color={[color]} />
-      </NavButton>
-      <NavButton
-        active={isDashboardActive}
-        onClick={onHandleClickDashboard}>
-        <Icon
-          icon={ICONS.DASHBOARD}
-          width={25}
-          height={25}
-          scale={0.048}
           color={[color]} />
       </NavButton>
       <NavButton
@@ -91,7 +66,6 @@ const NavigationRight = props => {
       </NavButton>
     </NavButtonContainer>
   )
-
 }
 
 NavigationRight.propTypes = {
@@ -110,7 +84,6 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = {
-  fetchTasks,
   deselectTasks,
   setTimeLine,
   cancelTimeLine,
@@ -131,28 +104,12 @@ export default compose(
       props.deselectContacts()
       props.changeLocation('/user/tasks')
     },
-    onHandleClickTimeLine: props => () => {
-      props.hideArchivedTasks()
-      props.deselectTasks()
-      props.deselectTags()
-      props.deselectContacts()
-      props.setTimeLine()
-      props.changeLocation('/user/tasks')
-    },
     onHandleClickTags: props => () => {
       props.cancelTimeLine()
       props.hideArchivedTasks()
       props.deselectTasks()
       props.deselectContacts()
       props.changeLocation('/user/tags')
-    },
-    onHandleClickDashboard: props => () => {
-      props.cancelTimeLine()
-      props.hideArchivedTasks()
-      props.deselectTasks()
-      props.deselectTags()
-      props.deselectContacts()
-      props.changeLocation('/user/dashboard')
     },
     onHandleClickAccount: props => () => {
       props.cancelTimeLine()

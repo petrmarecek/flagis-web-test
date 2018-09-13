@@ -65,6 +65,16 @@ export default class Icon extends PureComponent {
     this.setState({color: this.props.color})
   }
 
+  getFill = key => {
+    if (!this.state.color) {
+      return ''
+    }
+
+    return this.state.color.length === 1
+      ? this.state.color[0]
+      : this.state.color[key]
+  }
+
   render() {
     return (
       <svg
@@ -82,7 +92,7 @@ export default class Icon extends PureComponent {
           {this.props.icon.map((d,key) => (
             <path
               key={key}
-              fill={this.state.color ? this.state.color[key] : ''}
+              fill={this.getFill(key)}
               d={d}/>
           ))}
         </g>
