@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import velocity from 'velocity-animate'
+import domUtils from 'redux/utils/dom'
 
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
@@ -10,6 +11,8 @@ import {
   MenuBoxItemIcon,
   MenuBoxItemTitle,
 } from './styles'
+
+const OFFSET = 50
 
 export default class TasksMenuOptions extends PureComponent {
 
@@ -45,6 +48,12 @@ export default class TasksMenuOptions extends PureComponent {
     this.props.visibleMenuOption()
   }
 
+  getCenterIconPosition = () => {
+    const { options } = this.refs
+    const position = domUtils.getOffset(options)
+    return window.innerWidth - position.left - OFFSET
+  }
+
   render() {
     const isVisibleArchivedTasks = this.props.isVisibleArchivedTasks
     const { menu } = this.props.tasksMenu.options
@@ -69,7 +78,8 @@ export default class TasksMenuOptions extends PureComponent {
         <MenuBoxContainer
           animation="transition.fadeIn"
           menuIcon={this.refs.options}
-          clickOutsideMenu={this.handleClick}>
+          clickOutsideMenu={this.handleClick}
+          trianglePosition={this.getCenterIconPosition} >
           <MenuBoxGroup>
             <MenuBoxItemIcon
               icon={ICONS.SELECT}

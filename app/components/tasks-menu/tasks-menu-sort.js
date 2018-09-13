@@ -1,7 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import velocity from 'velocity-animate'
-import { compose, withHandlers, lifecycle } from 'recompose'
+import domUtils from 'redux/utils/dom'
+import { compose, withStateHandlers, lifecycle } from 'recompose'
 
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
@@ -13,7 +14,12 @@ import {
   MenuBoxItemTitle,
 } from './styles'
 
-const TasksMenuSort = ({ tasksMenu, onHandleClick, onHandleSortAlgorithmToggle  }) => {
+const TasksMenuSort = ({ tasksMenu, sortRef, getSortRef, onHandleClick, onHandleSortAlgorithmToggle  }) => {
+  const OFFSET = 50
+  const getCenterIconPosition = () => {
+    const position = domUtils.getOffset(sortRef)
+    return window.innerWidth - position.left - OFFSET
+  }
 
   const getActiveIcon = () => {
     const { alphabet, important, incomplete } = tasksMenu.sort
@@ -42,7 +48,7 @@ const TasksMenuSort = ({ tasksMenu, onHandleClick, onHandleSortAlgorithmToggle  
   return (
     <TasksMenuItem
       id='tasksMenuItemSort'
-      innerRef={comp => {this.sort = comp}}
+      innerRef={ref => { getSortRef(ref) }}
       onClick={onHandleClick} >
       <Icon
         icon={icon}
@@ -53,8 +59,9 @@ const TasksMenuSort = ({ tasksMenu, onHandleClick, onHandleSortAlgorithmToggle  
       {menu.isVisible &&
       <MenuBoxContainer
         animation="transition.fadeIn"
-        menuIcon={this.sort}
-        clickOutsideMenu={onHandleClick}>
+        menuIcon={sortRef}
+        clickOutsideMenu={onHandleClick}
+        trianglePosition={getCenterIconPosition} >
         <MenuBoxGroup>
           <MenuBoxItemIcon
             active={defaultSort}
@@ -114,6 +121,8 @@ const TasksMenuSort = ({ tasksMenu, onHandleClick, onHandleSortAlgorithmToggle  
 
 TasksMenuSort.propTypes = {
   tasksMenu: PropTypes.object,
+  sortRef: PropTypes.object,
+  getSortRef: PropTypes.func,
   onHandleClick: PropTypes.func,
   onHandleSortAlgorithmToggle: PropTypes.func,
   onToggleSortAlgorithm: PropTypes.func,
@@ -124,27 +133,33 @@ TasksMenuSort.propTypes = {
 }
 
 export default compose(
-  withHandlers({
-    onHandleClick: props => () => {
-      if (props.tasksMenu.sort.menu.isVisible) {
-        props.hideMenuSort()
-        return
-      }
+  withStateHandlers(
+    () => ({ sortRef: null }),
+    {
+      getSortRef: () => ref => ({ sortRef: ref }),
+      onHandleClick: (state, props) => () => {
+        if (props.tasksMenu.sort.menu.isVisible) {
+          props.hideMenuSort()
+          return ({})
+        }
 
-      if (props.tasksMenu.filters.menu.isVisible) {
-        props.hideMenuFilter()
-      }
+        if (props.tasksMenu.filters.menu.isVisible) {
+          props.hideMenuFilter()
+        }
 
-      if (props.tasksMenu.options.menu.isVisible) {
-        props.hideMenuOption()
-      }
+        if (props.tasksMenu.options.menu.isVisible) {
+          props.hideMenuOption()
+        }
 
-      props.visibleMenuSort()
-    },
-    onHandleSortAlgorithmToggle: props => algorithm => {
-      props.onToggleSortAlgorithm(algorithm)
+        props.visibleMenuSort()
+        return ({})
+      },
+      onHandleSortAlgorithmToggle: (state, props) => algorithm => {
+        props.onToggleSortAlgorithm(algorithm)
+        return ({})
+      }
     }
-  }),
+  ),
   lifecycle({
     componentDidMount() {
       const sort = document.getElementById('tasksMenuItemSort')

@@ -3,7 +3,7 @@ export default {
 
   getOffset(elem) {
 
-    if (!elem ) {
+    if (!elem) {
       return null
     }
 

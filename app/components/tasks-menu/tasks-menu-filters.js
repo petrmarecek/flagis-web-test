@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import velocity from 'velocity-animate'
+import domUtils from 'redux/utils/dom'
 
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
@@ -11,6 +12,7 @@ import {
   MenuBoxItemTitle,
 } from './styles'
 
+const OFFSET = 50
 
 export default class TasksMenuFilters extends PureComponent {
 
@@ -51,6 +53,12 @@ export default class TasksMenuFilters extends PureComponent {
     this.props.visibleMenuFilter()
   }
 
+  getCenterIconPosition = () => {
+    const { filters } = this.refs
+    const position = domUtils.getOffset(filters)
+    return window.innerWidth - position.left - OFFSET
+  }
+
   render() {
     const { menu, active, range, important, unimportant, noTags } = this.props.tasksMenu.filters
 
@@ -73,7 +81,8 @@ export default class TasksMenuFilters extends PureComponent {
         <MenuBoxContainer
           animation="transition.fadeIn"
           menuIcon={this.refs.filters}
-          clickOutsideMenu={this.handleClick}>
+          clickOutsideMenu={this.handleClick}
+          trianglePosition={this.getCenterIconPosition} >
           <MenuBoxGroup>
             <MenuBoxItemIcon
               active={range === 'today' || range === 'week' || range === 'month'}

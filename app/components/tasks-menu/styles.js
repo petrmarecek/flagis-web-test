@@ -58,17 +58,39 @@ const Button = styled.div`
 
 // ---------------------------------------- MenuBox ----------------------------------------
 const MenuBoxContainer = styled(MenuBox)`
+  ${borderRadius('5px')}
   position: absolute;
-  right: -10px;
+  right: 10px;
   top: 48px;
   z-index: 100;
-  border-color: #282f34 #8c9ea9 #8c9ea9;
-  border-style: solid;
-  border-width: 2px 1px 1px;
-  background-color: #e7eced;
+  border: 1px solid #C1CAD0;
+  background-color: #fff;
   font-size: 14px;
-  color: #8c9ea9;
+  color: #616F78;
   padding: 20px 15px 0 0;
+  
+  :before, :after {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-style: solid;
+  }
+  
+  :before {
+    top: -18px;
+    right: ${props => props.trianglePosition}px;
+    border-color: transparent transparent #C1CAD0 transparent;
+    border-width: 9px;
+  }
+  
+  :after {
+    top: -16px;
+    right: calc(${props => props.trianglePosition}px + 1px);
+    border-color: transparent transparent #fff transparent;
+    border-width: 8px;
+  }
 `;
 
 const MenuBoxGroup = styled(MenuBoxGroupItems)`
