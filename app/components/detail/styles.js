@@ -8,12 +8,13 @@ import {
   transition,
   transform,
   transformOrigin,
+  borderRadius,
   commonInputSmall,
   markdownStyles,
   fontMain,
 } from '../styled-components-mixins/'
 
-// Detail
+// --------------------------------------- Detail ---------------------------------------
 const DetailStyle = styled.div`
   ::-webkit-scrollbar {
     width: 5px;
@@ -311,7 +312,7 @@ const DetailContentCommentsAddInput = styled.div`
   }
 `;
 
-// Detail menu
+// --------------------------------------- Detail menu ---------------------------------------
 const Menu = styled.div`
   display: flex;
   justify-content: flex-start;
@@ -334,7 +335,7 @@ const RightMenu = styled.div`
   }
 `;
 
-// Content editable
+// --------------------------------------- Content editable ---------------------------------------
 const ContentEditableContainer = css`
   ${boxSizing('border-box')}
   line-height: 22px;
@@ -357,7 +358,7 @@ const ContentEditableContainer = css`
   }
 `;
 
-// Markdown editable
+// --------------------------------------- Markdown editable ---------------------------------------
 const MarkdownEditableContainer = styled(MarkdownEditable)`
   ${boxSizing('border-box')}
   padding: 15px 2px 15px 15px;
@@ -393,7 +394,7 @@ const MarkdownEditableContainer = styled(MarkdownEditable)`
   }
 `;
 
-// Task detail
+// --------------------------------------- Task detail ---------------------------------------
 const DetailSubjectTaskCompleted = styled(Icon)`
   position: absolute;
   left: 5px;
@@ -419,7 +420,7 @@ const DetailContentDescriptionTask = styled.div`
   margin-right: 22px;
 `;
 
-// Tag detail
+// --------------------------------------- Tag detail ---------------------------------------
 const DetailSubjectTagColor = styled(Icon)`
   position: absolute;
   pointer-events: none;
@@ -459,7 +460,7 @@ const DetailContentDescriptionTag = styled.div`
   height: calc(100% - 69px);
 `;
 
-// Contact detail
+// --------------------------------------- Contact detail ---------------------------------------
 const DetailSubjectIconContact = styled.div`
   position: absolute;
   left: 5px;
@@ -513,8 +514,34 @@ const DetailContentContactDataContent = styled.div`
   color: #293034;
 `;
 
+const DetailContentContactButton = styled.div`
+  ${transition('500ms')}
+  ${borderRadius('15px')}
+  position: relative;
+  background-color: #8c9da9;
+  margin: 20px 0 0 0;
+  border: none;
+  height: 27px;
+  width: 125px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  :hover {
+    ${transition('500ms')}
+    background-color: #293034;
+  }
+  
+`;
+
+const DetailContentContactButtonLabel = styled.span`
+  color: #fff;
+  font-size: 16px;
+  margin: 0 0 1px 0;
+`;
+
 export {
-  // Detail
   DetailStyle,
   DetailInner,
   DetailContentTop,
@@ -546,18 +573,15 @@ export {
   DetailContentCommentsAddIcon,
   DetailContentCommentsAddInput,
 
-  // Detail menu
   Menu,
   LeftMenu,
   RightMenu,
 
-  // Task detail
   DetailSubjectTaskCompleted,
   DetailSubjectTaskArchived,
   DetailSubjectTaskContentEditable,
   DetailContentDescriptionTask,
 
-  // Tag detail
   DetailSubjectTagColor,
   DetailSubjectTagContentEditable,
   DetailContentTagColor,
@@ -566,14 +590,14 @@ export {
   DetailTagColorSelectorOptions,
   DetailContentDescriptionTag,
 
-  // Contact detail
   DetailSubjectIconContact,
   DetailSubjectContactContentEditable,
   DetailContentDescriptionContact,
   DetailContentContactData,
   DetailContentContactDataLabel,
   DetailContentContactDataContent,
+  DetailContentContactButton,
+  DetailContentContactButtonLabel,
 
-  // Markdown
   MarkdownEditableContainer,
 }

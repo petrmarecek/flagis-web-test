@@ -21,6 +21,8 @@ import {
   DetailContentContactData,
   DetailContentContactDataLabel,
   DetailContentContactDataContent,
+  DetailContentContactButton,
+  DetailContentContactButtonLabel,
 } from './styles'
 
 const ContactDetail = props => {
@@ -104,24 +106,16 @@ const ContactDetail = props => {
         <DetailContentCenter>
           <DetailContentProperties>
             <DetailContentContactData>
-              <DetailContentContactDataLabel>
-                E-Mail
-              </DetailContentContactDataLabel>
-              <DetailContentContactDataContent>
-                {contact.email}
-              </DetailContentContactDataContent>
+              <DetailContentContactDataLabel>E-Mail</DetailContentContactDataLabel>
+              <DetailContentContactDataContent>{contact.email}</DetailContentContactDataContent>
             </DetailContentContactData>
             {!contact.isUser &&
             <DetailContentContactData>
-              <DetailContentContactDataLabel>
-                Non-existing user
-              </DetailContentContactDataLabel>
+              <DetailContentContactDataLabel>Non-existing user</DetailContentContactDataLabel>
             </DetailContentContactData>}
             {!contact.isUser && !contact.isInvitation &&
             <DetailContentContactData onClick={onHandleSendInvitation} button>
-              <DetailContentContactDataLabel>
-                Invite
-              </DetailContentContactDataLabel>
+              <DetailContentContactDataLabel>Invite</DetailContentContactDataLabel>
               <DetailContentContactDataContent>
                 <Icon
                   icon={ICONS.SEND_INVITE}
@@ -130,6 +124,9 @@ const ContactDetail = props => {
                   color={['#8C9DA9']} />
               </DetailContentContactDataContent>
             </DetailContentContactData>}
+            <DetailContentContactButton>
+              <DetailContentContactButtonLabel>Create task</DetailContentContactButtonLabel>
+            </DetailContentContactButton>
           </DetailContentProperties>
 
           <DetailContentDescriptionContact>
