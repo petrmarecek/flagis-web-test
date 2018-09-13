@@ -2,7 +2,6 @@ import React from 'react'
 
 import LeftPanel from 'components/panels/left-panel'
 import AccountMenu from 'components/account-menu/'
-import LoggedAccount from 'components/common/logged-account'
 import CenterPanel from 'components/panels/center-panel'
 import ChangePasswordContent from 'components/contents/change-password-content'
 
@@ -16,7 +15,6 @@ const ChangePasswordPage = () => {
     <div>
       <LeftPanel>
         <AccountMenu />
-        <LoggedAccount />
       </LeftPanel>
       <CenterPanel style={centerPanelStyle}>
         <ChangePasswordContent/>

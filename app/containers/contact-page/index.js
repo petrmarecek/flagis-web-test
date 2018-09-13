@@ -8,7 +8,6 @@ import { getContactDetail } from 'redux/store/app-state/app-state.selectors'
 import LeftPanel from 'components/panels/left-panel'
 import CenterPanel from 'components/panels/center-panel'
 import AccountMenu from 'components/account-menu/'
-import LoggedAccount from 'components/common/logged-account'
 import ContactContent from 'components/contents/contact-content'
 import DetailContent from 'components/contents/detail-content'
 
@@ -16,7 +15,6 @@ const ContactPage = ({ onGetContent }) => (
   <div>
     <LeftPanel>
       <AccountMenu/>
-      <LoggedAccount />
     </LeftPanel>
     <CenterPanel>
       {onGetContent()}

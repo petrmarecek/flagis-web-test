@@ -2,7 +2,6 @@ import React from 'react'
 
 import LeftPanel from 'components/panels/left-panel'
 import AccountMenu from 'components/account-menu/'
-import LoggedAccount from 'components/common/logged-account'
 import CenterPanel from 'components/panels/center-panel'
 import EditProfileContent from 'components/contents/edit-profile-content'
 
@@ -16,7 +15,6 @@ const EditProfilePage = () => {
     <div>
       <LeftPanel>
         <AccountMenu />
-        <LoggedAccount />
       </LeftPanel>
       <CenterPanel style={centerPanelStyle}>
         <EditProfileContent/>
