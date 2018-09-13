@@ -50,7 +50,7 @@ export default {
 
   invitation: {
     accept: userData => api
-      .post('invitation', userData)
+      .patch('invitation', userData)
       .then(res => res.data),
   },
 

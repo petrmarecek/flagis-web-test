@@ -173,7 +173,7 @@ function loadTasks(ids, data) {
  */
 
 function loadArchiveTasks(ids, data) {
-  const { tasksMenu, entitiesTasks, entitiesTags, activeTagsIds } = data
+  const { tasksMenu, entitiesTasks, entitiesTags, entitiesContacts, activeTagsIds } = data
 
   // apply search filter
   if (tasksMenu.getIn(['filters', 'searchText'])) {

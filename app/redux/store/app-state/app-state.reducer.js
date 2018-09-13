@@ -2,7 +2,7 @@ import typeToReducer from 'type-to-reducer'
 
 import { APP_STATE } from 'redux/store/app-state/app-state.actions'
 import { AUTH } from 'redux/store/auth/auth.actions'
-import { AppStateStore, Position, TagAutocomplete } from 'redux/data/records'
+import { AppStateStore } from 'redux/data/records'
 
 export default typeToReducer({
 
