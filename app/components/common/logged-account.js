@@ -8,6 +8,7 @@ import { ICONS } from '../icons/icon-constants'
 import { getUserEmail } from 'redux/store/auth/auth.selectors'
 
 import styled from 'styled-components'
+import {textOverflow} from "../styled-components-mixins";
 
 const Container = styled.div`
   position: fixed;
@@ -21,7 +22,11 @@ const Container = styled.div`
 const Email = styled.div`
   font-size: 15px;
   color: #8C9DA9;
-  margin: 0 0 0 10px;  
+  margin: 0 0 0 10px;
+  max-width: 204px;
+  overflow: hidden;
+  white-space: nowrap;
+  ${textOverflow('ellipsis')}
 `;
 
 const LoggedAccount = ({ email }) => (
