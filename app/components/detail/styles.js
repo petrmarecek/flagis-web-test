@@ -486,19 +486,6 @@ const DetailContentContactData = styled.div`
   margin: 10px 0;
   border-bottom: 1px solid #D7E3EC;
   height: 22px;
-  cursor: ${props => props.button ? 'pointer' : 'default'};
-  
-  :hover {
-    color: ${props => props.button ? '#293034' : '#8c9da9'};
-    font-weight: ${props => props.button ? 'bold' : 'normal'};
-    
-    svg {
-      path {
-        fill: ${props => props.button ? '#293034' : '#8c9da9'};;
-      }
-    }
-  }
-  
 `;
 
 const DetailContentContactDataLabel = styled.span`
@@ -512,6 +499,26 @@ const DetailContentContactDataContent = styled.div`
   float: right;
   font-size: 18px;
   color: #293034;
+  cursor: ${props => props.button ? 'pointer' : 'default'};
+  
+  span {
+    margin: 0 0 0 10px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #8c9da9;
+  }
+  
+  :hover {
+    span {
+      color: ${props => props.button ? '#293034' : '#8c9da9'};
+    }
+    
+    svg {
+      path {
+        fill: ${props => props.button ? '#293034' : '#8c9da9'};
+      }
+    }
+  }
 `;
 
 const DetailContentContactButton = styled.div`

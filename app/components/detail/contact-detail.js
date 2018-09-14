@@ -112,17 +112,15 @@ const ContactDetail = props => {
             {!contact.isUser &&
             <DetailContentContactData>
               <DetailContentContactDataLabel>Non-existing user</DetailContentContactDataLabel>
-            </DetailContentContactData>}
-            {!contact.isUser && !contact.isInvitation &&
-            <DetailContentContactData onClick={onHandleSendInvitation} button>
-              <DetailContentContactDataLabel>Invite</DetailContentContactDataLabel>
-              <DetailContentContactDataContent>
+              {!contact.isInvitation &&
+              <DetailContentContactDataContent onClick={onHandleSendInvitation} button>
                 <Icon
                   icon={ICONS.SEND_INVITE}
                   width={17}
                   height={16}
                   color={['#8C9DA9']} />
-              </DetailContentContactDataContent>
+                <span>Invite</span>
+              </DetailContentContactDataContent>}
             </DetailContentContactData>}
             <DetailContentContactButton>
               <DetailContentContactButtonLabel>Create task</DetailContentContactButtonLabel>
