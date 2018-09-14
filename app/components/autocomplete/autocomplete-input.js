@@ -91,7 +91,7 @@ const withAutocompleteInput = WrappedComponent => {
 
     onHandleKeyDown = event => {
       const { selectIndex, inputRef, hintsData } = this.state
-      const { dataType } = this.props
+      const { dataType, onBlurTagTree } = this.props
       const hintsLength = hintsData[dataType].length - 1
       let index = selectIndex
 
@@ -100,6 +100,11 @@ const withAutocompleteInput = WrappedComponent => {
         // escape
         case 27:
           inputRef.blur()
+
+          if (onBlurTagTree) {
+            onBlurTagTree()
+          }
+
           this.setState({ showHints: false })
           return
 
