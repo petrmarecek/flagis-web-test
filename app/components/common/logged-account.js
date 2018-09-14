@@ -37,7 +37,7 @@ const LoggedAccount = ({ email }) => (
       height={24}
       scale={1.14}
       color={['#8C9DA9', '#fff']}/>
-  <Email>{email}</Email>
+  <Email title={email}>{email}</Email>
   </Container>
 )
 
