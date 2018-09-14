@@ -40,9 +40,9 @@ const TasksMenuNavigation = props => {
         first >
         <Icon
           icon={ICONS.TASKS}
-          width={10}
-          height={8}
-          scale={0.4}
+          width={19}
+          height={15}
+          scale={0.75}
           color={isTaskActive ? [colorActive] : [color]} />
       </Button>
       <Button
@@ -50,9 +50,9 @@ const TasksMenuNavigation = props => {
         onClick={onHandleClickTimeLine}>
         <Icon
           icon={ICONS.TIME_LINE}
-          width={12}
-          height={10}
-          scale={0.4}
+          width={18}
+          height={15}
+          scale={0.6}
           color={isTimeLineActive ? [colorActive] : [color]} />
       </Button>
       <Button
@@ -61,8 +61,9 @@ const TasksMenuNavigation = props => {
         radius='0 3px 3px 0' >
         <Icon
           icon={ICONS.DASHBOARD}
-          width={11}
-          height={11}
+          width={15}
+          height={15}
+          scale={1.36}
           color={isDashboardActive ? [colorActive] : [color]} />
       </Button>
     </NavigationContainer>

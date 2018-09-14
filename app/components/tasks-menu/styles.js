@@ -35,7 +35,7 @@ const Button = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 20px;
+  height: 25px;
   cursor: pointer;
   width: 35px;
   border-width: ${props => props.first ? '1px' : '1px 1px 1px 0'};
