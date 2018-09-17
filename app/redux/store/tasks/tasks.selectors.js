@@ -481,6 +481,10 @@ export const getNextTask = createSelector(
 
     const nextTaskId = typeTask.get(nextIndex)
     const nextTask = entitiesTasks.get(nextTaskId)
+    if(!nextTask) {
+      return null
+    }
+
     return nextTask.setIn(['tags'], nextTask.getIn(['tags']).map(tagId => entitiesTags.getIn([tagId])))
   }
 )
@@ -538,9 +542,13 @@ export const getPreviousTask = createSelector(
       prevIndex = sizeListOfTasks - 1
     }
 
-    const nextTaskId = typeTask.get(prevIndex)
-    const nextTask = entitiesTasks.get(nextTaskId)
-    return nextTask.setIn(['tags'], nextTask.getIn(['tags']).map(tagId => entitiesTags.getIn([tagId])))
+    const prevTaskId = typeTask.get(prevIndex)
+    const prevTask = entitiesTasks.get(prevTaskId)
+    if (!prevTask) {
+      return null
+    }
+
+    return prevTask.setIn(['tags'], prevTask.getIn(['tags']).map(tagId => entitiesTags.getIn([tagId])))
   }
 )
 
