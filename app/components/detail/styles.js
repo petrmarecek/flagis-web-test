@@ -166,7 +166,7 @@ const DetailContentAddContactContent = styled.div`
   position: absolute;
   left: 26px;
   right: 35px;
-  bottom: -4px;
+  bottom: -5px;
 `;
 
 const DetailContentAddContactIcon = styled(Icon)`
@@ -184,7 +184,7 @@ const DetailContentAutocompleteContacts = styled.div`
 
 const DetailContentImportant = styled.div`
   ${detailContentOptionsItem}
-  margin: 0 0 10px 0;
+  margin: 10px 0;
   cursor: ${props => props.archived ? 'default' : 'pointer'};
 `;
 
@@ -193,29 +193,12 @@ const DetailContentImportantLabel = styled.div`
 `;
 
 const DetailContentImportantContent = styled.div`
-  margin: -15px 5px 0 0;
+  margin: -11px 5px 0 0;
   float: right;
   
   span {
     font-weight: bold;
   }
-`;
-
-const DetailContentCreatedDate = styled.div`
-  ${detailContentOptionsItem}
-  margin: 10px 0 20px 0;
-  cursor: 'default';
-`;
-
-const DetailContentCreatedDateLabel = styled.div`
-  ${detailContentOptionsItemLabel}
-`;
-
-const DetailContentCreatedDateContent = styled.div`
-  margin: -15px 5px 0 0;
-  float: right;
-  font-size: 15px;
-  color: #293034;
 `;
 
 const DetailContentDate = styled.div`
