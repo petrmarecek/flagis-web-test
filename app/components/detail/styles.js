@@ -47,8 +47,6 @@ const DetailInner = styled.div`
 const DetailContentTop = styled.div`
   ${boxSizing('border-box')}
   display: flex;
-  flex-wrap: wrap;
-  flex-grow: 100;
   min-height: 48px;
   justify-content: flex-start;
   position: relative;
@@ -83,9 +81,9 @@ const DetailContentTop = styled.div`
 
 const DetailContentSubject = styled.div`
   ${boxSizing('border-box')}
-  flex: 12;
-  min-width: 30%;
+  flex: 10 10 auto;
   padding: 11px 10px 11px 0;
+  max-width: 70%;
 `;
 
 const DetailSubject = styled.div`
@@ -95,10 +93,10 @@ const DetailSubject = styled.div`
 
 const DetailContentTagAutocomplete = styled.div`
   ${boxSizing('border-box')}
-  flex: 7;
+  flex: 10 10 auto;
   padding-right: 10px;
-  min-width: 25%;
   padding-top: 12px;
+  max-width: 70%;
 `;
 
 const DetailContentTagAutocompleteTags = styled.div`
@@ -110,8 +108,7 @@ const DetailContentTagAutocompleteTags = styled.div`
 const DetailContentDeleteIcon = styled.div`
   ${boxSizing('border-box')}
   pointer-events: auto;
-  flex: 1;
-  max-width: 3%;
+  flex: 0 0 35px;
   text-align: right;
   padding-right: 6px;
   padding-top: 10px;
