@@ -6,6 +6,7 @@ import {
   boxSizing,
   transition,
   borderRadius,
+  boxShadow,
   fontMain,
   transform,
   userSelect
@@ -59,6 +60,7 @@ const Button = styled.div`
 // ---------------------------------------- MenuBox ----------------------------------------
 const MenuBoxContainer = styled(MenuBox)`
   ${borderRadius('5px')}
+  ${boxShadow('0px 1px 6px 1px rgba(163,163,163,0.5)')}
   position: absolute;
   right: 10px;
   top: 48px;
@@ -100,6 +102,10 @@ const MenuBoxGroup = styled(MenuBoxGroupItems)`
   justify-content: flex-start;
   height: 100%;
   margin-bottom: 20px;
+  
+  span {
+    margin: 0 0 6px 0;
+  }
   
   &:hover {
     span {
