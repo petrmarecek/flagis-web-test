@@ -25,6 +25,7 @@ const withAutocompleteInput = WrappedComponent => {
 
     state = {
       showHints: false,
+      parentId: this.props.parentId,
       position: null,
       hintsData: this.props.hints,
       selectIndex: 0,
@@ -38,7 +39,7 @@ const withAutocompleteInput = WrappedComponent => {
     }
 
     static getDerivedStateFromProps(props, state) {
-      const { hintsData, inputRef, value } = state
+      const { hintsData, inputRef, value, parentId } = state
       const { hints, dataType, isAllowUpdate, location } = props
 
       if (!isAllowUpdate) {
@@ -47,6 +48,13 @@ const withAutocompleteInput = WrappedComponent => {
 
       if (value !== '') {
         return null
+      }
+
+      if (props.parentId !== parentId) {
+        return ({
+          hintsData: { [dataType]: hints[dataType] },
+          parentId: props.parentId
+        })
       }
 
       if ((hints[dataType].length !== hintsData[dataType].length)) {
