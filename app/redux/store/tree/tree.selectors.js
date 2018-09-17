@@ -14,7 +14,7 @@ import { createSelector } from 'reselect'
 const getTagIdsOfAllParents = (state, treeItemId) => {
   const treeItem = getTreeItem(state, treeItemId)
 
-  if (!treeItem.tagId) {
+  if (!treeItem || !treeItem.tagId) {
     return List()
   }
 
