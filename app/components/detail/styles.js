@@ -143,7 +143,6 @@ const detailContentOptionsItem = css`
   color: #8c9da9;
   padding: 0 0 2px 0;
   border-bottom: 1px solid #D7E3EC;
-  display: 'auto';
 `;
 
 const detailContentOptionsItemLabel = css`
@@ -166,6 +165,7 @@ const DetailContentAddContactLabel = styled.span`
 const DetailContentAddContactContent = styled.div`
   position: absolute;
   left: 26px;
+  right: 35px;
   bottom: -4px;
 `;
 

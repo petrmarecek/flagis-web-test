@@ -32,7 +32,7 @@ const Clear = styled.li`
   ${borderRadius('13px')}
   float: left;
   border: 1px solid #8c9da9;
-  padding: 3px 5px;
+  padding: 4px 0 0 5px;
   height: 23px;
   width: 23px;
   cursor: pointer;
@@ -101,13 +101,12 @@ const TagContainer = styled.li`
 const ContactContainer = styled.li`
   display: flex;
   align-items: center;
-  float: left;
   padding: 0 0 6px 0;
-  max-width: 120px;
 `;
 
 const Title = styled.span`
   font-size: 14px;
+  line-height: 15px;
   color: ${props => props.color};
   margin-right: 8px;
   overflow: hidden;
@@ -117,17 +116,19 @@ const Title = styled.span`
 
 const Delete = styled.span`
   ${boxSizing('border-box')}
-  ${borderRadius('5px')}
-  float: left;
+  ${borderRadius('7px')}
   border: 1px solid #8c9da9;
-  padding-left: 2px;
-  height: 12px;
-  width: 12px;
+  height: 14px;
+  width: 14px;
   cursor: pointer;
+  flex-shrink: 0;
+  position: relative;
 `;
 
 const DeleteIcon = styled(Icon)`
-  margin-top: -7px;
+  position: absolute;
+  top: 3px;
+  left: 3px;
 `;
 
 export {
