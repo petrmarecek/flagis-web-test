@@ -83,7 +83,7 @@ const DetailContentSubject = styled.div`
   ${boxSizing('border-box')}
   flex: 10 10 auto;
   padding: 11px 10px 11px 0;
-  max-width: 70%;
+  max-width: ${props => props.taskDetail ? '70%' : '100%'};
 `;
 
 const DetailSubject = styled.div`

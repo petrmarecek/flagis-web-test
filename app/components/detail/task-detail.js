@@ -164,7 +164,7 @@ const TaskDetail = props => {
           important={bindingData.isImportant}
           archived={bindingData.isArchived}
           animation={animation} >
-          <DetailContentSubject>
+          <DetailContentSubject taskDetail>
             <DetailSubject>
               {!bindingData.isArchived &&
               <DetailSubjectTaskCompleted
