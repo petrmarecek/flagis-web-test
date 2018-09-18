@@ -70,10 +70,8 @@ export default typeToReducer({
     .updateIn(['tasks', action.payload.taskId, 'tags'], tagList => tagList.push(action.payload.tag.id)),
 
   [TASKS.ADD_TASK_CONTACT]: (state, action) => state
-    .updateIn(
-      ['tasks', action.payload.taskId, 'contacts'],
-        contactsList => contactsList.push(action.payload.contact.id)
-    ),
+    .updateIn(['tasks', action.payload.taskId, 'contacts'],
+      contactsList => contactsList.push(action.payload.contact.id)),
 
   [TASKS.ADD_TASK_TAG_STORE]: (state, action) => state
     .updateIn(['tasks', action.payload.taskId, 'tags'], tagList => tagList.push(action.payload.tag.id)),
@@ -209,6 +207,15 @@ export default typeToReducer({
 
   [CONTACTS.ADD]: (state, action) => saveContacts(action.payload, state),
 
+  // Replace contact in either contacts & task referencing the tag
+  [CONTACTS.REPLACE]: (state, action) => state
+    .deleteIn(['contacts', action.payload.originalContactId])
+    .setIn(['contacts', action.payload.contact.id], new records.Contact(action.payload.contact))
+    .updateIn(['tasks', action.payload.relatedTaskId, 'contacts'], contactsList => {
+      const contactIndex = contactsList.indexOf(action.payload.originalContactId)
+      return contactsList.splice(contactIndex, 1, action.payload.contact.id)
+    }),
+
   [CONTACTS.UPDATE]: (state, action) => {
 
     const contactId = action.payload.contact.id
@@ -301,7 +308,7 @@ function saveAttachments(payload, state) {
 
 function saveContacts(payload, state) {
   const rawContacts = payload.entities.contacts || {}
-  const contacts = convertToImmutable(rawContacts, records.Contacts)
+  const contacts = convertToImmutable(rawContacts, records.Contact)
 
   return state
     .mergeIn(['contacts'], contacts)

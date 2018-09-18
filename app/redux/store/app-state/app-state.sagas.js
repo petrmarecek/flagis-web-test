@@ -70,8 +70,9 @@ export function* hintSelected(action) {
 
     // If contact is not yet defined, add it to the app
     if (isNewHint) {
-      // TODO: create new contact
-      return
+      hint.nickName = ''
+
+      yield put(contactActions.addContact(hint))
     }
 
     yield put(taskActions.addTaskContact(parentId, hint))

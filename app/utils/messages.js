@@ -34,7 +34,7 @@ export const errorMessages = {
   },
 
   autocomplete: {
-    createConflict: 'This item has already been created.',
+    createConflict: item => `This ${item} has already been created.`,
   },
 
   sessionExpired: 'Your session has expired.',

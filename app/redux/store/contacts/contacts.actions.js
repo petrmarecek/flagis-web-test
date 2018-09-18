@@ -4,6 +4,7 @@ export const CONTACTS = {
   FETCH: 'CONTACTS/FETCH',
   CREATE: 'CONTACTS/CREATE',
   ADD: 'CONTACTS/ADD',
+  REPLACE: 'CONTACTS/REPLACE',
   SELECT: 'CONTACTS/SELECT',
   DESELECT: 'CONTACTS/DESELECT',
   UPDATE: 'CONTACTS/UPDATE',
@@ -24,8 +25,17 @@ export const createContact = email => ({
 
 export const addContact = contact => ({
   type: CONTACTS.ADD,
-  payload: contact ,
+  payload: contact,
   meta: { schema: schema.contact }
+})
+
+export const replaceContact = (originalContactId, contact, relatedTaskId) => ({
+  type: CONTACTS.REPLACE,
+  payload: {
+    originalContactId,
+    contact,
+    relatedTaskId,
+  }
 })
 
 export const selectContact = contactId => ({

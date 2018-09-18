@@ -52,6 +52,7 @@ export default function* root() {
     takeLatest(TASKS.SET_ARCHIVE, task.setArchiveTasks),
     takeLatest(TASKS.CANCEL_ARCHIVE, task.cancelArchiveTasks),
     takeEvery(TASKS.ADD_TASK_TAG, task.addTaskTag),
+    takeEvery(TASKS.ADD_TASK_CONTACT, task.addTaskContact),
     takeEvery(TASKS.REMOVE_TASK_TAG, task.removeTaskTag),
     takeEvery(TASKS.ADD_REMOVE_TASK_TAGS, task.addRemoveTaskTags),
     takeEvery(TASKS.SELECT, task.selectTask),

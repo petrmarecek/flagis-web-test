@@ -288,7 +288,7 @@ export const TreeItem = Record({
   tag: null
 })
 
-export const Contacts = Record({
+export const Contact = Record({
   id: null,
   email: null,
   nickname: '',

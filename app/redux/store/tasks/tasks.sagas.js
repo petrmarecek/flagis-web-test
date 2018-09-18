@@ -9,6 +9,7 @@ import * as appStateActions from 'redux/store/app-state/app-state.actions'
 import * as taskActions from 'redux/store/tasks/tasks.actions'
 import * as tagsActions from 'redux/store/tags/tags.actions'
 import * as taskMenuActions from 'redux/store/tasks-menu/tasks-menu.actions'
+import * as contactActions from 'redux/store/contacts/contacts.actions'
 import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'
 import * as authSelectors from 'redux/store/auth/auth.selectors'
 import * as entitiesSelectors from 'redux/store/entities/entities.selectors'
@@ -535,6 +536,29 @@ export function* addRemoveTaskTags(action) {
   }
 }
 
+export function* addTaskContact(action) {
+  const { taskId, contact } = action.payload
+
+  try {
+    // TODO: add contact to task
+
+    // Create new contact
+    if (contact.isNew) {
+      const email = contact.email
+      const data = { email }
+      const serverContact = yield call(api.contacts.create, data)
+
+      // Add contact to search index
+      search.contacts.addItem(serverContact)
+
+      // Replace contact in store
+      yield put(contactActions.replaceContact(contact.id, serverContact, taskId))
+    }
+  } catch(err) {
+    console.error(err)
+    // TODO: revert to original state
+  }
+}
 
 // ------ HELPER FUNCTIONS ----------------------------------------------------
 

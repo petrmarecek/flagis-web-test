@@ -7,6 +7,8 @@ import { toast } from 'react-toastify'
 import { errorMessages } from 'utils/messages'
 import constants from 'utils/constants'
 import commonUtils from 'redux/utils/common'
+import { validateAddContact } from 'redux/utils/validate'
+import { isObjectEmpty } from 'redux/utils/component-helper'
 
 /* eslint react/prop-types: 0 */
 
@@ -173,25 +175,47 @@ const withAutocompleteInput = WrappedComponent => {
         tags: item.title,
         contacts: item.email,
       })
+      const itemType = {
+        tags: 'title',
+        contacts: 'email',
+      }
       const { hintsData, selectIndex, value, inputRef } = this.state
       const { location, parentId, dataType, validationItems, onBlurTagTree } = this.props
       const isNewHint = hintsData[dataType].length === 0
       let hint = hintsData[dataType][selectIndex]
       const context = { isNewHint, parentId }
       const hintValue = isNewHint ? value : itemValue(hint)[dataType]
+      const hintType = dataType.slice(0, dataType.length - 1)
 
+      // Email validation of new contact
+      if (isNewHint && dataType === 'contacts') {
+        const values = { email: value }
+        const validation = validateAddContact(values)
+
+        if (!isObjectEmpty(validation)) {
+          toast.error(validation.email, {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: constants.NOTIFICATION_ERROR_DURATION,
+          })
+
+          return
+        }
+      }
+
+      // Validation existing item(tag, contact) of new item
       if (isNewHint && validationItems.includes(hintValue.toLowerCase())) {
-        toast.error(errorMessages.autocomplete.createConflict, {
+        toast.error(errorMessages.autocomplete.createConflict(hintType), {
           position: toast.POSITION.BOTTOM_RIGHT,
           autoClose: constants.NOTIFICATION_ERROR_DURATION,
         })
+
         return
       }
 
       if (isNewHint) {
         hint = {
           id: commonUtils.clientUid(),
-          title: value,
+          [itemType[dataType]]: value,
           isNew: isNewHint
         }
       }

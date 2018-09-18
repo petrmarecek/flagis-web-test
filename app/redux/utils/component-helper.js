@@ -186,3 +186,8 @@ export function markdownToHTML(markdown) {
   const converter = new showdown.Converter()
   return converter.makeHtml(markdown)
 }
+
+export function isObjectEmpty(obj) {
+  /*eslint-disable prefer-reflect */
+  return Object.getOwnPropertyNames(obj).length === 0
+}
