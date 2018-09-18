@@ -145,7 +145,9 @@ const withAutocompleteInput = WrappedComponent => {
       })
 
       const hintsData = {
-        [dataType]: hints[dataType].filter(item => itemValue(item)[dataType].startsWith(value))
+        [dataType]: hints[dataType].filter(item =>
+          itemValue(item)[dataType].toLowerCase().startsWith(value.toLowerCase())
+        )
       }
 
       this.setState({ hintsData, value, selectIndex: 0 })
