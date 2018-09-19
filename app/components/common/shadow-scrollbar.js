@@ -8,14 +8,25 @@ export default class ShadowScrollbar extends PureComponent {
   static propTypes = {
     style: PropTypes.object,
     verticalStyle: PropTypes.object,
+    addScrollRef: PropTypes.func,
+  }
+
+  state = {
+    scrollbars: null,
   }
 
   getScrollbars() {
-    const { verticalStyle, ...props } = this.props
+    const { verticalStyle, addScrollRef, ...props } = this.props
     return verticalStyle
       ? (
         <Scrollbars
-          ref="scrollbars"
+          ref={ref => {
+            this.setState({ scrollbars: ref })
+
+            if (addScrollRef) {
+              addScrollRef(ref)
+            }
+          }}
           renderThumbVertical={scrollProps => <div {...scrollProps} style={verticalStyle} />}
           onDragEnter={this.handleDrag}
           onUpdate={this.handleUpdate}
@@ -23,7 +34,13 @@ export default class ShadowScrollbar extends PureComponent {
       )
       : (
         <Scrollbars
-          ref="scrollbars"
+          ref={ref => {
+            this.setState({ scrollbars: ref })
+
+            if (addScrollRef) {
+              addScrollRef(ref)
+            }
+          }}
           onDragEnter={this.handleDrag}
           onUpdate={this.handleUpdate}
           {...props}/>
@@ -41,7 +58,7 @@ export default class ShadowScrollbar extends PureComponent {
   }
 
   handleDrag = values => {
-    const { scrollbars } = this.refs
+    const { scrollbars } = this.state
     // Position of tasks list
     const { left, top, right, bottom } = findDOMNode(scrollbars).getBoundingClientRect()
     // Current position of mouse

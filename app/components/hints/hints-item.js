@@ -4,8 +4,18 @@ import { withHandlers } from 'recompose'
 
 import { Hint } from './styles'
 
-const HintsItem = ({ hint, dataType, selected, onHandleMouseOver, onHandleClickItem, onHandleKeyDown }) => {
- const itemValue = item => ({
+const HintsItem = props => {
+  const {
+    hint,
+    dataType,
+    selected,
+    getHintRef,
+    onHandleMouseOver,
+    onHandleClickItem,
+    onHandleKeyDown
+  } = props
+
+  const itemValue = item => ({
     tags: item.title,
     contacts: !item.nickname ? item.email : item.nickname,
   })
@@ -13,6 +23,7 @@ const HintsItem = ({ hint, dataType, selected, onHandleMouseOver, onHandleClickI
   return (
     <Hint
       key={hint.id}
+      innerRef={ref => getHintRef(ref)}
       onMouseOver={onHandleMouseOver}
       onClick={onHandleClickItem}
       onKeyDown={onHandleKeyDown}
@@ -31,9 +42,16 @@ HintsItem.propTypes = {
   onSubmit: PropTypes.func,
   onHandleClickItem: PropTypes.func,
   onHandleKeyDown: PropTypes.func,
+  addHintRef: PropTypes.func,
+  getHintRef: PropTypes.func,
 }
 
 export default withHandlers({
   onHandleMouseOver: props => () => props.onMouseOver(props.index),
   onHandleClickItem: props => () => props.onSubmit(),
+  getHintRef: props => ref => {
+    if (props.selected) {
+      props.addHintRef(ref)
+    }
+  },
 })(HintsItem)

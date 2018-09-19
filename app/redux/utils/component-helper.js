@@ -2,6 +2,7 @@ import { List, Set } from 'immutable'
 import moment from 'moment'
 import showdown from 'showdown'
 import commonUtils from 'redux/utils/common'
+import constants from '../../utils/constants'
 
 export function getSelectionInfo(event, task, selectedTasks) {
   let isMultiSelection = false
@@ -190,4 +191,10 @@ export function markdownToHTML(markdown) {
 export function isObjectEmpty(obj) {
   /*eslint-disable prefer-reflect */
   return Object.getOwnPropertyNames(obj).length === 0
+}
+
+export const getHintDirectionRender = inputPositionTop => {
+  const topHeight = constants.WINDOW_HEIGHT - inputPositionTop
+  const maxHintsHeight = topHeight - constants.OFFSET
+  return maxHintsHeight <= constants.MIN_HINTS_HEIGHT ? 'bottomToTop' : 'topToBottom'
 }

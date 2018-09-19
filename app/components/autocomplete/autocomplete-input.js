@@ -1,16 +1,17 @@
 import React, {PureComponent} from 'react'
-import { createPortal } from 'react-dom'
+import PropTypes from 'prop-types'
+import { createPortal, findDOMNode } from 'react-dom'
 import domUtils from 'redux/utils/dom'
-import Hints from '../hints'
-import { Input } from './styles'
+import commonUtils from 'redux/utils/common'
+import { validateAddContact } from 'redux/utils/validate'
+import { isObjectEmpty, getHintDirectionRender } from 'redux/utils/component-helper'
 import { toast } from 'react-toastify'
 import { errorMessages } from 'utils/messages'
 import constants from 'utils/constants'
-import commonUtils from 'redux/utils/common'
-import { validateAddContact } from 'redux/utils/validate'
-import { isObjectEmpty } from 'redux/utils/component-helper'
 
-/* eslint react/prop-types: 0 */
+import Hints from '../hints'
+
+import { Input } from './styles'
 
 const getInputPosition = (location, ref) => {
   const position = domUtils.getOffset(ref)
@@ -25,6 +26,19 @@ const getInputPosition = (location, ref) => {
 const withAutocompleteInput = WrappedComponent => {
   return class WithAutocompleteInput extends PureComponent {
 
+    static propTypes = {
+      location: PropTypes.string,
+      dataType: PropTypes.string,
+      hints: PropTypes.object,
+      validationItems: PropTypes.object,
+      isAllowUpdate: PropTypes.bool,
+      placeholder: PropTypes.string,
+      parentId: PropTypes.string,
+      onBlurTagTree: PropTypes.func,
+      onAddInputRef: PropTypes.func,
+      hintSelected: PropTypes.func,
+    }
+
     state = {
       showHints: false,
       parentId: this.props.parentId,
@@ -33,6 +47,8 @@ const withAutocompleteInput = WrappedComponent => {
       selectIndex: 0,
       value: '',
       inputRef: null,
+      scrollRef: null,
+      hintRef: null,
     }
 
     getInputRef = ref => {
@@ -40,8 +56,29 @@ const withAutocompleteInput = WrappedComponent => {
       this.setState({ inputRef: ref })
     }
 
+    getScrollRef = ref => {
+      this.setState({ scrollRef: ref })
+    }
+
+    getHintRef = ref => {
+      this.setState({ hintRef: ref })
+    }
+
+    getViewPosition = (positionTop) => {
+      const directionRender = getHintDirectionRender(positionTop)
+      let top = positionTop + constants.TITLE_HEIGHT
+      let bottom = constants.WINDOW_HEIGHT - constants.OFFSET
+
+      if (directionRender === 'bottomToTop') {
+        top = constants.OFFSET - constants.TITLE_HEIGHT
+        bottom = positionTop - constants.TITLE_HEIGHT - constants.AUTOCOMPLETE_INPUT_HEIGHT
+      }
+
+      return { top, bottom }
+    }
+
     static getDerivedStateFromProps(props, state) {
-      const { hintsData, inputRef, value, parentId } = state
+      const { hintsData, inputRef, value, parentId, scrollRef } = state
       const { hints, dataType, isAllowUpdate, location } = props
 
       if (!isAllowUpdate) {
@@ -52,6 +89,7 @@ const withAutocompleteInput = WrappedComponent => {
         return null
       }
 
+      // Switch task in task-detail(tag-hints in task-detail)
       if (props.parentId !== parentId) {
         return ({
           hintsData: { [dataType]: hints[dataType] },
@@ -59,8 +97,13 @@ const withAutocompleteInput = WrappedComponent => {
         })
       }
 
+      // Show hints if hints were changed(tag-hints in task-detail)
       if ((hints[dataType].length !== hintsData[dataType].length)) {
         inputRef.focus()
+
+        if (scrollRef) {
+          scrollRef.scrollToTop()
+        }
 
         return {
           showHints: true,
@@ -82,8 +125,10 @@ const withAutocompleteInput = WrappedComponent => {
         contacts: item.email,
       })
 
+      // Filter hints by value of input
       const hintsData = {
-        [dataType]: hints[dataType].filter(item => itemValue(item)[dataType].startsWith(value))
+        [dataType]: hints[dataType]
+          .filter(item => itemValue(item)[dataType].toLowerCase().startsWith(value.toLowerCase()))
       }
 
       this.setState({
@@ -100,8 +145,14 @@ const withAutocompleteInput = WrappedComponent => {
     }
 
     onHandleKeyDown = event => {
-      const { selectIndex, inputRef, hintsData } = this.state
+      const { showHints, selectIndex, inputRef, scrollRef, hintRef, hintsData, position } = this.state
       const { dataType, onBlurTagTree } = this.props
+      if (!showHints) {
+        return
+      }
+
+      const viewPosition = this.getViewPosition(position.top)
+      const hintPosition = findDOMNode(hintRef).getBoundingClientRect()
       const hintsLength = hintsData[dataType].length - 1
       let index = selectIndex
 
@@ -125,11 +176,39 @@ const withAutocompleteInput = WrappedComponent => {
 
         // arrow up key
         case 38:
+
+          // Scrollbar is showed
+          if (scrollRef !== null) {
+            // if hint isn't showed, scroll top
+            if ((hintPosition.top - constants.HINT_HEIGHT) < viewPosition.top) {
+              scrollRef.view.scrollTop -= constants.HINT_HEIGHT
+            }
+
+            // if selectindex is 0, scroll to top
+            if (index === 0) {
+              scrollRef.scrollToBottom()
+            }
+          }
+
           this.setState({ selectIndex: index === 0 ? hintsLength : --index })
           return
 
         // arrow down key
         case 40:
+
+          // Scrollbar is showed
+          if (scrollRef !== null) {
+            // if hint isn't showed, scroll bottom
+            if ((hintPosition.bottom + constants.HINT_HEIGHT) > viewPosition.bottom) {
+              scrollRef.view.scrollTop += constants.HINT_HEIGHT
+            }
+
+            // if selectindex is max, scroll to bottom
+            if (index === hintsLength) {
+              scrollRef.scrollToTop()
+            }
+          }
+
           this.setState({ selectIndex: index === hintsLength ? 0 : ++index })
           return
 
@@ -146,10 +225,10 @@ const withAutocompleteInput = WrappedComponent => {
         contacts: item.email,
       })
 
+      // Filter hints by value of input
       const hintsData = {
-        [dataType]: hints[dataType].filter(item =>
-          itemValue(item)[dataType].toLowerCase().startsWith(value.toLowerCase())
-        )
+        [dataType]: hints[dataType]
+          .filter(item => itemValue(item)[dataType].toLowerCase().startsWith(value.toLowerCase()))
       }
 
       this.setState({ hintsData, value, selectIndex: 0 })
@@ -159,8 +238,10 @@ const withAutocompleteInput = WrappedComponent => {
       const { inputRef } = this.state
       const { onBlurTagTree } = this.props
 
+      // Click to input
       if (event.target === inputRef) {
         inputRef.focus()
+
         return
       }
 
@@ -212,6 +293,7 @@ const withAutocompleteInput = WrappedComponent => {
         return
       }
 
+      // Data of new item
       if (isNewHint) {
         hint = {
           id: commonUtils.clientUid(),
@@ -220,10 +302,13 @@ const withAutocompleteInput = WrappedComponent => {
         }
       }
 
+      // Select Hint
       this.props.hintSelected(location, context, hint)
 
-      inputRef.value = ''
+      // Reset state
       this.setState({ showHints: false, value: '' })
+      inputRef.value = ''
+      inputRef.blur()
       if (onBlurTagTree) {
         onBlurTagTree()
       }
@@ -233,6 +318,8 @@ const withAutocompleteInput = WrappedComponent => {
       return (
         <WrappedComponent
           getInputRef={this.getInputRef}
+          getScrollRef={this.getScrollRef}
+          getHintRef={this.getHintRef}
           onHandleFocus={this.onHandleFocus}
           onHandleSelectIndex={this.onHandleSelectIndex}
           onHandleKeyDown={this.onHandleKeyDown}
@@ -248,34 +335,76 @@ const withAutocompleteInput = WrappedComponent => {
 }
 
 const AutocompleteInput = props => {
+  const {
+    hintsData,
+    dataType,
+    position,
+    value,
+    selectIndex,
+    showHints,
+    location,
+    placeholder,
+    getInputRef,
+    getScrollRef,
+    getHintRef,
+    onHandleFocus,
+    onHandleKeyDown,
+    onHandleChange,
+    onHandleSelectIndex,
+    onHandleClickOutside,
+    onHandleSubmit,
+  } = props
+
   const hintsElement = document.getElementById('floating-components-hints')
   const hints = (
     <Hints
-      hints={props.hintsData}
-      dataType={props.dataType}
-      position={props.position}
-      value={props.value}
-      selectIndex={props.selectIndex}
-      onSelectIndex={props.onHandleSelectIndex}
-      onHandleClickOutside={props.onHandleClickOutside}
-      onSubmit={props.onHandleSubmit} />
+      hints={hintsData}
+      dataType={dataType}
+      position={position}
+      value={value}
+      selectIndex={selectIndex}
+      addScrollRef={getScrollRef}
+      addHintRef={getHintRef}
+      onSelectIndex={onHandleSelectIndex}
+      onHandleClickOutside={onHandleClickOutside}
+      onSubmit={onHandleSubmit} />
   )
 
   return (
     <div>
       <Input
-        innerRef={ref => { props.getInputRef(ref) }}
+        innerRef={ref => getInputRef(ref)}
         type="text"
         autoComplete="off"
-        size={props.location === 'taskDetailTags' ? 5 : 10}
-        placeholder={props.placeholder}
-        onFocus={props.onHandleFocus}
-        onKeyDown={props.onHandleKeyDown}
-        onChange={props.onHandleChange}
-        mainSearch={props.location === 'mainSearch'} />
-      {hintsElement && props.showHints && createPortal(hints, hintsElement)}
+        size={location === 'taskDetailTags' ? 5 : 10}
+        placeholder={placeholder}
+        onFocus={onHandleFocus}
+        onKeyDown={onHandleKeyDown}
+        onChange={onHandleChange}
+        mainSearch={location === 'mainSearch'} />
+      {hintsElement && showHints && createPortal(hints, hintsElement)}
     </div>
   )
+}
+
+AutocompleteInput.propTypes = {
+  hintsData: PropTypes.object,
+  dataType: PropTypes.string,
+  position: PropTypes.object,
+  value: PropTypes.string,
+  selectIndex: PropTypes.number,
+  showHints: PropTypes.bool,
+  location: PropTypes.string,
+  placeholder: PropTypes.string,
+  getInputRef: PropTypes.func,
+  getScrollRef: PropTypes.func,
+  getHintRef: PropTypes.func,
+  onHandleFocus: PropTypes.func,
+  onHandleKeyDown: PropTypes.func,
+  onHandleChange: PropTypes.func,
+  onHandleSelectIndex: PropTypes.func,
+  onHandleClickOutside: PropTypes.func,
+  onHandleSubmit: PropTypes.func,
 }
 
 export default withAutocompleteInput(AutocompleteInput)
