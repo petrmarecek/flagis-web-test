@@ -8,6 +8,9 @@ import * as treeActions from 'redux/store/tree/tree.actions'
 import * as contactActions from 'redux/store/contacts/contacts.actions'
 import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'
 import * as tagSelectors from 'redux/store/tags/tags.selectors'
+import { toast } from 'react-toastify'
+import { errorMessages } from 'utils/messages'
+import constants from 'utils/constants'
 
 export function* defaultDisplay() {
   const isArchivedTask = select(state => appStateSelectors.getArchivedTasksVisibility(state))
@@ -36,6 +39,11 @@ export function* hintSelected(action) {
   // Hint selected in main search
   if (location === 'mainSearch') {
     if (isNewHint) {
+      toast.error(errorMessages.autocomplete.notAllowedCreate, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: constants.NOTIFICATION_ERROR_DURATION,
+      })
+
       return
     }
 
