@@ -1,12 +1,11 @@
 import React from 'react'
-import { compose, lifecycle, withStateHandlers } from 'recompose'
+import { compose, lifecycle, withHandlers } from 'recompose'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { List } from 'immutable'
 import { Field, reduxForm } from 'redux-form/immutable'
 
-import { deselectError, visibleLoader } from 'redux/store/app-state/app-state.actions'
+import { visibleLoader } from 'redux/store/app-state/app-state.actions'
 import { getAppStateItem, getLoader } from 'redux/store/app-state/app-state.selectors'
 import { controlRedirectTasks, signUp } from 'redux/store/auth/auth.actions'
 import { validateSignUp } from 'redux/utils/validate'
@@ -29,7 +28,7 @@ import {
   FormRow,
 } from '../../components/styled-components-mixins/'
 
-const SignUp = ({ errorMessage, loader, location, handleSubmit, onSubmit }) => (
+const SignUp = ({ errorSignUp, loader, location, handleSubmit, onSubmit }) => (
   <div className="landing-container">
     <NavigationLanding location={location}/>
     <Form>
@@ -37,18 +36,17 @@ const SignUp = ({ errorMessage, loader, location, handleSubmit, onSubmit }) => (
         <FormBodyFields>
           <FormErrors>
             <ErrorList>
-              {errorMessage.map((string, i) => (
-                <ErrorListItem key={i}>
-                  <ErrorListItemText key={i}>
-                    {string}
-                  </ErrorListItemText>
-                  <ErrorListItemIcon
-                    icon={ICONS.ERROR}
-                    width={12}
-                    height={14}
-                    color={["red"]}/>
-                </ErrorListItem>
-              ))}
+              {errorSignUp.message &&
+              <ErrorListItem>
+                <ErrorListItemText>
+                  {errorSignUp.message}
+                </ErrorListItemText>
+                <ErrorListItemIcon
+                  icon={ICONS.ERROR}
+                  width={12}
+                  height={14}
+                  color={["red"]}/>
+              </ErrorListItem>}
             </ErrorList>
           </FormErrors>
           <FormRow>
@@ -113,12 +111,10 @@ const SignUp = ({ errorMessage, loader, location, handleSubmit, onSubmit }) => (
 )
 
 SignUp.propTypes = {
-  errorMessage: PropTypes.object,
   errorSignUp: PropTypes.object,
   loader: PropTypes.bool,
   handleSubmit: PropTypes.func.isRequired,
   onSubmit: PropTypes.func,
-  onControlError: PropTypes.func,
   location: PropTypes.shape({
     pathname: PropTypes.string.isRequired,
   }).isRequired,
@@ -131,7 +127,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   signUp,
-  deselectError,
   visibleLoader,
   controlRedirectTasks,
 }
@@ -142,43 +137,28 @@ export default compose(
     form: 'signUp',
     validate: validateSignUp,
   }),
-  withStateHandlers(
-    () => ({ errorMessage: List() }),
-    {
-      onSubmit: ({ errorMessage }, props) => values => {
-        const numberCharacter = '/sign-up/'.length
-        const token = props.location.pathname.substring(numberCharacter)
-        const data = {
-          email: values.get('email'),
-          password: values.get('newPassword'),
-          firstName: values.get('firstName'),
-          lastName: values.get('lastName'),
-        }
-
-        if (token.length !== 0) {
-          data.token = token
-        }
-
-        props.visibleLoader()
-        props.signUp(data)
-        return { errorMessage: errorMessage.clear() }
-      },
-      onControlError: ({ errorMessage }, props) => () => {
-        if (props.errorSignUp.error) {
-          props.deselectError('signUp')
-          return { errorMessage: errorMessage.push(props.errorSignUp.message) }
-        }
-
-        return errorMessage
+  withHandlers({
+    onSubmit: props => values => {
+      const numberCharacter = '/sign-up/'.length
+      const token = props.location.pathname.substring(numberCharacter)
+      const data = {
+        email: values.get('email'),
+        password: values.get('newPassword'),
+        firstName: values.get('firstName'),
+        lastName: values.get('lastName'),
       }
-    }
-  ),
+
+      if (token.length !== 0) {
+        data.token = token
+      }
+
+      props.visibleLoader()
+      props.signUp(data)
+    },
+  }),
   lifecycle({
     componentWillMount() {
       this.props.controlRedirectTasks()
     },
-    componentWillReceiveProps() {
-      this.props.onControlError()
-    }
   })
 )(SignUp)

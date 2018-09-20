@@ -48,7 +48,7 @@ const TasksMenuSort = ({ tasksMenu, sortRef, getSortRef, onHandleClick, onHandle
   return (
     <TasksMenuItem
       id='tasksMenuItemSort'
-      innerRef={ref => getSortRef(ref)}
+      innerRef={getSortRef}
       onClick={onHandleClick} >
       <Icon
         icon={icon}

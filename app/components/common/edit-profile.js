@@ -1,11 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { List } from 'immutable'
 import { Field, reduxForm } from 'redux-form/immutable'
 import { connect } from 'react-redux'
-import { compose, withStateHandlers, lifecycle } from 'recompose'
+import { compose, withHandlers } from 'recompose'
 
-import { deselectError, visibleLoader } from 'redux/store/app-state/app-state.actions'
+import { visibleLoader } from 'redux/store/app-state/app-state.actions'
 import { getChangeNameForm, getLoader } from 'redux/store/app-state/app-state.selectors'
 import { changeName } from 'redux/store/auth/auth.actions'
 import { getUsername } from 'redux/store/auth/auth.selectors'
@@ -28,24 +27,23 @@ import {
   FormRow,
 } from '../styled-components-mixins/'
 
-const EditProfile = ({ errorMessage, loader, handleSubmit, onSubmit }) => (
+const EditProfile = ({ errorChangeName, loader, handleSubmit, onSubmit }) => (
   <Form>
     <FormBody onSubmit={handleSubmit(values => onSubmit(values))}>
       <FormBodyFields>
         <FormErrors>
           <ErrorList>
-            {errorMessage.map((string, i) => (
-              <ErrorListItem key={i}>
-                <ErrorListItemText key={i}>
-                  {string}
+            {errorChangeName.message &&
+              <ErrorListItem>
+                <ErrorListItemText>
+                  {errorChangeName.message}
                 </ErrorListItemText>
                 <ErrorListItemIcon
                   icon={ICONS.ERROR}
                   width={12}
                   height={14}
                   color={["red"]}/>
-              </ErrorListItem>
-            ))}
+              </ErrorListItem>}
           </ErrorList>
         </FormErrors>
         <FormRow>
@@ -80,23 +78,20 @@ const EditProfile = ({ errorMessage, loader, handleSubmit, onSubmit }) => (
 )
 
 EditProfile.propTypes = {
-  errorMessage: PropTypes.object,
   errorChangeName: PropTypes.object,
   loader: PropTypes.bool,
   handleSubmit: PropTypes.func,
   onSubmit: PropTypes.func,
-  onControlError: PropTypes.func,
 }
 
 const mapStateToProps = state => ({
   errorChangeName: getChangeNameForm(state),
   loader: getLoader(state),
-  initialValues: getUsername(state),
+  initialValues: getUsername(state)
 })
 
 const mapDispatchToProps = {
   changeName,
-  deselectError,
   visibleLoader,
 }
 
@@ -107,31 +102,13 @@ export default compose(
     validate: validateChangeName,
     enableReinitialize: true,
   }),
-  withStateHandlers(
-    () => ({ errorMessage: List() }),
-    {
-      onSubmit: ({ errorMessage }, props) => values => {
-        props.visibleLoader()
-        props.changeName({
-          firstName: values.get('firstName'),
-          lastName: values.get('lastName'),
-        })
-
-        return { errorMessage: errorMessage.clear() }
-      },
-      onControlError: ({ errorMessage }, props) => () => {
-        if (props.errorChangeName.error) {
-          props.deselectError('changeName')
-          return { errorMessage: errorMessage.push(props.errorChangeName.message) }
-        }
-
-        return errorMessage
-      }
-    }
-  ),
-  lifecycle({
-    componentWillReceiveProps() {
-      this.props.onControlError()
-    }
-  })
+  withHandlers({
+    onSubmit: props => values => {
+      props.visibleLoader()
+      props.changeName({
+        firstName: values.get('firstName'),
+        lastName: values.get('lastName'),
+      })
+    },
+  }),
 )(EditProfile)

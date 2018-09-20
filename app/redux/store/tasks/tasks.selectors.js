@@ -350,7 +350,6 @@ export const getSelectTasks = createSelector(
   getTimeLine,
   getEntitiesTasks,
   getEntitiesTags,
-  getEntitiesTags,
   getEntitiesContacts,
   getActiveTagsIds,
   (selectionTasks, tasksMenu, timeLine, entitiesTasks, entitiesTags, entitiesContacts, activeTagsIds) => {

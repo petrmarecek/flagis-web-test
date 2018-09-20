@@ -1,11 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { List } from 'immutable'
 import { Field, reduxForm } from 'redux-form/immutable'
 import { connect } from 'react-redux'
-import { compose, withStateHandlers, lifecycle } from 'recompose'
+import { compose, withHandlers } from 'recompose'
 
-import { deselectError, visibleLoader } from 'redux/store/app-state/app-state.actions'
+import { visibleLoader } from 'redux/store/app-state/app-state.actions'
 import { getChangePasswordForm, getLoader } from 'redux/store/app-state/app-state.selectors'
 import { changePassword } from 'redux/store/auth/auth.actions'
 import { validateChangePassword } from 'redux/utils/validate'
@@ -28,24 +27,23 @@ import {
   FormRow,
 } from '../styled-components-mixins/'
 
-const ChangePassword = ({ errorMessage, loader, handleSubmit, onSubmit }) => (
+const ChangePassword = ({ errorChangePassword, loader, handleSubmit, onSubmit }) => (
   <Form>
     <FormBody onSubmit={handleSubmit(values => onSubmit(values))}>
       <FormBodyFields>
         <FormErrors>
           <ErrorList>
-            {errorMessage.map((string, i) => (
-              <ErrorListItem key={i}>
-                <ErrorListItemText key={i}>
-                  {string}
-                </ErrorListItemText>
-                <ErrorListItemIcon
-                  icon={ICONS.ERROR}
-                  width={12}
-                  height={14}
-                  color={["red"]}/>
-              </ErrorListItem>
-            ))}
+            {errorChangePassword.message &&
+            <ErrorListItem>
+              <ErrorListItemText>
+                {errorChangePassword.message}
+              </ErrorListItemText>
+              <ErrorListItemIcon
+                icon={ICONS.ERROR}
+                width={12}
+                height={14}
+                color={["red"]}/>
+            </ErrorListItem>}
           </ErrorList>
         </FormErrors>
         <FormRow>
@@ -88,12 +86,10 @@ const ChangePassword = ({ errorMessage, loader, handleSubmit, onSubmit }) => (
 )
 
 ChangePassword.propTypes = {
-  errorMessage: PropTypes.object,
   errorChangePassword: PropTypes.object,
   loader: PropTypes.bool,
   handleSubmit: PropTypes.func,
   onSubmit: PropTypes.func,
-  onControlError: PropTypes.func,
 }
 
 const mapStateToProps = state => ({
@@ -103,7 +99,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   changePassword,
-  deselectError,
   visibleLoader,
 }
 
@@ -114,31 +109,13 @@ export default compose(
     validate: validateChangePassword,
     onSubmitSuccess: afterSubmitChangePassword,
   }),
-  withStateHandlers(
-    () => ({ errorMessage: List() }),
-    {
-      onSubmit: ({ errorMessage }, props) => values => {
-        props.visibleLoader()
-        props.changePassword({
-          oldPassword: values.get('oldPassword'),
-          newPassword: values.get('newPassword'),
-        })
-
-        return { errorMessage: errorMessage.clear() }
-      },
-      onControlError: ({ errorMessage }, props) => () => {
-        if (props.errorChangePassword.error) {
-          props.deselectError('changePassword')
-          return { errorMessage: errorMessage.push(props.errorChangePassword.message) }
-        }
-
-        return errorMessage
-      }
-    }
-  ),
-  lifecycle({
-    componentWillReceiveProps() {
-      this.props.onControlError()
-    }
-  })
+  withHandlers({
+    onSubmit: props => values => {
+      props.visibleLoader()
+      props.changePassword({
+        oldPassword: values.get('oldPassword'),
+        newPassword: values.get('newPassword'),
+      })
+    },
+  }),
 )(ChangePassword)
