@@ -27,12 +27,12 @@ const AddField = props => {
 
   return (
     <AddFieldStyle
-        id={id}
-        type={type}
-        value={value}
-        placeholder={placeholder}
-        onChange={onChange}
-        isError={(touched && error)}/>
+      id={id}
+      type={type}
+      value={value}
+      placeholder={placeholder}
+      onChange={onChange}
+      isError={(touched && error)}/>
   )
 }
 

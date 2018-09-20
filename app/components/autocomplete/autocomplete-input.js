@@ -1,5 +1,6 @@
 import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types'
+import { Map } from 'immutable'
 import { createPortal, findDOMNode } from 'react-dom'
 import domUtils from 'redux/utils/dom'
 import commonUtils from 'redux/utils/common'
@@ -270,7 +271,7 @@ const withAutocompleteInput = WrappedComponent => {
 
       // Email validation of new contact
       if (isNewHint && dataType === 'contacts') {
-        const values = { email: value }
+        const values = Map().set('email', value)
         const validation = validateAddContact(values)
 
         if (!isObjectEmpty(validation)) {

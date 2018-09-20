@@ -6,19 +6,9 @@ import { connect } from 'react-redux'
 import { List } from 'immutable'
 import { Field, reduxForm } from 'redux-form/immutable'
 
-import {
-  deselectError,
-  visibleLoader,
-} from 'redux/store/app-state/app-state.actions'
-import {
-  getAppStateItem,
-  getLoader,
-} from 'redux/store/app-state/app-state.selectors'
-import {
-  controlRedirectTasks,
-  signUpInvitation,
-  signUp,
-} from 'redux/store/auth/auth.actions'
+import { deselectError, visibleLoader } from 'redux/store/app-state/app-state.actions'
+import { getAppStateItem, getLoader } from 'redux/store/app-state/app-state.selectors'
+import { controlRedirectTasks, signUpInvitation, signUp } from 'redux/store/auth/auth.actions'
 import { validateSignUp } from 'redux/utils/validate'
 
 import NavigationLanding from 'components/navigation/navigation-landing'
@@ -165,9 +155,10 @@ export default compose(
         if (token.length !== 0) {
           props.signUpInvitation({
             token,
-            password: values.newPassword,
-            firstName: values.firstName,
-            lastName: values.lastName,
+            email: values.get('email'),
+            password: values.get('newPassword'),
+            firstName: values.get('firstName'),
+            lastName: values.get('lastName'),
           })
 
           return { errorMessage: errorMessage.clear() }
@@ -175,10 +166,10 @@ export default compose(
 
         // sign-up
         props.signUp({
-          email: values.email,
-          password: values.newPassword,
-          firstName: values.firstName,
-          lastName: values.lastName,
+          email: values.get('email'),
+          password: values.get('newPassword'),
+          firstName: values.get('firstName'),
+          lastName: values.get('lastName'),
         })
 
         return { errorMessage: errorMessage.clear() }

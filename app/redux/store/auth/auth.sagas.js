@@ -238,36 +238,13 @@ function* setTokens({ accessToken, firebaseToken }) {
 
 function* authorizeUser(authApiCall, action) {
   const { PENDING, FULFILLED, REJECTED } = createLoadActions(AUTH.LOGIN)
+  const { payload } = action
 
   try {
     yield put({ type: PENDING, payload: action.payload })
 
-    // prepare data
-    let requestBody = {
-      email: action.payload.email,
-      password: action.payload.password
-    }
-
-    if (action.payload.firstName) {
-      requestBody = {
-        email: action.payload.email,
-        password: action.payload.password,
-        firstName: action.payload.firstName,
-        lastName: action.payload.lastName,
-      }
-    }
-
-    if (action.payload.token) {
-      requestBody = {
-        token: action.payload.token,
-        password: action.payload.password,
-        firstName: action.payload.firstName,
-        lastName: action.payload.lastName,
-      }
-    }
-
     // call server
-    const auth = yield call(authApiCall, requestBody)
+    const auth = yield call(authApiCall, payload)
 
     // set access token and firebase token
     yield call(setTokens, auth)

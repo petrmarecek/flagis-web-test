@@ -120,8 +120,8 @@ export default compose(
       onSubmit: ({ errorMessage }, props) => values => {
         props.visibleLoader()
         props.changePassword({
-          oldPassword: values.oldPassword,
-          newPassword: values.newPassword,
+          oldPassword: values.get('oldPassword'),
+          newPassword: values.get('newPassword'),
         })
 
         return { errorMessage: errorMessage.clear() }

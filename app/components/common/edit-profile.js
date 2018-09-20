@@ -105,6 +105,7 @@ export default compose(
   reduxForm({
     form: 'changeName',
     validate: validateChangeName,
+    enableReinitialize: true,
   }),
   withStateHandlers(
     () => ({ errorMessage: List() }),
@@ -112,8 +113,8 @@ export default compose(
       onSubmit: ({ errorMessage }, props) => values => {
         props.visibleLoader()
         props.changeName({
-          firstName: values.firstName,
-          lastName: values.lastName,
+          firstName: values.get('firstName'),
+          lastName: values.get('lastName'),
         })
 
         return { errorMessage: errorMessage.clear() }

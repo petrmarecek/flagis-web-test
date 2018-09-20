@@ -6,10 +6,7 @@ import { Field, reduxForm } from 'redux-form/immutable'
 
 import { visibleLoader } from 'redux/store/app-state/app-state.actions'
 import { getLoader } from 'redux/store/app-state/app-state.selectors'
-import {
-  controlRedirectTasks,
-  emailResetPassword
-} from 'redux/store/auth/auth.actions'
+import { controlRedirectTasks, emailResetPassword } from 'redux/store/auth/auth.actions'
 import { validateEmailResetPassword } from 'redux/utils/validate'
 
 import NavigationLanding from 'components/navigation/navigation-landing'
@@ -38,7 +35,7 @@ class EmailResetPassword extends PureComponent {
   }
 
   onSubmit = values => {
-    this.props.emailResetPassword({ email: values.email })
+    this.props.emailResetPassword({ email: values.get('email') })
     this.props.visibleLoader()
   }
 

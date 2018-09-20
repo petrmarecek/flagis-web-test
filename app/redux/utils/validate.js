@@ -17,9 +17,9 @@ const isName = text => (typeof text === 'string') && /^[A-Za-z]{1,32}$/i.test(te
 const validateEmail = values => {
   const errors = {}
 
-  if (!values.email) {
+  if (!values.get('email')) {
     errors.email = messages.requiredEmail
-  } else if (!isEmail(values.email)) {
+  } else if (!isEmail(values.get('email'))) {
     errors.email = messages.badEmail
   }
 
@@ -29,9 +29,9 @@ const validateEmail = values => {
 const validatePassword = values => {
   const errors = {}
 
-  if (!values.password) {
+  if (!values.get('password')) {
     errors.password = messages.requiredPassword
-  } else if (values.password.length < 8) {
+  } else if (values.get('password').length < 8) {
     errors.password = messages.shortPassword
   }
 
@@ -41,9 +41,9 @@ const validatePassword = values => {
 const validateConfirmPassword = values => {
   const errors = {}
 
-  if (!values.confirmPassword) {
+  if (!values.get('confirmPassword')) {
     errors.confirmPassword = messages.passwordNotMatch
-  } else if (values.newPassword !== values.confirmPassword) {
+  } else if (values.get('newPassword') !== values.get('confirmPassword')) {
     errors.confirmPassword = messages.passwordNotMatch
   }
 
@@ -53,9 +53,9 @@ const validateConfirmPassword = values => {
 const validateNewPassword = values => {
   const errors = {}
 
-  if (!values.newPassword) {
+  if (!values.get('newPassword')) {
     errors.newPassword = messages.requiredPassword
-  } else if (values.newPassword.length < 8) {
+  } else if (values.get('newPassword').length < 8) {
     errors.newPassword = messages.shortPassword
   }
 
@@ -65,7 +65,7 @@ const validateNewPassword = values => {
 const validateOldPassword = values => {
   const errors = {}
 
-  if (!values.oldPassword) {
+  if (!values.get('oldPassword')) {
     errors.oldPassword = messages.requiredEmail
   }
 
@@ -75,10 +75,10 @@ const validateOldPassword = values => {
 const validateFirstName = values => {
   const errors = {}
 
-  if (!values.firstName) {
+  if (!values.get('firstName')) {
     errors.firstName = messages.requiredFirstName
-  } else if (!isName(values.firstName)) {
-    errors.email = messages.badFirstName
+  } else if (!isName(values.get('firstName'))) {
+    errors.firstName = messages.badFirstName
   }
 
   return errors
@@ -87,10 +87,10 @@ const validateFirstName = values => {
 const validateLastName = values => {
   const errors = {}
 
-  if (!values.lastName) {
+  if (!values.get('lastName')) {
     errors.lastName = messages.requiredLastName
-  } else if (!isName(values.lastName)) {
-    errors.email = messages.badLastName
+  } else if (!isName(values.get('lastName'))) {
+    errors.lastName = messages.badLastName
   }
 
   return errors

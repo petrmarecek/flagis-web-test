@@ -82,7 +82,7 @@ const mapDispatchToProps = { createContact }
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withHandlers({
-    onSubmit: props => value => props.createContact(value.email)
+    onSubmit: props => value => props.createContact(value.get('email'))
   }),
   reduxForm({
     form: 'addContactForm',

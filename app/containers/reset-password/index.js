@@ -3,13 +3,11 @@ import { compose } from 'recompose'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form/immutable'
+import Logo from 'assets/img/logo.svg'
 
 import { visibleLoader } from 'redux/store/app-state/app-state.actions'
 import { getLoader } from 'redux/store/app-state/app-state.selectors'
-import {
-  controlRedirectTasks,
-  resetPassword,
-} from 'redux/store/auth/auth.actions'
+import { controlRedirectTasks, resetPassword } from 'redux/store/auth/auth.actions'
 import { validateResetPassword } from 'redux/utils/validate'
 
 import InputField from 'components/common/input-field'
@@ -42,7 +40,7 @@ class ResetPassword extends PureComponent {
     this.props.visibleLoader()
     this.props.resetPassword({
       resetToken: resetToken,
-      password: values.newPassword,
+      password: values.get('newPassword'),
     })
   }
 
@@ -52,7 +50,7 @@ class ResetPassword extends PureComponent {
         <nav className="navbar-landing">
           <div className="navbar-landing__flex-container navbar-landing__flex-container--flex-row">
             <div className="navbar-landing__logo">
-              <img src="../../assets/img/logo.svg"/>
+              <img src={Logo}/>
             </div>
           </div>
         </nav>

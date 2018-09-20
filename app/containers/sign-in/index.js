@@ -7,26 +7,17 @@ import { List } from 'immutable'
 import { Field, reduxForm } from 'redux-form/immutable'
 import { ToastContainer, style } from 'react-toastify'
 
-import {
-  deselectError,
-  visibleLoader,
-} from 'redux/store/app-state/app-state.actions'
-import {
-  getLoader,
-  getAppStateItem,
-} from 'redux/store/app-state/app-state.selectors'
-import {
-  controlRedirectTasks,
-  login,
-} from 'redux/store/auth/auth.actions'
+import { deselectError, visibleLoader } from 'redux/store/app-state/app-state.actions'
+import { getLoader, getAppStateItem } from 'redux/store/app-state/app-state.selectors'
+import { controlRedirectTasks, login } from 'redux/store/auth/auth.actions'
 import { getAuth } from 'redux/store/auth/auth.selectors'
 import { validateSignIn } from 'redux/utils/validate'
+
 import NavigationLanding from 'components/navigation/navigation-landing'
 import InputField from 'components/common/input-field'
 import Loader from 'components/common/loader'
-
-import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
+import { ICONS } from 'components/icons/icon-constants'
 
 class SignIn extends PureComponent {
 
@@ -78,11 +69,14 @@ class SignIn extends PureComponent {
       errorMessage: state.errorMessage.clear()
     }))
     this.props.visibleLoader()
-    this.props.login(values)
+    this.props.login({
+      email: values.get('email'),
+      password: values.get('password')
+    })
   }
 
   renderErrorMessage = () => {
-    const error = this.state.errorMessage.map((string, i) => {
+    return this.state.errorMessage.map((string, i) => {
       return (
         <li key={i} className="error-list-item">
           <div key={i} className="error-list-item__text">
@@ -97,7 +91,6 @@ class SignIn extends PureComponent {
         </li>
       )
     })
-    return error
   }
 
   render() {
