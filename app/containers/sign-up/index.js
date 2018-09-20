@@ -8,7 +8,7 @@ import { Field, reduxForm } from 'redux-form/immutable'
 
 import { deselectError, visibleLoader } from 'redux/store/app-state/app-state.actions'
 import { getAppStateItem, getLoader } from 'redux/store/app-state/app-state.selectors'
-import { controlRedirectTasks, signUpInvitation, signUp } from 'redux/store/auth/auth.actions'
+import { controlRedirectTasks, signUp } from 'redux/store/auth/auth.actions'
 import { validateSignUp } from 'redux/utils/validate'
 
 import NavigationLanding from 'components/navigation/navigation-landing'
@@ -130,7 +130,6 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  signUpInvitation,
   signUp,
   deselectError,
   visibleLoader,
@@ -149,29 +148,19 @@ export default compose(
       onSubmit: ({ errorMessage }, props) => values => {
         const numberCharacter = '/sign-up/'.length
         const token = props.location.pathname.substring(numberCharacter)
-
-        props.visibleLoader()
-        // sign-up by invitation
-        if (token.length !== 0) {
-          props.signUpInvitation({
-            token,
-            email: values.get('email'),
-            password: values.get('newPassword'),
-            firstName: values.get('firstName'),
-            lastName: values.get('lastName'),
-          })
-
-          return { errorMessage: errorMessage.clear() }
-        }
-
-        // sign-up
-        props.signUp({
+        const data = {
           email: values.get('email'),
           password: values.get('newPassword'),
           firstName: values.get('firstName'),
           lastName: values.get('lastName'),
-        })
+        }
 
+        if (token.length !== 0) {
+          data.token = token
+        }
+
+        props.visibleLoader()
+        props.signUp(data)
         return { errorMessage: errorMessage.clear() }
       },
       onControlError: ({ errorMessage }, props) => () => {

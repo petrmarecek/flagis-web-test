@@ -78,10 +78,9 @@ export function* authFlow() {
 
     // login or register
     if (!auth) {
-      const { login, register, registerInvitation } = yield race({
+      const { login, register } = yield race({
         login: take(AUTH.LOGIN),
         register: take(AUTH.SIGN_UP),
-        registerInvitation: take(AUTH.SIGN_UP_INVITATION),
       })
 
       if (login) {
@@ -90,10 +89,6 @@ export function* authFlow() {
 
       if (register) {
         auth = yield call(authorizeUser, api.users.create, register)
-      }
-
-      if (registerInvitation) {
-        auth = yield call(authorizeUser, api.invitation.accept, registerInvitation)
       }
 
       // if api return error on login or register

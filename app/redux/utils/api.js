@@ -48,12 +48,6 @@ export default {
       .then(res => res.data),
   },
 
-  invitation: {
-    accept: userData => api
-      .patch('invitation', userData)
-      .then(res => res.data),
-  },
-
   tasks: {
     list: () => api
       .get('tasks')
