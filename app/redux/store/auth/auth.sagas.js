@@ -110,6 +110,27 @@ export function* authFlow() {
   }
 }
 
+export function* initEmail(action) {
+  const { invitationId } = action.payload
+  try {
+    const { email } = yield call(api.invitation.email, invitationId)
+    const profile = {
+      id: 0,
+      email,
+      firstName: null,
+      lastName: null,
+      createdAt: null,
+      updatedAt: null
+    }
+
+    yield put(authActions.updateProfile(profile))
+  } catch (err) {
+    const redirectAction = push('/sign-in')
+    yield put(redirectAction)
+
+  }
+}
+
 export function* controlRedirectSignIn() {
   const auth = yield select(state => authSelectors.getAuth(state))
 

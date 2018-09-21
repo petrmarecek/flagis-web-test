@@ -78,7 +78,7 @@ export function* hintSelected(action) {
 
     // If contact is not yet defined, add it to the app
     if (isNewHint) {
-      hint.nickName = ''
+      hint.nickName = null
 
       yield put(contactActions.addContact(hint))
     }

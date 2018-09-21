@@ -291,11 +291,11 @@ export const TreeItem = Record({
 export const Contact = Record({
   id: null,
   email: null,
-  nickname: '',
+  nickname: null,
   description: null,
   createdAt: null,
   updatedAt: null,
   isUser: false,
   isEmailNotificationEnabled: true,
-  isInvitation: false,
+  isInvited: false,
 })

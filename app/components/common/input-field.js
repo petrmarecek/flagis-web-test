@@ -9,7 +9,8 @@ const InputField = props => {
     meta: { touched, error },
     label,
     id,
-    type
+    type,
+    disabled
   } = props
 
   const controlCss = cx({
@@ -26,6 +27,7 @@ const InputField = props => {
           className={controlCss}
           type={type}
           value={value}
+          disabled={disabled}
           onChange={onChange} />
         <label className="field__label" htmlFor={id}>{label}</label>
       </div>
@@ -39,6 +41,7 @@ InputField.propTypes = {
   meta: PropTypes.object.isRequired,
   type: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
+  disabled: PropTypes.bool,
 }
 
 export default InputField

@@ -21,6 +21,7 @@ const Container = styled.div`
 
 const Email = styled.div`
   font-size: 15px;
+  line-height: 16px;
   color: #8C9DA9;
   margin: 0 0 0 10px;
   max-width: 204px;

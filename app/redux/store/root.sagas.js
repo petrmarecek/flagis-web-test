@@ -31,6 +31,7 @@ export default function* root() {
     fork(auth.authFlow),
     fork(auth.initDataFlow),
     takeLatest(AUTH.CONTROL_REDIRECT_SIGN_IN, auth.controlRedirectSignIn),
+    takeLatest(AUTH.INIT_EMAIL, auth.initEmail),
     takeLatest(AUTH.CONTROL_REDIRECT_TASKS, auth.controlRedirectTasks),
     takeLatest(AUTH.CHANGE_NAME, auth.changeName),
     takeLatest(AUTH.CHANGE_PASSWORD, auth.changePassword),

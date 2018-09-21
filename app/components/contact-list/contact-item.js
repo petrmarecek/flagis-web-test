@@ -32,7 +32,7 @@ const ContactItem = ({ contact, onHandleClickContact, onHandleClickInvitation })
     }
   }
 
-  const title = contact.nickname !== ''
+  const title = contact.nickname !== null
     ? contact.nickname
     : contact.email
 
@@ -49,7 +49,7 @@ const ContactItem = ({ contact, onHandleClickContact, onHandleClickInvitation })
       <ContactItemTitleWrapper>
         <ContactItemTitle isUser={contact.isUser}>{title}</ContactItemTitle>
       </ContactItemTitleWrapper>
-      {!contact.isInvitation && !contact.isUser &&
+      {!contact.isInvited && !contact.isUser &&
       <ContactItemInvite onClick={onHandleClickInvitation}>
         <ContactItemInviteIcon
           icon={ICONS.SEND_INVITE}

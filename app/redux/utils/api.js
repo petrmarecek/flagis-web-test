@@ -48,6 +48,12 @@ export default {
       .then(res => res.data),
   },
 
+  invitation: {
+    email: invitationId => api
+      .get(`invitation/${invitationId}`)
+      .then(res => res.data),
+  },
+
   tasks: {
     list: () => api
       .get('tasks')
