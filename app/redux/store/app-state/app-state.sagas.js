@@ -83,7 +83,7 @@ export function* hintSelected(action) {
       yield put(contactActions.addContact(hint))
     }
 
-    yield put(taskActions.addTaskContact(parentId, hint))
+    yield put(taskActions.addTaskFollower(parentId, hint))
   }
 }
 

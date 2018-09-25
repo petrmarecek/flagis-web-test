@@ -247,6 +247,7 @@
     "prop-types": "^15.6.2",
     "ramda": "^0.25.0",
     "react": "^16.5.2",
+    "react-animations": "^1.0.0",
     "react-chartjs-2": "^2.7.4",
     "react-custom-scrollbars": "^4.2.1",
     "react-datepicker": "^1.6.0",

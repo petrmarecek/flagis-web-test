@@ -375,6 +375,7 @@ const MarkdownEditableContainer = styled(MarkdownEditable)`
 `;
 
 // --------------------------------------- Task detail ---------------------------------------
+
 const DetailSubjectTaskCompleted = styled(Icon)`
   position: absolute;
   left: 5px;

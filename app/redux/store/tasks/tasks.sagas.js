@@ -536,11 +536,11 @@ export function* addRemoveTaskTags(action) {
   }
 }
 
-export function* addTaskContact(action) {
+export function* addTaskFollower(action) {
   const { taskId, contact } = action.payload
 
   try {
-    // TODO: add contact to task
+    // TODO: add follower to task
 
     // Create new contact
     if (contact.isNew) {
@@ -554,6 +554,18 @@ export function* addTaskContact(action) {
       // Replace contact in store
       yield put(contactActions.replaceContact(contact.id, serverContact, taskId))
     }
+  } catch(err) {
+    console.error(err)
+    // TODO: revert to original state
+  }
+}
+
+export function removeTaskFollower(action) {
+  const { taskId, contact } = action.payload
+
+  try {
+    // TODO: remove follower from task
+
   } catch(err) {
     console.error(err)
     // TODO: revert to original state

@@ -9,6 +9,7 @@ import { getColorIndex } from 'redux/utils/component-helper'
 import dateUtil from 'redux/utils/date'
 
 import DetailMenu from 'components/detail/detail-menu'
+import FollowerStatus from 'components/common/follower-status'
 import Autocomplete from 'components/autocomplete'
 import FilePicker from 'components/common/file-picker'
 import AttachmentList from 'components/attachment-list/attachment-list'
@@ -62,7 +63,7 @@ const TaskDetail = props => {
     onHandleArchive,
     onHandleSubjectUpdate,
     onHandleTagDelete,
-    onHandleContactDelete,
+    onHandleFollowerDelete,
     onHandleDelete,
     onHandleStartDateChanged,
     onHandleDueDateChanged,
@@ -98,7 +99,7 @@ const TaskDetail = props => {
         isCompleted: false,
         isImportant: false,
         isArchived: false,
-        contacts: List(),
+        followers: List(),
       }
     }
 
@@ -115,7 +116,7 @@ const TaskDetail = props => {
       isCompleted: task.isCompleted,
       isImportant: task.isImportant,
       isArchived: task.isArchived,
-      contacts: task.contacts,
+      followers: task.followers,
     }
   }
 
@@ -131,10 +132,10 @@ const TaskDetail = props => {
       </li>
     )
   })
-  const contacts = bindingData.contacts.map(contact => (
-      <li key={contact.id}>
-        <span className="tag__title">{!contact.nickname ? contact.email : contact.nickname}</span>
-      </li>
+  const followers = bindingData.followers.map(follower => (
+    <li key={follower.id}>
+      <span className="tag__title">{!follower.nickname ? follower.email : follower.nickname}</span>
+    </li>
   ))
   const iconAnimation = {
     action: 'transition.expandIn',
@@ -166,7 +167,8 @@ const TaskDetail = props => {
           animation={animation} >
           <DetailContentSubject taskDetail>
             <DetailSubject>
-              {!bindingData.isArchived &&
+              {bindingData.followers.size !== 0 && <FollowerStatus status='new'/>}
+              {!bindingData.isArchived && bindingData.followers.size === 0 &&
               <DetailSubjectTaskCompleted
                 icon={ICONS.TASK_CHECKED}
                 color={[isCompletedTaskColor]}
@@ -247,16 +249,16 @@ const TaskDetail = props => {
                 </DetailContentAddContactLabel>
                 <DetailContentAddContactContent>
                   {bindingData.isArchived &&
-                  <DetailContentAutocompleteContacts>{contacts}</DetailContentAutocompleteContacts>}
+                  <DetailContentAutocompleteContacts>{followers}</DetailContentAutocompleteContacts>}
                   {!bindingData.isArchived &&
                   <Autocomplete
                     dataType="contacts"
                     location="taskDetailContacts"
                     placeholder="Add contact"
-                    selectedItems={{ contacts: bindingData.contacts.size === 0 ? null : bindingData.contacts }}
+                    selectedItems={{ contacts: bindingData.followers.size === 0 ? null : bindingData.followers }}
                     parentId={bindingData.id}
-                    onItemDelete={onHandleContactDelete}
-                    isWithoutInput={bindingData.contacts.size !== 0} />}
+                    onItemDelete={onHandleFollowerDelete}
+                    isWithoutInput={bindingData.followers.size !== 0} />}
                 </DetailContentAddContactContent>
                 <DetailContentAddContactIcon
                   icon={ICONS.CONTACTS}
@@ -386,8 +388,9 @@ TaskDetail.propTypes = {
   onHandleSubjectUpdate: PropTypes.func,
   onHandleTaskSubjectUpdate: PropTypes.func,
   onHandleTagDelete: PropTypes.func,
-  onHandleContactDelete: PropTypes.func,
   onHandleTaskTagDeleted: PropTypes.func,
+  onHandleFollowerDelete: PropTypes.func,
+  onHandleTaskFollowerDeleted: PropTypes.func,
   onHandleDelete: PropTypes.func,
   onHandleTaskDelete: PropTypes.func,
   onHandleStartDateChanged: PropTypes.func,
@@ -439,9 +442,9 @@ export default withHandlers({
     props.onHandleTaskTagDeleted(data)
   },
   onHandleDelete: props => () => props.onHandleTaskDelete(props.task.id),
-  onHandleContactDelete: props => contactInfo => {
-    const data = { task: props.task, contactInfo }
-    props.onHandleTaskContactDeleted(data)
+  onHandleFollowerDelete: props => followerInfo => {
+    const data = { task: props.task, followerInfo }
+    props.onHandleTaskFollowerDeleted(data)
   },
   onHandleStartDateChanged: props => date => {
     const data = { task: props.task, date , typeDate: 'startDate' }

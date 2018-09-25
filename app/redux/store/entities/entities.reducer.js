@@ -69,9 +69,9 @@ export default typeToReducer({
   [TASKS.ADD_TASK_TAG]: (state, action) => state
     .updateIn(['tasks', action.payload.taskId, 'tags'], tagList => tagList.push(action.payload.tag.id)),
 
-  [TASKS.ADD_TASK_CONTACT]: (state, action) => state
-    .updateIn(['tasks', action.payload.taskId, 'contacts'],
-      contactsList => contactsList.push(action.payload.contact.id)),
+  [TASKS.ADD_TASK_FOLLOWER]: (state, action) => state
+    .updateIn(['tasks', action.payload.taskId, 'followers'],
+      followersList => followersList.push(action.payload.contact.id)),
 
   [TASKS.ADD_TASK_TAG_STORE]: (state, action) => state
     .updateIn(['tasks', action.payload.taskId, 'tags'], tagList => tagList.push(action.payload.tag.id)),
@@ -80,9 +80,9 @@ export default typeToReducer({
     .updateIn(['tasks', action.payload.taskId, 'tags'],
       tagList => tagList.filter(tagId => tagId !== action.payload.tag.id)),
 
-  [TASKS.REMOVE_TASK_CONTACT]: (state, action) => state
-    .updateIn(['tasks', action.payload.taskId, 'contacts'],
-      contactsList => contactsList.filter(contactId => contactId !== action.payload.contact.id)),
+  [TASKS.REMOVE_TASK_FOLLOWER]: (state, action) => state
+    .updateIn(['tasks', action.payload.taskId, 'followers'],
+      followersList => followersList.filter(followerId => followerId !== action.payload.contact.id)),
 
   [TASKS.DELETE]: (state, action) => state
     .setIn(['tasks', action.payload.taskEntitiesList]),

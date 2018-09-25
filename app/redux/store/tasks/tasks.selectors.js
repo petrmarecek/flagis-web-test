@@ -65,10 +65,10 @@ function loadTasks(ids, data) {
   let tasks = ids.map(taskId => {
     const task = entitiesTasks.get(taskId)
     const tags = task.tags.map(tagId => entitiesTags.get(tagId))
-    const contacts = task.contacts.map(contactId => entitiesContacts.get(contactId))
+    const followers = task.followers.map(followerId => entitiesContacts.get(followerId))
     return task
       .set('tags', tags)
-      .set('contacts', contacts)
+      .set('followers', followers)
   })
 
   // sort task by order
@@ -184,10 +184,10 @@ function loadArchiveTasks(ids, data) {
   let tasks = ids.map(taskId => {
     const task = entitiesTasks.get(taskId)
     const tags = task.tags.map(tagId => entitiesTags.get(tagId))
-    const contacts = task.contacts.map(contactId => entitiesContacts.get(contactId))
+    const followers = task.followers.map(followerId => entitiesContacts.get(followerId))
     return task
       .set('tags', tags)
-      .set('contacts', contacts)
+      .set('followers', followers)
   })
 
   // apply sort by archive date
@@ -424,7 +424,7 @@ export const getCurrentTask = createSelector(
     const task = entitiesTasks.get(selectedTaskId)
     return task
       .setIn(['tags'], task.getIn(['tags']).map(tagId => entitiesTags.getIn([tagId])))
-      .setIn(['contacts'], task.getIn(['contacts']).map(contactId => entitiesContacts.getIn([contactId])))
+      .setIn(['followers'], task.getIn(['followers']).map(followerId => entitiesContacts.getIn([followerId])))
   }
 )
 
@@ -484,7 +484,7 @@ export const getNextTask = createSelector(
       return null
     }
 
-    return nextTask.setIn(['tags'], nextTask.getIn(['tags']).map(tagId => entitiesTags.getIn([tagId])))
+    return nextTask
   }
 )
 
@@ -547,7 +547,7 @@ export const getPreviousTask = createSelector(
       return null
     }
 
-    return prevTask.setIn(['tags'], prevTask.getIn(['tags']).map(tagId => entitiesTags.getIn([tagId])))
+    return prevTask
   }
 )
 

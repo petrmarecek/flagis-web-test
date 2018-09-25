@@ -24,7 +24,7 @@ import {
   deselectTasks,
   setSubject,
   removeTaskTag,
-  removeTaskContact,
+  removeTaskFollower,
   setDate,
   setDescription,
 } from 'redux/store/tasks/tasks.actions'
@@ -95,7 +95,7 @@ const Detail = props => {
     onHandleTaskArchive,
     onHandleTaskSubjectUpdate,
     onHandleTaskTagDeleted,
-    onHandleTaskContactDeleted,
+    onHandleTaskFollowerDeleted,
     onHandleTaskDelete,
     onHandleTaskDateChanged,
     onHandleTaskToggleImportant,
@@ -140,7 +140,7 @@ const Detail = props => {
         onHandleTaskSetIncomplete={onHandleTaskSetIncomplete}
         onHandleTaskSubjectUpdate={onHandleTaskSubjectUpdate}
         onHandleTaskTagDeleted={onHandleTaskTagDeleted}
-        onHandleTaskContactDeleted={onHandleTaskContactDeleted}
+        onHandleTaskFollowerDeleted={onHandleTaskFollowerDeleted}
         onHandleTaskDelete={onHandleTaskDelete}
         onHandleTaskDateChanged={onHandleTaskDateChanged}
         onHandleTaskToggleImportant={onHandleTaskToggleImportant}
@@ -188,7 +188,7 @@ Detail.propTypes = {
   onHandleTaskArchive: PropTypes.func,
   onHandleTaskSubjectUpdate: PropTypes.func,
   onHandleTaskTagDeleted: PropTypes.func,
-  onHandleTaskContactDeleted: PropTypes.func,
+  onHandleTaskFollowerDeleted: PropTypes.func,
   onHandleTaskDelete: PropTypes.func,
   onHandleTaskDateChanged: PropTypes.func,
   onHandleTaskToggleImportant: PropTypes.func,
@@ -251,7 +251,7 @@ const mapDispatchToProps = {
   cancelArchiveTasks,
   setSubject,
   removeTaskTag,
-  removeTaskContact,
+  removeTaskFollower,
   setDate,
   requestToggleImportant,
   setDescription,
@@ -362,7 +362,7 @@ export default compose(
     },
     onHandleTaskSubjectUpdate: props => data => props.setSubject(data.task, data.subject),
     onHandleTaskTagDeleted: props => data => props.removeTaskTag(data.task.id, data.tagInfo),
-    onHandleTaskContactDeleted: props => data => props.removeTaskContact(data.task.id, data.contactInfo),
+    onHandleTaskFollowerDeleted: props => data => props.removeTaskFollower(data.task.id, data.followerInfo),
     onHandleTaskDateChanged: props => data => props.setDate(data.task, data.date, data.typeDate),
     onHandleTaskToggleImportant: props => data => props.requestToggleImportant(data),
     onHandleTaskDescriptionUpdate: props => data => props.setDescription(data.task, data.description),

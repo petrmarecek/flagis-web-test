@@ -218,7 +218,7 @@ export const Task = Record({
   archivedAt: null,
   isTrashed: null,
   trashedAt: null,
-  contacts: List(),
+  followers: List(),
   tags: List(),
 })
 
