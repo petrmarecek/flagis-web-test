@@ -1,5 +1,6 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
+import { withHandlers } from 'recompose'
 import filepicker from 'filepicker-js'
 
 import { ICONS } from 'components/icons/icon-constants'
@@ -7,33 +8,56 @@ import Icon from 'components/icons/icon'
 
 filepicker.setKey('A7hMFRb7XS6KIA4fg4DChz')
 
-class FilePicker extends PureComponent {
+import styled from 'styled-components'
 
-  static propTypes = {
-    onFileUploaded: PropTypes.func,
-    test: PropTypes.string,
+const AddAttachment = styled.div`
+  margin-top: 10px;
+`;
+
+const PinIcon = styled(Icon)`
+  vertical-align: middle;
+  padding-right: 8px;
+`;
+
+const Button = styled.button`
+  font-size: 14px;
+  color: #8C9DA9;
+  border: none;
+  background-color: #fff;
+  line-height: 26px;
+  padding: 0;
+
+  :active {
+    outline: none;
   }
 
-  handleClick = () => {
-    filepicker.pick({language: 'en'}, (blob) => {
-      this.props.onFileUploaded(blob)
-    })
+  :hover {
+    color: #293034;
   }
+`;
 
-  render() {
-    return (
-      <div className="attachment-add">
-        <Icon
-          className="attachment-add__icon-pin"
-          icon={ICONS.PIN}
-          width={23}
-          height={26}
-          color={["#8C9DA9"]}
-          onClick={this.handleClick}/>
-        <button className="attachment-add__button" onClick={this.handleClick}>Add attachment</button>
-      </div>
-    )
-  }
+const FilePicker = ({ handleClick }) => (
+  <AddAttachment>
+    <PinIcon
+      icon={ICONS.PIN}
+      width={23}
+      height={26}
+      color={["#8C9DA9"]}
+      onClick={handleClick}/>
+    <Button onClick={handleClick}>Add attachment</Button>
+  </AddAttachment>
+)
+
+FilePicker.propTypes = {
+  test: PropTypes.string,
+  onFileUploaded: PropTypes.func,
+  handleClick: PropTypes.func,
 }
 
-export default FilePicker
+export default withHandlers({
+  handleClick: props => () => {
+    filepicker.pick({language: 'en'}, (blob) => {
+      props.onFileUploaded(blob)
+    })
+  }
+})(FilePicker)
