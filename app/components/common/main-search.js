@@ -1,5 +1,6 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
+import { compose, withHandlers } from 'recompose'
 import { connect } from 'react-redux'
 import { List } from 'immutable'
 
@@ -10,63 +11,67 @@ import Autocomplete from 'components/autocomplete'
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
 
-class MainSearch extends PureComponent {
+import styled from 'styled-components'
 
-  static propTypes = {
-    tags: PropTypes.object.isRequired,
-    selectActiveTags: PropTypes.func.isRequired,
-  }
+const Search = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  color: #ccc;
+  height: 60px;
+`;
 
-  handleItemDelete = tagToDelete => {
+const SearchIcon = styled(Icon)`
+  margin-right: 10px;
+`;
 
-    const tagIds = this.props.tags
-      .map(tag => tag.id)
-      .reverse()
-      .filter(id => id !== tagToDelete.id)
+const MainSearch = ({ tags, handleClearFilter, handleItemDelete }) => (
+  <Search>
+    <SearchIcon
+      icon={ICONS.TAG_FILTER}
+      width={19}
+      height={25}
+      scale={1.25}
+      color={["#8c9ea9"]}/>
+    <Autocomplete
+      dataType="tags"
+      location="mainSearch"
+      placeholder="Tag filter"
+      selectedItems={tags.size === 0 ? { tags: null } : { tags }}
+      parentId={null}
+      onItemDelete={handleItemDelete}
+      onClearFilter={tags.size === 0 ? null : handleClearFilter} />
+  </Search>
+)
 
-    this.props.selectActiveTags(tagIds)
-  }
 
-  handleClearFilter = () => {
-    this.props.selectActiveTags(List())
-  }
-
-  render() {
-    let handleClearFilter = null
-    let tags = null
-
-    if (this.props.tags.size !== 0) {
-     handleClearFilter = this.handleClearFilter
-     tags = this.props.tags
-    }
-
-    return (
-      <div className="main-search">
-        <Icon
-          className="main-search__icon"
-          icon={ICONS.TAG_FILTER}
-          width={19}
-          height={25}
-          scale={1.25}
-          color={["#8c9ea9"]}/>
-        <Autocomplete
-          dataType="tags"
-          location="mainSearch"
-          placeholder="Tag filter"
-          selectedItems={{ tags }}
-          parentId={null}
-          onItemDelete={this.handleItemDelete}
-          onClearFilter={handleClearFilter} />
-      </div>
-    )
-  }
+MainSearch.propTypes = {
+  tags: PropTypes.object.isRequired,
+  selectActiveTags: PropTypes.func.isRequired,
+  handleClearFilter: PropTypes.func,
+  handleItemDelete: PropTypes.func,
 }
 
 const mapStateToProps = state => ({
   tags: getActiveTags(state),
 })
+
 const mapDispatchToProps = {
   selectActiveTags,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MainSearch)
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withHandlers({
+    handleClearFilter: props => () => props.selectActiveTags(List()),
+    handleItemDelete: props => tagToDelete => {
+      const tagIds = props.tags
+        .map(tag => tag.id)
+        .reverse()
+        .filter(id => id !== tagToDelete.id)
+
+      props.selectActiveTags(tagIds)
+    }
+  })
+)(MainSearch)
