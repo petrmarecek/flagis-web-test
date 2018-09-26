@@ -1,55 +1,73 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
-import velocity from 'velocity-animate'
 import { connect } from 'react-redux'
 
-import {
-  getTasksId,
-  getCompletedTasksId,
-} from 'redux/store/tasks/tasks.selectors'
+import { getTasksId, getCompletedTasksId } from 'redux/store/tasks/tasks.selectors'
 
-class TasksProgressBar extends PureComponent {
+import styled, { keyframes } from 'styled-components'
+import { fontMain, borderRadius, transition } from '../styled-components-mixins'
+import { zoomIn } from 'react-animations'
 
-  static propTypes = {
-    tasksCount: PropTypes.number,
-    completedTasksCount: PropTypes.number,
-  }
+const zoom = keyframes`${zoomIn}`;
 
-  state = {
-    width: this.props.completedTasksCount !== 0
-      ? Math.round((this.props.completedTasksCount * 200) / this.props.tasksCount)
-      : 0
-  }
+const ProgressBar = styled.div`
+  position: absolute;
+  right: 16px;
+  bottom: 10px;
+  z-index: 15;
+  animation: 500ms ${zoom}
+`;
 
-  componentDidMount() {
-   velocity(this.refs.elem, 'transition.slideRightIn', { duration: 600 })
-  }
+const Count = styled.div`
+  ${fontMain}
+  position: absolute;
+  white-space: nowrap;
+  color: #8c9ea9;
+  bottom: 0;
+  right: 195px;
+  font-size: 14px;
+  margin: 0 15px 0 0;
+`;
 
-  componentWillReceiveProps(newProps) {
-    if (newProps.completedTasksCount !== 0) {
-      const count = Math.round((newProps.completedTasksCount * 200) / newProps.tasksCount)
-      this.setState({ width: count })
-    } else {
-      this.setState({ width: 0 })
-    }
-  }
+const Bar = styled.span`
+  ${borderRadius('2px')}
+  position: absolute;
+  bottom: 4px;
+  right: 0;
+  z-index: 15;
+  width: 200px;
+  height: 4px;
+  background-color: #fff;
+`;
 
-  render() {
-    const { tasksCount, completedTasksCount } = this.props
-    const { width } = this.state
-    const count = `${completedTasksCount}/${tasksCount}`
-    return (
-      <div
-        ref="elem"
-        className="tasks-progress-bar">
-        <div className="tasks-progress-bar__count">
-          {count}
-        </div>
-        <span className="tasks-progress-bar__line"/>
-        <span className="tasks-progress-bar__line-completed" style={{width: `${width}px`}} />
-      </div>
-    )
-  }
+const CompletedBar = styled.span`
+  ${borderRadius('2px')}
+  ${transition('width 500ms ease-in-out')};
+  position: absolute;
+  bottom: 4px;
+  left: -200px;
+  float: left;
+  z-index: 20;
+  height: 4px;
+  background-color: #43ffb1;
+`;
+
+const TasksProgressBar = ({ tasksCount, completedTasksCount }) => {
+  const count = `${completedTasksCount}/${tasksCount}`
+  const width = Math.round((completedTasksCount * 200) / tasksCount)
+
+  return (
+    <ProgressBar>
+      <Count >{count}</Count>
+      <Bar/>
+      <CompletedBar style={{width: `${width}px`}} />
+    </ProgressBar>
+  )
+}
+
+TasksProgressBar.propTypes = {
+  tasksCount: PropTypes.number,
+  completedTasksCount: PropTypes.number,
 }
 
 const mapStateToProps = state => ({
@@ -57,6 +75,4 @@ const mapStateToProps = state => ({
   completedTasksCount: getCompletedTasksId(state).size,
 })
 
-const mapDispatchToProps = {}
-
-export default connect(mapStateToProps, mapDispatchToProps)(TasksProgressBar)
+export default connect(mapStateToProps)(TasksProgressBar)

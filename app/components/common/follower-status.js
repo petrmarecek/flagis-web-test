@@ -6,7 +6,7 @@ import styled, { keyframes } from 'styled-components'
 import { transition } from 'components/styled-components-mixins'
 import { bounceIn } from 'react-animations'
 
-const pulser = keyframes`${bounceIn}`;
+const bounce = keyframes`${bounceIn}`;
 
 const Container = styled.div`
   position: absolute;
@@ -14,7 +14,7 @@ const Container = styled.div`
   top: 0;
   height: 26px;
   margin: 0 5px;
-  animation: 1s ${pulser};
+  animation: 1s ${bounce};
 `;
 
 const Button = styled.button`
