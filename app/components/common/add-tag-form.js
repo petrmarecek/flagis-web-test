@@ -10,7 +10,7 @@ import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
 
 import styled from 'styled-components'
-import { boxShadow, boxSizing, placeholderColor } from "../styled-components-mixins";
+import { boxShadow, boxSizing, placeholderColor } from '../styled-components-mixins'
 
 const AddForm = styled.form`
   margin-bottom: 6px;
@@ -27,6 +27,7 @@ const SubmitIcon = styled.div`
   padding: 7px 20px;
   width: 56px;
   cursor: pointer;
+  pointer-events: ${props => props.disabled ? 'none' : 'auto'};
 `;
 
 const SubjectContainer = styled.div`
@@ -78,13 +79,14 @@ const AddTagForm = ({ title, handleChange, handleSubmit }) => {
 
 AddTagForm.propTypes = {
   title: PropTypes.string,
-  createTag: PropTypes.func.isRequired,
   handleChange: PropTypes.func,
   handleSubmit: PropTypes.func,
 }
 
 const mapStateToProps = () => ({})
+
 const mapDispatchToProps = { createTag }
+
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withStateHandlers(
@@ -101,5 +103,6 @@ export default compose(
         props.createTag({ title })
         return { title: '' }
       },
-  })
+    }
+  )
 )(AddTagForm)

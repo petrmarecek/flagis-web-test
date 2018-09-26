@@ -1,5 +1,6 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
+import { compose, withStateHandlers } from 'recompose'
 import moment from 'moment'
 import { connect } from 'react-redux'
 
@@ -11,126 +12,87 @@ import { createTask } from 'redux/store/tasks/tasks.actions'
 import { getTimeLine } from 'redux/store/tasks/tasks.selectors'
 import { getTasksMenu } from 'redux/store/tasks-menu/tasks-menu.selectors'
 import { getActiveTagsId } from 'redux/store/tags/tags.selectors'
-import cx from "classnames"
+import { isStringEmpty } from '../../redux/utils/component-helper'
 
-class AddTaskForm extends PureComponent {
+import styled from 'styled-components'
+import { boxShadow, boxSizing, placeholderColor } from '../styled-components-mixins'
 
-  static propTypes = {
-    createTask: PropTypes.func.isRequired,
-    tags: PropTypes.object,
-    tasksMenu: PropTypes.object,
-    timeLine: PropTypes.bool,
-  }
+const AddForm = styled.form`
+  margin-bottom: 6px;
+  background-color: white;
+  ${boxShadow('0 3px 4px 0 #d5dce0')}
+`;
 
-  state = {
-    subject: '',
-    focused: false,
-    isImportant: false,
-  }
+const SubmitIcon = styled.div`
+  ${boxSizing('border-box')}
+  display: inline-block;
+  float: right;
+  margin: 0;
+  height: 50px;
+  padding: 11px 16px 10px 16px;
+  width: 61px;
+  cursor: pointer;
+  pointer-events: ${props => props.disabled ? 'none' : 'auto'};
+`;
 
-  componentWillReceiveProps(newProps) {
-    if (newProps.tasksMenu.filters.important) {
-      this.setState({ isImportant: true })
-    } else {
-      this.setState({ isImportant: false })
-    }
+const SubjectContainer = styled.div`
+  position: relative;
+  margin-right: 61px;
+  padding: 0;
+  height: 50px;
+`;
 
-    if (newProps.tasksMenu.filters.unimportant) {
-      this.setState({ isImportant: false })
-    }
-  }
+const Subject = styled.input`
+  ${placeholderColor('#d7e3ec')}
+  ${boxSizing('border-box')}
+  position: absolute;
+  border: none;
+  width: 100%;
+  font-size: 18px;
+  line-height: 30px;
+  padding: 10px 0 10px 17px;
+  z-index: 5;
+  margin: 0;
+  font-weight: ${props => props.isImportant ? 'bold' : 'normal'};
+`;
 
-  handleAddTask = () => {
-    const { tasksMenu, timeLine } = this.props
+const AddTaskForm = ({ subject, tasksMenu, handleChange, handleSubmit }) => {
+  const addButtonDisabled = isStringEmpty(subject)
+  const plusColor = addButtonDisabled
+    ? '#d7e3ec'
+    : '#44FFB1'
 
-    if (!AddTaskForm.isNotEmpty(this.state.subject))
-      return
+  return (
+    <AddForm
+      autoComplete="off"
+      onSubmit={handleSubmit}>
+      <SubmitIcon
+        onClick={handleSubmit}
+        disabled={addButtonDisabled} >
+        <Icon
+          icon={ICONS.PLUS}
+          width={29}
+          height={29}
+          color={[plusColor]}/>
+      </SubmitIcon>
+      <SubjectContainer>
+        <Subject
+          type="text"
+          name="subject"
+          placeholder="Add new task"
+          value={subject}
+          onChange={handleChange}
+          isImportant={tasksMenu.filters.important}/>
+      </SubjectContainer>
+    </AddForm>
+  )
+}
 
-    // due date sorting algorithm is activated
-    const now = moment()
-    const dueDate = timeLine || tasksMenu.filters.range
-      ? now.startOf('day').set({
-        'hour': 23,
-        'minute': 45,
-        'second': 0,
-        'millisecond': 0
-      })
-      : null
-
-    // extract data
-    const task = {
-      id: null,
-      clientId: commonUtils.uid(),
-      subject: this.state.subject,
-      description: '',
-      startDate: null,
-      reminderDate: null,
-      dueDate: dueDate,
-      isCompleted: false,
-      isImportant: this.state.isImportant,
-      tags: this.props.tags,
-    }
-
-    // dispatch action
-    this.props.createTask(task)
-
-    // reset form
-    this.setState({ subject: '' })
-  }
-
-  handleSubjectChanged = event => {
-    this.setState({ subject: event.target.value })
-  }
-
-  handleSubmit = event => {
-    event.preventDefault()
-    this.handleAddTask()
-  }
-
-  handleFocus = () => this.setState({ focused: true })
-  handleBlur = () => this.setState({ focused: false })
-
-  static isNotEmpty(str) {
-    return str.trim().length !== 0
-  }
-
-  render() {
-    const addButtonDisabled = !this.state.subject.trim()
-    const tasksMenu = this.props.tasksMenu
-
-    const subjectCss = cx({
-      'add-task__subject': true,
-      'important': Boolean(tasksMenu.filters.important),
-    })
-
-    const plusColor = addButtonDisabled
-      ? '#d7e3ec'
-      : '#44FFB1'
-
-    return (
-      <form className="add-task" autoComplete="off" onSubmit={this.handleSubmit}>
-        <div className="add-task__submit" onClick={this.handleSubmit} disabled={addButtonDisabled}>
-          <Icon
-            icon={ICONS.PLUS}
-            width={29}
-            height={29}
-            color={[plusColor]}/>
-        </div>
-        <div className="add-task__subject-container">
-          <input
-            className={subjectCss}
-            type="text"
-            name="subject"
-            ref="subject"
-            placeholder="Add new task"
-            value={this.state.subject}
-            onChange={this.handleSubjectChanged}
-            onFocus={this.handleFocus}
-            onBlur={this.handleBlur} />
-        </div>
-      </form>
-    )
-  }
+AddTaskForm.propTypes = {
+  subject: PropTypes.string,
+  tasksMenu: PropTypes.object,
+  handleChange: PropTypes.func,
+  handleSubmit: PropTypes.func,
 }
 
 const mapStateToProps = state => ({
@@ -138,5 +100,48 @@ const mapStateToProps = state => ({
   tasksMenu: getTasksMenu(state),
   timeLine: getTimeLine(state),
 })
+
 const actionCreators = { createTask }
-export default connect(mapStateToProps, actionCreators)(AddTaskForm)
+
+export default compose(
+  connect(mapStateToProps, actionCreators),
+  withStateHandlers(
+    () => ({ subject: '' }),
+    {
+      handleChange: () => event => ({ subject: event.target.value }),
+      handleSubmit: ({ subject }, props) => event => {
+        const { tasksMenu, timeLine, tags } = props
+        const { filters } = tasksMenu
+        event.preventDefault()
+
+        if (isStringEmpty(subject)) {
+          return {}
+        }
+
+        // due date sorting algorithm or some date filter is activated
+        const dueDate = timeLine || filters.range
+          ? moment().startOf('day').set({
+            'hour': 23,
+            'minute': 45,
+            'second': 0,
+            'millisecond': 0
+          })
+          : null
+
+        props.createTask({
+          id: null,
+          clientId: commonUtils.uid(),
+          subject: subject,
+          description: '',
+          startDate: null,
+          reminderDate: null,
+          dueDate: dueDate,
+          isCompleted: false,
+          isImportant: filters.important,
+          tags: tags,
+        })
+        return { subject: '' }
+      }
+    }
+  )
+)(AddTaskForm)

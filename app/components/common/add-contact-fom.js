@@ -30,6 +30,7 @@ const SubmitIcon = styled.div`
   padding: 7px 20px;
   width: 56px;
   cursor: pointer;
+  pointer-events: ${props => props.disabled ? 'none' : 'auto'};
 `;
 
 const SubjectContainer = styled.div`
