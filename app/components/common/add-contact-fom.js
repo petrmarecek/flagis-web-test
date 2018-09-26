@@ -15,13 +15,13 @@ import { boxSizing, boxShadow } from '../styled-components-mixins/'
 import { Field, reduxForm } from 'redux-form/immutable'
 import { validateAddContact } from '../../redux/utils/validate'
 
-const AddFormContainer = styled.form`
+const AddForm = styled.form`
   margin-bottom: 6px;
   background-color: white;
   ${boxShadow('0 3px 4px 0 #d5dce0')}
 `;
 
-const Submit = styled.div`
+const SubmitIcon = styled.div`
   ${boxSizing('border-box')}
   display: inline-block;
   float: right;
@@ -45,10 +45,10 @@ const AddContactForm = ({ valid, handleSubmit, onSubmit }) => {
     : '#44FFB1'
 
   return (
-    <AddFormContainer
+    <AddForm
       autoComplete="off"
       onSubmit={handleSubmit((values) => onSubmit(values))}>
-      <Submit
+      <SubmitIcon
         onClick={handleSubmit((values) => onSubmit(values))}
         disabled={addButtonDisabled}>
         <Icon
@@ -57,7 +57,7 @@ const AddContactForm = ({ valid, handleSubmit, onSubmit }) => {
           height={16}
           scale={0.55}
           color={[plusColor]}/>
-      </Submit>
+      </SubmitIcon>
       <SubjectContainer>
         <Field
           id="email"
@@ -66,7 +66,7 @@ const AddContactForm = ({ valid, handleSubmit, onSubmit }) => {
           placeholder="Add E-Mail"
           component={AddField} />
       </SubjectContainer>
-    </AddFormContainer>
+    </AddForm>
   )
 }
 

@@ -193,6 +193,10 @@ export function isObjectEmpty(obj) {
   return Object.getOwnPropertyNames(obj).length === 0
 }
 
+export const isStringEmpty = (str) => {
+  return str.trim().length === 0
+}
+
 export const getHintDirectionRender = inputPositionTop => {
   const topHeight = constants.WINDOW_HEIGHT - inputPositionTop
   const maxHintsHeight = topHeight - constants.OFFSET

@@ -1,89 +1,105 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
+import { compose, withStateHandlers } from 'recompose'
 import { connect } from 'react-redux'
 
 import { createTag } from 'redux/store/tags/tags.actions'
+import { isStringEmpty } from '../../redux/utils/component-helper'
 
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
 
-class AddTagForm extends PureComponent {
+import styled from 'styled-components'
+import { boxShadow, boxSizing, placeholderColor } from "../styled-components-mixins";
 
-  static propTypes = {
-    createTag: PropTypes.func.isRequired,
-  }
+const AddForm = styled.form`
+  margin-bottom: 6px;
+  background-color: white;
+  ${boxShadow('0 3px 4px 0 #d5dce0')}
+`;
 
-  state = {
-    subject: '',
-    focused: false,
-  }
+const SubmitIcon = styled.div`
+  ${boxSizing('border-box')}
+  display: inline-block;
+  float: right;
+  margin: 0;
+  height: 30px;
+  padding: 7px 20px;
+  width: 56px;
+  cursor: pointer;
+`;
 
-  handleAddTag = () => {
+const SubjectContainer = styled.div`
+  margin-right: 56px;
+  padding: 0;
+`;
 
-    if (!AddTagForm.isNotEmpty(this.state.subject))
-      return
+const Subject = styled.input`
+  ${placeholderColor('#d7e3ec')}
+  ${boxSizing('border-box')}
+  width: 100%;
+  border: none;
+  font-size: 16px;
+  height: 30px;
+  padding: 5px 0 5px 10px;
+`;
 
-    // extract data
-    const tag = {
-      title: this.state.subject
-    }
+const AddTagForm = ({ title, handleChange, handleSubmit }) => {
+  const addButtonDisabled = isStringEmpty(title)
+  const plusColor = addButtonDisabled
+    ? '#d7e3ec'
+    : '#44FFB1'
 
-    // dispatch action
-    this.props.createTag(tag)
+  return (
+    <AddForm
+      autoComplete="off"
+      onSubmit={handleSubmit}>
+      <SubmitIcon
+        onClick={handleSubmit}
+        disabled={addButtonDisabled}>
+        <Icon
+          icon={ICONS.PLUS}
+          width={16}
+          height={16}
+          scale={0.55}
+          color={[plusColor]}/>
+      </SubmitIcon>
+      <SubjectContainer>
+        <Subject
+          type="text"
+          name="title"
+          placeholder="Add new tag"
+          value={title}
+          onChange={handleChange} />
+      </SubjectContainer>
+    </AddForm>
+  )
+}
 
-    // reset form
-    this.setState({ subject: '' })
-  }
-
-  handleSubjectChanged = event => {
-    this.setState({ subject: event.target.value })
-  }
-
-  handleSubmit = event => {
-    event.preventDefault()
-    this.handleAddTag()
-  }
-
-  handleFocus = () => this.setState({ focused: true })
-  handleBlur = () => this.setState({ focused: false })
-
-  static isNotEmpty(str) {
-    return str.trim().length !== 0
-  }
-
-  render() {
-    const addButtonDisabled = !this.state.subject.trim()
-    const plusColor = addButtonDisabled
-      ? '#d7e3ec'
-      : '#44FFB1'
-
-    return (
-      <form className="add-tag" autoComplete="off" onSubmit={this.handleSubmit}>
-        <div className="add-tag__submit" onClick={this.handleSubmit} disabled={addButtonDisabled}>
-          <Icon
-            icon={ICONS.PLUS}
-            width={16}
-            height={16}
-            scale={0.55}
-            color={[plusColor]}/>
-        </div>
-        <div className="add-tag__subject-container">
-          <input
-            className="add-tag__subject"
-            type="text"
-            name="subject"
-            ref="subject"
-            placeholder="Add new tag"
-            value={this.state.subject}
-            onChange={this.handleSubjectChanged}
-            onFocus={this.handleFocus}
-            onBlur={this.handleBlur} />
-        </div>
-      </form>
-    )
-  }
+AddTagForm.propTypes = {
+  title: PropTypes.string,
+  createTag: PropTypes.func.isRequired,
+  handleChange: PropTypes.func,
+  handleSubmit: PropTypes.func,
 }
 
 const mapStateToProps = () => ({})
 const mapDispatchToProps = { createTag }
-export default connect(mapStateToProps, mapDispatchToProps)(AddTagForm)
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withStateHandlers(
+    () => ({ title: '' }),
+    {
+      handleChange: () => event => ({ title: event.target.value }),
+      handleSubmit: ({ title }, props) => event => {
+        event.preventDefault()
+
+        if (isStringEmpty(title)) {
+          return {}
+        }
+
+        props.createTag({ title })
+        return { title: '' }
+      },
+  })
+)(AddTagForm)
