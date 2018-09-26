@@ -16,7 +16,7 @@ const LeftPanel = ({ children, leftPanel, location, onHandleResize }) => {
       width={leftPanel.width}
       whiteBackground={isAccountPage}>
       {!isAccountPage &&
-      <ResizeHandle right onResize={onHandleResize} />}
+      <ResizeHandle onResize={onHandleResize} />}
       {children}
     </LeftPanelContainer>
   )

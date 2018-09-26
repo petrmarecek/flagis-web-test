@@ -1,59 +1,61 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import cx from 'classnames'
 
-const EventListenerMode = { capture: true }
+import styled from 'styled-components'
+import { userSelect } from '../styled-components-mixins'
 
-export default class ResizeHandle extends PureComponent {
+const Resize = styled.div`
+  ${userSelect('none')}
+  position: absolute;
+  top: 0;
+  left: auto;
+  right: -8px;
+  bottom: 0;
+  width: 8px;
+  cursor: col-resize;
+  z-index: 150;
+`;
 
-  static propTypes = {
-    onResize: PropTypes.func.isRequired,
-    onResizeStart: PropTypes.func,
-    onResizeStop: PropTypes.func,
-    right: PropTypes.bool,
-  }
+const withResizeHandle = WrappedComponent => {
+  return class WithResizeHandle extends PureComponent {
 
-  handleMouseDown = e => {
-    this.props.onResizeStart && this.props.onResizeStart()
-    this.captureMouseEvents(e)
-    e.preventDefault()
-    e.stopPropagation()
-  }
+    static propTypes = {
+      onResize: PropTypes.func.isRequired,
+    }
 
-  mousemoveListener = e => {
-    e.preventDefault()
-    this.props.onResize({
-      x: e.clientX,
-      y: e.clientY,
-    })
-  }
+    handleMouseDown = event => {
+      document.addEventListener('mouseup', this.mouseUpListener, {capture: true})
+      document.addEventListener('mousemove', this.mouseMoveListener, {capture: true})
+      event.preventDefault()
+      event.stopPropagation()
+    }
 
-  mouseupListener = e => {
-    this.props.onResizeStop && this.props.onResizeStop()
-    document.removeEventListener ('mouseup', this.mouseupListener, EventListenerMode)
-    document.removeEventListener ('mousemove', this.mousemoveListener, EventListenerMode)
-    e.stopPropagation()
-  }
+    mouseMoveListener = event => {
+      event.preventDefault()
+      this.props.onResize({
+        x: event.clientX,
+        y: event.clientY,
+      })
+    }
 
-  captureMouseEvents = e => {
-    document.addEventListener ('mouseup', this.mouseupListener, EventListenerMode)
-    document.addEventListener ('mousemove', this.mousemoveListener, EventListenerMode)
-    e.preventDefault()
-    e.stopPropagation()
-  }
+    mouseUpListener = event => {
+      console.log('up')
+      document.removeEventListener('mouseup', this.mouseUpListener, {capture: true})
+      document.removeEventListener('mousemove', this.mouseMoveListener, {capture: true})
+      event.preventDefault()
+      event.stopPropagation()
+    }
 
-  render() {
-    const css = cx({
-      'resize-handle': true,
-      'resize-handle--right': Boolean(this.props.right),
-    })
-
-    return (
-      <div
-        ref="handle"
-        className={css}
-        onMouseDownCapture={this.handleMouseDown}
-        onMouseUpCapture={this.handleMouseUp} />
-    )
+    render() {
+      return <WrappedComponent onMouseDownCapture={this.handleMouseDown}/>
+    }
   }
 }
+
+const ResizeHandle = ({ onMouseDownCapture }) => <Resize onMouseDownCapture={onMouseDownCapture} />
+
+ResizeHandle.propTypes = {
+  onMouseDownCapture: PropTypes.func
+}
+
+export default withResizeHandle(ResizeHandle)
