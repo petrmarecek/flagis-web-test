@@ -43,7 +43,6 @@ const EmailResetPassword = ({ loader, location, handleSubmit, onSubmit }) => (
               onClick={handleSubmit((values) => onSubmit(values))}/>
           </FormRow>
         </FormBodyFields>
-
         {loader &&
         <FormLoader>
           <Loader />

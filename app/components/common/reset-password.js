@@ -1,113 +1,80 @@
-import React, { PureComponent } from 'react'
-import { compose } from 'recompose'
+import React from 'react'
+import {compose, lifecycle, withHandlers} from 'recompose'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form/immutable'
-import Logo from 'assets/img/logo.svg'
 
 import { visibleLoader } from 'redux/store/app-state/app-state.actions'
 import { getLoader } from 'redux/store/app-state/app-state.selectors'
 import { controlRedirectTasks, resetPassword } from 'redux/store/auth/auth.actions'
 import { validateResetPassword } from 'redux/utils/validate'
 
+import NavigationLanding from 'components/navigation/navigation-landing'
 import InputField from 'components/common/input-field'
 import Loader from 'components/common/loader'
 
-class ResetPassword extends PureComponent {
+import {
+  Form,
+  FormBody,
+  FormBodyFields,
+  FormLoader,
+  FormRow,
+} from '../styled-components-mixins'
 
-  static contextTypes = {
-    router: PropTypes.object.isRequired
-  }
+const ResetPassword = ({ loader, location, handleSubmit, onSubmit }) => (
+  <div className="landing-container">
+    <NavigationLanding location={location} isLogoNav />
+    <Form>
+      <FormBody>
+          <FormBodyFields>
+            <FormRow>
+                <Field
+                  id="newPassword"
+                  name="newPassword"
+                  type="password"
+                  label="New password"
+                  component={InputField}/>
+            </FormRow>
+            <FormRow>
+                <Field
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type="password"
+                  label="Password confirmation"
+                  component={InputField}/>
+            </FormRow>
+            <FormRow>
+              <input
+                type="submit"
+                className="btn-default"
+                value="Submit"
+                onClick={handleSubmit((values) => onSubmit(values))}/>
+            </FormRow>
+          </FormBodyFields>
+        {loader &&
+        <FormLoader>
+          <Loader />
+        </FormLoader>}
+      </FormBody>
+    </Form>
+  </div>
+)
 
-  static propTypes = {
-    controlRedirectTasks: PropTypes.func,
-    handleSubmit: PropTypes.func,
-    visibleLoader: PropTypes.func,
-    resetPassword: PropTypes.func,
-    loader: PropTypes.bool,
-    location: PropTypes.object,
-  }
-
-  componentWillMount() {
-    this.props.controlRedirectTasks()
-  }
-
-  onSubmit = values => {
-    const numberCharacter = '/reset-password/'.length
-    const resetToken = this.props.location.pathname.substring(numberCharacter)
-    this.props.visibleLoader()
-    this.props.resetPassword({
-      resetToken: resetToken,
-      password: values.get('newPassword'),
-    })
-  }
-
-  render() {
-    return (
-      <div className="landing-container">
-        <nav className="navbar-landing">
-          <div className="navbar-landing__flex-container navbar-landing__flex-container--flex-row">
-            <div className="navbar-landing__logo">
-              <img src={Logo}/>
-            </div>
-          </div>
-        </nav>
-        <div className="form-window">
-          <div className="form-window-body">
-            <form className="common-form" method="post">
-              <div className="form-fields">
-                <div className="form-row">
-                  <div className="field-control">
-                    <Field
-                      id="newPassword"
-                      name="newPassword"
-                      type="password"
-                      label="New password"
-                      component={InputField}/>
-                  </div>
-                </div>
-                <div className="form-row">
-                  <div className="field-control">
-                    <Field
-                      id="confirmPassword"
-                      name="confirmPassword"
-                      type="password"
-                      label="Password confirmation"
-                      component={InputField}/>
-                  </div>
-                </div>
-                <div className="form-row form-button-row">
-                  <div className="field-label-offset">
-                    <div className="field-control">
-                      <input
-                        type="submit"
-                        className="btn-default"
-                        value="Change password"
-                        onClick={this.props.handleSubmit((values) => this.onSubmit(values))}/>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              {this.props.loader &&
-              <div className="common-form__loader">
-                <Loader />
-              </div>
-              }
-            </form>
-          </div>
-        </div>
-      </div>
-    )
-  }
+ResetPassword.propTypes = {
+  loader: PropTypes.bool,
+  handleSubmit: PropTypes.func,
+  onSubmit: PropTypes.func,
+  location: PropTypes.object,
 }
 
 const mapStateToProps = state => ({
   loader: getLoader(state),
 })
+
 const mapDispatchToProps = {
-  controlRedirectTasks,
-  visibleLoader,
   resetPassword,
+  visibleLoader,
+  controlRedirectTasks,
 }
 
 export default compose(
@@ -116,4 +83,20 @@ export default compose(
     form: 'resetPassword',
     validate: validateResetPassword,
   }),
+  withHandlers({
+    onSubmit: props => values => {
+      const numberCharacter = '/reset-password/'.length
+      const resetToken = props.location.pathname.substring(numberCharacter)
+      props.visibleLoader()
+      props.resetPassword({
+        resetToken: resetToken,
+        password: values.get('newPassword'),
+      })
+    },
+  }),
+  lifecycle({
+    componentWillMount() {
+      this.props.controlRedirectTasks()
+    }
+  })
 )(ResetPassword)

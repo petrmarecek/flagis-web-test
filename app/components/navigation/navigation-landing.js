@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import Logo from 'assets/img/logo.svg'
 
-const NavigationLanding = ({ location }) => {
+const NavigationLanding = ({ isLogoNav, location }) => {
   const signInBtnDisabled = location.pathname === '/sign-in'
   const signUpBtnDisabled = location.pathname === '/sign-up'
 
@@ -16,6 +16,7 @@ const NavigationLanding = ({ location }) => {
           </Link>
         </div>
 
+        {!isLogoNav &&
         <div className="navbar-landing__link-up">
           <Link
             className="form-link form-link__button-in"
@@ -29,13 +30,14 @@ const NavigationLanding = ({ location }) => {
             disabled={signUpBtnDisabled}>
             Sign up for Free
           </Link>
-        </div>
+        </div>}
       </div>
     </nav>
   )
 }
 
 NavigationLanding.propTypes = {
+  isLogoNav: PropTypes.bool,
   location: PropTypes.shape({
     pathname: PropTypes.string.isRequired,
   }).isRequired,
