@@ -3,17 +3,17 @@ import { compose } from 'recompose'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form/immutable'
+import Logo from 'assets/img/logo.svg'
 
 import { visibleLoader } from 'redux/store/app-state/app-state.actions'
 import { getLoader } from 'redux/store/app-state/app-state.selectors'
-import { controlRedirectTasks, emailResetPassword } from 'redux/store/auth/auth.actions'
-import { validateEmailResetPassword } from 'redux/utils/validate'
+import { controlRedirectTasks, resetPassword } from 'redux/store/auth/auth.actions'
+import { validateResetPassword } from 'redux/utils/validate'
 
-import NavigationLanding from 'components/navigation/navigation-landing'
 import InputField from 'components/common/input-field'
 import Loader from 'components/common/loader'
 
-class EmailResetPassword extends PureComponent {
+class ResetPassword extends PureComponent {
 
   static contextTypes = {
     router: PropTypes.object.isRequired
@@ -21,13 +21,11 @@ class EmailResetPassword extends PureComponent {
 
   static propTypes = {
     controlRedirectTasks: PropTypes.func,
-    handleSubmit: PropTypes.func.isRequired,
+    handleSubmit: PropTypes.func,
     visibleLoader: PropTypes.func,
-    emailResetPassword: PropTypes.func,
-    location: PropTypes.shape({
-      pathname: PropTypes.string.isRequired,
-    }).isRequired,
+    resetPassword: PropTypes.func,
     loader: PropTypes.bool,
+    location: PropTypes.object,
   }
 
   componentWillMount() {
@@ -35,14 +33,25 @@ class EmailResetPassword extends PureComponent {
   }
 
   onSubmit = values => {
-    this.props.emailResetPassword({ email: values.get('email') })
+    const numberCharacter = '/reset-password/'.length
+    const resetToken = this.props.location.pathname.substring(numberCharacter)
     this.props.visibleLoader()
+    this.props.resetPassword({
+      resetToken: resetToken,
+      password: values.get('newPassword'),
+    })
   }
 
   render() {
     return (
       <div className="landing-container">
-        <NavigationLanding location={this.props.location}/>
+        <nav className="navbar-landing">
+          <div className="navbar-landing__flex-container navbar-landing__flex-container--flex-row">
+            <div className="navbar-landing__logo">
+              <img src={Logo}/>
+            </div>
+          </div>
+        </nav>
         <div className="form-window">
           <div className="form-window-body">
             <form className="common-form" method="post">
@@ -50,10 +59,20 @@ class EmailResetPassword extends PureComponent {
                 <div className="form-row">
                   <div className="field-control">
                     <Field
-                      id="email"
-                      name="email"
-                      type="text"
-                      label="E-mail"
+                      id="newPassword"
+                      name="newPassword"
+                      type="password"
+                      label="New password"
+                      component={InputField}/>
+                  </div>
+                </div>
+                <div className="form-row">
+                  <div className="field-control">
+                    <Field
+                      id="confirmPassword"
+                      name="confirmPassword"
+                      type="password"
+                      label="Password confirmation"
                       component={InputField}/>
                   </div>
                 </div>
@@ -63,7 +82,7 @@ class EmailResetPassword extends PureComponent {
                       <input
                         type="submit"
                         className="btn-default"
-                        value="Submit"
+                        value="Change password"
                         onClick={this.props.handleSubmit((values) => this.onSubmit(values))}/>
                     </div>
                   </div>
@@ -72,7 +91,8 @@ class EmailResetPassword extends PureComponent {
               {this.props.loader &&
               <div className="common-form__loader">
                 <Loader />
-              </div>}
+              </div>
+              }
             </form>
           </div>
         </div>
@@ -84,18 +104,16 @@ class EmailResetPassword extends PureComponent {
 const mapStateToProps = state => ({
   loader: getLoader(state),
 })
-
 const mapDispatchToProps = {
   controlRedirectTasks,
   visibleLoader,
-  emailResetPassword,
+  resetPassword,
 }
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   reduxForm({
-    form: 'emailResetPassword',
-    validate: validateEmailResetPassword,
+    form: 'resetPassword',
+    validate: validateResetPassword,
   }),
-)(EmailResetPassword)
-
+)(ResetPassword)

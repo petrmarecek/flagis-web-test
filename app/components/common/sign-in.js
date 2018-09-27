@@ -32,9 +32,7 @@ class SignIn extends PureComponent {
     handleSubmit: PropTypes.func.isRequired,
     visibleLoader: PropTypes.func.isRequired,
     errorSignIn: PropTypes.object,
-    location: PropTypes.shape({
-      pathname: PropTypes.string.isRequired,
-    }).isRequired,
+    location: PropTypes.object,
     loader: PropTypes.bool,
   }
 

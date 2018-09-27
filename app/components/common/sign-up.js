@@ -27,7 +27,7 @@ import {
   ErrorListItemIcon,
   ErrorListItemText,
   FormRow,
-} from '../../components/styled-components-mixins/'
+} from '../styled-components-mixins'
 
 const getToken = (pathname) => {
   const numberCharacter = '/sign-up/'.length
@@ -126,9 +126,7 @@ SignUp.propTypes = {
   loader: PropTypes.bool,
   handleSubmit: PropTypes.func.isRequired,
   onSubmit: PropTypes.func,
-  location: PropTypes.shape({
-    pathname: PropTypes.string.isRequired,
-  }).isRequired,
+  location: PropTypes.object,
 }
 
 const mapStateToProps = (state, props) => {
