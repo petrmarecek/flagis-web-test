@@ -1,11 +1,10 @@
 import React from 'react'
 import { compose, lifecycle, withHandlers } from 'recompose'
 import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form/immutable'
 
-import { visibleLoader } from 'redux/store/app-state/app-state.actions'
+import { deselectError, visibleLoader } from 'redux/store/app-state/app-state.actions'
 import { getAppStateItem, getLoader } from 'redux/store/app-state/app-state.selectors'
 import { controlRedirectTasks, signUp, initEmail } from 'redux/store/auth/auth.actions'
 import { getUserEmail } from 'redux/store/auth/auth.selectors'
@@ -27,6 +26,7 @@ import {
   ErrorListItemIcon,
   ErrorListItemText,
   FormRow,
+  FormLink,
 } from '../styled-components-mixins'
 
 const getToken = (pathname) => {
@@ -107,7 +107,7 @@ const SignUp = ({ errorSignUp, loader, location, handleSubmit, onSubmit }) => {
             </FormRow>
 
             <FormRow pointer>
-              <Link to="/sign-in">Already have an account? Sign In!</Link>
+              <FormLink to="/sign-in">Already have an account? Sign In!</FormLink>
             </FormRow>
 
           </FormBodyFields>
@@ -149,6 +149,7 @@ const mapDispatchToProps = {
   visibleLoader,
   controlRedirectTasks,
   initEmail,
+  deselectError,
 }
 
 export default compose(
@@ -182,6 +183,7 @@ export default compose(
     },
     componentDidMount() {
       const token = getToken(this.props.location.pathname)
+      this.props.deselectError('signUp')
 
       if (token.length !== 0) {
         this.props.initEmail(token)

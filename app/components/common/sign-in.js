@@ -1,170 +1,117 @@
-import React, { PureComponent } from 'react'
-import { compose } from 'recompose'
+import React from 'react'
+import {compose, lifecycle, withHandlers} from 'recompose'
 import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { List } from 'immutable'
 import { Field, reduxForm } from 'redux-form/immutable'
 import { ToastContainer, style } from 'react-toastify'
 
 import { deselectError, visibleLoader } from 'redux/store/app-state/app-state.actions'
 import { getLoader, getAppStateItem } from 'redux/store/app-state/app-state.selectors'
 import { controlRedirectTasks, login } from 'redux/store/auth/auth.actions'
-import { getAuth } from 'redux/store/auth/auth.selectors'
 import { validateSignIn } from 'redux/utils/validate'
 
 import NavigationLanding from 'components/navigation/navigation-landing'
 import InputField from 'components/common/input-field'
 import Loader from 'components/common/loader'
-import Icon from 'components/icons/icon'
 import { ICONS } from 'components/icons/icon-constants'
 
-class SignIn extends PureComponent {
+import {
+  Form,
+  FormBody,
+  FormBodyFields,
+  FormLoader,
+  FormErrors,
+  ErrorList,
+  ErrorListItem,
+  ErrorListItemIcon,
+  ErrorListItemText,
+  FormRow,
+  FormLink,
+} from '../styled-components-mixins'
 
-  static contextTypes = {
-    router: PropTypes.object.isRequired
-  }
+const SignIn = ({ errorSignIn, loader, location, handleSubmit, onSubmit }) => (
+  <div className="landing-container">
+    <NavigationLanding location={location}/>
+    <Form>
+      <FormBody>
+          <FormBodyFields>
+            <FormErrors>
+              <ErrorList>
+                {errorSignIn.message &&
+                <ErrorListItem>
+                  <ErrorListItemText>
+                    {errorSignIn.message}
+                  </ErrorListItemText>
+                  <ErrorListItemIcon
+                    icon={ICONS.ERROR}
+                    width={12}
+                    height={14}
+                    color={["red"]}/>
+                </ErrorListItem>}
+              </ErrorList>
+            </FormErrors>
+            <FormRow>
+              <Field
+                id="email"
+                name="email"
+                type="text"
+                label="E-mail"
+                component={InputField} />
+            </FormRow>
+            <FormRow>
+              <Field
+                id="password"
+                name="password"
+                type="password"
+                label="Password"
+                component={InputField} />
+            </FormRow>
+            <FormRow>
+              <input
+                type="submit"
+                className="btn-default"
+                value="Sign In"
+                onClick={handleSubmit((values) => onSubmit(values))} />
+            </FormRow>
 
-  static propTypes = {
-    controlRedirectTasks: PropTypes.func,
-    login: PropTypes.func,
-    deselectError: PropTypes.func.isRequired,
-    handleSubmit: PropTypes.func.isRequired,
-    visibleLoader: PropTypes.func.isRequired,
-    errorSignIn: PropTypes.object,
-    location: PropTypes.object,
-    loader: PropTypes.bool,
-  }
+            <FormRow pointer>
+              <FormLink to="/email-reset-password">Forgot your password?</FormLink>
+              <br/>
+              <br/>
+              <FormLink to="/sign-up">Register as a new user</FormLink>
+            </FormRow>
 
-  state = {
-    errorMessage: List(),
-  }
+          </FormBodyFields>
+        {loader &&
+        <FormLoader>
+          <Loader />
+        </FormLoader>}
+      </FormBody>
+    </Form>
+    <div className="floating-components">
+      <ToastContainer />
+    </div>
+  </div>
+)
 
-  componentWillMount() {
-    this.props.controlRedirectTasks()
-  }
-
-  componentDidMount() {
-    style({
-      BOTTOM_RIGHT: {
-        bottom: '30px',
-        right: '25px'
-      }
-    })
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.errorSignIn.error) {
-      this.setState((state) => ({
-        errorMessage: state.errorMessage.push(nextProps.errorSignIn.message)
-      }))
-      this.props.deselectError('signIn')
-    }
-  }
-
-  onSubmit = values => {
-    this.setState((state) => ({
-      errorMessage: state.errorMessage.clear()
-    }))
-    this.props.visibleLoader()
-    this.props.login({
-      email: values.get('email'),
-      password: values.get('password')
-    })
-  }
-
-  renderErrorMessage = () => {
-    return this.state.errorMessage.map((string, i) => {
-      return (
-        <li key={i} className="error-list-item">
-          <div key={i} className="error-list-item__text">
-            {string}
-          </div>
-          <Icon
-            className="error-list-item__icon"
-            icon={ICONS.ERROR}
-            width={12}
-            height={14}
-            color={["red"]}/>
-        </li>
-      )
-    })
-  }
-
-  render() {
-    return (
-      <div className="landing-container">
-        <NavigationLanding location={this.props.location}/>
-        <div className="form-window">
-          <div className="form-window-body">
-            <form className="common-form">
-              <div className="form-fields">
-                <div className="form-error">
-                  <ul className="error-list">
-                    {this.renderErrorMessage()}
-                  </ul>
-                </div>
-                <div className="form-row">
-                  <Field
-                    id="email"
-                    name="email"
-                    type="text"
-                    label="E-mail"
-                    component={InputField} />
-                </div>
-                <div className="form-row">
-                  <Field
-                    id="password"
-                    name="password"
-                    type="password"
-                    label="Password"
-                    component={InputField} />
-                </div>
-                <div className="form-row form-button-row">
-                  <div className="field-label-offset">
-                    <input
-                      type="submit"
-                      className="btn-default"
-                      value="Sign In"
-                      onClick={this.props.handleSubmit((values) => this.onSubmit(values))} />
-                  </div>
-                </div>
-                <div className="form-row">
-                  <div className="field-control field-label-offset">
-                    <Link className="form-link" to="/email-reset-password">Forgot your password?</Link>
-                    <br/>
-                    <br/>
-                    <Link className="form-link" to="/sign-up">Register as a new user</Link>
-                  </div>
-                </div>
-              </div>
-              {this.props.loader &&
-              <div className="common-form__loader">
-                <Loader />
-              </div>
-              }
-            </form>
-          </div>
-        </div>
-        <div className="floating-components">
-          <ToastContainer />
-        </div>
-      </div>
-    )
-  }
+SignIn.propTypes = {
+  errorSignIn: PropTypes.object,
+  loader: PropTypes.bool,
+  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func,
+  location: PropTypes.object,
 }
 
 const mapStateToProps = state => ({
-  auth: getAuth(state),
   errorSignIn: getAppStateItem(state, 'signIn'),
   loader: getLoader(state),
 })
 
 const mapDispatchToProps = {
-  controlRedirectTasks,
   login,
-  deselectError,
   visibleLoader,
+  controlRedirectTasks,
+  deselectError,
 }
 
 export default compose(
@@ -173,4 +120,27 @@ export default compose(
     form: 'signIn',
     validate: validateSignIn,
   }),
+  withHandlers({
+    onSubmit: props => values => {
+      props.visibleLoader()
+      props.login({
+        email: values.get('email'),
+        password: values.get('password')
+      })
+    },
+  }),
+  lifecycle({
+    componentWillMount() {
+      this.props.controlRedirectTasks()
+    },
+    componentDidMount() {
+      this.props.deselectError('signIn')
+      style({
+        BOTTOM_RIGHT: {
+          bottom: '30px',
+          right: '25px'
+        }
+      })
+    }
+  })
 )(SignIn)

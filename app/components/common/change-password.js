@@ -2,9 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Field, reduxForm } from 'redux-form/immutable'
 import { connect } from 'react-redux'
-import { compose, withHandlers } from 'recompose'
+import {compose, lifecycle, withHandlers} from 'recompose'
 
-import { visibleLoader } from 'redux/store/app-state/app-state.actions'
+import { deselectError, visibleLoader } from 'redux/store/app-state/app-state.actions'
 import { getChangePasswordForm, getLoader } from 'redux/store/app-state/app-state.selectors'
 import { changePassword } from 'redux/store/auth/auth.actions'
 import { validateChangePassword } from 'redux/utils/validate'
@@ -100,6 +100,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   changePassword,
   visibleLoader,
+  deselectError,
 }
 
 export default compose(
@@ -116,6 +117,11 @@ export default compose(
         oldPassword: values.get('oldPassword'),
         newPassword: values.get('newPassword'),
       })
-    },
+    }
   }),
+  lifecycle({
+    componentDidMount() {
+      this.props.deselectError('changePassword')
+    }
+  })
 )(ChangePassword)

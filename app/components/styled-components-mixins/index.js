@@ -11,6 +11,7 @@ import {
   ErrorListItemIcon,
   ErrorListItemText,
   FormRow,
+  FormLink,
 } from './forms'
 
 // fonts
@@ -154,4 +155,5 @@ export {
   ErrorListItemIcon,
   ErrorListItemText,
   FormRow,
+  FormLink,
 }

@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { Link } from 'react-router-dom'
 import Icon from '../icons/icon'
 
 const Form = styled.div`
@@ -60,6 +61,12 @@ const FormRow = styled.div`
   cursor: ${props => props.pointer ? 'pointer' : 'auto'}
 `;
 
+const FormLink = styled(Link)`
+  color: #8C9DA9;
+  font-size: 14px;
+  cursor: pointer;
+`;
+
 export {
   Form,
   FormBody,
@@ -71,6 +78,7 @@ export {
   ErrorListItemIcon,
   ErrorListItemText,
   FormRow,
+  FormLink,
 }
 
 

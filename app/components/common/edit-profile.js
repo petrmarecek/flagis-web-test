@@ -2,9 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Field, reduxForm } from 'redux-form/immutable'
 import { connect } from 'react-redux'
-import { compose, withHandlers } from 'recompose'
+import {compose, lifecycle, withHandlers} from 'recompose'
 
-import { visibleLoader } from 'redux/store/app-state/app-state.actions'
+import { deselectError, visibleLoader } from 'redux/store/app-state/app-state.actions'
 import { getChangeNameForm, getLoader } from 'redux/store/app-state/app-state.selectors'
 import { changeName } from 'redux/store/auth/auth.actions'
 import { getUsername } from 'redux/store/auth/auth.selectors'
@@ -93,6 +93,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   changeName,
   visibleLoader,
+  deselectError,
 }
 
 export default compose(
@@ -109,6 +110,11 @@ export default compose(
         firstName: values.get('firstName'),
         lastName: values.get('lastName'),
       })
-    },
+    }
   }),
+  lifecycle({
+    componentDidMount() {
+      this.props.deselectError('changeName')
+    }
+  })
 )(EditProfile)
