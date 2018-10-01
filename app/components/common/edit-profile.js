@@ -105,10 +105,19 @@ export default compose(
   }),
   withHandlers({
     onSubmit: props => values => {
+      const initFirstName = props.initialValues.get('firstName')
+      const firstName = values.get('firstName')
+      const initLastName = props.initialValues.get('lastName')
+      const lastName = values.get('lastName')
+
+      if (initFirstName === firstName && initLastName === lastName) {
+        return
+      }
+
       props.visibleLoader()
       props.changeName({
-        firstName: values.get('firstName'),
-        lastName: values.get('lastName'),
+        firstName: firstName,
+        lastName: lastName,
       })
     }
   }),

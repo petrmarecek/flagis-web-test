@@ -12,7 +12,7 @@ const messages = {
 
 // Validations
 const isEmail = text => (typeof text === 'string') && /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(text)
-const isName = text => (typeof text === 'string') && /^[A-Za-z]{1,32}$/i.test(text)
+const isName = text => (typeof text === 'string') && /^[A-ZÁ-Ža-za-ž]{1,32}$/i.test(text)
 
 const validateEmail = values => {
   const errors = {}
