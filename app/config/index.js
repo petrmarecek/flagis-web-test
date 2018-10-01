@@ -30,7 +30,7 @@ const firebaseProduction = {
 const configs = {
   development: {
     isProduction: false,
-    apiURL: 'https://flagis-test.herokuapp.com', //'https://flagis-api-development.herokuapp.com'
+    apiURL: 'https://flagis-api-development.herokuapp.com',
     firebase: firebaseDevelopment,
   },
   test: {
