@@ -8,6 +8,7 @@ import { TAGS } from 'redux/store/tags/tags.actions'
 import { COMMENTS } from 'redux/store/comments/comments.actions'
 import { ATTACHMENTS } from 'redux/store/attachments/attachments.actions'
 import { CONTACTS } from 'redux/store/contacts/contacts.actions'
+import { FOLLOWERS } from 'redux/store/followers/followers.actions'
 import * as records from 'redux/data/records'
 
 export default typeToReducer({
@@ -69,9 +70,9 @@ export default typeToReducer({
   [TASKS.ADD_TASK_TAG]: (state, action) => state
     .updateIn(['tasks', action.payload.taskId, 'tags'], tagList => tagList.push(action.payload.tag.id)),
 
-  [TASKS.ADD_TASK_CONTACT]: (state, action) => state
+  [TASKS.ADD_TASK_FOLLOWER]: (state, action) => state
     .updateIn(['tasks', action.payload.taskId, 'followers'],
-      followersList => followersList.push(action.payload.contact.id)),
+        followersList => followersList.push(action.payload.followerId)),
 
   [TASKS.ADD_TASK_TAG_STORE]: (state, action) => state
     .updateIn(['tasks', action.payload.taskId, 'tags'], tagList => tagList.push(action.payload.tag.id)),
@@ -82,7 +83,7 @@ export default typeToReducer({
 
   [TASKS.REMOVE_TASK_FOLLOWER]: (state, action) => state
     .updateIn(['tasks', action.payload.taskId, 'followers'],
-      followersList => followersList.filter(followerId => followerId !== action.payload.contact.id)),
+      followersList => followersList.filter(followerId => followerId !== action.payload.followerId)),
 
   [TASKS.DELETE]: (state, action) => state
     .setIn(['tasks', action.payload.taskEntitiesList]),
@@ -226,11 +227,27 @@ export default typeToReducer({
     return state.setIn(['contacts', contactId, fieldName], fieldValue)
   },
 
-  [CONTACTS.SEND_INVITATION]: (state, action) => state
-    .setIn(['contacts', action.payload.contactId, 'isInvited'], true),
+  [CONTACTS.SEND_INVITATION]: (state, action) =>
+    state.setIn(['contacts', action.payload.contactId, 'isInvited'], true),
 
   [CONTACTS.DELETE]: (state, action) =>
     state.deleteIn(['contacts', action.payload.originalData.id]),
+
+  // ------ Followers ----------------------------------------------------------
+
+  [FOLLOWERS.ADD]: (state, action) => saveFollowers(action.payload, state),
+
+  [FOLLOWERS.SEND_TASK]: (state, action) =>
+    state.setIn(['followers', action.payload.followerId, 'status'], 'pending'),
+
+  [FOLLOWERS.ACCEPT_TASK]: (state, action) =>
+    state.setIn(['followers', action.payload.followerId, 'status'], 'accepted'),
+
+  [FOLLOWERS.REJECT_TASK]: (state, action) =>
+    state.setIn(['followers', action.payload.followerId, 'status'], 'rejected'),
+
+  [FOLLOWERS.DELETE]: (state, action) =>
+    state.deleteIn(['followers', action.payload.followerId])
 
 }, new records.EntitiesStore())
 
@@ -317,6 +334,17 @@ function saveContacts(payload, state) {
   const contacts = convertToImmutable(rawContacts, records.Contact)
 
   return state
+    .mergeIn(['contacts'], contacts)
+}
+
+function saveFollowers(payload, state) {
+  const rawFollowers = payload.entities.followers || {}
+  const rawContacts = payload.entities.profile || {}
+  const contacts = convertToImmutable(rawContacts, records.Contact)
+  const followers = convertToImmutable(rawFollowers, records.Follower)
+
+  return state
+    .mergeIn(['followers'], followers)
     .mergeIn(['contacts'], contacts)
 }
 

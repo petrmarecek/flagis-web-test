@@ -364,7 +364,11 @@ export default compose(
     onHandleTaskTagDeleted: props => data => props.removeTaskTag(data.task.id, data.tagInfo),
     onHandleTaskFollowerDeleted: props => data => {
       props.setAnimation()
-      props.removeTaskFollower(data.task.id, data.followerInfo)
+      props.removeTaskFollower(
+        data.taskId,
+        data.userId,
+        data.followerId
+      )
     },
     onHandleTaskDateChanged: props => data => props.setDate(data.task, data.date, data.typeDate),
     onHandleTaskToggleImportant: props => data => props.requestToggleImportant(data),

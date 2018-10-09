@@ -9,6 +9,7 @@ import { TAGS } from './tags/tags.actions'
 import { COMMENTS } from './comments/comments.actions'
 import { ATTACHMENTS } from './attachments/attachments.actions'
 import { CONTACTS } from './contacts/contacts.actions'
+import { FOLLOWERS } from './followers/followers.actions'
 
 import * as auth from './auth/auth.sagas'
 import * as task from './tasks/tasks.sagas'
@@ -19,6 +20,7 @@ import * as appState from './app-state/app-state.sagas'
 import * as comment from './comments/comments.sagas'
 import * as attachment from './attachments/attachments.sagas'
 import * as contact from './contacts/contacts.sagas'
+import * as followers from './followers/followers.sagas'
 
 export default function* root() {
   yield all([
@@ -53,7 +55,6 @@ export default function* root() {
     takeLatest(TASKS.SET_ARCHIVE, task.setArchiveTasks),
     takeLatest(TASKS.CANCEL_ARCHIVE, task.cancelArchiveTasks),
     takeEvery(TASKS.ADD_TASK_TAG, task.addTaskTag),
-    takeEvery(TASKS.ADD_TASK_CONTACT, task.addTaskContact),
     takeEvery(TASKS.REMOVE_TASK_TAG, task.removeTaskTag),
     takeEvery(TASKS.REMOVE_TASK_FOLLOWER, task.removeTaskFollower),
     takeEvery(TASKS.ADD_REMOVE_TASK_TAGS, task.addRemoveTaskTags),
@@ -110,5 +111,12 @@ export default function* root() {
     takeLatest(CONTACTS.SEND_INVITATION, contact.sendInvitationContact),
     takeEvery(CONTACTS.DELETE, contact.deleteContact),
     takeEvery(CONTACTS.UNDO_DELETE, contact.undoDeleteContact),
+
+    // followers
+    takeEvery(FOLLOWERS.CREATE, followers.createFollower),
+    takeEvery(FOLLOWERS.SEND_TASK, followers.sendTaskToFollowers),
+    takeEvery(FOLLOWERS.ACCEPT_TASK, followers.followerAcceptTask),
+    takeEvery(FOLLOWERS.REJECT_TASK, followers.followerRejectTask),
+    takeEvery(FOLLOWERS.DELETE, followers.deleteFollower),
   ])
 }

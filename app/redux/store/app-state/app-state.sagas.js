@@ -6,6 +6,7 @@ import * as tasksMenuActions from 'redux/store/tasks-menu/tasks-menu.actions'
 import * as tagActions from 'redux/store/tags/tags.actions'
 import * as treeActions from 'redux/store/tree/tree.actions'
 import * as contactActions from 'redux/store/contacts/contacts.actions'
+import * as followerActions from 'redux/store/followers/followers.actions'
 import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'
 import * as tagSelectors from 'redux/store/tags/tags.selectors'
 import { toast } from 'react-toastify'
@@ -84,7 +85,7 @@ export function* hintSelected(action) {
       yield put(contactActions.addContact(hint))
     }
 
-    yield put(taskActions.addTaskContact(parentId, hint))
+    yield put(followerActions.createFollower(parentId, hint.id))
   }
 }
 

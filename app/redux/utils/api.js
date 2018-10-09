@@ -173,4 +173,26 @@ export default {
       .delete(`contacts/${contactId}`)
       .then(res => res.data),
   },
+
+  followers: {
+    create: (taskId, data) => api
+      .post(`tasks/${taskId}/followers`, data)
+      .then(res => res.data),
+
+    send: (taskId) => api
+      .put(`tasks/${taskId}/followers/send`)
+      .then(res => res.data),
+
+    accept: (taskId) => api
+      .put(`tasks/${taskId}/followers/accept`)
+      .then(res => res.data),
+
+    reject: (taskId) => api
+      .put(`tasks/${taskId}/followers/reject`)
+      .then(res => res.data),
+
+    delete: (taskId, userId) => api
+      .delete(`tasks/${taskId}/followers/${userId}`)
+      .then(res => res.data),
+  },
 }

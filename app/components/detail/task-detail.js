@@ -441,8 +441,13 @@ export default withHandlers({
     props.onHandleTaskTagDeleted(data)
   },
   onHandleDelete: props => () => props.onHandleTaskDelete(props.task.id),
-  onHandleFollowerDelete: props => followerInfo => {
-    const data = { task: props.task, followerInfo }
+  onHandleFollowerDelete: props => user => {
+    const data = {
+      taskId: props.task.id,
+      userId: user.id,
+      followerId:  props.task.followers.first().id,
+    }
+
     props.onHandleTaskFollowerDeleted(data)
   },
   onHandleStartDateChanged: props => date => {
