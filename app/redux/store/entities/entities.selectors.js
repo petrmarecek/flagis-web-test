@@ -9,6 +9,7 @@ export const getEntitiesTreeItems = state => state.getIn(['entities', 'treeItems
 export const getEntitiesAttachments = state => state.getIn(['entities', 'attachments'])
 export const getEntitiesComments = state => state.getIn(['entities', 'comments'])
 export const getEntitiesContacts = state => state.getIn(['entities', 'contacts'])
+export const getEntitiesFollowers = state => state.getIn(['entities', 'followers'])
 
 // ------ Reselect selectors ----------------------------------------------------
 

@@ -35,17 +35,19 @@ export const compareContactByEmail = (contactA, contactB) => {
 
 function loadContact(data) {
   const { contactsSearch, entitiesContacts } = data
-  let entities = entitiesContacts.toArray()
+  let contacts = entitiesContacts.toArray()
 
   // apply search filter
   if (contactsSearch) {
-    entities = search.contacts
+    contacts = search.contacts
       .get(contactsSearch)
       .map(item => item.ref)
       .map(contactId => entitiesContacts.getIn([contactId]))
   }
 
-  return entities.sort(compareContactByEmail)
+  return contacts
+    .filter(contact => contact.isContact)
+    .sort(compareContactByEmail)
 }
 
 // ------ Selectors -------------------------------------------------------------
@@ -66,7 +68,9 @@ export const getContacts = createSelector(
 
     return ({
       isFetching: contactsIsFetching,
-      items: entitiesContacts.sort(compareContactByEmail).toArray(),
+      items: entitiesContacts
+        .filter(contact => contact.isContact)
+        .sort(compareContactByEmail).toArray(),
     })
   }
 )

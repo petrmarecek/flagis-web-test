@@ -2,20 +2,21 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
-import { List } from 'immutable'
 import { withHandlers } from 'recompose'
-import { getColorIndex } from 'redux/utils/component-helper'
 
 import dateUtil from 'redux/utils/date'
 
 import DetailMenu from 'components/detail/detail-menu'
 import FollowerStatus from 'components/common/follower-status'
 import Autocomplete from 'components/autocomplete'
+import FollowerIcon from '../common/follower-icon'
 import FilePicker from 'components/common/file-picker'
 import AttachmentList from 'components/attachment-list/attachment-list'
 import CommentList from 'components/comment-list/comment-list'
 import Loader from 'components/common/loader'
 import Icon from 'components/icons/icon'
+import FollowerItems from '../common/follower-items'
+import TagItems from '../common/tag-items'
 import {ICONS} from 'components/icons/icon-constants'
 
 import {
@@ -79,78 +80,66 @@ const TaskDetail = props => {
     onHandlePrevious,
   } = props
 
+  // No task loaded --> hide detail
   if (!task) {
-    return <div>Detail not found</div>
+    return <div>Task not found</div>
   }
 
   // Data of current task
-  const getBindingData = () => {
-
-    // No task loaded --> return default values
-    if (!task) {
-      return {
-        startDate: null,
-        dueDate: null,
-        reminderDate: null,
-        subject: null,
-        tags: List(),
-        description: null,
-        context: null,
-        isCompleted: false,
-        isImportant: false,
-        isArchived: false,
-        followers: List(),
-      }
-    }
-
-    // Task loaded --> return real data
-    return {
-      id: task.id,
-      startDate: dateUtil.toMoment(task.startDate),
-      dueDate: dateUtil.toMoment(task.dueDate),
-      reminderDate: dateUtil.toMoment(task.reminderDate),
-      subject: task.subject,
-      tags: task.tags,
-      description: task.description,
-      context: { source: 'task-detail', parentId: task.id },
-      isCompleted: task.isCompleted,
-      isImportant: task.isImportant,
-      isArchived: task.isArchived,
-      followers: task.followers,
-    }
-  }
-
-  const bindingData = getBindingData()
-  const description = bindingData.description === null ? '' : bindingData.description
-  const tags = bindingData.tags.map(tag => {
-    const colorIndex = getColorIndex(tag.colorIndex, tag.title)
-    const tagClasses = `tag cl-${colorIndex}`
-
-    return (
-      <li key={tag.id} className={tagClasses}>
-        <span className="tag__title">{tag.title}</span>
-      </li>
-    )
+  const getBindingData = ({
+    id: task.id,
+    subject: task.subject,
+    followerStatus: task.followers.size !== 0 ? task.followers.first().status : 'new',
+    tags: task.tags,
+    followers: task.followers,
+    startDate: dateUtil.toMoment(task.startDate),
+    dueDate: dateUtil.toMoment(task.dueDate),
+    reminderDate: dateUtil.toMoment(task.reminderDate),
+    description: task.description,
+    isCompleted: task.isCompleted,
+    isArchived: task.isArchived,
+    isTags: task.tags.size !== 0,
+    isFollowers: task.followers.size !== 0,
+    isImportant: task.isImportant
   })
-  const followers = bindingData.followers.map(follower => (
-    <li key={follower.id}>
-      <span className="tag__title">{!follower.nickname ? follower.email : follower.nickname}</span>
-    </li>
-  ))
-  const iconAnimation = {
-    action: 'transition.expandIn',
-    duration: 1000,
+
+  const {
+    id,
+    subject,
+    followerStatus,
+    tags,
+    followers,
+    startDate,
+    dueDate,
+    reminderDate,
+    description,
+    isCompleted,
+    isArchived,
+    isTags,
+    isFollowers,
+    isImportant
+  } = getBindingData
+
+  // Margin-left of subject
+  const marginLeft = () => {
+    if (isCompleted && !isArchived) {
+      return '85px'
+    }
+
+    if (isFollowers && !isArchived) {
+      if (followerStatus === 'pending') {
+        return '92px'
+      }
+
+      if (followerStatus === 'rejected') {
+        return '190px'
+      }
+
+      return '147px'
+    }
+
+    return '45px'
   }
-  const scrollStyle = {
-    height: 'calc(100vh - 232px)',
-    overflow: 'hidden',
-  }
-  const isCompletedTaskColor = bindingData.isCompleted
-    ? '#c2fee5'
-    : '#D7E3EC'
-  const isCompletedTaskHoverColor = bindingData.isCompleted
-    ? '#D7E3EC'
-    : '#00FFC7'
 
   return (
     <div>
@@ -158,34 +147,37 @@ const TaskDetail = props => {
         back={onHandleToggleList}
         previous={onHandlePrevious}
         next={onHandleNext} />
-
-      <DetailInner archived={bindingData.isArchived}>
+      <DetailInner archived={isArchived}>
         <DetailContentTop
-          completed={bindingData.isCompleted}
-          important={bindingData.isImportant}
-          archived={bindingData.isArchived}
+          completed={isCompleted}
+          important={isImportant}
+          archived={isArchived}
           animation={animation} >
           <DetailContentSubject taskDetail>
             <DetailSubject>
-              {bindingData.followers.size !== 0 && <FollowerStatus status='new'/>}
-              {!bindingData.isArchived && bindingData.followers.size === 0 &&
+              {!isArchived && isFollowers &&
+              <FollowerStatus status={followerStatus} animation={animation} />}
+              {!isArchived && !isFollowers &&
               <DetailSubjectTaskCompleted
                 icon={ICONS.TASK_CHECKED}
-                color={[isCompletedTaskColor]}
-                hoverColor={[isCompletedTaskHoverColor]}
+                color={isCompleted ? ['#c2fee5'] : ['#D7E3EC']}
+                hoverColor={isCompleted ? ['#D7E3EC'] : ['#00FFC7']}
                 width={22}
                 height={21}
                 onClick={onHandleComplete}/>}
-              {bindingData.isCompleted && animation && !bindingData.isArchived &&
+              {isCompleted && animation && !isArchived &&
               <DetailSubjectTaskArchived
                 icon={ICONS.ARCHIVE}
                 color={["#8c9ea9"]}
                 width={24}
                 height={25}
                 scale={0.926}
-                animation={iconAnimation}
-                onClick={onHandleArchive} />}
-              {bindingData.isCompleted && !animation && !bindingData.isArchived &&
+                onClick={onHandleArchive}
+                animation={{
+                  action: 'transition.expandIn',
+                  duration: 1000,
+                }} />}
+              {isCompleted && !animation && !isArchived &&
               <DetailSubjectTaskArchived
                 icon={ICONS.ARCHIVE}
                 color={["#8c9ea9"]}
@@ -193,7 +185,7 @@ const TaskDetail = props => {
                 height={25}
                 scale={0.926}
                 onClick={onHandleArchive} />}
-              {bindingData.isArchived &&
+              {isArchived &&
               <DetailSubjectTaskArchived
                 archived
                 icon={ICONS.NON_ARCHIVE}
@@ -204,68 +196,72 @@ const TaskDetail = props => {
                 onClick={onHandleArchive} />}
                 <span onClick={onHandleRemoveEventListener}>
                   <DetailSubjectTaskContentEditable
-                    completed={bindingData.isCompleted}
-                    important={bindingData.isImportant}
-                    archived={bindingData.isArchived}
-                    animation={animation}
-                    html={bindingData.subject}
+                    html={subject}
                     enforcePlainText
-                    onChange={onHandleSubjectUpdate} />
+                    onChange={onHandleSubjectUpdate}
+                    completed={isCompleted}
+                    important={isImportant}
+                    archived={isArchived}
+                    marginLeft={marginLeft}
+                    animation={animation}/>
                 </span>
             </DetailSubject>
           </DetailContentSubject>
           <DetailContentTagAutocomplete onClick={onHandleRemoveEventListener}>
-            {bindingData.isArchived &&
-            <DetailContentTagAutocompleteTags>{tags}</DetailContentTagAutocompleteTags>}
-            {!bindingData.isArchived &&
+            {isArchived &&
+            <DetailContentTagAutocompleteTags>
+              <TagItems tags={tags}/>
+            </DetailContentTagAutocompleteTags>}
+            {!isArchived &&
             <Autocomplete
               dataType="tags"
               location="taskDetailTags"
               placeholder="Add tags"
-              selectedItems={{ tags: bindingData.tags.size === 0 ? null : bindingData.tags }}
-              parentId={bindingData.id}
+              selectedItems={{ tags: isTags === 0 ? null : tags }}
+              parentId={id}
               onItemDelete={onHandleTagDelete}
               isAllowUpdate />}
           </DetailContentTagAutocomplete>
           <DetailContentDeleteIcon
-            archived={bindingData.isArchived}
+            archived={isArchived}
             onClick={onHandleRemoveEventListener} >
             <Icon
               icon={ICONS.TRASH}
               width={23}
               height={26}
               scale={1}
-              color={["#ff8181", "#ff8181", "#ff8181", "#ff8181"]}
+              color={["#ff8181"]}
               onClick={onHandleDelete}/>
           </DetailContentDeleteIcon>
         </DetailContentTop>
-
         <DetailContentCenter>
           <DetailContentProperties>
             <DetailContentOptions>
-              <DetailContentAddContact onClick={onHandleRemoveEventListener}>
+              <DetailContentAddContact
+                onClick={onHandleRemoveEventListener}
+                disabled={isCompleted && !isArchived && !isFollowers}
+                animation={animation} >
                 <DetailContentAddContactLabel changeColor>
                   To:
                 </DetailContentAddContactLabel>
                 <DetailContentAddContactContent>
-                  {bindingData.isArchived &&
-                  <DetailContentAutocompleteContacts>{followers}</DetailContentAutocompleteContacts>}
-                  {!bindingData.isArchived &&
+                  {isArchived &&
+                  <DetailContentAutocompleteContacts>
+                    <FollowerItems followers={followers}/>
+                  </DetailContentAutocompleteContacts>}
+                  {!isArchived &&
                   <Autocomplete
                     dataType="contacts"
                     location="taskDetailContacts"
                     placeholder="Add contact"
-                    selectedItems={{ contacts: bindingData.followers.size === 0 ? null : bindingData.followers }}
-                    parentId={bindingData.id}
+                    selectedItems={{ contacts: isFollowers ? followers.map(follower => follower.profile) : null }}
+                    parentId={id}
                     onItemDelete={onHandleFollowerDelete}
-                    isWithoutInput={bindingData.followers.size !== 0} />}
+                    isWithoutInput={isFollowers} />}
                 </DetailContentAddContactContent>
-                <DetailContentAddContactIcon
-                  icon={ICONS.CONTACTS}
-                  width={21}
-                  height={16}
-                  scale={0.7}
-                  color={["#8C9DA9"]} />
+                <DetailContentAddContactIcon>
+                  <FollowerIcon status={followerStatus} scale={0.75} />
+                </DetailContentAddContactIcon>
               </DetailContentAddContact>
               <DetailContentDate>
                 <DetailContentDateLabel>
@@ -279,7 +275,7 @@ const TaskDetail = props => {
                     timeFormat="HH:mm"
                     timeIntervals={15}
                     dateFormat={dateUtil.DEFAULT_DATE_TIME_FORMAT}
-                    selected={bindingData.startDate}
+                    selected={startDate}
                     onChange={onHandleStartDateChanged} />
                 </DetailContentDatePicker>
               </DetailContentDate>
@@ -295,7 +291,7 @@ const TaskDetail = props => {
                     timeFormat="HH:mm"
                     timeIntervals={15}
                     dateFormat={dateUtil.DEFAULT_DATE_TIME_FORMAT}
-                    selected={bindingData.dueDate}
+                    selected={dueDate}
                     onChange={onHandleDueDateChanged} />
                 </DetailContentDatePicker>
               </DetailContentDate>
@@ -311,12 +307,12 @@ const TaskDetail = props => {
                     timeFormat="HH:mm"
                     timeIntervals={15}
                     dateFormat={dateUtil.DEFAULT_DATE_TIME_FORMAT}
-                    selected={bindingData.reminderDate}
+                    selected={reminderDate}
                     onChange={onHandleReminderDateChanged}/>
                 </DetailContentDatePicker>
               </DetailContentDate>
               <DetailContentImportant onClick={onHandleToggleImportant} last>
-                <DetailContentImportantLabel important={bindingData.isImportant}>
+                <DetailContentImportantLabel important={isImportant}>
                   Important
                 </DetailContentImportantLabel>
                 <DetailContentImportantContent>
@@ -329,19 +325,22 @@ const TaskDetail = props => {
               <Loader />}
               {!attachments.isFetching &&
               <AttachmentList
-                disabled={bindingData.isArchived}
+                disabled={isArchived}
                 attachments={attachments}
                 attachmentDelete={onHandleAttachmentDelete} />}
-              {!bindingData.isArchived && <FilePicker onFileUploaded={onHandleFileUploaded}/>}
+              {!isArchived && <FilePicker onFileUploaded={onHandleFileUploaded}/>}
             </DetailContentAttachments>
           </DetailContentProperties>
           <DetailContentDescriptionTask>
             <span onClick={onHandleRemoveEventListener}>
               <MarkdownEditableContainer
-                text={description}
-                scrollStyle={scrollStyle}
+                text={description === null ? '' : description}
                 placeholder='Add description'
-                onUpdate={onHandleDescriptionUpdate} />
+                onUpdate={onHandleDescriptionUpdate}
+                scrollStyle={{
+                  height: 'calc(100vh - 232px)',
+                  overflow: 'hidden',
+                }} />
             </span>
           </DetailContentDescriptionTask>
           <DetailContentComments>
@@ -349,7 +348,7 @@ const TaskDetail = props => {
             <Loader />}
             {!comments.isFetching &&
             <CommentList comments={comments} />}
-            {!bindingData.isArchived &&
+            {!isArchived &&
             <DetailContentCommentsAdd>
               <DetailContentCommentsAddIcon>
                 <Icon

@@ -1,5 +1,13 @@
 import { schema } from 'normalizr';
 
+const contact = new schema.Entity('contacts', {}, { idAttribute: 'id' })
+const contactList = new schema.Array(contact)
+
+const profile = new schema.Entity('profile', {}, { idAttribute: 'id' })
+const follower = new schema.Entity('followers', {}, { idAttribute: 'id' })
+
+follower.define({ profile })
+
 const tag = new schema.Entity('tags', {}, { idAttribute: 'id' })
 const tagList = new schema.Array(tag)
 
@@ -8,6 +16,7 @@ const taskList = new schema.Array(task)
 
 task.define({
   tags: new schema.Array(tag),
+  followers: new schema.Array(follower),
 })
 
 const treeItem = new schema.Entity('treeItem', {}, { idAttribute: 'id' })
@@ -37,14 +46,10 @@ attachment.define({
   items: new schema.Array(attachment)
 })
 
-const contact = new schema.Entity('contacts', {}, { idAttribute: 'id' })
-const contactList = new schema.Array(contact)
-
-contact.define({
-  items: new schema.Array(comment)
-})
-
 export default {
+  contact,
+  contactList,
+  follower,
   tag,
   tagList,
   task,
@@ -56,6 +61,4 @@ export default {
   commentList,
   attachment,
   attachmentList,
-  contact,
-  contactList,
 }

@@ -155,10 +155,13 @@
     }
 
     &__tags {
-        display: inline-block;
         position: absolute;
         right: 10px;
         top: 5px;
+
+        .task-item.followers & {
+            right: 60px;
+        }
     }
 
     &__due-date {
@@ -180,5 +183,18 @@
             }
 
         }
+
+        .task-item.followers & {
+            right: 68px;
+        }
+    }
+
+    &__followers {
+        display: flex;
+        align-items: center;
+        height: 50px;
+        position: absolute;
+        right: 26px;
+        top: 0;
     }
 }

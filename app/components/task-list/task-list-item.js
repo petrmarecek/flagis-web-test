@@ -12,8 +12,8 @@ import dateUtils from 'redux/utils/date'
 
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
-
 import TaskListItemTag from 'components/task-list/task-list-item-tag'
+import FollowerIcon from '../common/follower-icon'
 
 // Drag and Drop
 const ItemTypes = {
@@ -354,6 +354,8 @@ class TaskListItem extends Component {
         listType={this.props.listType} />
     ))
 
+    const isFollowers = this.props.task.followers.size !== 0
+    const followerStatus = isFollowers ? this.props.task.followers.first().status : 'new'
     const now = moment()
     const dueDate = this.props.task.dueDate
     const dueDateFormat = dateUtils.formatDate(dueDate)
@@ -370,6 +372,7 @@ class TaskListItem extends Component {
       'selected': this.props.isSelected,
       'completed': this.props.task.isCompleted && this.props.listType !== 'archived',
       'important': this.props.task.isImportant,
+      'followers': isFollowers,
       'due-date': dueDate !== null,
     })
 
@@ -426,7 +429,13 @@ class TaskListItem extends Component {
             <div className="task-item__tags">
               {tags}
             </div>
-            <div className={dueDateClass} title={fromNow}>{dueDateFormat}</div>
+            <div className={dueDateClass} title={fromNow}>
+              {dueDateFormat}
+            </div>
+            {isFollowers &&
+            <div className="task-item__followers">
+              <FollowerIcon status={followerStatus} />
+            </div>}
           </div>
         </li>}
       </div>

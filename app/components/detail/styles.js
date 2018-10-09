@@ -69,7 +69,7 @@ const DetailContentTop = styled.div`
     ${transition(props => props.animation ? 'transform 500ms ease-out' : 'none')}
   }
   
-  &:after {
+  :after {
     content: "";
     position: absolute;
     left: 10px;
@@ -99,10 +99,9 @@ const DetailContentTagAutocomplete = styled.div`
   max-width: 70%;
 `;
 
-const DetailContentTagAutocompleteTags = styled.div`
-  flex: 5;
-  height: 22px;
+const DetailContentTagAutocompleteTags = styled.ul`
   float: right;
+  list-style-type: none;
 `;
 
 const DetailContentDeleteIcon = styled.div`
@@ -132,7 +131,7 @@ const DetailContentProperties = styled.div`
 `;
 
 const DetailContentOptions = styled.div`
-  margin: 6px 0 10px;
+  margin: 0 0 10px;
 `;
 
 const detailContentOptionsItem = css`
@@ -152,11 +151,28 @@ const detailContentOptionsItemLabel = css`
 const DetailContentAddContact = styled.div`
   ${detailContentOptionsItem}
   margin: 0 0 10px 0;
-  cursor: 'default';
+  cursor: default;
+  padding: 10px 0 2px 0;
+  pointer-events: ${props => props.disabled ? 'none' : 'auto'};
+  
+  :before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #f6f8f9;
+    ${borderRadius('4px 4px 0 0')}
+    ${transform(props => props.disabled ? 'scaleX(1)' : 'scaleX(0)')}
+    ${transformOrigin('0 50%')}
+    ${transition(props => props.animation ? 'transform 500ms ease-out' : 'none')}
+  }
 `;
 
-const DetailContentAddContactLabel = styled.span`
+const DetailContentAddContactLabel = styled.div`
   ${detailContentOptionsItemLabel}
+  position: relative;
 `;
 
 const DetailContentAddContactContent = styled.div`
@@ -166,17 +182,18 @@ const DetailContentAddContactContent = styled.div`
   bottom: -5px;
 `;
 
-const DetailContentAddContactIcon = styled(Icon)`
+const DetailContentAddContactIcon = styled.div`
   position: absolute;
   right: 5px;
   bottom: 2px;
   pointer-events: none;
 `;
 
-const DetailContentAutocompleteContacts = styled.div`
-  flex: 5;
-  height: 22px;
-  float: right;
+const DetailContentAutocompleteContacts = styled.ul`
+  display: flex;
+  align-items: center;
+  padding: 0 0 6px 0;
+  list-style-type: none;
 `;
 
 const DetailContentImportant = styled.div`
@@ -325,11 +342,11 @@ const ContentEditableContainer = css`
   max-height: 134px;
   overflow-y: auto;
   overflow-x: hidden;
+  ${transition(props => props.animation ? 'margin 500ms ease-out, color 500ms ease-out' : 'none')};
   color: ${props => (props.completed && !props.archived) ? '#D7E3EC' : '#293034'};
-  margin-left: ${props => (props.completed && !props.archived) ? '85px' : '45px'};
+  margin-left: ${props => props.marginLeft ? props.marginLeft : '45px'};
   text-decoration: ${props => (props.completed || props.archived) ? 'line-through' : 'none'};
   font-weight: ${props => props.important ? 'bold' : 'normal'};
-  ${transition(props => props.animation ? 'margin 500ms ease-out, color 500ms ease-out' : 'none')};
   pointer-events: ${props => props.archived ? 'none' : 'auto'};
   
   :empty:before {

@@ -145,6 +145,7 @@ export const EntitiesStore = Record({
   treeItems: Map(),
   comments: Map(),
   attachments: Map(),
+  followers: Map(),
   contacts: Map(),
 })
 
@@ -218,6 +219,8 @@ export const Task = Record({
   archivedAt: null,
   isTrashed: null,
   trashedAt: null,
+  createdById: null,
+  createdBy: null,
   followers: List(),
   tags: List(),
 })
@@ -288,6 +291,16 @@ export const TreeItem = Record({
   tag: null
 })
 
+export const Follower = Record({
+  id: null,
+  type: null,
+  status: null,
+  createdAt: null,
+  updatedAt: null,
+  archivedAt: null,
+  profile: null,
+})
+
 export const Contact = Record({
   id: null,
   email: null,
@@ -296,6 +309,7 @@ export const Contact = Record({
   createdAt: null,
   updatedAt: null,
   isUser: false,
+  isContact: false,
   isEmailNotificationEnabled: true,
   isInvited: false,
 })

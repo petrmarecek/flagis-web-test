@@ -69,7 +69,7 @@ export default typeToReducer({
   [TASKS.ADD_TASK_TAG]: (state, action) => state
     .updateIn(['tasks', action.payload.taskId, 'tags'], tagList => tagList.push(action.payload.tag.id)),
 
-  [TASKS.ADD_TASK_FOLLOWER]: (state, action) => state
+  [TASKS.ADD_TASK_CONTACT]: (state, action) => state
     .updateIn(['tasks', action.payload.taskId, 'followers'],
       followersList => followersList.push(action.payload.contact.id)),
 
@@ -281,12 +281,18 @@ function saveTree(payload, state) {
 function saveTasks(payload, state) {
   const rawTasks = payload.entities.tasks || {}
   const rawTags = payload.entities.tags || {}
+  const rawFollowers = payload.entities.followers || {}
+  const rawContacts = payload.entities.profile || {}
+  const contacts = convertToImmutable(rawContacts, records.Contact)
+  const followers = convertToImmutable(rawFollowers, records.Follower)
   const tags = convertToImmutable(rawTags, records.Tag)
   const tasks = convertToImmutable(rawTasks, records.Task)
 
   return state
     .mergeIn(['tasks'], tasks)
     .mergeIn(['tags'], tags)
+    .mergeIn(['followers'], followers)
+    .mergeIn(['contacts'], contacts)
 }
 
 function saveComments(payload, state) {
@@ -320,9 +326,11 @@ function convertToImmutable(entities, record) {
 
     switch (record) {
 
-      // Task record -> tags to OrderedSet
+      // Task record -> tags to List
       case records.Task:
-        result[key] = result[key].set('tags', List(result[key].tags))
+        result[key] = result[key]
+          .set('tags', List(result[key].tags))
+          .set('followers', List(result[key].followers))
         break;
 
       default:

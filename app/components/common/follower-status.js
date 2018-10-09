@@ -3,28 +3,33 @@ import PropTypes from 'prop-types'
 import { withHandlers } from 'recompose'
 
 import styled, { keyframes } from 'styled-components'
-import { transition } from 'components/styled-components-mixins'
-import { bounceIn } from 'react-animations'
+import { transition, boxSizing } from 'components/styled-components-mixins'
+import { pulse } from 'react-animations'
 
-const bounce = keyframes`${bounceIn}`;
+const show = keyframes`${pulse}`;
+const hide = keyframes`
+    0%    {opacity: 0;}
+    99%   {opacity: 0;}
+    100%  {opacity: 1;}
+`;
 
 const Container = styled.div`
   position: absolute;
   left: 5px;
-  top: 0;
+  top: 2px;
   height: 26px;
   margin: 0 5px;
-  animation: 1s ${bounce};
+  animation: ${props => props.animation ? `500ms ${hide}, 1s ${show} linear 400ms` : 'none'};
 `;
 
 const Button = styled.button`
+  ${boxSizing('border-box')}
   display: flex;
-  align-items: center;
   justify-content: center;
-  height: 26px;
   background-color: #44FFB1;
   width: 123px;
   border: none;
+  padding: 0;
   
   :hover {
     ${transition('500ms')}
@@ -38,7 +43,7 @@ const Title = styled.span`
   color: ${props => props.color};
 `;
 
-const FollowerStatus = ({ status, handleSendTask }) => {
+const FollowerStatus = ({ status, animation, handleSendTask }) => {
   const getStatus = {
      new: (
        <Button onClick={handleSendTask}>
@@ -50,7 +55,7 @@ const FollowerStatus = ({ status, handleSendTask }) => {
   }
 
   return (
-    <Container>
+    <Container animation={animation}>
       {getStatus[status]}
     </Container>
   )
@@ -58,6 +63,7 @@ const FollowerStatus = ({ status, handleSendTask }) => {
 
 FollowerStatus.propTypes = {
   status: PropTypes.string,
+  animation: PropTypes.bool,
   onSendTask: PropTypes.func,
   handleSendTask: PropTypes.func,
 }

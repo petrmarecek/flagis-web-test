@@ -536,7 +536,7 @@ export function* addRemoveTaskTags(action) {
   }
 }
 
-export function* addTaskFollower(action) {
+export function* addTaskContact(action) {
   const { taskId, contact } = action.payload
 
   try {
