@@ -41,6 +41,7 @@ export function* initDataFlow() {
     yield put(contactsActions.fetchContacts())
     yield put(tagActions.fetchTagsRelations())
     yield put(taskActions.fetchTasks())
+    yield put(taskActions.fetchInboxTasks())
     yield put(treeActions.fetchTree())
 
     // Init data from firestore

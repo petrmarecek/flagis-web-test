@@ -147,6 +147,14 @@ export function* fetchTasks() {
   yield put(taskMenuActions.changeSearchText(text))
 }
 
+export function* fetchInboxTasks() {
+  yield* fetch(TASKS.FETCH_INBOX, {
+    method: api.tasks.inbox,
+    args: [],
+    schema: schema.taskList
+  })
+}
+
 export function* fetchArchivedTasks() {
   const isArchivedTasks = yield select(state => appStateSelectors.getArchivedTasksVisibility(state))
 

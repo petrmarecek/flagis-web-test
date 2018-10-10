@@ -3,6 +3,7 @@ import { createSelector } from 'reselect'
 import search from 'redux/services/search'
 import moment from 'moment'
 import intersection from 'lodash/intersection'
+import { getInboxIsFetching } from '../inbox/inbox.selectors'
 import {
   getTaskDetail,
   getTaskArchiveDetail,
@@ -10,11 +11,13 @@ import {
 } from '../app-state/app-state.selectors'
 import {
   getEntitiesTasks,
+  getEntitiesInbox,
   getEntitiesTags,
   getEntitiesFollowers,
   getEntitiesContacts
 } from '../entities/entities.selectors'
 import { getActiveTagsIds } from '../tags/tags.selectors'
+import { getTasksMenu } from '../tasks-menu/tasks-menu.selectors'
 
 // ------ Helper functions ----------------------------------------------------
 
@@ -289,7 +292,6 @@ function findTasksByTags(tasks, tags) {
 // Local selectors
 const getTasksIsFetching = state => state.getIn(['tasks', 'isFetching'])
 const getArchivedTasksIsFetching = state => state.getIn(['tasks', 'archived', 'isFetching'])
-const getTasksMenu = state => state.getIn(['tasksMenu'])
 
 // Export selectors
 export const getTimeLine = state => state.getIn(['tasks', 'timeLine'])
@@ -350,6 +352,18 @@ export const getTasks = createSelector(
       isFetching: tasksIsFetching,
       items: loadTasks(tasksItems.toArray(), data),
       type: 'main',
+    })
+  }
+)
+
+export const getInboxTasks = createSelector(
+  getInboxIsFetching,
+  getEntitiesInbox,
+  (inboxIsFetching, entitiesInbox) => {
+
+    return ({
+      isFetching: inboxIsFetching,
+      items: entitiesInbox.toArray(),
     })
   }
 )

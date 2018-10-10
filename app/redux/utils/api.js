@@ -59,6 +59,10 @@ export default {
       .get('tasks')
       .then(res => res.data),
 
+    inbox: () => api
+      .get('inbox')
+      .then(res => res.data),
+
     search: search => api
       .post('tasks/search', search)
       .then(res => res.data),

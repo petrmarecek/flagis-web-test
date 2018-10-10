@@ -42,6 +42,7 @@ export default function* root() {
 
     // task
     takeLatest(TASKS.FETCH, task.fetchTasks),
+    takeLatest(TASKS.FETCH_INBOX, task.fetchInboxTasks),
     takeLatest(TASKS.FETCH_ARCHIVED, task.fetchArchivedTasks),
     takeLatest(TASKS.TOGGLE_IMPORTANT_REQUESTED, task.toggleImportant),
     takeLatest(TASKS.SET_DATE, task.setDate),

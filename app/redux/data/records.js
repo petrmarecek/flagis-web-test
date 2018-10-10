@@ -69,18 +69,6 @@ export const TagHints = Record({
   selectedItem: null
 })
 
-export const TagAutocomplete = Record({
-  focus: null,
-  text: '',
-})
-
-export const TagAutocompleteMap = Record({
-  task: new TagAutocomplete(),
-  tree: new TagAutocomplete(),
-  treeUpdate: new TagAutocomplete(),
-  search: new TagAutocomplete(),
-})
-
 export const MultiSelectTasks = Record({
   activeTags: List(),
   otherTags: List(),
@@ -121,7 +109,6 @@ export const AppStateStore = Record({
   detail: new Detail(),
   undoBox: null,
   currentDialog: null,
-  tagAutocompletes: new TagAutocompleteMap(),
   tagHints: new TagHints(),
   changeName: new Error(),
   changePassword: new Error(),
@@ -141,6 +128,7 @@ export const AuthStore = Record({
 
 export const EntitiesStore = Record({
   tasks: Map(),
+  inbox: Map(),
   tags: Map(),
   treeItems: Map(),
   comments: Map(),
@@ -156,6 +144,10 @@ export const TaskStore = Record({
   archived: new ListRecord(),
   timeLine: false,
   selection: OrderedSet(),
+})
+
+export const InboxStore = Record({
+  isFetching: false,
 })
 
 export const CommentStore = Record({

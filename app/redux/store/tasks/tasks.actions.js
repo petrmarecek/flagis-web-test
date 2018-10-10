@@ -2,6 +2,7 @@ import schema from '../../data/schema'
 
 export const TASKS = {
   FETCH: 'TASK/FETCH',
+  FETCH_INBOX: 'TASK/FETCH_INBOX',
   FETCH_ARCHIVED: 'TASK/FETCH_ARCHIVED',
   CREATE: 'TASK/CREATE',
   FIREBASE: 'TASK/FIREBASE',
@@ -41,6 +42,10 @@ export const TASKS = {
 
 export const fetchTasks = () => ({
   type: TASKS.FETCH
+})
+
+export const fetchInboxTasks = () => ({
+  type: TASKS.FETCH_INBOX
 })
 
 export const fetchArchivedTasks = () => ({
