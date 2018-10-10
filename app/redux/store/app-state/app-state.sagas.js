@@ -1,4 +1,4 @@
-import { put, select } from 'redux-saga/effects'
+import { put, select, call } from 'redux-saga/effects'
 import { push } from 'react-router-redux'
 import * as appStateActions from 'redux/store/app-state/app-state.actions'
 import * as taskActions from 'redux/store/tasks/tasks.actions'
@@ -12,6 +12,8 @@ import * as tagSelectors from 'redux/store/tags/tags.selectors'
 import { toast } from 'react-toastify'
 import { errorMessages } from 'utils/messages'
 import constants from 'utils/constants'
+import search from 'redux/services/search'
+import api from 'redux/utils/api'
 
 export function* defaultDisplay() {
   const isArchivedTask = select(state => appStateSelectors.getArchivedTasksVisibility(state))
@@ -76,17 +78,20 @@ export function* hintSelected(action) {
 
   // Hint(contact) selected within task detail context
   if (location === 'taskDetailContacts') {
+    let profile = hint
     yield put(appStateActions.setAnimation())
 
     // If contact is not yet defined, add it to the app
     if (isNewHint) {
-      hint.nickName = null
+      const email = profile.email
+      const data = { email }
+      profile = yield call(api.contacts.create, data)
 
-      yield put(contactActions.addContact(hint))
+      // Add contact to search index
+      search.contacts.addItem(profile)
     }
 
-    yield put(followerActions.createFollower(parentId, hint.id))
+    yield put(followerActions.createFollower(parentId, profile.id))
   }
 }
-
 
