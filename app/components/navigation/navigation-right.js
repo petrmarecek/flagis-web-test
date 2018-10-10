@@ -11,18 +11,20 @@ import {
   setTimeLine,
   cancelTimeLine,
 } from 'redux/store/tasks/tasks.actions'
-import { getTimeLine } from 'redux/store/tasks/tasks.selectors'
+import { hideArchivedTasks, changeLocation } from 'redux/store/app-state/app-state.actions'
 import { deselectTags } from 'redux/store/tags/tags.actions'
 import { deselectContacts } from 'redux/store/contacts/contacts.actions'
-import { hideArchivedTasks, changeLocation } from 'redux/store/app-state/app-state.actions'
+import { getTimeLine } from 'redux/store/tasks/tasks.selectors'
+import { getInboxCount } from 'redux/store/inbox/inbox.selectors'
 
-import { NavButtonContainer, NavButton } from './styles'
+import { NavButtonContainer, NavButton, InboxCounter } from './styles'
 
 const NavigationRight = props => {
 
   const {
     location,
     timeLine,
+    inboxCount,
     onHandleClickTasks,
     onHandleClickTags,
     onHandleClickInbox,
@@ -59,6 +61,7 @@ const NavigationRight = props => {
       <NavButton
         active={isInboxActive}
         onClick={onHandleClickInbox}>
+        {inboxCount > 0 && <InboxCounter count={inboxCount} />}
         <Icon
           icon={ICONS.INBOX}
           width={31}
@@ -83,6 +86,7 @@ const NavigationRight = props => {
 NavigationRight.propTypes = {
   location: PropTypes.object,
   timeLine: PropTypes.bool,
+  inboxCount: PropTypes.number,
   onHandleClickTasks: PropTypes.func,
   onHandleClickTimeLine: PropTypes.func,
   onHandleClickTags: PropTypes.func,
@@ -93,6 +97,7 @@ NavigationRight.propTypes = {
 const mapStateToProps = (state, ownProps) => ({
   location: ownProps.location,
   timeLine: getTimeLine(state),
+  inboxCount: getInboxCount(state),
 })
 
 const mapDispatchToProps = {

@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { boxSizing } from '../styled-components-mixins/'
+import Counter from 'components/common/counter'
 
 // ---------------------------------- NavigationBar ----------------------------------
 const Navbar = styled.nav`
@@ -41,6 +42,7 @@ const NavButtonContainer = styled.div`
 
 const NavButton = styled.div`
   ${boxSizing('border-box')}
+  position: relative;
   color: white;
   display: flex;
   align-items: center;
@@ -59,6 +61,12 @@ const NavButton = styled.div`
   }
 `;
 
+const InboxCounter = styled(Counter)`
+  position: absolute;
+  top: 6px;
+  right: 16px;
+`;
+
 export {
   // NavigationBar
   Navbar,
@@ -70,4 +78,5 @@ export {
   // NavigationRight
   NavButtonContainer,
   NavButton,
+  InboxCounter,
 }
