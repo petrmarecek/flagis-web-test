@@ -48,6 +48,7 @@ import {
   updateContact,
   sendInvitationContact
 } from 'redux/store/contacts/contacts.actions'
+import { sendTaskToFollowers } from 'redux/store/followers/followers.actions'
 import { getDetail } from 'redux/store/app-state/app-state.selectors'
 import {
   getTasksItems,
@@ -93,6 +94,7 @@ const Detail = props => {
     onHandleTaskSetComplete,
     onHandleTaskSetIncomplete,
     onHandleTaskArchive,
+    onHandleTaskSend,
     onHandleTaskSubjectUpdate,
     onHandleTaskTagDeleted,
     onHandleTaskFollowerDeleted,
@@ -137,6 +139,7 @@ const Detail = props => {
         onHandlePrevious={onHandlePrevious}
         onHandleTaskSetComplete={onHandleTaskSetComplete}
         onHandleTaskArchive={onHandleTaskArchive}
+        onHandleTaskSend={onHandleTaskSend}
         onHandleTaskSetIncomplete={onHandleTaskSetIncomplete}
         onHandleTaskSubjectUpdate={onHandleTaskSubjectUpdate}
         onHandleTaskTagDeleted={onHandleTaskTagDeleted}
@@ -186,6 +189,7 @@ Detail.propTypes = {
   onHandleTaskSetComplete: PropTypes.func,
   onHandleTaskSetIncomplete: PropTypes.func,
   onHandleTaskArchive: PropTypes.func,
+  onHandleTaskSend: PropTypes.func,
   onHandleTaskSubjectUpdate: PropTypes.func,
   onHandleTaskTagDeleted: PropTypes.func,
   onHandleTaskFollowerDeleted: PropTypes.func,
@@ -269,6 +273,8 @@ const mapDispatchToProps = {
   deselectContacts,
   updateContact,
   sendInvitationContact,
+
+  sendTaskToFollowers,
 
   deselectDetail,
   showDialog,
@@ -359,6 +365,10 @@ export default compose(
     onHandleTaskSetIncomplete: props => data => {
       props.setAnimation()
       props.setIncomplete(data)
+    },
+    onHandleTaskSend: props => data => {
+      props.setAnimation()
+      props.sendTaskToFollowers(data.taskId, data.followerId)
     },
     onHandleTaskSubjectUpdate: props => data => props.setSubject(data.task, data.subject),
     onHandleTaskTagDeleted: props => data => props.removeTaskTag(data.task.id, data.tagInfo),

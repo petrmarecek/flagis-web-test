@@ -5,6 +5,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 import { withHandlers } from 'recompose'
 
 import dateUtil from 'redux/utils/date'
+import { getAssigneeOfTask } from 'redux/utils/component-helper'
 
 import DetailMenu from 'components/detail/detail-menu'
 import FollowerStatus from 'components/common/follower-status'
@@ -62,6 +63,7 @@ const TaskDetail = props => {
     animation,
     onHandleComplete,
     onHandleArchive,
+    onHandleSend,
     onHandleSubjectUpdate,
     onHandleTagDelete,
     onHandleFollowerDelete,
@@ -86,10 +88,11 @@ const TaskDetail = props => {
   }
 
   // Data of current task
+  const assignee = getAssigneeOfTask(task.followers)
   const getBindingData = ({
     id: task.id,
     subject: task.subject,
-    followerStatus: task.followers.size !== 0 ? task.followers.first().status : 'new',
+    followerStatus: assignee !== null ? assignee.status : 'new',
     tags: task.tags,
     followers: task.followers,
     startDate: dateUtil.toMoment(task.startDate),
@@ -99,7 +102,7 @@ const TaskDetail = props => {
     isCompleted: task.isCompleted,
     isArchived: task.isArchived,
     isTags: task.tags.size !== 0,
-    isFollowers: task.followers.size !== 0,
+    isFollowers: assignee !== null,
     isImportant: task.isImportant
   })
 
@@ -128,11 +131,11 @@ const TaskDetail = props => {
 
     if (isFollowers && !isArchived) {
       if (followerStatus === 'pending') {
-        return '92px'
+        return '190px'
       }
 
       if (followerStatus === 'rejected') {
-        return '190px'
+        return '92px'
       }
 
       return '147px'
@@ -156,7 +159,10 @@ const TaskDetail = props => {
           <DetailContentSubject taskDetail>
             <DetailSubject>
               {!isArchived && isFollowers &&
-              <FollowerStatus status={followerStatus} animation={animation} />}
+              <FollowerStatus
+                status={followerStatus}
+                animation={animation}
+                onSend={onHandleSend}/>}
               {!isArchived && !isFollowers &&
               <DetailSubjectTaskCompleted
                 icon={ICONS.TASK_CHECKED}
@@ -384,6 +390,8 @@ TaskDetail.propTypes = {
   onHandleTaskSetIncomplete: PropTypes.func,
   onHandleArchive: PropTypes.func,
   onHandleTaskArchive: PropTypes.func,
+  onHandleSend: PropTypes.func,
+  onHandleTaskSend: PropTypes.func,
   onHandleSubjectUpdate: PropTypes.func,
   onHandleTaskSubjectUpdate: PropTypes.func,
   onHandleTagDelete: PropTypes.func,
@@ -427,6 +435,16 @@ export default withHandlers({
     event.stopPropagation()
     props.onHandleTaskArchive(props.task)
   },
+  onHandleSend: props => () => {
+    const { id, followers } = props.task
+    const assignee = getAssigneeOfTask(followers)
+    const data = {
+      taskId: id,
+      followerId: assignee.id,
+    }
+
+    props.onHandleTaskSend(data)
+  },
   onHandleSubjectUpdate: props => event => {
     const subject = event.target.value
     if (subject === props.task.subject || subject === '') {
@@ -442,10 +460,12 @@ export default withHandlers({
   },
   onHandleDelete: props => () => props.onHandleTaskDelete(props.task.id),
   onHandleFollowerDelete: props => user => {
+    const { id, followers } = props.task
+    const assignee = getAssigneeOfTask(followers)
     const data = {
-      taskId: props.task.id,
+      taskId: id,
       userId: user.id,
-      followerId:  props.task.followers.first().id,
+      followerId: assignee.id,
     }
 
     props.onHandleTaskFollowerDeleted(data)

@@ -200,5 +200,25 @@ export const isStringEmpty = (str) => {
 export const getHintDirectionRender = inputPositionTop => {
   const topHeight = constants.WINDOW_HEIGHT - inputPositionTop
   const maxHintsHeight = topHeight - constants.OFFSET
+
   return maxHintsHeight <= constants.MIN_HINTS_HEIGHT ? 'bottomToTop' : 'topToBottom'
+}
+
+export function getAssigneeOfTask(followers) {
+  const taskFollowers = Array.isArray(followers) ? followers : followers.toArray()
+  let result = null
+
+  if (taskFollowers.length === 0) {
+    return null
+  }
+
+  taskFollowers.forEach(follower => {
+    const { type } = follower
+
+    if (type === 'assignee') {
+      result = follower
+    }
+  })
+
+  return result
 }

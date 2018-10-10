@@ -9,6 +9,7 @@ import 'velocity-animate/velocity.ui'
 import removeMd from 'remove-markdown'
 
 import dateUtils from 'redux/utils/date'
+import { getAssigneeOfTask } from 'redux/utils/component-helper'
 
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
@@ -354,8 +355,9 @@ class TaskListItem extends Component {
         listType={this.props.listType} />
     ))
 
-    const isFollowers = this.props.task.followers.size !== 0
-    const followerStatus = isFollowers ? this.props.task.followers.first().status : 'new'
+    const assignee = getAssigneeOfTask(this.props.task.followers)
+    const isFollowers = assignee !== null
+    const followerStatus = isFollowers ? assignee.status : 'new'
     const now = moment()
     const dueDate = this.props.task.dueDate
     const dueDateFormat = dateUtils.formatDate(dueDate)

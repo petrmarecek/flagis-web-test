@@ -43,10 +43,10 @@ const Title = styled.span`
   color: ${props => props.color};
 `;
 
-const FollowerStatus = ({ status, animation, handleSendTask }) => {
+const FollowerStatus = ({ status, animation, onHandleSend }) => {
   const getStatus = {
      new: (
-       <Button onClick={handleSendTask}>
+       <Button onClick={onHandleSend}>
          <Title color='#fff'>SEND TASK</Title>
        </Button>
      ),
@@ -64,10 +64,10 @@ const FollowerStatus = ({ status, animation, handleSendTask }) => {
 FollowerStatus.propTypes = {
   status: PropTypes.string,
   animation: PropTypes.bool,
-  onSendTask: PropTypes.func,
-  handleSendTask: PropTypes.func,
+  onSend: PropTypes.func,
+  onHandleSend: PropTypes.func,
 }
 
 export default withHandlers({
-  handleSendTask: props => () => props.onSendTask()
+  onHandleSend: props => () => props.onSend()
 })(FollowerStatus)
