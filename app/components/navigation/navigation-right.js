@@ -25,11 +25,13 @@ const NavigationRight = props => {
     timeLine,
     onHandleClickTasks,
     onHandleClickTags,
+    onHandleClickInbox,
     onHandleClickAccount
   } = props
 
   const isTaskActive = (location.pathname === '/user/tasks' && !timeLine)
   const isTagsActive = location.pathname === '/user/tags'
+  const isInboxActive = location.pathname === '/user/inbox'
   const isAccountActive = location.pathname === '/user/account'
   const color = '#fff'
 
@@ -55,6 +57,16 @@ const NavigationRight = props => {
           color={[color]} />
       </NavButton>
       <NavButton
+        active={isInboxActive}
+        onClick={onHandleClickInbox}>
+        <Icon
+          icon={ICONS.INBOX}
+          width={31}
+          height={22}
+          scale={1}
+          color={[color]} />
+      </NavButton>
+      <NavButton
         active={isAccountActive}
         onClick={onHandleClickAccount}>
         <Icon
@@ -74,7 +86,7 @@ NavigationRight.propTypes = {
   onHandleClickTasks: PropTypes.func,
   onHandleClickTimeLine: PropTypes.func,
   onHandleClickTags: PropTypes.func,
-  onHandleClickDashboard: PropTypes.func,
+  onHandleClickInbox: PropTypes.func,
   onHandleClickAccount: PropTypes.func,
 }
 
@@ -110,6 +122,14 @@ export default compose(
       props.deselectTasks()
       props.deselectContacts()
       props.changeLocation('/user/tags')
+    },
+    onHandleClickInbox: props => () => {
+      props.cancelTimeLine()
+      props.hideArchivedTasks()
+      props.deselectTasks()
+      props.deselectTags()
+      props.deselectContacts()
+      props.changeLocation('/user/inbox')
     },
     onHandleClickAccount: props => () => {
       props.cancelTimeLine()

@@ -14,6 +14,7 @@ import UndoBox from 'components/common/undo-box'
 import NavigationBar from 'components/navigation/navigation-bar'
 import TaskPage from 'containers/task-page'
 import TagPage from 'containers/tag-page'
+import InboxPage from 'containers/inbox-page'
 import DashboardPage from 'containers/dashboard-page'
 import AccountContainer from 'containers/account-container'
 
@@ -66,6 +67,7 @@ class UserContainer extends PureComponent {
           <Switch>
             <Route path={`${this.props.match.path}/tasks`} component={TaskPage} />
             <Route path={`${this.props.match.path}/tags`} component={TagPage} />
+            <Route path={`${this.props.match.path}/inbox`} component={InboxPage} />
             <Route path={`${this.props.match.path}/dashboard`} component={DashboardPage} />
             <Route path={`${this.props.match.path}/account`} component={AccountContainer} />
           </Switch>
