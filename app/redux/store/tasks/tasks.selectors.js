@@ -3,11 +3,12 @@ import { createSelector } from 'reselect'
 import search from 'redux/services/search'
 import moment from 'moment'
 import intersection from 'lodash/intersection'
-import { getInboxIsFetching } from '../inbox/inbox.selectors'
+
 import {
   getTaskDetail,
   getTaskArchiveDetail,
-  getArchivedTasksVisibility
+  getArchivedTasksVisibility,
+  getInboxTasksVisibility
 } from '../app-state/app-state.selectors'
 import {
   getEntitiesTasks,
@@ -292,6 +293,7 @@ function findTasksByTags(tasks, tags) {
 // Local selectors
 const getTasksIsFetching = state => state.getIn(['tasks', 'isFetching'])
 const getArchivedTasksIsFetching = state => state.getIn(['tasks', 'archived', 'isFetching'])
+const getInboxTasksIsFetching = state => state.getIn(['tasks', 'inbox', 'isFetching'])
 
 // Export selectors
 export const getTimeLine = state => state.getIn(['tasks', 'timeLine'])
@@ -305,31 +307,36 @@ export const getSelectionTasks = state => state.getIn(['tasks', 'selection'])
 
 export const getTasks = createSelector(
   getArchivedTasksVisibility,
+  getInboxTasksVisibility,
   getArchivedTasksIsFetching,
   getArchivedTasksItems,
   getTasksIsFetching,
+  getInboxTasksIsFetching,
   getTasksItems,
   getTasksMenu,
   getTimeLine,
   getEntitiesTasks,
+  getEntitiesInbox,
   getEntitiesTags,
   getEntitiesFollowers,
   getEntitiesContacts,
   getActiveTagsIds,
   (isArchivedTasksVisible,
+   isInboxTasksVisible,
    archivedTasksIsFetching,
    archivedTasksItems,
    tasksIsFetching,
+   inboxTasksIsFetching,
    tasksItems,
    tasksMenu,
    timeLine,
    entitiesTasks,
+   entitiesInbox,
    entitiesTags,
    entitiesFollowers,
    entitiesContacts,
    activeTagsIds) => {
 
-    const archived = isArchivedTasksVisible
     const data = {
       tasksMenu,
       entitiesTasks,
@@ -340,7 +347,8 @@ export const getTasks = createSelector(
       timeLine
     }
 
-    if (archived) {
+    // Load archived tasks
+    if (isArchivedTasksVisible) {
       return ({
         isFetching: archivedTasksIsFetching,
         items: loadArchiveTasks(archivedTasksItems.toArray(), data),
@@ -348,22 +356,20 @@ export const getTasks = createSelector(
       })
     }
 
+    // Load inbox tasks
+    if (isInboxTasksVisible) {
+      return ({
+        isFetching: inboxTasksIsFetching,
+        items: entitiesInbox.toArray(),
+        type: 'inbox',
+      })
+    }
+
+    // Load main tasks
     return ({
       isFetching: tasksIsFetching,
       items: loadTasks(tasksItems.toArray(), data),
       type: 'main',
-    })
-  }
-)
-
-export const getInboxTasks = createSelector(
-  getInboxIsFetching,
-  getEntitiesInbox,
-  (inboxIsFetching, entitiesInbox) => {
-
-    return ({
-      isFetching: inboxIsFetching,
-      items: entitiesInbox.toArray(),
     })
   }
 )

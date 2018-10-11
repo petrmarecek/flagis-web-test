@@ -106,6 +106,7 @@ export const AppStateStore = Record({
   leftPanel: new LeftPanel(),
   multiSelect: new Visibility(),
   archivedTasks: new Visibility(),
+  inboxTasks: new Visibility(),
   detail: new Detail(),
   undoBox: null,
   currentDialog: null,
@@ -142,12 +143,9 @@ export const TaskStore = Record({
   items: List(),
   completed: List(),
   archived: new ListRecord(),
+  inbox: new ListRecord(),
   timeLine: false,
   selection: OrderedSet(),
-})
-
-export const InboxStore = Record({
-  isFetching: false,
 })
 
 export const CommentStore = Record({

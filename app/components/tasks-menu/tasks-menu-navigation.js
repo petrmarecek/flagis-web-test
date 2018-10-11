@@ -6,10 +6,8 @@ import { compose, withHandlers } from 'recompose'
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
 
-import { hideArchivedTasks, changeLocation } from 'redux/store/app-state/app-state.actions'
+import { changeLocation } from 'redux/store/app-state/app-state.actions'
 import { deselectTasks, setTimeLine, cancelTimeLine } from 'redux/store/tasks/tasks.actions'
-import { deselectTags } from 'redux/store/tags/tags.actions'
-import { deselectContacts } from 'redux/store/contacts/contacts.actions'
 import { getTimeLine } from 'redux/store/tasks/tasks.selectors'
 import { getRoutingPathname } from 'redux/store/routing/routing.selectors'
 
@@ -87,9 +85,6 @@ const mapDispatchToProps = {
   deselectTasks,
   setTimeLine,
   cancelTimeLine,
-  deselectTags,
-  deselectContacts,
-  hideArchivedTasks,
   changeLocation
 }
 
@@ -98,26 +93,17 @@ export default compose(
   withHandlers({
     onHandleClickTasks: props => () => {
       props.cancelTimeLine()
-      props.hideArchivedTasks()
       props.deselectTasks()
-      props.deselectTags()
-      props.deselectContacts()
       props.changeLocation('/user/tasks')
     },
     onHandleClickTimeLine: props => () => {
-      props.hideArchivedTasks()
       props.deselectTasks()
-      props.deselectTags()
-      props.deselectContacts()
       props.setTimeLine()
       props.changeLocation('/user/tasks')
     },
     onHandleClickDashboard: props => () => {
       props.cancelTimeLine()
-      props.hideArchivedTasks()
       props.deselectTasks()
-      props.deselectTags()
-      props.deselectContacts()
       props.changeLocation('/user/dashboard')
     },
   })

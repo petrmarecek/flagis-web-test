@@ -16,9 +16,15 @@ import search from 'redux/services/search'
 import api from 'redux/utils/api'
 
 export function* defaultDisplay() {
-  const isArchivedTask = select(state => appStateSelectors.getArchivedTasksVisibility(state))
+  const isArchivedTask = yield select(state => appStateSelectors.getArchivedTasksVisibility(state))
+  const isInboxTasks = yield select(state => appStateSelectors.getInboxTasksVisibility(state))
+
   if (isArchivedTask) {
     yield put(appStateActions.hideArchivedTasks())
+  }
+
+  if (isInboxTasks) {
+    yield put(appStateActions.hideInboxTasks())
   }
 
   yield put(taskActions.deselectTasks())

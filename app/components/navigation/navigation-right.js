@@ -11,7 +11,12 @@ import {
   setTimeLine,
   cancelTimeLine,
 } from 'redux/store/tasks/tasks.actions'
-import { hideArchivedTasks, changeLocation } from 'redux/store/app-state/app-state.actions'
+import {
+  hideArchivedTasks,
+  visibleInboxTasks,
+  hideInboxTasks,
+  changeLocation
+} from 'redux/store/app-state/app-state.actions'
 import { deselectTags } from 'redux/store/tags/tags.actions'
 import { deselectContacts } from 'redux/store/contacts/contacts.actions'
 import { getTimeLine } from 'redux/store/tasks/tasks.selectors'
@@ -107,6 +112,8 @@ const mapDispatchToProps = {
   deselectTags,
   deselectContacts,
   hideArchivedTasks,
+  visibleInboxTasks,
+  hideInboxTasks,
   changeLocation
 }
 
@@ -116,6 +123,7 @@ export default compose(
     onHandleClickTasks: props => () => {
       props.cancelTimeLine()
       props.hideArchivedTasks()
+      props.hideInboxTasks()
       props.deselectTasks()
       props.deselectTags()
       props.deselectContacts()
@@ -124,6 +132,7 @@ export default compose(
     onHandleClickTags: props => () => {
       props.cancelTimeLine()
       props.hideArchivedTasks()
+      props.hideInboxTasks()
       props.deselectTasks()
       props.deselectContacts()
       props.changeLocation('/user/tags')
@@ -134,11 +143,13 @@ export default compose(
       props.deselectTasks()
       props.deselectTags()
       props.deselectContacts()
+      props.visibleInboxTasks()
       props.changeLocation('/user/inbox')
     },
     onHandleClickAccount: props => () => {
       props.cancelTimeLine()
       props.hideArchivedTasks()
+      props.hideInboxTasks()
       props.deselectTasks()
       props.deselectTags()
       props.deselectContacts()

@@ -51,6 +51,11 @@ export default typeToReducer({
     }
   },
 
+  [TASKS.FETCH_INBOX]: {
+    PENDING: state => state.withMutations(taskStore => { taskStore.setIn(['inbox', 'isFetching'], true)}),
+    FULFILLED: state => state.withMutations(taskStore => { taskStore.setIn(['inbox', 'isFetching'], false)}),
+  },
+
   // Update lists for tasks
   [TASKS.FIREBASE]: {
     FULFILLED: (state, action) => {

@@ -122,9 +122,14 @@ function* syncTasksChannel(channel) {
 
 export function* fetchTasks() {
   const isArchivedTasks = yield select(state => appStateSelectors.getArchivedTasksVisibility(state))
+  const isInboxTasks = yield select(state => appStateSelectors.getInboxTasksVisibility(state))
 
   if (isArchivedTasks) {
     yield put(appStateActions.hideArchivedTasks())
+  }
+
+  if (isInboxTasks) {
+    yield put(appStateActions.hideInboxTasks())
   }
 
   const result = yield* fetch(TASKS.FETCH, {
@@ -145,14 +150,6 @@ export function* fetchTasks() {
   const text = yield select(state => taskMenuSelectors.getTaskMenuFiltersItem(state, 'searchText'))
   yield put(taskMenuActions.changeSearchText(''))
   yield put(taskMenuActions.changeSearchText(text))
-}
-
-export function* fetchInboxTasks() {
-  yield* fetch(TASKS.FETCH_INBOX, {
-    method: api.tasks.inbox,
-    args: [],
-    schema: schema.taskList
-  })
 }
 
 export function* fetchArchivedTasks() {
@@ -181,6 +178,15 @@ export function* fetchArchivedTasks() {
   const text = yield select(state => taskMenuSelectors.getTaskMenuFiltersItem(state, 'searchText'))
   yield put(taskMenuActions.changeSearchText(''))
   yield put(taskMenuActions.changeSearchText(text))
+}
+
+export function* fetchInboxTasks() {
+
+  yield* fetch(TASKS.FETCH_INBOX, {
+    method: api.tasks.inbox,
+    args: [],
+    schema: schema.taskList
+  })
 }
 
 export function* initTasksData(initTime) {
