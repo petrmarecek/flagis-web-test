@@ -5,8 +5,10 @@ import { connect } from 'react-redux'
 import { ToastContainer, style } from 'react-toastify'
 import HTML5Backend from 'react-dnd-html5-backend'
 import { DragDropContext } from 'react-dnd'
+import debounce from 'lodash/debounce'
 
 import { controlRedirectSignIn } from 'redux/store/auth/auth.actions'
+import { updateWindow } from 'redux/store/app-state/app-state.actions'
 import { getAppStateItem } from 'redux/store/app-state/app-state.selectors'
 
 import Dialogs from 'components/dialogs/dialogs'
@@ -21,6 +23,7 @@ import AccountContainer from 'containers/account-container'
 class UserContainer extends PureComponent {
   static propTypes = {
     controlRedirectSignIn: PropTypes.func,
+    updateWindow: PropTypes.func,
     location: PropTypes.shape({
       pathname: PropTypes.string.isRequired,
     }).isRequired,
@@ -28,17 +31,26 @@ class UserContainer extends PureComponent {
     undoBox: PropTypes.object,
   }
 
-  componentWillMount() {
-    this.props.controlRedirectSignIn()
+  constructor(props) {
+    super(props)
+    this.debouncedUpdateWindow = debounce(this.updateWindow, 250)
   }
 
   componentDidMount() {
+    this.props.updateWindow(window)
+    window.addEventListener('resize', this.debouncedUpdateWindow)
+
     style({
       BOTTOM_RIGHT: {
         bottom: '30px',
         right: '25px'
       }
     })
+  }
+
+  componentWillMount() {
+    window.removeEventListener('resize', this.debouncedUpdateWindow)
+    this.props.controlRedirectSignIn()
   }
 
   componentWillReceiveProps(newProps) {
@@ -57,6 +69,10 @@ class UserContainer extends PureComponent {
         }
       })
     }
+  }
+
+  updateWindow = () => {
+    this.props.updateWindow(window)
   }
 
   render() {
@@ -88,7 +104,10 @@ class UserContainer extends PureComponent {
 const mapStateToProps = state => ({
   undoBox: getAppStateItem(state, 'undoBox'),
 })
-const mapDispatchToProps = { controlRedirectSignIn }
+const mapDispatchToProps = {
+  updateWindow,
+  controlRedirectSignIn
+}
 
 export default DragDropContext(HTML5Backend)(
   connect(mapStateToProps, mapDispatchToProps)(UserContainer)

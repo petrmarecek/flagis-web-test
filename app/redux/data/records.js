@@ -14,6 +14,11 @@ export const TreeRecord = Record({
 
 // ------ Partials ------------------------------------------------------------
 
+export const Window = Record({
+  width: null,
+  height: null,
+})
+
 const LeftPanel = Record({
   width: 290,
 })
@@ -53,22 +58,6 @@ export const Detail = Record({
   animation: false,
 })
 
-export const TagHints = Record({
-  autocompleteId: null,
-
-  isVisible: false,
-  isSelectOnly: false,
-  search: '',
-  position: new Position(),
-  context: new HintsContext(),
-
-  visibleTags: List(),
-  newItemVisible: false,
-  newItemSelected: false,
-  selectionIndex: 0,
-  selectedItem: null
-})
-
 export const MultiSelectTasks = Record({
   activeTags: List(),
   otherTags: List(),
@@ -102,6 +91,7 @@ export const TasksOptions = Record({
 // ------ Stores --------------------------------------------------------------
 
 export const AppStateStore = Record({
+  window: new Window(),
   loader: new Visibility(),
   leftPanel: new LeftPanel(),
   multiSelect: new Visibility(),
@@ -110,7 +100,6 @@ export const AppStateStore = Record({
   detail: new Detail(),
   undoBox: null,
   currentDialog: null,
-  tagHints: new TagHints(),
   changeName: new Error(),
   changePassword: new Error(),
   signIn: new Error(),

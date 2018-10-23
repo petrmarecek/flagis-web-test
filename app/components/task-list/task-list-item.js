@@ -1,20 +1,31 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import { DragSource, DropTarget } from 'react-dnd'
+import { compose, shouldUpdate, withHandlers } from 'recompose'
 import { findDOMNode } from 'react-dom'
-import classnames from 'classnames'
 import moment from 'moment'
-import velocity from 'velocity-animate'
-import 'velocity-animate/velocity.ui'
 import removeMd from 'remove-markdown'
 
 import dateUtils from 'redux/utils/date'
-import { getAssigneeOfTask } from 'redux/utils/component-helper'
+import { getAssigneeOfTask, getSortedTags } from 'redux/utils/component-helper'
 
 import { ICONS } from 'components/icons/icon-constants'
-import Icon from 'components/icons/icon'
-import TaskListItemTag from 'components/task-list/task-list-item-tag'
+import TaskListTagItems from './task-list-tag-items'
 import FollowerIcon from '../common/follower-icon'
+
+import {
+  TaskItem,
+  Completed,
+  Archived,
+  Content,
+  SubjectTags,
+  Subject,
+  Tags,
+  DescriptionDueDate,
+  Description,
+  DueDate,
+  Followers,
+} from './styles'
 
 // Drag and Drop
 const ItemTypes = {
@@ -41,6 +52,7 @@ const taskSource = {
       && !important
       && !incomplete
       && props.listType !== 'archived'
+      && props.listType !== 'inbox'
   },
 }
 
@@ -171,283 +183,214 @@ function collectDropTarget(connect, monitor) {
   }
 }
 
-
 // TaskListItem
-class TaskListItem extends Component {
+const TaskListItem = props => {
 
-  static propTypes = {
-    // Data
-    task: PropTypes.object,
-    noTaskFound: PropTypes.bool,
-    listType: PropTypes.string.isRequired,
-    isSelected: PropTypes.bool,
-    section: PropTypes.string,
-    isDragging: PropTypes.bool,
-    sort: PropTypes.object,
+  const {
+    task,
+    isSelected,
+    isDragging,
+    noTaskFound,
+    listType,
+    selectedTags,
+    leftPanelWidth,
+    windowWidth,
+    onHandleClicked,
+    onHandleTagClicked,
+    onHandleCompleteClicked,
+    onHandleArchiveClicked,
+    connectDragSource,
+    connectDropTarget,
+  } = props
 
-    // Handlers
-    onClick: PropTypes.func,
-    onCompleteClick: PropTypes.func,
-    moveTask: PropTypes.func.isRequired,
-    dropTask: PropTypes.func.isRequired,
-    onTagClick: PropTypes.func,
-    setArchiveTasks: PropTypes.func,
-    cancelArchiveTasks: PropTypes.func,
+  // Conditions
+  const isArchivedList = listType === 'archived'
+  const isCompletedMainList = task.isCompleted && !isArchivedList
+  const isDescription = task.description !== ''
 
-    // Drag and Drop
-    connectDropTarget: PropTypes.func.isRequired,
-    connectDragSource: PropTypes.func.isRequired,
-  }
+  // Sorted tags
+  const sortedTags = getSortedTags(task.tags, selectedTags)
 
-  state = {
-    animation: false
-  }
+  // Data of assignee
+  const assignee = getAssigneeOfTask(task.followers)
+  const isFollowers = assignee !== null
+  const followerStatus = isFollowers ? assignee.status : 'new'
 
-  constructor(props) {
-    super(props)
-    this.sortedTags = this.getSortedTags(props)
-  }
+  // Date from dueDate
+  const now = moment()
+  const dueDate = task.dueDate
+  const dueDateFormat = dateUtils.formatDate(dueDate)
+  const fromNow = task.dueDate ? moment(dueDate).fromNow() : ''
 
-  shouldComponentUpdate(nextProps) {
-    // props
-    const { task, isSelected, isDragging } = this.props
+  // Description
+  let description = isDescription ? task.description : ''
+  description = removeMd(description)
 
-    // nextProps
-    const nextTask = nextProps.task
-    const nextIsSelected = nextProps.isSelected
-    const nextIsDragging = nextProps.isDragging
+  // Task-Item width
+  const taskItemWidth = windowWidth - leftPanelWidth - 20
 
-    return (task.size >= 2 ? !task.equals(nextTask) : task === nextTask)
-      || (isSelected !== nextIsSelected)
-      || (isDragging !== nextIsDragging)
-  }
-
-  componentDidMount() {
-    if (!this.props.noTaskFound) {
-      velocity(this.refs.elem, 'transition.slideUpIn', { duration: 400 })
-    }
-  }
-
-  componentWillReceiveProps(newProps) {
-    this.sortedTags = this.getSortedTags(newProps)
-    this.setState({ animation: newProps.task.isCompleted })
-  }
-
-  handleClicked = event => {
-    this.refs.elem.focus()
-    this.props.onClick(this.props.task, event)
-  }
-
-  handleCompleteClicked = event => {
-    event.stopPropagation()
-
-    if (this.props.listType === 'archived') {
-      return
+  // Background color of task item
+  const backgroundColor = () => {
+    if (isSelected) {
+      return '#ffffd7'
     }
 
-    this.props.onCompleteClick(this.props.task)
-  }
-
-  handleArchiveClicked = event => {
-    event.stopPropagation()
-
-    if (this.props.listType === 'archived') {
-      this.props.cancelArchiveTasks(this.props.task.id)
-      return
+    if (isDragging) {
+      return '#f6f7f8'
     }
 
-    this.props.setArchiveTasks(this.props.task.id)
-  }
-
-  getSortedTags(props) {
-    if (this.props.noTaskFound) {
-      return []
+    if (isArchivedList) {
+      return '#c1cad0'
     }
 
-    const orderedTagIds = props.task.tags.sort(TaskListItem.compareTagByTitle).map(tag => tag.id)
-    const tagsById = props.task.tags.reduce((acc, tag) => {
-      acc[tag.id] = tag
-      return acc
-    }, {})
-
-    const result = []
-
-    // First, put selected tags
-    props.selectedTags.reverse().forEach(tagId => {
-
-      // Do not add this tag if it is not present on the task
-      // (e.g. when we delete that tag, but list of tasks is
-      // not yet updated)
-      if (!tagsById.hasOwnProperty(tagId)) {
-        return
-      }
-
-      result.push(tagsById[tagId])
-    })
-
-    // Second, add others
-    orderedTagIds.forEach(tagId => {
-
-      // Skip those that are already added
-      if (props.selectedTags.includes(tagId)) {
-        return
-      }
-
-      result.push(tagsById[tagId])
-    })
-
-    return result
+    return '#fff'
   }
 
-  static compareTagByTitle(tagA, tagB) {
-    if (tagA.title > tagB.title) {
-      return 1
-    } else if (tagA.title < tagB.title) {
-      return -1
-    } else {
-      return 0
-    }
-  }
+  // Render component
+  return connectDragSource(connectDropTarget(
+    <div>
+      {noTaskFound &&
+      <li className="empty-list">No task found</li>}
 
-  getArchiveIcon() {
-    const iconsArchive = this.props.listType === 'archived'
-      ? ICONS.NON_ARCHIVE
-      : ICONS.ARCHIVE
-
-    const isArchivedTaskColor = this.props.listType === 'archived'
-      ? '#282f34'
-      : '#8c9ea9'
-
-    const iconAnimation = {
-      action: 'transition.expandIn',
-      duration: 1000,
-    }
-
-    return this.state.animation === true
-      ? (<Icon
-        className="task-item__archive"
-        icon={iconsArchive}
-        color={[isArchivedTaskColor]}
-        width={24}
-        height={27}
-        scale={0.926}
-        animation={iconAnimation}
-        onClick={this.handleArchiveClicked}/>)
-      : (<Icon
-        className="task-item__archive"
-        icon={iconsArchive}
-        color={[isArchivedTaskColor]}
-        width={24}
-        height={27}
-        scale={0.926}
-        onClick={this.handleArchiveClicked}/>)
-  }
-
-  render() {
-
-    // child tags
-    const tags = this.sortedTags.map(tag => (
-      <TaskListItemTag
-        key={tag.id}
-        className="tag"
-        model={tag}
-        onClick={this.props.onTagClick}
-        listType={this.props.listType} />
-    ))
-
-    const assignee = getAssigneeOfTask(this.props.task.followers)
-    const isFollowers = assignee !== null
-    const followerStatus = isFollowers ? assignee.status : 'new'
-    const now = moment()
-    const dueDate = this.props.task.dueDate
-    const dueDateFormat = dateUtils.formatDate(dueDate)
-    const fromNow = this.props.task.dueDate ? moment(dueDate).fromNow() : ''
-    let description = this.props.task.description === null ? '' : this.props.task.description
-    // remove markdown syntax
-    description = removeMd(description)
-
-    // init classes
-    const taskListItemClasses = classnames({
-      'task-item': true,
-      'archived': this.props.listType === 'archived',
-      'active': this.props.task.active,
-      'selected': this.props.isSelected,
-      'completed': this.props.task.isCompleted && this.props.listType !== 'archived',
-      'important': this.props.task.isImportant,
-      'followers': isFollowers,
-      'due-date': dueDate !== null,
-    })
-
-    const isCompletedTaskColor = this.props.task.isCompleted
-      ? '#c2fee5'
-      : '#D7E3EC'
-
-    const archiveIcon = this.getArchiveIcon()
-
-    const subjectDescriptionClass = classnames({
-      'task-item__subject': true,
-      'task-item__subject--description': this.props.task.description
-    })
-
-    const dueDateClass = classnames({
-      'task-item__due-date': true,
-      'task-item__due-date--overdue': moment(dueDate) < now && this.props.listType !== 'archived',
-    })
-
-    // render component
-    const { connectDragSource, connectDropTarget, isDragging } = this.props
-    const visibility = isDragging ? 'hidden' : ''
-
-    return connectDragSource(connectDropTarget(
-      <div>
-        {this.props.noTaskFound &&
-        <li className="empty-list">No task found</li>}
-
-        {!this.props.noTaskFound &&
-        <li
-          key={this.props.task.id}
-          tabIndex="-1"
-          className={taskListItemClasses}
-          data-item-id={this.props.task.id}
-          onClick={this.handleClicked}
-          style={{ visibility }}
-          ref="elem" >
-          {this.props.listType !== 'archived' &&
-          <Icon
-            className="task-item__completed"
-            icon={ICONS.TASK_CHECKED}
-            color={[isCompletedTaskColor]}
-            hoverColor={["#00FFC7"]}
-            width={22}
-            height={21}
-            onClick={this.handleCompleteClicked}/>}
-          {this.props.task.isCompleted && archiveIcon}
-          <div className="task-item__wrapper">
-            <div className={subjectDescriptionClass}>{this.props.task.subject}</div>
-            {this.props.task.description &&
-            <div className="task-item__description">
-              {description}
-            </div>}
-            <div className="task-item__tags">
-              {tags}
-            </div>
-            <div className={dueDateClass} title={fromNow}>
-              {dueDateFormat}
-            </div>
-            {isFollowers &&
-            <div className="task-item__followers">
-              <FollowerIcon status={followerStatus} />
-            </div>}
-          </div>
-        </li>}
-      </div>
-    ))
-  }
+      {!noTaskFound &&
+      <TaskItem
+        key={task.id}
+        tabIndex="-1"
+        data-item-id={task.id}
+        onClick={onHandleClicked}
+        active={task.active}
+        selected={isSelected}
+        backgroundColor={backgroundColor}
+        completed={isCompletedMainList}
+        dragging={isDragging}>
+        {!isArchivedList &&
+        <Completed
+          icon={ICONS.TASK_CHECKED}
+          color={task.isCompleted ? ['#c2fee5'] : ['#D7E3EC']}
+          hoverColor={["#00FFC7"]}
+          width={22}
+          height={21}
+          onClick={onHandleCompleteClicked} />}
+        {task.isCompleted &&
+        <Archived
+          icon={isArchivedList ? ICONS.NON_ARCHIVE : ICONS.ARCHIVE}
+          color={isArchivedList ? ['#282f34'] : ['#8c9ea9']}
+          width={24}
+          height={27}
+          scale={0.926}
+          onClick={onHandleArchiveClicked}
+          animation={!task.isCompleted ? null : {
+            action: 'transition.expandIn',
+            duration: 1000,
+          }} 
+          archived={isArchivedList} />}
+        <Content
+          completed={isCompletedMainList}
+          followers={isFollowers}>
+          <SubjectTags>
+            <Subject
+              archived={isArchivedList}
+              completed={isCompletedMainList}
+              important={task.isImportant}
+              description={isDescription}>{task.subject}</Subject>
+            <Tags>
+              <TaskListTagItems
+                tags={sortedTags}
+                parentWidth={taskItemWidth}
+                onTagClick={onHandleTagClicked} />
+            </Tags>
+          </SubjectTags>
+          <DescriptionDueDate>
+            {isDescription &&
+            <Description completed={isCompletedMainList}>{description}</Description>}
+            <DueDate
+              title={fromNow}
+              overdue={moment(dueDate) < now && !isArchivedList}
+              completed={isCompletedMainList}
+              description={isDescription}>{dueDateFormat}</DueDate>
+          </DescriptionDueDate>
+        </Content>
+        {isFollowers &&
+        <Followers>
+          <FollowerIcon status={followerStatus} />
+        </Followers>}
+      </TaskItem>}
+    </div>
+  ))
 }
 
-export default
-  DragSource(ItemTypes.TASK, taskSource, collectDragSource)(
-    DropTarget(ItemTypes.TASK, taskTarget, collectDropTarget)(
-      TaskListItem
-    )
-  )
+TaskItem.propTypes = {
+  // Data
+  task: PropTypes.object,
+  noTaskFound: PropTypes.bool,
+  listType: PropTypes.string,
+  isSelected: PropTypes.bool,
+  section: PropTypes.string,
+  isDragging: PropTypes.bool,
+  sort: PropTypes.object,
+  leftPanelWidth: PropTypes.number,
+  windowWidth: PropTypes.number,
+
+  // Handlers
+  onClick: PropTypes.func,
+  onCompleteClick: PropTypes.func,
+  moveTask: PropTypes.func,
+  dropTask: PropTypes.func,
+  onTagClick: PropTypes.func,
+  setArchiveTasks: PropTypes.func,
+  cancelArchiveTasks: PropTypes.func,
+  onHandleClicked: PropTypes.func,
+  onHandleTagClicked: PropTypes.func,
+  onHandleCompleteClicked: PropTypes.func,
+  onHandleArchiveClicked: PropTypes.func,
+
+  // Drag and Drop
+  connectDropTarget: PropTypes.func,
+  connectDragSource: PropTypes.func,
+}
+
+const checkPropsChange = (props, nextProps) => {
+  // props
+  const { task, isSelected, isDragging, windowWidth } = props
+
+  // nextProps
+  const nextTask = nextProps.task
+  const nextIsSelected = nextProps.isSelected
+  const nextIsDragging = nextProps.isDragging
+  const nextWindowWidth = nextProps.windowWidth
+
+  return (task.size >= 2 ? !task.equals(nextTask) : task === nextTask)
+    || (isSelected !== nextIsSelected)
+    || (isDragging !== nextIsDragging)
+    || (windowWidth !== nextWindowWidth)
+}
+
+export default DragSource(ItemTypes.TASK, taskSource, collectDragSource)(
+  compose(
+    DropTarget(ItemTypes.TASK, taskTarget, collectDropTarget),
+    withHandlers({
+      onHandleClicked: props => event => props.onClick(props.task, event),
+      onHandleTagClicked: props => tag => props.onTagClick(tag),
+      onHandleCompleteClicked: props => event => {
+        event.stopPropagation()
+
+        if (props.listType === 'archived') {
+          return
+        }
+
+        props.onCompleteClick(props.task)
+      },
+      onHandleArchiveClicked: props => event => {
+        event.stopPropagation()
+
+        if (props.listType === 'archived') {
+          props.cancelArchiveTasks(props.task.id)
+          return
+        }
+
+        props.setArchiveTasks(props.task.id)
+      },
+    }),
+    shouldUpdate(checkPropsChange)
+  )(TaskListItem)
+)

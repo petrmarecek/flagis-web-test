@@ -6,6 +6,10 @@ import { AppStateStore } from 'redux/data/records'
 
 export default typeToReducer({
 
+  [APP_STATE.UPDATE_WINDOW]: (state, action) => state
+    .setIn(['window', 'width'], action.payload.window.innerWidth)
+    .setIn(['window', 'height'], action.payload.window.innerHeight),
+
   [APP_STATE.LOADER_VISIBLE]: state =>
     state.setIn(['loader', 'isVisible'], true),
 
@@ -23,6 +27,12 @@ export default typeToReducer({
 
   [APP_STATE.ARCHIVED_TASKS_HIDE]: state =>
     state.setIn(['archivedTasks', 'isVisible'], false),
+
+  [APP_STATE.INBOX_TASKS_VISIBLE]: state =>
+    state.setIn(['inboxTasks', 'isVisible'], true),
+
+  [APP_STATE.INBOX_TASKS_HIDE]: state =>
+    state.setIn(['inboxTasks', 'isVisible'], false),
 
   [APP_STATE.SET_ANIMATION]: state =>
     state.setIn(['detail', 'animation'], true),

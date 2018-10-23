@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
+import { List } from 'immutable'
 import TaskListItem from 'components/task-list/task-list-item'
 import moment from 'moment'
 import { getTimeLineByDueDate } from 'redux/utils/component-helper'
@@ -15,6 +16,9 @@ export default class TaskList extends PureComponent {
     isVisibleArchivedTasks: PropTypes.bool,
     timeLine: PropTypes.bool,
     sort: PropTypes.object,
+    leftPanelWidth: PropTypes.number,
+    windowWidth: PropTypes.number,
+
 
     // Handlers
     onCompleteClick: PropTypes.func,
@@ -46,13 +50,18 @@ export default class TaskList extends PureComponent {
       later: now.clone().add(daysToNewMonth, 'days'),
       noDueDates: null,
     }
-    const task = { dueDate: date[typeDate] }
+    const task = { 
+      dueDate: date[typeDate],
+      tags: List(),
+      followers: List(),
+    }
 
     return (
       <TaskListItem
         index={0}
         listType="main"
         task={task}
+        selectedTags={this.props.selectedTags}
         moveTask={this.props.moveTask}
         dropTask={this.props.dropTask}
         timeLine={null}
@@ -88,7 +97,9 @@ export default class TaskList extends PureComponent {
               timeLine={this.props.timeLine}
               sort={this.props.sort}
               setArchiveTasks={this.props.setArchiveTasks}
-              section={section}/>
+              section={section}
+              leftPanelWidth={this.props.leftPanelWidth}
+              windowWidth={this.props.windowWidth} />
           ))
         )
       }
@@ -111,7 +122,35 @@ export default class TaskList extends PureComponent {
               timeLine={this.props.timeLine}
               sort={this.props.sort}
               cancelArchiveTasks={this.props.cancelArchiveTasks}
-              section={section}/>
+              section={section}
+              leftPanelWidth={this.props.leftPanelWidth}
+              windowWidth={this.props.windowWidth} />
+          ))
+        )
+      }
+
+      case 'inbox': {
+        return (
+          tasks.map((task, i) => (
+            <TaskListItem
+              key={task.id}
+              task={task}
+              index={i}
+              order={task.order}
+              listType={this.props.listType}
+              isSelected={this.isSelected(task.id)}
+              selectedTags={this.props.selectedTags}
+              onCompleteClick={this.props.onCompleteClick}
+              onClick={this.props.onTaskSelect}
+              moveTask={this.props.moveTask}
+              dropTask={this.props.dropTask}
+              onTagClick={this.props.onTagClick}
+              timeLine={this.props.timeLine}
+              sort={this.props.sort}
+              setArchiveTasks={this.props.setArchiveTasks}
+              section={section} 
+              leftPanelWidth={this.props.leftPanelWidth}
+              windowWidth={this.props.windowWidth} />
           ))
         )
       }

@@ -222,3 +222,66 @@ export function getAssigneeOfTask(followers) {
 
   return result
 }
+
+export const compareTagByTitle = (tagA, tagB) => {
+
+  const titleA = tagA.title.toLowerCase()
+  const titleB = tagB.title.toLowerCase()
+
+  if (titleA > titleB) {
+    return 1
+  } else if (titleA < titleB) {
+    return -1
+  } else {
+    return 0
+  }
+}
+
+export const getSortedTags = (tags, selectedTags) => {
+
+  const orderedTagIds = tags.sort(compareTagByTitle).map(tag => tag.id)
+  const tagsById = tags.reduce((acc, tag) => {
+    acc[tag.id] = tag
+    return acc
+  }, {})
+
+  const result = []
+
+  // First, put selected tags
+  selectedTags.reverse().forEach(tagId => {
+
+    // Do not add this tag if it is not present on the task
+    // (e.g. when we delete that tag, but list of tasks is
+    // not yet updated)
+    if (!tagsById.hasOwnProperty(tagId)) {
+      return
+    }
+
+    result.push(tagsById[tagId])
+  })
+
+  // Second, add others
+  orderedTagIds.forEach(tagId => {
+
+    // Skip those that are already added
+    if (selectedTags.includes(tagId)) {
+      return
+    }
+
+    result.push(tagsById[tagId])
+  })
+
+  return result
+}
+
+export const getWidthTagItems = tags => {
+  let result = 0
+
+  tags.forEach(tag => {
+    const character = tag.title.length
+    const widthText = Math.floor(character * 7.5)
+    result += (widthText + 20)
+  })
+
+  return result
+}

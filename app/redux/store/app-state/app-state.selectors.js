@@ -8,6 +8,7 @@ const getTagHintsVisibleTags = state => state.getIn(['appState', 'tagHints', 'vi
 
 // Export selectors
 export const getAppState = state => state.getIn(['appState'])
+export const getWindow = state => state.getIn(['appState', 'window'])
 export const getLeftPanel = state => state.getIn(['appState', 'leftPanel'])
 export const getTagHintsRaw = state => state.getIn(['appState', 'tagHints'])
 export const getTagHintsVisibility = state => state.getIn(['appState', 'tagHints', 'isVisible'])

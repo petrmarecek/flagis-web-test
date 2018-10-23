@@ -6,7 +6,11 @@ import { toast } from 'react-toastify'
 import { successMessages } from 'utils/messages'
 import constants from 'utils/constants'
 
-import { getArchivedTasksVisibility } from 'redux/store/app-state/app-state.selectors'
+import {
+  getArchivedTasksVisibility,
+  getLeftPanel,
+  getWindow
+} from 'redux/store/app-state/app-state.selectors'
 import { getNewRefreshToken } from 'redux/store/auth/auth.selectors'
 import { getEntitiesTasks } from 'redux/store/entities/entities.selectors'
 import { selectActiveTags } from 'redux/store/tags/tags.actions'
@@ -62,6 +66,8 @@ class TaskListContainer extends PureComponent {
     isVisibleArchivedTasks: PropTypes.bool,
     timeLine: PropTypes.bool,
     sort: PropTypes.object,
+    leftPanelWidth: PropTypes.number,
+    windowWidth: PropTypes.number,
 
     // Actions
     selectTask: PropTypes.func,
@@ -271,7 +277,9 @@ class TaskListContainer extends PureComponent {
             sort={this.props.sort}
             setArchiveTasks={this.handleSetArchiveTasks}
             cancelArchiveTasks={this.handleCancelArchiveTasks}
-            isVisibleArchivedTasks={this.props.isVisibleArchivedTasks}/>
+            isVisibleArchivedTasks={this.props.isVisibleArchivedTasks}
+            leftPanelWidth={this.props.leftPanelWidth}
+            windowWidth={this.props.windowWidth} />
         </ShadowScrollbar>
       </div>
     )
@@ -300,6 +308,8 @@ const mapStateToProps = state => ({
   timeLine: getTimeLine(state),
   sort: getTasksMenuSort(state),
   isVisibleArchivedTasks: getArchivedTasksVisibility(state),
+  leftPanelWidth: getLeftPanel(state).width,
+  windowWidth: getWindow(state).width,
 })
 
 const mapDispatchToProps = {

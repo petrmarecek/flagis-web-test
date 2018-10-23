@@ -39,7 +39,6 @@ const withResizeHandle = WrappedComponent => {
     }
 
     mouseUpListener = event => {
-      console.log('up')
       document.removeEventListener('mouseup', this.mouseUpListener, {capture: true})
       document.removeEventListener('mousemove', this.mouseMoveListener, {capture: true})
       event.preventDefault()

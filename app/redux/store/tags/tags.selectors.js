@@ -1,32 +1,12 @@
 import { List } from "immutable"
 import search from 'redux/services/search'
 import intersection from 'lodash/intersection'
+import { createSelector } from 'reselect'
 import { getTagDetail } from '../app-state/app-state.selectors'
 import { getEntitiesTags } from '../entities/entities.selectors'
-import { createSelector } from 'reselect'
+import { compareTagByTitle } from '../../utils/component-helper'
 
 // ------ Helper functions ----------------------------------------------------
-
-/**
- * Compares title two tag and sorts it
- * @param {Object} tagA Tag record
- * @param {Object} tagB Tag record
- * @return {Number}
- */
-
-export const compareTagByTitle = (tagA, tagB) => {
-
-  const titleA = tagA.title.toLowerCase()
-  const titleB = tagB.title.toLowerCase()
-
-  if (titleA > titleB) {
-    return 1
-  } else if (titleA < titleB) {
-    return -1
-  } else {
-    return 0
-  }
-}
 
 /**
  * Loads tags entities for given tags IDs

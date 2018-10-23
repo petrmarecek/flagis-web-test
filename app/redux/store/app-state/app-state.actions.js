@@ -1,4 +1,7 @@
 export const APP_STATE = {
+  // Window
+  UPDATE_WINDOW: 'APP-STATE/UPDATE_WINDOW',
+
   // Default display
   DEFAULT_DISPLAY: 'APP-STATE/DEFAULT_DISPLAY',
 
@@ -46,6 +49,13 @@ export const APP_STATE = {
   // Hints
   HINT_SELECTED: 'APP-STATE/HINT_SELECTED',
 }
+
+// ------ Window --------------------------------------------------------------------
+
+export const updateWindow = window => ({
+  type: APP_STATE.UPDATE_WINDOW,
+  payload: { window }
+})
 
 // ------ Default display -----------------------------------------------------------
 
