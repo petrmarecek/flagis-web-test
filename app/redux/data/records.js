@@ -277,6 +277,7 @@ export const Follower = Record({
   createdAt: null,
   updatedAt: null,
   archivedAt: null,
+  userId: null,
   profile: null,
 })
 

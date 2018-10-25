@@ -46,7 +46,7 @@ export function* fetchAttachment(action) {
   yield* fetch(ATTACHMENTS.FETCH, {
     method: api.attachments.get,
     args: [action.payload],
-    schema: schema.attachmentList
+    schema: schema.attachments
   })
 }
 

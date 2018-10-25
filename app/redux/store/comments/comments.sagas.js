@@ -46,7 +46,7 @@ export function* fetchComment(action) {
   yield* fetch(COMMENTS.FETCH, {
     method: api.comments.get,
     args: [action.payload],
-    schema: schema.commentList
+    schema: schema.comments
   })
 }
 

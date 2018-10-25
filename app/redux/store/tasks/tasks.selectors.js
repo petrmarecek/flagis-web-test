@@ -84,7 +84,7 @@ function loadTasks(ids, data) {
     const tags = task.tags.map(tagId => entitiesTags.get(tagId))
     const followers = task.followers.map(followerId => {
       const follower = entitiesFollowers.get(followerId)
-      const profile = entitiesContacts.get(follower.profile)
+      const profile = entitiesContacts.get(follower.userId)
 
       return follower.set('profile', profile)
     })
@@ -216,7 +216,7 @@ function loadArchiveTasks(ids, data) {
     const tags = task.tags.map(tagId => entitiesTags.get(tagId))
     const followers = task.followers.map(followerId => {
       const follower = entitiesFollowers.get(followerId)
-      const profile = entitiesContacts.get(follower.profile)
+      const profile = entitiesContacts.get(follower.userId)
 
       return follower.set('profile', profile)
     })
@@ -547,7 +547,7 @@ export const getCurrentTask = createSelector(
     const tags = task.tags.map(tagId => entitiesTags.get(tagId))
     const followers = task.followers.map(followerId => {
       const follower = entitiesFollowers.get(followerId)
-      const profile = entitiesContacts.get(follower.profile)
+      const profile = entitiesContacts.get(follower.userId)
 
       return follower.set('profile', profile)
     })

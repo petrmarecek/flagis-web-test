@@ -19,7 +19,6 @@ export default class TaskList extends PureComponent {
     leftPanelWidth: PropTypes.number,
     windowWidth: PropTypes.number,
 
-
     // Handlers
     onCompleteClick: PropTypes.func,
     onTaskSelect: PropTypes.func,

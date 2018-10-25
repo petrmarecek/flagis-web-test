@@ -88,7 +88,7 @@ export function* fetchTree() {
   yield* fetch(TREE.FETCH, {
     method: api.tree.get,
     args: [],
-    schema: schema.treeList
+    schema: schema.trees
   })
 }
 

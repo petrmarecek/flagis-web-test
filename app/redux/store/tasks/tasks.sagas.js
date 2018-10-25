@@ -27,11 +27,13 @@ import constants from 'utils/constants'
 
 const TASKS = taskActions.TASKS
 
-function* saveChangeFromFirestore(change) {
+function* saveChangeFromFirestore(change, userId) {
   const { FULFILLED } = createLoadActions(TASKS.FIREBASE)
   const task = change.doc.data()
+  console.log(task)
 
   // Prepare data
+  task.tags = task.tags[userId]
   const normalizeData = normalize(task, schema.task)
   const storeItems = yield select(state => taskSelectors.getTasksItems(state))
   const storeArchivedItems = yield select(state => taskSelectors.getArchivedTasksItems(state))
@@ -102,21 +104,10 @@ function* saveChangeFromFirestore(change) {
   yield put({ type: TASKS.FIREBASE_TAGS_RELATIONS, payload: entitiesTasks })
 }
 
-function* syncTasksChannel(channel) {
-  const { REJECTED } = createLoadActions(TASKS.FIREBASE)
-
-  try {
-    while (true) { // eslint-disable-line
-      const snapshot = yield take(channel)
-      yield all(snapshot.docChanges().map(change => call(saveChangeFromFirestore, change)))
-    }
-  } catch(err) {
-    yield put({ type: REJECTED, err })
-
-  } finally {
-    if (yield cancelled()) {
-      channel.close()
-    }
+function* syncTasksChannel(channel, userId) {
+  while (true) { // eslint-disable-line
+    const snapshot = yield take(channel)
+    yield all(snapshot.docChanges().map(change => call(saveChangeFromFirestore, change, userId)))
   }
 }
 
@@ -139,7 +130,7 @@ export function* fetchTasks() {
       isTrashed: false,
       tags: [],
     }],
-    schema: schema.taskList
+    schema: schema.tasks
   })
 
   // Initialize search service
@@ -167,7 +158,7 @@ export function* fetchArchivedTasks() {
       isTrashed: false,
       tags: [],
     }],
-    schema: schema.taskList
+    schema: schema.tasks
   })
 
   // Initialize search service
@@ -185,14 +176,14 @@ export function* fetchInboxTasks() {
   yield* fetch(TASKS.FETCH_INBOX, {
     method: api.tasks.inbox,
     args: [],
-    schema: schema.taskList
+    schema: schema.tasks
   })
 }
 
 export function* initTasksData(initTime) {
   const userId = yield select(state => authSelectors.getUserId(state))
   const channel = firebase.getTasksChannel(userId, initTime)
-  return yield fork(syncTasksChannel, channel)
+  return yield fork(syncTasksChannel, channel, userId)
 }
 
 export function* createTask(action) {

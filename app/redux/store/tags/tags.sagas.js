@@ -77,7 +77,7 @@ export function* fetchTags() {
   const result = yield* fetch(tagActions.TAGS.FETCH, {
     method: api.tags.list,
     args: [],
-    schema: schema.tagList
+    schema: schema.tags
   })
 
   // Initialize search service

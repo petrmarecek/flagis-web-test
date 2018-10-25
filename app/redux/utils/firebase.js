@@ -22,6 +22,14 @@ export default {
     return eventChannel(emit => ref.onSnapshot(emit))
   },
 
+  getCollaboratedTasksChannel: (userId, initTime) => {
+    const ref = db.collection('tasks')
+      .where('followerIds', 'array-contains', userId)
+      .where('updatedAt', '>', initTime)
+
+    return eventChannel(emit => ref.onSnapshot(emit))
+  },
+
   getCommentsChannel: (taskId, initTime) => {
     const ref = db.collection('comments')
       .where('taskId', '==', taskId)
@@ -49,6 +57,23 @@ export default {
   getTagTreeItemsChannel: (userId, initTime) => {
     const ref = db.collection('tagTreeItems')
       .where('createdById', '==', userId)
+      .where('updatedAt', '>', initTime)
+
+    return eventChannel(emit => ref.onSnapshot(emit))
+  },
+
+  getContactsChannel: (userId, initTime) => {
+    const ref = db.collection('users')
+       .doc(userId)
+       .collection('contacts')
+       .where('updatedAt', '>', initTime)
+ 
+    return eventChannel(emit => ref.onSnapshot(emit))
+  },
+
+  getGlobalProfilesChannel: (userId, initTime) => {
+    const ref = db.collection('users')
+      .where('accessibleFor', 'array-contains', userId)
       .where('updatedAt', '>', initTime)
 
     return eventChannel(emit => ref.onSnapshot(emit))

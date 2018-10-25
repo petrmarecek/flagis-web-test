@@ -14,7 +14,7 @@ export function* fetchContacts() {
   const result = yield* fetch(CONTACTS.FETCH, {
     method: api.contacts.get,
     args: [],
-    schema: schema.contactList
+    schema: schema.contacts
   })
 
   // Initialize search service
