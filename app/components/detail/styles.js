@@ -453,6 +453,18 @@ const DetailTagColorSelectorOptions = styled.ul`
   }
 `;
 
+const DetailTagColorSelectorItems = styled.li`
+  ${borderRadius('50%')}
+  background-color: ${props => props.color};
+  border: ${props => props.selected ? '1px solid #293034' : 'none'};
+  float: left;
+  width: 24px;
+  height: 24px;
+  margin: 0 9px 20px 0;
+  list-style-type: none;
+  cursor: pointer;
+`;
+
 const DetailContentDescriptionTag = styled.div`
   margin: 0 17px;
   height: calc(100% - 69px);
@@ -590,6 +602,7 @@ export {
   DetailTagColorSelector,
   DetailTagColorSelectorLabel,
   DetailTagColorSelectorOptions,
+  DetailTagColorSelectorItems,
   DetailContentDescriptionTag,
 
   DetailSubjectIconContact,

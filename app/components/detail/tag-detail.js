@@ -1,11 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { withHandlers } from 'recompose'
-import { getColorIndex, getTagColor } from 'redux/utils/component-helper'
+import { tagColor, getColorIndex, getTagColor } from 'redux/utils/component-helper'
 import { toast } from 'react-toastify'
 import { errorMessages } from 'utils/messages'
 import constants from 'utils/constants'
 
+import TagDetailColors from 'components/detail/tag-detail-colors'
 import DetailMenu from 'components/detail/detail-menu'
 import Icon from 'components/icons/icon'
 import { ICONS } from 'components/icons/icon-constants'
@@ -51,18 +52,8 @@ const TagDetail = props => {
   }
 
   const colorIndex = getColorIndex(tag.colorIndex, tag.title)
-  const tagColor = getTagColor(colorIndex)
+  const color = getTagColor(colorIndex)
   const description = tag.description === null ? '' : tag.description
-  const colors = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
-  const colorItems = colors.map(index => {
-    const colorClass = `color-selector__item cl-${index}`
-    return (
-      <li
-        key={index}
-        className={colorClass}
-        onClick={() => onHandleSetColor(index)} />
-    )
-  })
 
   return (
     <div>
@@ -80,7 +71,7 @@ const TagDetail = props => {
                 width={37}
                 height={20}
                 scale={1.81}
-                color={[tagColor]}/>
+                color={[color]}/>
               <span onClick={onHandleRemoveEventListener}>
                 <DetailSubjectTagContentEditable
                   html={tag.title}
@@ -95,20 +86,20 @@ const TagDetail = props => {
               width={23}
               height={26}
               scale={1}
-              color={["#ff8181", "#ff8181", "#ff8181", "#ff8181"]}
+              color={['#ff8181']}
               onClick={onHandleDelete}/>
           </DetailContentDeleteIcon>
         </DetailContentTop>
-
         <DetailContentCenter column>
           <DetailContentTagColor>
             <DetailTagColorSelector>
               <DetailTagColorSelectorLabel>
                 Select a color
               </DetailTagColorSelectorLabel>
-              <DetailTagColorSelectorOptions>
-                {colorItems}
-              </DetailTagColorSelectorOptions>
+              <TagDetailColors
+                colors={tagColor}
+                colorIndex={colorIndex}
+                setColor={onHandleSetColor} />
             </DetailTagColorSelector>
           </DetailContentTagColor>
           <DetailContentDescriptionTag>

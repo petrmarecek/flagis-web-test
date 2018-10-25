@@ -156,31 +156,39 @@ export function getTagRelations(relations, parentRelations, tagId) {
 
 export const getColorIndex = (colorIndex, title) => {
   return colorIndex === null
-    ? commonUtils.computeIntHash(title, 10)
+    ? commonUtils.computeIntHash(title, 23)
     : colorIndex
 }
 
-const color = {
-  0: '#6F8083',
-  1: '#F0BD67',
-  2: '#52C2D9',
-  3: '#3FB198',
-  4: '#6999B9',
-  5: '#E197F0',
-  6: '#D88C69',
-  7: '#9188E3',
-  8: '#9EDB5B',
-  9: '#ADB09F',
-  10: '#7BA6DE',
-  11: '#B3AD36',
-  12: '#34A2EE',
-  13: '#5BDBA3',
-  14: '#ff6a6a',
-  15: '#6F8083',
+export const tagColor = {
+  0: '#F7BED2',
+  1: '#F99C9C',
+  2: '#D36363',
+  3: '#C55B79',
+  4: '#D88C69',
+  5: '#E4B25F',
+  6: '#F7CE4D',
+  7: '#E4DB27',
+  8: '#7BA6DE',
+  9: '#52C2D9',
+  10: '#4DCBBD',
+  11: '#9EDB5B',
+  12: '#5BDBA3',
+  13: '#3FB198',
+  14: '#B3AD36',
+  15: '#C8C629',
+  16: '#34A2EE',
+  17: '#6999B9',
+  18: '#9188E3',
+  19: '#E197F0',
+  20: '#F288C1',
+  21: '#D28CB2',
+  22: '#ADB09F',
+  23: '#6F8083',
 }
 
 export function getTagColor(index) {
-  return color[index]
+  return tagColor[index]
 }
 
 export function markdownToHTML(markdown) {
