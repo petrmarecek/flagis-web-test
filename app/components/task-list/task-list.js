@@ -71,12 +71,13 @@ export default class TaskList extends PureComponent {
   }
 
   getTaskItems(tasks, section) {
+    const { listType } = this.props
 
-    if (!this.props.listType) {
+    if (!listType) {
       return null
     }
 
-    switch (this.props.listType) {
+    switch (listType) {
       case 'main': {
         return (
           tasks.map((task, i) => (
@@ -159,7 +160,9 @@ export default class TaskList extends PureComponent {
   }
 
   getTaskItemsList(tasks) {
-    if (this.props.timeLine && !this.props.isVisibleArchivedTasks) {
+    const { isVisibleArchivedTasks, timeLine } = this.props
+
+    if (timeLine && !isVisibleArchivedTasks) {
       // Due date sorting algorithm is activated
       const timeLineTasks = getTimeLineByDueDate(tasks)
       const tasksRender = {
@@ -217,8 +220,7 @@ export default class TaskList extends PureComponent {
 
   render() {
     // children items
-    const { tasks, isVisibleArchivedTasks } = this.props
-    const timeLine = this.props.timeLine
+    const { tasks, isVisibleArchivedTasks, timeLine } = this.props
     const taskItems = this.getTaskItemsList(tasks)
 
     return (
@@ -248,9 +250,7 @@ export default class TaskList extends PureComponent {
             <span className="time-line__point"/>
             <p className="time-line__text">Today</p>
             <ul ref="list" className="task-items">
-              {!taskItems.todayTasks && this.getEmptyTask('today', 'todayTasks')}
-
-              {taskItems.todayTasks}
+              {!taskItems.todayTasks ? this.getEmptyTask('today', 'todayTasks') : taskItems.todayTasks}
             </ul>
           </li>
 
@@ -258,9 +258,7 @@ export default class TaskList extends PureComponent {
             <span className="time-line__point"/>
             <p className="time-line__text">Tomorrow</p>
             <ul ref="list" className="task-items">
-              {!taskItems.tomorrowTasks && this.getEmptyTask('tomorrow', 'tomorrowTasks')}
-
-              {taskItems.tomorrowTasks}
+              {!taskItems.tomorrowTasks ? this.getEmptyTask('tomorrow', 'tomorrowTasks') : taskItems.tomorrowTasks}
             </ul>
           </li>
 
@@ -268,9 +266,7 @@ export default class TaskList extends PureComponent {
             <span className="time-line__point"/>
             <p className="time-line__text">This week</p>
             <ul ref="list" className="task-items">
-              {!taskItems.weekTasks && this.getEmptyTask('week', 'weekTasks')}
-
-              {taskItems.weekTasks}
+              {!taskItems.weekTasks ? this.getEmptyTask('week', 'weekTasks') : taskItems.weekTasks}
             </ul>
           </li>
 
@@ -278,9 +274,7 @@ export default class TaskList extends PureComponent {
             <span className="time-line__point"/>
             <p className="time-line__text">This month</p>
             <ul ref="list" className="task-items">
-              {!taskItems.monthTasks && this.getEmptyTask('month', 'monthTasks')}
-
-              {taskItems.monthTasks}
+              {!taskItems.monthTasks ? this.getEmptyTask('month', 'monthTasks') : taskItems.monthTasks}
             </ul>
           </li>
 
@@ -288,9 +282,7 @@ export default class TaskList extends PureComponent {
             <span className="time-line__point"/>
             <p className="time-line__text">Later</p>
             <ul ref="list" className="task-items">
-              {!taskItems.laterTasks && this.getEmptyTask('later', 'laterTasks')}
-
-              {taskItems.laterTasks}
+              {!taskItems.laterTasks ? this.getEmptyTask('later', 'laterTasks') : taskItems.laterTasks}
             </ul>
           </li>
 
@@ -298,9 +290,7 @@ export default class TaskList extends PureComponent {
             <span className="time-line__point"/>
             <p className="time-line__text">No Due Dates</p>
             <ul ref="list" className="task-items">
-              {!taskItems.noDueDatesTasks && this.getEmptyTask('noDueDates', 'noDueDatesTasks')}
-
-              {taskItems.noDueDatesTasks}
+              {!taskItems.noDueDatesTasks ? this.getEmptyTask('noDueDates', 'noDueDatesTasks') : taskItems.noDueDatesTasks}
             </ul>
           </li>
         </ul>}

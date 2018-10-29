@@ -1,7 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { withHandlers } from 'recompose'
-import { tagColor, getColorIndex, getTagColor } from 'redux/utils/component-helper'
+import {
+  tagColor,
+  getColorIndex,
+  getTagColor
+} from 'redux/utils/component-helper'
 import { toast } from 'react-toastify'
 import { errorMessages } from 'utils/messages'
 import constants from 'utils/constants'
@@ -23,7 +27,6 @@ import {
   DetailContentTagColor,
   DetailTagColorSelector,
   DetailTagColorSelectorLabel,
-  DetailTagColorSelectorOptions,
   DetailContentDescriptionTag,
   MarkdownEditableContainer,
 } from './styles'

@@ -17,6 +17,7 @@ import {
   TaskItem,
   Completed,
   Archived,
+  FollowerResponse,
   Content,
   SubjectTags,
   Subject,
@@ -205,6 +206,7 @@ const TaskListItem = props => {
 
   // Conditions
   const isArchivedList = listType === 'archived'
+  const isInboxList = listType === 'inbox'
   const isCompletedMainList = task.isCompleted && !isArchivedList
   const isDescription = task.description !== ''
 
@@ -246,6 +248,19 @@ const TaskListItem = props => {
     return '#fff'
   }
 
+  // Background color of task item
+  const contentMarginLeft = () => {
+    if (isInboxList) {
+      return '260px'
+    }
+
+    if (isCompletedMainList) {
+      return '90px'
+    }
+
+    return '50px'
+  }
+
   // Render component
   return connectDragSource(connectDropTarget(
     <div>
@@ -263,7 +278,7 @@ const TaskListItem = props => {
         backgroundColor={backgroundColor}
         completed={isCompletedMainList}
         dragging={isDragging}>
-        {!isArchivedList &&
+        {!isArchivedList && !isInboxList &&
         <Completed
           icon={ICONS.TASK_CHECKED}
           color={task.isCompleted ? ['#c2fee5'] : ['#D7E3EC']}
@@ -271,7 +286,7 @@ const TaskListItem = props => {
           width={22}
           height={21}
           onClick={onHandleCompleteClicked} />}
-        {task.isCompleted &&
+        {task.isCompleted && !isInboxList &&
         <Archived
           icon={isArchivedList ? ICONS.NON_ARCHIVE : ICONS.ARCHIVE}
           color={isArchivedList ? ['#282f34'] : ['#8c9ea9']}
@@ -284,8 +299,10 @@ const TaskListItem = props => {
             duration: 1000,
           }} 
           archived={isArchivedList} />}
+          {isInboxList && <FollowerResponse>ACEPPTED</FollowerResponse>}
+          {isInboxList && <FollowerResponse rejected>REJECTED</FollowerResponse>}
         <Content
-          completed={isCompletedMainList}
+          marginLeft={contentMarginLeft}
           followers={isFollowers}>
           <SubjectTags>
             <Subject
@@ -312,7 +329,11 @@ const TaskListItem = props => {
         </Content>
         {isFollowers &&
         <Followers>
-          <FollowerIcon status={followerStatus} />
+          <FollowerIcon status={followerStatus}/>
+        </Followers>}
+        {isInboxList &&
+        <Followers>
+          <FollowerIcon inbox/>
         </Followers>}
       </TaskItem>}
     </div>

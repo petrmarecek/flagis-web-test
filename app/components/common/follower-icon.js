@@ -5,12 +5,13 @@ import constants from '../../utils/constants'
 import Icon from '../icons/icon'
 import { ICONS } from '../icons/icon-constants'
 
-const FollowerIcon = ({ status, scale }) => {
-  const width = status === 'new'
+const FollowerIcon = ({ status, scale, inbox }) => {
+  const followerStatus = inbox ? 'new' : status
+  const width = followerStatus === 'new'
     ? Number(constants.NEW_FOLLOWER_ICON_WIDTH * scale)
     : Number(constants.FOLLOWER_ICON_WIDTH * scale)
 
-  const height = status === 'new'
+  const height = followerStatus === 'new'
     ? Number(constants.NEW_FOLLOWER_ICON__HEIGHT * scale)
     : Number(constants.FOLLOWER_ICON_HEIGHT * scale)
 
@@ -23,11 +24,11 @@ const FollowerIcon = ({ status, scale }) => {
 
   return (
     <Icon
-      icon={ICONS[`FOLLOWER_${status.toUpperCase()}`]}
+      icon={ICONS[`FOLLOWER_${followerStatus.toUpperCase()}`]}
       width={width}
       height={height}
       scale={scale}
-      color={[color[status]]} />
+      color={[color[followerStatus]]} />
   )
 }
 
@@ -38,6 +39,7 @@ FollowerIcon.defaultProps = {
 FollowerIcon.propTypes = {
   status: PropTypes.string,
   scale: PropTypes.number,
+  inbox: PropTypes.bool,
 }
 
 export default FollowerIcon

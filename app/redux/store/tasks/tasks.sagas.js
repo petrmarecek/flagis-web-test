@@ -30,7 +30,6 @@ const TASKS = taskActions.TASKS
 function* saveChangeFromFirestore(change, userId) {
   const { FULFILLED } = createLoadActions(TASKS.FIREBASE)
   const task = change.doc.data()
-  console.log(task)
 
   // Prepare data
   task.tags = task.tags[userId]

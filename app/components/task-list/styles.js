@@ -56,10 +56,25 @@ const Archived = styled(Icon)`
   z-index: 1;
 `;
 
+const FollowerResponse = styled.div`
+  height: 26px;
+  width: 117px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 12px;
+  background-color: ${props => props.rejected ? '#FF6A6A' : '#44FFB1'};
+  left: ${props => props.rejected ? '133px' : '11px'};
+  font-size: 16px;
+  font-style: italic;
+  color: #fff;
+`;
+
 const Content = styled.div`
   display: flex;
   flex-direction: column;
-  margin-left: ${props => props.completed ? '90px' : '50px'};
+  margin-left: ${props => props.marginLeft};
   margin-right: ${props => props.followers ? '70px' : '15px'};
   ${transition('margin 500ms ease-out')};
 `;
@@ -171,6 +186,7 @@ export {
   TaskItem,
   Completed,
   Archived,
+  FollowerResponse,
   Content,
   SubjectTags,
   Subject,
