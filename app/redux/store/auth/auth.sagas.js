@@ -15,7 +15,7 @@ import * as treeActions from 'redux/store/tree/tree.actions'
 import * as contactsActions from 'redux/store/contacts/contacts.actions'
 import * as authSelectors from 'redux/store/auth/auth.selectors'
 import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'
-import { initTasksData } from 'redux/store/tasks/tasks.sagas'
+import { initTasksData, initInboxTasksData } from 'redux/store/tasks/tasks.sagas'
 import { initTagsData } from 'redux/store/tags/tags.sagas'
 import { initTagTreeItemsData } from 'redux/store/tree/tree.sagas'
 import { createLoadActions } from 'redux/store/common.sagas'
@@ -45,14 +45,21 @@ export function* initDataFlow() {
     yield put(treeActions.fetchTree())
 
     // Init data from firestore
-    const { tasksSyncing, tagsSyncing, tagTreeItemsSyncing } = yield all({
+    const {
+      tasksSyncing,
+      inboxTasksSyncing,
+      tagsSyncing,
+      tagTreeItemsSyncing
+    } = yield all({
       tasksSyncing: fork(initTasksData, initTime),
+      inboxTasksSyncing: fork(initInboxTasksData, initTime),
       tagsSyncing: fork(initTagsData, initTime),
       tagTreeItemsSyncing: fork(initTagTreeItemsData, initTime),
     })
 
     yield take(AUTH.LOGOUT)
     yield cancel(tasksSyncing)
+    yield cancel(inboxTasksSyncing)
     yield cancel(tagsSyncing)
     yield cancel(tagTreeItemsSyncing)
 

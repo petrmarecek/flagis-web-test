@@ -1,5 +1,5 @@
 import { normalize } from 'normalizr'
-import { all, cancelled, take, call, put, select, fork } from 'redux-saga/effects'
+import { all, take, call, put, select, fork } from 'redux-saga/effects'
 import {
   createLoadActions,
   fetch,
@@ -27,15 +27,17 @@ import constants from 'utils/constants'
 
 const TASKS = taskActions.TASKS
 
-function* saveChangeFromFirestore(change, userId) {
+function* saveChangeFromFirestore(change, userId, isInboxTask) {
   const { FULFILLED } = createLoadActions(TASKS.FIREBASE)
   const task = change.doc.data()
 
   // Prepare data
+  task.isInbox = isInboxTask
   task.tags = task.tags[userId]
   const normalizeData = normalize(task, schema.task)
   const storeItems = yield select(state => taskSelectors.getTasksItems(state))
   const storeArchivedItems = yield select(state => taskSelectors.getArchivedTasksItems(state))
+  const storeInboxItems = yield select(state => taskSelectors.getInboxTasksItems(state))
   const isDetailVisible = yield select(state => appStateSelectors.getDetail(state))
   const { id, isArchived, isTrashed } = task
 
@@ -47,9 +49,26 @@ function* saveChangeFromFirestore(change, userId) {
       autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
     })
 
-    // Close archive detail
-    if (isDetailVisible.archive) {
-      yield put(appStateActions.deselectDetail('archive'))
+    // Close task detail
+    if (isDetailVisible.task) {
+      yield put(appStateActions.deselectDetail('task'))
+    }
+
+    // Update task in search
+    search.tasks.updateItem(task)
+  }
+
+  // Move task from inbox to tasks list (accepted)
+  if (!isArchived && !isTrashed && !storeItems.includes(id) && storeInboxItems.includes(id)) {
+    // Show notification
+    toast.success(successMessages.tasks.cancelArchive, {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+    })
+
+    // Close task detail
+    if (isDetailVisible.task) {
+      yield put(appStateActions.deselectDetail('task'))
     }
 
     // Update task in search
@@ -64,7 +83,7 @@ function* saveChangeFromFirestore(change, userId) {
       autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
     })
 
-    // Close detail
+    // Close task detail
     if (isDetailVisible.task) {
       yield put(appStateActions.deselectDetail('task'))
     }
@@ -86,11 +105,6 @@ function* saveChangeFromFirestore(change, userId) {
       yield put(appStateActions.deselectDetail('task'))
     }
 
-    // Close archive detail
-    if (isDetailVisible.archive) {
-      yield put(appStateActions.deselectDetail('archive'))
-    }
-
     // Delete task from search
     search.tasks.removeItem({ id })
   }
@@ -103,11 +117,23 @@ function* saveChangeFromFirestore(change, userId) {
   yield put({ type: TASKS.FIREBASE_TAGS_RELATIONS, payload: entitiesTasks })
 }
 
-function* syncTasksChannel(channel, userId) {
+function* syncTasksChannel(channel, userId, isInboxTask) {
   while (true) { // eslint-disable-line
     const snapshot = yield take(channel)
-    yield all(snapshot.docChanges().map(change => call(saveChangeFromFirestore, change, userId)))
+    yield all(snapshot.docChanges().map(change => call(saveChangeFromFirestore, change, userId, isInboxTask)))
   }
+}
+
+export function* initTasksData(initTime) {
+  const userId = yield select(state => authSelectors.getUserId(state))
+  const channel = firebase.getTasksChannel(userId, initTime)
+  return yield fork(syncTasksChannel, channel, userId, false)
+}
+
+export function* initInboxTasksData(initTime) {
+  const userId = yield select(state => authSelectors.getUserId(state))
+  const channel = firebase.getCollaboratedTasksChannel(userId, initTime)
+  return yield fork(syncTasksChannel, channel, userId, true)
 }
 
 export function* fetchTasks() {
@@ -177,12 +203,6 @@ export function* fetchInboxTasks() {
     args: [],
     schema: schema.tasks
   })
-}
-
-export function* initTasksData(initTime) {
-  const userId = yield select(state => authSelectors.getUserId(state))
-  const channel = firebase.getTasksChannel(userId, initTime)
-  return yield fork(syncTasksChannel, channel, userId)
 }
 
 export function* createTask(action) {

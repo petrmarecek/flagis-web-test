@@ -259,7 +259,7 @@ function loadInboxTasks(ids, data) {
     entitiesContacts,
   } = data
 
-  return ids.map(taskId => {
+  const tasks = ids.map(taskId => {
     const task = entitiesTasks.get(taskId)
     const tags = task.tags.map(tagId => entitiesTags.get(tagId))
     const followers = task.followers.map(followerId => {
@@ -273,6 +273,16 @@ function loadInboxTasks(ids, data) {
       .set('tags', tags)
       .set('followers', followers)
   })
+
+  // sort task by order
+  tasks.sort((a, b) => {
+    if (a.order > b.order) return -1;
+    if (a.order < b.order) return 1;
+
+    return 0;
+  })
+
+  return tasks
 }
 
 /**

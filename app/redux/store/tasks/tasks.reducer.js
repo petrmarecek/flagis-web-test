@@ -72,11 +72,18 @@ export default typeToReducer({
   [TASKS.FIREBASE]: {
     FULFILLED: (state, action) => {
       // Get new lists for tasks store
-      const { newItems, newCompleted, newArchived, newSelection } = updateTasksListsFromFirestore(state, action)
+      const { 
+        newItems,
+        newInbox,
+        newCompleted,
+        newArchived,
+        newSelection
+      } = updateTasksListsFromFirestore(state, action)
 
       // Set new lists
       return state
         .setIn(['items'], newItems)
+        .setIn(['inbox', 'items'], newInbox)
         .setIn(['completed'], newCompleted)
         .setIn(['archived', 'items'], newArchived)
         .setIn(['selection'], newSelection)
@@ -151,14 +158,24 @@ function completedTasks(tasks) {
 }
 
 function updateTasksListsFromFirestore(state, action) {
-  const task = action.payload.entities.tasks
-  const resultId = action.payload.result
-  const { id, isCompleted, isArchived, isTrashed } = task[resultId]
+  console.log(action.payload)
+  const { entities, result } = action.payload
+  const { id, isInbox, isCompleted, isArchived, isTrashed } = entities.tasks[result]
 
   let newItems = state.getIn(['items'])
   let newCompleted = state.getIn(['completed'])
   let newArchived = state.getIn(['archived', 'items'])
+  let newInbox = state.getIn(['inbox', 'items'])
   let newSelection = state.getIn(['selection'])
+
+  // New inbox task
+  if (isInbox && !isArchived && !isTrashed) {
+    if (!newInbox.includes(id)) {
+      newInbox = newInbox.push(id)
+    }
+
+    return { newItems, newInbox, newCompleted, newArchived, newSelection }
+  }
 
   // Uncompleted task
   if (!isCompleted && !isArchived && !isTrashed) {
@@ -174,7 +191,7 @@ function updateTasksListsFromFirestore(state, action) {
       newCompleted = newCompleted.filter(taskId => taskId !== id)
     }
 
-    return { newItems, newCompleted, newArchived, newSelection }
+    return { newItems, newInbox, newCompleted, newArchived, newSelection }
   }
 
   // Completed task
@@ -195,7 +212,7 @@ function updateTasksListsFromFirestore(state, action) {
       newArchived = newArchived.filter(taskId => taskId !== id)
     }
 
-    return { newItems, newCompleted, newArchived, newSelection }
+    return { newItems, newInbox, newCompleted, newArchived, newSelection }
   }
 
   // Archived task
@@ -216,7 +233,7 @@ function updateTasksListsFromFirestore(state, action) {
       newCompleted = newCompleted.filter(taskId => taskId !== id)
     }
 
-    return { newItems, newCompleted, newArchived, newSelection }
+    return { newItems, newInbox, newCompleted, newArchived, newSelection }
   }
 
   // Trashed task
@@ -240,5 +257,5 @@ function updateTasksListsFromFirestore(state, action) {
     return { newItems, newCompleted, newArchived, newSelection }
   }
 
-  return { newItems, newCompleted, newArchived, newSelection }
+  return { newItems, newInbox, newCompleted, newArchived, newSelection }
 }
