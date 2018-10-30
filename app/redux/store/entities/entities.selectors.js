@@ -4,7 +4,6 @@ import { createSelector } from 'reselect'
 
 // Export selectors
 export const getEntitiesTasks = state => state.getIn(['entities', 'tasks'])
-export const getEntitiesInbox = state => state.getIn(['entities', 'inbox'])
 export const getEntitiesTags = state => state.getIn(['entities', 'tags'])
 export const getEntitiesTreeItems = state => state.getIn(['entities', 'treeItems'])
 export const getEntitiesAttachments = state => state.getIn(['entities', 'attachments'])

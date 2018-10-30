@@ -49,7 +49,7 @@ import {
   sendInvitationContact
 } from 'redux/store/contacts/contacts.actions'
 import { sendTaskToFollowers } from 'redux/store/followers/followers.actions'
-import { getDetail } from 'redux/store/app-state/app-state.selectors'
+import { getDetail, getInboxTasksVisibility } from 'redux/store/app-state/app-state.selectors'
 import {
   getTasksItems,
   getCompletedTasksItems,
@@ -87,6 +87,7 @@ const Detail = props => {
 
   const {
     detail,
+    isInboxVisible,
 
     task,
     attachments,
@@ -133,6 +134,7 @@ const Detail = props => {
         animation={detail.animation}
         attachments={attachments}
         comments={comments}
+        isInboxVisible={isInboxVisible}
         onHandleRemoveEventListener={onHandleRemoveEventListener}
         onHandleToggleList={onHandleToggleList}
         onHandleNext={onHandleNext}
@@ -182,6 +184,7 @@ const Detail = props => {
 
 Detail.propTypes = {
   detail: PropTypes.object,
+  isInboxVisible: PropTypes.bool,
 
   task: PropTypes.object,
   attachments: PropTypes.object,
@@ -224,6 +227,7 @@ Detail.propTypes = {
 
 const mapStateToProps = state => ({
   detail: getDetail(state),
+  isInboxVisible: getInboxTasksVisibility(state),
 
   task: getCurrentTask(state),
   comments: getComments(state),

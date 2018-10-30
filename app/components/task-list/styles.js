@@ -57,18 +57,9 @@ const Archived = styled(Icon)`
 `;
 
 const FollowerResponse = styled.div`
-  height: 26px;
-  width: 117px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   position: absolute;
   top: 12px;
-  background-color: ${props => props.rejected ? '#FF6A6A' : '#44FFB1'};
-  left: ${props => props.rejected ? '133px' : '11px'};
-  font-size: 16px;
-  font-style: italic;
-  color: #fff;
+  left: 11px;
 `;
 
 const Content = styled.div`

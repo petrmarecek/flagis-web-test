@@ -17,6 +17,10 @@ export const errorMessages = {
     linkExpired: 'Link has expired. Please ask for a new one.',
   },
 
+  tasks: {
+    waitingResponse: 'Waiting for response!',
+  },
+
   tags: {
     createConflict: 'This tag has already been created.',
     titleConflict: 'This title has already been used.',

@@ -52,8 +52,20 @@ export default typeToReducer({
   },
 
   [TASKS.FETCH_INBOX]: {
-    PENDING: state => state.withMutations(taskStore => { taskStore.setIn(['inbox', 'isFetching'], true)}),
-    FULFILLED: state => state.withMutations(taskStore => { taskStore.setIn(['inbox', 'isFetching'], false)}),
+    PENDING: state => state.withMutations(taskStore => {
+
+      // reset tasks set
+      taskStore.setIn(['inbox', 'isFetching'], true)
+      taskStore.setIn(['inbox', 'items'], List())
+    }),
+
+    FULFILLED: (state, action) => {
+      const taskIds = action.payload.result
+
+      return state
+        .setIn(['inbox', 'isFetching'], false)
+        .setIn(['inbox', 'items'], List(taskIds))
+    }
   },
 
   // Update lists for tasks

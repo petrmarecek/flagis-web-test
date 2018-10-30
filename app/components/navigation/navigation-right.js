@@ -19,8 +19,7 @@ import {
 } from 'redux/store/app-state/app-state.actions'
 import { deselectTags } from 'redux/store/tags/tags.actions'
 import { deselectContacts } from 'redux/store/contacts/contacts.actions'
-import { getTimeLine } from 'redux/store/tasks/tasks.selectors'
-import { getInboxCount } from 'redux/store/inbox/inbox.selectors'
+import { getTimeLine, getInboxTasksItems } from 'redux/store/tasks/tasks.selectors'
 
 import { NavButtonContainer, NavButton, InboxCounter } from './styles'
 
@@ -102,7 +101,7 @@ NavigationRight.propTypes = {
 const mapStateToProps = (state, ownProps) => ({
   location: ownProps.location,
   timeLine: getTimeLine(state),
-  inboxCount: getInboxCount(state),
+  inboxCount: getInboxTasksItems(state).size,
 })
 
 const mapDispatchToProps = {

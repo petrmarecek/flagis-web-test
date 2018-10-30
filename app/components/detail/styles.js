@@ -97,6 +97,7 @@ const DetailContentTagAutocomplete = styled.div`
   padding-right: 10px;
   padding-top: 12px;
   max-width: 70%;
+  pointer-events: ${props => props.disabled ? 'none' : 'auto'};
 `;
 
 const DetailContentTagAutocompleteTags = styled.ul`
@@ -132,6 +133,7 @@ const DetailContentProperties = styled.div`
 
 const DetailContentOptions = styled.div`
   margin: 0 0 10px;
+  pointer-events: ${props => props.disabled ? 'none' : 'auto'};
 `;
 
 const detailContentOptionsItem = css`
@@ -177,8 +179,8 @@ const DetailContentAddContactLabel = styled.div`
 
 const DetailContentAddContactContent = styled.div`
   position: absolute;
-  left: 26px;
-  right: 35px;
+  left: ${props => props.inbox ? '45px': '26px'};
+  right: ${props => props.inbox ? '5px': '35px'};
   bottom: -5px;
 `;
 
@@ -347,7 +349,7 @@ const ContentEditableContainer = css`
   margin-left: ${props => props.marginLeft ? props.marginLeft : '45px'};
   text-decoration: ${props => (props.completed || props.archived) ? 'line-through' : 'none'};
   font-weight: ${props => props.important ? 'bold' : 'normal'};
-  pointer-events: ${props => props.archived ? 'none' : 'auto'};
+  pointer-events: ${props => props.disabled ? 'none' : 'auto'};
   
   :empty:before {
     color: #8c9da9;
@@ -409,6 +411,12 @@ const DetailSubjectTaskArchived = styled(Icon)`
   margin: 0 5px;
 `;
 
+const DetailSubjectTasFollowerResponse = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+`;
+
 const DetailSubjectTaskContentEditable = styled(ContentEditable)`
   ${ContentEditableContainer}
 `;
@@ -416,6 +424,7 @@ const DetailSubjectTaskContentEditable = styled(ContentEditable)`
 const DetailContentDescriptionTask = styled.div`
   flex: 6;
   margin-right: 22px;
+  pointer-events: ${props => props.disabled ? 'none' : 'auto'};
 `;
 
 // --------------------------------------- Tag detail ---------------------------------------
@@ -593,6 +602,7 @@ export {
 
   DetailSubjectTaskCompleted,
   DetailSubjectTaskArchived,
+  DetailSubjectTasFollowerResponse,
   DetailSubjectTaskContentEditable,
   DetailContentDescriptionTask,
 

@@ -9,6 +9,7 @@ import { getAssigneeOfTask } from 'redux/utils/component-helper'
 
 import DetailMenu from 'components/detail/detail-menu'
 import FollowerStatus from 'components/common/follower-status'
+import FollowerResponseButtons from '../common/follower-response-buttons'
 import Autocomplete from 'components/autocomplete'
 import FollowerIcon from '../common/follower-icon'
 import FilePicker from 'components/common/file-picker'
@@ -27,6 +28,7 @@ import {
   DetailSubject,
   DetailSubjectTaskCompleted,
   DetailSubjectTaskArchived,
+  DetailSubjectTasFollowerResponse,
   DetailSubjectTaskContentEditable,
   DetailContentTagAutocomplete,
   DetailContentTagAutocompleteTags,
@@ -60,6 +62,7 @@ const TaskDetail = props => {
     task,
     attachments,
     comments,
+    isInboxVisible,
     animation,
     onHandleComplete,
     onHandleArchive,
@@ -103,7 +106,7 @@ const TaskDetail = props => {
     isArchived: task.isArchived,
     isTags: task.tags.size !== 0,
     isFollowers: assignee !== null,
-    isImportant: task.isImportant
+    isImportant: task.isImportant,
   })
 
   const {
@@ -124,7 +127,11 @@ const TaskDetail = props => {
   } = getBindingData
 
   // Margin-left of subject
-  const marginLeft = () => {
+  const subjectMarginLeft = () => {
+    if (isInboxVisible) {
+      return '260px'
+    }
+
     if (isCompleted && !isArchived) {
       return '85px'
     }
@@ -158,7 +165,11 @@ const TaskDetail = props => {
           animation={animation} >
           <DetailContentSubject taskDetail>
             <DetailSubject>
-              {!isArchived && isFollowers &&
+              {isInboxVisible &&
+              <DetailSubjectTasFollowerResponse>
+                <FollowerResponseButtons />
+              </DetailSubjectTasFollowerResponse>}
+              {!isArchived && !isInboxVisible && isFollowers &&
               <FollowerStatus
                 status={followerStatus}
                 animation={animation}
@@ -208,12 +219,15 @@ const TaskDetail = props => {
                     completed={isCompleted}
                     important={isImportant}
                     archived={isArchived}
-                    marginLeft={marginLeft}
-                    animation={animation}/>
+                    marginLeft={subjectMarginLeft}
+                    animation={animation}
+                    disabled={isInboxVisible || isArchived} />
                 </span>
             </DetailSubject>
           </DetailContentSubject>
-          <DetailContentTagAutocomplete onClick={onHandleRemoveEventListener}>
+          <DetailContentTagAutocomplete 
+            onClick={onHandleRemoveEventListener}
+            disabled={isInboxVisible}>
             {isArchived &&
             <DetailContentTagAutocompleteTags>
               <TagItems tags={tags}/>
@@ -228,9 +242,8 @@ const TaskDetail = props => {
               onItemDelete={onHandleTagDelete}
               isAllowUpdate />}
           </DetailContentTagAutocomplete>
-          <DetailContentDeleteIcon
-            archived={isArchived}
-            onClick={onHandleRemoveEventListener} >
+          {!isInboxVisible &&
+          <DetailContentDeleteIcon onClick={onHandleRemoveEventListener} >
             <Icon
               icon={ICONS.TRASH}
               width={23}
@@ -238,24 +251,28 @@ const TaskDetail = props => {
               scale={1}
               color={["#ff8181"]}
               onClick={onHandleDelete}/>
-          </DetailContentDeleteIcon>
+          </DetailContentDeleteIcon>}
+          {isInboxVisible &&
+          <DetailContentDeleteIcon onClick={onHandleRemoveEventListener} >
+            <FollowerIcon inbox/>
+          </DetailContentDeleteIcon>}
         </DetailContentTop>
         <DetailContentCenter>
           <DetailContentProperties>
-            <DetailContentOptions>
+            <DetailContentOptions disabled={isInboxVisible}>
               <DetailContentAddContact
                 onClick={onHandleRemoveEventListener}
                 disabled={isCompleted && !isArchived && !isFollowers}
                 animation={animation} >
                 <DetailContentAddContactLabel changeColor>
-                  To:
+                  {isInboxVisible ? 'From:' : 'To:'}
                 </DetailContentAddContactLabel>
-                <DetailContentAddContactContent>
-                  {isArchived &&
+                <DetailContentAddContactContent inbox={isInboxVisible}>
+                  {isArchived || isInboxVisible &&
                   <DetailContentAutocompleteContacts>
                     <FollowerItems followers={followers}/>
                   </DetailContentAutocompleteContacts>}
-                  {!isArchived &&
+                  {!isArchived && !isInboxVisible &&
                   <Autocomplete
                     dataType="contacts"
                     location="taskDetailContacts"
@@ -265,9 +282,10 @@ const TaskDetail = props => {
                     onItemDelete={onHandleFollowerDelete}
                     isWithoutInput={isFollowers} />}
                 </DetailContentAddContactContent>
+                {!isInboxVisible &&
                 <DetailContentAddContactIcon>
-                  <FollowerIcon status={followerStatus} scale={0.75} />
-                </DetailContentAddContactIcon>
+                  <FollowerIcon status={followerStatus} scale={0.75}/>
+                </DetailContentAddContactIcon>}
               </DetailContentAddContact>
               <DetailContentDate>
                 <DetailContentDateLabel>
@@ -337,7 +355,7 @@ const TaskDetail = props => {
               {!isArchived && <FilePicker onFileUploaded={onHandleFileUploaded}/>}
             </DetailContentAttachments>
           </DetailContentProperties>
-          <DetailContentDescriptionTask>
+          <DetailContentDescriptionTask disabled={isInboxVisible}>
             <span onClick={onHandleRemoveEventListener}>
               <MarkdownEditableContainer
                 text={description === null ? '' : description}
@@ -385,6 +403,7 @@ TaskDetail.propTypes = {
   animation: PropTypes.bool,
   attachments: PropTypes.object,
   comments: PropTypes.object,
+  isInboxVisible: PropTypes.bool,
   onHandleComplete: PropTypes.func,
   onHandleTaskSetComplete: PropTypes.func,
   onHandleTaskSetIncomplete: PropTypes.func,

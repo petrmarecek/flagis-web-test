@@ -5,11 +5,15 @@ import { compose, shouldUpdate, withHandlers } from 'recompose'
 import { findDOMNode } from 'react-dom'
 import moment from 'moment'
 import removeMd from 'remove-markdown'
+import { toast } from 'react-toastify'
+import { errorMessages } from 'utils/messages'
+import constants from 'utils/constants'
 
 import dateUtils from 'redux/utils/date'
 import { getAssigneeOfTask, getSortedTags } from 'redux/utils/component-helper'
 
 import { ICONS } from 'components/icons/icon-constants'
+import FollowerResponseButtons from '../common/follower-response-buttons'
 import TaskListTagItems from './task-list-tag-items'
 import FollowerIcon from '../common/follower-icon'
 
@@ -248,7 +252,7 @@ const TaskListItem = props => {
     return '#fff'
   }
 
-  // Background color of task item
+  // Margin-left of content task
   const contentMarginLeft = () => {
     if (isInboxList) {
       return '260px'
@@ -299,8 +303,10 @@ const TaskListItem = props => {
             duration: 1000,
           }} 
           archived={isArchivedList} />}
-          {isInboxList && <FollowerResponse>ACEPPTED</FollowerResponse>}
-          {isInboxList && <FollowerResponse rejected>REJECTED</FollowerResponse>}
+          {isInboxList && 
+          <FollowerResponse>
+            <FollowerResponseButtons />
+          </FollowerResponse>}
         <Content
           marginLeft={contentMarginLeft}
           followers={isFollowers}>
@@ -329,11 +335,7 @@ const TaskListItem = props => {
         </Content>
         {isFollowers &&
         <Followers>
-          <FollowerIcon status={followerStatus}/>
-        </Followers>}
-        {isInboxList &&
-        <Followers>
-          <FollowerIcon inbox/>
+          <FollowerIcon status={followerStatus} inbox={isInboxList} />
         </Followers>}
       </TaskItem>}
     </div>
@@ -394,8 +396,16 @@ export default DragSource(ItemTypes.TASK, taskSource, collectDragSource)(
       onHandleTagClicked: props => tag => props.onTagClick(tag),
       onHandleCompleteClicked: props => event => {
         event.stopPropagation()
+        // Data of assignee
+        const assignee = getAssigneeOfTask(props.task.followers)
+        const isFollowers = assignee !== null
+        const followerStatus = isFollowers ? assignee.status : 'new'
 
-        if (props.listType === 'archived') {
+        if (followerStatus === 'pending') {
+          toast.error(errorMessages.tasks.waitingResponse, {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: constants.NOTIFICATION_ERROR_DURATION,
+          })
           return
         }
 

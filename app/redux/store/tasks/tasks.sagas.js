@@ -382,15 +382,9 @@ export function* selectTask(action) {
 
     yield put(appStateActions.visibleMultiSelect())
   } else {
-
+    
     yield put(appStateActions.hideMultiSelect())
-
-    const archivedTasks = yield select(state => appStateSelectors.getArchivedTasksVisibility(state))
-    if (archivedTasks) {
-      yield put(appStateActions.setDetail('archive'))
-    } else {
-      yield put(appStateActions.setDetail('task'))
-    }
+    yield put(appStateActions.setDetail('task'))
   }
 }
 

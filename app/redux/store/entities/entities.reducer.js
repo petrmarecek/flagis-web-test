@@ -22,7 +22,7 @@ export default typeToReducer({
   },
 
   [TASKS.FETCH_INBOX]: {
-    FULFILLED: (state, action) => saveTasks(action.payload, state, true)
+    FULFILLED: (state, action) => saveTasks(action.payload, state)
   },
 
   [TASKS.FETCH_ARCHIVED]: {
@@ -299,7 +299,7 @@ function saveTree(payload, state) {
     .mergeIn(['tags'], tags)
 }
 
-function saveTasks(payload, state, isInbox = false) {
+function saveTasks(payload, state) {
   const rawTasks = payload.entities.tasks || {}
   const rawTags = payload.entities.tags || {}
   const rawFollowers = payload.entities.followers || {}
@@ -308,10 +308,9 @@ function saveTasks(payload, state, isInbox = false) {
   const followers = convertToImmutable(rawFollowers, records.Follower)
   const tags = convertToImmutable(rawTags, records.Tag)
   const tasks = convertToImmutable(rawTasks, records.Task)
-  const type = isInbox ? 'inbox' : 'tasks'
 
   return state
-    .mergeIn([type], tasks)
+    .mergeIn(['tasks'], tasks)
     .mergeIn(['tags'], tags)
     .mergeIn(['followers'], followers)
     .mergeIn(['contacts'], contacts)

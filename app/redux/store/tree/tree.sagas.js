@@ -17,6 +17,7 @@ import * as appStateActions from 'redux/store/app-state/app-state.actions'
 import * as taskActions from 'redux/store/tasks/tasks.actions'
 import * as tagActions from 'redux/store/tags/tags.actions'
 import * as treeActions from 'redux/store/tree/tree.actions'
+import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'
 import * as authSelectors from 'redux/store/auth/auth.selectors'
 import * as tagSelectors from 'redux/store/tags/tags.selectors'
 import * as treeSelectors from 'redux/store/tree/tree.selectors'
@@ -125,6 +126,11 @@ export function* createTreeItem(action) {
 
 export function* selectPath(action) {
   yield put(taskActions.deselectTasks())
+
+  const isInboxTasks = yield select(state => appStateSelectors.getInboxTasksVisibility(state))
+  if (isInboxTasks) {
+    yield put(appStateActions.hideInboxTasks())
+  }
 
   const location = yield select(state => routingSelectors.getRoutingPathname(state))
   if (location !== '/user/tasks') {

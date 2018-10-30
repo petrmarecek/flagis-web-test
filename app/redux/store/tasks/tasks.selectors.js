@@ -6,13 +6,11 @@ import intersection from 'lodash/intersection'
 
 import {
   getTaskDetail,
-  getTaskArchiveDetail,
   getArchivedTasksVisibility,
   getInboxTasksVisibility
 } from '../app-state/app-state.selectors'
 import {
   getEntitiesTasks,
-  getEntitiesInbox,
   getEntitiesTags,
   getEntitiesFollowers,
   getEntitiesContacts
@@ -58,7 +56,7 @@ function filterByDateRange(range, tasks) {
 /**
  * Loads task entities for given task IDs
  * @param {Array} ids Array of tasks
- * @param {Object} data Object of tasksItems, tasksMenu, entitiesTasks, entitiesTags, activeTagsIds
+ * @param {Object} data Object
  * @returns {Array} array of tasks
  */
 
@@ -191,7 +189,7 @@ function loadTasks(ids, data) {
 /**
  * Loads task entities for given task IDs (only archived tasks)
  * @param {Array} ids Array of tasks
- * @param {Object} data Object of archivedTasksItems, tasksMenu, entitiesTasks, entitiesTags, activeTagsIds
+ * @param {Object} data Object
  * @returns {Array} array of tasks
  */
 
@@ -244,6 +242,37 @@ function loadArchiveTasks(ids, data) {
   }
 
   return tasks
+}
+
+ /**
+ * Loads task entities for given task IDs (only inbox tasks)
+ * @param {Array} ids Array of tasks
+ * @param {Object} data Object
+ * @returns {Array} array of tasks
+ */
+
+function loadInboxTasks(ids, data) {
+  const {
+    entitiesTasks,
+    entitiesTags,
+    entitiesFollowers,
+    entitiesContacts,
+  } = data
+
+  return ids.map(taskId => {
+    const task = entitiesTasks.get(taskId)
+    const tags = task.tags.map(tagId => entitiesTags.get(tagId))
+    const followers = task.followers.map(followerId => {
+      const follower = entitiesFollowers.get(followerId)
+      const profile = entitiesContacts.get(follower.userId)
+
+      return follower.set('profile', profile)
+    })
+
+    return task
+      .set('tags', tags)
+      .set('followers', followers)
+  })
 }
 
 /**
@@ -299,6 +328,7 @@ const getInboxTasksIsFetching = state => state.getIn(['tasks', 'inbox', 'isFetch
 export const getTimeLine = state => state.getIn(['tasks', 'timeLine'])
 export const getTasksItems = state => state.getIn(['tasks', 'items'])
 export const getArchivedTasksItems = state => state.getIn(['tasks', 'archived', 'items'])
+export const getInboxTasksItems = state => state.getIn(['tasks', 'inbox', 'items'])
 export const getTaskTags = (state, taskId) => state.getIn(['entities', 'tasks', taskId, 'tags'])
 export const getCompletedTasksItems = state => state.getIn(['tasks', 'completed'])
 export const getSelectionTasks = state => state.getIn(['tasks', 'selection'])
@@ -311,12 +341,12 @@ export const getTasks = createSelector(
   getArchivedTasksIsFetching,
   getArchivedTasksItems,
   getTasksIsFetching,
-  getInboxTasksIsFetching,
   getTasksItems,
+  getInboxTasksIsFetching,
+  getInboxTasksItems,
   getTasksMenu,
   getTimeLine,
   getEntitiesTasks,
-  getEntitiesInbox,
   getEntitiesTags,
   getEntitiesFollowers,
   getEntitiesContacts,
@@ -326,12 +356,12 @@ export const getTasks = createSelector(
    archivedTasksIsFetching,
    archivedTasksItems,
    tasksIsFetching,
-   inboxTasksIsFetching,
    tasksItems,
+   inboxTasksIsFetching,
+   InboxTasksItems,
    tasksMenu,
    timeLine,
    entitiesTasks,
-   entitiesInbox,
    entitiesTags,
    entitiesFollowers,
    entitiesContacts,
@@ -360,7 +390,7 @@ export const getTasks = createSelector(
     if (isInboxTasksVisible) {
       return ({
         isFetching: inboxTasksIsFetching,
-        items: entitiesInbox.toArray(),
+        items: loadInboxTasks(InboxTasksItems.toArray(), data),
         type: 'inbox',
       })
     }
@@ -560,10 +590,11 @@ export const getCurrentTask = createSelector(
 
 export const getNextTask = createSelector(
   getTaskDetail,
-  getTaskArchiveDetail,
   getSelectionTasks,
   getArchivedTasksVisibility,
   getArchivedTasksItems,
+  getInboxTasksVisibility,
+  getInboxTasksItems,
   getTasksItems,
   getTasksMenu,
   getTimeLine,
@@ -573,10 +604,11 @@ export const getNextTask = createSelector(
   getEntitiesContacts,
   getActiveTagsIds,
   (isTaskDetail,
-   isTaskArchiveDetail,
    selectionTasks,
    isArchivedTasksVisible,
    archivedTasksItems,
+   isInboxTasksVisible,
+   InboxTasksItems,
    tasksItems,
    tasksMenu,
    timeLine,
@@ -585,6 +617,9 @@ export const getNextTask = createSelector(
    entitiesFollowers,
    entitiesContacts,
    activeTagsIds) => {
+    if (!isTaskDetail) {
+      return null
+    }
 
     const selectedTaskId = getSelectedTaskId(selectionTasks)
     if (!selectedTaskId) {
@@ -606,6 +641,11 @@ export const getNextTask = createSelector(
     typeTask = List(typeTask.map(task => task.id))
     if (isArchivedTasksVisible) {
       typeTask = List(loadArchiveTasks(archivedTasksItems.toArray(), data))
+      typeTask = List(typeTask.map(task => task.id))
+    }
+
+    if (isInboxTasksVisible) {
+      typeTask = List(loadInboxTasks(InboxTasksItems.toArray(), data))
       typeTask = List(typeTask.map(task => task.id))
     }
 
@@ -631,10 +671,11 @@ export const getNextTask = createSelector(
 
 export const getPreviousTask = createSelector(
   getTaskDetail,
-  getTaskArchiveDetail,
   getSelectionTasks,
   getArchivedTasksVisibility,
   getArchivedTasksItems,
+  getInboxTasksVisibility,
+  getInboxTasksItems,
   getTasksItems,
   getTasksMenu,
   getTimeLine,
@@ -644,10 +685,11 @@ export const getPreviousTask = createSelector(
   getEntitiesContacts,
   getActiveTagsIds,
   (isTaskDetail,
-   isTaskArchiveDetail,
    selectionTasks,
    isArchivedTasksVisible,
    archivedTasksItems,
+   isInboxTasksVisible,
+   InboxTasksItems,
    tasksItems,
    tasksMenu,
    timeLine,
@@ -656,7 +698,7 @@ export const getPreviousTask = createSelector(
    entitiesFollowers,
    entitiesContacts,
    activeTagsIds) => {
-    if (!isTaskDetail && !isTaskArchiveDetail) {
+    if (!isTaskDetail) {
       return null
     }
 
@@ -680,6 +722,11 @@ export const getPreviousTask = createSelector(
     typeTask = List(typeTask.map(task => task.id))
     if (isArchivedTasksVisible) {
       typeTask = List(loadArchiveTasks(archivedTasksItems.toArray(), data))
+      typeTask = List(typeTask.map(task => task.id))
+    }
+
+    if (isInboxTasksVisible) {
+      typeTask = List(loadInboxTasks(InboxTasksItems.toArray(), data))
       typeTask = List(typeTask.map(task => task.id))
     }
 
