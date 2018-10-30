@@ -277,7 +277,7 @@ const TaskDetail = props => {
                     dataType="contacts"
                     location="taskDetailContacts"
                     placeholder="Add contact"
-                    selectedItems={{ contacts: isFollowers ? followers.map(follower => follower.userId) : null }}
+                    selectedItems={{ contacts: isFollowers ? followers.map(follower => follower.profile) : null }}
                     parentId={id}
                     onItemDelete={onHandleFollowerDelete}
                     isWithoutInput={isFollowers} />}
