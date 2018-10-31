@@ -17,36 +17,6 @@ export function* createFollower(action) {
   }
 }
 
-export function* sendTaskToFollowers(action) {
-  try {
-    const { taskId } = action.payload
-    yield call(api.followers.send, taskId)
-
-  } catch(err) {
-    console.error(err)
-  }
-}
-
-export function* followerAcceptTask(action) {
-  try {
-    const { taskId } = action.payload
-    yield call(api.followers.accept, taskId)
-
-  } catch(err) {
-    console.error(err)
-  }
-}
-
-export function* followerRejectTask(action) {
-  try {
-    const { taskId } = action.payload
-    yield call(api.followers.reject, taskId)
-
-  } catch(err) {
-    console.error(err)
-  }
-}
-
 export function* deleteFollower(action) {
   try {
     const { taskId, userId } = action.payload

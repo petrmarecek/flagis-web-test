@@ -5,8 +5,8 @@ import constants from '../../utils/constants'
 import Icon from '../icons/icon'
 import { ICONS } from '../icons/icon-constants'
 
-const FollowerIcon = ({ status, scale, inbox }) => {
-  const followerStatus = inbox ? 'new' : status
+const FollowerIcon = ({ status, scale, defaultIcon }) => {
+  const followerStatus = defaultIcon ? 'new' : status
   const width = followerStatus === 'new'
     ? Number(constants.NEW_FOLLOWER_ICON_WIDTH * scale)
     : Number(constants.FOLLOWER_ICON_WIDTH * scale)
@@ -38,8 +38,8 @@ FollowerIcon.defaultProps = {
 
 FollowerIcon.propTypes = {
   status: PropTypes.string,
+  defaultIcon: PropTypes.bool,
   scale: PropTypes.number,
-  inbox: PropTypes.bool,
 }
 
 export default FollowerIcon

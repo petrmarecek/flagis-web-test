@@ -137,6 +137,10 @@ export default typeToReducer({
     .updateIn(['completed'], list => list.filter(taskId => taskId !== action.payload.taskId))
     .updateIn(['items'], list => list.filter(taskId => taskId !== action.payload.taskId)),
 
+  [TASKS.ACCEPT]: (state, action) => state
+    .updateIn(['inbox', 'items'], list => list.filter(taskId => taskId !== action.payload.taskId))
+    .updateIn(['selection'], list => list.filter(taskId => taskId !== action.payload.taskId))
+    .updateIn(['items'], list => list.push(action.payload.taskId)),
 
   [AUTH.LOGOUT]: () => new TaskStore(),
 
@@ -158,9 +162,9 @@ function completedTasks(tasks) {
 }
 
 function updateTasksListsFromFirestore(state, action) {
-  console.log(action.payload)
   const { entities, result } = action.payload
   const { id, isInbox, isCompleted, isArchived, isTrashed } = entities.tasks[result]
+  console.log(isInbox)
 
   let newItems = state.getIn(['items'])
   let newCompleted = state.getIn(['completed'])

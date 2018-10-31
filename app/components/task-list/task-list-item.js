@@ -192,6 +192,7 @@ function collectDropTarget(connect, monitor) {
 const TaskListItem = props => {
 
   const {
+    userId,
     task,
     isSelected,
     isDragging,
@@ -204,6 +205,8 @@ const TaskListItem = props => {
     onHandleTagClicked,
     onHandleCompleteClicked,
     onHandleArchiveClicked,
+    onHandleAcceptClicked,
+    onHandleRejectClicked,
     connectDragSource,
     connectDropTarget,
   } = props
@@ -211,6 +214,7 @@ const TaskListItem = props => {
   // Conditions
   const isArchivedList = listType === 'archived'
   const isInboxList = listType === 'inbox'
+  const isOwner = task.createdById === userId
   const isCompletedMainList = task.isCompleted && !isArchivedList
   const isDescription = task.description !== ''
 
@@ -237,6 +241,10 @@ const TaskListItem = props => {
 
   // Background color of task item
   const backgroundColor = () => {
+    if (isOwner && (followerStatus === 'accepted')) {
+      return '#ecfff7'
+    }
+
     if (isSelected) {
       return '#ffffd7'
     }
@@ -305,7 +313,9 @@ const TaskListItem = props => {
           archived={isArchivedList} />}
           {isInboxList && 
           <FollowerResponse>
-            <FollowerResponseButtons />
+            <FollowerResponseButtons
+              acceptClicked={onHandleAcceptClicked}
+              rejectClicked={onHandleRejectClicked} />
           </FollowerResponse>}
         <Content
           marginLeft={contentMarginLeft}
@@ -333,9 +343,9 @@ const TaskListItem = props => {
               description={isDescription}>{dueDateFormat}</DueDate>
           </DescriptionDueDate>
         </Content>
-        {isFollowers &&
+        {isFollowers && (followerStatus !== 'new') &&
         <Followers>
-          <FollowerIcon status={followerStatus} inbox={isInboxList} />
+          <FollowerIcon status={followerStatus} defaultIcon={isInboxList || !isOwner} />
         </Followers>}
       </TaskItem>}
     </div>
@@ -344,6 +354,7 @@ const TaskListItem = props => {
 
 TaskItem.propTypes = {
   // Data
+  userId: PropTypes.string,
   task: PropTypes.object,
   noTaskFound: PropTypes.bool,
   listType: PropTypes.string,
@@ -362,10 +373,14 @@ TaskItem.propTypes = {
   onTagClick: PropTypes.func,
   setArchiveTasks: PropTypes.func,
   cancelArchiveTasks: PropTypes.func,
+  acceptTask: PropTypes.func,
+  rejectTask: PropTypes.func,
   onHandleClicked: PropTypes.func,
   onHandleTagClicked: PropTypes.func,
   onHandleCompleteClicked: PropTypes.func,
   onHandleArchiveClicked: PropTypes.func,
+  onHandleAcceptClicked: PropTypes.func,
+  onHandleRejectClicked: PropTypes.func,
 
   // Drag and Drop
   connectDropTarget: PropTypes.func,
@@ -420,6 +435,26 @@ export default DragSource(ItemTypes.TASK, taskSource, collectDragSource)(
         }
 
         props.setArchiveTasks(props.task.id)
+      },
+      onHandleAcceptClicked: props => () => {
+        const { id, followers } = props.task
+        const assignee = getAssigneeOfTask(followers)
+        const data = {
+          taskId: id,
+          followerId: assignee.id,
+        }
+    
+        props.acceptTask(data)
+      },
+      onHandleRejectClicked: props => () => {
+        const { id, followers } = props.task
+        const assignee = getAssigneeOfTask(followers)
+        const data = {
+          taskId: id,
+          followerId: assignee.id,
+        }
+    
+        props.rejectTask(data)
       },
     }),
     shouldUpdate(checkPropsChange)

@@ -20,6 +20,7 @@ import schema from 'redux/data/schema'
 import search from 'redux/services/search'
 import firebase from 'redux/utils/firebase'
 import dateUtil from 'redux/utils/date'
+import { getAssigneeOfTask } from 'redux/utils/component-helper'
 
 import { toast } from 'react-toastify'
 import { successMessages } from 'utils/messages'
@@ -27,19 +28,25 @@ import constants from 'utils/constants'
 
 const TASKS = taskActions.TASKS
 
-function* saveChangeFromFirestore(change, userId, isInboxTask) {
+function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
   const { FULFILLED } = createLoadActions(TASKS.FIREBASE)
   const task = change.doc.data()
 
   // Prepare data
-  task.isInbox = isInboxTask
   task.tags = task.tags[userId]
-  const normalizeData = normalize(task, schema.task)
   const storeItems = yield select(state => taskSelectors.getTasksItems(state))
   const storeArchivedItems = yield select(state => taskSelectors.getArchivedTasksItems(state))
   const storeInboxItems = yield select(state => taskSelectors.getInboxTasksItems(state))
   const isDetailVisible = yield select(state => appStateSelectors.getDetail(state))
   const { id, isArchived, isTrashed } = task
+
+  // Set isInbox property in task entitie
+  if (isCollaboratedTask) {
+    const { followers } = task
+    const assignee = getAssigneeOfTask(Object.values(followers))
+    const isInboxTask = assignee.status === 'pending'
+    task.isInbox = isInboxTask
+  }
 
   // Return task from archive
   if (!isArchived && !isTrashed && !storeItems.includes(id) && storeArchivedItems.includes(id)) {
@@ -110,6 +117,7 @@ function* saveChangeFromFirestore(change, userId, isInboxTask) {
   }
 
   // Save changes to store
+  const normalizeData = normalize(task, schema.task)
   yield put({type: FULFILLED, payload: normalizeData})
 
   // Update tag relations in store
@@ -117,10 +125,10 @@ function* saveChangeFromFirestore(change, userId, isInboxTask) {
   yield put({ type: TASKS.FIREBASE_TAGS_RELATIONS, payload: entitiesTasks })
 }
 
-function* syncTasksChannel(channel, userId, isInboxTask) {
+function* syncTasksChannel(channel, userId, isCollaboratedTask) {
   while (true) { // eslint-disable-line
     const snapshot = yield take(channel)
-    yield all(snapshot.docChanges().map(change => call(saveChangeFromFirestore, change, userId, isInboxTask)))
+    yield all(snapshot.docChanges().map(change => call(saveChangeFromFirestore, change, userId, isCollaboratedTask)))
   }
 }
 
@@ -562,6 +570,24 @@ export function* removeTaskFollower(action) {
   } catch(err) {
     console.error(err)
   }
+}
+
+export function* sendTask(action) {
+  const { taskId } = action.payload
+  const { send } = api.followers
+
+  yield call(send, taskId)
+}
+
+export function* acceptTask(action) {
+  const { taskId } = action.payload
+  const { accept } = api.followers
+
+  yield call(accept, taskId)
+}
+
+export function rejectTask() {
+  // TODO: call API
 }
 
 // ------ HELPER FUNCTIONS ----------------------------------------------------

@@ -55,6 +55,8 @@ export const successMessages = {
   tasks: {
     archive: 'Task has been archived.',
     cancelArchive: 'Task has been returned to the main list as completed task.',
+    accepted: 'Task has been moved to the main list.',
+    rejected: 'Task has been returned to the owner.',
   },
 
   multiSelect: {

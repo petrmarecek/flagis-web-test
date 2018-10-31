@@ -9,6 +9,7 @@ export default class TaskList extends PureComponent {
 
   static propTypes = {
     // Data
+    userId: PropTypes.string,
     tasks: PropTypes.array,
     listType: PropTypes.string,
     selectedTasks: PropTypes.object,
@@ -27,6 +28,8 @@ export default class TaskList extends PureComponent {
     onTagClick: PropTypes.func,
     setArchiveTasks: PropTypes.func,
     cancelArchiveTasks: PropTypes.func,
+    acceptTask: PropTypes.func,
+    rejectTask: PropTypes.func,
   }
 
   isSelected(taskId) {
@@ -83,6 +86,7 @@ export default class TaskList extends PureComponent {
           tasks.map((task, i) => (
             <TaskListItem
               key={task.id}
+              userId={this.props.userId}
               task={task}
               index={i}
               order={task.order}
@@ -109,6 +113,7 @@ export default class TaskList extends PureComponent {
           tasks.map((task, i) => (
             <TaskListItem
               key={task.id}
+              userId={this.props.userId}
               task={task}
               index={i}
               order={task.order}
@@ -135,6 +140,7 @@ export default class TaskList extends PureComponent {
             <TaskListItem
               key={task.id}
               task={task}
+              userId={this.props.userId}
               index={i}
               order={task.order}
               listType={this.props.listType}
@@ -148,6 +154,8 @@ export default class TaskList extends PureComponent {
               timeLine={this.props.timeLine}
               sort={this.props.sort}
               setArchiveTasks={this.props.setArchiveTasks}
+              acceptTask={this.props.acceptTask}
+              rejectTask={this.props.rejectTask}
               section={section} 
               leftPanelWidth={this.props.leftPanelWidth}
               windowWidth={this.props.windowWidth} />

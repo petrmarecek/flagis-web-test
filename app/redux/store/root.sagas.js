@@ -62,6 +62,9 @@ export default function* root() {
     takeEvery(TASKS.SELECT, task.selectTask),
     takeEvery(TASKS.SELECT_ALL, task.selectAllTask),
     takeEvery(TASKS.DESELECT, task.deselectTasks),
+    takeEvery(TASKS.SEND, task.sendTask),
+    takeEvery(TASKS.ACCEPT, task.acceptTask),
+    takeEvery(TASKS.REJECT, task.rejectTask),
     takeEvery(TASKS.DELETE, task.deleteTask),
     takeEvery(TASKS.UNDO_DELETE, task.undoDeleteTask),
 
@@ -115,9 +118,6 @@ export default function* root() {
 
     // followers
     takeEvery(FOLLOWERS.CREATE, followers.createFollower),
-    takeEvery(FOLLOWERS.SEND_TASK, followers.sendTaskToFollowers),
-    takeEvery(FOLLOWERS.ACCEPT_TASK, followers.followerAcceptTask),
-    takeEvery(FOLLOWERS.REJECT_TASK, followers.followerRejectTask),
     takeEvery(FOLLOWERS.DELETE, followers.deleteFollower),
   ])
 }

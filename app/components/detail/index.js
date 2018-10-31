@@ -27,6 +27,9 @@ import {
   removeTaskFollower,
   setDate,
   setDescription,
+  sendTask,
+  acceptTask,
+  rejectTask,
 } from 'redux/store/tasks/tasks.actions'
 import {
   fetchAttachment,
@@ -48,7 +51,7 @@ import {
   updateContact,
   sendInvitationContact
 } from 'redux/store/contacts/contacts.actions'
-import { sendTaskToFollowers } from 'redux/store/followers/followers.actions'
+import { getUserId } from 'redux/store/auth/auth.selectors'
 import { getDetail, getInboxTasksVisibility } from 'redux/store/app-state/app-state.selectors'
 import {
   getTasksItems,
@@ -89,6 +92,7 @@ const Detail = props => {
     detail,
     isInboxVisible,
 
+    userId,
     task,
     attachments,
     comments,
@@ -96,6 +100,8 @@ const Detail = props => {
     onHandleTaskSetIncomplete,
     onHandleTaskArchive,
     onHandleTaskSend,
+    onHandleTaskAccept,
+    onHandleTaskReject,
     onHandleTaskSubjectUpdate,
     onHandleTaskTagDeleted,
     onHandleTaskFollowerDeleted,
@@ -130,6 +136,7 @@ const Detail = props => {
     <DetailStyle>
       {(detail.task || detail.archive) &&
       <TaskDetail
+        userId={userId}
         task={task}
         animation={detail.animation}
         attachments={attachments}
@@ -142,6 +149,8 @@ const Detail = props => {
         onHandleTaskSetComplete={onHandleTaskSetComplete}
         onHandleTaskArchive={onHandleTaskArchive}
         onHandleTaskSend={onHandleTaskSend}
+        onHandleTaskAccept={onHandleTaskAccept}
+        onHandleTaskReject={onHandleTaskReject}
         onHandleTaskSetIncomplete={onHandleTaskSetIncomplete}
         onHandleTaskSubjectUpdate={onHandleTaskSubjectUpdate}
         onHandleTaskTagDeleted={onHandleTaskTagDeleted}
@@ -186,6 +195,7 @@ Detail.propTypes = {
   detail: PropTypes.object,
   isInboxVisible: PropTypes.bool,
 
+  userId: PropTypes.string,
   task: PropTypes.object,
   attachments: PropTypes.object,
   comments: PropTypes.object,
@@ -193,6 +203,8 @@ Detail.propTypes = {
   onHandleTaskSetIncomplete: PropTypes.func,
   onHandleTaskArchive: PropTypes.func,
   onHandleTaskSend: PropTypes.func,
+  onHandleTaskAccept: PropTypes.func,
+  onHandleTaskReject: PropTypes.func,
   onHandleTaskSubjectUpdate: PropTypes.func,
   onHandleTaskTagDeleted: PropTypes.func,
   onHandleTaskFollowerDeleted: PropTypes.func,
@@ -229,6 +241,7 @@ const mapStateToProps = state => ({
   detail: getDetail(state),
   isInboxVisible: getInboxTasksVisibility(state),
 
+  userId: getUserId(state),
   task: getCurrentTask(state),
   comments: getComments(state),
   attachments: getAttachments(state),
@@ -268,6 +281,9 @@ const mapDispatchToProps = {
   deleteAttachment,
   fetchComment,
   createComment,
+  sendTask,
+  acceptTask,
+  rejectTask,
 
   selectTag,
   deselectTags,
@@ -277,8 +293,6 @@ const mapDispatchToProps = {
   deselectContacts,
   updateContact,
   sendInvitationContact,
-
-  sendTaskToFollowers,
 
   deselectDetail,
   showDialog,
@@ -372,7 +386,23 @@ export default compose(
     },
     onHandleTaskSend: props => data => {
       props.setAnimation()
-      props.sendTaskToFollowers(data.taskId, data.followerId)
+      props.sendTask(data.taskId, data.followerId)
+    },
+    onHandleTaskAccept: props => data => {
+      props.deselectTasks()
+      toast.success(successMessages.tasks.accepted, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+      })
+      props.acceptTask(data.taskId, data.followerId)
+    },
+    onHandleTaskReject: props => data => {
+      props.deselectTasks()
+      toast.success(successMessages.tasks.rejected, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+      })
+      props.rejectTask(data.taskId, data.followerId)
     },
     onHandleTaskSubjectUpdate: props => data => props.setSubject(data.task, data.subject),
     onHandleTaskTagDeleted: props => data => props.removeTaskTag(data.task.id, data.tagInfo),

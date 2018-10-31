@@ -11,7 +11,7 @@ import {
   getLeftPanel,
   getWindow
 } from 'redux/store/app-state/app-state.selectors'
-import { getNewRefreshToken } from 'redux/store/auth/auth.selectors'
+import { getNewRefreshToken, getUserId } from 'redux/store/auth/auth.selectors'
 import { getEntitiesTasks } from 'redux/store/entities/entities.selectors'
 import { selectActiveTags } from 'redux/store/tags/tags.actions'
 import { getActiveTagsIds } from 'redux/store/tags/tags.selectors'
@@ -26,6 +26,8 @@ import {
   deselectTasks,
   setArchiveTasks,
   cancelArchiveTasks,
+  acceptTask,
+  rejectTask,
 } from 'redux/store/tasks/tasks.actions'
 import {
   getTasksItems,
@@ -55,6 +57,7 @@ class TaskListContainer extends PureComponent {
 
   static propTypes = {
     // Data
+    userId: PropTypes.string,
     tasks: PropTypes.object,
     isNewRefreshToken: PropTypes.bool,
     tasksId: PropTypes.object,
@@ -81,6 +84,8 @@ class TaskListContainer extends PureComponent {
     deselectTasks: PropTypes.func,
     setArchiveTasks: PropTypes.func,
     cancelArchiveTasks: PropTypes.func,
+    acceptTask: PropTypes.func,
+    rejectTask: PropTypes.func,
   }
 
   state = {
@@ -245,6 +250,22 @@ class TaskListContainer extends PureComponent {
     })
   }
 
+  handleAcceptTask = data => {
+    toast.success(successMessages.tasks.accepted, {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+    })
+    this.props.acceptTask(data.taskId, data.followerId)
+  }
+
+  handleRejectTask = data => {
+    toast.success(successMessages.tasks.rejected, {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+    })
+    this.props.rejectTask(data.taskId, data.followerId)
+  }
+
   getTaskList() {
     const offset = this.props.isVisibleArchivedTasks
       ? 154
@@ -264,6 +285,7 @@ class TaskListContainer extends PureComponent {
         <div className="empty-list">No task found</div>}
         <ShadowScrollbar style={scrollStyle}>
           <TaskList
+            userId={this.props.userId}
             listType={this.props.tasks.type}
             tasks={this.props.tasks.items}
             selectedTags={this.props.selectedTags}
@@ -277,6 +299,8 @@ class TaskListContainer extends PureComponent {
             sort={this.props.sort}
             setArchiveTasks={this.handleSetArchiveTasks}
             cancelArchiveTasks={this.handleCancelArchiveTasks}
+            acceptTask={this.handleAcceptTask}
+            rejectTask={this.handleRejectTask}
             isVisibleArchivedTasks={this.props.isVisibleArchivedTasks}
             leftPanelWidth={this.props.leftPanelWidth}
             windowWidth={this.props.windowWidth} />
@@ -297,6 +321,7 @@ class TaskListContainer extends PureComponent {
 }
 
 const mapStateToProps = state => ({
+  userId: getUserId(state),
   tasks: getTasks(state),
   isNewRefreshToken: getNewRefreshToken(state),
   tasksId: getTasksItems(state),
@@ -324,6 +349,8 @@ const mapDispatchToProps = {
   deselectTasks,
   setArchiveTasks,
   cancelArchiveTasks,
+  acceptTask,
+  rejectTask,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TaskListContainer)

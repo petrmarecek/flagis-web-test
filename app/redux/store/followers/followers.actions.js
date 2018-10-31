@@ -24,30 +24,6 @@ export const addFollower = follower => ({
   meta: { schema: schema.follower }
 })
 
-export const sendTaskToFollowers = (taskId, followerId) => ({
-  type: FOLLOWERS.SEND_TASK,
-  payload: {
-    taskId,
-    followerId
-  },
-})
-
-export const followerAcceptTask = (taskId, followerId) => ({
-  type: FOLLOWERS.ACCEPT_TASK,
-  payload: {
-    taskId,
-    followerId
-  },
-})
-
-export const followerRejectTask = (taskId, followerId) => ({
-  type: FOLLOWERS.REJECT_TASK,
-  payload: {
-    taskId,
-    followerId
-  },
-})
-
 export const deleteFollower = (taskId, userId, followerId) => ({
   type: FOLLOWERS.DELETE,
   payload: {

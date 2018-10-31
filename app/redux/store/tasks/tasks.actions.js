@@ -38,6 +38,9 @@ export const TASKS = {
   UNDO_DELETE: 'UNDO_TASK/DELETE',
   SET_FIELD: 'TASK/SET_FIELD',
   REMOVE_FROM_LISTS: 'TASK/REMOVE_FROM_LISTS',
+  SEND: 'TASK/SEND',
+  ACCEPT: 'TASK/ACCEPT',
+  REJECT: 'TASK/REJECT',
 }
 
 export const fetchTasks = () => ({
@@ -263,9 +266,30 @@ export const deleteTask = (taskDeleteList, taskList, taskCompleteList, taskArchi
 
 export const removeTaskFromLists = taskId => ({
   type: TASKS.REMOVE_FROM_LISTS,
+  payload: { taskId }
+})
+
+export const sendTask = (taskId, followerId) => ({
+  type: TASKS.SEND,
   payload: {
-    taskId
+    taskId,
+    followerId
   }
 })
 
+export const acceptTask = (taskId, followerId) => ({
+  type: TASKS.ACCEPT,
+  payload: {
+    taskId,
+    followerId
+  }
+})
+
+export const rejectTask = (taskId, followerId) => ({
+  type: TASKS.REJECT,
+  payload: {
+    taskId,
+    followerId
+  }
+})
 

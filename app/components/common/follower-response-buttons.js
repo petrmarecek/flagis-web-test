@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { withHandlers } from 'recompose'
 
 import styled from 'styled-components'
+import { transition } from 'components/styled-components-mixins'
 
 const Container = styled.div`
   display: flex;
@@ -22,23 +23,34 @@ const Button = styled.button`
   font-style: italic;
   color: #fff;
   border: none;
+
+  :hover {
+    ${transition('500ms')}
+    background-color: #293034;
+  }
 `;
 
-const FollowerResponseButtons = ({ onHandleAcceptedClick, onHandleRejectedClick }) => (
+const FollowerResponseButtons = ({ onHandleAcceptClicked, onHandleRejectClicked }) => (
   <Container>
-    <Button onClick={onHandleAcceptedClick}>ACCEPTED</Button>
-    <Button onClick={onHandleRejectedClick} rejected>REJECTED</Button>
+    <Button onClick={onHandleAcceptClicked}>ACCEPT</Button>
+    <Button onClick={onHandleRejectClicked} rejected>REJECT</Button>
   </Container>
 )
 
 FollowerResponseButtons.propTypes = {
-  onAcceptedClick: PropTypes.func,
-  onRejectedClick: PropTypes.func,
-  onHandleAcceptedClick: PropTypes.func,
-  onHandleRejectedClick: PropTypes.func,
+  acceptClicked: PropTypes.func,
+  rejectClicked: PropTypes.func,
+  onHandleAcceptClicked: PropTypes.func,
+  onHandleRejectClicked: PropTypes.func,
 }
 
 export default withHandlers({
-  onHandleAcceptedClick: props => () => props.onAcceptedClick(),
-  onHandleRejectedClick: props => () => props.onRejectedClick()
+  onHandleAcceptClicked: props => event => {
+    event.stopPropagation()
+    props.acceptClicked()
+  },
+  onHandleRejectClicked: props => event => {
+    event.stopPropagation()
+    props.rejectClicked()
+  }
 })(FollowerResponseButtons)

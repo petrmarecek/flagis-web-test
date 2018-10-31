@@ -59,6 +59,7 @@ import {
 const TaskDetail = props => {
 
   const {
+    userId,
     task,
     attachments,
     comments,
@@ -67,6 +68,8 @@ const TaskDetail = props => {
     onHandleComplete,
     onHandleArchive,
     onHandleSend,
+    onHandleAccept,
+    onHandleReject,
     onHandleSubjectUpdate,
     onHandleTagDelete,
     onHandleFollowerDelete,
@@ -107,6 +110,7 @@ const TaskDetail = props => {
     isTags: task.tags.size !== 0,
     isFollowers: assignee !== null,
     isImportant: task.isImportant,
+    isOwner: task.createdById === userId,
   })
 
   const {
@@ -123,7 +127,8 @@ const TaskDetail = props => {
     isArchived,
     isTags,
     isFollowers,
-    isImportant
+    isImportant,
+    isOwner
   } = getBindingData
 
   // Margin-left of subject
@@ -167,7 +172,9 @@ const TaskDetail = props => {
             <DetailSubject>
               {isInboxVisible &&
               <DetailSubjectTasFollowerResponse>
-                <FollowerResponseButtons />
+                <FollowerResponseButtons 
+                  acceptClicked={onHandleAccept}
+                  rejectClicked={onHandleReject} />
               </DetailSubjectTasFollowerResponse>}
               {!isArchived && !isInboxVisible && isFollowers &&
               <FollowerStatus
@@ -254,7 +261,7 @@ const TaskDetail = props => {
           </DetailContentDeleteIcon>}
           {isInboxVisible &&
           <DetailContentDeleteIcon onClick={onHandleRemoveEventListener} >
-            <FollowerIcon inbox/>
+            <FollowerIcon defaultIcon/>
           </DetailContentDeleteIcon>}
         </DetailContentTop>
         <DetailContentCenter>
@@ -282,7 +289,7 @@ const TaskDetail = props => {
                     onItemDelete={onHandleFollowerDelete}
                     isWithoutInput={isFollowers} />}
                 </DetailContentAddContactContent>
-                {!isInboxVisible &&
+                {!isInboxVisible && isOwner && 
                 <DetailContentAddContactIcon>
                   <FollowerIcon status={followerStatus} scale={0.75}/>
                 </DetailContentAddContactIcon>}
@@ -399,6 +406,7 @@ const TaskDetail = props => {
 }
 
 TaskDetail.propTypes = {
+  userId: PropTypes.string,
   task: PropTypes.object,
   animation: PropTypes.bool,
   attachments: PropTypes.object,
@@ -410,7 +418,11 @@ TaskDetail.propTypes = {
   onHandleArchive: PropTypes.func,
   onHandleTaskArchive: PropTypes.func,
   onHandleSend: PropTypes.func,
+  onHandleAccept: PropTypes.func,
+  onHandleReject: PropTypes.func,
   onHandleTaskSend: PropTypes.func,
+  onHandleTaskAccept: PropTypes.func,
+  onHandleTaskReject: PropTypes.func,
   onHandleSubjectUpdate: PropTypes.func,
   onHandleTaskSubjectUpdate: PropTypes.func,
   onHandleTagDelete: PropTypes.func,
@@ -463,6 +475,26 @@ export default withHandlers({
     }
 
     props.onHandleTaskSend(data)
+  },
+  onHandleAccept: props => () => {
+    const { id, followers } = props.task
+    const assignee = getAssigneeOfTask(followers)
+    const data = {
+      taskId: id,
+      followerId: assignee.id,
+    }
+
+    props.onHandleTaskAccept(data)
+  },
+  onHandleReject: props => () => {
+    const { id, followers } = props.task
+    const assignee = getAssigneeOfTask(followers)
+    const data = {
+      taskId: id,
+      followerId: assignee.id,
+    }
+
+    props.onHandleTaskReject(data)
   },
   onHandleSubjectUpdate: props => event => {
     const subject = event.target.value

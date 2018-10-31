@@ -1,5 +1,6 @@
 import { Map, List } from 'immutable'
 import typeToReducer from 'type-to-reducer'
+import dateUtil from 'redux/utils/date'
 
 import { AUTH } from 'redux/store/auth/auth.actions'
 import { TASKS } from 'redux/store/tasks/tasks.actions'
@@ -88,6 +89,16 @@ export default typeToReducer({
   [TASKS.REMOVE_TASK_FOLLOWER]: (state, action) => state
     .updateIn(['tasks', action.payload.taskId, 'followers'],
       followersList => followersList.filter(followerId => followerId !== action.payload.followerId)),
+
+  [TASKS.SEND]: (state, action) =>
+    state.setIn(['followers', action.payload.followerId, 'status'], 'pending'),
+
+  [TASKS.ACCEPT]: (state, action) => state
+    .setIn(['tasks', action.payload.taskId, 'order'], dateUtil.getMilliseconds())
+    .setIn(['followers', action.payload.followerId, 'status'], 'accepted'),
+
+  [TASKS.REJECT]: (state, action) =>
+    state.setIn(['followers', action.payload.followerId, 'status'], 'rejected'),
 
   [TASKS.DELETE]: (state, action) => state
     .setIn(['tasks', action.payload.taskEntitiesList]),
@@ -240,15 +251,6 @@ export default typeToReducer({
   // ------ Followers ----------------------------------------------------------
 
   [FOLLOWERS.ADD]: (state, action) => saveFollowers(action.payload, state),
-
-  [FOLLOWERS.SEND_TASK]: (state, action) =>
-    state.setIn(['followers', action.payload.followerId, 'status'], 'pending'),
-
-  [FOLLOWERS.ACCEPT_TASK]: (state, action) =>
-    state.setIn(['followers', action.payload.followerId, 'status'], 'accepted'),
-
-  [FOLLOWERS.REJECT_TASK]: (state, action) =>
-    state.setIn(['followers', action.payload.followerId, 'status'], 'rejected'),
 
   [FOLLOWERS.DELETE]: (state, action) =>
     state.deleteIn(['followers', action.payload.followerId])
