@@ -22,7 +22,7 @@ import {
   DetailSubject,
   DetailSubjectTagColor,
   DetailSubjectTagContentEditable,
-  DetailContentDeleteIcon,
+  DetailContentIcon,
   DetailContentCenter,
   DetailContentTagColor,
   DetailTagColorSelector,
@@ -83,7 +83,7 @@ const TagDetail = props => {
               </span>
             </DetailSubject>
           </DetailContentSubject>
-          <DetailContentDeleteIcon onClick={onHandleRemoveEventListener}>
+          <DetailContentIcon onClick={onHandleRemoveEventListener}>
             <Icon
               icon={ICONS.TRASH}
               width={23}
@@ -91,7 +91,7 @@ const TagDetail = props => {
               scale={1}
               color={['#ff8181']}
               onClick={onHandleDelete}/>
-          </DetailContentDeleteIcon>
+          </DetailContentIcon>
         </DetailContentTop>
         <DetailContentCenter column>
           <DetailContentTagColor>

@@ -30,14 +30,15 @@ const Button = styled.button`
   }
 `;
 
-const FollowerResponseButtons = ({ onHandleAcceptClicked, onHandleRejectClicked }) => (
+const FollowerResponseButtons = ({ isAccepted, onHandleAcceptClicked, onHandleRejectClicked }) => (
   <Container>
-    <Button onClick={onHandleAcceptClicked}>ACCEPT</Button>
+    {!isAccepted && <Button onClick={onHandleAcceptClicked}>ACCEPT</Button>}
     <Button onClick={onHandleRejectClicked} rejected>REJECT</Button>
   </Container>
 )
 
 FollowerResponseButtons.propTypes = {
+  isAccepted: PropTypes.bool,
   acceptClicked: PropTypes.func,
   rejectClicked: PropTypes.func,
   onHandleAcceptClicked: PropTypes.func,

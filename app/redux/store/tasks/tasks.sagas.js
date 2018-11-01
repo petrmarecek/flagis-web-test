@@ -596,6 +596,11 @@ export function* acceptTask(action) {
 export function* rejectTask(action) {
   const { taskId } = action.payload
   const { reject } = api.followers
+  const isTaskDetail = yield select(state => appStateSelectors.getDetail(state).task)
+
+  if (isTaskDetail) {
+    yield put(appStateActions.deselectDetail('task'))
+  }
 
   yield call(reject, taskId)
 }

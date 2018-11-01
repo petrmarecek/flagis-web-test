@@ -11,7 +11,7 @@ import {
   DetailContentTop,
   DetailContentSubject,
   DetailSubject,
-  DetailContentDeleteIcon,
+  DetailContentIcon,
   DetailContentCenter,
   DetailContentProperties,
   DetailSubjectIconContact,
@@ -92,7 +92,7 @@ const ContactDetail = props => {
               </span>
             </DetailSubject>
           </DetailContentSubject>
-          <DetailContentDeleteIcon onClick={onHandleRemoveEventListener}>
+          <DetailContentIcon onClick={onHandleRemoveEventListener}>
             <Icon
               icon={ICONS.TRASH}
               width={23}
@@ -100,7 +100,7 @@ const ContactDetail = props => {
               scale={1}
               color={["#ff8181", "#ff8181", "#ff8181", "#ff8181"]}
               onClick={onHandleDelete} />
-          </DetailContentDeleteIcon>
+          </DetailContentIcon>
         </DetailContentTop>
 
         <DetailContentCenter>

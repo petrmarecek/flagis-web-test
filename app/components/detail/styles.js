@@ -105,7 +105,13 @@ const DetailContentTagAutocompleteTags = styled.ul`
   list-style-type: none;
 `;
 
-const DetailContentDeleteIcon = styled.div`
+const DetailContentButton = styled.div`
+  ${boxSizing('border-box')}
+  flex: 0 0 117px;
+  margin: 11px 0;
+`;
+
+const DetailContentIcon = styled.div`
   ${boxSizing('border-box')}
   pointer-events: auto;
   flex: 0 0 35px;
@@ -411,7 +417,7 @@ const DetailSubjectTaskArchived = styled(Icon)`
   margin: 0 5px;
 `;
 
-const DetailSubjectTasFollowerResponse = styled.div`
+const DetailSubjectTaskFollowerResponse = styled.div`
   position: absolute;
   top: 0;
   left: 0;
@@ -575,7 +581,8 @@ export {
   DetailSubject,
   DetailContentTagAutocomplete,
   DetailContentTagAutocompleteTags,
-  DetailContentDeleteIcon,
+  DetailContentButton,
+  DetailContentIcon,
   DetailContentCenter,
   DetailContentProperties,
   DetailContentOptions,
@@ -602,7 +609,7 @@ export {
 
   DetailSubjectTaskCompleted,
   DetailSubjectTaskArchived,
-  DetailSubjectTasFollowerResponse,
+  DetailSubjectTaskFollowerResponse,
   DetailSubjectTaskContentEditable,
   DetailContentDescriptionTask,
 

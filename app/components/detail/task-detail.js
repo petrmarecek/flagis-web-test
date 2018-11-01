@@ -28,11 +28,12 @@ import {
   DetailSubject,
   DetailSubjectTaskCompleted,
   DetailSubjectTaskArchived,
-  DetailSubjectTasFollowerResponse,
+  DetailSubjectTaskFollowerResponse,
   DetailSubjectTaskContentEditable,
   DetailContentTagAutocomplete,
   DetailContentTagAutocompleteTags,
-  DetailContentDeleteIcon,
+  DetailContentButton,
+  DetailContentIcon,
   DetailContentCenter,
   DetailContentProperties,
   DetailContentOptions,
@@ -141,7 +142,7 @@ const TaskDetail = props => {
       return '85px'
     }
 
-    if (isFollowers && !isArchived) {
+    if (isFollowers && !isArchived && followerStatus !== 'accepted') {
       if (followerStatus === 'pending') {
         return '190px'
       }
@@ -171,17 +172,17 @@ const TaskDetail = props => {
           <DetailContentSubject taskDetail>
             <DetailSubject>
               {isInboxVisible &&
-              <DetailSubjectTasFollowerResponse>
-                <FollowerResponseButtons 
+              <DetailSubjectTaskFollowerResponse>
+                <FollowerResponseButtons
                   acceptClicked={onHandleAccept}
                   rejectClicked={onHandleReject} />
-              </DetailSubjectTasFollowerResponse>}
-              {!isArchived && !isInboxVisible && isFollowers &&
+              </DetailSubjectTaskFollowerResponse>}
+              {!isArchived && !isInboxVisible && isFollowers && followerStatus !== 'accepted' &&
               <FollowerStatus
                 status={followerStatus}
                 animation={animation}
                 onSend={onHandleSend}/>}
-              {!isArchived && !isFollowers &&
+              {!isArchived && followerStatus === 'accepted' &&
               <DetailSubjectTaskCompleted
                 icon={ICONS.TASK_CHECKED}
                 color={isCompleted ? ['#c2fee5'] : ['#D7E3EC']}
@@ -249,8 +250,8 @@ const TaskDetail = props => {
               onItemDelete={onHandleTagDelete}
               isAllowUpdate />}
           </DetailContentTagAutocomplete>
-          {!isInboxVisible &&
-          <DetailContentDeleteIcon onClick={onHandleRemoveEventListener} >
+          {isOwner &&
+          <DetailContentIcon onClick={onHandleRemoveEventListener} >
             <Icon
               icon={ICONS.TRASH}
               width={23}
@@ -258,11 +259,18 @@ const TaskDetail = props => {
               scale={1}
               color={["#ff8181"]}
               onClick={onHandleDelete}/>
-          </DetailContentDeleteIcon>}
-          {isInboxVisible &&
-          <DetailContentDeleteIcon onClick={onHandleRemoveEventListener} >
+          </DetailContentIcon>}
+          {!isOwner &&
+          <DetailContentButton>
+            <FollowerResponseButtons
+              acceptClicked={onHandleAccept}
+              rejectClicked={onHandleReject}
+              isAccepted />
+          </DetailContentButton>}
+          {!isOwner &&
+          <DetailContentIcon onClick={onHandleRemoveEventListener} >
             <FollowerIcon defaultIcon/>
-          </DetailContentDeleteIcon>}
+          </DetailContentIcon>}
         </DetailContentTop>
         <DetailContentCenter>
           <DetailContentProperties>
