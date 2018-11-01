@@ -97,8 +97,9 @@ export default typeToReducer({
     .setIn(['tasks', action.payload.taskId, 'order'], dateUtil.getMilliseconds())
     .setIn(['followers', action.payload.followerId, 'status'], 'accepted'),
 
-  [TASKS.REJECT]: (state, action) =>
-    state.setIn(['followers', action.payload.followerId, 'status'], 'rejected'),
+  [TASKS.REJECT]: (state, action) => state
+    .deleteIn(['tasks', action.payload.taskId])
+    .deleteIn(['followers', action.payload.followerId]),
 
   [TASKS.DELETE]: (state, action) => state
     .setIn(['tasks', action.payload.taskEntitiesList]),

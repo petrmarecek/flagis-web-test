@@ -31,6 +31,7 @@ const TASKS = taskActions.TASKS
 function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
   const { FULFILLED } = createLoadActions(TASKS.FIREBASE)
   const task = change.doc.data()
+  const changeType = change.type
 
   // Prepare data
   task.tags = task.tags[userId]
@@ -41,11 +42,17 @@ function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
   const { id, isArchived, isTrashed } = task
 
   // Set isInbox property in task entitie
+  console.log(isCollaboratedTask)
   if (isCollaboratedTask) {
     const { followers } = task
     const assignee = getAssigneeOfTask(Object.values(followers))
-    const isInboxTask = assignee.status === 'pending'
-    task.isInbox = isInboxTask
+    const { status } = assignee
+
+    if (status === 'pending' && changeType === 'removed') {
+      return
+    }
+
+    task.isInbox = status === 'pending'
   }
 
   // Return task from archive
@@ -586,8 +593,11 @@ export function* acceptTask(action) {
   yield call(accept, taskId)
 }
 
-export function rejectTask() {
-  // TODO: call API
+export function* rejectTask(action) {
+  const { taskId } = action.payload
+  const { reject } = api.followers
+
+  yield call(reject, taskId)
 }
 
 // ------ HELPER FUNCTIONS ----------------------------------------------------
