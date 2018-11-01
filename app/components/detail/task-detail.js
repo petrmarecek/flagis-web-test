@@ -99,7 +99,7 @@ const TaskDetail = props => {
   const getBindingData = ({
     id: task.id,
     subject: task.subject,
-    followerStatus: assignee !== null ? assignee.status : 'new',
+    followerStatus: assignee !== null ? assignee.status : null,
     tags: task.tags,
     followers: task.followers,
     startDate: dateUtil.toMoment(task.startDate),
@@ -109,8 +109,8 @@ const TaskDetail = props => {
     isCompleted: task.isCompleted,
     isArchived: task.isArchived,
     isTags: task.tags.size !== 0,
-    isFollowers: assignee !== null,
     isImportant: task.isImportant,
+    isFollowers: assignee !== null,
     isOwner: task.createdById === userId,
   })
 
@@ -177,12 +177,12 @@ const TaskDetail = props => {
                   acceptClicked={onHandleAccept}
                   rejectClicked={onHandleReject} />
               </DetailSubjectTaskFollowerResponse>}
-              {!isArchived && !isInboxVisible && isFollowers && followerStatus !== 'accepted' &&
+              {!isInboxVisible && isFollowers && followerStatus !== 'accepted' &&
               <FollowerStatus
                 status={followerStatus}
                 animation={animation}
                 onSend={onHandleSend}/>}
-              {!isArchived && followerStatus === 'accepted' &&
+              {!isArchived && followerStatus !== 'new' && followerStatus !== 'pending' && followerStatus !== 'rejected' &&
               <DetailSubjectTaskCompleted
                 icon={ICONS.TASK_CHECKED}
                 color={isCompleted ? ['#c2fee5'] : ['#D7E3EC']}
@@ -280,9 +280,9 @@ const TaskDetail = props => {
                 disabled={isCompleted && !isArchived && !isFollowers}
                 animation={animation} >
                 <DetailContentAddContactLabel changeColor>
-                  {isInboxVisible ? 'From:' : 'To:'}
+                  {!isOwner ? 'From:' : 'To:'}
                 </DetailContentAddContactLabel>
-                <DetailContentAddContactContent inbox={isInboxVisible}>
+                <DetailContentAddContactContent isOwner={isOwner}>
                   {isArchived || isInboxVisible &&
                   <DetailContentAutocompleteContacts>
                     <FollowerItems followers={followers}/>

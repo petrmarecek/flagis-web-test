@@ -185,8 +185,8 @@ const DetailContentAddContactLabel = styled.div`
 
 const DetailContentAddContactContent = styled.div`
   position: absolute;
-  left: ${props => props.inbox ? '45px': '26px'};
-  right: ${props => props.inbox ? '5px': '35px'};
+  left: ${props => !props.isOwner ? '45px': '26px'};
+  right: ${props => !props.isOwner ? '5px': '35px'};
   bottom: -5px;
 `;
 

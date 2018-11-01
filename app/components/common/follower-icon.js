@@ -6,7 +6,7 @@ import Icon from '../icons/icon'
 import { ICONS } from '../icons/icon-constants'
 
 const FollowerIcon = ({ status, scale, defaultIcon }) => {
-  const followerStatus = defaultIcon ? 'new' : status
+  const followerStatus = (defaultIcon || status === null) ? 'new' : status
   const width = followerStatus === 'new'
     ? Number(constants.NEW_FOLLOWER_ICON_WIDTH * scale)
     : Number(constants.FOLLOWER_ICON_WIDTH * scale)
