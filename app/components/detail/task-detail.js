@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { withHandlers } from 'recompose'
+import { List } from 'immutable'
 
 import dateUtil from 'redux/utils/date'
 import { getAssigneeOfTask } from 'redux/utils/component-helper'
@@ -99,6 +100,7 @@ const TaskDetail = props => {
   const getBindingData = ({
     id: task.id,
     subject: task.subject,
+    createdBy: task.createdBy,
     followerStatus: assignee !== null ? assignee.status : null,
     tags: task.tags,
     followers: task.followers,
@@ -117,6 +119,7 @@ const TaskDetail = props => {
   const {
     id,
     subject,
+    createdBy,
     followerStatus,
     tags,
     followers,
@@ -131,6 +134,11 @@ const TaskDetail = props => {
     isImportant,
     isOwner
   } = getBindingData
+
+  const createdByFollower = {
+    id: createdBy.id,
+    profile: createdBy,
+  }
 
   // Margin-left of subject
   const subjectMarginLeft = () => {
@@ -283,11 +291,11 @@ const TaskDetail = props => {
                   {!isOwner ? 'From:' : 'To:'}
                 </DetailContentAddContactLabel>
                 <DetailContentAddContactContent isOwner={isOwner}>
-                  {isArchived || isInboxVisible &&
+                  {isArchived || !isOwner &&
                   <DetailContentAutocompleteContacts>
-                    <FollowerItems followers={followers}/>
+                    <FollowerItems followers={!isOwner ? List().push(createdByFollower) : followers}/>
                   </DetailContentAutocompleteContacts>}
-                  {!isArchived && !isInboxVisible &&
+                  {!isArchived && isOwner &&
                   <Autocomplete
                     dataType="contacts"
                     location="taskDetailContacts"

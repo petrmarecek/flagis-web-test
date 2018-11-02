@@ -42,7 +42,6 @@ function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
   const { id, isArchived, isTrashed } = task
 
   // Set isInbox property in task entitie
-  console.log(isCollaboratedTask)
   if (isCollaboratedTask) {
     const { followers } = task
     const assignee = getAssigneeOfTask(Object.values(followers))
