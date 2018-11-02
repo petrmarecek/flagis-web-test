@@ -2,6 +2,7 @@ import schema from '../../data/schema'
 
 export const CONTACTS = {
   FETCH: 'CONTACTS/FETCH',
+  FIREBASE: 'CONTACTS/FIREBASE',
   CREATE: 'CONTACTS/CREATE',
   ADD: 'CONTACTS/ADD',
   REPLACE: 'CONTACTS/REPLACE',

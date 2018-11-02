@@ -222,6 +222,10 @@ export default typeToReducer({
     FULFILLED: (state, action) => saveContacts(action.payload, state)
   },
 
+  [CONTACTS.FIREBASE]: {
+    FULFILLED: (state, action) => saveContacts(action.payload, state)
+  },
+
   [CONTACTS.ADD]: (state, action) => saveContacts(action.payload, state),
 
   // Replace contact in either contacts & task referencing the tag

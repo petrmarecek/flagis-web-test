@@ -1,14 +1,42 @@
-import { call, put, select } from 'redux-saga/effects'
+import { normalize } from 'normalizr'
+import { call, put, select, fork, take, all } from 'redux-saga/effects'
 
+import * as authSelectors from 'redux/store/auth/auth.selectors'
 import * as contactsActions from 'redux/store/contacts/contacts.actions'
 import * as appStateActions from 'redux/store/app-state/app-state.actions'
 import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'
-import { fetch, mainUndo } from 'redux/store/common.sagas'
+import { fetch, mainUndo, createLoadActions } from 'redux/store/common.sagas'
 import api from 'redux/utils/api'
 import search from 'redux/services/search'
 import schema from 'redux/data/schema'
+import firebase from 'redux/utils/firebase'
 
 const CONTACTS = contactsActions.CONTACTS
+
+function* saveChangeFromFirestore(change) {
+  const { FULFILLED } = createLoadActions(CONTACTS.FIREBASE)
+  const contact = change.doc.data()
+  console.log(contact)
+
+  // Prepare data
+  const normalizeData = normalize(contact, schema.contact)
+
+  // Save changes to store entities
+  yield put({ type: FULFILLED, payload: normalizeData })
+}
+
+function* syncContactsChannel(channel, userId) {
+  while (true) { // eslint-disable-line
+    const snapshot = yield take(channel)
+    yield all(snapshot.docChanges().map(change => call(saveChangeFromFirestore, change, userId)))
+  }
+}
+
+export function* initContactsData(initTime) {
+  const userId = yield select(state => authSelectors.getUserId(state))
+  const channel = firebase.getContactsChannel(userId, initTime)
+  return yield fork(syncContactsChannel, channel)
+}
 
 export function* fetchContacts() {
   const result = yield* fetch(CONTACTS.FETCH, {
