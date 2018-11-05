@@ -18,7 +18,7 @@ import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'
 import { initTasksData, initInboxTasksData } from 'redux/store/tasks/tasks.sagas'
 import { initTagsData } from 'redux/store/tags/tags.sagas'
 import { initTagTreeItemsData } from 'redux/store/tree/tree.sagas'
-import { initContactsData } from 'redux/store/contacts/contacts.sagas'
+import { initContactsData, initGlobalContactsData } from 'redux/store/contacts/contacts.sagas'
 import { createLoadActions } from 'redux/store/common.sagas'
 import api from 'redux/utils/api'
 import firebase from 'redux/utils/firebase'
@@ -51,13 +51,15 @@ export function* initDataFlow() {
       inboxTasksSyncing,
       tagsSyncing,
       tagTreeItemsSyncing,
-      contactsSyncing
+      contactsSyncing,
+      globalContactsSyncing,
     } = yield all({
       tasksSyncing: fork(initTasksData, initTime),
       inboxTasksSyncing: fork(initInboxTasksData, initTime),
       tagsSyncing: fork(initTagsData, initTime),
       tagTreeItemsSyncing: fork(initTagTreeItemsData, initTime),
       contactsSyncing: fork(initContactsData, initTime),
+      globalContactsSyncing: fork(initGlobalContactsData, initTime),
     })
 
     yield take(AUTH.LOGOUT)
@@ -66,6 +68,7 @@ export function* initDataFlow() {
     yield cancel(tagsSyncing)
     yield cancel(tagTreeItemsSyncing)
     yield cancel(contactsSyncing)
+    yield cancel(globalContactsSyncing)
 
     // Cancel snapshot for comments and attachments from firestore
     const isTaskDetailVisible = yield select(state => appStateSelectors.getDetail(state).task)

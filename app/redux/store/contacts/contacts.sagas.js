@@ -5,6 +5,7 @@ import * as authSelectors from 'redux/store/auth/auth.selectors'
 import * as contactsActions from 'redux/store/contacts/contacts.actions'
 import * as appStateActions from 'redux/store/app-state/app-state.actions'
 import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'
+import * as entitiesSelectors from 'redux/store/entities/entities.selectors'
 import { fetch, mainUndo, createLoadActions } from 'redux/store/common.sagas'
 import api from 'redux/utils/api'
 import search from 'redux/services/search'
@@ -13,29 +14,43 @@ import firebase from 'redux/utils/firebase'
 
 const CONTACTS = contactsActions.CONTACTS
 
-function* saveChangeFromFirestore(change) {
+function* saveChangeFromFirestore(change, isGlobalProfile) {
   const { FULFILLED } = createLoadActions(CONTACTS.FIREBASE)
   const contact = change.doc.data()
-  console.log(contact)
 
   // Prepare data
   const normalizeData = normalize(contact, schema.contact)
+  const entitiesContacts = yield select(state => entitiesSelectors.getEntitiesContacts(state))
+
+  if (isGlobalProfile && entitiesContacts.has(contact.id)) {
+    const entitiesContact = entitiesContacts.get(contact.id)
+
+    if (entitiesContact.isContact) {
+      return
+    }
+  }
 
   // Save changes to store entities
   yield put({ type: FULFILLED, payload: normalizeData })
 }
 
-function* syncContactsChannel(channel, userId) {
+function* syncContactsChannel(channel, isGlobalProfile) {
   while (true) { // eslint-disable-line
     const snapshot = yield take(channel)
-    yield all(snapshot.docChanges().map(change => call(saveChangeFromFirestore, change, userId)))
+    yield all(snapshot.docChanges().map(change => call(saveChangeFromFirestore, change, isGlobalProfile)))
   }
 }
 
 export function* initContactsData(initTime) {
   const userId = yield select(state => authSelectors.getUserId(state))
   const channel = firebase.getContactsChannel(userId, initTime)
-  return yield fork(syncContactsChannel, channel)
+  return yield fork(syncContactsChannel, channel, false)
+}
+
+export function* initGlobalContactsData(initTime) {
+  const userId = yield select(state => authSelectors.getUserId(state))
+  const channel = firebase.getGlobalProfilesChannel(userId, initTime)
+  return yield fork(syncContactsChannel, channel, true)
 }
 
 export function* fetchContacts() {
