@@ -119,6 +119,7 @@ const commonInputSmall = css`
   font-size: 14px;
   border: none;
   border-bottom: 1px solid #D7E3EC;
+  background-color: transparent;
 }
 `;
 

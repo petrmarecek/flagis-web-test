@@ -19,7 +19,7 @@ const Container = styled.div`
   top: 2px;
   height: 26px;
   margin: 0 5px;
-  animation: ${props => props.animation ? `500ms ${hide}, 1s ${show} linear 400ms` : 'none'};
+  animation: ${props => props.animation ? `500ms ${hide}, 500ms ${show} linear 500ms` : 'none'};
 `;
 
 const Button = styled.button`
@@ -41,6 +41,7 @@ const Title = styled.span`
   font-size: 16px;
   line-height: 26px;
   color: ${props => props.color};
+  animation: ${props => props.animation ? `500ms ${hide}, 500ms ${show} linear 500ms` : 'none'};
 `;
 
 const FollowerStatus = ({ status, animation, onHandleSend }) => {
@@ -50,8 +51,8 @@ const FollowerStatus = ({ status, animation, onHandleSend }) => {
          <Title color='#fff'>SEND TASK</Title>
        </Button>
      ),
-     pending: <Title color='#8C9DA9'>WAITING FOR RESPONSE</Title>,
-     rejected: <Title color='#FF6A6A'>REJECTED</Title>
+     pending: <Title color='#8C9DA9' animation={animation}>WAITING FOR RESPONSE</Title>,
+     rejected: <Title color='#FF6A6A' animation={animation}>REJECTED</Title>
   }
 
   return (

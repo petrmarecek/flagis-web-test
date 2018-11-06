@@ -32,7 +32,6 @@ const DetailStyle = styled.div`
 `;
 
 const DetailInner = styled.div`
-  pointer-events: ${props => props.archived ? 'none' : 'auto'};
   background-color: #fff;
   position: absolute;
   top: 42px;
@@ -53,7 +52,6 @@ const DetailContentTop = styled.div`
   background-color: #fff;
   z-index: 1;
   padding: 0 12px;
-  margin-bottom: 21px;
   
   :before {
     content: "";
@@ -97,7 +95,7 @@ const DetailContentTagAutocomplete = styled.div`
   padding-right: 10px;
   padding-top: 12px;
   max-width: 70%;
-  pointer-events: ${props => props.disabled ? 'none' : 'auto'};
+  pointer-events: ${props => props.allowed ? 'auto' : 'none'};
 `;
 
 const DetailContentTagAutocompleteTags = styled.ul`
@@ -109,6 +107,7 @@ const DetailContentButton = styled.div`
   ${boxSizing('border-box')}
   flex: 0 0 117px;
   margin: 11px 0;
+  pointer-events: ${props => props.allowed ? 'auto' : 'none'};
 `;
 
 const DetailContentIcon = styled.div`
@@ -117,16 +116,32 @@ const DetailContentIcon = styled.div`
   flex: 0 0 35px;
   text-align: right;
   padding-right: 6px;
-  padding-top: 10px;
+  padding-top: ${props => props.contactIcon ? '14px' : '10px'};
 `;
 
 const DetailContentCenter = styled.div`
   display: flex;
+  position: relative;
   flex-wrap: wrap;
   flex-shrink: 100;
   height: 100%;
-  margin-bottom: 22px;
   flex-direction: ${props => props.column ? 'column' : 'row'};
+  padding: 21px 0 22px 0;
+  pointer-events: ${props => props.allowed ? 'auto' : 'none'};
+
+  :before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #f6f8f9;
+    ${borderRadius('4px 4px 0 0')}
+    ${transform(props => props.allowed ? 'scaleX(0)' : 'scaleX(1)')}
+    ${transformOrigin('0 50%')}
+    ${transition(props => props.animation ? 'transform 500ms ease-out' : 'none')}
+  }
 `;
 
 const DetailContentProperties = styled.div`
@@ -139,10 +154,11 @@ const DetailContentProperties = styled.div`
 
 const DetailContentOptions = styled.div`
   margin: 0 0 10px;
-  pointer-events: ${props => props.disabled ? 'none' : 'auto'};
+  pointer-events: ${props => props.allowed ? 'auto' : 'none'};
 `;
 
 const detailContentOptionsItem = css`
+  
   position: relative;
   color: #8c9da9;
   padding: 0 0 2px 0;
@@ -161,21 +177,6 @@ const DetailContentAddContact = styled.div`
   margin: 0 0 10px 0;
   cursor: default;
   padding: 10px 0 2px 0;
-  pointer-events: ${props => props.disabled ? 'none' : 'auto'};
-  
-  :before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #f6f8f9;
-    ${borderRadius('4px 4px 0 0')}
-    ${transform(props => props.disabled ? 'scaleX(1)' : 'scaleX(0)')}
-    ${transformOrigin('0 50%')}
-    ${transition(props => props.animation ? 'transform 500ms ease-out' : 'none')}
-  }
 `;
 
 const DetailContentAddContactLabel = styled.div`
@@ -243,7 +244,7 @@ const DetailContentDatePicker = styled.div`
     input {
       text-align: right;
       font-size: 15px;
-      background-color: #fff;
+      background-color: transparent;
     }
   }
   
@@ -285,6 +286,7 @@ const DetailContentAttachments = styled.div`
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
+  z-index: 1;
 `;
 
 const DetailContentComments = styled.div`
@@ -304,16 +306,16 @@ const DetailContentCommentsAddIcon = styled.div`
   margin-right: 10px;
   flex: 1;
   pointer-events: none;
+  z-index: 1;
 `;
 
 const DetailContentCommentsAddInput = styled.div`
   flex: 12;
   position: relative;
 
-  input{
+  input {
     ${placeholderColor('#8c9da9')}
     ${commonInputSmall}
-    background-color: #fff;
   }
 `;
 
@@ -355,7 +357,7 @@ const ContentEditableContainer = css`
   margin-left: ${props => props.marginLeft ? props.marginLeft : '45px'};
   text-decoration: ${props => (props.completed || props.archived) ? 'line-through' : 'none'};
   font-weight: ${props => props.important ? 'bold' : 'normal'};
-  pointer-events: ${props => props.disabled ? 'none' : 'auto'};
+  pointer-events: ${props => props.allowed ? 'auto' : 'none'};
   
   :empty:before {
     color: #8c9da9;
@@ -367,7 +369,6 @@ const ContentEditableContainer = css`
 const MarkdownEditableContainer = styled(MarkdownEditable)`
   ${boxSizing('border-box')}
   padding: 15px 2px 15px 15px;
-  background-color: #fff;
   border: 1px solid #D7E3EC;
   width: 100%;
   height: 100%;
@@ -430,7 +431,8 @@ const DetailSubjectTaskContentEditable = styled(ContentEditable)`
 const DetailContentDescriptionTask = styled.div`
   flex: 6;
   margin-right: 22px;
-  pointer-events: ${props => props.disabled ? 'none' : 'auto'};
+  pointer-events: ${props => props.allowed ? 'auto' : 'none'};
+  z-index: 1;
 `;
 
 // --------------------------------------- Tag detail ---------------------------------------

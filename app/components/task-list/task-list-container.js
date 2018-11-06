@@ -28,6 +28,7 @@ import {
   cancelArchiveTasks,
   acceptTask,
   rejectTask,
+  removeTaskFollower,
 } from 'redux/store/tasks/tasks.actions'
 import {
   getTasksItems,
@@ -41,7 +42,8 @@ import { getTasksMenuSort } from 'redux/store/tasks-menu/tasks-menu.selectors'
 import {
   getSelectionInfo,
   setArchive,
-  cancelArchive
+  cancelArchive,
+  getAssigneeOfTask
 } from 'redux/utils/component-helper'
 import {
   computeOrder,
@@ -86,6 +88,7 @@ class TaskListContainer extends PureComponent {
     cancelArchiveTasks: PropTypes.func,
     acceptTask: PropTypes.func,
     rejectTask: PropTypes.func,
+    removeTaskFollower: PropTypes.func,
   }
 
   state = {
@@ -191,12 +194,21 @@ class TaskListContainer extends PureComponent {
   }
 
   handleCompleteClick = task => {
+    const { id, followers } = task
+    const assignee = getAssigneeOfTask(followers)
+
     if (task.isCompleted) {
-      this.props.setIncomplete(task.id)
+      this.props.setIncomplete(id)
       return
     }
 
-    this.props.setComplete(task.id)
+    if (assignee !== null) {
+      if (assignee.status === 'new') {
+        this.props.removeTaskFollower(id, assignee.userId, assignee.id)
+      }
+    }
+
+    this.props.setComplete(id)
   }
 
   handleTagClick = tag => {
@@ -351,6 +363,7 @@ const mapDispatchToProps = {
   cancelArchiveTasks,
   acceptTask,
   rejectTask,
+  removeTaskFollower,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TaskListContainer)

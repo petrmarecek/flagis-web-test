@@ -135,6 +135,7 @@ const TaskDetail = props => {
     isOwner
   } = getBindingData
 
+  const isAcceptedStatus = followerStatus !== 'new' && followerStatus !== 'pending' && followerStatus !== 'rejected'
   const createdByFollower = {
     id: createdBy.id,
     profile: createdBy,
@@ -171,7 +172,7 @@ const TaskDetail = props => {
         back={onHandleToggleList}
         previous={onHandlePrevious}
         next={onHandleNext} />
-      <DetailInner archived={isArchived}>
+      <DetailInner>
         <DetailContentTop
           completed={isCompleted}
           important={isImportant}
@@ -190,7 +191,7 @@ const TaskDetail = props => {
                 status={followerStatus}
                 animation={animation}
                 onSend={onHandleSend}/>}
-              {!isArchived && followerStatus !== 'new' && followerStatus !== 'pending' && followerStatus !== 'rejected' &&
+              {!isArchived && isAcceptedStatus &&
               <DetailSubjectTaskCompleted
                 icon={ICONS.TASK_CHECKED}
                 color={isCompleted ? ['#c2fee5'] : ['#D7E3EC']}
@@ -198,7 +199,7 @@ const TaskDetail = props => {
                 width={22}
                 height={21}
                 onClick={onHandleComplete}/>}
-              {isCompleted && animation && !isArchived &&
+              {isCompleted && animation && !isArchived && isAcceptedStatus &&
               <DetailSubjectTaskArchived
                 icon={ICONS.ARCHIVE}
                 color={["#8c9ea9"]}
@@ -210,7 +211,7 @@ const TaskDetail = props => {
                   action: 'transition.expandIn',
                   duration: 1000,
                 }} />}
-              {isCompleted && !animation && !isArchived &&
+              {isCompleted && !animation && !isArchived && isAcceptedStatus &&
               <DetailSubjectTaskArchived
                 icon={ICONS.ARCHIVE}
                 color={["#8c9ea9"]}
@@ -237,13 +238,13 @@ const TaskDetail = props => {
                     archived={isArchived}
                     marginLeft={subjectMarginLeft}
                     animation={animation}
-                    disabled={isInboxVisible || isArchived} />
+                    allowed={!isCompleted && !isInboxVisible && isOwner} />
                 </span>
             </DetailSubject>
           </DetailContentSubject>
           <DetailContentTagAutocomplete 
             onClick={onHandleRemoveEventListener}
-            disabled={isInboxVisible}>
+            allowed={!isCompleted && !isInboxVisible}>
             {isArchived &&
             <DetailContentTagAutocompleteTags>
               <TagItems tags={tags}/>
@@ -268,25 +269,24 @@ const TaskDetail = props => {
               color={["#ff8181"]}
               onClick={onHandleDelete}/>
           </DetailContentIcon>}
-          {!isOwner &&
-          <DetailContentButton>
+          {!isInboxVisible && !isOwner &&
+          <DetailContentButton allowed={!isCompleted}>
             <FollowerResponseButtons
               acceptClicked={onHandleAccept}
               rejectClicked={onHandleReject}
               isAccepted />
           </DetailContentButton>}
           {!isOwner &&
-          <DetailContentIcon onClick={onHandleRemoveEventListener} >
+          <DetailContentIcon contactIcon>
             <FollowerIcon defaultIcon/>
           </DetailContentIcon>}
         </DetailContentTop>
-        <DetailContentCenter>
+        <DetailContentCenter
+          allowed={!isCompleted}
+          animation={animation}>
           <DetailContentProperties>
-            <DetailContentOptions disabled={isInboxVisible}>
-              <DetailContentAddContact
-                onClick={onHandleRemoveEventListener}
-                disabled={isCompleted && !isArchived && !isFollowers}
-                animation={animation} >
+            <DetailContentOptions allowed={!isCompleted && isOwner}>
+              <DetailContentAddContact onClick={onHandleRemoveEventListener}>
                 <DetailContentAddContactLabel changeColor>
                   {!isOwner ? 'From:' : 'To:'}
                 </DetailContentAddContactLabel>
@@ -378,7 +378,7 @@ const TaskDetail = props => {
               {!isArchived && <FilePicker onFileUploaded={onHandleFileUploaded}/>}
             </DetailContentAttachments>
           </DetailContentProperties>
-          <DetailContentDescriptionTask disabled={isInboxVisible}>
+          <DetailContentDescriptionTask allowed={isOwner && !isCompleted}>
             <span onClick={onHandleRemoveEventListener}>
               <MarkdownEditableContainer
                 text={description === null ? '' : description}
@@ -471,11 +471,12 @@ TaskDetail.propTypes = {
 export default withHandlers({
   onHandleComplete: props => event => {
     event.stopPropagation()
+    const { id } = props.task
 
     if (!props.task.isCompleted) {
-      props.onHandleTaskSetComplete(props.task.id)
+      props.onHandleTaskSetComplete(id)
     } else {
-      props.onHandleTaskSetIncomplete(props.task.id)
+      props.onHandleTaskSetIncomplete(id)
     }
   },
   onHandleArchive: props => event => {

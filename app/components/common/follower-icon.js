@@ -5,6 +5,12 @@ import constants from '../../utils/constants'
 import Icon from '../icons/icon'
 import { ICONS } from '../icons/icon-constants'
 
+import styled from 'styled-components'
+
+const Container = styled.div`
+  pointer-events: none;
+`;
+
 const FollowerIcon = ({ status, scale, defaultIcon }) => {
   const followerStatus = (defaultIcon || status === null) ? 'new' : status
   const width = followerStatus === 'new'
@@ -23,12 +29,14 @@ const FollowerIcon = ({ status, scale, defaultIcon }) => {
   }
 
   return (
-    <Icon
-      icon={ICONS[`FOLLOWER_${followerStatus.toUpperCase()}`]}
-      width={width}
-      height={height}
-      scale={scale}
-      color={[color[followerStatus]]} />
+    <Container>
+      <Icon
+        icon={ICONS[`FOLLOWER_${followerStatus.toUpperCase()}`]}
+        width={width}
+        height={height}
+        scale={scale}
+        color={[color[followerStatus]]} />
+    </Container>
   )
 }
 

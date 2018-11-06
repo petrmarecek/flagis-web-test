@@ -47,6 +47,13 @@ export default class Icon extends PureComponent {
     if (newProps.color !== this.props.color) {
       this.setState({ color: newProps.color })
     }
+
+    if ((newProps.width !== this.props.width) || (newProps.height !== this.props.height)) {
+      this.setState({
+          width: Math.round(newProps.width / newProps.scale),
+          height: Math.round(newProps.height / newProps.scale)
+       })
+    }
   }
 
   handleMouseOver = () => {
