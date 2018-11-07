@@ -160,12 +160,12 @@ const TaskDetail = props => {
 
   // Margin-left of subject
   const subjectMarginLeft = () => {
-    if (isInboxVisible) {
-      return '260px'
+    if (isArchived) {
+      return '45px'
     }
 
-    if (isCompleted && !isArchived) {
-      return '85px'
+    if (isInboxVisible) {
+      return '260px'
     }
 
     if (isFollowers && followerStatus !== 'accepted') {
@@ -178,6 +178,10 @@ const TaskDetail = props => {
       }
 
       return '147px'
+    }
+
+    if (isCompleted && !isArchived) {
+      return '85px'
     }
 
     return '45px'
@@ -202,7 +206,7 @@ const TaskDetail = props => {
                   acceptClicked={onHandleAccept}
                   rejectClicked={onHandleReject} />
               </DetailSubjectTaskFollowerResponse>}
-              {!isInboxVisible && isFollowers && followerStatus !== 'accepted' &&
+              {!isInboxVisible && !isArchived && isFollowers && followerStatus !== 'accepted' &&
               <FollowerStatus
                 status={followerStatus}
                 animation={animation}
