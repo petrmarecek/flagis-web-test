@@ -61,8 +61,8 @@ const DetailContentTop = styled.div`
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: ${props => props.archived ? '#c1cad0' : '#f6f8f9'};
-    ${transform(props => props.completed ? 'scaleX(1)' : 'scaleX(0)')}
+    background-color: ${props => props.backgroundColor};
+    ${transform(props => props.isBackground ? 'scaleX(1)' : 'scaleX(0)')}
     ${transformOrigin('0 50%')}
     ${transition(props => props.animation ? 'transform 500ms ease-out' : 'none')}
   }

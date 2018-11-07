@@ -136,9 +136,26 @@ const TaskDetail = props => {
   } = getBindingData
 
   const isAcceptedStatus = followerStatus !== 'new' && followerStatus !== 'pending' && followerStatus !== 'rejected'
+  const isOwnerAcceptedTask = isOwner && (followerStatus === 'accepted')
+  const isBackgroundTopContent = isCompleted || isOwnerAcceptedTask
   const createdByFollower = {
     id: createdBy.id,
     profile: createdBy,
+  }
+
+  // Background color of top content
+  const backgroundColor = () => {
+
+    if (isArchived) {
+      return '#c1cad0'
+    }
+
+    if (isCompleted) {
+      return '#f6f8f9'
+    }
+
+    return '#ecfff7'
+
   }
 
   // Margin-left of subject
@@ -151,7 +168,7 @@ const TaskDetail = props => {
       return '85px'
     }
 
-    if (isFollowers && !isArchived && followerStatus !== 'accepted') {
+    if (isFollowers && followerStatus !== 'accepted') {
       if (followerStatus === 'pending') {
         return '190px'
       }
@@ -174,10 +191,9 @@ const TaskDetail = props => {
         next={onHandleNext} />
       <DetailInner>
         <DetailContentTop
-          completed={isCompleted}
-          important={isImportant}
-          archived={isArchived}
-          animation={animation} >
+          animation={animation} 
+          backgroundColor={backgroundColor}
+          isBackground={isBackgroundTopContent}>
           <DetailContentSubject taskDetail>
             <DetailSubject>
               {isInboxVisible &&

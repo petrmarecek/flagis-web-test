@@ -225,6 +225,7 @@ const TaskListItem = props => {
   const assignee = getAssigneeOfTask(task.followers)
   const isFollowers = assignee !== null
   const followerStatus = isFollowers ? assignee.status : 'new'
+  const isOwnerAcceptedTask = isOwner && (followerStatus === 'accepted')
 
   // Date from dueDate
   const now = moment()
@@ -241,10 +242,6 @@ const TaskListItem = props => {
 
   // Background color of task item
   const backgroundColor = () => {
-    if (isOwner && (followerStatus === 'accepted')) {
-      return '#ecfff7'
-    }
-
     if (isSelected) {
       return '#ffffd7'
     }
@@ -255,6 +252,10 @@ const TaskListItem = props => {
 
     if (isArchivedList) {
       return '#c1cad0'
+    }
+
+    if (isOwnerAcceptedTask) {
+      return '#ecfff7'
     }
 
     return '#fff'
