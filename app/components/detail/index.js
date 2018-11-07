@@ -134,7 +134,7 @@ const Detail = props => {
 
   return (
     <DetailStyle>
-      {(detail.task || detail.archive) &&
+      {(detail.task || detail.archive || detail.inbox) &&
       <TaskDetail
         userId={userId}
         task={task}
@@ -304,13 +304,15 @@ export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withHandlers({
     onHandleToggleList: props => () => {
-      if (props.detail.task || props.detail.archive) {
+      const { detail } = props
+
+      if (detail.task || detail.archive || detail.inbox) {
         props.deselectAnimation()
         props.deselectTasks()
         return
       }
 
-      if (props.detail.tag) {
+      if (detail.tag) {
         props.deselectTags()
         return
       }
@@ -318,62 +320,66 @@ export default compose(
       props.deselectContacts()
     },
     onHandleNext: props => () => {
-      if (props.detail.task || props.detail.archive) {
-        if (!props.nextTask) {
+      const { detail, nextTask, nextTag, nextContact, selectedTasks } = props
+
+      if (detail.task || detail.archive || detail.inbox) {
+        if (!nextTask) {
           return
         }
 
-        const selectionInfo = getSelectionInfo(null, props.nextTask, props.selectedTasks)
+        const selectionInfo = getSelectionInfo(null, nextTask, selectedTasks)
         props.deselectAnimation()
-        props.fetchAttachment(props.nextTask.id)
-        props.fetchComment(props.nextTask.id)
+        props.fetchAttachment(nextTask.id)
+        props.fetchComment(nextTask.id)
         props.selectTask(selectionInfo.newSelectedTasks, selectionInfo.isMultiSelection)
         return
       }
 
-      if (props.detail.tag) {
-        if (!props.nextTag) {
+      if (detail.tag) {
+        if (!nextTag) {
           return
         }
 
-        props.selectTag(props.nextTag.id)
+        props.selectTag(nextTag.id)
         return
       }
 
-      if (!props.nextContact) {
+      if (!nextContact) {
         return
       }
 
-      props.selectContact(props.nextContact.id)
+      props.selectContact(nextContact.id)
     },
     onHandlePrevious: props => () => {
-      if (props.detail.task || props.detail.archive) {
-        if (!props.previousTask) {
+      const { detail, previousTask, previousTag, previousContact, selectedTasks } = props
+
+      if (detail.task || detail.archive || detail.inbox) {
+        if (!previousTask) {
           return
         }
 
-        const selectionInfo = getSelectionInfo(null, props.previousTask, props.selectedTasks)
+        const selectionInfo = getSelectionInfo(null, previousTask, selectedTasks)
         props.deselectAnimation()
-        props.fetchAttachment(props.previousTask.id)
-        props.fetchComment(props.previousTask.id)
+        props.fetchAttachment(previousTask.id)
+        props.fetchComment(previousTask.id)
         props.selectTask(selectionInfo.newSelectedTasks, selectionInfo.isMultiSelection)
         return
       }
 
-      if (props.detail.tag) {
-        if (!props.previousTag) {
+      if (detail.tag) {
+        if (!previousTag) {
           return
         }
 
-        props.selectTag(props.previousTag.id)
+        props.selectTag(previousTag.id)
         return
       }
 
-      if (!props.previousContact) {
+      if (!previousContact) {
         return
       }
 
-      props.selectContact(props.previousContact.id)
+      props.selectContact(previousContact.id)
     },
 
     onHandleTaskSetComplete: props => data => {

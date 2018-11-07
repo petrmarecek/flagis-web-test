@@ -228,18 +228,18 @@ const TaskDetail = props => {
                 height={27}
                 scale={0.926}
                 onClick={onHandleArchive} />}
-                <span onClick={onHandleRemoveEventListener}>
-                  <DetailSubjectTaskContentEditable
-                    html={subject}
-                    enforcePlainText
-                    onChange={onHandleSubjectUpdate}
-                    completed={isCompleted}
-                    important={isImportant}
-                    archived={isArchived}
-                    marginLeft={subjectMarginLeft}
-                    animation={animation}
-                    allowed={!isCompleted && !isInboxVisible && isOwner} />
-                </span>
+              <span onClick={onHandleRemoveEventListener}>
+                <DetailSubjectTaskContentEditable
+                  html={subject}
+                  enforcePlainText
+                  onChange={onHandleSubjectUpdate}
+                  completed={isCompleted}
+                  important={isImportant}
+                  archived={isArchived}
+                  marginLeft={subjectMarginLeft}
+                  animation={animation}
+                  allowed={!isCompleted && !isInboxVisible && isOwner} />
+              </span>
             </DetailSubject>
           </DetailContentSubject>
           <DetailContentTagAutocomplete 

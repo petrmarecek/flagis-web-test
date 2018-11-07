@@ -1,7 +1,6 @@
 import React  from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { compose, withHandlers } from 'recompose'
 
 import { getContactDetail } from 'redux/store/app-state/app-state.selectors'
 
@@ -11,20 +10,19 @@ import AccountMenu from 'components/account-menu/'
 import ContactContent from 'components/contents/contact-content'
 import DetailContent from 'components/contents/detail-content'
 
-const ContactPage = ({ onGetContent }) => (
+const ContactPage = ({ contactDetail }) => (
   <div>
     <LeftPanel>
       <AccountMenu/>
     </LeftPanel>
     <CenterPanel>
-      {onGetContent()}
+      {contactDetail ? <DetailContent/> : <ContactContent/>}
     </CenterPanel>
   </div>
 )
 
-
 ContactPage.propTypes = {
-  onGetContent: PropTypes.func,
+  contactDetail: PropTypes.bool,
 }
 
 const mapStateToProps = state => ({
@@ -33,19 +31,4 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {}
 
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  withHandlers({
-    onGetContent: props => () => {
-      if (props.contactDetail) {
-        return (
-          <DetailContent/>
-        )
-      } else {
-        return (
-          <ContactContent/>
-        )
-      }
-    }
-  })
-)(ContactPage)
+export default connect(mapStateToProps, mapDispatchToProps)(ContactPage)

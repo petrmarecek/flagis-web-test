@@ -88,7 +88,8 @@ const ContactDetail = props => {
                   html={nickname}
                   placeholder='Add username'
                   enforcePlainText
-                  onChange={onHandleNicknameUpdate} />
+                  onChange={onHandleNicknameUpdate}
+                  allowed />
               </span>
             </DetailSubject>
           </DetailContentSubject>
@@ -103,7 +104,7 @@ const ContactDetail = props => {
           </DetailContentIcon>
         </DetailContentTop>
 
-        <DetailContentCenter>
+        <DetailContentCenter allowed>
           <DetailContentProperties>
             <DetailContentContactData>
               <DetailContentContactDataLabel>E-Mail</DetailContentContactDataLabel>

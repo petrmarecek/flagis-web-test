@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { compose, withHandlers } from 'recompose'
 
 import { getTaskDetail } from 'redux/store/app-state/app-state.selectors'
 
@@ -11,40 +10,23 @@ import TagTreeContent from 'components/contents/tag-tree-content'
 import DetailContent from 'components/contents/detail-content'
 import TasksContent from 'components/contents/tasks-content'
 
-const TaskPage = ({ onGetContent }) => (
+const TaskPage = ({ taskDetail }) => (
   <div>
     <LeftPanel>
       <TagTreeContent/>
     </LeftPanel>
     <CenterPanel>
-      {onGetContent()}
+      {taskDetail ? <DetailContent/> : <TasksContent/>}
     </CenterPanel>
   </div>
 )
 
 TaskPage.propTypes = {
-  onGetContent: PropTypes.func,
+  taskDetail: PropTypes.bool,
 }
 
 const mapStateToProps = state => ({
   taskDetail: getTaskDetail(state),
 })
 
-const mapDispatchToProps = {}
-
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  withHandlers({
-    onGetContent: props => () => {
-      if (props.taskDetail) {
-        return (
-          <DetailContent/>
-        )
-      } else {
-        return (
-          <TasksContent/>
-        )
-      }
-    }
-  })
-)(TaskPage)
+export default connect(mapStateToProps)(TaskPage)

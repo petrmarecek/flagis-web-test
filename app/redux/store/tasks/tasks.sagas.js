@@ -41,7 +41,7 @@ function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
   const isDetailVisible = yield select(state => appStateSelectors.getDetail(state))
   const { id, isArchived, isTrashed } = task
 
-  // Set isInbox property in task entitie
+  // Set isInbox property in task entities
   if (isCollaboratedTask) {
     const { followers } = task
     const assignee = getAssigneeOfTask(Object.values(followers))
@@ -62,9 +62,9 @@ function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
       autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
     })
 
-    // Close task detail
-    if (isDetailVisible.task) {
-      yield put(appStateActions.deselectDetail('task'))
+    // Close archive detail
+    if (isDetailVisible.archive) {
+      yield put(appStateActions.deselectDetail('archive'))
     }
 
     // Update task in search
@@ -73,17 +73,7 @@ function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
 
   // Move task from inbox to tasks list (accepted)
   if (!isArchived && !isTrashed && !storeItems.includes(id) && storeInboxItems.includes(id)) {
-    // Show notification
-    toast.success(successMessages.tasks.cancelArchive, {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
-    })
-
-    // Close task detail
-    if (isDetailVisible.task) {
-      yield put(appStateActions.deselectDetail('task'))
-    }
-
+    
     // Update task in search
     search.tasks.updateItem(task)
   }
@@ -113,9 +103,20 @@ function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
 
   // Delete task
   if (isTrashed) {
-    // Close detail
+
+    // Close task detail
     if (isDetailVisible.task) {
       yield put(appStateActions.deselectDetail('task'))
+    }
+
+    // Close archive detail
+    if (isDetailVisible.archive) {
+      yield put(appStateActions.deselectDetail('archive'))
+    }
+
+    // Close inbox detail
+    if (isDetailVisible.inbox) {
+      yield put(appStateActions.deselectDetail('inbox'))
     }
 
     // Delete task from search
@@ -416,8 +417,21 @@ export function* selectTask(action) {
 
     yield put(appStateActions.visibleMultiSelect())
   } else {
-    
+    const archivedTasksVisible = yield select(state => appStateSelectors.getArchivedTasksVisibility(state))
+    const inboxTasksVisible = yield select(state => appStateSelectors.getInboxTasksVisibility(state))
+
     yield put(appStateActions.hideMultiSelect())
+
+    if (archivedTasksVisible) {
+      yield put(appStateActions.setDetail('archive'))
+      return
+    }
+
+    if (inboxTasksVisible) {
+      yield put(appStateActions.setDetail('inbox'))
+      return
+    }
+    
     yield put(appStateActions.setDetail('task'))
   }
 }
@@ -429,19 +443,22 @@ export function* selectAllTask() {
 
 export function* deselectTasks() {
   const isMultiSelectVisible = yield select(state => appStateSelectors.getMultiSelectVisibility(state))
-  const isTaskDetail = yield select(state => appStateSelectors.getDetail(state).task)
-  const isArchiveDetail = yield select(state => appStateSelectors.getDetail(state).archive)
+  const { task, archive, inbox } = yield select(state => appStateSelectors.getDetail(state))
 
   if (isMultiSelectVisible) {
     yield put(appStateActions.hideMultiSelect())
   }
 
-  if (isTaskDetail) {
+  if (task) {
     yield put(appStateActions.deselectDetail('task'))
   }
 
-  if (isArchiveDetail) {
+  if (archive) {
     yield put(appStateActions.deselectDetail('archive'))
+  }
+
+  if (inbox) {
+    yield put(appStateActions.deselectDetail('inbox'))
   }
 }
 
@@ -595,10 +612,10 @@ export function* acceptTask(action) {
 export function* rejectTask(action) {
   const { taskId } = action.payload
   const { reject } = api.followers
-  const isTaskDetail = yield select(state => appStateSelectors.getDetail(state).task)
+  const { inbox } = yield select(state => appStateSelectors.getDetail(state))
 
-  if (isTaskDetail) {
-    yield put(appStateActions.deselectDetail('task'))
+  if (inbox) {
+    yield put(appStateActions.deselectDetail('inbox'))
   }
 
   yield call(reject, taskId)

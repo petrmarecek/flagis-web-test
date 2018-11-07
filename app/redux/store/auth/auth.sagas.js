@@ -71,9 +71,13 @@ export function* initDataFlow() {
     yield cancel(globalContactsSyncing)
 
     // Cancel snapshot for comments and attachments from firestore
-    const isTaskDetailVisible = yield select(state => appStateSelectors.getDetail(state).task)
-    if (isTaskDetailVisible) {
+    const { task, inbox } = yield select(state => appStateSelectors.getDetail(state))
+    if (task) {
       yield put(appStateActions.deselectDetail('task'))
+    }
+
+    if (inbox) {
+      yield put(appStateActions.deselectDetail('inbox'))
     }
   }
 }

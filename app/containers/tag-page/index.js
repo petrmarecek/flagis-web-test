@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { compose, withHandlers } from 'recompose'
 
 import { getTagDetail } from 'redux/store/app-state/app-state.selectors'
 
@@ -11,19 +10,19 @@ import LeftPanel from 'components/panels/left-panel'
 import CenterPanel from 'components/panels/center-panel'
 import TagTreeContent from 'components/contents/tag-tree-content'
 
-const TagPage = ({ onGetContent }) => (
+const TagPage = ({ tagDetail }) => (
   <div>
     <LeftPanel>
       <TagTreeContent/>
     </LeftPanel>
     <CenterPanel>
-      {onGetContent()}
+      {tagDetail ? <DetailContent/> : <TagsContent/>}
     </CenterPanel>
   </div>
 )
 
 TagPage.propTypes = {
-  onGetContent: PropTypes.func,
+  tagDetail: PropTypes.bool,
 }
 
 const mapStateToProps = state => ({
@@ -32,19 +31,4 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {}
 
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  withHandlers({
-    onGetContent: props => () => {
-      if (props.tagDetail) {
-        return (
-          <DetailContent/>
-        )
-      } else {
-        return (
-          <TagsContent/>
-        )
-      }
-    }
-  })
-)(TagPage)
+export default connect(mapStateToProps, mapDispatchToProps)(TagPage)

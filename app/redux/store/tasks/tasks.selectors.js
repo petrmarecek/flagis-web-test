@@ -5,7 +5,6 @@ import moment from 'moment'
 import intersection from 'lodash/intersection'
 
 import {
-  getTaskDetail,
   getArchivedTasksVisibility,
   getInboxTasksVisibility
 } from '../app-state/app-state.selectors'
@@ -599,7 +598,6 @@ export const getCurrentTask = createSelector(
 )
 
 export const getNextTask = createSelector(
-  getTaskDetail,
   getSelectionTasks,
   getArchivedTasksVisibility,
   getArchivedTasksItems,
@@ -613,8 +611,7 @@ export const getNextTask = createSelector(
   getEntitiesFollowers,
   getEntitiesContacts,
   getActiveTagsIds,
-  (isTaskDetail,
-   selectionTasks,
+  (selectionTasks,
    isArchivedTasksVisible,
    archivedTasksItems,
    isInboxTasksVisible,
@@ -627,10 +624,6 @@ export const getNextTask = createSelector(
    entitiesFollowers,
    entitiesContacts,
    activeTagsIds) => {
-    if (!isTaskDetail) {
-      return null
-    }
-
     const selectedTaskId = getSelectedTaskId(selectionTasks)
     if (!selectedTaskId) {
       return null
@@ -680,7 +673,6 @@ export const getNextTask = createSelector(
 )
 
 export const getPreviousTask = createSelector(
-  getTaskDetail,
   getSelectionTasks,
   getArchivedTasksVisibility,
   getArchivedTasksItems,
@@ -694,8 +686,7 @@ export const getPreviousTask = createSelector(
   getEntitiesFollowers,
   getEntitiesContacts,
   getActiveTagsIds,
-  (isTaskDetail,
-   selectionTasks,
+  (selectionTasks,
    isArchivedTasksVisible,
    archivedTasksItems,
    isInboxTasksVisible,
@@ -708,10 +699,6 @@ export const getPreviousTask = createSelector(
    entitiesFollowers,
    entitiesContacts,
    activeTagsIds) => {
-    if (!isTaskDetail) {
-      return null
-    }
-
     const selectedTaskId = getSelectedTaskId(selectionTasks)
     if (!selectedTaskId) {
       return null

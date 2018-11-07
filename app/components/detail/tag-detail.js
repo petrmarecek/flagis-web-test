@@ -79,7 +79,8 @@ const TagDetail = props => {
                 <DetailSubjectTagContentEditable
                   html={tag.title}
                   enforcePlainText
-                  onChange={onHandleTitleUpdate} />
+                  onChange={onHandleTitleUpdate}
+                  allowed />
               </span>
             </DetailSubject>
           </DetailContentSubject>
@@ -93,7 +94,7 @@ const TagDetail = props => {
               onClick={onHandleDelete}/>
           </DetailContentIcon>
         </DetailContentTop>
-        <DetailContentCenter column>
+        <DetailContentCenter column allowed>
           <DetailContentTagColor>
             <DetailTagColorSelector>
               <DetailTagColorSelectorLabel>

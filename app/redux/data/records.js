@@ -52,6 +52,8 @@ export const Visibility = Record({
 
 export const Detail = Record({
   task: false,
+  archive: false,
+  inbox: false,
   tag: false,
   contact: false,
   animation: false,
