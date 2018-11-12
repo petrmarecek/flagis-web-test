@@ -76,4 +76,8 @@ export const infoMessages = {
   treeItems: {
     edit: 'You are editing tag properties (not the filter).',
   },
+
+  tasks: {
+    removeFollower: 'Owner has just removed you from task.',
+  },
 }

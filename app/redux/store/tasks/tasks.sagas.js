@@ -23,7 +23,7 @@ import dateUtil from 'redux/utils/date'
 import { getAssigneeOfTask } from 'redux/utils/component-helper'
 
 import { toast } from 'react-toastify'
-import { successMessages } from 'utils/messages'
+import { successMessages, infoMessages } from 'utils/messages'
 import constants from 'utils/constants'
 
 const TASKS = taskActions.TASKS
@@ -38,20 +38,53 @@ function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
   const storeItems = yield select(state => taskSelectors.getTasksItems(state))
   const storeArchivedItems = yield select(state => taskSelectors.getArchivedTasksItems(state))
   const storeInboxItems = yield select(state => taskSelectors.getInboxTasksItems(state))
+  const storeSelectionItem = yield select(state => taskSelectors.getSelectionTasks(state).first())
   const isDetailVisible = yield select(state => appStateSelectors.getDetail(state))
   const { id, isArchived, isTrashed } = task
 
-  // Set isInbox property in task entities
+  // Collaborated task
   if (isCollaboratedTask) {
+    // Set isInbox property in task entities
     const { followers } = task
     const assignee = getAssigneeOfTask(Object.values(followers))
     const { status } = assignee
+    task.isInbox = status === 'pending'
 
-    if (status === 'pending' && changeType === 'removed') {
+    // Remove follower from task (pending, accepted)
+    if ((status === 'pending'|| status === 'accepted') && changeType === 'removed') {
+      // Close task detail
+      if (isDetailVisible.task && storeSelectionItem === id) {
+        yield put(appStateActions.deselectDetail('task'))
+      }
+
+      // Close inbox detail
+      if (isDetailVisible.inbox && storeSelectionItem === id) {
+        yield put(appStateActions.deselectDetail('inbox'))
+      }
+
+      toast.info(infoMessages.tasks.removeFollower, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+      })
+
+      // Call action for edit redux-store
+      yield put({
+        type: TASKS.FIREBASE_REMOVE_TASK_FOLLOWER,
+        payload: {
+          taskId: id,
+          followerId: assignee.id
+        }
+      })
+
       return
     }
 
-    task.isInbox = status === 'pending'
+    // Move task from inbox to tasks list (accepted)
+    if (assignee.status === 'accepted' && !isTrashed && !storeItems.includes(id) && storeInboxItems.includes(id)) {
+      
+      // Update task in search
+      search.tasks.updateItem(task)
+    }
   }
 
   // Return task from archive
@@ -63,17 +96,10 @@ function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
     })
 
     // Close archive detail
-    if (isDetailVisible.archive) {
+    if (isDetailVisible.archive && storeSelectionItem === id) {
       yield put(appStateActions.deselectDetail('archive'))
     }
 
-    // Update task in search
-    search.tasks.updateItem(task)
-  }
-
-  // Move task from inbox to tasks list (accepted)
-  if (!isArchived && !isTrashed && !storeItems.includes(id) && storeInboxItems.includes(id)) {
-    
     // Update task in search
     search.tasks.updateItem(task)
   }
@@ -87,7 +113,7 @@ function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
     })
 
     // Close task detail
-    if (isDetailVisible.task) {
+    if (isDetailVisible.task && storeSelectionItem === id) {
       yield put(appStateActions.deselectDetail('task'))
     }
 
@@ -105,17 +131,17 @@ function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
   if (isTrashed) {
 
     // Close task detail
-    if (isDetailVisible.task) {
+    if (isDetailVisible.task && storeSelectionItem === id) {
       yield put(appStateActions.deselectDetail('task'))
     }
 
     // Close archive detail
-    if (isDetailVisible.archive) {
+    if (isDetailVisible.archive && storeSelectionItem === id) {
       yield put(appStateActions.deselectDetail('archive'))
     }
 
     // Close inbox detail
-    if (isDetailVisible.inbox) {
+    if (isDetailVisible.inbox && storeSelectionItem === id) {
       yield put(appStateActions.deselectDetail('inbox'))
     }
 

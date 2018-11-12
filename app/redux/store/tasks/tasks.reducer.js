@@ -90,6 +90,11 @@ export default typeToReducer({
     }
   },
 
+  [TASKS.FIREBASE_REMOVE_TASK_FOLLOWER]: (state, action) => state
+    .updateIn(['items'], list => list.filter(taskId => taskId !== action.payload.taskId))
+    .updateIn(['inbox', 'items'], list => list.filter(taskId => taskId !== action.payload.taskId))
+    .updateIn(['selection'], list => list.filter(taskId => taskId !== action.payload.taskId)),
+
   [TASKS.SET_TIME_LINE]: state => state
     .setIn(['timeLine'], true),
 

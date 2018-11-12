@@ -34,6 +34,10 @@ export default typeToReducer({
     FULFILLED: (state, action) => saveTasks(action.payload, state)
   },
 
+  [TASKS.FIREBASE_REMOVE_TASK_FOLLOWER]: (state, action) => state
+    .deleteIn(['tasks', action.payload.taskId])
+    .deleteIn(['followers', action.payload.followerId]),
+
   [TASKS.SET_COMPLETE]: (state, action) => state
     .setIn(['tasks', action.payload.taskId, 'isCompleted'], true)
     .setIn(['tasks', action.payload.taskId, 'completedAt'], new Date().toISOString())
