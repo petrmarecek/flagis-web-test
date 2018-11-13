@@ -17,7 +17,7 @@ const Button = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-left: ${props => props.rejected ? '6px' : '0'};
+  margin-right: ${props => props.rejected ? '0' : '6px'};
   background-color: ${props => props.rejected ? '#FF6A6A' : '#44FFB1'};
   font-size: 16px;
   font-style: italic;

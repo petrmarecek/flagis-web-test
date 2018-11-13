@@ -17,7 +17,8 @@ export default {
   OFFSET: 100,
   MIN_HINTS_HEIGHT: 200,
 
-  // Follower icons
+  // Icons
+  CONTACT_EXIST: 21,
   FOLLOWER_ICON_WIDTH: 22,
   FOLLOWER_ICON_HEIGHT: 28,
   NEW_FOLLOWER_ICON_WIDTH: 20,

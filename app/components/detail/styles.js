@@ -106,17 +106,20 @@ const DetailContentTagAutocompleteTags = styled.ul`
 const DetailContentButton = styled.div`
   ${boxSizing('border-box')}
   flex: 0 0 117px;
-  margin: 11px 0;
+  display: flex;
+  align-items: center;
+  margin-right: 7px;
   pointer-events: ${props => props.allowed ? 'auto' : 'none'};
 `;
 
 const DetailContentIcon = styled.div`
   ${boxSizing('border-box')}
+  display: flex;
+  align-items: center;
   pointer-events: auto;
   flex: 0 0 35px;
   text-align: right;
   padding-right: 6px;
-  padding-top: ${props => props.contactIcon ? '14px' : '10px'};
 `;
 
 const DetailContentCenter = styled.div`

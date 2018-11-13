@@ -133,9 +133,11 @@ const DueDate =  styled.div`
 const Followers = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   height: 50px;
+  width: 70px;
   position: absolute;
-  right: 26px;
+  right: 0;
   top: 0;
   z-index: 1;
 `;

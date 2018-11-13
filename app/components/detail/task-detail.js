@@ -327,7 +327,7 @@ const TaskDetail = props => {
                 </DetailContentAddContactContent>
                 {!isInboxVisible && isOwner && 
                 <DetailContentAddContactIcon>
-                  <FollowerIcon status={followerStatus} scale={0.75}/>
+                  <FollowerIcon status={followerStatus} iconScale={0.75}/>
                 </DetailContentAddContactIcon>}
               </DetailContentAddContact>
               <DetailContentDate>
