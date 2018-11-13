@@ -3,29 +3,9 @@ import { getContactDetail } from '../app-state/app-state.selectors'
 import { getEntitiesContacts } from '../entities/entities.selectors'
 import { createSelector } from 'reselect'
 import search from 'redux/services/search'
+import { compareContactByEmail } from '../../utils/component-helper'
 
 // ------ Helper functions ----------------------------------------------------
-
-/**
- * Compares email two contact and sorts it
- * @param {Object} contactA Contact record
- * @param {Object} contactB Contact record
- * @return {Number}
- */
-
-export const compareContactByEmail = (contactA, contactB) => {
-
-  const emailA = contactA.email.toLowerCase()
-  const emailB = contactB.email.toLowerCase()
-
-  if (emailA > emailB) {
-    return 1
-  } else if (emailA < emailB) {
-    return -1
-  } else {
-    return 0
-  }
-}
 
 /**
  * Loads contacts entities

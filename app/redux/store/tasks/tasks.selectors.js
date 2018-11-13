@@ -16,6 +16,7 @@ import {
 } from '../entities/entities.selectors'
 import { getActiveTagsIds } from '../tags/tags.selectors'
 import { getTasksMenu } from '../tasks-menu/tasks-menu.selectors'
+import { compareTaskBySubject } from '../../utils/component-helper'
 
 // ------ Helper functions ----------------------------------------------------
 
@@ -132,11 +133,7 @@ function loadTasks(ids, data) {
 
   // apply sort alphabetically
   if (tasksMenu.getIn(['sort', 'alphabet'])) {
-    tasks.sort((a, b) => {
-      if(a.subject.toLowerCase() < b.subject.toLowerCase()) return -1;
-      if(a.subject.toLowerCase() > b.subject.toLowerCase()) return 1;
-      return 0;
-    })
+    tasks.sort(compareTaskBySubject)
   }
 
   // apply time line

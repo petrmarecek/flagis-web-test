@@ -231,18 +231,25 @@ export function getAssigneeOfTask(followers) {
   return result
 }
 
-export const compareTagByTitle = (tagA, tagB) => {
+export const compareTaskBySubject = (taskA, taskB) => {
+  const subjectA = taskA.subject.toLowerCase()
+  const subjectB = taskB.subject.toLowerCase()
 
+  return subjectA.localeCompare(subjectB)
+}
+
+export const compareTagByTitle = (tagA, tagB) => {
   const titleA = tagA.title.toLowerCase()
   const titleB = tagB.title.toLowerCase()
 
-  if (titleA > titleB) {
-    return 1
-  } else if (titleA < titleB) {
-    return -1
-  } else {
-    return 0
-  }
+  return titleA.localeCompare(titleB)
+}
+
+export const compareContactByEmail = (contactA, contactB) => {
+  const emailA = contactA.email.toLowerCase()
+  const emailB = contactB.email.toLowerCase()
+
+  return emailA.localeCompare(emailB)
 }
 
 export const getSortedTags = (tags, selectedTags) => {
