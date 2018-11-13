@@ -4,7 +4,7 @@ import { compose, withStateHandlers } from 'recompose'
 import { connect } from 'react-redux'
 
 import { createTag } from 'redux/store/tags/tags.actions'
-import { isStringEmpty } from '../../redux/utils/component-helper'
+import { isStringEmpty, getColorIndex } from '../../redux/utils/component-helper'
 
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
@@ -100,7 +100,8 @@ export default compose(
           return {}
         }
 
-        props.createTag({ title })
+        const colorIndex = getColorIndex(null, title)
+        props.createTag({ title, colorIndex })
         return { title: '' }
       },
     }
