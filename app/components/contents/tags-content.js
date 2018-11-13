@@ -6,7 +6,7 @@ import { compose, withHandlers } from 'recompose'
 import { updateTagSearch } from 'redux/store/tags/tags.actions'
 import { getTagsSearch } from 'redux/store/tags/tags.selectors'
 
-import TagList from 'components/tag-list/tag-list-container'
+import TagList from 'components/tag-list'
 import SearchBox from 'components/common/search-box'
 import AddTagForm from 'components/common/add-tag-form'
 

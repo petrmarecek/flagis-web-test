@@ -17,6 +17,7 @@ import FollowerResponseButtons from '../common/follower-response-buttons'
 import TaskListTagItems from './task-list-tag-items'
 import FollowerIcon from '../common/follower-icon'
 
+import { EmptyList } from 'components/styled-components-mixins'
 import {
   TaskItem,
   Completed,
@@ -211,6 +212,10 @@ const TaskListItem = props => {
     connectDropTarget,
   } = props
 
+  if (noTaskFound) {
+    return <EmptyList>No tasks found</EmptyList>
+  }
+
   // Conditions
   const isArchivedList = listType === 'archived'
   const isInboxList = listType === 'inbox'
@@ -275,90 +280,89 @@ const TaskListItem = props => {
   }
 
   // Render component
-  return connectDragSource(connectDropTarget(
-    <div>
-      {noTaskFound &&
-      <li className="empty-list">No task found</li>}
-
-      {!noTaskFound &&
-      <TaskItem
-        key={task.id}
-        tabIndex="-1"
-        data-item-id={task.id}
-        onClick={onHandleClicked}
-        active={task.active}
-        selected={isSelected}
-        backgroundColor={backgroundColor}
-        completed={isCompletedMainList}
-        dragging={isDragging}>
-        {!isArchivedList && !isInboxList &&
-        <Completed
-          icon={ICONS.TASK_CHECKED}
-          color={task.isCompleted ? ['#c2fee5'] : ['#D7E3EC']}
-          hoverColor={["#00FFC7"]}
-          width={22}
-          height={21}
-          onClick={onHandleCompleteClicked} />}
-        {task.isCompleted && !isInboxList &&
-        <Archived
-          icon={isArchivedList ? ICONS.NON_ARCHIVE : ICONS.ARCHIVE}
-          color={isArchivedList ? ['#282f34'] : ['#8c9ea9']}
-          width={24}
-          height={27}
-          scale={0.926}
-          onClick={onHandleArchiveClicked}
-          animation={!task.isCompleted ? null : {
-            action: 'transition.expandIn',
-            duration: 1000,
-          }} 
-          archived={isArchivedList} />}
-          {isInboxList && 
-          <FollowerResponse>
-            <FollowerResponseButtons
-              acceptClicked={onHandleAcceptClicked}
-              rejectClicked={onHandleRejectClicked} />
-          </FollowerResponse>}
-        <Content
-          marginLeft={contentMarginLeft}
-          followers={isFollowers}>
-          <SubjectTags>
-            <Subject
-              archived={isArchivedList}
-              completed={isCompletedMainList}
-              important={task.isImportant}
-              description={isDescription}>{task.subject}</Subject>
-            <Tags>
-              <TaskListTagItems
-                tags={sortedTags}
-                parentWidth={taskItemWidth}
-                onTagClick={onHandleTagClicked} />
-            </Tags>
-          </SubjectTags>
-          <DescriptionDueDate>
-            {isDescription &&
-            <Description completed={isCompletedMainList}>{description}</Description>}
-            <DueDate
-              title={fromNow}
-              overdue={moment(dueDate) < now && !isArchivedList}
-              completed={isCompletedMainList}
-              description={isDescription}>{dueDateFormat}</DueDate>
-          </DescriptionDueDate>
-        </Content>
-        {isFollowers && (followerStatus !== 'new') &&
-        <Followers>
-          <FollowerIcon status={followerStatus} defaultIcon={isInboxList || !isOwner} />
-        </Followers>}
-      </TaskItem>}
-    </div>
-  ))
+  return (
+    <TaskItem
+      key={task.id}
+      tabIndex="-1"
+      data-item-id={task.id}
+      onClick={onHandleClicked}
+      active={task.active}
+      selected={isSelected}
+      backgroundColor={backgroundColor}
+      completed={isCompletedMainList}
+      dragging={isDragging}
+      innerRef={instance => {
+        connectDragSource(instance)
+        connectDropTarget(instance)
+      }}>
+      {!isArchivedList && !isInboxList &&
+      <Completed
+        icon={ICONS.TASK_CHECKED}
+        color={task.isCompleted ? ['#c2fee5'] : ['#D7E3EC']}
+        hoverColor={["#00FFC7"]}
+        width={22}
+        height={21}
+        onClick={onHandleCompleteClicked} />}
+      {task.isCompleted && !isInboxList &&
+      <Archived
+        icon={isArchivedList ? ICONS.NON_ARCHIVE : ICONS.ARCHIVE}
+        color={isArchivedList ? ['#282f34'] : ['#8c9ea9']}
+        width={24}
+        height={27}
+        scale={0.926}
+        onClick={onHandleArchiveClicked}
+        animation={!task.isCompleted ? null : {
+          action: 'transition.expandIn',
+          duration: 1000,
+        }} 
+        archived={isArchivedList} />}
+        {isInboxList && 
+        <FollowerResponse>
+          <FollowerResponseButtons
+            acceptClicked={onHandleAcceptClicked}
+            rejectClicked={onHandleRejectClicked} />
+        </FollowerResponse>}
+      <Content
+        marginLeft={contentMarginLeft}
+        followers={isFollowers}>
+        <SubjectTags>
+          <Subject
+            archived={isArchivedList}
+            completed={isCompletedMainList}
+            important={task.isImportant}
+            description={isDescription}>{task.subject}</Subject>
+          <Tags>
+            <TaskListTagItems
+              tags={sortedTags}
+              parentWidth={taskItemWidth}
+              onTagClick={onHandleTagClicked} />
+          </Tags>
+        </SubjectTags>
+        <DescriptionDueDate>
+          {isDescription &&
+          <Description completed={isCompletedMainList}>{description}</Description>}
+          <DueDate
+            title={fromNow}
+            overdue={moment(dueDate) < now && !isArchivedList}
+            completed={isCompletedMainList}
+            description={isDescription}>{dueDateFormat}</DueDate>
+        </DescriptionDueDate>
+      </Content>
+      {isFollowers && (followerStatus !== 'new') &&
+      <Followers>
+        <FollowerIcon status={followerStatus} defaultIcon={isInboxList || !isOwner} />
+      </Followers>}
+    </TaskItem>
+  )
 }
 
-TaskItem.propTypes = {
+TaskListItem.propTypes = {
   // Data
   userId: PropTypes.string,
   task: PropTypes.object,
   noTaskFound: PropTypes.bool,
   listType: PropTypes.string,
+  selectedTags: PropTypes.object,
   isSelected: PropTypes.bool,
   section: PropTypes.string,
   isDragging: PropTypes.bool,

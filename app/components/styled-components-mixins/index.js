@@ -1,4 +1,4 @@
-import { css } from 'styled-components'
+import styled, { css } from 'styled-components'
 import { markdownStyles } from './markdown-styles'
 import {
   Form,
@@ -14,7 +14,17 @@ import {
   FormLink,
 } from './forms'
 
-// fonts
+/* ----------------------------- Lists -----------------------------------*/
+const EmptyList = styled.div`
+  color: #8c9da9;
+  text-align: center;
+  font-style: italic;
+  font-size: 16px;
+  height: 50px;
+  line-height: 50px;
+`;
+
+/* ----------------------------- Fonts -----------------------------------*/
 const fontMain = css`
   font-family: 'Source Sans Pro', 'Segoe UI', sans-serif;
   font-weight: 400;
@@ -38,7 +48,7 @@ const fontIconMdi = css`
   transform: translate(0, 0);
 `;
 
-// mixins
+/* ----------------------------- Mixins -----------------------------------*/
 const boxSizing = value => css`
   -webkit-box-sizing: ${value};
   -moz-box-sizing: ${value};
@@ -124,13 +134,16 @@ const commonInputSmall = css`
 `;
 
 export {
-  // fonts
+  // Lists
+  EmptyList,
+
+  // Fonts
   fontMain,
   fontSub,
   fontBold,
   fontIconMdi,
 
-  // mixins
+  // Mixins
   boxSizing,
   boxShadow,
   borderRadius,
@@ -142,10 +155,10 @@ export {
   placeholderColor,
   commonInputSmall,
 
-  // markdown
+  // Markdown
   markdownStyles,
 
-  // forms
+  // Forms
   Form,
   FormBody,
   FormBodyFields,

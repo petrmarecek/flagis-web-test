@@ -13,12 +13,12 @@ import ContactItem from './contact-item'
 import ShadowScrollbar from '../common/shadow-scrollbar'
 import Loader from '../common/loader'
 
+import { EmptyList } from 'components/styled-components-mixins'
+
 const ContactList = ({ contacts, onHandleClickContact, onHandleClickInvitation }) => {
 
   if (contacts.items.length === 0) {
-    return (
-      <div className="empty-list">No contacts found</div>
-    )
+    return <EmptyList>No contacts found</EmptyList>
   }
 
   const scrollStyle = {
@@ -31,13 +31,15 @@ const ContactList = ({ contacts, onHandleClickContact, onHandleClickInvitation }
 
   return (
     <ShadowScrollbar style={scrollStyle}>
-      {contacts.items.map(contact => (
-        <ContactItem
-          key={contact.id}
-          contact={contact}
-          onClickContact={onHandleClickContact}
-          onClickInvitation={onHandleClickInvitation} />
-      ))}
+      <ul>
+        {contacts.items.map(contact => (
+          <ContactItem
+            key={contact.id}
+            contact={contact}
+            onClickContact={onHandleClickContact}
+            onClickInvitation={onHandleClickInvitation} />
+        ))}
+      </ul>
     </ShadowScrollbar>
   )
 }
