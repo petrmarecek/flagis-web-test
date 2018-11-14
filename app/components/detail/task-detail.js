@@ -114,6 +114,7 @@ const TaskDetail = props => {
     isImportant: task.isImportant,
     isFollowers: assignee !== null,
     isOwner: task.createdById === userId,
+    isArchivedOrInbox: task.isArchived || isInboxVisible,
   })
 
   const {
@@ -132,12 +133,17 @@ const TaskDetail = props => {
     isTags,
     isFollowers,
     isImportant,
-    isOwner
+    isOwner,
+    isArchivedOrInbox,
   } = getBindingData
-
+  
+  // Conditionals
   const isAcceptedStatus = followerStatus !== 'new' && followerStatus !== 'pending' && followerStatus !== 'rejected'
   const isOwnerAcceptedTask = isOwner && (followerStatus === 'accepted')
   const isBackgroundTopContent = isCompleted || isOwnerAcceptedTask
+  const isArchivedOrCollaborated = isArchived || !isOwner
+  
+  // Data about owner of task
   const createdByFollower = {
     id: createdBy.id,
     profile: createdBy,
@@ -311,7 +317,7 @@ const TaskDetail = props => {
                   {!isOwner ? 'From:' : 'To:'}
                 </DetailContentAddContactLabel>
                 <DetailContentAddContactContent isOwner={isOwner}>
-                  {isArchived || !isOwner &&
+                  {isArchivedOrCollaborated &&
                   <DetailContentAutocompleteContacts>
                     <FollowerItems followers={!isOwner ? List().push(createdByFollower) : followers}/>
                   </DetailContentAutocompleteContacts>}
@@ -392,10 +398,10 @@ const TaskDetail = props => {
               <Loader />}
               {!attachments.isFetching &&
               <AttachmentList
-                disabled={isArchived}
+                disabled={isArchivedOrInbox}
                 attachments={attachments}
                 attachmentDelete={onHandleAttachmentDelete} />}
-              {!isArchived && <FilePicker onFileUploaded={onHandleFileUploaded}/>}
+              {!isArchivedOrInbox && <FilePicker onFileUploaded={onHandleFileUploaded}/>}
             </DetailContentAttachments>
           </DetailContentProperties>
           <DetailContentDescriptionTask allowed={isOwner && !isCompleted}>
