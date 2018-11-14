@@ -549,13 +549,15 @@ export default compose(
   }),
   lifecycle({
     componentDidMount() {
-      if (this.props.detail.task) {
-        const { id } = this.props.task
+      const { detail, task } = this.props
+
+      if (detail.task || detail.inbox || detail.archive) {
         // Load attachments
-        this.props.fetchAttachment(id)
+        this.props.fetchAttachment(task.id)
         // Load comments
-        this.props.fetchComment(id)
+        this.props.fetchComment(task.id)
       }
+      console.log('mount')
 
       document.getElementById('user-container').addEventListener('click', this.props.onHandleClickOutSide, false)
       document.addEventListener('keydown', this.props.onHandleKeyDown, false)
