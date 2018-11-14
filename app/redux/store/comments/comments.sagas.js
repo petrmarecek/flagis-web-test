@@ -16,6 +16,7 @@ const COMMENTS = commentActions.COMMENTS
 function* saveChangeFromFirestore(change) {
   const { FULFILLED } = createLoadActions(COMMENTS.FIREBASE)
   const comment = change.doc.data()
+  console.log(comment)
 
   // Prepare data
   const normalizeData = normalize(comment, schema.comment)
@@ -54,7 +55,7 @@ export function* initCommentsData() {
   while (true) { // eslint-disable-line
     let detail = (yield take(APP_STATE.SET_DETAIL)).payload.detail
 
-    if (detail === 'task') {
+    if (detail === 'task' || detail === 'inbox') {
       const initTime = dateUtil.getDateToISOString()
       const taskId = yield select(state => taskSelectors.getSelectionTasks(state).first())
 

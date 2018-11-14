@@ -557,7 +557,6 @@ export default compose(
         // Load comments
         this.props.fetchComment(task.id)
       }
-      console.log('mount')
 
       document.getElementById('user-container').addEventListener('click', this.props.onHandleClickOutSide, false)
       document.addEventListener('keydown', this.props.onHandleKeyDown, false)
