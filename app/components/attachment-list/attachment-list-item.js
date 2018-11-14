@@ -10,31 +10,28 @@ import {
   AttachmentItemFileName,
 } from './styles'
 
-const AttachmentListItem = ({ attachment, disabled, onHandleAttachmentDelete }) => {
-
-  return (
-    <AttachmentItemContainer>
-      <AttachmentItemIconFile
-        icon={ICONS.FILE_EMPTY}
-        width={18}
-        height={18}
-        scale={0.56}
-        color={["#8C9DA9"]}/>
-      {!disabled &&
-      <AttachmentItemIconRemove
-        icon={ICONS.CROSS_SIMPLE}
-        width={11}
-        height={11}
-        scale={0.78}
-        color={["#8c9da9"]}
-        hoverColor={["#282f34"]}
-        onClick={onHandleAttachmentDelete}/>}
-      <AttachmentItemFileName>
-        <a href={attachment.url} target="_blank">{attachment.fileName}</a>
-      </AttachmentItemFileName>
-    </AttachmentItemContainer>
-  )
-}
+const AttachmentListItem = ({ attachment, disabled, onHandleAttachmentDelete }) => (
+  <AttachmentItemContainer>
+    <AttachmentItemIconFile
+      icon={ICONS.FILE_EMPTY}
+      width={18}
+      height={18}
+      scale={0.56}
+      color={["#8C9DA9"]}/>
+    {!disabled &&
+    <AttachmentItemIconRemove
+      icon={ICONS.CROSS_SIMPLE}
+      width={11}
+      height={11}
+      scale={0.78}
+      color={["#8c9da9"]}
+      hoverColor={["#282f34"]}
+      onClick={onHandleAttachmentDelete}/>}
+    <AttachmentItemFileName>
+      <a href={attachment.url} target="_blank">{attachment.fileName}</a>
+    </AttachmentItemFileName>
+  </AttachmentItemContainer>
+)
 
 AttachmentListItem.propTypes = {
   attachment: PropTypes.object,

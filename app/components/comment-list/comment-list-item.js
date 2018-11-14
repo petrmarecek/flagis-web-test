@@ -11,28 +11,31 @@ import {
   CommentItemContent,
 } from './styles'
 
-const CommentListItem = ({ comment }) => {
-  const dateText = comment.id === null
-    ? 'Not synced'
-    : dateUtil.formatDate(comment.createdAt)
+const CommentListItem = ({ comment, userId }) => {
+  const { createdById, createdAt, author, content } = comment
+  const dateText = dateUtil.formatDate(createdAt)
+  const icon = createdById === userId
+    ? { type: ICONS.COMMENT, width: 15, height: 14, scale: 0.57 }
+    : { type: ICONS.COMMENT_FILL, width: 17, height: 15, scale: 1.15}
 
   return (
     <CommentItemContainer>
       <CommentItemIcon
-        icon={ICONS.COMMENT}
-        width={15}
-        height={14}
-        scale={0.57}
+        icon={icon.type}
+        width={icon.width}
+        height={icon.height}
+        scale={icon.scale}
         color={["#8C9DA9"]}/>
-      <CommentItemAuthor>{comment.author}</CommentItemAuthor>
+      <CommentItemAuthor>{author}</CommentItemAuthor>
       <CommentItemDate>{dateText}</CommentItemDate>
-      <CommentItemContent>{comment.content}</CommentItemContent>
+      <CommentItemContent>{content}</CommentItemContent>
     </CommentItemContainer>
   )
 }
 
 CommentListItem.propTypes = {
   comment: PropTypes.object,
+  userId: PropTypes.string,
 }
 
 export default CommentListItem
