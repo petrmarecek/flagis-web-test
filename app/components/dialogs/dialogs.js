@@ -5,6 +5,7 @@ import { toast } from 'react-toastify'
 import { errorMessages } from 'utils/messages'
 import constants from 'utils/constants'
 
+import { getUserId } from 'redux/store/auth/auth.selectors'
 import { hideDialog } from 'redux/store/app-state/app-state.actions'
 import { getCurrentDialog } from 'redux/store/app-state/app-state.selectors'
 import {
@@ -77,6 +78,7 @@ class Dialogs extends PureComponent {
     setActiveTags: PropTypes.func.isRequired,
     tags: PropTypes.object,
     tagsLists: PropTypes.object,
+    userId: PropTypes.string,
     deselectTasks: PropTypes.func,
     deselectTags: PropTypes.func,
     addToList: PropTypes.func,
@@ -143,6 +145,10 @@ class Dialogs extends PureComponent {
     let newTaskCompleteList = this.props.completedTasks
     let newArchivedTasks = this.props.archivedTasks
     let newTaskEntitiesList = this.props.entitiesTasks
+    deleteTasks = deleteTasks.filter(taskId =>
+      newTaskEntitiesList.get(taskId).createdById === this.props.userId
+    )
+
     const originalData = {
       taskDeleteList: deleteTasks,
       taskList: newTasksList,
@@ -152,6 +158,7 @@ class Dialogs extends PureComponent {
     }
 
     for (const taskId of deleteTasks) {
+
       newTasksList = newTasksList.includes(taskId)
         ? newTasksList.delete(newTasksList.indexOf(taskId))
         : newTasksList
@@ -389,6 +396,7 @@ const mapStateToProps = state => ({
   multiSelectRemoveTags: getMultiSelectRemoveTagsIds(state),
   multiSelectRemoveEntitiesTags: getMultiSelectRemoveTags(state),
   selectTasks: getSelectTasks(state),
+  userId: getUserId(state)
 })
 
 const mapDispatchToProps = {

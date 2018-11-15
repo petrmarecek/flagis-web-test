@@ -119,8 +119,8 @@ export default class TasksMenuMultiSelect extends PureComponent {
           icon={ICONS.TRASH}
           width={23}
           height={26}
-          color={["#8C9DA9", "#8C9DA9", "#8C9DA9", "#8C9DA9"]}
-          hoverColor={["#FF6A6A", "#FF6A6A", "#FF6A6A", "#FF6A6A"]}
+          color={["#8C9DA9"]}
+          hoverColor={["#FF6A6A"]}
           className="multi-select__items"
           onClick={this.props.onDelete}/>
         <FileDownload

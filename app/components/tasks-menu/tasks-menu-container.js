@@ -153,13 +153,15 @@ class TasksMenuContainer extends PureComponent {
 
   // Multi Select
   handleAddRemoveTags = () => {
-    this.props.showDialog('add-remove-tags', {tasks: this.props.selectTasks})
+    this.props.showDialog('add-remove-tags', { tasks: this.props.selectTasks })
   }
 
   handleDelete = () => {
-    if (this.props.selectTaskCount !== 0) {
-      this.props.showDialog('task-delete-confirm', {tasks: this.props.selectTasks})
+    if (this.props.selectTaskCount === 0) {
+      return
     }
+
+    this.props.showDialog('task-delete-confirm', { tasks: this.props.selectTasks })
   }
 
   render() {
