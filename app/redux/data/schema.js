@@ -5,8 +5,9 @@ const contact = new schema.Entity('contacts', {}, { idAttribute: 'id' })
 const contacts = new schema.Array(contact)
 
 const profile = new schema.Entity('profile', {}, { idAttribute: 'id' })
+const createdBy = new schema.Entity('createdBy', {}, { idAttribute: 'id' })
 
-const follower = new schema.Entity('followers', { profile }, { 
+const follower = new schema.Entity('followers', { profile }, {
   idAttribute: 'id',
   processStrategy: entity => {
     if (_.has(entity, 'userId')) {
@@ -28,7 +29,7 @@ const treeItems = new schema.Array(treeItem)
 const tree = new schema.Entity('tree', { items: treeItems }, { idAttribute: 'parentId' })
 const trees = new schema.Array(tree)
 
-const task = new schema.Entity('tasks', { tags, followers }, { 
+const task = new schema.Entity('tasks', { tags, followers, createdBy }, { 
   idAttribute: 'id',
   processStrategy: entity => _.omit(entity, 'followerIds'),
 })

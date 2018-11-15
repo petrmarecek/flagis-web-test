@@ -1,6 +1,7 @@
 import { Map, List } from 'immutable'
 import typeToReducer from 'type-to-reducer'
 import dateUtil from 'redux/utils/date'
+import _ from 'lodash'
 
 import { AUTH } from 'redux/store/auth/auth.actions'
 import { TASKS } from 'redux/store/tasks/tasks.actions'
@@ -311,6 +312,7 @@ function saveTree(payload, state) {
 }
 
 function saveTasks(payload, state) {
+  _.assign(payload.entities.profile, payload.entities.createdBy)
   const rawTasks = payload.entities.tasks || {}
   const rawTags = payload.entities.tags || {}
   const rawFollowers = payload.entities.followers || {}
