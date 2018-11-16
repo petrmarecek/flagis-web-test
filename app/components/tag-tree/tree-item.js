@@ -252,7 +252,6 @@ class TreeItem extends Component {
       'folder': this.props.treeItem.childItems.size > 0,
     })
 
-    //console.log({ isOver, dropPosition: this.state.dropPosition }, 'asdfasdf')
     const currentItemClasses = classnames({
       'tree-item': true,
       'drag-over': isOver && this.state.dropPosition === 'MIDDLE',

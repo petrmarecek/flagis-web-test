@@ -16,7 +16,6 @@ const COMMENTS = commentActions.COMMENTS
 function* saveChangeFromFirestore(change) {
   const { FULFILLED } = createLoadActions(COMMENTS.FIREBASE)
   const comment = change.doc.data()
-  console.log(comment)
 
   // Prepare data
   const normalizeData = normalize(comment, schema.comment)
