@@ -312,11 +312,15 @@ function saveTree(payload, state) {
 }
 
 function saveTasks(payload, state) {
-  _.assign(payload.entities.profile, payload.entities.createdBy)
+  const { profile, createdBy } = payload.entities
+  const profiles = profile 
+    ? _.assign(profile, createdBy)
+    : createdBy
+
   const rawTasks = payload.entities.tasks || {}
   const rawTags = payload.entities.tags || {}
   const rawFollowers = payload.entities.followers || {}
-  const rawContacts = payload.entities.profile || {}
+  const rawContacts = profiles || {}
   const contacts = convertToImmutable(rawContacts, records.Contact)
   const followers = convertToImmutable(rawFollowers, records.Follower)
   const tags = convertToImmutable(rawTags, records.Tag)
