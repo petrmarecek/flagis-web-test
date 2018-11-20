@@ -13,7 +13,7 @@ import {
 
 const CommentListItem = ({ comment, userId }) => {
   const { createdById, createdAt, author, content } = comment
-  const dateText = dateUtil.formatDate(createdAt)
+  const dateText = dateUtil.formatDateTime(createdAt)
   const icon = createdById === userId
     ? { type: ICONS.COMMENT, width: 15, height: 14, scale: 0.57 }
     : { type: ICONS.COMMENT_FILL, width: 17, height: 15, scale: 1.15}
