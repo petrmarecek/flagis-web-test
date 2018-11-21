@@ -15,7 +15,7 @@ import Icon from '../icons/icon'
 
 const fadeUp = keyframes`${fadeInUp}`;
 
-const TaskItem = styled.li`
+const TaskItem = styled.div`
   height: 50px;
   overflow: hidden;
   list-style-type: none;
