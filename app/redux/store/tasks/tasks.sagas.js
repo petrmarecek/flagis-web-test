@@ -1,4 +1,5 @@
 import { normalize } from 'normalizr'
+import { push } from 'react-router-redux'
 import { all, take, call, put, select, fork } from 'redux-saga/effects'
 import {
   createLoadActions,
@@ -432,8 +433,9 @@ export function* setSubject(action) {
 }
 
 export function* selectTask(action) {
-  const isMultiSelect = action.payload.isMultiSelect
-  const sizeOfTaskList = action.payload.taskList.size
+  const { taskList, isMultiSelect } = action.payload
+  const taskId = taskList.first()
+  const sizeOfTaskList = taskList.size
 
   if (isMultiSelect) {
     if (sizeOfTaskList === 0) {
@@ -449,15 +451,18 @@ export function* selectTask(action) {
     yield put(appStateActions.hideMultiSelect())
 
     if (archivedTasksVisible) {
+      yield put(push(`/user/account/archive/${taskId}`))
       yield put(appStateActions.setDetail('archive'))
       return
     }
 
     if (inboxTasksVisible) {
+      yield put(push(`/user/inbox/${taskId}`))
       yield put(appStateActions.setDetail('inbox'))
       return
     }
     
+    yield put(push(`/user/tasks/${taskId}`))
     yield put(appStateActions.setDetail('task'))
   }
 }

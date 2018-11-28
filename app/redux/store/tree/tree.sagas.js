@@ -126,6 +126,7 @@ export function* createTreeItem(action) {
 
 export function* selectPath(action) {
   yield put(taskActions.deselectTasks())
+  yield put(tagActions.deselectTags())
 
   const isInboxTasks = yield select(state => appStateSelectors.getInboxTasksVisibility(state))
   if (isInboxTasks) {
@@ -134,9 +135,7 @@ export function* selectPath(action) {
 
   const location = yield select(state => routingSelectors.getRoutingPathname(state))
   if (location !== '/user/tasks') {
-    if (location !== '/user/archive') {
-      yield put(push('/user/tasks'))
-    }
+    yield put(push('/user/tasks'))
   }
 
   const relatedTagIds = action.payload.map(treeItem => treeItem.tagId)

@@ -266,6 +266,22 @@ export function* resetPassword(action) {
 
 // ------ HELPER FUNCTIONS ----------------------------------------------------
 
+function getRedirectPathname() {
+  const { pathname } = window.location
+  const tasksTemplate = '/user/tasks'
+  const inboxTemplate = '/user/inbox'
+  const numberTasksTemplate = tasksTemplate.length
+  const numberInboxTemplate = inboxTemplate.length
+  const isTasksPathname = pathname.substring(0, numberTasksTemplate) === tasksTemplate
+  const isInboxPathname = pathname.substring(0, numberInboxTemplate) === inboxTemplate
+
+  if (isTasksPathname || isInboxPathname) {
+    return pathname
+  }
+
+  return tasksTemplate
+}
+
 function* setTokens({ accessToken, firebaseToken }) {
   api.setApiToken(accessToken)
   yield call(firebase.signIn, firebaseToken)
@@ -359,7 +375,8 @@ function* tokenLoop(auth) {
       yield put({ type: FULFILLED, payload: response })
 
       // redirect
-      const redirectAction = push('/user/tasks')
+      const redirectPathname = getRedirectPathname()
+      const redirectAction = push(redirectPathname)
       yield put(redirectAction)
 
       yield call(delay, response.expiresIn - constants.MIN_TOKEN_LIFESPAN)

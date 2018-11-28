@@ -29,7 +29,7 @@ const treeItems = new schema.Array(treeItem)
 const tree = new schema.Entity('tree', { items: treeItems }, { idAttribute: 'parentId' })
 const trees = new schema.Array(tree)
 
-const task = new schema.Entity('tasks', { tags, followers, createdBy }, { 
+const task = new schema.Entity('tasks', { tags, followers, createdBy }, {
   idAttribute: 'id',
   processStrategy: entity => _.omit(entity, 'followerIds'),
 })

@@ -13,6 +13,7 @@ import {
   showDialog,
   setAnimation,
   deselectAnimation,
+  changeLocation,
 } from 'redux/store/app-state/app-state.actions'
 import {
   selectTask,
@@ -298,6 +299,7 @@ const mapDispatchToProps = {
   showDialog,
   setAnimation,
   deselectAnimation,
+  changeLocation,
 }
 
 export default compose(
@@ -307,6 +309,18 @@ export default compose(
       const { detail } = props
 
       if (detail.task || detail.archive || detail.inbox) {
+        if (detail.task) {
+          props.changeLocation('/user/tasks')
+        }
+
+        if (detail.inbox) {
+          props.changeLocation('/user/inbox')
+        }
+
+        if (detail.archive) {
+          props.changeLocation('/user/account/archive')
+        }
+        
         props.deselectAnimation()
         props.deselectTasks()
         return
