@@ -185,14 +185,13 @@ class TasksMenuContainer extends PureComponent {
     })
 
     return (
-      <div
-        className="tasks-menu">
+      <div className="tasks-menu">
 
         <SearchBox
           onChange={this.handleSearchTextChange}
           value={this.props.tasksMenu.filters.searchText} />
 
-        {!isVisibleArchivedTasks && <TasksMenuNavigation />}
+        {!isMultiSelect && !isVisibleArchivedTasks && <TasksMenuNavigation />}
 
         {isMultiSelect &&
         <TasksMenuMultiSelect
