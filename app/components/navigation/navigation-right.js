@@ -26,7 +26,7 @@ import { NavButtonContainer, NavButton, InboxCounter } from './styles'
 const NavigationRight = props => {
 
   const {
-    location,
+    location: { pathname },
     timeLine,
     inboxCount,
     onHandleClickTasks,
@@ -35,10 +35,15 @@ const NavigationRight = props => {
     onHandleClickAccount
   } = props
 
-  const isTaskActive = (location.pathname === '/user/tasks' && !timeLine)
-  const isTagsActive = location.pathname === '/user/tags'
-  const isInboxActive = location.pathname === '/user/inbox'
-  const isAccountActive = location.pathname === '/user/account'
+  const tasksTemplate = '/user/tasks'
+  const inboxTemplate = '/user/inbox'
+  const numberTasksTemplate = tasksTemplate.length
+  const numberInboxTemplate = inboxTemplate.length
+
+  const isTaskActive = (pathname.substring(0, numberTasksTemplate) === tasksTemplate && !timeLine)
+  const isTagsActive = pathname === '/user/tags'
+  const isInboxActive = pathname.substring(0, numberInboxTemplate) === inboxTemplate
+  const isAccountActive = pathname === '/user/account'
   const color = '#fff'
 
   return (

@@ -30,13 +30,17 @@ import {
 const AccountMenu = props => {
 
   const {
-    location,
+    pathname,
     onHandleClickArchive,
     onHandleClickContacts,
     onHandleClickEditProfile,
     onHandleClickChangePassword,
     onHandleClickLogOut,
   } = props
+
+  const archiveTemplate = '/user/account/archive'
+  const numberArchiveTemplate = archiveTemplate.length
+  const isArchiveActive = pathname.substring(0, numberArchiveTemplate) === archiveTemplate
 
   return (
     <div>
@@ -46,12 +50,12 @@ const AccountMenu = props => {
             <MenuBoxItemIcon
               icon={ICONS.ARCHIVED}
               iconScale={0.94}
-              active={location === '/user/account/archive'}
+              active={isArchiveActive}
               type='archivedTasks'
               onChange={onHandleClickArchive} />
             <MenuBoxItemTitle
               title="Archived Tasks"
-              active={location === '/user/account/archive'}
+              active={isArchiveActive}
               type='archivedTasks'
               onChange={onHandleClickArchive} />
           </MenuBoxGroupItem>
@@ -59,12 +63,12 @@ const AccountMenu = props => {
             <MenuBoxItemIcon
               icon={ICONS.CONTACTS}
               iconScale={0.53}
-              active={location === '/user/account/contacts'}
+              active={pathname === '/user/account/contacts'}
               type='contactsList'
               onChange={onHandleClickContacts} />
             <MenuBoxItemTitle
               title="Contact List"
-              active={location === '/user/account/contacts'}
+              active={pathname === '/user/account/contacts'}
               type='contactsList'
               onChange={onHandleClickContacts} />
           </MenuBoxGroupItem>
@@ -77,12 +81,12 @@ const AccountMenu = props => {
             <MenuBoxItemIcon
               icon={ICONS.ACCOUNT}
               iconScale={0.72}
-              active={location === '/user/account/edit-profile'}
+              active={pathname === '/user/account/edit-profile'}
               type='editProfile'
               onChange={onHandleClickEditProfile} />
             <MenuBoxItemTitle
               title="Edit My Profile"
-              active={location === '/user/account/edit-profile'}
+              active={pathname === '/user/account/edit-profile'}
               type='editProfile'
               onChange={onHandleClickEditProfile} />
           </MenuBoxGroupItem>
@@ -90,12 +94,12 @@ const AccountMenu = props => {
             <MenuBoxItemIcon
               icon={ICONS.LOCK}
               iconScale={0.42}
-              active={location === '/user/account/change-password'}
+              active={pathname === '/user/account/change-password'}
               type='changePassword'
               onChange={onHandleClickChangePassword} />
             <MenuBoxItemTitle
               title="Change Password"
-              active={location === '/user/account/change-password'}
+              active={pathname === '/user/account/change-password'}
               type='changePassword'
               onChange={onHandleClickChangePassword} />
           </MenuBoxGroupItem>
@@ -121,7 +125,7 @@ const AccountMenu = props => {
 }
 
 AccountMenu.propTypes = {
-  location: PropTypes.string,
+  pathname: PropTypes.string,
   onHandleClickArchive: PropTypes.func,
   onHandleClickContacts: PropTypes.func,
   onHandleClickEditProfile: PropTypes.func,
@@ -130,7 +134,7 @@ AccountMenu.propTypes = {
 }
 
 const mapStateToProps = state => ({
-  location: getRoutingPathname(state),
+  pathname: getRoutingPathname(state),
 })
 
 const mapDispatchToProps = {
