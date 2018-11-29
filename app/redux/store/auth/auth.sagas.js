@@ -270,12 +270,15 @@ function getRedirectPathname() {
   const { pathname } = window.location
   const tasksTemplate = '/user/tasks'
   const inboxTemplate = '/user/inbox'
+  const tagsTemplate = '/user/tags'
   const numberTasksTemplate = tasksTemplate.length
   const numberInboxTemplate = inboxTemplate.length
+  const numberTagsTemplate = tagsTemplate.length
   const isTasksPathname = pathname.substring(0, numberTasksTemplate) === tasksTemplate
   const isInboxPathname = pathname.substring(0, numberInboxTemplate) === inboxTemplate
+  const isTagsPathname = pathname.substring(0, numberTagsTemplate) === tagsTemplate
 
-  if (isTasksPathname || isInboxPathname) {
+  if (isTasksPathname || isInboxPathname || isTagsPathname) {
     return pathname
   }
 

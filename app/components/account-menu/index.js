@@ -39,8 +39,11 @@ const AccountMenu = props => {
   } = props
 
   const archiveTemplate = '/user/account/archive'
+  const contactsTemplate = '/user/account/contacts'
   const numberArchiveTemplate = archiveTemplate.length
+  const numberContactsTemplate = contactsTemplate.length
   const isArchiveActive = pathname.substring(0, numberArchiveTemplate) === archiveTemplate
+  const isContactsActive = pathname.substring(0, numberContactsTemplate) === contactsTemplate
 
   return (
     <div>
@@ -63,12 +66,12 @@ const AccountMenu = props => {
             <MenuBoxItemIcon
               icon={ICONS.CONTACTS}
               iconScale={0.53}
-              active={pathname === '/user/account/contacts'}
+              active={isContactsActive}
               type='contactsList'
               onChange={onHandleClickContacts} />
             <MenuBoxItemTitle
               title="Contact List"
-              active={pathname === '/user/account/contacts'}
+              active={isContactsActive}
               type='contactsList'
               onChange={onHandleClickContacts} />
           </MenuBoxGroupItem>

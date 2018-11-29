@@ -104,12 +104,14 @@ export default function* root() {
     takeLatest(TAGS.UPDATE, tag.update),
     takeEvery(TAGS.DELETE, tag.deleteTag),
     takeEvery(TAGS.UNDO_DELETE, tag.undoDeleteTag),
+    takeEvery(TAGS.SELECT, tag.selectTags),
     takeEvery(TAGS.DESELECT, tag.deselectTags),
     takeLatest(TAGS.FETCH_TAGS_RELATIONS, tag.fetchTagsRelations),
 
     // contacts
     takeLatest(CONTACTS.FETCH, contact.fetchContacts),
     takeEvery(CONTACTS.CREATE, contact.createContact),
+    takeLatest(CONTACTS.SELECT, contact.selectContacts),
     takeLatest(CONTACTS.DESELECT, contact.deselectContacts),
     takeLatest(CONTACTS.UPDATE, contact.updateContacts),
     takeLatest(CONTACTS.SEND_INVITATION, contact.sendInvitationContact),

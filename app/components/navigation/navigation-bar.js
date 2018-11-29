@@ -59,8 +59,11 @@ export default compose(
   withHandlers({
     onHandleClick: props => () => props.defaultDisplay(),
     mainSearch: props => () => {
-      const isAccountPage = props.location.pathname === '/user/account'
-      const isTagPage = props.location.pathname === '/user/tags'
+      const { pathname } = props.location
+      const tagsTemplate = '/user/tags'
+      const numberTagsTemplate = tagsTemplate.length
+      const isAccountPage = pathname === '/user/account'
+      const isTagPage = pathname.substring(0, numberTagsTemplate) === tagsTemplate
 
       if (isAccountPage || isTagPage) {
         return null

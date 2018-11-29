@@ -37,11 +37,13 @@ const NavigationRight = props => {
 
   const tasksTemplate = '/user/tasks'
   const inboxTemplate = '/user/inbox'
+  const tagsTemplate = '/user/tags'
   const numberTasksTemplate = tasksTemplate.length
   const numberInboxTemplate = inboxTemplate.length
+  const numberTagsTemplate = tagsTemplate.length
 
-  const isTaskActive = (pathname.substring(0, numberTasksTemplate) === tasksTemplate && !timeLine)
-  const isTagsActive = pathname === '/user/tags'
+  const isTasksActive = (pathname.substring(0, numberTasksTemplate) === tasksTemplate && !timeLine)
+  const isTagsActive = pathname.substring(0, numberTagsTemplate) === tagsTemplate
   const isInboxActive = pathname.substring(0, numberInboxTemplate) === inboxTemplate
   const isAccountActive = pathname === '/user/account'
   const color = '#fff'
@@ -49,7 +51,7 @@ const NavigationRight = props => {
   return (
     <NavButtonContainer>
       <NavButton
-        active={isTaskActive}
+        active={isTasksActive}
         onClick={onHandleClickTasks}>
         <Icon
           icon={ICONS.TASKS}

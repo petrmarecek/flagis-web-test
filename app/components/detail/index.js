@@ -327,10 +327,12 @@ export default compose(
       }
 
       if (detail.tag) {
+        props.changeLocation('/user/tags')
         props.deselectTags()
         return
       }
 
+      props.changeLocation('/user/account/contacts')
       props.deselectContacts()
     },
     onHandleNext: props => () => {

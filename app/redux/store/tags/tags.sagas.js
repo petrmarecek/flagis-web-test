@@ -1,5 +1,6 @@
 import { all, put, call, select, cancelled, fork, take } from 'redux-saga/effects'
 import { normalize } from 'normalizr'
+import { push } from 'react-router-redux'
 
 import { toast } from 'react-toastify'
 import { errorMessages } from 'utils/messages'
@@ -113,6 +114,12 @@ export function* createTag(action) {
       autoClose: constants.NOTIFICATION_ERROR_DURATION,
     })
   }
+}
+
+export function* selectTags(action) {
+  const { tagId } = action.payload
+
+  yield put(push(`/user/tags/${tagId}`))
 }
 
 export function* deselectTags() {

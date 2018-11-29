@@ -1,5 +1,6 @@
 import { normalize } from 'normalizr'
 import { call, put, select, fork, take, all } from 'redux-saga/effects'
+import { push } from 'react-router-redux'
 
 import * as authSelectors from 'redux/store/auth/auth.selectors'
 import * as contactsActions from 'redux/store/contacts/contacts.actions'
@@ -79,6 +80,12 @@ export function* createContact(action) {
   } catch(err) {
     console.error(err)
   }
+}
+
+export function* selectContacts(action) {
+  const { contactId } = action.payload
+
+  yield put(push(`/user/account/contacts/${contactId}`))
 }
 
 export function* deselectContacts() {
