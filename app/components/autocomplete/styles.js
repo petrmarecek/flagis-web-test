@@ -55,6 +55,10 @@ const Search = styled.li`
 `;
 
 // -------------------------------------- AutocompeleteInput ---------------------------------------------
+const InputContainer = styled.div`
+  width: 100%;
+`;
+
 const Input = styled.input`
   ${placeholderColor('#8c9da9')}
   ${fontSub}
@@ -69,6 +73,7 @@ const Input = styled.input`
   margin: 0 !important;
   padding: 1px 0 3px 0;
   font-size: ${props => props.mainSearch ? '15px': '14px'};
+  width: 100%;
 
   :active {
     outline: none;
@@ -135,6 +140,7 @@ export {
   AutocompleteContainer,
   Clear,
   Search,
+  InputContainer,
   Input,
   TagContainer,
   ContactContainer,

@@ -12,7 +12,7 @@ import constants from 'utils/constants'
 
 import Hints from '../hints'
 
-import { Input } from './styles'
+import { InputContainer, Input } from './styles'
 
 const getInputPosition = (location, ref) => {
   const position = domUtils.getOffset(ref)
@@ -372,7 +372,7 @@ const AutocompleteInput = props => {
   )
 
   return (
-    <div>
+    <InputContainer>
       <Input
         innerRef={ref => getInputRef(ref)}
         type="text"
@@ -384,7 +384,7 @@ const AutocompleteInput = props => {
         onChange={onHandleChange}
         mainSearch={location === 'mainSearch'} />
       {hintsElement && showHints && createPortal(hints, hintsElement)}
-    </div>
+    </InputContainer>
   )
 }
 
