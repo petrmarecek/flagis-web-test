@@ -36,9 +36,15 @@ const ItemTitle = styled.div`
   justify-content: flex-start;
 `;
 
+const ItemTagRelations = styled.div`
+  position: absolute;
+  right: 20px;
+`;
+
 export {
   ItemContainer,
   Item,
   ItemIcon,
   ItemTitle,
+  ItemTagRelations,
 }

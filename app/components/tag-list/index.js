@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import { connect } from 'react-redux'
 import { compose, branch, renderComponent, withHandlers } from 'recompose'
-import { getVisibleTags, getCurrentTagId } from 'redux/store/tags/tags.selectors'
+import { getVisibleTags, getCurrentTagId, getTagsRelations } from 'redux/store/tags/tags.selectors'
 import { selectTag } from 'redux/store/tags/tags.actions'
 import { setDetail } from 'redux/store/app-state/app-state.actions'
 
@@ -13,7 +13,7 @@ import ShadowScrollbar from 'components/common/shadow-scrollbar'
 
 import { EmptyList } from 'components/styled-components-mixins'
 
-const TagList = ({ tags, currentTag, onHandleTagClick }) => {
+const TagList = ({ tags, currentTag, tagsRelations, onHandleTagClick }) => {
 
   if (tags.items.length === 0) {
     return <EmptyList>No tags found</EmptyList>
@@ -35,7 +35,8 @@ const TagList = ({ tags, currentTag, onHandleTagClick }) => {
             key={tag.id}
             tag={tag}
             selected={currentTag === tag.id}
-            onClick={onHandleTagClick}/>
+            onClick={onHandleTagClick}
+            tagRelations={tagsRelations.has(tag.id) ? tagsRelations.get(tag.id).size : null} />
         ))}
       </ul>
     </ShadowScrollbar>
@@ -45,6 +46,7 @@ const TagList = ({ tags, currentTag, onHandleTagClick }) => {
 TagList.propTypes = {
   tags: PropTypes.object,
   currentTag: PropTypes.string,
+  tagsRelations: PropTypes.object,
   selectTag: PropTypes.func,
   setDetail: PropTypes.func,
   onHandleTagClick: PropTypes.func,
@@ -53,6 +55,7 @@ TagList.propTypes = {
 const mapStateToProps = state => ({
   tags: getVisibleTags(state),
   currentTag: getCurrentTagId(state),
+  tagsRelations: getTagsRelations(state),
 })
 
 const mapDispatchToProps = {
