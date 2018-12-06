@@ -39,7 +39,7 @@ export const errorMessages = {
 
   autocomplete: {
     createConflict: item => `This ${item} has already been created.`,
-    notAllowedCreate: 'Not allowed to create tag in Tag filter.',
+    notAllowedCreate: (item, location) => `Not allowed to create ${item} in ${location}.`,
   },
 
   sessionExpired: 'Your session has expired.',

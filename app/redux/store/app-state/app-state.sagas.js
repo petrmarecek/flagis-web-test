@@ -8,6 +8,7 @@ import * as treeActions from 'redux/store/tree/tree.actions'
 import * as contactActions from 'redux/store/contacts/contacts.actions'
 import * as followerActions from 'redux/store/followers/followers.actions'
 import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'
+import * as authSelectors from 'redux/store/auth/auth.selectors'
 import * as tagSelectors from 'redux/store/tags/tags.selectors'
 import { toast } from 'react-toastify'
 import { errorMessages } from 'utils/messages'
@@ -41,14 +42,13 @@ export function* changeLocation(action) {
 }
 
 export function* hintSelected(action) {
-
   const { location, context, hint } = action.payload
-  const { parentId, isNewHint } = context
+  const { parentId, isNewHint, isSelectMe } = context
 
-  // Hint selected in main search
+  // Hint selected within main search context
   if (location === 'mainSearch') {
     if (isNewHint) {
-      toast.error(errorMessages.autocomplete.notAllowedCreate, {
+      toast.error(errorMessages.autocomplete.notAllowedCreate('tag', 'Tag filter'), {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: constants.NOTIFICATION_ERROR_DURATION,
       })
@@ -98,6 +98,30 @@ export function* hintSelected(action) {
     }
 
     yield put(followerActions.createFollower(parentId, profile.id))
+  }
+
+  // Hint(contact) selected within tasks menu filter
+  if (location === 'tasksMenuFilterContacts') {
+
+    // Click on Select Me button in tasksMenu for assignee filter
+    if (isSelectMe) {
+      const userId = yield select(state => authSelectors.getUserId(state))
+
+      yield put(tasksMenuActions.setActiveAssignee(userId))
+      return
+    }
+
+    // Not allowed create a new contact
+    if (isNewHint) {
+      toast.error(errorMessages.autocomplete.notAllowedCreate('contact', 'Filter'), {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: constants.NOTIFICATION_ERROR_DURATION,
+      })
+
+      return
+    }
+
+    yield put(tasksMenuActions.setActiveAssignee(hint.id))
   }
 }
 

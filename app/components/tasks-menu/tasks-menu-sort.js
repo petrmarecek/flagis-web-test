@@ -1,8 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import velocity from 'velocity-animate'
 import domUtils from 'redux/utils/dom'
-import { compose, withStateHandlers, lifecycle } from 'recompose'
+import { withStateHandlers } from 'recompose'
 
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
@@ -47,7 +46,6 @@ const TasksMenuSort = ({ tasksMenu, sortRef, getSortRef, onHandleClick, onHandle
 
   return (
     <TasksMenuItem
-      id='tasksMenuItemSort'
       innerRef={getSortRef}
       onClick={onHandleClick} >
       <Icon
@@ -132,38 +130,30 @@ TasksMenuSort.propTypes = {
   hideMenuOption: PropTypes.func,
 }
 
-export default compose(
-  withStateHandlers(
-    () => ({ sortRef: null }),
-    {
-      getSortRef: () => ref => ({ sortRef: ref }),
-      onHandleClick: (state, props) => () => {
-        if (props.tasksMenu.sort.menu.isVisible) {
-          props.hideMenuSort()
-          return ({})
-        }
-
-        if (props.tasksMenu.filters.menu.isVisible) {
-          props.hideMenuFilter()
-        }
-
-        if (props.tasksMenu.options.menu.isVisible) {
-          props.hideMenuOption()
-        }
-
-        props.visibleMenuSort()
-        return ({})
-      },
-      onHandleSortAlgorithmToggle: (state, props) => algorithm => {
-        props.onToggleSortAlgorithm(algorithm)
+export default withStateHandlers(
+  () => ({ sortRef: null }),
+  {
+    getSortRef: () => ref => ({ sortRef: ref }),
+    onHandleClick: (state, props) => () => {
+      if (props.tasksMenu.sort.menu.isVisible) {
+        props.hideMenuSort()
         return ({})
       }
+
+      if (props.tasksMenu.filters.menu.isVisible) {
+        props.hideMenuFilter()
+      }
+
+      if (props.tasksMenu.options.menu.isVisible) {
+        props.hideMenuOption()
+      }
+
+      props.visibleMenuSort()
+      return ({})
+    },
+    onHandleSortAlgorithmToggle: (state, props) => algorithm => {
+      props.onToggleSortAlgorithm(algorithm)
+      return ({})
     }
-  ),
-  lifecycle({
-    componentDidMount() {
-      const sort = document.getElementById('tasksMenuItemSort')
-      velocity(sort, 'transition.fadeIn', { duration: 600, display: 'flex' })
-    }
-  })
+  }
 )(TasksMenuSort)

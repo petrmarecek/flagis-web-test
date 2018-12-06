@@ -15,7 +15,7 @@ const ProgressBar = styled.div`
   right: 16px;
   bottom: 10px;
   z-index: 15;
-  animation: 500ms ${zoom}
+  animation: 500ms ${zoom};
 `;
 
 const Count = styled.div`

@@ -81,6 +81,7 @@ export default function* root() {
     takeEvery(ATTACHMENTS.DELETE, attachment.deleteAttachment),
 
     // task-menu
+    takeEvery(TASKS_MENU.TOGGLE_ASSIGNEE_FILTER, taskMenu.toggleAssigneeFilter),
     takeEvery(TASKS_MENU.CHANGE_RANGE_FILTER, taskMenu.changeRangeFilter),
     takeEvery(TASKS_MENU.TOGGLE_IMPORTANT_FILTER, taskMenu.toggleImportantFilter),
     takeEvery(TASKS_MENU.TOGGLE_UNIMPORTANT_FILTER, taskMenu.toggleUnimportantFilter),

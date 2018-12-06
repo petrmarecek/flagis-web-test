@@ -33,6 +33,7 @@ const withAutocompleteInput = WrappedComponent => {
       hints: PropTypes.object,
       validationItems: PropTypes.object,
       isAllowUpdate: PropTypes.bool,
+      isInputMode: PropTypes.bool,
       placeholder: PropTypes.string,
       parentId: PropTypes.string,
       onBlurTagTree: PropTypes.func,
@@ -252,7 +253,26 @@ const withAutocompleteInput = WrappedComponent => {
       }
     }
 
-    onHandleSubmit = () => {
+    onHandleSubmit = isSelectMe => {
+      const { hintsData, selectIndex, value, inputRef } = this.state
+      const { location, parentId, dataType, validationItems, onBlurTagTree } = this.props
+
+      // Click on Select Me button in tasksMenu for assignee filter
+      if (isSelectMe) {
+        // Select Hint
+        this.props.hintSelected(location, { isSelectMe })
+
+        // Reset state
+        this.setState({ showHints: false, value: '' })
+        inputRef.value = 'Me'
+        inputRef.blur()
+        if (onBlurTagTree) {
+          onBlurTagTree()
+        }
+
+        return
+      }
+
       const itemValue = item => ({
         tags: item.title,
         contacts: item.email,
@@ -261,8 +281,6 @@ const withAutocompleteInput = WrappedComponent => {
         tags: 'title',
         contacts: 'email',
       }
-      const { hintsData, selectIndex, value, inputRef } = this.state
-      const { location, parentId, dataType, validationItems, onBlurTagTree } = this.props
       const isNewHint = hintsData[dataType].length === 0
       let hint = hintsData[dataType][selectIndex]
       const context = { isNewHint, parentId }
@@ -308,7 +326,7 @@ const withAutocompleteInput = WrappedComponent => {
 
       // Reset state
       this.setState({ showHints: false, value: '' })
-      inputRef.value = ''
+      inputRef.value = this.props.isInputMode ? hintValue : ''
       inputRef.blur()
       if (onBlurTagTree) {
         onBlurTagTree()
@@ -364,6 +382,7 @@ const AutocompleteInput = props => {
       position={position}
       value={value}
       selectIndex={selectIndex}
+      location={location}
       addScrollRef={getScrollRef}
       addHintRef={getHintRef}
       onSelectIndex={onHandleSelectIndex}

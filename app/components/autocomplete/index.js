@@ -25,6 +25,7 @@ const Autocomplete = props => {
     validationItems,
     isWithoutItems,
     isWithoutInput,
+    isInputMode,
     isAllowUpdate,
     parentId,
     onClearFilter,
@@ -63,7 +64,8 @@ const Autocomplete = props => {
           parentId={parentId}
           onBlurTagTree={onBlurTagTree}
           onAddInputRef={onHandleAddInputRef}
-          hintSelected={onHandleHintSelected} />
+          hintSelected={onHandleHintSelected}
+          isInputMode={isInputMode} />
       </Search>}
     </AutocompleteContainer>
   )
@@ -75,6 +77,7 @@ Autocomplete.propTypes = {
   placeholder: PropTypes.string,
   isWithoutItems: PropTypes.bool,
   isWithoutInput: PropTypes.bool,
+  isInputMode: PropTypes.bool,
   isFocusTagTree: PropTypes.bool,
   isAllowUpdate: PropTypes.bool,
   selectedItems: PropTypes.object,

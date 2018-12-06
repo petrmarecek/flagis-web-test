@@ -2,6 +2,16 @@ import { put, select } from 'redux-saga/effects'
 import * as taskMenuActions from 'redux/store/tasks-menu/tasks-menu.actions'
 import * as taskMenuSelectros from 'redux/store/tasks-menu/tasks-menu.selectors'
 
+export function* toggleAssigneeFilter() {
+  const assignee = yield select(state => taskMenuSelectros.getTaskMenuFiltersItem(state, 'assignee'))
+
+  if (assignee) {
+    yield put(taskMenuActions.addActiveFilter('assignee'))
+  } else {
+    yield put(taskMenuActions.deleteActiveFilter('assignee'))
+  }
+}
+
 export function* changeRangeFilter(action) {
   const activeFilters = yield select(state => taskMenuSelectros.getTaskMenuFiltersItem(state, 'active'))
   const range = yield select(state => taskMenuSelectros.getTaskMenuFiltersItem(state, 'range'))
@@ -68,5 +78,9 @@ export function* toggleNoTagsFilter() {
 }
 
 export function* deleteFilter(action) {
+  if (action.payload.filter === 'assignee') {
+    yield put(taskMenuActions.deselectActiveAssignee())
+  }
+
   yield put(taskMenuActions.deleteActiveFilter(action.payload.filter))
 }

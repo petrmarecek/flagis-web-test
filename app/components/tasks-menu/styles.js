@@ -1,4 +1,5 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
+import { fadeIn, flipInX, flipOutX } from 'react-animations'
 import MenuBox from 'components/menux-box/menu-box'
 import MenuBoxGroupItems from 'components/menux-box/menu-box-group-items'
 import MenuBoxItem from 'components/menux-box/menu-box-item'
@@ -12,6 +13,7 @@ import {
   userSelect
 } from '../styled-components-mixins/'
 
+const fade = keyframes`${fadeIn}`;
 const TasksMenuItem = styled.div`
   ${boxSizing('border-box')}
   height: 100%;
@@ -21,6 +23,57 @@ const TasksMenuItem = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  animation: 600ms ${fade};
+`;
+
+// ---------------------------------- TasksMenuFiltersActive ----------------------------------
+const TasksMenuFiltersActive = styled.ul`
+  ${boxSizing('border-box')}
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  width: auto;
+  height: 100%;
+  float: right;
+  color: #282f34;
+  white-space: nowrap;
+`;
+
+const flipIn = keyframes`${flipInX}`;
+const flipOut = keyframes`${flipOutX}`;
+const FilterActiveItem = styled.li`
+  ${borderRadius('15px')}
+  display: flex;
+  align-items: center;
+  list-style-type: none;
+  height: 30px;
+  text-align: left;
+  margin: 0 0 0 15px;
+  background-color: #fff;
+  padding: 0 10px 0 18px;
+  font-size: 14px;
+  animation: ${props => props.isMounted ? `${flipIn} 500ms` : `${flipOut} 500ms`};
+`;
+const FilterActiveItemIcon = styled.div`
+  ${borderRadius('15px')}
+  width: auto;
+`;
+
+const FilterActiveItemTitle = styled.div`
+  font-weight: bold;
+  margin: ${props => props.isAssignee ? '0 10px 2px 10px' : '0 10px 2px 0'};
+`;
+
+const FilterActiveItemAutocomplete = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 0 0 6px 0;
+  margin: 0 10px 0 0;
+  border-left: 2px solid #e7eced;
+  border-right: 2px solid #e7eced;
 `;
 
 // ---------------------------------- TasksMenuNavigation ----------------------------------
@@ -44,11 +97,11 @@ const Button = styled.div`
   border-color: ${props => props.active ? '#8C9DA9' : '#C1CAD0'};
   pointer-events: ${props => props.active ? 'none' : 'auto'};
   background-color: ${props => props.active ? '#8C9DA9' : '#E7ECED'};
-  
+
   &:hover {
     background-color: #8C9DA9;
     border: 1px solid #8C9DA9;
-    
+
     svg {
       path {
         fill: #fff;
@@ -70,7 +123,7 @@ const MenuBoxContainer = styled(MenuBox)`
   font-size: 14px;
   color: #616F78;
   padding: 20px 15px 0 0;
-  
+
   :before, :after {
     content: '';
     display: block;
@@ -79,14 +132,14 @@ const MenuBoxContainer = styled(MenuBox)`
     height: 0;
     border-style: solid;
   }
-  
+
   :before {
     top: -18px;
     right: ${props => props.trianglePosition}px;
     border-color: transparent transparent #C1CAD0 transparent;
     border-width: 9px;
   }
-  
+
   :after {
     top: -16px;
     right: calc(${props => props.trianglePosition}px + 1px);
@@ -102,11 +155,11 @@ const MenuBoxGroup = styled(MenuBoxGroupItems)`
   justify-content: flex-start;
   height: 100%;
   margin-bottom: 20px;
-  
+
   span {
     margin: 0 0 6px 0;
   }
-  
+
   &:hover {
     span {
       color: #293034;
@@ -151,12 +204,17 @@ const MenuBoxItemTitle = styled(MenuBoxItem)`
       ${transform('scaleX(1)')}
     }
   }
-  
+
   border-bottom: ${props => props.active ? '1px solid #293034' : '0'}
 `;
 
 export {
   TasksMenuItem,
+  TasksMenuFiltersActive,
+  FilterActiveItem,
+  FilterActiveItemIcon,
+  FilterActiveItemTitle,
+  FilterActiveItemAutocomplete,
   NavigationContainer,
   Button,
   MenuBoxContainer,

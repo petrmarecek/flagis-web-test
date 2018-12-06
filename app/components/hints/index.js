@@ -8,7 +8,7 @@ import { getHintDirectionRender } from '../../redux/utils/component-helper'
 
 import HintItem from './hints-item'
 
-import { HintsContainer, Title, Hint } from './styles'
+import { HintsContainer, Button, Title, Hint } from './styles'
 
 const getTopHeight = (positionTop, directionRender) => {
   return directionRender === 'topToBottom'
@@ -36,6 +36,7 @@ const Hints = props => {
     position,
     value,
     selectIndex,
+    location,
     getScrollRef,
     getHintRef,
     onHandleSubmit,
@@ -44,6 +45,7 @@ const Hints = props => {
 
   const hintsLength = hints[dataType].length
   const condition = hints[dataType].length === 0
+  const isSelectMe = location === 'tasksMenuFilterContacts'
   const directionRender = getHintDirectionRender(position.top)
   const isScroll = getScroll(hintsLength, position.top, directionRender)
   const overflowHeight = getOverflowHeight(position.top, directionRender)
@@ -73,7 +75,17 @@ const Hints = props => {
   const getRender = {
     topToBottom: (
       <HintsContainer position={{ top: position.top, left: position.left }}>
-        <Title directionRender={directionRender}>{title[dataType]}</Title>
+        {isSelectMe &&
+        <Button
+          directionRender={directionRender}
+          onClick={() => onHandleSubmit(true)}>
+          Select Me
+        </Button>}
+        <Title
+          directionRender={directionRender}
+          isSelectMe={isSelectMe}>
+          {title[dataType]}
+        </Title>
         {!isScroll
           ? getItem
           : <ShadowScrollbar
@@ -91,7 +103,17 @@ const Hints = props => {
           : <ShadowScrollbar
               addScrollRef={getScrollRef}
               style={scrollStyle}>{getItem}</ShadowScrollbar>}
-        <Title directionRender={directionRender}>{title[dataType]}</Title>
+        <Title
+          directionRender={directionRender}
+          isSelectMe={isSelectMe}>
+          {title[dataType]}
+        </Title>
+        {isSelectMe &&
+        <Button
+          directionRender={directionRender}
+          onClick={() => onHandleSubmit(true)}>
+          Select Me
+        </Button>}
       </HintsContainer>
     )
   }
@@ -105,6 +127,7 @@ Hints.propTypes = {
   position: PropTypes.object,
   value: PropTypes.string,
   selectIndex: PropTypes.number,
+  location: PropTypes.string,
   onSelectIndex: PropTypes.func,
   addScrollRef: PropTypes.func,
   getScrollRef: PropTypes.func,
@@ -121,5 +144,5 @@ export default withHandlers({
   getHintRef: props => ref => props.addHintRef(ref),
   handleClickOutside: props => event => props.onHandleClickOutside(event),
   onHandleMouseOver: props => index => props.onSelectIndex(index),
-  onHandleSubmit: props => () => props.onSubmit(),
+  onHandleSubmit: props => isSelectMe => props.onSubmit(isSelectMe),
 })(onClickOutside(Hints))

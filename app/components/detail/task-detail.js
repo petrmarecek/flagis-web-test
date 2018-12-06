@@ -136,13 +136,13 @@ const TaskDetail = props => {
     isOwner,
     isArchivedOrInbox,
   } = getBindingData
-  
+
   // Conditionals
   const isAcceptedStatus = followerStatus !== 'new' && followerStatus !== 'pending' && followerStatus !== 'rejected'
   const isOwnerAcceptedTask = isOwner && (followerStatus === 'accepted')
   const isBackgroundTopContent = isCompleted || isOwnerAcceptedTask
   const isArchivedOrCollaborated = isArchived || !isOwner
-  
+
   // Data about owner of task
   const createdByFollower = {
     id: createdBy.id,
@@ -201,7 +201,7 @@ const TaskDetail = props => {
         next={onHandleNext} />
       <DetailInner>
         <DetailContentTop
-          animation={animation} 
+          animation={animation}
           backgroundColor={backgroundColor}
           isBackground={isBackgroundTopContent}>
           <DetailContentSubject taskDetail>
@@ -268,7 +268,7 @@ const TaskDetail = props => {
               </span>
             </DetailSubject>
           </DetailContentSubject>
-          <DetailContentTagAutocomplete 
+          <DetailContentTagAutocomplete
             onClick={onHandleRemoveEventListener}
             allowed={!isCompleted && !isInboxVisible}>
             {isArchived &&
@@ -331,7 +331,7 @@ const TaskDetail = props => {
                     onItemDelete={onHandleFollowerDelete}
                     isWithoutInput={isFollowers} />}
                 </DetailContentAddContactContent>
-                {!isInboxVisible && isOwner && 
+                {!isInboxVisible && isOwner &&
                 <DetailContentAddContactIcon>
                   <FollowerIcon status={followerStatus} iconScale={0.75}/>
                 </DetailContentAddContactIcon>}

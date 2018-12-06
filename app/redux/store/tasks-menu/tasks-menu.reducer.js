@@ -7,6 +7,8 @@ import { TasksMenuStore } from '../../data/records'
 export default typeToReducer({
 
   [TASKS_MENU.RESET]: (state) => state
+    .setIn(['filters', 'activeAssignee'], null)
+    .setIn(['filters', 'assignee'], false)
     .setIn(['filters', 'range'], null)
     .setIn(['filters', 'important'], false)
     .setIn(['filters', 'unimportant'], false)
@@ -19,6 +21,9 @@ export default typeToReducer({
     .setIn(['sort', 'incomplete'], false),
 
   // ------ FILTERS ACTIONS --------------------------------------------------
+
+  [TASKS_MENU.TOGGLE_ASSIGNEE_FILTER]: state => state
+    .setIn(['filters', 'assignee'], !state.filters.assignee),
 
   [TASKS_MENU.CHANGE_RANGE_FILTER]: (state, action) => {
     // same filter --> toggle, otherwise set
@@ -43,6 +48,12 @@ export default typeToReducer({
   [TASKS_MENU.CHANGE_SEARCH_TEXT_FILTER]: (state, action) =>
     state.setIn(['filters', 'searchText'], action.payload.value),
 
+  [TASKS_MENU.SET_ACTIVE_ASSIGNEE]: (state, action) =>
+    state.setIn(['filters', 'activeAssignee'], action.payload.assignee),
+
+  [TASKS_MENU.DESELECT_ACTIVE_ASSIGNEE]: state =>
+    state.setIn(['filters', 'activeAssignee'], null),
+
   [TASKS_MENU.ADD_ACTIVE_FILTER]: (state, action) =>
     state.updateIn(['filters', 'active'], list => list.push(action.payload.filter)),
 
@@ -51,9 +62,10 @@ export default typeToReducer({
 
   [TASKS_MENU.DELETE_FILTER]: (state, action) => {
     const filter = action.payload.filter
-    return filter === 'important' || filter === 'unimportant' || filter === 'noTags'
-      ? state.setIn(['filters', filter], false)
-      : state.setIn(['filters', 'range'], null)
+    const resetFilter = filter === 'today' || filter === 'week' || filter === 'month' ? null : false
+    const typeFilter = resetFilter === null ? 'range' : filter
+
+    return state.setIn(['filters', typeFilter], resetFilter)
   },
 
   [TASKS_MENU.VISIBLE_MENU_FILTER]: state =>

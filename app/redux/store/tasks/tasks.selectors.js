@@ -16,7 +16,7 @@ import {
 } from '../entities/entities.selectors'
 import { getActiveTagsIds } from '../tags/tags.selectors'
 import { getTasksMenu } from '../tasks-menu/tasks-menu.selectors'
-import { compareTaskBySubject } from '../../utils/component-helper'
+import { compareTaskBySubject, getAssigneeOfTask } from '../../utils/component-helper'
 
 // ------ Helper functions ----------------------------------------------------
 
@@ -110,6 +110,18 @@ function loadTasks(ids, data) {
     }).toList()
 
     tasks = findTasksByTags(tasks, tags)
+  }
+
+  // apply assignee filter
+  if (tasksMenu.getIn(['filters', 'activeAssignee'])) {
+    tasks = tasks.filter(task => {
+      const activeAssignee = tasksMenu.getIn(['filters', 'activeAssignee'])
+      const followers = task.getIn(['followers'])
+      const assignee = getAssigneeOfTask(followers)
+      const assigneeId = assignee ? assignee.userId : null
+
+      return assigneeId === activeAssignee
+    })
   }
 
   // apply date range filter

@@ -30,6 +30,7 @@ import {
   getTimeLine,
 } from 'redux/store/tasks/tasks.selectors'
 import {
+  toggleAssigneeFilter,
   changeRangeFilter,
   toggleImportantFilter,
   toggleUnimportantFilter,
@@ -50,10 +51,12 @@ import { archiveCompletedTasks } from 'redux/utils/component-helper'
 import SearchBox from 'components/common/search-box'
 import TasksMenuNavigation from 'components/tasks-menu/tasks-menu-navigation'
 import TasksMenuFilters from 'components/tasks-menu/tasks-menu-filters'
-import TasksMenuFiltersActive from 'components/tasks-menu/tasks-menu-filters-active'
+import TasksMenuFiltersActiveItem from 'components/tasks-menu/tasks-menu-filters-active-item'
 import TasksMenuSort from 'components/tasks-menu//tasks-menu-sort'
 import TasksMenuOptions from 'components/tasks-menu//tasks-menu-options'
 import TasksMenuMultiSelect from 'components/tasks-menu/tasks-menu-multi-select'
+
+import { TasksMenuFiltersActive } from './styles'
 
 class TasksMenuContainer extends PureComponent {
 
@@ -64,6 +67,7 @@ class TasksMenuContainer extends PureComponent {
     showCompletedTasks: PropTypes.object,
     archivedTasks: PropTypes.object,
     entitiesTasks: PropTypes.object,
+    toggleAssigneeFilter: PropTypes.func,
     changeRangeFilter: PropTypes.func,
     toggleImportantFilter: PropTypes.func,
     toggleUnimportantFilter: PropTypes.func,
@@ -92,6 +96,10 @@ class TasksMenuContainer extends PureComponent {
   }
 
   // Filters
+  handleAssigneeFilterToggle = () => {
+    this.props.toggleAssigneeFilter()
+  }
+
   handleRangeFilterChange = value => {
     this.props.changeRangeFilter(value)
   }
@@ -109,6 +117,7 @@ class TasksMenuContainer extends PureComponent {
   }
 
   handleDeleteFilter = (filter) => {
+    this.setState({ isMounted: false })
     this.props.deleteFilter(filter)
   }
 
@@ -168,13 +177,6 @@ class TasksMenuContainer extends PureComponent {
     const isMultiSelect = this.props.multiSelect
     const isVisibleArchivedTasks = this.props.isVisibleArchivedTasks
     const isTimeLine = this.props.timeLine
-    const activeFilters = this.props.tasksMenu.filters.active.map((filter, key) => (
-      <TasksMenuFiltersActive
-        key={key}
-        title={filter}
-        onDelete={this.handleDeleteFilter}/>
-    ))
-
     const taskCount = isMultiSelect
       ? this.props.selectTaskCount
       : this.props.showTasksId.size
@@ -203,12 +205,19 @@ class TasksMenuContainer extends PureComponent {
           deselectTasks={this.props.deselectTasks} />}
 
         {!isVisibleArchivedTasks && !isMultiSelect &&
-        <div className="filter-active">
-          {activeFilters}
-        </div>}
+        <TasksMenuFiltersActive isFilterActive={this.props.tasksMenu.filters.active.size !== 0}>
+          {this.props.tasksMenu.filters.active.map((filter, key) => (
+            <TasksMenuFiltersActiveItem
+              key={key}
+              title={filter}
+              activeAssignee={this.props.tasksMenu.filters.activeAssignee}
+              onDelete={this.handleDeleteFilter}/>
+          ))}
+        </TasksMenuFiltersActive>}
 
         {!isVisibleArchivedTasks && !isMultiSelect &&
         <TasksMenuFilters
+          onToggleAssigneeFilter={this.handleAssigneeFilterToggle}
           onChangeRangeFilter={this.handleRangeFilterChange}
           onToggleImportantFilter={this.handleImportantFilterToggle}
           onToggleUnimportantFilter={this.handleUnimportantFilterToggle}
@@ -265,6 +274,7 @@ const mapStateToProps = state => ({
   timeLine: getTimeLine(state),
 })
 const mapDispatchToProps = {
+  toggleAssigneeFilter,
   changeRangeFilter,
   toggleImportantFilter,
   toggleUnimportantFilter,
