@@ -106,7 +106,7 @@ export default class TasksMenuMultiSelect extends PureComponent {
           className="multi-select__items"
           onClick={this.props.onAddRemoveTags}/>
         }
-        <Icon
+        {/* <Icon
           icon={ICONS.EXPORT}
           width={26}
           height={26}
@@ -114,7 +114,7 @@ export default class TasksMenuMultiSelect extends PureComponent {
           color={["#8C9DA9"]}
           hoverColor={["#293034"]}
           className="multi-select__items"
-          onClick={this.handleDownload}/>
+          onClick={this.handleDownload}/> */}
         <Icon
           icon={ICONS.TRASH}
           width={23}
