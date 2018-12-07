@@ -137,6 +137,7 @@ const Detail = props => {
     <DetailStyle>
       {(detail.task || detail.archive || detail.inbox) &&
       <TaskDetail
+        detail={detail}
         userId={userId}
         task={task}
         animation={detail.animation}
@@ -320,7 +321,7 @@ export default compose(
         if (detail.archive) {
           props.changeLocation('/user/account/archive')
         }
-        
+
         props.deselectAnimation()
         props.deselectTasks()
         return
@@ -420,11 +421,7 @@ export default compose(
     },
     onHandleTaskReject: props => data => {
       props.deselectTasks()
-      toast.success(successMessages.tasks.rejected, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
-      })
-      props.rejectTask(data.taskId, data.followerId)
+      props.rejectTask(data)
     },
     onHandleTaskSubjectUpdate: props => data => props.setSubject(data.task, data.subject),
     onHandleTaskTagDeleted: props => data => props.removeTaskTag(data.task.id, data.tagInfo),

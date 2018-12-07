@@ -101,6 +101,7 @@ function* onUndo(action, name) {
   const { undo } = yield race({
     undo: take(act => act.type === 'APP-STATE/UNDO_ACTIVE' && act.undoType === undoType),
     undoAction: take(act =>
+      act.type === 'TASK/REJECT' ||
       act.type === 'TASK/DELETE' ||
       act.type === 'TAGS/DELETE' ||
       act.type === 'TREE/DELETE' ||

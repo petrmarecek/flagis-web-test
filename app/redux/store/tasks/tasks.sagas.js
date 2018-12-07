@@ -1,6 +1,7 @@
 import { normalize } from 'normalizr'
+import { delay } from 'redux-saga'
 import { push } from 'react-router-redux'
-import { all, take, call, put, select, fork } from 'redux-saga/effects'
+import { all, take, call, put, select, fork, race } from 'redux-saga/effects'
 import {
   createLoadActions,
   fetch,
@@ -82,7 +83,7 @@ function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
 
     // Move task from inbox to tasks list (accepted)
     if (assignee.status === 'accepted' && !isTrashed && !storeItems.includes(id) && storeInboxItems.includes(id)) {
-      
+
       // Update task in search
       search.tasks.updateItem(task)
     }
@@ -461,7 +462,7 @@ export function* selectTask(action) {
       yield put(appStateActions.setDetail('inbox'))
       return
     }
-    
+
     yield put(push(`/user/tasks/${taskId}`))
     yield put(appStateActions.setDetail('task'))
   }
@@ -641,7 +642,7 @@ export function* acceptTask(action) {
 }
 
 export function* rejectTask(action) {
-  const { taskId } = action.payload
+  const { task } = action.payload.originalData
   const { reject } = api.followers
   const { inbox } = yield select(state => appStateSelectors.getDetail(state))
 
@@ -649,7 +650,38 @@ export function* rejectTask(action) {
     yield put(appStateActions.deselectDetail('inbox'))
   }
 
-  yield call(reject, taskId)
+  // Debounce by 50ms
+  yield call(delay, 50)
+  // Dispatch undo action
+  yield* mainUndo(action, 'taskRejected')
+
+  // Wait for undo
+  const { undo } = yield race({
+    undo: take('UNDO_TASK/REJECT'),
+    timeout: call(delay, 8000),
+  })
+
+  // Dispatch undo -> don't call API
+  if (undo) {
+    return
+  }
+
+  // Show notification
+  toast.success(successMessages.tasks.rejected, {
+    position: toast.POSITION.BOTTOM_RIGHT,
+    autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+  })
+
+  // Call API
+  yield call(reject, task.id)
+}
+
+export function* undoRejectTask(action) {
+  const { task, type } = action.payload
+  const originalTask = task.toJS()
+  originalTask.isInbox = type === 'inbox'
+
+  yield put(taskActions.addTask(originalTask))
 }
 
 // ------ HELPER FUNCTIONS ----------------------------------------------------

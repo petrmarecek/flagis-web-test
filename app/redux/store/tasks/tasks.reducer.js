@@ -8,9 +8,12 @@ import { TaskStore } from 'redux/data/records'
 export default typeToReducer({
 
   [TASKS.ADD]: (state, action) => {
-    const newTaskId = action.payload.result
-    return state.updateIn(['items'],
-      items => items.insert(0, newTaskId))
+    const { entities, result } = action.payload
+    const task = entities.tasks[result]
+    const type = task.isInbox ? ['inbox', 'items'] : ['items']
+
+    return state.updateIn(type,
+      items => items.insert(0, result))
   },
 
   [TASKS.FETCH]: {
@@ -72,7 +75,7 @@ export default typeToReducer({
   [TASKS.FIREBASE]: {
     FULFILLED: (state, action) => {
       // Get new lists for tasks store
-      const { 
+      const {
         newItems,
         newInbox,
         newCompleted,
@@ -148,9 +151,9 @@ export default typeToReducer({
     .updateIn(['items'], list => list.push(action.payload.taskId)),
 
   [TASKS.REJECT]: (state, action) => state
-    .updateIn(['items'], list => list.filter(taskId => taskId !== action.payload.taskId))
-    .updateIn(['inbox', 'items'], list => list.filter(taskId => taskId !== action.payload.taskId))
-    .updateIn(['selection'], list => list.filter(taskId => taskId !== action.payload.taskId)),
+    .updateIn(['items'], list => list.filter(taskId => taskId !== action.payload.originalData.task.id))
+    .updateIn(['inbox', 'items'], list => list.filter(taskId => taskId !== action.payload.originalData.task.id))
+    .updateIn(['selection'], list => list.filter(taskId => taskId !== action.payload.originalData.task.id)),
 
   [AUTH.LOGOUT]: () => new TaskStore(),
 

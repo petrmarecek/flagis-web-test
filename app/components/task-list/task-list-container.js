@@ -271,11 +271,7 @@ class TaskListContainer extends PureComponent {
   }
 
   handleRejectTask = data => {
-    toast.success(successMessages.tasks.rejected, {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
-    })
-    this.props.rejectTask(data.taskId, data.followerId)
+    this.props.rejectTask(data)
   }
 
   getTaskList() {

@@ -2,6 +2,7 @@ import { Map, List } from 'immutable'
 import typeToReducer from 'type-to-reducer'
 import dateUtil from 'redux/utils/date'
 import _ from 'lodash'
+import { getAssigneeOfTask } from 'redux/utils/component-helper'
 
 import { AUTH } from 'redux/store/auth/auth.actions'
 import { TASKS } from 'redux/store/tasks/tasks.actions'
@@ -102,9 +103,14 @@ export default typeToReducer({
     .setIn(['tasks', action.payload.taskId, 'order'], dateUtil.getMilliseconds())
     .setIn(['followers', action.payload.followerId, 'status'], 'accepted'),
 
-  [TASKS.REJECT]: (state, action) => state
-    .deleteIn(['tasks', action.payload.taskId])
-    .deleteIn(['followers', action.payload.followerId]),
+  [TASKS.REJECT]: (state, action) => {
+    const { task } = action.payload.originalData
+    const assignee = getAssigneeOfTask(task.followers)
+
+    return state
+      .deleteIn(['tasks', task.id])
+      .deleteIn(['followers', assignee.id])
+  },
 
   [TASKS.DELETE]: (state, action) => state
     .setIn(['tasks', action.payload.taskEntitiesList]),
@@ -313,7 +319,7 @@ function saveTree(payload, state) {
 
 function saveTasks(payload, state) {
   const { profile, createdBy } = payload.entities
-  const profiles = profile 
+  const profiles = profile
     ? _.assign(profile, createdBy)
     : createdBy
 

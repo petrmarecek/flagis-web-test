@@ -64,6 +64,7 @@ const UndoBox = ({ undoBox, onHandleUndo }) => {
     treeItemDelete: 'Tree item deleted',
     treeGroupDelete: 'Tree filter group deleted',
     contactDelete: 'Contact deleted',
+    taskRejected: 'Task rejected',
   }
 
   return (
@@ -117,6 +118,10 @@ export default compose(
 
         case 'contactDelete':
           props.activeUndo('UNDO_CONTACTS/DELETE')
+          break
+
+        case 'taskRejected':
+          props.activeUndo('UNDO_TASK/REJECT')
           break
 
         default:

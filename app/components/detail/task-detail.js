@@ -448,6 +448,7 @@ const TaskDetail = props => {
 }
 
 TaskDetail.propTypes = {
+  detail: PropTypes.object,
   userId: PropTypes.string,
   task: PropTypes.object,
   animation: PropTypes.bool,
@@ -530,11 +531,10 @@ export default withHandlers({
     props.onHandleTaskAccept(data)
   },
   onHandleReject: props => () => {
-    const { id, followers } = props.task
-    const assignee = getAssigneeOfTask(followers)
+    const { task, detail } = props
     const data = {
-      taskId: id,
-      followerId: assignee.id,
+      task,
+      type: detail.inbox ? 'inbox' : 'task',
     }
 
     props.onHandleTaskReject(data)

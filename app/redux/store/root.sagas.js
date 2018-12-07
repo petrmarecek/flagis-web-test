@@ -65,6 +65,7 @@ export default function* root() {
     takeEvery(TASKS.SEND, task.sendTask),
     takeEvery(TASKS.ACCEPT, task.acceptTask),
     takeEvery(TASKS.REJECT, task.rejectTask),
+    takeEvery(TASKS.UNDO_REJECT, task.undoRejectTask),
     takeEvery(TASKS.DELETE, task.deleteTask),
     takeEvery(TASKS.UNDO_DELETE, task.undoDeleteTask),
 

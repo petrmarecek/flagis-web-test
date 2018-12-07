@@ -170,7 +170,7 @@ const taskTarget = {
       dropTask: dragSource.task,
       targetSection: props.section,
     }
-    
+
     props.dropTask(drop)
   }
 }
@@ -313,9 +313,9 @@ const TaskListItem = props => {
               animation={!task.isCompleted ? null : {
                 action: 'transition.expandIn',
                 duration: 1000,
-              }} 
+              }}
               archived={isArchivedList} />}
-              {isInboxList && 
+              {isInboxList &&
               <FollowerResponse>
                 <FollowerResponseButtons
                   acceptClicked={onHandleAcceptClicked}
@@ -450,17 +450,16 @@ export default DragSource(ItemTypes.TASK, taskSource, collectDragSource)(
           taskId: id,
           followerId: assignee.id,
         }
-    
+
         props.acceptTask(data)
       },
       onHandleRejectClicked: props => () => {
-        const { id, followers } = props.task
-        const assignee = getAssigneeOfTask(followers)
+        const { task, listType } = props
         const data = {
-          taskId: id,
-          followerId: assignee.id,
+          task,
+          type: listType,
         }
-    
+
         props.rejectTask(data)
       },
     }),

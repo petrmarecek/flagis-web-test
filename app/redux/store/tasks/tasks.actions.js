@@ -42,6 +42,7 @@ export const TASKS = {
   SEND: 'TASK/SEND',
   ACCEPT: 'TASK/ACCEPT',
   REJECT: 'TASK/REJECT',
+  UNDO_REJECT: 'UNDO_TASK/REJECT',
 }
 
 export const fetchTasks = () => ({
@@ -286,11 +287,8 @@ export const acceptTask = (taskId, followerId) => ({
   }
 })
 
-export const rejectTask = (taskId, followerId) => ({
+export const rejectTask = originalData => ({
   type: TASKS.REJECT,
-  payload: {
-    taskId,
-    followerId
-  }
+  payload: { originalData }
 })
 
