@@ -52,7 +52,7 @@ const DetailContentTop = styled.div`
   background-color: #fff;
   z-index: 1;
   padding: 0 12px;
-  
+
   :before {
     content: "";
     position: absolute;
@@ -66,7 +66,7 @@ const DetailContentTop = styled.div`
     ${transformOrigin('0 50%')}
     ${transition(props => props.animation ? 'transform 500ms ease-out' : 'none')}
   }
-  
+
   :after {
     content: "";
     position: absolute;
@@ -161,7 +161,7 @@ const DetailContentOptions = styled.div`
 `;
 
 const detailContentOptionsItem = css`
-  
+
   position: relative;
   color: #8c9da9;
   padding: 0 0 2px 0;
@@ -221,7 +221,7 @@ const DetailContentImportantLabel = styled.div`
 const DetailContentImportantContent = styled.div`
   margin: -11px 5px 0 0;
   float: right;
-  
+
   span {
     font-weight: bold;
   }
@@ -250,32 +250,32 @@ const DetailContentDatePicker = styled.div`
       background-color: transparent;
     }
   }
-  
+
   .react-datepicker-wrapper {
     width: 100%;
   }
-  
+
   .react-datepicker-popper {
     z-index: 2;
-    
+
     .react-datepicker {
       .border-radius(5px 0 5px 5px);
 
       .react-datepicker__header {
         .border-radius(5px 0 0 0);
       }
-      
+
       .react-datepicker__today-button {
         .border-radius(0 0 5px 5px);
       }
-      
+
       .react-datepicker__time-container {
         .border-radius(0 5px 5px 0);
-        
+
         .react-datepicker__header {
           .border-radius(0 5px 0 0);
         }
-        
+
         .react-datepicker__time{
           .border-radius(0 0 5px 0);
         }
@@ -339,7 +339,7 @@ const RightMenu = styled.div`
   flex: 1;
   text-align: right;
   margin-right: 5px;
-  
+
   svg {
     margin-left: 20px;
   }
@@ -361,7 +361,7 @@ const ContentEditableContainer = css`
   text-decoration: ${props => (props.completed || props.archived) ? 'line-through' : 'none'};
   font-weight: ${props => props.important ? 'bold' : 'normal'};
   pointer-events: ${props => props.allowed ? 'auto' : 'none'};
-  
+
   :empty:before {
     color: #8c9da9;
     content: attr(data-placeholder);
@@ -376,12 +376,12 @@ const MarkdownEditableContainer = styled(MarkdownEditable)`
   width: 100%;
   height: 100%;
   font-size: 14px;
-  
+
   .markdown__html {
     ${fontMain}
     ${markdownStyles}
     padding-right: 13px;
-    
+
     :empty:before {
       color: #8c9da9;
       display: block;
@@ -389,7 +389,7 @@ const MarkdownEditableContainer = styled(MarkdownEditable)`
       content: attr(data-placeholder);
     }
   }
-  
+
   .markdown__edit {
     ${placeholderColor('#8c9da9')}
     font-family: 'Source Sans Pro', 'Segoe UI', sans-serif;
@@ -530,19 +530,19 @@ const DetailContentContactDataContent = styled.div`
   font-size: 18px;
   color: #293034;
   cursor: ${props => props.button ? 'pointer' : 'default'};
-  
+
   span {
     margin: 0 0 0 10px;
     font-size: 14px;
     font-weight: bold;
     color: #8c9da9;
   }
-  
+
   :hover {
     span {
       color: ${props => props.button ? '#293034' : '#8c9da9'};
     }
-    
+
     svg {
       path {
         fill: ${props => props.button ? '#293034' : '#8c9da9'};
@@ -564,12 +564,12 @@ const DetailContentContactButton = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  
+
   :hover {
     ${transition('500ms')}
     background-color: #293034;
   }
-  
+
 `;
 
 const DetailContentContactButtonLabel = styled.span`

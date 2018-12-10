@@ -19,7 +19,7 @@ const TaskPage = ({ tasksItems, pathname }) => {
   const numberTemplate = template.length
   const taskId = pathname.substring(numberTemplate)
   const isTaskId = tasksItems.includes(taskId)
-  
+
   return (
     <div>
       <LeftPanel>
@@ -52,22 +52,22 @@ export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   lifecycle({
     componentDidUpdate() {
-      const { tasksItems, pathname, selectTasksItems, selectTask, changeLocation } = this.props
-      const template = '/user/tasks/'
+      const { tasksItems, pathname, selectTasksItems } = this.props
+      let template = '/user/tasks/'
       const numberTemplate = template.length
       const taskId = pathname.substring(numberTemplate)
       const isTaskId = tasksItems.includes(taskId)
       let newSelectTaskItems = selectTasksItems
-      
+
       if (!isTaskId) {
-        const template = '/user/tasks'
+        template = '/user/tasks'
 
         if (tasksItems.size === 0) {
           return
         }
-        
+
         if (pathname !== template) {
-          changeLocation(template)
+          this.props.changeLocation(template)
         }
 
         return
@@ -78,7 +78,7 @@ export default compose(
       }
 
       newSelectTaskItems = newSelectTaskItems.clear().add(taskId)
-      selectTask(newSelectTaskItems, null)
+      this.props.selectTask(newSelectTaskItems, null)
     }
   })
 )(TaskPage)

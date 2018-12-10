@@ -56,30 +56,27 @@ export default compose(
       const {
         inboxItems,
         pathname,
-        selectTasksItems,
-        selectTask,
-        changeLocation,
-        visibleInboxTasks
+        selectTasksItems
       } = this.props
 
-      const template = '/user/inbox/'
+      let template = '/user/inbox/'
       const numberTemplate = template.length
       const taskId = pathname.substring(numberTemplate)
       const isTaskId = inboxItems.includes(taskId)
       let newSelectTaskItems = selectTasksItems
-      
+
       // Set visibility for inbox tasks
-      visibleInboxTasks()
-      
+      this.props.visibleInboxTasks()
+
       if (!isTaskId) {
-        const template = '/user/inbox'
+        template = '/user/inbox'
 
         if (inboxItems.size === 0) {
           return
         }
-        
+
         if (pathname !== template) {
-          changeLocation(template)
+          this.props.changeLocation(template)
         }
 
         return
@@ -90,7 +87,7 @@ export default compose(
       }
 
       newSelectTaskItems = newSelectTaskItems.clear().add(taskId)
-      selectTask(newSelectTaskItems, null)
+      this.props.selectTask(newSelectTaskItems, null)
     }
   })
 )(InboxPage)

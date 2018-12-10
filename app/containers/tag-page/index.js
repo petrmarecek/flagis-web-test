@@ -56,26 +56,23 @@ export default compose(
       const {
         tagsItems,
         pathname,
-        currentTagId,
-        selectTag,
-        changeLocation,
-        setDetail
+        currentTagId
       } = this.props
 
-      const template = '/user/tags/'
+      let template = '/user/tags/'
       const numberTemplate = template.length
       const tagId = pathname.substring(numberTemplate)
       const isTagId = tagsItems.includes(tagId)
-      
+
       if (!isTagId) {
-        const template = '/user/tags'
+        template = '/user/tags'
 
         if (tagsItems.size === 0) {
           return
         }
-        
+
         if (pathname !== template) {
-          changeLocation(template)
+          this.props.changeLocation(template)
         }
 
         return
@@ -85,8 +82,8 @@ export default compose(
         return
       }
 
-      selectTag(tagId)
-      setDetail('tag')
+      this.props.selectTag(tagId)
+      this.props.setDetail('tag')
     }
   })
 )(TagPage)
