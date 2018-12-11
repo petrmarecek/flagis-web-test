@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { DragSource, DropTarget } from 'react-dnd'
-import { compose, shouldUpdate, withHandlers } from 'recompose'
+import { compose, shouldUpdate, withHandlers, withState } from 'recompose'
 import { findDOMNode } from 'react-dom'
 import moment from 'moment'
 import removeMd from 'remove-markdown'
@@ -197,6 +197,7 @@ const TaskListItem = props => {
     task,
     isSelected,
     isDragging,
+    isMounted,
     noTaskFound,
     listType,
     selectedTags,
@@ -293,7 +294,8 @@ const TaskListItem = props => {
             selected={isSelected}
             backgroundColor={backgroundColor}
             completed={isCompletedMainList}
-            dragging={isDragging}>
+            dragging={isDragging}
+            isMounted={isMounted}>
             {!isArchivedList && !isInboxList &&
             <Completed
               icon={ICONS.TASK_CHECKED}
@@ -363,6 +365,7 @@ TaskListItem.propTypes = {
   userId: PropTypes.string,
   task: PropTypes.object,
   noTaskFound: PropTypes.bool,
+  isMounted: PropTypes.bool,
   listType: PropTypes.string,
   selectedTags: PropTypes.object,
   isSelected: PropTypes.bool,
@@ -373,6 +376,7 @@ TaskListItem.propTypes = {
   windowWidth: PropTypes.number,
 
   // Handlers
+  setMounted: PropTypes.func,
   onClick: PropTypes.func,
   onCompleteClick: PropTypes.func,
   moveTask: PropTypes.func,
@@ -396,23 +400,26 @@ TaskListItem.propTypes = {
 
 const checkPropsChange = (props, nextProps) => {
   // props
-  const { task, isSelected, isDragging, windowWidth } = props
+  const { task, isSelected, isDragging, isMounted, windowWidth } = props
 
   // nextProps
   const nextTask = nextProps.task
   const nextIsSelected = nextProps.isSelected
   const nextIsDragging = nextProps.isDragging
+  const nextIsMounted = nextProps.isMounted
   const nextWindowWidth = nextProps.windowWidth
 
   return (task.size >= 2 ? !task.equals(nextTask) : task === nextTask)
     || (isSelected !== nextIsSelected)
     || (isDragging !== nextIsDragging)
+    || (isMounted !== nextIsMounted)
     || (windowWidth !== nextWindowWidth)
 }
 
 export default DragSource(ItemTypes.TASK, taskSource, collectDragSource)(
   compose(
     DropTarget(ItemTypes.TASK, taskTarget, collectDropTarget),
+    withState('isMounted', 'setMounted', true),
     withHandlers({
       onHandleClicked: props => event => props.onClick(props.task, event),
       onHandleTagClicked: props => tag => props.onTagClick(tag),
@@ -437,11 +444,13 @@ export default DragSource(ItemTypes.TASK, taskSource, collectDragSource)(
         event.stopPropagation()
 
         if (props.listType === 'archived') {
-          props.cancelArchiveTasks(props.task.id)
+          window.setTimeout(() => props.cancelArchiveTasks(props.task.id), 400)
+          props.setMounted(false)
           return
         }
 
-        props.setArchiveTasks(props.task.id)
+        window.setTimeout(() => props.setArchiveTasks(props.task.id), 400)
+        props.setMounted(false)
       },
       onHandleAcceptClicked: props => () => {
         const { id, followers } = props.task

@@ -1,5 +1,5 @@
 import styled, { keyframes } from 'styled-components'
-import { fadeInUp } from 'react-animations'
+import { fadeInUp, flipOutX } from 'react-animations'
 import {
   transition,
   transform,
@@ -13,7 +13,8 @@ import Icon from '../icons/icon'
 
 /*----------------------------------- Task Item ----------------------------------------------*/
 
-const fadeUp = keyframes`${fadeInUp}`;
+const showAnimation = keyframes`${fadeInUp}`;
+const hideAnimation = keyframes`${flipOutX}`;
 
 const TaskItem = styled.div`
   height: 50px;
@@ -25,7 +26,7 @@ const TaskItem = styled.div`
   outline: none;
   background-color: ${props => props.backgroundColor};
   visibility: ${props => props.dragging ? 'hidden' : 'visible'};
-  animation: 400ms ${fadeUp};
+  animation: ${props => props.isMounted ? `${showAnimation} 400ms` : `${hideAnimation} 400ms`};
 
   :before {
     content: "";
