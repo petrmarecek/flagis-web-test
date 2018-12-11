@@ -10,11 +10,11 @@ export default typeToReducer({
     .setIn(['window', 'width'], action.payload.window.innerWidth)
     .setIn(['window', 'height'], action.payload.window.innerHeight),
 
-  [APP_STATE.LOADER_VISIBLE]: state =>
-    state.setIn(['loader', 'isVisible'], true),
+  [APP_STATE.SET_LOADER]: (state, action) =>
+    state.setIn(['loader', action.payload.type], true),
 
-  [APP_STATE.LOADER_HIDE]: state =>
-    state.setIn(['loader', 'isVisible'], false),
+  [APP_STATE.DESELECT_LOADER]: (state, action) =>
+    state.setIn(['loader', action.payload.type], false),
 
   [APP_STATE.MULTI_SELECT_VISIBLE]: state =>
     state.setIn(['multiSelect', 'isVisible'], true),

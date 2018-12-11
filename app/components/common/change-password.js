@@ -4,7 +4,7 @@ import { Field, reduxForm } from 'redux-form/immutable'
 import { connect } from 'react-redux'
 import {compose, lifecycle, withHandlers} from 'recompose'
 
-import { deselectError, visibleLoader } from 'redux/store/app-state/app-state.actions'
+import { deselectError, setLoader } from 'redux/store/app-state/app-state.actions'
 import { getChangePasswordForm, getLoader } from 'redux/store/app-state/app-state.selectors'
 import { changePassword } from 'redux/store/auth/auth.actions'
 import { validateChangePassword } from 'redux/utils/validate'
@@ -94,12 +94,12 @@ ChangePassword.propTypes = {
 
 const mapStateToProps = state => ({
   errorChangePassword: getChangePasswordForm(state),
-  loader: getLoader(state),
+  loader: getLoader(state).form,
 })
 
 const mapDispatchToProps = {
   changePassword,
-  visibleLoader,
+  setLoader,
   deselectError,
 }
 
@@ -112,7 +112,7 @@ export default compose(
   }),
   withHandlers({
     onSubmit: props => values => {
-      props.visibleLoader()
+      props.setLoader('form')
       props.changePassword({
         oldPassword: values.get('oldPassword'),
         newPassword: values.get('newPassword'),

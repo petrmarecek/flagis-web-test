@@ -9,8 +9,8 @@ export const APP_STATE = {
   CHANGE_LOCATION: 'APP-STATE/CHANGE_LOCATION',
 
   // Loader
-  LOADER_VISIBLE: 'APP-STATE/LOADER_VISIBLE',
-  LOADER_HIDE: 'APP-STATE/LOADER_HIDE',
+  SET_LOADER: 'APP-STATE/SET_LOADER',
+  DESELECT_LOADER: 'APP-STATE/DESELECT_LOADER',
 
   // Multi Select
   MULTI_SELECT_VISIBLE: 'APP-STATE/MULTI_SELECT_VISIBLE',
@@ -74,12 +74,14 @@ export const changeLocation = pathname => ({
 
 // ------ Loader --------------------------------------------------------------------
 
-export const visibleLoader = () => ({
-  type: APP_STATE.LOADER_VISIBLE
+export const setLoader = type => ({
+  type: APP_STATE.SET_LOADER,
+  payload: { type }
 })
 
-export const hideLoader = () => ({
-  type: APP_STATE.LOADER_HIDE
+export const deselectLoader = type => ({
+  type: APP_STATE.DESELECT_LOADER,
+  payload: { type }
 })
 
 // ------ Multi select --------------------------------------------------------------

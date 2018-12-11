@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form/immutable'
 
-import { visibleLoader } from 'redux/store/app-state/app-state.actions'
+import { setLoader } from 'redux/store/app-state/app-state.actions'
 import { getLoader } from 'redux/store/app-state/app-state.selectors'
 import { controlRedirectTasks, resetPassword } from 'redux/store/auth/auth.actions'
 import { validateResetPassword } from 'redux/utils/validate'
@@ -68,12 +68,12 @@ ResetPassword.propTypes = {
 }
 
 const mapStateToProps = state => ({
-  loader: getLoader(state),
+  loader: getLoader(state).form,
 })
 
 const mapDispatchToProps = {
   resetPassword,
-  visibleLoader,
+  setLoader,
   controlRedirectTasks,
 }
 
@@ -87,7 +87,7 @@ export default compose(
     onSubmit: props => values => {
       const numberCharacter = '/reset-password/'.length
       const resetToken = props.location.pathname.substring(numberCharacter)
-      props.visibleLoader()
+      props.setLoader('form')
       props.resetPassword({
         resetToken: resetToken,
         password: values.get('newPassword'),

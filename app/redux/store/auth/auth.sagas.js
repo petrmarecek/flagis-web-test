@@ -173,7 +173,7 @@ export function* changeName(action) {
     const profile = yield call(api.users.update, action.payload)
     yield put(authActions.updateProfile(profile))
     yield put(appStateActions.deselectError('changeName'))
-    yield put(appStateActions.hideLoader())
+    yield put(appStateActions.deselectLoader('form'))
 
     toast.success(successMessages.changeName, {
       position: toast.POSITION.BOTTOM_RIGHT,
@@ -182,7 +182,7 @@ export function* changeName(action) {
 
   } catch (err) {
     yield put(appStateActions.setError('changeName', errorMessages.somethingWrong))
-    yield put(appStateActions.hideLoader())
+    yield put(appStateActions.deselectLoader('form'))
   }
 }
 
@@ -190,7 +190,7 @@ export function* changePassword(action) {
   try {
     yield call(api.users.password, action.payload)
     yield put(appStateActions.deselectError('changePassword'))
-    yield put(appStateActions.hideLoader())
+    yield put(appStateActions.deselectLoader('form'))
 
     toast.success(successMessages.changePassword, {
       position: toast.POSITION.BOTTOM_RIGHT,
@@ -199,14 +199,14 @@ export function* changePassword(action) {
 
   } catch (err) {
     yield put(appStateActions.setError('changePassword', errorMessages.changePassword.badRequest))
-    yield put(appStateActions.hideLoader())
+    yield put(appStateActions.deselectLoader('form'))
   }
 }
 
 export function* emailResetPassword(action) {
   try {
     yield call(api.users.emailResetPassword, action.payload)
-    yield put(appStateActions.hideLoader())
+    yield put(appStateActions.deselectLoader('form'))
     yield put(appStateActions.changeLocation('/sign-in'))
 
     // delay for render sign-in component
@@ -219,7 +219,7 @@ export function* emailResetPassword(action) {
     })
 
   } catch (err) {
-    yield put(appStateActions.hideLoader())
+    yield put(appStateActions.deselectLoader('form'))
     yield put(appStateActions.changeLocation('/sign-in'))
 
     // delay for render sign-in component
@@ -237,7 +237,7 @@ export function* resetPassword(action) {
   try {
 
     yield call(api.users.resetPassword, action.payload)
-    yield put(appStateActions.hideLoader())
+    yield put(appStateActions.deselectLoader('form'))
     yield put(appStateActions.changeLocation('/sign-in'))
 
     // delay for render sign-in component
@@ -250,7 +250,7 @@ export function* resetPassword(action) {
     })
 
   } catch (err) {
-    yield put(appStateActions.hideLoader())
+    yield put(appStateActions.deselectLoader('form'))
     yield put(appStateActions.changeLocation('/sign-in'))
 
     // delay for render sign-in component
@@ -307,7 +307,7 @@ function* authorizeUser(authApiCall, action) {
     yield put({ type: FULFILLED, payload: auth })
 
     // hide loader
-    yield put(appStateActions.hideLoader())
+    yield put(appStateActions.deselectLoader('form'))
 
     // redirect
     const redirectAction = push('/user/tasks')
@@ -330,7 +330,7 @@ function* authorizeUser(authApiCall, action) {
       yield put(appStateActions.setError('signUp', errorMessages.signUp.conflict))
     }
 
-    yield put(appStateActions.hideLoader())
+    yield put(appStateActions.deselectLoader('form'))
 
     return null
   }

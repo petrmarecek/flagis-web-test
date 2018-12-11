@@ -50,6 +50,11 @@ export const Visibility = Record({
   isVisible: false,
 })
 
+export const Loader = Record({
+  form: false,
+  global: false,
+})
+
 export const Detail = Record({
   task: false,
   archive: false,
@@ -95,7 +100,7 @@ export const TasksOptions = Record({
 
 export const AppStateStore = Record({
   window: new Window(),
-  loader: new Visibility(),
+  loader: new Loader(),
   leftPanel: new LeftPanel(),
   multiSelect: new Visibility(),
   archivedTasks: new Visibility(),

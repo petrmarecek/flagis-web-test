@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form/immutable'
 
-import { visibleLoader } from 'redux/store/app-state/app-state.actions'
+import { setLoader } from 'redux/store/app-state/app-state.actions'
 import { getLoader } from 'redux/store/app-state/app-state.selectors'
 import { controlRedirectTasks, emailResetPassword } from 'redux/store/auth/auth.actions'
 import { validateEmailResetPassword } from 'redux/utils/validate'
@@ -60,12 +60,12 @@ EmailResetPassword.propTypes = {
 }
 
 const mapStateToProps = state => ({
-  loader: getLoader(state),
+  loader: getLoader(state).form,
 })
 
 const mapDispatchToProps = {
   emailResetPassword,
-  visibleLoader,
+  setLoader,
   controlRedirectTasks,
 }
 
@@ -78,7 +78,7 @@ export default compose(
   }),
   withHandlers({
     onSubmit: props => values => {
-      props.visibleLoader()
+      props.setLoader('form')
       props.emailResetPassword({ email: values.get('email') })
     },
   }),

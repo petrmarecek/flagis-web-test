@@ -6,7 +6,7 @@ import { errorMessages } from 'utils/messages'
 import constants from 'utils/constants'
 
 import { getUserId } from 'redux/store/auth/auth.selectors'
-import { hideDialog } from 'redux/store/app-state/app-state.actions'
+import { hideDialog, setLoader, deselectLoader } from 'redux/store/app-state/app-state.actions'
 import { getCurrentDialog } from 'redux/store/app-state/app-state.selectors'
 import {
   updateTreeItemTitle,
@@ -71,6 +71,8 @@ class Dialogs extends PureComponent {
     tagsRelations: PropTypes.object,
     activeTags: PropTypes.object,
     hideDialog: PropTypes.func.isRequired,
+    setLoader: PropTypes.func.isRequired,
+    deselectLoader: PropTypes.func.isRequired,
     updateTreeItemTitle: PropTypes.func.isRequired,
     deleteTreeItem: PropTypes.func.isRequired,
     deleteTask: PropTypes.func.isRequired,
@@ -176,6 +178,7 @@ class Dialogs extends PureComponent {
 
     this.props.hideDialog()
     this.props.deselectTasks()
+    this.props.setLoader('global')
     this.props.deleteTask(
       deleteTasks,
       newTasksList,
@@ -248,6 +251,7 @@ class Dialogs extends PureComponent {
 
   handleAddRemoveTagsSubmit = () => {
     const tasks = this.props.selectTasks
+    this.props.setLoader('global')
 
     for (const task of tasks) {
       let addTags = this.props.multiSelectAddEntitiesTags
@@ -270,6 +274,7 @@ class Dialogs extends PureComponent {
 
     this.props.clearLists()
     this.props.hideDialog()
+    this.props.deselectLoader('global')
   }
 
   // Get current dialog
@@ -403,6 +408,8 @@ const mapDispatchToProps = {
   updateTreeItemTitle,
   deleteTreeItem,
   hideDialog,
+  setLoader,
+  deselectLoader,
   deleteTask,
   deleteTag,
   setActiveTags,

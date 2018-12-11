@@ -8,7 +8,7 @@ import { successMessages } from 'utils/messages'
 import constants from 'utils/constants'
 
 import { getAuth } from 'redux/store/auth/auth.selectors'
-import { showDialog } from 'redux/store/app-state/app-state.actions'
+import { showDialog, setLoader } from 'redux/store/app-state/app-state.actions'
 import {
   getMultiSelectVisibility,
   getArchivedTasksVisibility,
@@ -78,6 +78,7 @@ class TasksMenuContainer extends PureComponent {
     deselectTasks: PropTypes.func,
     setArchiveTasks: PropTypes.func,
     showDialog: PropTypes.func,
+    setLoader: PropTypes.func,
     selectTasks: PropTypes.object,
     selectTaskCount: PropTypes.number,
     tasksMenu: PropTypes.object,
@@ -141,6 +142,7 @@ class TasksMenuContainer extends PureComponent {
 
     const archive = archiveCompletedTasks(tasks, showCompletedTasks, completedTasks, archivedTasks, entitiesTasks, selectedTasks)
 
+    this.props.setLoader('global')
     this.props.setArchiveTasks(
       archive.newArchiveTasksList,
       archive.tasks,
@@ -283,6 +285,7 @@ const mapDispatchToProps = {
   changeSearchText,
   toggleSortAlgorithm,
   showDialog,
+  setLoader,
   setArchiveTasks,
   deselectTasks,
   visibleMenuFilter,

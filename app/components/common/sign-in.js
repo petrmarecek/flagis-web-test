@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form/immutable'
 import { ToastContainer, style } from 'react-toastify'
 
-import { deselectError, visibleLoader } from 'redux/store/app-state/app-state.actions'
+import { deselectError, setLoader } from 'redux/store/app-state/app-state.actions'
 import { getLoader, getAppStateItem } from 'redux/store/app-state/app-state.selectors'
 import { controlRedirectTasks, login } from 'redux/store/auth/auth.actions'
 import { validateSignIn } from 'redux/utils/validate'
@@ -104,12 +104,12 @@ SignIn.propTypes = {
 
 const mapStateToProps = state => ({
   errorSignIn: getAppStateItem(state, 'signIn'),
-  loader: getLoader(state),
+  loader: getLoader(state).form,
 })
 
 const mapDispatchToProps = {
   login,
-  visibleLoader,
+  setLoader,
   controlRedirectTasks,
   deselectError,
 }
@@ -122,7 +122,7 @@ export default compose(
   }),
   withHandlers({
     onSubmit: props => values => {
-      props.visibleLoader()
+      props.setLoader('form')
       props.login({
         email: values.get('email'),
         password: values.get('password')

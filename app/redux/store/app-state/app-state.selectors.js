@@ -27,7 +27,7 @@ export const getTaskArchiveDetail = state => state.getIn(['appState', 'detail', 
 export const getTaskInboxDetail = state => state.getIn(['appState', 'detail', 'inbox'])
 export const getTagDetail = state => state.getIn(['appState', 'detail', 'tag'])
 export const getContactDetail = state => state.getIn(['appState', 'detail', 'contact'])
-export const getLoader = state => state.getIn(['appState', 'loader', 'isVisible'])
+export const getLoader = state => state.getIn(['appState', 'loader'])
 
 // ------ Reselect selectors ----------------------------------------------------
 

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form/immutable'
 
-import { deselectError, visibleLoader } from 'redux/store/app-state/app-state.actions'
+import { deselectError, setLoader } from 'redux/store/app-state/app-state.actions'
 import { getAppStateItem, getLoader } from 'redux/store/app-state/app-state.selectors'
 import { controlRedirectTasks, signUp, initEmail } from 'redux/store/auth/auth.actions'
 import { getUserEmail } from 'redux/store/auth/auth.selectors'
@@ -139,14 +139,14 @@ const mapStateToProps = (state, props) => {
 
   return {
     errorSignUp: getAppStateItem(state, 'signUp'),
-    loader: getLoader(state),
+    loader: getLoader(state).form,
     initialValues: { email }
   }
 }
 
 const mapDispatchToProps = {
   signUp,
-  visibleLoader,
+  setLoader,
   controlRedirectTasks,
   initEmail,
   deselectError,
@@ -173,7 +173,7 @@ export default compose(
         data.token = token
       }
 
-      props.visibleLoader()
+      props.setLoader('form')
       props.signUp(data)
     },
   }),

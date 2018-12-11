@@ -321,6 +321,7 @@ export function* setArchiveTasks(action) {
       }
     }
 
+    yield put(appStateActions.deselectLoader('global'))
   } catch(err) {
     // TODO: revert to original state
   }
@@ -516,6 +517,7 @@ export function* deleteTask(action) {
   }
 
   yield put(taskActions.deselectTasks())
+  yield put(appStateActions.deselectLoader('global'))
   yield* mainUndo(action, 'taskDelete')
 }
 

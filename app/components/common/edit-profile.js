@@ -4,7 +4,7 @@ import { Field, reduxForm } from 'redux-form/immutable'
 import { connect } from 'react-redux'
 import {compose, lifecycle, withHandlers} from 'recompose'
 
-import { deselectError, visibleLoader } from 'redux/store/app-state/app-state.actions'
+import { deselectError, setLoader } from 'redux/store/app-state/app-state.actions'
 import { getChangeNameForm, getLoader } from 'redux/store/app-state/app-state.selectors'
 import { changeName } from 'redux/store/auth/auth.actions'
 import { getUsername } from 'redux/store/auth/auth.selectors'
@@ -86,13 +86,13 @@ EditProfile.propTypes = {
 
 const mapStateToProps = state => ({
   errorChangeName: getChangeNameForm(state),
-  loader: getLoader(state),
+  loader: getLoader(state).form,
   initialValues: getUsername(state)
 })
 
 const mapDispatchToProps = {
   changeName,
-  visibleLoader,
+  setLoader,
   deselectError,
 }
 
@@ -114,7 +114,7 @@ export default compose(
         return
       }
 
-      props.visibleLoader()
+      props.setLoader('form')
       props.changeName({
         firstName: firstName,
         lastName: lastName,

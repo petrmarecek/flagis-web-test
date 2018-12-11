@@ -9,10 +9,11 @@ import debounce from 'lodash/debounce'
 
 import { controlRedirectSignIn } from 'redux/store/auth/auth.actions'
 import { updateWindow } from 'redux/store/app-state/app-state.actions'
-import { getAppStateItem } from 'redux/store/app-state/app-state.selectors'
+import { getAppStateItem, getLoader } from 'redux/store/app-state/app-state.selectors'
 
 import Dialogs from 'components/dialogs/dialogs'
 import UndoBox from 'components/common/undo-box'
+import Loader from 'components/common/loader'
 import NavigationBar from 'components/navigation/navigation-bar'
 import TaskPage from 'containers/task-page'
 import TagPage from 'containers/tag-page'
@@ -29,6 +30,7 @@ class UserContainer extends PureComponent {
     }).isRequired,
     match: PropTypes.any,
     undoBox: PropTypes.object,
+    loader: PropTypes.bool,
   }
 
   constructor(props) {
@@ -95,6 +97,7 @@ class UserContainer extends PureComponent {
           <div id="floating-components-hints" />
           <ToastContainer />
           <UndoBox />
+          {this.props.loader && <Loader global />}
         </div>
       </div>
     )
@@ -103,7 +106,9 @@ class UserContainer extends PureComponent {
 
 const mapStateToProps = state => ({
   undoBox: getAppStateItem(state, 'undoBox'),
+  loader: getLoader(state).global,
 })
+
 const mapDispatchToProps = {
   updateWindow,
   controlRedirectSignIn
