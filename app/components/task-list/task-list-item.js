@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { DragSource, DropTarget } from 'react-dnd'
 import { compose, shouldUpdate, withHandlers, withState } from 'recompose'
 import { findDOMNode } from 'react-dom'
+import Linkify from 'react-linkify'
 import moment from 'moment'
 import removeMd from 'remove-markdown'
 import { toast } from 'react-toastify'
@@ -331,7 +332,11 @@ const TaskListItem = props => {
                   archived={isArchivedList}
                   completed={isCompletedMainList}
                   important={task.isImportant}
-                  description={isDescription}>{task.subject}</Subject>
+                  description={isDescription}>
+                  <Linkify properties={{target: '_blank'}}>
+                    {task.subject}
+                  </Linkify>
+                </Subject>
                 <Tags>
                   <TaskListTagItems
                     tags={sortedTags}
@@ -421,7 +426,13 @@ export default DragSource(ItemTypes.TASK, taskSource, collectDragSource)(
     DropTarget(ItemTypes.TASK, taskTarget, collectDropTarget),
     withState('isMounted', 'setMounted', true),
     withHandlers({
-      onHandleClicked: props => event => props.onClick(props.task, event),
+      onHandleClicked: props => event => {
+        if (event.target.nodeName === 'A') {
+          return
+        }
+
+        props.onClick(props.task, event)
+      },
       onHandleTagClicked: props => tag => props.onTagClick(tag),
       onHandleCompleteClicked: props => event => {
         event.stopPropagation()

@@ -1,11 +1,16 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { compose, withHandlers } from 'recompose'
+import styled from 'styled-components'
+
+const Editable = styled.div`
+  cursor: text;
+`;
 
 /* eslint-disable react/no-danger */
 
 const ContentEditable = ({ html, placeholder, className, onHandleUpdateText }) => (
-  <div
+  <Editable
     className={className}
     onBlur={onHandleUpdateText}
     data-placeholder={placeholder}

@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import dateUtil from 'redux/utils/date'
 import { ICONS } from 'components/icons/icon-constants'
+import Linkify from 'react-linkify'
 
 import {
   CommentItemContainer,
@@ -28,7 +29,11 @@ const CommentListItem = ({ comment, userId }) => {
         color={["#8C9DA9"]}/>
       <CommentItemAuthor>{author}</CommentItemAuthor>
       <CommentItemDate>{dateText}</CommentItemDate>
-      <CommentItemContent>{content}</CommentItemContent>
+      <CommentItemContent>
+        <Linkify properties={{target: '_blank'}}>
+          {content}
+        </Linkify>
+      </CommentItemContent>
     </CommentItemContainer>
   )
 }

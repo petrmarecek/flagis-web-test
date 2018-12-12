@@ -111,11 +111,11 @@ const placeholderColor = value => css`
   &:-moz-placeholder { /!* Firefox 18- *!/
     color: ${value};
   }
-  
+
   &::-moz-placeholder { /!* Firefox 19+ *!/
     color: ${value};
   }
-  
+
   &:-ms-input-placeholder {
     color: ${value};
   }
@@ -130,7 +130,19 @@ const commonInputSmall = css`
   border: none;
   border-bottom: 1px solid #D7E3EC;
   background-color: transparent;
-}
+`;
+
+const link = css`
+  a {
+    cursor: pointer;
+    outline: none;
+    text-decoration: none;
+    color: #0799ea;
+  }
+
+  a:hover {
+    color: #00599c;
+  }
 `;
 
 export {
@@ -154,6 +166,7 @@ export {
   textOverflow,
   placeholderColor,
   commonInputSmall,
+  link,
 
   // Markdown
   markdownStyles,

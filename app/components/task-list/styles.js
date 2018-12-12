@@ -6,7 +6,8 @@ import {
   transformOrigin,
   textOverflow,
   borderRadius,
-  fontMain
+  fontMain,
+  link
 } from '../styled-components-mixins'
 
 import Icon from '../icons/icon'
@@ -85,11 +86,12 @@ const Subject =  styled.div`
   font-size: 18px;
   overflow: hidden;
   white-space: nowrap;
+  z-index: 1;
   color: ${props => props.completed ? '#cfdbe4' : '#293034'};
   font-weight: ${props => props.important ? 'bold' : 'normal'};
   text-decoration: ${props => (props.completed || props.archived) ? 'line-through' : 'none'};
   ${transition('color 500ms ease-out')};
-  z-index: 1;
+  ${link}
 `;
 
 const Tags =  styled.div`

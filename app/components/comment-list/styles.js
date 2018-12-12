@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { link } from '../styled-components-mixins/'
 import Icon from '../icons/icon'
 
 const CommentListContainer = styled.div`
@@ -12,7 +13,7 @@ const CommentItemContainer = styled.li`
   margin: 20px 0;
   position: relative;
   color: #8C9DA9;
-  
+
   :first-of-type {
     margin-top: 0;
   }
@@ -47,6 +48,7 @@ const CommentItemContent = styled.div`
   display: block;
   margin: 4px 0 0 37px;
   word-wrap: break-word;
+  ${link}
 `;
 
 export {
