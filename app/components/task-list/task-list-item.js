@@ -427,6 +427,15 @@ export default DragSource(ItemTypes.TASK, taskSource, collectDragSource)(
     withState('isMounted', 'setMounted', true),
     withHandlers({
       onHandleClicked: props => event => {
+        const isInboxList = props.listType === 'inbox'
+        const isMultiselect = event.ctrlKey || event.metaKey
+
+        // Not allowed multiselect in inbox list
+        if (isMultiselect && isInboxList) {
+          return
+        }
+
+        // Click on link
         if (event.target.nodeName === 'A') {
           return
         }
