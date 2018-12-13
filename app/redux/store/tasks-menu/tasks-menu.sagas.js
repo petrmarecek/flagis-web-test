@@ -3,7 +3,7 @@ import * as taskMenuActions from 'redux/store/tasks-menu/tasks-menu.actions'
 import * as taskMenuSelectros from 'redux/store/tasks-menu/tasks-menu.selectors'
 
 export function* toggleAssigneeFilter() {
-  const assignee = yield select(state => taskMenuSelectros.getTaskMenuFiltersItem(state, 'assignee'))
+  const assignee = yield select(state => taskMenuSelectros.getTasksMenuFiltersItem(state, 'assignee'))
 
   if (assignee) {
     yield put(taskMenuActions.addActiveFilter('assignee'))
@@ -13,8 +13,8 @@ export function* toggleAssigneeFilter() {
 }
 
 export function* changeRangeFilter(action) {
-  const activeFilters = yield select(state => taskMenuSelectros.getTaskMenuFiltersItem(state, 'active'))
-  const range = yield select(state => taskMenuSelectros.getTaskMenuFiltersItem(state, 'range'))
+  const activeFilters = yield select(state => taskMenuSelectros.getTasksMenuFiltersItem(state, 'active'))
+  const range = yield select(state => taskMenuSelectros.getTasksMenuFiltersItem(state, 'range'))
   const value = action.value
 
   if (range) {
@@ -38,8 +38,8 @@ export function* changeRangeFilter(action) {
 }
 
 export function* toggleImportantFilter() {
-  const activeFilters = yield select(state => taskMenuSelectros.getTaskMenuFiltersItem(state, 'active'))
-  const important = yield select(state => taskMenuSelectros.getTaskMenuFiltersItem(state, 'important'))
+  const activeFilters = yield select(state => taskMenuSelectros.getTasksMenuFiltersItem(state, 'active'))
+  const important = yield select(state => taskMenuSelectros.getTasksMenuFiltersItem(state, 'important'))
 
   if (important) {
     if (activeFilters.includes('unimportant')) {
@@ -53,8 +53,8 @@ export function* toggleImportantFilter() {
 }
 
 export function* toggleUnimportantFilter() {
-  const activeFilters = yield select(state => taskMenuSelectros.getTaskMenuFiltersItem(state, 'active'))
-  const unimportant = yield select(state => taskMenuSelectros.getTaskMenuFiltersItem(state, 'unimportant'))
+  const activeFilters = yield select(state => taskMenuSelectros.getTasksMenuFiltersItem(state, 'active'))
+  const unimportant = yield select(state => taskMenuSelectros.getTasksMenuFiltersItem(state, 'unimportant'))
 
   if (unimportant) {
     if (activeFilters.includes('important')) {
@@ -68,7 +68,7 @@ export function* toggleUnimportantFilter() {
 }
 
 export function* toggleNoTagsFilter() {
-  const noTags = yield select(state => taskMenuSelectros.getTaskMenuFiltersItem(state, 'noTags'))
+  const noTags = yield select(state => taskMenuSelectros.getTasksMenuFiltersItem(state, 'noTags'))
 
   if (noTags) {
     yield put(taskMenuActions.addActiveFilter('noTags'))

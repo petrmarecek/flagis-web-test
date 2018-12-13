@@ -44,8 +44,9 @@ import {
   hideMenuSort,
   visibleMenuOption,
   hideMenuOption,
+  deselectActiveAssignee,
 } from 'redux/store/tasks-menu/tasks-menu.actions'
-import { getTasksMenu } from 'redux/store/tasks-menu/tasks-menu.selectors'
+import { getTasksMenu, getTasksMenuFiltersActiveAssignee } from 'redux/store/tasks-menu/tasks-menu.selectors'
 import { archiveCompletedTasks } from 'redux/utils/component-helper'
 
 import SearchBox from 'components/common/search-box'
@@ -82,6 +83,7 @@ class TasksMenuContainer extends PureComponent {
     selectTasks: PropTypes.object,
     selectTaskCount: PropTypes.number,
     tasksMenu: PropTypes.object,
+    activeAssignee: PropTypes.object,
     multiSelect: PropTypes.bool,
     activeTags: PropTypes.object,
     auth: PropTypes.object,
@@ -93,6 +95,7 @@ class TasksMenuContainer extends PureComponent {
     visibleMenuOption: PropTypes.func,
     hideMenuOption: PropTypes.func,
     selectAllTask: PropTypes.func,
+    deselectActiveAssignee: PropTypes.func,
     timeLine: PropTypes.bool,
   }
 
@@ -212,7 +215,8 @@ class TasksMenuContainer extends PureComponent {
             <TasksMenuFiltersActiveItem
               key={key}
               title={filter}
-              activeAssignee={this.props.tasksMenu.filters.activeAssignee}
+              activeAssignee={this.props.activeAssignee}
+              onDeselectActiveAssignee={this.props.deselectActiveAssignee}
               onDelete={this.handleDeleteFilter}/>
           ))}
         </TasksMenuFiltersActive>}
@@ -269,6 +273,7 @@ const mapStateToProps = state => ({
   selectTasks: getSelectionTasks(state),
   selectTaskCount: getSelectionTasks(state).size,
   tasksMenu: getTasksMenu(state),
+  activeAssignee: getTasksMenuFiltersActiveAssignee(state),
   multiSelect: getMultiSelectVisibility(state),
   activeTags: getActiveTagsIds(state),
   auth: getAuth(state),
@@ -295,5 +300,6 @@ const mapDispatchToProps = {
   visibleMenuOption,
   hideMenuOption,
   selectAllTask,
+  deselectActiveAssignee,
 }
 export default connect(mapStateToProps, mapDispatchToProps)(TasksMenuContainer)

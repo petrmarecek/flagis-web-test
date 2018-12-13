@@ -13,7 +13,7 @@ import {
   FilterActiveItemAutocomplete,
 } from './styles'
 
-const TasksMenuFiltersActiveItem = ({ title, isMounted, onHandleDelete }) => {
+const TasksMenuFiltersActiveItem = ({ title, activeAssignee, isMounted, onHandleDeselectActiveAssignee, onHandleDelete }) => {
   const isAssignee = title === 'assignee'
   const renameTitle = filterTitle => {
     switch (filterTitle) {
@@ -69,8 +69,9 @@ const TasksMenuFiltersActiveItem = ({ title, isMounted, onHandleDelete }) => {
           dataType="contacts"
           location="tasksMenuFilterContacts"
           placeholder="Select Contact"
-          selectedItems={{ contacts: null }}
+          selectedItems={{ contacts: activeAssignee }}
           parentId={null}
+          onDeselectInput={onHandleDeselectActiveAssignee}
           isWithoutItems
           isInputMode />
       </FilterActiveItemAutocomplete>}
@@ -89,9 +90,11 @@ const TasksMenuFiltersActiveItem = ({ title, isMounted, onHandleDelete }) => {
 
 TasksMenuFiltersActiveItem.propTypes = {
   title: PropTypes.string,
-  activeAssignee: PropTypes.string,
+  activeAssignee: PropTypes.object,
   delayTime: PropTypes.number,
   isMounted: PropTypes.bool,
+  onDeselectActiveAssignee: PropTypes.func,
+  onHandleDeselectActiveAssignee: PropTypes.func,
   onDelete: PropTypes.func,
   onHandleDelete: PropTypes.func,
 }
@@ -110,6 +113,10 @@ export default compose(
         )
 
         return ({ isMounted: false })
+      },
+      onHandleDeselectActiveAssignee: (state, props) => () => {
+        props.onDeselectActiveAssignee()
+        return {}
       },
     }
   ),

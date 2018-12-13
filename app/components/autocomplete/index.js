@@ -20,7 +20,7 @@ const Autocomplete = props => {
     location,
     dataType,
     selectedItems,
-    placeholder,
+    inputPlaceholder,
     hints,
     validationItems,
     isWithoutItems,
@@ -33,6 +33,7 @@ const Autocomplete = props => {
     onHandleAddInputRef,
     onHandleItemDelete,
     onHandleClearFilter,
+    onHandleDeselectInput,
     onHandleHintSelected,
   } = props
 
@@ -60,11 +61,12 @@ const Autocomplete = props => {
           hints={hints}
           validationItems={validationItems}
           isAllowUpdate={isAllowUpdate}
-          placeholder={placeholder}
+          placeholder={inputPlaceholder}
           parentId={parentId}
           onBlurTagTree={onBlurTagTree}
           onAddInputRef={onHandleAddInputRef}
           hintSelected={onHandleHintSelected}
+          onDeselectInput={onHandleDeselectInput}
           isInputMode={isInputMode} />
       </Search>}
     </AutocompleteContainer>
@@ -75,6 +77,7 @@ Autocomplete.propTypes = {
   dataType: PropTypes.string,
   location: PropTypes.string,
   placeholder: PropTypes.string,
+  inputPlaceholder: PropTypes.string,
   isWithoutItems: PropTypes.bool,
   isWithoutInput: PropTypes.bool,
   isInputMode: PropTypes.bool,
@@ -86,16 +89,19 @@ Autocomplete.propTypes = {
   validationItems: PropTypes.object,
   onBlurTagTree: PropTypes.func,
   onAddInputRef: PropTypes.func,
-  onHandleAddInputRef: PropTypes.func,
   onItemDelete: PropTypes.func,
   onClearFilter: PropTypes.func,
+  onDeselectInput: PropTypes.func,
+  onHandleAddInputRef: PropTypes.func,
   onHandleItemDelete: PropTypes.func,
   onHandleClearFilter: PropTypes.func,
+  onHandleDeselectInput: PropTypes.func,
   onHandleHintSelected: PropTypes.func,
 }
 
 const mapStateToProps = (state, props) => {
-  const { selectedItems, dataType } = props
+  const { selectedItems, dataType, placeholder, isInputMode } = props
+  let inputPlaceholder = placeholder
   const eqA = R.eqBy(R.prop('id'))
   // Get data of tags and contacts from store
   const storeData = {
@@ -114,10 +120,21 @@ const mapStateToProps = (state, props) => {
 
   if (selectedItems[dataType] !== null) {
     // From data for hints remove selectedItems
-    data = R.symmetricDifferenceWith(eqA, storeData[dataType].data, selectedItems[dataType].toArray())
+    data = R.differenceWith(eqA, storeData[dataType].data, selectedItems[dataType].toArray())
+
+    // Get value of item for input mode
+    if (isInputMode) {
+      const itemValue = item => ({
+        tags: item.title,
+        contacts: item.email,
+      })
+      const item = selectedItems[dataType].first()
+      inputPlaceholder = itemValue(item)[dataType]
+    }
   }
 
   return {
+    inputPlaceholder,
     validationItems,
     hints: {
       [dataType]: data
@@ -130,6 +147,7 @@ const mapDispatchToProps = { hintSelected }
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withHandlers({
+    onHandleDeselectInput: props => () => props.onDeselectInput(),
     onHandleItemDelete: props => item => props.onItemDelete(item),
     onHandleClearFilter: props => event => {
       event.stopPropagation()

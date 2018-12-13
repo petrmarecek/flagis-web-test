@@ -38,6 +38,7 @@ const withAutocompleteInput = WrappedComponent => {
       parentId: PropTypes.string,
       onBlurTagTree: PropTypes.func,
       onAddInputRef: PropTypes.func,
+      onDeselectInput: PropTypes.func,
       hintSelected: PropTypes.func,
     }
 
@@ -47,6 +48,7 @@ const withAutocompleteInput = WrappedComponent => {
       position: null,
       hintsData: this.props.hints,
       selectIndex: 0,
+      inputPlaceholder: this.props.placeholder,
       value: '',
       inputRef: null,
       scrollRef: null,
@@ -220,12 +222,18 @@ const withAutocompleteInput = WrappedComponent => {
     }
 
     onHandleChange = event => {
-      const { hints, dataType } = this.props
+      const { hints, dataType, isInputMode } = this.props
       const value = event.target.value
       const itemValue = item => ({
         tags: item.title,
         contacts: item.email,
       })
+
+      // Deselect input for input mode
+      if (isInputMode) {
+        this.props.onDeselectInput()
+        this.setState({ inputPlaceholder: this.props.placeholder })
+      }
 
       // Filter hints by value of input
       const hintsData = {
@@ -255,16 +263,17 @@ const withAutocompleteInput = WrappedComponent => {
 
     onHandleSubmit = isSelectMe => {
       const { hintsData, selectIndex, value, inputRef } = this.state
-      const { location, parentId, dataType, validationItems, onBlurTagTree } = this.props
+      const { location, parentId, dataType, validationItems, onBlurTagTree, isInputMode } = this.props
 
       // Click on Select Me button in tasksMenu for assignee filter
       if (isSelectMe) {
+        this.setState({ inputPlaceholder: 'Me' })
         // Select Hint
         this.props.hintSelected(location, { isSelectMe })
 
         // Reset state
         this.setState({ showHints: false, value: '' })
-        inputRef.value = 'Me'
+        inputRef.value = ''
         inputRef.blur()
         if (onBlurTagTree) {
           onBlurTagTree()
@@ -321,12 +330,16 @@ const withAutocompleteInput = WrappedComponent => {
         }
       }
 
+      if (isInputMode) {
+        this.setState({ inputPlaceholder: hintValue })
+      }
+
       // Select Hint
       this.props.hintSelected(location, context, hint)
 
       // Reset state
       this.setState({ showHints: false, value: '' })
-      inputRef.value = this.props.isInputMode ? hintValue : ''
+      inputRef.value = ''
       inputRef.blur()
       if (onBlurTagTree) {
         onBlurTagTree()
@@ -360,9 +373,9 @@ const AutocompleteInput = props => {
     position,
     value,
     selectIndex,
+    inputPlaceholder,
     showHints,
     location,
-    placeholder,
     getInputRef,
     getScrollRef,
     getHintRef,
@@ -397,7 +410,7 @@ const AutocompleteInput = props => {
         type="text"
         autoComplete="off"
         size={location === 'taskDetailTags' ? 5 : 10}
-        placeholder={placeholder}
+        placeholder={inputPlaceholder}
         onFocus={onHandleFocus}
         onKeyDown={onHandleKeyDown}
         onChange={onHandleChange}
@@ -413,9 +426,9 @@ AutocompleteInput.propTypes = {
   position: PropTypes.object,
   value: PropTypes.string,
   selectIndex: PropTypes.number,
+  inputPlaceholder: PropTypes.string,
   showHints: PropTypes.bool,
   location: PropTypes.string,
-  placeholder: PropTypes.string,
   getInputRef: PropTypes.func,
   getScrollRef: PropTypes.func,
   getHintRef: PropTypes.func,
