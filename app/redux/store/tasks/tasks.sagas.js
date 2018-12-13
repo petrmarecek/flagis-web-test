@@ -181,14 +181,9 @@ export function* initInboxTasksData(initTime) {
 
 export function* fetchTasks() {
   const isArchivedTasks = yield select(state => appStateSelectors.getArchivedTasksVisibility(state))
-  const isInboxTasks = yield select(state => appStateSelectors.getInboxTasksVisibility(state))
 
   if (isArchivedTasks) {
     yield put(appStateActions.hideArchivedTasks())
-  }
-
-  if (isInboxTasks) {
-    yield put(appStateActions.hideInboxTasks())
   }
 
   const result = yield* fetch(TASKS.FETCH, {
