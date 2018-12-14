@@ -3,6 +3,7 @@ import { delay } from 'redux-saga'
 import { toast } from 'react-toastify'
 import { errorMessages } from 'utils/messages'
 import constants from 'utils/constants'
+import _ from 'lodash'
 
 import * as appStateActions from 'redux/store/app-state/app-state.actions'
 import { logout } from 'redux/store/auth/auth.actions'
@@ -57,7 +58,7 @@ export function* fetch(actionType, fetchDef) {
     // add userId for repare data of follower in normalizr schema
     if (fetchDef.userId) {
       const userId = fetchDef.userId
-      _.forEach(result, (task, key) => result[key] = _.assign({ userId }, task))
+      _.forEach(result, (task, key) => {result[key] = _.assign({ userId }, task)})
     }
 
     // dispatch fetch fulfilled action
