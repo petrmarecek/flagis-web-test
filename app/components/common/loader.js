@@ -26,7 +26,7 @@ const Spinner = styled.div`
 const Item = styled.div`
   width: 10px;
   height: 10px;
-  background-color: #43ffb1;
+  background-color: #D7E3EC;
   border-radius: 100%;
   display: inline-block;
   animation: sk-delay 1.7s infinite ease-in-out both;
