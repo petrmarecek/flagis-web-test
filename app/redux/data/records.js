@@ -284,6 +284,10 @@ export const Follower = Record({
   createdAt: null,
   updatedAt: null,
   archivedAt: null,
+  isArchived: false,
+  isImportant: false,
+  order: null,
+  orderTimeLine: null,
   userId: null,
   profile: null,
 })

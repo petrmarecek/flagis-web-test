@@ -53,11 +53,20 @@ export function* fetch(actionType, fetchDef) {
     // call server & dispatch result
     const args = fetchDef.args || []
     result = yield call(fetchDef.method, ...args)
+
+    // add userId for repare data of follower in normalizr schema
+    if (fetchDef.userId) {
+      const userId = fetchDef.userId
+      _.forEach(result, (task, key) => result[key] = _.assign({ userId }, task))
+    }
+
+    // dispatch fetch fulfilled action
     const fulfilledAction = {
       type: FULFILLED,
       payload: result,
     }
 
+    // add schema to meta of action
     if (fetchDef.schema) {
       fulfilledAction['meta'] = { schema: fetchDef.schema }
     }

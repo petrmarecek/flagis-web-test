@@ -213,17 +213,24 @@ export const getHintDirectionRender = inputPositionTop => {
 }
 
 export function getAssigneeOfTask(followers) {
-  const taskFollowers = Array.isArray(followers) ? followers : followers.toArray()
+  let taskFollowers = followers
   let result = null
 
+  if (typeof taskFollowers === 'object' && !Array.isArray(taskFollowers) && !List.isList(taskFollowers)) {
+    if (isObjectEmpty(taskFollowers)) {
+      return null
+    }
+
+    taskFollowers = Object.values(taskFollowers)
+  }
+
+  taskFollowers = Array.isArray(taskFollowers) ? taskFollowers : taskFollowers.toArray()
   if (taskFollowers.length === 0) {
     return null
   }
 
   taskFollowers.forEach(follower => {
-    const { type } = follower
-
-    if (type === 'assignee') {
+    if (follower.type === 'assignee') {
       result = follower
     }
   })

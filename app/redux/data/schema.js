@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import { schema } from 'normalizr'
+import { getAssigneeOfTask } from '../utils/component-helper'
 
 const contact = new schema.Entity('contacts', {}, { idAttribute: 'id' })
 const contacts = new schema.Array(contact)
@@ -31,7 +32,24 @@ const trees = new schema.Array(tree)
 
 const task = new schema.Entity('tasks', { tags, followers, createdBy }, {
   idAttribute: 'id',
-  processStrategy: entity => _.omit(entity, 'followerIds'),
+  processStrategy: entity => {
+
+    if(entity.userId) {
+      const { createdById, userId, followers } = entity
+      const assignee = getAssigneeOfTask(followers)
+
+      if ((createdById !== userId) && (assignee !== null)) {
+        const { isArchived, isImportant, order, orderTimeLine } = assignee
+
+        _.set(entity, 'isArchived', isArchived)
+        _.set(entity, 'isImportant', isImportant)
+        _.set(entity, 'order', order)
+        _.set(entity, 'orderTimeLine', orderTimeLine)
+      }
+    }
+
+    return _.omit(entity, ['followerIds', 'userId'])
+  }
 })
 const tasks = new schema.Array(task)
 

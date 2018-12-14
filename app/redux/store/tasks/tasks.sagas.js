@@ -37,6 +37,7 @@ function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
 
   // Prepare data
   task.tags = task.tags[userId]
+  task.userId = userId
   const storeItems = yield select(state => taskSelectors.getTasksItems(state))
   const storeArchivedItems = yield select(state => taskSelectors.getArchivedTasksItems(state))
   const storeInboxItems = yield select(state => taskSelectors.getInboxTasksItems(state))
@@ -181,6 +182,7 @@ export function* initInboxTasksData(initTime) {
 
 export function* fetchTasks() {
   const isArchivedTasks = yield select(state => appStateSelectors.getArchivedTasksVisibility(state))
+  const userId = yield select(state => authSelectors.getUserId(state))
 
   if (isArchivedTasks) {
     yield put(appStateActions.hideArchivedTasks())
@@ -193,7 +195,8 @@ export function* fetchTasks() {
       isTrashed: false,
       tags: [],
     }],
-    schema: schema.tasks
+    schema: schema.tasks,
+    userId
   })
 
   // Initialize search service
@@ -208,6 +211,7 @@ export function* fetchTasks() {
 
 export function* fetchArchivedTasks() {
   const isArchivedTasks = yield select(state => appStateSelectors.getArchivedTasksVisibility(state))
+  const userId = yield select(state => authSelectors.getUserId(state))
 
   if (!isArchivedTasks) {
     yield put(appStateActions.visibleArchivedTasks())
@@ -221,7 +225,8 @@ export function* fetchArchivedTasks() {
       isTrashed: false,
       tags: [],
     }],
-    schema: schema.tasks
+    schema: schema.tasks,
+    userId
   })
 
   // Initialize search service
