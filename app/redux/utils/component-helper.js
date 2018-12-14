@@ -213,6 +213,10 @@ export const getHintDirectionRender = inputPositionTop => {
 }
 
 export function getAssigneeOfTask(followers) {
+  if (!followers) {
+    return null
+  }
+
   let taskFollowers = followers
   let result = null
 
