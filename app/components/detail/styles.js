@@ -73,19 +73,22 @@ const DetailContentTop = styled.div`
     left: 10px;
     right: 10px;
     bottom: 0;
-    border-bottom: 2px solid #44FFB1;
+    border-bottom: 1px solid #44FFB1;
   }
 `;
 
 const DetailContentSubject = styled.div`
   ${boxSizing('border-box')}
   flex: 10 10 auto;
-  padding: 11px 10px 11px 0;
+  padding: 0 10px 0 0;
   max-width: ${props => props.taskDetail ? '70%' : '100%'};
 `;
 
 const DetailSubject = styled.div`
   position: relative;
+  display: flex;
+  align-items: center;
+  height: 100%;
   z-index: 30;
 `;
 
@@ -351,7 +354,6 @@ const ContentEditableContainer = css`
   line-height: 22px;
   font-size: 18px;
   outline: none !important;
-  padding-top: 3px;
   max-height: 134px;
   overflow-y: auto;
   overflow-x: hidden;
@@ -405,26 +407,57 @@ const MarkdownEditableContainer = styled(MarkdownEditable)`
 
 // --------------------------------------- Task detail ---------------------------------------
 
-const DetailSubjectTaskCompleted = styled(Icon)`
-  position: absolute;
-  left: 5px;
-  top: 0;
-  margin: 2px 5px;
-`;
-
-const DetailSubjectTaskArchived = styled(Icon)`
-  position: absolute;
-  pointer-events: auto;
-  left: ${props => props.archived ? '5px' : '40px'};
-  top: ${props => props.archived ? '-1px' : '0'};
-  top: 0;
-  margin: 0 5px;
-`;
-
-const DetailSubjectTaskFollowerResponse = styled.div`
+const DetailSubjectTaskCompleted = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
   position: absolute;
   top: 0;
   left: 0;
+  bottom: 0;
+  width: 45px;
+  padding-right: 8px;
+  z-index: 1;
+  cursor: pointer;
+
+  :hover {
+    svg {
+      path {
+        fill: ${props => props.completed ? '#D7E3EC' : '#00FFC7'};
+      }
+    }
+  }
+`;
+
+const DetailSubjectTaskArchived = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: ${props => props.archived ? '0' : '45px'};
+  width: 40px;
+  padding-left: ${props => props.archived ? '13px' : '6px'};
+  z-index: 1;
+  cursor: pointer;
+
+  :hover {
+    svg {
+      path {
+        fill: ${props => props.archived ? '#8c9ea9' : '#282f34'};
+      }
+    }
+  }
+`;
+
+const DetailSubjectTaskFollowerResponse = styled.div`
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
 `;
 
 const DetailSubjectTaskContentEditable = styled(ContentEditable)`
@@ -443,7 +476,6 @@ const DetailSubjectTagColor = styled(Icon)`
   position: absolute;
   pointer-events: none;
   left: 4px;
-  top: 3px;
 `;
 
 const DetailSubjectTagContentEditable = styled(ContentEditable)`
@@ -494,9 +526,7 @@ const DetailContentDescriptionTag = styled.div`
 const DetailSubjectIconContact = styled.div`
   position: absolute;
   left: 5px;
-  top: 0;
-  margin: 2px 5px;
-  padding: ${props => props.isUser ? '2px 0 0 0' : '0'};
+  margin: ${props => props.isUser ? '0 5px' : '-2px 5px'}
 `;
 
 const DetailSubjectContactContentEditable = styled(ContentEditable)`

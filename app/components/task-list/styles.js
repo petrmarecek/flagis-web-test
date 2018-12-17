@@ -10,8 +10,6 @@ import {
   link
 } from '../styled-components-mixins'
 
-import Icon from '../icons/icon'
-
 /*----------------------------------- Task Item ----------------------------------------------*/
 
 const showAnimation = keyframes`${fadeInUp}`;
@@ -44,18 +42,46 @@ const TaskItem = styled.div`
   }
 `;
 
-const Completed = styled(Icon)`
+const Completed = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
   position: absolute;
-  top: 15px;
-  left: 13px;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 45px;
+  padding-right: 8px;
   z-index: 1;
+
+  :hover {
+    svg {
+      path {
+        fill: #00FFC7;
+      }
+    }
+  }
 `;
 
-const Archived = styled(Icon)`
+const Archived = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
   position: absolute;
-  top: ${props => props.archived ? '11px' : '13px'};
-  left: ${props => props.archived ? '13px' : '50px'};
+  top: 0;
+  bottom: 0;
+  left: ${props => props.archived ? '0' : '45px'};
+  width: 45px;
+  padding-left: ${props => props.archived ? '13px' : '6px'};
   z-index: 1;
+
+  :hover {
+    svg {
+      path {
+        fill: ${props => props.archived ? '#8c9ea9' : '#282f34'};
+      }
+    }
+  }
 `;
 
 const FollowerResponse = styled.div`

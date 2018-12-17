@@ -14,6 +14,7 @@ import dateUtils from 'redux/utils/date'
 import { getAssigneeOfTask, getSortedTags } from 'redux/utils/component-helper'
 
 import { ICONS } from 'components/icons/icon-constants'
+import Icon from '../icons/icon'
 import FollowerResponseButtons from '../common/follower-response-buttons'
 import TaskListTagItems from './task-list-tag-items'
 import FollowerIcon from '../common/follower-icon'
@@ -298,32 +299,34 @@ const TaskListItem = props => {
             dragging={isDragging}
             isMounted={isMounted}>
             {!isArchivedList && !isInboxList &&
-            <Completed
-              icon={ICONS.TASK_CHECKED}
-              color={task.isCompleted ? ['#c2fee5'] : ['#D7E3EC']}
-              hoverColor={["#00FFC7"]}
-              width={22}
-              height={21}
-              onClick={onHandleCompleteClicked} />}
+            <Completed onClick={onHandleCompleteClicked}>
+              <Icon
+                icon={ICONS.TASK_CHECKED}
+                color={task.isCompleted ? ['#c2fee5'] : ['#D7E3EC']}
+                width={22}
+                height={21} />
+            </Completed>}
             {task.isCompleted && !isInboxList &&
             <Archived
-              icon={isArchivedList ? ICONS.NON_ARCHIVE : ICONS.ARCHIVE}
-              color={isArchivedList ? ['#282f34'] : ['#8c9ea9']}
-              width={24}
-              height={27}
-              scale={0.926}
-              onClick={onHandleArchiveClicked}
-              animation={!task.isCompleted ? null : {
-                action: 'transition.expandIn',
-                duration: 1000,
-              }}
-              archived={isArchivedList} />}
-              {isInboxList &&
-              <FollowerResponse>
-                <FollowerResponseButtons
-                  acceptClicked={onHandleAcceptClicked}
-                  rejectClicked={onHandleRejectClicked} />
-              </FollowerResponse>}
+              archived={isArchivedList}
+              onClick={onHandleArchiveClicked} >
+              <Icon
+                icon={isArchivedList ? ICONS.NON_ARCHIVE : ICONS.ARCHIVE}
+                color={isArchivedList ? ['#282f34'] : ['#8c9ea9']}
+                width={24}
+                height={27}
+                scale={0.926}
+                animation={!task.isCompleted ? null : {
+                  action: 'transition.expandIn',
+                  duration: 1000,
+                }} />
+            </Archived>}
+            {isInboxList &&
+            <FollowerResponse>
+              <FollowerResponseButtons
+                acceptClicked={onHandleAcceptClicked}
+                rejectClicked={onHandleRejectClicked} />
+            </FollowerResponse>}
             <Content
               marginLeft={contentMarginLeft}
               followers={isFollowers}>

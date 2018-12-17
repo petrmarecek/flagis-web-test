@@ -17,10 +17,10 @@ import FilePicker from 'components/common/file-picker'
 import AttachmentList from 'components/attachment-list/attachment-list'
 import CommentList from 'components/comment-list/comment-list'
 import Loader from 'components/common/loader'
-import Icon from 'components/icons/icon'
 import FollowerItems from '../common/follower-items'
 import TagItems from '../common/tag-items'
-import {ICONS} from 'components/icons/icon-constants'
+import Icon from 'components/icons/icon'
+import { ICONS } from 'components/icons/icon-constants'
 
 import {
   DetailInner,
@@ -167,11 +167,11 @@ const TaskDetail = props => {
   // Margin-left of subject
   const subjectMarginLeft = () => {
     if (isArchived) {
-      return '45px'
+      return '50px'
     }
 
     if (isInboxVisible) {
-      return '260px'
+      return '250px'
     }
 
     if (isFollowers && followerStatus !== 'accepted') {
@@ -187,10 +187,10 @@ const TaskDetail = props => {
     }
 
     if (isCompleted && !isArchived) {
-      return '85px'
+      return '90px'
     }
 
-    return '45px'
+    return '50px'
   }
 
   return (
@@ -219,41 +219,52 @@ const TaskDetail = props => {
                 onSend={onHandleSend}/>}
               {!isArchived && isAcceptedStatus &&
               <DetailSubjectTaskCompleted
-                icon={ICONS.TASK_CHECKED}
-                color={isCompleted ? ['#c2fee5'] : ['#D7E3EC']}
-                hoverColor={isCompleted ? ['#D7E3EC'] : ['#00FFC7']}
-                width={22}
-                height={21}
-                onClick={onHandleComplete}/>}
+                compelted={isCompleted}
+                onClick={onHandleComplete} >
+                <Icon
+                  icon={ICONS.TASK_CHECKED}
+                  color={isCompleted ? ['#c2fee5'] : ['#D7E3EC']}
+                  width={22}
+                  height={21} />
+              </DetailSubjectTaskCompleted>}
               {isCompleted && animation && !isArchived && isAcceptedStatus &&
               <DetailSubjectTaskArchived
-                icon={ICONS.ARCHIVE}
-                color={["#8c9ea9"]}
-                width={24}
-                height={25}
-                scale={0.926}
-                onClick={onHandleArchive}
-                animation={{
-                  action: 'transition.expandIn',
-                  duration: 1000,
-                }} />}
+                archived={isArchived}
+                onClick={onHandleArchive}>
+                <Icon
+                  icon={ICONS.ARCHIVE}
+                  color={['#8c9ea9']}
+                  width={24}
+                  height={25}
+                  scale={0.926}
+                  animation={{
+                    action: 'transition.expandIn',
+                    duration: 1000,
+                }} />
+              </DetailSubjectTaskArchived>}
               {isCompleted && !animation && !isArchived && isAcceptedStatus &&
               <DetailSubjectTaskArchived
-                icon={ICONS.ARCHIVE}
-                color={["#8c9ea9"]}
-                width={24}
-                height={25}
-                scale={0.926}
-                onClick={onHandleArchive} />}
+                archived={isArchived}
+                onClick={onHandleArchive}>
+                <Icon
+                  icon={ICONS.ARCHIVE}
+                  color={["#8c9ea9"]}
+                  width={24}
+                  height={25}
+                  scale={0.926} />
+              </DetailSubjectTaskArchived>}
               {isArchived &&
               <DetailSubjectTaskArchived
-                archived
-                icon={ICONS.NON_ARCHIVE}
-                color={["#282f34"]}
-                width={24}
-                height={27}
-                scale={0.926}
-                onClick={onHandleArchive} />}
+                archived={isArchived}
+                onClick={onHandleArchive}>
+                <Icon
+                  archived
+                  icon={ICONS.NON_ARCHIVE}
+                  color={["#282f34"]}
+                  width={24}
+                  height={27}
+                  scale={0.926} />
+              </DetailSubjectTaskArchived>}
               <span onClick={onHandleRemoveEventListener}>
                 <DetailSubjectTaskContentEditable
                   html={subject}

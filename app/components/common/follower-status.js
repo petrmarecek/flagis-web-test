@@ -15,9 +15,6 @@ const hide = keyframes`
 
 const Container = styled.div`
   position: absolute;
-  left: 5px;
-  top: 2px;
-  height: 26px;
   margin: 0 5px;
   animation: ${props => props.animation ? `500ms ${hide}, 500ms ${show} linear 500ms` : 'none'};
 `;
@@ -30,7 +27,7 @@ const Button = styled.button`
   width: 123px;
   border: none;
   padding: 0;
-  
+
   :hover {
     ${transition('500ms')}
     background-color: #293034;
