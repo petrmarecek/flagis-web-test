@@ -356,7 +356,9 @@ export function* cancelArchiveTasks(action) {
 
 export function* setComplete(action) {
   const taskId = action.payload.taskId
+
   try {
+    yield put(taskActions.deselectTasks())
 
     // call server
     const update = { isCompleted: true }
@@ -369,7 +371,9 @@ export function* setComplete(action) {
 
 export function* setIncomplete(action) {
   const taskId = action.payload.taskId
+
   try {
+    yield put(taskActions.deselectTasks())
 
     // update isCompleted and put task to top
     const update = { isCompleted: false }

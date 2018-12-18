@@ -35,7 +35,7 @@ const TaskItem = styled.div`
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: ${props => props.selected ? '#ffffd7' : '#f6f7f8'};
+    background-color: ${props => props.selected ? '#ffffd7' : '#ecfff7'};
     ${transform(props => props.completed ? 'scaleX(1)' : 'scaleX(0)')};
     ${transformOrigin('0 50%')};
     ${transition('transform 500ms ease-out')};

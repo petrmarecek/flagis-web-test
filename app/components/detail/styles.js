@@ -49,7 +49,7 @@ const DetailContentTop = styled.div`
   min-height: 48px;
   justify-content: flex-start;
   position: relative;
-  background-color: #fff;
+  background-color: ${props => props.backgroundColor};
   z-index: 1;
   padding: 0 12px;
 
@@ -61,8 +61,8 @@ const DetailContentTop = styled.div`
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: ${props => props.backgroundColor};
-    ${transform(props => props.isBackground ? 'scaleX(1)' : 'scaleX(0)')}
+    background-color: #ecfff7;
+    ${transform(props => props.completed ? 'scaleX(1)' : 'scaleX(0)')}
     ${transformOrigin('0 50%')}
     ${transition(props => props.animation ? 'transform 500ms ease-out' : 'none')}
   }
@@ -142,7 +142,7 @@ const DetailContentCenter = styled.div`
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #f6f8f9;
+    background-color: #ecfff7;
     ${borderRadius('4px 4px 0 0')}
     ${transform(props => props.allowed ? 'scaleX(0)' : 'scaleX(1)')}
     ${transformOrigin('0 50%')}

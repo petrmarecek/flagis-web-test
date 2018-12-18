@@ -140,7 +140,7 @@ const TaskDetail = props => {
   // Conditionals
   const isAcceptedStatus = followerStatus !== 'new' && followerStatus !== 'pending' && followerStatus !== 'rejected'
   const isOwnerAcceptedTask = isOwner && (followerStatus === 'accepted')
-  const isBackgroundTopContent = isCompleted || isOwnerAcceptedTask
+  const isCompletedMainList = isCompleted && !isArchived
   const isArchivedOrCollaborated = isArchived || !isOwner
 
   // Data about owner of task
@@ -149,19 +149,17 @@ const TaskDetail = props => {
     profile: createdBy,
   }
 
-  // Background color of top content
+  // Background color of center top
   const backgroundColor = () => {
-
     if (isArchived) {
       return '#c1cad0'
     }
 
-    if (isCompleted) {
-      return '#f6f8f9'
+    if (isOwnerAcceptedTask) {
+      return '#f6f8f8'
     }
 
-    return '#ecfff7'
-
+    return '#fff'
   }
 
   // Margin-left of subject
@@ -202,8 +200,8 @@ const TaskDetail = props => {
       <DetailInner>
         <DetailContentTop
           animation={animation}
-          backgroundColor={backgroundColor}
-          isBackground={isBackgroundTopContent}>
+          completed={isCompletedMainList}
+          backgroundColor={backgroundColor}>
           <DetailContentSubject taskDetail>
             <DetailSubject>
               {isInboxVisible &&

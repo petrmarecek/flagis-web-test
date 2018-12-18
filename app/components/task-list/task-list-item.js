@@ -263,7 +263,7 @@ const TaskListItem = props => {
     }
 
     if (isOwnerAcceptedTask) {
-      return '#ecfff7'
+      return '#f6f8f8'
     }
 
     return '#fff'
