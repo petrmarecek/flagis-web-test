@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { compose, withHandlers } from 'recompose'
 
 import { createContact } from 'redux/store/contacts/contacts.actions'
+import { getContactsEmail } from 'redux/store/contacts/contacts.selectors'
 import { afterSubmitContacts } from 'redux/utils/form-submit'
 
 import { ICONS } from 'components/icons/icon-constants'
@@ -14,6 +15,9 @@ import styled from 'styled-components'
 import { boxSizing, boxShadow } from '../styled-components-mixins/'
 import { Field, reduxForm } from 'redux-form/immutable'
 import { validateAddContact } from '../../redux/utils/validate'
+import { toast } from 'react-toastify'
+import { errorMessages } from 'utils/messages'
+import constants from 'utils/constants'
 
 const AddForm = styled.form`
   margin-bottom: 6px;
@@ -73,17 +77,35 @@ const AddContactForm = ({ valid, handleSubmit, onSubmit }) => {
 
 AddContactForm.propTypes = {
   valid: PropTypes.bool,
+  validEmails: PropTypes.object,
   handleSubmit: PropTypes.func,
   onSubmit: PropTypes.func,
 }
 
-const mapStateToProps = () => ({})
+const mapStateToProps = (state) => ({
+  validEmails: getContactsEmail(state)
+})
+
 const mapDispatchToProps = { createContact }
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withHandlers({
-    onSubmit: props => value => props.createContact(value.get('email'))
+    onSubmit: props => value => {
+      const { validEmails } = props
+      const email = value.get('email')
+
+      if (validEmails.includes(email.toLowerCase())) {
+        toast.error(errorMessages.createEntity.createConflict('contact'), {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: constants.NOTIFICATION_ERROR_DURATION,
+        })
+
+        return
+      }
+
+      props.createContact(email)
+    }
   }),
   reduxForm({
     form: 'addContactForm',

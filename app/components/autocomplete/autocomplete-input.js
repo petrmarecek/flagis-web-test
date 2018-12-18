@@ -313,7 +313,7 @@ const withAutocompleteInput = WrappedComponent => {
 
       // Validation existing item(tag, contact) of new item
       if (isNewHint && validationItems.includes(hintValue.toLowerCase())) {
-        toast.error(errorMessages.autocomplete.createConflict(hintType), {
+        toast.error(errorMessages.createEntity.createConflict(hintType), {
           position: toast.POSITION.BOTTOM_RIGHT,
           autoClose: constants.NOTIFICATION_ERROR_DURATION,
         })

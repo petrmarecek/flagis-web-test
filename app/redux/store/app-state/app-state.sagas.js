@@ -48,7 +48,7 @@ export function* hintSelected(action) {
   // Hint selected within main search context
   if (location === 'mainSearch') {
     if (isNewHint) {
-      toast.error(errorMessages.autocomplete.notAllowedCreate('tag', 'Tag filter'), {
+      toast.error(errorMessages.createEntity.notAllowedCreate('tag', 'Tag filter'), {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: constants.NOTIFICATION_ERROR_DURATION,
       })
@@ -113,7 +113,7 @@ export function* hintSelected(action) {
 
     // Not allowed create a new contact
     if (isNewHint) {
-      toast.error(errorMessages.autocomplete.notAllowedCreate('contact', 'Filter'), {
+      toast.error(errorMessages.createEntity.notAllowedCreate('contact', 'Filter'), {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: constants.NOTIFICATION_ERROR_DURATION,
       })

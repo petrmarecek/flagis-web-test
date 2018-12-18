@@ -37,7 +37,7 @@ export const errorMessages = {
     'The same tag found on the same tree level.',
   },
 
-  autocomplete: {
+  createEntity: {
     createConflict: item => `This ${item} has already been created.`,
     notAllowedCreate: (item, location) => `Not allowed to create ${item} in ${location}.`,
   },
