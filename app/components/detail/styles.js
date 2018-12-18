@@ -214,7 +214,8 @@ const DetailContentAutocompleteContacts = styled.ul`
 const DetailContentImportant = styled.div`
   ${detailContentOptionsItem}
   margin: 10px 0;
-  cursor: ${props => props.archived ? 'default' : 'pointer'};
+  pointer-events: ${props => props.allowed ? 'auto' : 'none'};
+  cursor: pointer;
 `;
 
 const DetailContentImportantLabel = styled.div`

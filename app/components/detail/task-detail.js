@@ -393,7 +393,10 @@ const TaskDetail = props => {
                     onChange={onHandleReminderDateChanged}/>
                 </DetailContentDatePicker>
               </DetailContentDate>
-              <DetailContentImportant onClick={onHandleToggleImportant} last>
+              <DetailContentImportant
+                onClick={onHandleToggleImportant}
+                allowed={!isCompleted}
+                last>
                 <DetailContentImportantLabel important={isImportant}>
                   Important
                 </DetailContentImportantLabel>
