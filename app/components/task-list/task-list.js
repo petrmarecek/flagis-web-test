@@ -52,7 +52,7 @@ export default class TaskList extends PureComponent {
       later: now.clone().add(daysToNewMonth, 'days'),
       noDueDates: null,
     }
-    const task = { 
+    const task = {
       dueDate: date[typeDate],
       tags: List(),
       followers: List(),
@@ -156,7 +156,7 @@ export default class TaskList extends PureComponent {
               setArchiveTasks={this.props.setArchiveTasks}
               acceptTask={this.props.acceptTask}
               rejectTask={this.props.rejectTask}
-              section={section} 
+              section={section}
               leftPanelWidth={this.props.leftPanelWidth}
               windowWidth={this.props.windowWidth} />
           ))

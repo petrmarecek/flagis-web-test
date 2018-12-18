@@ -215,10 +215,6 @@ const TaskListItem = props => {
     connectDropTarget,
   } = props
 
-  if (noTaskFound) {
-    return <EmptyList>No tasks found</EmptyList>
-  }
-
   // Conditions
   const isArchivedList = listType === 'archived'
   const isInboxList = listType === 'inbox'
@@ -287,81 +283,83 @@ const TaskListItem = props => {
     connectDragSource(
       connectDropTarget(
         <li>
-          <TaskItem
-            key={task.id}
-            tabIndex="-1"
-            data-item-id={task.id}
-            onClick={onHandleClicked}
-            active={task.active}
-            selected={isSelected}
-            backgroundColor={backgroundColor}
-            completed={isCompletedMainList}
-            dragging={isDragging}
-            isMounted={isMounted}>
-            {!isArchivedList && !isInboxList &&
-            <Completed onClick={onHandleCompleteClicked}>
-              <Icon
-                icon={ICONS.TASK_CHECKED}
-                color={task.isCompleted ? ['#c2fee5'] : ['#D7E3EC']}
-                width={22}
-                height={21} />
-            </Completed>}
-            {task.isCompleted && !isInboxList &&
-            <Archived
-              archived={isArchivedList}
-              onClick={onHandleArchiveClicked} >
-              <Icon
-                icon={isArchivedList ? ICONS.NON_ARCHIVE : ICONS.ARCHIVE}
-                color={isArchivedList ? ['#282f34'] : ['#8c9ea9']}
-                width={24}
-                height={27}
-                scale={0.926}
-                animation={!task.isCompleted ? null : {
-                  action: 'transition.expandIn',
-                  duration: 1000,
-                }} />
-            </Archived>}
-            {isInboxList &&
-            <FollowerResponse>
-              <FollowerResponseButtons
-                acceptClicked={onHandleAcceptClicked}
-                rejectClicked={onHandleRejectClicked} />
-            </FollowerResponse>}
-            <Content
-              marginLeft={contentMarginLeft}
-              followers={isFollowers}>
-              <SubjectTags>
-                <Subject
-                  archived={isArchivedList}
-                  completed={isCompletedMainList}
-                  important={task.isImportant}
-                  description={isDescription}>
-                  <Linkify properties={{target: '_blank'}}>
-                    {task.subject}
-                  </Linkify>
-                </Subject>
-                <Tags>
-                  <TaskListTagItems
-                    tags={sortedTags}
-                    parentWidth={taskItemWidth}
-                    onTagClick={onHandleTagClicked} />
-                </Tags>
-              </SubjectTags>
-              <DescriptionDueDate>
-                {isDescription &&
-                <Description completed={isCompletedMainList}>{description}</Description>}
-                <DueDate
-                  title={fromNow}
-                  overdue={moment(dueDate) < now && !isArchivedList}
-                  completed={isCompletedMainList}
-                  description={isDescription}>{dueDateFormat}</DueDate>
-              </DescriptionDueDate>
-            </Content>
-            {isFollowers && (followerStatus !== 'new') &&
-            <Followers>
-              <FollowerIcon status={followerStatus} defaultIcon={isInboxList || !isOwner} />
-            </Followers>}
-          </TaskItem>
+          {noTaskFound
+          ? <EmptyList>No tasks found</EmptyList>
+          : <TaskItem
+              key={task.id}
+              tabIndex="-1"
+              data-item-id={task.id}
+              onClick={onHandleClicked}
+              active={task.active}
+              selected={isSelected}
+              backgroundColor={backgroundColor}
+              completed={isCompletedMainList}
+              dragging={isDragging}
+              isMounted={isMounted}>
+              {!isArchivedList && !isInboxList &&
+              <Completed onClick={onHandleCompleteClicked}>
+                <Icon
+                  icon={ICONS.TASK_CHECKED}
+                  color={task.isCompleted ? ['#c2fee5'] : ['#D7E3EC']}
+                  width={22}
+                  height={21} />
+              </Completed>}
+              {task.isCompleted && !isInboxList &&
+              <Archived
+                archived={isArchivedList}
+                onClick={onHandleArchiveClicked} >
+                <Icon
+                  icon={isArchivedList ? ICONS.NON_ARCHIVE : ICONS.ARCHIVE}
+                  color={isArchivedList ? ['#282f34'] : ['#8c9ea9']}
+                  width={24}
+                  height={27}
+                  scale={0.926}
+                  animation={!task.isCompleted ? null : {
+                    action: 'transition.expandIn',
+                    duration: 1000,
+                  }} />
+              </Archived>}
+              {isInboxList &&
+              <FollowerResponse>
+                <FollowerResponseButtons
+                  acceptClicked={onHandleAcceptClicked}
+                  rejectClicked={onHandleRejectClicked} />
+              </FollowerResponse>}
+              <Content
+                marginLeft={contentMarginLeft}
+                followers={isFollowers}>
+                <SubjectTags>
+                  <Subject
+                    archived={isArchivedList}
+                    completed={isCompletedMainList}
+                    important={task.isImportant}
+                    description={isDescription}>
+                    <Linkify properties={{target: '_blank'}}>
+                      {task.subject}
+                    </Linkify>
+                  </Subject>
+                  <Tags>
+                    <TaskListTagItems
+                      tags={sortedTags}
+                      parentWidth={taskItemWidth}
+                      onTagClick={onHandleTagClicked} />
+                  </Tags>
+                </SubjectTags>
+                <DescriptionDueDate>
+                  {isDescription &&
+                  <Description completed={isCompletedMainList}>{description}</Description>}
+                  <DueDate
+                    title={fromNow}
+                    overdue={moment(dueDate) < now && !isArchivedList}
+                    completed={isCompletedMainList}
+                    description={isDescription}>{dueDateFormat}</DueDate>
+                </DescriptionDueDate>
+              </Content>
+              {isFollowers && (followerStatus !== 'new') &&
+              <Followers>
+                <FollowerIcon status={followerStatus} defaultIcon={isInboxList || !isOwner} />
+              </Followers>}
+            </TaskItem>}
         </li>
       )
     )
