@@ -77,7 +77,8 @@ export const infoMessages = {
     edit: 'You are editing tag properties (not the filter).',
   },
 
-  tasks: {
+  collaboration: {
     removeFollower: 'Owner has just removed you from task.',
+    deletedTask: 'Owner has just deleted task.',
   },
 }

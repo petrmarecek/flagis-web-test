@@ -258,6 +258,10 @@ function updateTasksListsFromFirestore(state, action) {
       newItems = newItems.filter(taskId => taskId !== id)
     }
 
+    if (newInbox.includes(id)) {
+      newInbox = newInbox.filter(taskId => taskId !== id)
+    }
+
     if (newCompleted.includes(id)) {
       newCompleted = newCompleted.filter(taskId => taskId !== id)
     }

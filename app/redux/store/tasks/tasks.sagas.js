@@ -2,6 +2,7 @@ import { normalize } from 'normalizr'
 import { delay } from 'redux-saga'
 import { push } from 'react-router-redux'
 import { all, take, call, put, select, fork, race } from 'redux-saga/effects'
+import _ from 'lodash'
 import {
   createLoadActions,
   fetch,
@@ -65,9 +66,9 @@ function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
         yield put(appStateActions.deselectDetail('inbox'))
       }
 
-      toast.info(infoMessages.tasks.removeFollower, {
+      toast.info(infoMessages.collaboration.removeFollower, {
         position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+        autoClose: constants.NOTIFICATION_INFO_DURATION,
       })
 
       // Call action for edit redux-store
@@ -80,6 +81,14 @@ function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
       })
 
       return
+    }
+
+    // Owner deleted task -> show notification
+    if (isTrashed) {
+      toast.info(infoMessages.collaboration.deletedTask, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: constants.NOTIFICATION_INFO_DURATION,
+      })
     }
 
     // Move task from inbox to tasks list (accepted)
@@ -753,10 +762,14 @@ function* setTaskField(task, fieldName, newFieldValue) {
 function* updateTask(taskId, update) {
 
   // call server
-  const updatedTask = yield call(api.tasks.update, taskId, update)
+  let updatedTask = yield call(api.tasks.update, taskId, update)
 
   // update task in the search index
   search.tasks.updateItem(updatedTask)
+
+  // add userId for repare data of follower in normalizr schema
+  const userId = yield select(state => authSelectors.getUserId(state))
+  updatedTask = _.assign({ userId }, updatedTask)
 
   // replace task in the store with the updated one
   yield put(taskActions.replaceTask(updatedTask))
