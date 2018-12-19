@@ -481,7 +481,8 @@ export default DragSource(ItemTypes.TASK, taskSource, collectDragSource)(
           followerId: assignee.id,
         }
 
-        props.acceptTask(data)
+        window.setTimeout(() => props.acceptTask(data), 400)
+        props.setMounted(false)
       },
       onHandleRejectClicked: props => () => {
         const { task, listType } = props
@@ -490,7 +491,8 @@ export default DragSource(ItemTypes.TASK, taskSource, collectDragSource)(
           type: listType,
         }
 
-        props.rejectTask(data)
+        window.setTimeout(() => props.rejectTask(data), 400)
+        props.setMounted(false)
       },
     }),
     shouldUpdate(checkPropsChange)

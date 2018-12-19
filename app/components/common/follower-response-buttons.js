@@ -20,7 +20,6 @@ const Button = styled.button`
   margin-right: ${props => props.rejected ? '0' : '6px'};
   background-color: ${props => props.rejected ? '#FF6A6A' : '#44FFB1'};
   font-size: 16px;
-  font-style: italic;
   color: #fff;
   border: none;
 

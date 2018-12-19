@@ -66,6 +66,11 @@ function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
         yield put(appStateActions.deselectDetail('inbox'))
       }
 
+      // Rejected action
+      if (!storeItems.includes(id) && !storeInboxItems.includes(id)) {
+        return
+      }
+
       toast.info(infoMessages.collaboration.removeFollower, {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: constants.NOTIFICATION_INFO_DURATION,
@@ -83,19 +88,19 @@ function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
       return
     }
 
+    // Move task from inbox to tasks list (accepted)
+    if (assignee.status === 'accepted' && !isTrashed && !storeItems.includes(id) && storeInboxItems.includes(id)) {
+
+      // Update task in search
+      search.tasks.updateItem(task)
+    }
+
     // Owner deleted task -> show notification
     if (isTrashed) {
       toast.info(infoMessages.collaboration.deletedTask, {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: constants.NOTIFICATION_INFO_DURATION,
       })
-    }
-
-    // Move task from inbox to tasks list (accepted)
-    if (assignee.status === 'accepted' && !isTrashed && !storeItems.includes(id) && storeInboxItems.includes(id)) {
-
-      // Update task in search
-      search.tasks.updateItem(task)
     }
   }
 
