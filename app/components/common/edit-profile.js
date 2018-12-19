@@ -105,13 +105,17 @@ export default compose(
   }),
   withHandlers({
     onSubmit: props => values => {
-      const initFirstName = props.initialValues.get('firstName')
+      const { initialValues } = props
       const firstName = values.get('firstName')
-      const initLastName = props.initialValues.get('lastName')
       const lastName = values.get('lastName')
 
-      if (initFirstName === firstName && initLastName === lastName) {
-        return
+      if (initialValues !== null) {
+        const initFirstName = initialValues.get('firstName')
+        const initLastName = initialValues.get('lastName')
+
+        if (initFirstName === firstName && initLastName === lastName) {
+          return
+        }
       }
 
       props.setLoader('form')
