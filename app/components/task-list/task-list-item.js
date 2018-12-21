@@ -355,7 +355,7 @@ const TaskListItem = props => {
                     description={isDescription}>{dueDateFormat}</DueDate>
                 </DescriptionDueDate>
               </Content>
-              {isFollowers && (followerStatus !== 'new') &&
+              {isFollowers &&
               <Followers>
                 <FollowerIcon status={followerStatus} defaultIcon={isInboxList || !isOwner} />
               </Followers>}

@@ -139,6 +139,7 @@ const TaskDetail = props => {
 
   // Conditionals
   const isAcceptedStatus = followerStatus !== 'new' && followerStatus !== 'pending' && followerStatus !== 'rejected'
+  const isCollaborated = followerStatus === 'pending' || followerStatus === 'accepted'
   const isOwnerAcceptedTask = isOwner && (followerStatus === 'accepted')
   const isCompletedMainList = isCompleted && !isArchived
   const isArchivedOrCollaborated = isArchived || !isOwner
@@ -149,7 +150,7 @@ const TaskDetail = props => {
     profile: createdBy,
   }
 
-  // Background color of center top
+  // Background color of top content
   const backgroundColor = () => {
     if (isArchived) {
       return '#c1cad0'
@@ -210,7 +211,7 @@ const TaskDetail = props => {
                   acceptClicked={onHandleAccept}
                   rejectClicked={onHandleReject} />
               </DetailSubjectTaskFollowerResponse>}
-              {!isInboxVisible && !isArchived && isFollowers && followerStatus !== 'accepted' &&
+              {!isInboxVisible && !isArchived && isFollowers && !isAcceptedStatus &&
               <FollowerStatus
                 status={followerStatus}
                 animation={animation}
@@ -273,13 +274,13 @@ const TaskDetail = props => {
                   archived={isArchived}
                   marginLeft={subjectMarginLeft}
                   animation={animation}
-                  allowed={!isCompleted && !isInboxVisible && isOwner} />
+                  allowed={!isCompleted && !isInboxVisible && !isCollaborated} />
               </span>
             </DetailSubject>
           </DetailContentSubject>
           <DetailContentTagAutocomplete
             onClick={onHandleRemoveEventListener}
-            allowed={!isCompleted && !isInboxVisible}>
+            allowed={!isCompleted && !isInboxVisible && !isCollaborated}>
             {isArchived &&
             <DetailContentTagAutocompleteTags>
               <TagItems tags={tags}/>
@@ -294,16 +295,6 @@ const TaskDetail = props => {
               onItemDelete={onHandleTagDelete}
               isAllowUpdate />}
           </DetailContentTagAutocomplete>
-          {isOwner &&
-          <DetailContentIcon onClick={onHandleRemoveEventListener} >
-            <Icon
-              icon={ICONS.TRASH}
-              width={23}
-              height={26}
-              scale={1}
-              color={["#ff8181"]}
-              onClick={onHandleDelete}/>
-          </DetailContentIcon>}
           {!isInboxVisible && !isOwner &&
           <DetailContentButton allowed={!isCompleted}>
             <FollowerResponseButtons
@@ -311,10 +302,19 @@ const TaskDetail = props => {
               rejectClicked={onHandleReject}
               isAccepted />
           </DetailContentButton>}
-          {!isOwner &&
-          <DetailContentIcon contactIcon>
-            <FollowerIcon defaultIcon/>
-          </DetailContentIcon>}
+          {isOwner
+          ? <DetailContentIcon onClick={onHandleRemoveEventListener} >
+              <Icon
+                icon={ICONS.TRASH}
+                width={23}
+                height={26}
+                scale={1}
+                color={["#ff8181"]}
+                onClick={onHandleDelete}/>
+            </DetailContentIcon>
+          : <DetailContentIcon contactIcon>
+              <FollowerIcon defaultIcon/>
+            </DetailContentIcon>}
         </DetailContentTop>
         <DetailContentCenter
           allowed={!isCompleted}
@@ -345,7 +345,7 @@ const TaskDetail = props => {
                   <FollowerIcon status={followerStatus} iconScale={0.75}/>
                 </DetailContentAddContactIcon>}
               </DetailContentAddContact>
-              <DetailContentDate>
+              <DetailContentDate allowed={!isCompleted && !isCollaborated}>
                 <DetailContentDateLabel>
                   Start date
                 </DetailContentDateLabel>
@@ -361,7 +361,7 @@ const TaskDetail = props => {
                     onChange={onHandleStartDateChanged} />
                 </DetailContentDatePicker>
               </DetailContentDate>
-              <DetailContentDate>
+              <DetailContentDate allowed={!isCompleted && !isCollaborated}>
                 <DetailContentDateLabel>
                   Due date
                 </DetailContentDateLabel>
@@ -377,7 +377,7 @@ const TaskDetail = props => {
                     onChange={onHandleDueDateChanged} />
                 </DetailContentDatePicker>
               </DetailContentDate>
-              <DetailContentDate>
+              <DetailContentDate allowed={!isCompleted && !isCollaborated}>
                 <DetailContentDateLabel>
                   Reminder date
                 </DetailContentDateLabel>
@@ -395,7 +395,7 @@ const TaskDetail = props => {
               </DetailContentDate>
               <DetailContentImportant
                 onClick={onHandleToggleImportant}
-                allowed={!isCompleted}
+                allowed={!isCompleted && !isInboxVisible}
                 last>
                 <DetailContentImportantLabel important={isImportant}>
                   Important
@@ -416,7 +416,7 @@ const TaskDetail = props => {
               {!isArchivedOrInbox && <FilePicker onFileUploaded={onHandleFileUploaded}/>}
             </DetailContentAttachments>
           </DetailContentProperties>
-          <DetailContentDescriptionTask allowed={isOwner && !isCompleted}>
+          <DetailContentDescriptionTask allowed={!isCompleted && !isCollaborated}>
             <span onClick={onHandleRemoveEventListener}>
               <MarkdownEditableContainer
                 text={description === null ? '' : description}

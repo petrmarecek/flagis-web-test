@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { compose, lifecycle, withHandlers } from 'recompose'
+import { compose, withHandlers } from 'recompose'
 
 import {
   ContactItemContainer,
@@ -13,7 +13,6 @@ import {
 } from './styles'
 
 import { ICONS } from '../icons/icon-constants'
-import velocity from 'velocity-animate'
 
 const ContactItem = ({ contact, onHandleClickContact, onHandleClickInvitation }) => {
   let icon = {
@@ -38,7 +37,6 @@ const ContactItem = ({ contact, onHandleClickContact, onHandleClickInvitation })
 
   return(
     <ContactItemContainer
-      id={contact.id}
       key={contact.id}
       onClick={onHandleClickContact}>
       <ContactItemIcon
@@ -78,10 +76,4 @@ export default compose(
       props.onClickInvitation(props.contact.id)
     }
   }),
-  lifecycle({
-    componentDidMount() {
-      const elem = document.getElementById(this.props.contact.id)
-      velocity(elem, 'transition.slideUpIn', { duration: 400 })
-    }
-  })
 )(ContactItem)

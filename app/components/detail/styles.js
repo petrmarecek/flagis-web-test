@@ -56,7 +56,7 @@ const DetailContentTop = styled.div`
   :before {
     content: "";
     position: absolute;
-    z-index:-1;
+    z-index: -1;
     top: 0;
     left: 0;
     right: 0;
@@ -233,6 +233,7 @@ const DetailContentImportantContent = styled.div`
 
 const DetailContentDate = styled.div`
   position: relative;
+  pointer-events: ${props => props.allowed ? 'auto' : 'none'};
 `;
 
 const DetailContentDateLabel = styled.div`
@@ -379,6 +380,7 @@ const MarkdownEditableContainer = styled(MarkdownEditable)`
   width: 100%;
   height: 100%;
   font-size: 14px;
+  cursor: text;
 
   .markdown__html {
     ${fontMain}

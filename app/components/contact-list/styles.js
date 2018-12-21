@@ -1,6 +1,9 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
+import { fadeInUp } from 'react-animations'
 import { textOverflow } from '../styled-components-mixins'
 import Icon from '../icons/icon'
+
+const fadeUp = keyframes`${fadeInUp}`;
 
 const ContactItemContainer = styled.li`
   overflow: hidden;
@@ -10,6 +13,7 @@ const ContactItemContainer = styled.li`
   position: relative;
   background-color: white;
   height: 30px;
+  animation: 400ms ${fadeUp};
 `;
 
 const ContactItemIcon = styled(Icon)`
@@ -47,10 +51,10 @@ const ContactItemInvite = styled.div`
   color: #8C9DA9;
   overflow: hidden;
   z-index: 1;
-  
+
   :hover {
     color: #293034;
-    
+
     svg {
       path {
         fill: #293034;
