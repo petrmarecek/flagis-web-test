@@ -370,9 +370,12 @@ export function* cancelArchiveTasks(action) {
 
 export function* setComplete(action) {
   const taskId = action.payload.taskId
+  const detail = yield select(state => appStateSelectors.getDetail(state))
 
   try {
-    yield put(taskActions.deselectTasks())
+    if (!detail.task) {
+      yield put(taskActions.deselectTasks())
+    }
 
     // call server
     const update = { isCompleted: true }
@@ -385,9 +388,12 @@ export function* setComplete(action) {
 
 export function* setIncomplete(action) {
   const taskId = action.payload.taskId
+  const detail = yield select(state => appStateSelectors.getDetail(state))
 
   try {
-    yield put(taskActions.deselectTasks())
+    if (!detail.task) {
+      yield put(taskActions.deselectTasks())
+    }
 
     // update isCompleted and put task to top
     const update = { isCompleted: false }
