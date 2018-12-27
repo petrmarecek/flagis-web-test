@@ -69,7 +69,7 @@ const TasksMenuFilters = props => {
             iconScale={0.66}
             onChange={onHandleToggleAssigneeFilter} />
           <MenuBoxItemTitle
-            title="Assigned to ..."
+            title="Send to ..."
             active={assignee}
             onChange={onHandleToggleAssigneeFilter} />
         </MenuBoxGroup>

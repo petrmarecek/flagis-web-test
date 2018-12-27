@@ -35,6 +35,7 @@ const withAutocompleteInput = WrappedComponent => {
       isAllowUpdate: PropTypes.bool,
       isInputMode: PropTypes.bool,
       placeholder: PropTypes.string,
+      inputValue: PropTypes.string,
       parentId: PropTypes.string,
       onBlurTagTree: PropTypes.func,
       onAddInputRef: PropTypes.func,
@@ -48,8 +49,7 @@ const withAutocompleteInput = WrappedComponent => {
       position: null,
       hintsData: this.props.hints,
       selectIndex: 0,
-      inputPlaceholder: this.props.placeholder,
-      value: '',
+      value: this.props.inputValue,
       inputRef: null,
       scrollRef: null,
       hintRef: null,
@@ -121,9 +121,9 @@ const withAutocompleteInput = WrappedComponent => {
     }
 
     onHandleFocus = event => {
-      const { inputRef } = this.state
-      const { hints, dataType, location } = this.props
-      const value = event.target.value
+      const { inputRef, value } = this.state
+      const { hints, dataType, location, isInputMode } = this.props
+      const inputValue = isInputMode ? value : event.target.value
       const itemValue = item => ({
         tags: item.title,
         contacts: item.email,
@@ -131,15 +131,16 @@ const withAutocompleteInput = WrappedComponent => {
 
       // Filter hints by value of input
       const hintsData = {
-        [dataType]: hints[dataType]
-          .filter(item => itemValue(item)[dataType].toLowerCase().startsWith(value.toLowerCase()))
+        [dataType]: !isInputMode
+          ? hints[dataType].filter(item => itemValue(item)[dataType].toLowerCase().startsWith(inputValue.toLowerCase()))
+          : hints[dataType]
       }
 
       this.setState({
         showHints: true,
         position: getInputPosition(location, inputRef),
         hintsData,
-        value,
+        value: inputValue,
         selectIndex: 0,
       })
     }
@@ -232,7 +233,6 @@ const withAutocompleteInput = WrappedComponent => {
       // Deselect input for input mode
       if (isInputMode) {
         this.props.onDeselectInput()
-        this.setState({ inputPlaceholder: this.props.placeholder })
       }
 
       // Filter hints by value of input
@@ -267,13 +267,11 @@ const withAutocompleteInput = WrappedComponent => {
 
       // Click on Select Me button in tasksMenu for assignee filter
       if (isSelectMe) {
-        this.setState({ inputPlaceholder: 'Me' })
         // Select Hint
         this.props.hintSelected(location, { isSelectMe })
 
         // Reset state
-        this.setState({ showHints: false, value: '' })
-        inputRef.value = ''
+        this.setState({ showHints: false, value: 'Me' })
         inputRef.blur()
         if (onBlurTagTree) {
           onBlurTagTree()
@@ -330,16 +328,11 @@ const withAutocompleteInput = WrappedComponent => {
         }
       }
 
-      if (isInputMode) {
-        this.setState({ inputPlaceholder: hintValue })
-      }
-
       // Select Hint
       this.props.hintSelected(location, context, hint)
 
       // Reset state
-      this.setState({ showHints: false, value: '' })
-      inputRef.value = ''
+      this.setState({ showHints: false, value: isInputMode ? hintValue : '' })
       inputRef.blur()
       if (onBlurTagTree) {
         onBlurTagTree()
@@ -372,8 +365,8 @@ const AutocompleteInput = props => {
     dataType,
     position,
     value,
+    placeholder,
     selectIndex,
-    inputPlaceholder,
     showHints,
     location,
     getInputRef,
@@ -410,11 +403,12 @@ const AutocompleteInput = props => {
         type="text"
         autoComplete="off"
         size={location === 'taskDetailTags' ? 5 : 10}
-        placeholder={inputPlaceholder}
+        placeholder={placeholder}
         onFocus={onHandleFocus}
         onKeyDown={onHandleKeyDown}
         onChange={onHandleChange}
-        mainSearch={location === 'mainSearch'} />
+        mainSearch={location === 'mainSearch'}
+        value={value} />
       {hintsElement && showHints && createPortal(hints, hintsElement)}
     </InputContainer>
   )
@@ -426,7 +420,7 @@ AutocompleteInput.propTypes = {
   position: PropTypes.object,
   value: PropTypes.string,
   selectIndex: PropTypes.number,
-  inputPlaceholder: PropTypes.string,
+  placeholder: PropTypes.string,
   showHints: PropTypes.bool,
   location: PropTypes.string,
   getInputRef: PropTypes.func,

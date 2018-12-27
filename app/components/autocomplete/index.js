@@ -20,7 +20,8 @@ const Autocomplete = props => {
     location,
     dataType,
     selectedItems,
-    inputPlaceholder,
+    placeholder,
+    inputValue,
     hints,
     validationItems,
     isWithoutItems,
@@ -61,13 +62,14 @@ const Autocomplete = props => {
           hints={hints}
           validationItems={validationItems}
           isAllowUpdate={isAllowUpdate}
-          placeholder={inputPlaceholder}
+          placeholder={placeholder}
+          inputValue={inputValue}
+          isInputMode={isInputMode}
           parentId={parentId}
           onBlurTagTree={onBlurTagTree}
           onAddInputRef={onHandleAddInputRef}
           hintSelected={onHandleHintSelected}
-          onDeselectInput={onHandleDeselectInput}
-          isInputMode={isInputMode} />
+          onDeselectInput={onHandleDeselectInput} />
       </Search>}
     </AutocompleteContainer>
   )
@@ -77,7 +79,7 @@ Autocomplete.propTypes = {
   dataType: PropTypes.string,
   location: PropTypes.string,
   placeholder: PropTypes.string,
-  inputPlaceholder: PropTypes.string,
+  inputValue: PropTypes.string,
   isWithoutItems: PropTypes.bool,
   isWithoutInput: PropTypes.bool,
   isInputMode: PropTypes.bool,
@@ -100,9 +102,10 @@ Autocomplete.propTypes = {
 }
 
 const mapStateToProps = (state, props) => {
-  const { selectedItems, dataType, placeholder, isInputMode } = props
-  let inputPlaceholder = placeholder
+  const { selectedItems, dataType, isInputMode } = props
+  let inputValue = ''
   const eqA = R.eqBy(R.prop('id'))
+
   // Get data of tags and contacts from store
   const storeData = {
     tags: {
@@ -114,6 +117,7 @@ const mapStateToProps = (state, props) => {
       validationItems: getContactsEmail(state)
     }
   }
+
   // validationItems for create new item
   const validationItems = storeData[dataType].validationItems
   let data = storeData[dataType].data
@@ -129,12 +133,12 @@ const mapStateToProps = (state, props) => {
         contacts: item.email,
       })
       const item = selectedItems[dataType].first()
-      inputPlaceholder = itemValue(item)[dataType]
+      inputValue = itemValue(item)[dataType]
     }
   }
 
   return {
-    inputPlaceholder,
+    inputValue,
     validationItems,
     hints: {
       [dataType]: data

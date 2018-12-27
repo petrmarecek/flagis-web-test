@@ -18,7 +18,7 @@ const TasksMenuFiltersActiveItem = ({ title, activeAssignee, isMounted, onHandle
   const renameTitle = filterTitle => {
     switch (filterTitle) {
       case ('assignee'):
-      filterTitle = 'Assignee to:'
+      filterTitle = 'Send to:'
         break;
 
       case ('today'):
