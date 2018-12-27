@@ -261,17 +261,32 @@ const withAutocompleteInput = WrappedComponent => {
       }
     }
 
-    onHandleSubmit = isSelectMe => {
+    onHandleSubmit = (submitType = null) => {
       const { hintsData, selectIndex, value, inputRef } = this.state
       const { location, parentId, dataType, validationItems, onBlurTagTree, isInputMode } = this.props
 
-      // Click on Select Me button in tasksMenu for assignee filter
-      if (isSelectMe) {
+      // Click on Send Me button in tasksMenu for assignee filter
+      if (submitType === 'sendMe') {
         // Select Hint
-        this.props.hintSelected(location, { isSelectMe })
+        this.props.hintSelected(location, { isSendMe: true })
 
         // Reset state
         this.setState({ showHints: false, value: 'Me' })
+        inputRef.blur()
+        if (onBlurTagTree) {
+          onBlurTagTree()
+        }
+
+        return
+      }
+
+      // Click on Send All button in tasksMenu for assignee filter
+      if (submitType === 'sendAll') {
+        // Select Hint
+        this.props.hintSelected(location, { isSendAll: true })
+
+        // Reset state
+        this.setState({ showHints: false, value: 'All' })
         inputRef.blur()
         if (onBlurTagTree) {
           onBlurTagTree()

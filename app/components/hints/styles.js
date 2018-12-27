@@ -17,10 +17,7 @@ const HintsContainer = styled.ul`
 
 const rowHeader = css`
   background-color: #fff;
-  display: block;
   font-size: 15px;
-  height: 30px;
-  line-height: 30px;
   border-width: ${props => props.directionRender === 'topToBottom'
     ? '0 0 1px 0'
     : '1px 0 0 0'
@@ -28,13 +25,23 @@ const rowHeader = css`
   border-style: solid;
 `
 
-const Button = styled.li`
+const Buttons = styled.li`
   ${rowHeader}
   height: 40px;
   line-height: 40px;
   padding: 0 10px;
   border-color: #D7E3EC;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+`;
+
+const Button = styled.div`
+  flex: 1;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  border-right: ${props => props.first ? '1px solid #D7E3EC' : 'none'};
 
   :hover {
     font-weight: bold;
@@ -43,9 +50,10 @@ const Button = styled.li`
 
 const Title = styled.li`
   ${rowHeader}
+  display: block;
   height: 30px;
   line-height: 30px;
-  margin: ${props => props.isSelectMe ? '10px 5px 0 5px' : '0 5px' };
+  margin: ${props => props.isFilterContacts ? '10px 5px 0 5px' : '0 5px' };
   padding: 0 5px;
   border-color: #44FFB1;
   color: #C1CAD0;
@@ -67,6 +75,7 @@ const Hint = styled.li`
 
 export {
   HintsContainer,
+  Buttons,
   Button,
   Title,
   Hint,

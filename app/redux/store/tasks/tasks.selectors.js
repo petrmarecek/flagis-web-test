@@ -4,6 +4,7 @@ import search from 'redux/services/search'
 import moment from 'moment'
 import intersection from 'lodash/intersection'
 
+import { getUserId } from '../auth/auth.selectors'
 import {
   getArchivedTasksVisibility,
   getInboxTasksVisibility
@@ -68,7 +69,8 @@ function loadTasks(ids, data) {
     entitiesFollowers,
     entitiesContacts,
     activeTagsIds,
-    timeLine
+    timeLine,
+    userId
   } = data
 
   // apply search filter
@@ -120,7 +122,12 @@ function loadTasks(ids, data) {
       const assignee = getAssigneeOfTask(followers)
       const assigneeId = assignee ? assignee.userId : null
 
-      return assigneeId === activeAssignee
+      // filter every send tasks
+      if (activeAssignee === 'sendAll' && assigneeId !== null) {
+        return assigneeId !== userId && assignee.status !== 'rejected'
+      }
+
+      return assigneeId === activeAssignee && assignee.status !== 'rejected'
     })
   }
 
@@ -375,6 +382,7 @@ export const getTasks = createSelector(
   getEntitiesFollowers,
   getEntitiesContacts,
   getActiveTagsIds,
+  getUserId,
   (isArchivedTasksVisible,
    isInboxTasksVisible,
    archivedTasksIsFetching,
@@ -389,7 +397,8 @@ export const getTasks = createSelector(
    entitiesTags,
    entitiesFollowers,
    entitiesContacts,
-   activeTagsIds) => {
+   activeTagsIds,
+   userId) => {
 
     const data = {
       tasksMenu,
@@ -398,7 +407,8 @@ export const getTasks = createSelector(
       entitiesFollowers,
       entitiesContacts,
       activeTagsIds,
-      timeLine
+      timeLine,
+      userId
     }
 
     // Load archived tasks
@@ -437,6 +447,7 @@ export const getCompletedTasks = createSelector(
   getEntitiesFollowers,
   getEntitiesContacts,
   getActiveTagsIds,
+  getUserId,
   (completedTasksItems,
    tasksMenu,
    timeLine,
@@ -444,7 +455,8 @@ export const getCompletedTasks = createSelector(
    entitiesTags,
    entitiesFollowers,
    entitiesContacts,
-   activeTagsIds) => {
+   activeTagsIds,
+   userId) => {
 
     const data = {
       tasksMenu,
@@ -453,7 +465,8 @@ export const getCompletedTasks = createSelector(
       entitiesFollowers,
       entitiesContacts,
       activeTagsIds,
-      timeLine
+      timeLine,
+      userId
     }
 
     return ({
@@ -485,6 +498,7 @@ export const getSelectTasks = createSelector(
   getEntitiesFollowers,
   getEntitiesContacts,
   getActiveTagsIds,
+  getUserId,
   (selectionTasks,
    tasksMenu,
    timeLine,
@@ -492,7 +506,8 @@ export const getSelectTasks = createSelector(
    entitiesTags,
    entitiesFollowers,
    entitiesContacts,
-   activeTagsIds) => {
+   activeTagsIds,
+   userId) => {
 
     const data = {
       tasksMenu,
@@ -501,7 +516,8 @@ export const getSelectTasks = createSelector(
       entitiesFollowers,
       entitiesContacts,
       activeTagsIds,
-      timeLine
+      timeLine,
+      userId
     }
 
     return loadTasks(selectionTasks.toArray(), data)
@@ -519,6 +535,7 @@ export const getTasksId = createSelector(
   getEntitiesFollowers,
   getEntitiesContacts,
   getActiveTagsIds,
+  getUserId,
   (isArchivedTasksVisible,
    archivedTasksItems,
    tasksItems,
@@ -528,7 +545,8 @@ export const getTasksId = createSelector(
    entitiesTags,
    entitiesFollowers,
    entitiesContacts,
-   activeTagsIds) => {
+   activeTagsIds,
+   userId) => {
 
     const archived = isArchivedTasksVisible
     const data = {
@@ -538,7 +556,8 @@ export const getTasksId = createSelector(
       entitiesFollowers,
       entitiesContacts,
       activeTagsIds,
-      timeLine
+      timeLine,
+      userId
     }
 
     if (archived) {
@@ -561,6 +580,7 @@ export const getCompletedTasksId = createSelector(
   getEntitiesFollowers,
   getEntitiesContacts,
   getActiveTagsIds,
+  getUserId,
   (completedTasksItems,
    tasksMenu,
    timeLine,
@@ -568,7 +588,8 @@ export const getCompletedTasksId = createSelector(
    entitiesTags,
    entitiesFollowers,
    entitiesContacts,
-   activeTagsIds) => {
+   activeTagsIds,
+   userId) => {
 
     const data = {
       tasksMenu,
@@ -577,7 +598,8 @@ export const getCompletedTasksId = createSelector(
       entitiesFollowers,
       entitiesContacts,
       activeTagsIds,
-      timeLine
+      timeLine,
+      userId
     }
     const tasks = loadTasks(completedTasksItems.toArray(), data)
     return List(tasks.map(task => task.id))
@@ -628,6 +650,7 @@ export const getNextTask = createSelector(
   getEntitiesFollowers,
   getEntitiesContacts,
   getActiveTagsIds,
+  getUserId,
   (selectionTasks,
    isArchivedTasksVisible,
    archivedTasksItems,
@@ -640,7 +663,8 @@ export const getNextTask = createSelector(
    entitiesTags,
    entitiesFollowers,
    entitiesContacts,
-   activeTagsIds) => {
+   activeTagsIds,
+   userId) => {
     const selectedTaskId = getSelectedTaskId(selectionTasks)
     if (!selectedTaskId) {
       return null
@@ -654,7 +678,8 @@ export const getNextTask = createSelector(
       entitiesFollowers,
       entitiesContacts,
       activeTagsIds,
-      timeLine
+      timeLine,
+      userId
     }
 
     let typeTask = loadTasks(tasksItems.toArray(), data)
@@ -703,6 +728,7 @@ export const getPreviousTask = createSelector(
   getEntitiesFollowers,
   getEntitiesContacts,
   getActiveTagsIds,
+  getUserId,
   (selectionTasks,
    isArchivedTasksVisible,
    archivedTasksItems,
@@ -715,7 +741,8 @@ export const getPreviousTask = createSelector(
    entitiesTags,
    entitiesFollowers,
    entitiesContacts,
-   activeTagsIds) => {
+   activeTagsIds,
+   userId) => {
     const selectedTaskId = getSelectedTaskId(selectionTasks)
     if (!selectedTaskId) {
       return null
@@ -729,7 +756,8 @@ export const getPreviousTask = createSelector(
       entitiesFollowers,
       entitiesContacts,
       activeTagsIds,
-      timeLine
+      timeLine,
+      userId
     }
 
     let typeTask = loadTasks(tasksItems.toArray(), data)

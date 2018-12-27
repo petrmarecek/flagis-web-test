@@ -8,7 +8,7 @@ import { getHintDirectionRender, isStringEmpty} from '../../redux/utils/componen
 
 import HintItem from './hints-item'
 
-import { HintsContainer, Button, Title, Hint } from './styles'
+import { HintsContainer, Buttons, Button, Title, Hint } from './styles'
 
 const getTopHeight = (positionTop, directionRender) => {
   return directionRender === 'topToBottom'
@@ -46,7 +46,7 @@ const Hints = props => {
   const hintsLength = hints[dataType].length
   const isCreateNewHint = hints[dataType].length === 0
   const noHintFound = isCreateNewHint && isStringEmpty(value)
-  const isSelectMe = location === 'tasksMenuFilterContacts'
+  const isFilterContacts = location === 'tasksMenuFilterContacts'
   const directionRender = getHintDirectionRender(position.top)
   const isScroll = getScroll(hintsLength, position.top, directionRender)
   const overflowHeight = getOverflowHeight(position.top, directionRender)
@@ -100,15 +100,18 @@ const Hints = props => {
   const getRender = {
     topToBottom: (
       <HintsContainer position={{ top: position.top, left: position.left }}>
-        {isSelectMe &&
-        <Button
-          directionRender={directionRender}
-          onClick={() => onHandleSubmit(true)}>
-          Select Me
-        </Button>}
+        {isFilterContacts &&
+        <Buttons directionRender={directionRender}>
+          <Button onClick={() => onHandleSubmit('sendMe')} first>
+            Send Me
+          </Button>
+          <Button onClick={() => onHandleSubmit('sendAll')}>
+            Send All
+          </Button>
+        </Buttons>}
         <Title
           directionRender={directionRender}
-          isSelectMe={isSelectMe}>
+          isFilterContacts={isFilterContacts}>
           {data.title}
         </Title>
         {!isScroll
@@ -130,15 +133,18 @@ const Hints = props => {
               style={scrollStyle}>{data.items}</ShadowScrollbar>}
         <Title
           directionRender={directionRender}
-          isSelectMe={isSelectMe}>
+          isFilterContacts={isFilterContacts}>
           {data.title}
         </Title>
-        {isSelectMe &&
-        <Button
-          directionRender={directionRender}
-          onClick={() => onHandleSubmit(true)}>
-          Select Me
-        </Button>}
+        {isFilterContacts &&
+        <Buttons directionRender={directionRender}>
+          <Button onClick={() => onHandleSubmit('sendMe')} first>
+            Send Me
+          </Button>
+          <Button onClick={() => onHandleSubmit('sendAll')}>
+            Send All
+          </Button>
+        </Buttons>}
       </HintsContainer>
     )
   }
@@ -169,5 +175,5 @@ export default withHandlers({
   getHintRef: props => ref => props.addHintRef(ref),
   handleClickOutside: props => event => props.onHandleClickOutside(event),
   onHandleMouseOver: props => index => props.onSelectIndex(index),
-  onHandleSubmit: props => isSelectMe => props.onSubmit(isSelectMe),
+  onHandleSubmit: props => submitType => props.onSubmit(submitType),
 })(onClickOutside(Hints))

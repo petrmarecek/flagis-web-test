@@ -18,7 +18,7 @@ export const getTasksMenuFiltersActiveAssignee = createSelector(
   getEntitiesContacts,
   getTasksMenuFiltersActiveAssigneeIds,
   (entitiesContacts, activeAssignee) => {
-    if (activeAssignee === null) {
+    if (activeAssignee === null || activeAssignee === 'sendAll') {
       return null
     }
 

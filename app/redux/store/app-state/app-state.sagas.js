@@ -43,7 +43,7 @@ export function* changeLocation(action) {
 
 export function* hintSelected(action) {
   const { location, context, hint } = action.payload
-  const { parentId, isNewHint, isSelectMe } = context
+  const { parentId, isNewHint, isSendMe, isSendAll } = context
 
   // Hint selected within main search context
   if (location === 'mainSearch') {
@@ -103,11 +103,17 @@ export function* hintSelected(action) {
   // Hint(contact) selected within tasks menu filter
   if (location === 'tasksMenuFilterContacts') {
 
-    // Click on Select Me button in tasksMenu for assignee filter
-    if (isSelectMe) {
+    // Click on Send Me button in tasksMenu for assignee filter
+    if (isSendMe) {
       const userId = yield select(state => authSelectors.getUserId(state))
 
       yield put(tasksMenuActions.setActiveAssignee(userId))
+      return
+    }
+
+    // Click on Send All button in tasksMenu for assignee filter
+    if (isSendAll) {
+      yield put(tasksMenuActions.setActiveAssignee('sendAll'))
       return
     }
 
