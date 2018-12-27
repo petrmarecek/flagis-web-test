@@ -4,7 +4,7 @@ import onClickOutside from 'react-onclickoutside'
 import { withHandlers } from 'recompose'
 import ShadowScrollbar from '../common/shadow-scrollbar'
 import constants from '../../utils/constants'
-import { getHintDirectionRender } from '../../redux/utils/component-helper'
+import { getHintDirectionRender, isStringEmpty} from '../../redux/utils/component-helper'
 
 import HintItem from './hints-item'
 
@@ -44,7 +44,8 @@ const Hints = props => {
   } = props
 
   const hintsLength = hints[dataType].length
-  const condition = hints[dataType].length === 0
+  const isCreateNewHint = hints[dataType].length === 0
+  const noHintFound = isCreateNewHint && isStringEmpty(value)
   const isSelectMe = location === 'tasksMenuFilterContacts'
   const directionRender = getHintDirectionRender(position.top)
   const isScroll = getScroll(hintsLength, position.top, directionRender)
@@ -56,22 +57,46 @@ const Hints = props => {
     boxShadowBottom: 'inset 0 -10px 10px -5px #fafafa',
     overflow: 'hidden'
   }
-  const title = {
-    tags: condition ? 'Create a new tag' : 'Select existing tag',
-    contacts: condition ? 'Create a new contact' : 'Select existing contact'
+
+  const getHintsData = () => {
+    const typeHint = {
+      tags: 'tag',
+      contacts: 'contact'
+    }
+
+    // No hint found
+    if (noHintFound) {
+      return {
+        title: 'No hint found',
+        items: <Hint innerRef={ref => getHintRef(ref)} noHintFound/>
+      }
+    }
+
+    // Create a new hint
+    if (isCreateNewHint) {
+      return {
+        title: `Create a new ${typeHint[dataType]}`,
+        items: <Hint innerRef={ref => getHintRef(ref)} onClick={onHandleSubmit} selected>{value}</Hint>
+      }
+    }
+
+    // Existing hints
+    return {
+      title: `Select existing ${typeHint[dataType]}`,
+      items: hints[dataType].map((hint, i) => (
+        <HintItem
+          key={hint.id}
+          hint={hint}
+          addHintRef={getHintRef}
+          index={i}
+          dataType={dataType}
+          selected={selectIndex === i}
+          onSubmit={onHandleSubmit}
+          onMouseOver={onHandleMouseOver} />))
+    }
   }
-  const getItem = condition
-    ? <Hint innerRef={ref => getHintRef(ref)} onClick={onHandleSubmit} selected>{value}</Hint>
-    : hints[dataType].map((hint, i) => (
-      <HintItem
-        key={hint.id}
-        hint={hint}
-        addHintRef={getHintRef}
-        index={i}
-        dataType={dataType}
-        selected={selectIndex === i}
-        onSubmit={onHandleSubmit}
-        onMouseOver={onHandleMouseOver} />))
+
+  const data = getHintsData()
   const getRender = {
     topToBottom: (
       <HintsContainer position={{ top: position.top, left: position.left }}>
@@ -84,13 +109,13 @@ const Hints = props => {
         <Title
           directionRender={directionRender}
           isSelectMe={isSelectMe}>
-          {title[dataType]}
+          {data.title}
         </Title>
         {!isScroll
-          ? getItem
+          ? data.items
           : <ShadowScrollbar
               addScrollRef={getScrollRef}
-              style={scrollStyle}>{getItem}</ShadowScrollbar>}
+              style={scrollStyle}>{data.items}</ShadowScrollbar>}
       </HintsContainer>
     ),
     bottomToTop: (
@@ -99,14 +124,14 @@ const Hints = props => {
         left: position.left
       }}>
         {!isScroll
-          ? getItem
+          ? data.items
           : <ShadowScrollbar
               addScrollRef={getScrollRef}
-              style={scrollStyle}>{getItem}</ShadowScrollbar>}
+              style={scrollStyle}>{data.items}</ShadowScrollbar>}
         <Title
           directionRender={directionRender}
           isSelectMe={isSelectMe}>
-          {title[dataType]}
+          {data.title}
         </Title>
         {isSelectMe &&
         <Button

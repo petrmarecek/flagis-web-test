@@ -57,10 +57,10 @@ const Hint = styled.li`
   height: auto;
   line-height: 16px;
   padding: 5px 10px;
-  cursor: pointer;
   white-space: nowrap;
   overflow:hidden;
   max-width: 200px;
+  cursor: ${props => props.noHintFound ? 'auto' : 'pointer'};
   background-color: ${props => props.selected ? '#69fec0' : '#fff'};
   font-weight: ${props => props.selected ? 'bold' : 'normal'};
 `;
