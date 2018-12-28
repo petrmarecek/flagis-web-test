@@ -152,6 +152,8 @@ export const getContactsEmail = createSelector(
   getEntitiesContacts,
   (entitiesContacts) => {
 
-    return entitiesContacts.map(contact => contact.email.toLowerCase()).toList()
+    return entitiesContacts
+      .filter(contact => contact.isContact)
+      .map(contact => contact.email.toLowerCase()).toList()
   }
 )
