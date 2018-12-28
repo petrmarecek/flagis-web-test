@@ -1,7 +1,7 @@
 import { List } from 'immutable'
 import moment from 'moment'
 import { getSelectionTasks } from '../tasks/tasks.selectors'
-import { getEntitiesComments } from '../entities/entities.selectors'
+import { getEntitiesComments, getEntitiesContacts } from '../entities/entities.selectors'
 import { createSelector } from 'reselect'
 
 // ------ Helper functions ----------------------------------------------------
@@ -13,7 +13,7 @@ import { createSelector } from 'reselect'
  */
 
 function loadComments(data) {
-  const { selectionTasks, entitiesComments } = data
+  const { selectionTasks, entitiesComments, entitiesContacts } = data
   let comments = List()
 
   const taskId = selectionTasks.last()
@@ -23,6 +23,16 @@ function loadComments(data) {
 
   // Get values from map without keys
   entitiesCommentsItems.forEach(comment => {
+
+    // prepare author of comment for existing contact
+    if (entitiesContacts.has(comment.createdById)) {
+      const { createdById, author } = comment
+      const { isContact, nickname } = entitiesContacts.get(createdById)
+      const newAuthor = isContact ? nickname : author
+
+      comment = comment.set('author', newAuthor)
+    }
+
     comments = comments.push(comment)
   })
 
@@ -48,8 +58,9 @@ export const getComments = createSelector(
   getCommentsIsFetching,
   getSelectionTasks,
   getEntitiesComments,
-  (commentsIsFetching, selectionTasks, entitiesComments) => {
-    const data = { selectionTasks, entitiesComments }
+  getEntitiesContacts,
+  (commentsIsFetching, selectionTasks, entitiesComments, entitiesContacts) => {
+    const data = { selectionTasks, entitiesComments, entitiesContacts }
 
     return ({
       isFetching: commentsIsFetching,
