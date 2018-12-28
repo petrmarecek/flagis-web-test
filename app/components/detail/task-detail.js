@@ -280,20 +280,19 @@ const TaskDetail = props => {
           </DetailContentSubject>
           <DetailContentTagAutocomplete
             onClick={onHandleRemoveEventListener}
-            allowed={!isCompleted && !isInboxVisible && !isCollaborated}>
-            {isArchived &&
-            <DetailContentTagAutocompleteTags>
-              <TagItems tags={tags}/>
-            </DetailContentTagAutocompleteTags>}
-            {!isArchived &&
-            <Autocomplete
-              dataType="tags"
-              location="taskDetailTags"
-              placeholder="Add tags"
-              selectedItems={{ tags: isTags === 0 ? null : tags }}
-              parentId={id}
-              onItemDelete={onHandleTagDelete}
-              isAllowUpdate />}
+            allowed={!isCompleted && !isArchivedOrInbox}>
+            {isArchivedOrInbox
+              ? <DetailContentTagAutocompleteTags>
+                  <TagItems tags={tags}/>
+                </DetailContentTagAutocompleteTags>
+              : <Autocomplete
+                  dataType="tags"
+                  location="taskDetailTags"
+                  placeholder="Add tags"
+                  selectedItems={{ tags: isTags === 0 ? null : tags }}
+                  parentId={id}
+                  onItemDelete={onHandleTagDelete}
+                  isAllowUpdate />}
           </DetailContentTagAutocomplete>
           {!isInboxVisible && !isOwner &&
           <DetailContentButton allowed={!isCompleted}>
@@ -405,7 +404,7 @@ const TaskDetail = props => {
                 </DetailContentImportantContent>
               </DetailContentImportant>
             </DetailContentOptions>
-            <DetailContentAttachments>
+            <DetailContentAttachments allowed={!isArchivedOrInbox}>
               {attachments.isFetching &&
               <Loader />}
               {!attachments.isFetching &&

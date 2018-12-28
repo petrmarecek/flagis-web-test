@@ -295,6 +295,7 @@ const DetailContentAttachments = styled.div`
   justify-content: space-between;
   height: 100%;
   z-index: 1;
+  pointer-events: ${props => props.allowed ? 'auto' : 'none'};
 `;
 
 const DetailContentComments = styled.div`
