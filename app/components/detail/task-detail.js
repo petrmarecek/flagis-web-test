@@ -4,6 +4,7 @@ import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { withHandlers } from 'recompose'
 import { List } from 'immutable'
+import { infoMessages } from 'utils/messages'
 
 import dateUtil from 'redux/utils/date'
 import { getAssigneeOfTask } from 'redux/utils/component-helper'
@@ -136,6 +137,11 @@ const TaskDetail = props => {
     isOwner,
     isArchivedOrInbox,
   } = getBindingData
+
+  // Variables
+  const ruleMessage = isInboxVisible
+    ? infoMessages.taskDetail.inboxRules
+    : infoMessages.taskDetail.acceptedRules
 
   // Conditionals
   const isAcceptedStatus = followerStatus !== 'new' && followerStatus !== 'pending' && followerStatus !== 'rejected'
@@ -302,18 +308,30 @@ const TaskDetail = props => {
               isAccepted />
           </DetailContentButton>}
           {isOwner
-          ? <DetailContentIcon onClick={onHandleRemoveEventListener} >
-              <Icon
-                icon={ICONS.TRASH}
-                width={23}
-                height={26}
-                scale={1}
-                color={["#ff8181"]}
-                onClick={onHandleDelete}/>
-            </DetailContentIcon>
-          : <DetailContentIcon contactIcon>
-              <FollowerIcon defaultIcon/>
-            </DetailContentIcon>}
+            ? <DetailContentIcon onClick={onHandleRemoveEventListener} >
+                <Icon
+                  icon={ICONS.TRASH}
+                  width={23}
+                  height={26}
+                  scale={1}
+                  color={["#ff8181"]}
+                  onClick={onHandleDelete}/>
+              </DetailContentIcon>
+            : <DetailContentIcon contactIcon>
+                <FollowerIcon defaultIcon/>
+              </DetailContentIcon>}
+          {isCollaborated && !isArchived && !isCompleted &&
+          <DetailContentIcon
+            title={ruleMessage}
+            animation >
+            <Icon
+              icon={ICONS.LOCK}
+              width={26}
+              height={26}
+              scale={0.68}
+              color={['#8C9DA9']}
+              title={ruleMessage} />
+          </DetailContentIcon>}
         </DetailContentTop>
         <DetailContentCenter
           allowed={!isCompleted}

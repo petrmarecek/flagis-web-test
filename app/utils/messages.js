@@ -81,4 +81,9 @@ export const infoMessages = {
     removeFollower: 'Owner has just removed you from task.',
     deletedTask: 'Owner has just deleted task.',
   },
+
+  taskDetail: {
+    acceptedRules: 'Not allowed to edit subject, dates and description of task!',
+    inboxRules: 'Allowed to add comments and accept/reject of task!',
+  }
 }

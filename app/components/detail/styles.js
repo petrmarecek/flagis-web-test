@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components'
+import styled, { css, keyframes } from 'styled-components'
 import ContentEditable from '../common/content-editable'
 import MarkdownEditable from '../common/markdown-editable'
 import Icon from '../icons/icon'
@@ -13,6 +13,10 @@ import {
   markdownStyles,
   fontMain,
 } from '../styled-components-mixins/'
+import { tada } from 'react-animations'
+
+// --------------------------------------- Animations ---------------------------------------
+const tadaAnimation = keyframes`${tada}`;
 
 // --------------------------------------- Detail ---------------------------------------
 const DetailStyle = styled.div`
@@ -123,6 +127,7 @@ const DetailContentIcon = styled.div`
   flex: 0 0 35px;
   text-align: right;
   padding-right: 6px;
+  animation: ${props => props.animation ? `500ms ${tadaAnimation}` : 'none'};
 `;
 
 const DetailContentCenter = styled.div`
