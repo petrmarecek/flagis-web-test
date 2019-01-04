@@ -97,6 +97,8 @@ const Detail = props => {
     task,
     attachments,
     comments,
+    onHandleFetchAttachment,
+    onHandleFetchComment,
     onHandleTaskSetComplete,
     onHandleTaskSetIncomplete,
     onHandleTaskArchive,
@@ -144,7 +146,8 @@ const Detail = props => {
         attachments={attachments}
         comments={comments}
         isInboxVisible={isInboxVisible}
-        onHandleRemoveEventListener={onHandleRemoveEventListener}
+        onHandleFetchAttachment={onHandleFetchAttachment}
+        onHandleFetchComment={onHandleFetchComment}
         onHandleToggleList={onHandleToggleList}
         onHandleNext={onHandleNext}
         onHandlePrevious={onHandlePrevious}
@@ -201,6 +204,8 @@ Detail.propTypes = {
   task: PropTypes.object,
   attachments: PropTypes.object,
   comments: PropTypes.object,
+  onHandleFetchAttachment: PropTypes.func,
+  onHandleFetchComment: PropTypes.func,
   onHandleTaskSetComplete: PropTypes.func,
   onHandleTaskSetIncomplete: PropTypes.func,
   onHandleTaskArchive: PropTypes.func,
@@ -399,6 +404,8 @@ export default compose(
       props.selectContact(previousContact.id)
     },
 
+    onHandleFetchAttachment: props => data => props.fetchAttachment(data),
+    onHandleFetchComment: props => data => props.fetchComment(data),
     onHandleTaskSetComplete: props => data => {
       props.setAnimation()
       props.setComplete(data)
@@ -562,15 +569,6 @@ export default compose(
   }),
   lifecycle({
     componentDidMount() {
-      const { detail, task } = this.props
-
-      if (detail.task || detail.inbox || detail.archive) {
-        // Load attachments
-        this.props.fetchAttachment(task.id)
-        // Load comments
-        this.props.fetchComment(task.id)
-      }
-
       document.getElementById('user-container').addEventListener('click', this.props.onHandleClickOutSide, false)
       document.addEventListener('keydown', this.props.onHandleKeyDown, false)
     },

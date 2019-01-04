@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
-import { withHandlers } from 'recompose'
+import { compose, withHandlers, lifecycle } from 'recompose'
 import { List } from 'immutable'
 import { infoMessages } from 'utils/messages'
 
@@ -528,147 +528,158 @@ TaskDetail.propTypes = {
   onHandlePrevious: PropTypes.func,
 }
 
-export default withHandlers({
-  onHandleComplete: props => event => {
-    event.stopPropagation()
-    const { id } = props.task
+export default compose(
+  withHandlers({
+    onHandleComplete: props => event => {
+      event.stopPropagation()
+      const { id } = props.task
 
-    if (!props.task.isCompleted) {
-      props.onHandleTaskSetComplete(id)
-    } else {
-      props.onHandleTaskSetIncomplete(id)
-    }
-  },
-  onHandleArchive: props => event => {
-    event.stopPropagation()
-    props.onHandleTaskArchive(props.task)
-  },
-  onHandleSend: props => () => {
-    const { id, followers } = props.task
-    const assignee = getAssigneeOfTask(followers)
-    const data = {
-      taskId: id,
-      followerId: assignee.id,
-    }
-
-    props.onHandleTaskSend(data)
-  },
-  onHandleAccept: props => () => {
-    const { id, followers } = props.task
-    const assignee = getAssigneeOfTask(followers)
-    const data = {
-      taskId: id,
-      followerId: assignee.id,
-    }
-
-    props.onHandleTaskAccept(data)
-  },
-  onHandleReject: props => () => {
-    const { task, detail } = props
-    const data = {
-      task,
-      type: detail.inbox ? 'inbox' : 'task',
-    }
-
-    props.onHandleTaskReject(data)
-  },
-  onHandleSubjectUpdate: props => event => {
-    const subject = event.target.value
-    if (subject === props.task.subject || subject === '') {
-      return
-    }
-
-    const data = { task: props.task, subject }
-    props.onHandleTaskSubjectUpdate(data)
-  },
-  onHandleTagDelete: props => tagInfo => {
-    const data = { task: props.task, tagInfo }
-    props.onHandleTaskTagDeleted(data)
-  },
-  onHandleDelete: props => () => props.onHandleTaskDelete(props.task.id),
-  onHandleFollowerDelete: props => (user, isAssignee) => {
-    const { id, followers } = props.task
-    const assignee = getAssigneeOfTask(followers)
-
-    const data = {
-      taskId: id,
-      userId: isAssignee ? user.profile.id : user.id,
-      followerId: assignee.id,
-    }
-
-    props.onHandleTaskFollowerDeleted(data)
-  },
-  onHandleStartDateChanged: props => date => {
-    const data = { task: props.task, date , typeDate: 'startDate' }
-    props.onHandleTaskDateChanged(data)
-  },
-  onHandleDueDateChanged: props => date => {
-    if (date) {
-      date.set({
-        'second': 0,
-        'millisecond': 0,
-      })
-
-      if (date.hour() === 0 && date.minute() === 0) {
-        date.add(59, 's').add(999, 'ms')
+      if (!props.task.isCompleted) {
+        props.onHandleTaskSetComplete(id)
+      } else {
+        props.onHandleTaskSetIncomplete(id)
       }
-    }
+    },
+    onHandleArchive: props => event => {
+      event.stopPropagation()
+      props.onHandleTaskArchive(props.task)
+    },
+    onHandleSend: props => () => {
+      const { id, followers } = props.task
+      const assignee = getAssigneeOfTask(followers)
+      const data = {
+        taskId: id,
+        followerId: assignee.id,
+      }
 
-    const data = { task: props.task, date , typeDate: 'dueDate' }
-    props.onHandleTaskDateChanged(data)
-  },
-  onHandleReminderDateChanged: props => date => {
-    const data = { task: props.task, date , typeDate: 'reminderDate' }
-    props.onHandleTaskDateChanged(data)
-  },
-  onHandleToggleImportant: props => event => {
-    event.stopPropagation()
-    props.onHandleTaskToggleImportant(props.task)
-  },
-  onHandleAttachmentDelete: props => attachmentId => {
-    const data = { task: props.task, attachmentId }
-    props.onHandleTaskAttachmentDelete(data)
-  },
-  onHandleFileUploaded: props => attachment => {
-    const data = {
-      taskId: props.task.id,
-      fileName: attachment.filename,
-      client: attachment.client,
-      isWritable: attachment.isWritable,
-      mimeType: attachment.mimetype,
-      size: attachment.size,
-      url: attachment.url,
-    }
+      props.onHandleTaskSend(data)
+    },
+    onHandleAccept: props => () => {
+      const { id, followers } = props.task
+      const assignee = getAssigneeOfTask(followers)
+      const data = {
+        taskId: id,
+        followerId: assignee.id,
+      }
 
-    props.onHandleTaskFileUploaded(data)
-  },
-  onHandleDescriptionUpdate: props => event => {
-    const description = event.target.value
-    if (description === props.task.description) {
-      return
-    }
+      props.onHandleTaskAccept(data)
+    },
+    onHandleReject: props => () => {
+      const { task, detail } = props
+      const data = {
+        task,
+        type: detail.inbox ? 'inbox' : 'task',
+      }
 
-    const data = { task: props.task, description }
-    props.onHandleTaskDescriptionUpdate(data)
-  },
-  onHandleAddComment: props => event => {
-    const isSubmit = (event.which === 13 || event.type === 'click')
-    if (!isSubmit) {
-      return
-    }
+      props.onHandleTaskReject(data)
+    },
+    onHandleSubjectUpdate: props => event => {
+      const subject = event.target.value
+      if (subject === props.task.subject || subject === '') {
+        return
+      }
 
-    event.preventDefault()
-    const value = event.target.value
-    if(value === '') {
-      return
-    }
+      const data = { task: props.task, subject }
+      props.onHandleTaskSubjectUpdate(data)
+    },
+    onHandleTagDelete: props => tagInfo => {
+      const data = { task: props.task, tagInfo }
+      props.onHandleTaskTagDeleted(data)
+    },
+    onHandleDelete: props => () => props.onHandleTaskDelete(props.task.id),
+    onHandleFollowerDelete: props => (user, isAssignee) => {
+      const { id, followers } = props.task
+      const assignee = getAssigneeOfTask(followers)
 
-    event.target.value = ''
-    const comment = {
-      content: { content: value },
-      taskId: props.task.id
-    }
+      const data = {
+        taskId: id,
+        userId: isAssignee ? user.profile.id : user.id,
+        followerId: assignee.id,
+      }
 
-    props.onHandleTaskAddComment(comment)
-  },
-})(TaskDetail)
+      props.onHandleTaskFollowerDeleted(data)
+    },
+    onHandleStartDateChanged: props => date => {
+      const data = { task: props.task, date , typeDate: 'startDate' }
+      props.onHandleTaskDateChanged(data)
+    },
+    onHandleDueDateChanged: props => date => {
+      if (date) {
+        date.set({
+          'second': 0,
+          'millisecond': 0,
+        })
+
+        if (date.hour() === 0 && date.minute() === 0) {
+          date.add(59, 's').add(999, 'ms')
+        }
+      }
+
+      const data = { task: props.task, date , typeDate: 'dueDate' }
+      props.onHandleTaskDateChanged(data)
+    },
+    onHandleReminderDateChanged: props => date => {
+      const data = { task: props.task, date , typeDate: 'reminderDate' }
+      props.onHandleTaskDateChanged(data)
+    },
+    onHandleToggleImportant: props => event => {
+      event.stopPropagation()
+      props.onHandleTaskToggleImportant(props.task)
+    },
+    onHandleAttachmentDelete: props => attachmentId => {
+      const data = { task: props.task, attachmentId }
+      props.onHandleTaskAttachmentDelete(data)
+    },
+    onHandleFileUploaded: props => attachment => {
+      const data = {
+        taskId: props.task.id,
+        fileName: attachment.filename,
+        client: attachment.client,
+        isWritable: attachment.isWritable,
+        mimeType: attachment.mimetype,
+        size: attachment.size,
+        url: attachment.url,
+      }
+
+      props.onHandleTaskFileUploaded(data)
+    },
+    onHandleDescriptionUpdate: props => event => {
+      const description = event.target.value
+      if (description === props.task.description) {
+        return
+      }
+
+      const data = { task: props.task, description }
+      props.onHandleTaskDescriptionUpdate(data)
+    },
+    onHandleAddComment: props => event => {
+      const isSubmit = (event.which === 13 || event.type === 'click')
+      if (!isSubmit) {
+        return
+      }
+
+      event.preventDefault()
+      const value = event.target.value
+      if(value === '') {
+        return
+      }
+
+      event.target.value = ''
+      const comment = {
+        content: { content: value },
+        taskId: props.task.id
+      }
+
+      props.onHandleTaskAddComment(comment)
+    },
+  }),
+  lifecycle({
+    componentDidMount() {
+      const { task } = this.props
+        // Load attachments
+        this.props.onHandleFetchAttachment(task.id)
+        // Load comments
+        this.props.onHandleFetchComment(task.id)
+    }
+  })
+)(TaskDetail)
