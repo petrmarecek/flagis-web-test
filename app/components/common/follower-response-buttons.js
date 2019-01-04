@@ -2,8 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { withHandlers } from 'recompose'
 
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
+import { pulse } from 'react-animations'
 import { transition } from 'components/styled-components-mixins'
+
+const show = keyframes`${pulse}`;
 
 const Container = styled.div`
   display: flex;
@@ -22,6 +25,7 @@ const Button = styled.button`
   font-size: 16px;
   color: #fff;
   border: none;
+  animation: ${props => props.animation ? `500ms linear ${show}` : 'none'};
 
   :hover {
     ${transition('500ms')}
@@ -29,22 +33,51 @@ const Button = styled.button`
   }
 `;
 
-const FollowerResponseButtons = ({ isAccepted, onHandleAcceptClicked, onHandleRejectClicked }) => (
-  <Container>
-    {!isAccepted && <Button onClick={onHandleAcceptClicked}>ACCEPT</Button>}
-    <Button onClick={onHandleRejectClicked} rejected>REJECT</Button>
-  </Container>
-)
+const FollowerResponseButtons = props => {
+  const {
+    isTakeBack,
+    isAccepted,
+    onHandleTakeBackClicked,
+    onHandleAcceptClicked,
+    onHandleRejectClicked
+  } = props
+
+  const getRender = () => {
+    if (isTakeBack) {
+      return (
+        <Container>
+          <Button onClick={onHandleTakeBackClicked} rejected animation>TAKE BACK</Button>
+        </Container>
+      )
+    }
+
+    return (
+      <Container>
+        {!isAccepted && <Button onClick={onHandleAcceptClicked}>ACCEPT</Button>}
+        <Button onClick={onHandleRejectClicked} rejected>REJECT</Button>
+      </Container>
+    )
+  }
+
+  return getRender()
+}
 
 FollowerResponseButtons.propTypes = {
+  isTakeBack: PropTypes.bool,
   isAccepted: PropTypes.bool,
+  takeBackClicked: PropTypes.func,
   acceptClicked: PropTypes.func,
   rejectClicked: PropTypes.func,
+  onHandleTakeBackClicked: PropTypes.func,
   onHandleAcceptClicked: PropTypes.func,
   onHandleRejectClicked: PropTypes.func,
 }
 
 export default withHandlers({
+  onHandleTakeBackClicked: props => event => {
+    event.stopPropagation()
+    props.takeBackClicked()
+  },
   onHandleAcceptClicked: props => event => {
     event.stopPropagation()
     props.acceptClicked()

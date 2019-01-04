@@ -14,7 +14,7 @@ import {
   DeleteIcon,
 } from './styles'
 
-const AutocompleteItem = ({ item, dataType, onHandleDelete }) => {
+const AutocompleteItem = ({ item, dataType, isHideDelete, onHandleDelete }) => {
   const colorIndex = getColorIndex(item.colorIndex, item.title)
   const tagColor = getTagColor(colorIndex)
   const contactTitle = !item.nickname ? item.email : item.nickname
@@ -23,6 +23,7 @@ const AutocompleteItem = ({ item, dataType, onHandleDelete }) => {
     tags: (
       <TagContainer key={item.id} tagColor={tagColor}>
         <Title color={'#fff'}>{item.title}</Title>
+        {!isHideDelete &&
         <Icon
           icon={ICONS.CROSS_SIMPLE}
           width={11}
@@ -30,12 +31,13 @@ const AutocompleteItem = ({ item, dataType, onHandleDelete }) => {
           scale={0.78}
           color={["#fff"]}
           hoverColor={["#eee"]}
-          onClick={onHandleDelete} />
+          onClick={onHandleDelete} />}
       </TagContainer>
     ),
     contacts: (
       <ContactContainer key={item.id}>
         <Title color={'#293034'}>{contactTitle}</Title>
+        {!isHideDelete &&
         <Delete onClick={onHandleDelete}>
           <DeleteIcon
             icon={ICONS.CROSS_SIMPLE}
@@ -43,7 +45,7 @@ const AutocompleteItem = ({ item, dataType, onHandleDelete }) => {
             height={6}
             scale={0.42}
             color={['#8c9da9']} />
-        </Delete>
+        </Delete>}
       </ContactContainer>
     )
   }
@@ -54,6 +56,7 @@ const AutocompleteItem = ({ item, dataType, onHandleDelete }) => {
 AutocompleteItem.propTypes = {
   item: PropTypes.object,
   dataType: PropTypes.string,
+  isHideDelete: PropTypes.bool,
   onDelete: PropTypes.func,
   onHandleDelete: PropTypes.func,
 }

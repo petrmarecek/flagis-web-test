@@ -127,7 +127,7 @@ const DetailContentIcon = styled.div`
   flex: 0 0 35px;
   text-align: right;
   padding-right: 6px;
-  animation: ${props => props.animation ? `500ms ${tadaAnimation}` : 'none'};
+  animation: ${props => props.animation ? `500ms linear 1s ${tadaAnimation}` : 'none'};
 `;
 
 const DetailContentCenter = styled.div`

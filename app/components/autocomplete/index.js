@@ -28,6 +28,7 @@ const Autocomplete = props => {
     isWithoutInput,
     isInputMode,
     isAllowUpdate,
+    isHideItemDelete,
     parentId,
     onClearFilter,
     onBlurTagTree,
@@ -44,7 +45,8 @@ const Autocomplete = props => {
       <AutocompleteItems
         items={selectedItems}
         dataType={dataType}
-        onDelete={onHandleItemDelete}/>}
+        onDelete={onHandleItemDelete}
+        isHideDelete={isHideItemDelete}/>}
       {!isWithoutItems && onClearFilter &&
       <Clear onClick={onHandleClearFilter}>
         <Icon
@@ -85,6 +87,7 @@ Autocomplete.propTypes = {
   isInputMode: PropTypes.bool,
   isFocusTagTree: PropTypes.bool,
   isAllowUpdate: PropTypes.bool,
+  isHideItemDelete: PropTypes.bool,
   selectedItems: PropTypes.object,
   parentId: PropTypes.string,
   hints: PropTypes.object,

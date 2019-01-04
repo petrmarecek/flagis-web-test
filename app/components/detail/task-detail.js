@@ -146,7 +146,9 @@ const TaskDetail = props => {
   // Conditionals
   const isAcceptedStatus = followerStatus !== 'new' && followerStatus !== 'pending' && followerStatus !== 'rejected'
   const isCollaborated = followerStatus === 'pending' || followerStatus === 'accepted'
-  const isOwnerAcceptedTask = isOwner && (followerStatus === 'accepted')
+  const isOwnerCollaborated = isOwner && isCollaborated
+  const isOwnerAccepted = isOwner && (followerStatus === 'accepted')
+  const isAssigneeAccepted = !isOwner && (followerStatus === 'accepted')
   const isCompletedMainList = isCompleted && !isArchived
   const isArchivedOrCollaborated = isArchived || !isOwner
 
@@ -162,7 +164,7 @@ const TaskDetail = props => {
       return '#c1cad0'
     }
 
-    if (isOwnerAcceptedTask) {
+    if (isOwnerAccepted) {
       return '#f6f8f8'
     }
 
@@ -300,12 +302,13 @@ const TaskDetail = props => {
                   onItemDelete={onHandleTagDelete}
                   isAllowUpdate />}
           </DetailContentTagAutocomplete>
-          {!isInboxVisible && !isOwner &&
+          {!isInboxVisible && isOwnerCollaborated &&
           <DetailContentButton allowed={!isCompleted}>
             <FollowerResponseButtons
-              acceptClicked={onHandleAccept}
+              takeBackClicked={() => onHandleFollowerDelete(assignee, 'isAssignee')}
               rejectClicked={onHandleReject}
-              isAccepted />
+              isTakeBack={isOwnerCollaborated}
+              isAccepted={isAssigneeAccepted} />
           </DetailContentButton>}
           {isOwner
             ? <DetailContentIcon onClick={onHandleRemoveEventListener} >
@@ -355,6 +358,7 @@ const TaskDetail = props => {
                     selectedItems={{ contacts: isFollowers ? followers.map(follower => follower.profile) : null }}
                     parentId={id}
                     onItemDelete={onHandleFollowerDelete}
+                    isHideItemDelete={isOwnerCollaborated}
                     isWithoutInput={isFollowers} />}
                 </DetailContentAddContactContent>
                 {!isInboxVisible && isOwner &&
@@ -582,12 +586,13 @@ export default withHandlers({
     props.onHandleTaskTagDeleted(data)
   },
   onHandleDelete: props => () => props.onHandleTaskDelete(props.task.id),
-  onHandleFollowerDelete: props => user => {
+  onHandleFollowerDelete: props => (user, isAssignee) => {
     const { id, followers } = props.task
     const assignee = getAssigneeOfTask(followers)
+
     const data = {
       taskId: id,
-      userId: user.id,
+      userId: isAssignee ? user.profile.id : user.id,
       followerId: assignee.id,
     }
 
