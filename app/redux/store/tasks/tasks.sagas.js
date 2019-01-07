@@ -3,11 +3,7 @@ import { delay } from 'redux-saga'
 import { push } from 'react-router-redux'
 import { all, take, call, put, select, fork, race } from 'redux-saga/effects'
 import _ from 'lodash'
-import {
-  createLoadActions,
-  fetch,
-  mainUndo,
-} from 'redux/store/common.sagas'
+import { createLoadActions, fetch, mainUndo } from 'redux/store/common.sagas'
 import * as appStateActions from 'redux/store/app-state/app-state.actions'
 import * as taskActions from 'redux/store/tasks/tasks.actions'
 import * as tagsActions from 'redux/store/tags/tags.actions'
@@ -39,23 +35,38 @@ function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
   // Prepare data
   task.tags = task.tags[userId]
   task.userId = userId
+  const { id, createdById, followers, isTrashed } = task
   const storeItems = yield select(state => taskSelectors.getTasksItems(state))
-  const storeArchivedItems = yield select(state => taskSelectors.getArchivedTasksItems(state))
-  const storeInboxItems = yield select(state => taskSelectors.getInboxTasksItems(state))
-  const storeSelectionItem = yield select(state => taskSelectors.getSelectionTasks(state).first())
-  const isDetailVisible = yield select(state => appStateSelectors.getDetail(state))
-  const { id, isArchived, isTrashed } = task
+  const storeArchivedItems = yield select(state =>
+    taskSelectors.getArchivedTasksItems(state)
+  )
+  const storeInboxItems = yield select(state =>
+    taskSelectors.getInboxTasksItems(state)
+  )
+  const storeSelectionItem = yield select(state =>
+    taskSelectors.getSelectionTasks(state).first()
+  )
+  const isDetailVisible = yield select(state =>
+    appStateSelectors.getDetail(state)
+  )
 
   // Collaborated task
   if (isCollaboratedTask) {
     // Set isInbox property in task entities
-    const { followers } = task
     const assignee = getAssigneeOfTask(Object.values(followers))
     const { status } = assignee
     task.isInbox = status === 'pending'
 
+    // rewrite isArchived of task for assignee
+    if (createdById !== userId && assignee !== null) {
+      _.set(task, 'isArchived', assignee.isArchived)
+    }
+
     // Remove follower from task (pending, accepted)
-    if ((status === 'pending'|| status === 'accepted') && changeType === 'removed') {
+    if (
+      (status === 'pending' || status === 'accepted') &&
+      changeType === 'removed'
+    ) {
       // Close task detail
       if (isDetailVisible.task && storeSelectionItem === id) {
         yield put(appStateActions.deselectDetail('task'))
@@ -81,16 +92,20 @@ function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
         type: TASKS.FIREBASE_REMOVE_TASK_FOLLOWER,
         payload: {
           taskId: id,
-          followerId: assignee.id
-        }
+          followerId: assignee.id,
+        },
       })
 
       return
     }
 
     // Move task from inbox to tasks list (accepted)
-    if (assignee.status === 'accepted' && !isTrashed && !storeItems.includes(id) && storeInboxItems.includes(id)) {
-
+    if (
+      assignee.status === 'accepted' &&
+      !isTrashed &&
+      !storeItems.includes(id) &&
+      storeInboxItems.includes(id)
+    ) {
       // Update task in search
       search.tasks.updateItem(task)
     }
@@ -104,8 +119,14 @@ function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
     }
   }
 
+  const { isArchived } = task
   // Return task from archive
-  if (!isArchived && !isTrashed && !storeItems.includes(id) && storeArchivedItems.includes(id)) {
+  if (
+    !isArchived &&
+    !isTrashed &&
+    !storeItems.includes(id) &&
+    storeArchivedItems.includes(id)
+  ) {
     // Show notification
     toast.success(successMessages.tasks.cancelArchive, {
       position: toast.POSITION.BOTTOM_RIGHT,
@@ -122,7 +143,12 @@ function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
   }
 
   // Move task to archive
-  if (isArchived && !isTrashed && !storeArchivedItems.includes(id) && storeItems.includes(id)) {
+  if (
+    isArchived &&
+    !isTrashed &&
+    !storeArchivedItems.includes(id) &&
+    storeItems.includes(id)
+  ) {
     // Show notification
     toast.success(successMessages.tasks.archive, {
       position: toast.POSITION.BOTTOM_RIGHT,
@@ -146,7 +172,6 @@ function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
 
   // Delete task
   if (isTrashed) {
-
     // Close task detail
     if (isDetailVisible.task && storeSelectionItem === id) {
       yield put(appStateActions.deselectDetail('task'))
@@ -168,17 +193,26 @@ function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
 
   // Save changes to store
   const normalizeData = normalize(task, schema.task)
-  yield put({type: FULFILLED, payload: normalizeData})
+  yield put({ type: FULFILLED, payload: normalizeData })
 
   // Update tag relations in store
-  const entitiesTasks = yield select(state => entitiesSelectors.getActiveEntitiesTasks(state))
+  const entitiesTasks = yield select(state =>
+    entitiesSelectors.getActiveEntitiesTasks(state)
+  )
   yield put({ type: TASKS.FIREBASE_TAGS_RELATIONS, payload: entitiesTasks })
 }
 
 function* syncTasksChannel(channel, userId, isCollaboratedTask) {
-  while (true) { // eslint-disable-line
+  while (true) {
+    // eslint-disable-line
     const snapshot = yield take(channel)
-    yield all(snapshot.docChanges().map(change => call(saveChangeFromFirestore, change, userId, isCollaboratedTask)))
+    yield all(
+      snapshot
+        .docChanges()
+        .map(change =>
+          call(saveChangeFromFirestore, change, userId, isCollaboratedTask)
+        )
+    )
   }
 }
 
@@ -195,7 +229,9 @@ export function* initInboxTasksData(initTime) {
 }
 
 export function* fetchTasks() {
-  const isArchivedTasks = yield select(state => appStateSelectors.getArchivedTasksVisibility(state))
+  const isArchivedTasks = yield select(state =>
+    appStateSelectors.getArchivedTasksVisibility(state)
+  )
   const userId = yield select(state => authSelectors.getUserId(state))
 
   if (isArchivedTasks) {
@@ -204,13 +240,15 @@ export function* fetchTasks() {
 
   const result = yield* fetch(TASKS.FETCH, {
     method: api.tasks.search,
-    args: [{
-      isArchived: false,
-      isTrashed: false,
-      tags: [],
-    }],
+    args: [
+      {
+        isArchived: false,
+        isTrashed: false,
+        tags: [],
+      },
+    ],
     schema: schema.tasks,
-    userId
+    userId,
   })
 
   // Initialize search service
@@ -218,13 +256,17 @@ export function* fetchTasks() {
   search.tasks.addItems(result)
 
   // Reset full text search
-  const text = yield select(state => taskMenuSelectors.getTasksMenuFiltersItem(state, 'searchText'))
+  const text = yield select(state =>
+    taskMenuSelectors.getTasksMenuFiltersItem(state, 'searchText')
+  )
   yield put(taskMenuActions.changeSearchText(''))
   yield put(taskMenuActions.changeSearchText(text))
 }
 
 export function* fetchArchivedTasks() {
-  const isArchivedTasks = yield select(state => appStateSelectors.getArchivedTasksVisibility(state))
+  const isArchivedTasks = yield select(state =>
+    appStateSelectors.getArchivedTasksVisibility(state)
+  )
   const userId = yield select(state => authSelectors.getUserId(state))
 
   if (!isArchivedTasks) {
@@ -233,14 +275,16 @@ export function* fetchArchivedTasks() {
 
   const result = yield* fetch(TASKS.FETCH_ARCHIVED, {
     method: api.tasks.search,
-    args: [{
-      isArchived: true,
-      isCompleted: true,
-      isTrashed: false,
-      tags: [],
-    }],
+    args: [
+      {
+        isArchived: true,
+        isCompleted: true,
+        isTrashed: false,
+        tags: [],
+      },
+    ],
     schema: schema.tasks,
-    userId
+    userId,
   })
 
   // Initialize search service
@@ -248,17 +292,18 @@ export function* fetchArchivedTasks() {
   search.tasks.addItems(result)
 
   // Reset full text search
-  const text = yield select(state => taskMenuSelectors.getTasksMenuFiltersItem(state, 'searchText'))
+  const text = yield select(state =>
+    taskMenuSelectors.getTasksMenuFiltersItem(state, 'searchText')
+  )
   yield put(taskMenuActions.changeSearchText(''))
   yield put(taskMenuActions.changeSearchText(text))
 }
 
 export function* fetchInboxTasks() {
-
   yield* fetch(TASKS.FETCH_INBOX, {
     method: api.tasks.inbox,
     args: [],
-    schema: schema.tasks
+    schema: schema.tasks,
   })
 }
 
@@ -281,13 +326,12 @@ export function* createTask(action) {
 
     yield put(taskActions.addTask(task))
 
-    if(task.tags.length !== 0) {
+    if (task.tags.length !== 0) {
       for (const tag of task.tags) {
         yield put(tagsActions.addTagsRelations(tag.id, task.id))
       }
     }
-
-  } catch(err) {
+  } catch (err) {
     console.error('Cannot create task.', err)
     // TODO: handle error
   }
@@ -306,7 +350,6 @@ export function* toggleImportant(action) {
     // call server
     const update = { isImportant }
     yield updateTask(task.id, update)
-
   } catch (err) {
     // log error
     console.error('Error occured during task update', err)
@@ -327,8 +370,10 @@ export function* setArchiveTasks(action) {
       yield* updateTask(archiveTaskId, update)
 
       // delete relations for archived task and tags
-      const tagList = yield select(state => taskSelectors.getTaskTags(state, archiveTaskId))
-      if(tagList.length !== 0) {
+      const tagList = yield select(state =>
+        taskSelectors.getTaskTags(state, archiveTaskId)
+      )
+      if (tagList.length !== 0) {
         for (const tag of tagList) {
           yield put(tagsActions.deleteTagsRelations(tag, archiveTaskId))
         }
@@ -336,7 +381,7 @@ export function* setArchiveTasks(action) {
     }
 
     yield put(appStateActions.deselectLoader('global'))
-  } catch(err) {
+  } catch (err) {
     // TODO: revert to original state
   }
 }
@@ -355,15 +400,16 @@ export function* cancelArchiveTasks(action) {
       yield* updateTask(taskId, update)
 
       // add relations for archived task and tags
-      const tagList = yield select(state => taskSelectors.getTaskTags(state, taskId))
-      if(tagList.length !== 0) {
+      const tagList = yield select(state =>
+        taskSelectors.getTaskTags(state, taskId)
+      )
+      if (tagList.length !== 0) {
         for (const tag of tagList) {
           yield put(tagsActions.addTagsRelations(tag, taskId))
         }
       }
     }
-
-  } catch(err) {
+  } catch (err) {
     // TODO: revert to original state
   }
 }
@@ -380,8 +426,7 @@ export function* setComplete(action) {
     // call server
     const update = { isCompleted: true }
     yield* updateTask(taskId, update)
-
-  } catch(err) {
+  } catch (err) {
     // TODO: revert to original state
   }
 }
@@ -398,8 +443,7 @@ export function* setIncomplete(action) {
     // update isCompleted and put task to top
     const update = { isCompleted: false }
     yield* updateTask(taskId, update)
-
-  } catch(err) {
+  } catch (err) {
     console.error(err)
     // TODO: revert to original state
   }
@@ -417,15 +461,13 @@ export function* setOrder(action) {
 
     // update task in the search index
     search.tasks.updateItem(updatedTask)
-
-  } catch(err) {
+  } catch (err) {
     // TODO: revert
     // We need to both revert Task.order field and position within loaded list
   }
 }
 
 export function* setOrderTimeLine(action) {
-
   try {
     // call server
     const taskId = action.payload.task.id
@@ -437,8 +479,7 @@ export function* setOrderTimeLine(action) {
 
     // update task in the search index
     search.tasks.updateItem(updatedTask)
-
-  } catch(err) {
+  } catch (err) {
     // TODO: revert
     // We need to both revert Task.order field and position within loaded list
   }
@@ -451,7 +492,11 @@ export function* setDate(action) {
 }
 
 export function* setDescription(action) {
-  yield* setTaskField(action.payload.task, 'description', action.payload.description)
+  yield* setTaskField(
+    action.payload.task,
+    'description',
+    action.payload.description
+  )
 }
 
 export function* setSubject(action) {
@@ -471,8 +516,12 @@ export function* selectTask(action) {
 
     yield put(appStateActions.visibleMultiSelect())
   } else {
-    const archivedTasksVisible = yield select(state => appStateSelectors.getArchivedTasksVisibility(state))
-    const inboxTasksVisible = yield select(state => appStateSelectors.getInboxTasksVisibility(state))
+    const archivedTasksVisible = yield select(state =>
+      appStateSelectors.getArchivedTasksVisibility(state)
+    )
+    const inboxTasksVisible = yield select(state =>
+      appStateSelectors.getInboxTasksVisibility(state)
+    )
 
     yield put(appStateActions.hideMultiSelect())
 
@@ -499,8 +548,12 @@ export function* selectAllTask() {
 }
 
 export function* deselectTasks() {
-  const isMultiSelectVisible = yield select(state => appStateSelectors.getMultiSelectVisibility(state))
-  const { task, archive, inbox } = yield select(state => appStateSelectors.getDetail(state))
+  const isMultiSelectVisible = yield select(state =>
+    appStateSelectors.getMultiSelectVisibility(state)
+  )
+  const { task, archive, inbox } = yield select(state =>
+    appStateSelectors.getDetail(state)
+  )
 
   if (isMultiSelectVisible) {
     yield put(appStateActions.hideMultiSelect())
@@ -526,8 +579,10 @@ export function* deleteTask(action) {
       // update task (change isTrashed: true)
       yield* updateTask(taskId, update)
 
-      const tagList = yield select(state => taskSelectors.getTaskTags(state, taskId))
-      if(tagList.length !== 0) {
+      const tagList = yield select(state =>
+        taskSelectors.getTaskTags(state, taskId)
+      )
+      if (tagList.length !== 0) {
         for (const tag of tagList) {
           yield put(tagsActions.deleteTagsRelations(tag, taskId))
         }
@@ -535,7 +590,7 @@ export function* deleteTask(action) {
 
       // delete task from the search index
       search.tasks.removeItem({ id: taskId })
-    } catch(err) {
+    } catch (err) {
       console.error(err)
     }
   }
@@ -553,14 +608,15 @@ export function* undoDeleteTask(action) {
       // update task (change isTrashed: false)
       yield* updateTask(taskId, update)
 
-      const tagList = yield select(state => taskSelectors.getTaskTags(state, taskId))
-      if(tagList.length !== 0) {
+      const tagList = yield select(state =>
+        taskSelectors.getTaskTags(state, taskId)
+      )
+      if (tagList.length !== 0) {
         for (const tag of tagList) {
           yield put(tagsActions.addTagsRelations(tag, taskId))
         }
       }
-
-    } catch(err) {
+    } catch (err) {
       console.error(err)
     }
   }
@@ -575,7 +631,9 @@ export function* removeTaskTag(action) {
     yield put(tagsActions.deleteTagsRelations(tag.id, taskId))
 
     // Find current list of tags
-    const tagList = yield select(state => taskSelectors.getTaskTags(state, taskId))
+    const tagList = yield select(state =>
+      taskSelectors.getTaskTags(state, taskId)
+    )
 
     // Remove the target tag
     const tags = tagList
@@ -585,8 +643,7 @@ export function* removeTaskTag(action) {
 
     // Update list on the server
     yield call(api.tasks.setTags, taskId, tags)
-
-  } catch(err) {
+  } catch (err) {
     console.error(err)
     // TODO: revert to original state
   }
@@ -601,7 +658,7 @@ export function* addTaskTag(action) {
 
     // Save relation on server (don't block rest of saga)
     yield fork(saveTaskTagRelation, taskId, tag)
-  } catch(err) {
+  } catch (err) {
     console.error(err)
     // TODO: revert to original state
   }
@@ -636,8 +693,7 @@ export function* addRemoveTaskTags(action) {
 
     // Update list on the server
     yield call(api.tasks.setTags, taskId, tags)
-
-  } catch(err) {
+  } catch (err) {
     console.error(err)
     // TODO: revert to original state
   }
@@ -647,8 +703,7 @@ export function* removeTaskFollower(action) {
   try {
     const { taskId, userId, followerId } = action.payload
     yield put(followerActions.deleteFollower(taskId, userId, followerId))
-
-  } catch(err) {
+  } catch (err) {
     console.error(err)
   }
 }
@@ -720,7 +775,9 @@ function* saveTaskTagRelation(taskId, tag) {
     }
 
     // Construct result list of tags
-    const tagList = yield select(state => taskSelectors.getTaskTags(state, taskId))
+    const tagList = yield select(state =>
+      taskSelectors.getTaskTags(state, taskId)
+    )
     const tagsList = tagList.includes(tag.id)
       ? tagList.delete(tagList.indexOf(tag.id))
       : tagList
@@ -735,7 +792,9 @@ function* saveTaskTagRelation(taskId, tag) {
 
     // If we added a new task --> replace instance with the server one
     if (tag.isNew) {
-      const matchedTags = resultTagList.filter(t => t.title.toLowerCase() === tag.title.toLowerCase())
+      const matchedTags = resultTagList.filter(
+        t => t.title.toLowerCase() === tag.title.toLowerCase()
+      )
       if (matchedTags.length !== 1) {
         throw new Error('Cannot find related tag.')
       }
@@ -750,7 +809,6 @@ function* saveTaskTagRelation(taskId, tag) {
 }
 
 function* setTaskField(task, fieldName, newFieldValue) {
-
   const originalFieldValue = task[fieldName]
 
   try {
@@ -760,8 +818,7 @@ function* setTaskField(task, fieldName, newFieldValue) {
     // call server
     const update = { [fieldName]: newFieldValue }
     yield* updateTask(task.id, update)
-
-  } catch(err) {
+  } catch (err) {
     // log error
     console.error('Error occured during task update', err)
 
@@ -771,7 +828,6 @@ function* setTaskField(task, fieldName, newFieldValue) {
 }
 
 function* updateTask(taskId, update) {
-
   // call server
   let updatedTask = yield call(api.tasks.update, taskId, update)
 
