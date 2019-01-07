@@ -590,33 +590,6 @@ const DetailContentContactDataContent = styled.div`
   }
 `;
 
-const DetailContentContactButton = styled.div`
-  ${transition('500ms')}
-  ${borderRadius('15px')}
-  position: relative;
-  background-color: #8c9da9;
-  margin: 20px 0 0 0;
-  border: none;
-  height: 27px;
-  width: 125px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  :hover {
-    ${transition('500ms')}
-    background-color: #293034;
-  }
-
-`;
-
-const DetailContentContactButtonLabel = styled.span`
-  color: #fff;
-  font-size: 16px;
-  margin: 0 0 1px 0;
-`;
-
 export {
   DetailStyle,
   DetailInner,
@@ -672,8 +645,6 @@ export {
   DetailContentContactData,
   DetailContentContactDataLabel,
   DetailContentContactDataContent,
-  DetailContentContactButton,
-  DetailContentContactButtonLabel,
 
   MarkdownEditableContainer,
 }

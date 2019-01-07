@@ -4,7 +4,7 @@ import { withHandlers } from 'recompose'
 
 import DetailMenu from './detail-menu'
 import Icon from '../icons/icon'
-import {ICONS} from '../icons/icon-constants'
+import { ICONS } from '../icons/icon-constants'
 
 import {
   DetailInner,
@@ -21,12 +21,9 @@ import {
   DetailContentContactData,
   DetailContentContactDataLabel,
   DetailContentContactDataContent,
-  DetailContentContactButton,
-  DetailContentContactButtonLabel,
 } from './styles'
 
 const ContactDetail = props => {
-
   const {
     contact,
     onHandleRemoveEventListener,
@@ -71,7 +68,8 @@ const ContactDetail = props => {
       <DetailMenu
         back={onHandleToggleList}
         previous={onHandlePrevious}
-        next={onHandleNext} />
+        next={onHandleNext}
+      />
       <DetailInner>
         <DetailContentTop>
           <DetailContentSubject>
@@ -81,15 +79,17 @@ const ContactDetail = props => {
                   icon={icon.icon}
                   width={icon.width}
                   height={icon.height}
-                  color={icon.color} />
+                  color={icon.color}
+                />
               </DetailSubjectIconContact>
               <span onClick={onHandleRemoveEventListener}>
                 <DetailSubjectContactContentEditable
                   html={nickname}
-                  placeholder='Add username'
+                  placeholder="Add username"
                   enforcePlainText
                   onChange={onHandleNicknameUpdate}
-                  allowed />
+                  allowed
+                />
               </span>
             </DetailSubject>
           </DetailContentSubject>
@@ -99,33 +99,43 @@ const ContactDetail = props => {
               width={23}
               height={26}
               scale={1}
-              color={["#ff8181", "#ff8181", "#ff8181", "#ff8181"]}
-              onClick={onHandleDelete} />
+              color={['#ff8181', '#ff8181', '#ff8181', '#ff8181']}
+              onClick={onHandleDelete}
+            />
           </DetailContentIcon>
         </DetailContentTop>
 
         <DetailContentCenter allowed>
           <DetailContentProperties>
             <DetailContentContactData>
-              <DetailContentContactDataLabel>E-Mail</DetailContentContactDataLabel>
-              <DetailContentContactDataContent>{contact.email}</DetailContentContactDataContent>
+              <DetailContentContactDataLabel>
+                E-Mail
+              </DetailContentContactDataLabel>
+              <DetailContentContactDataContent>
+                {contact.email}
+              </DetailContentContactDataContent>
             </DetailContentContactData>
-            {!contact.isUser &&
-            <DetailContentContactData>
-              <DetailContentContactDataLabel>Non-existing user</DetailContentContactDataLabel>
-              {!contact.isInvited &&
-              <DetailContentContactDataContent onClick={onHandleSendInvitation} button>
-                <Icon
-                  icon={ICONS.SEND_INVITE}
-                  width={17}
-                  height={16}
-                  color={['#8C9DA9']} />
-                <span>Invite</span>
-              </DetailContentContactDataContent>}
-            </DetailContentContactData>}
-            <DetailContentContactButton>
-              <DetailContentContactButtonLabel>Create task</DetailContentContactButtonLabel>
-            </DetailContentContactButton>
+            {!contact.isUser && (
+              <DetailContentContactData>
+                <DetailContentContactDataLabel>
+                  Non-existing user
+                </DetailContentContactDataLabel>
+                {!contact.isInvited && (
+                  <DetailContentContactDataContent
+                    onClick={onHandleSendInvitation}
+                    button
+                  >
+                    <Icon
+                      icon={ICONS.SEND_INVITE}
+                      width={17}
+                      height={16}
+                      color={['#8C9DA9']}
+                    />
+                    <span>Invite</span>
+                  </DetailContentContactDataContent>
+                )}
+              </DetailContentContactData>
+            )}
           </DetailContentProperties>
 
           <DetailContentDescriptionContact>
@@ -133,8 +143,9 @@ const ContactDetail = props => {
               <MarkdownEditableContainer
                 text={description}
                 scrollStyle={scrollStyle}
-                placeholder='Add description'
-                onUpdate={onHandleDescriptionUpdate} />
+                placeholder="Add description"
+                onUpdate={onHandleDescriptionUpdate}
+              />
             </span>
           </DetailContentDescriptionContact>
         </DetailContentCenter>
@@ -179,5 +190,6 @@ export default withHandlers({
     const data = { contact: props.contact, description }
     props.onHandleContactDescriptionUpdate(data)
   },
-  onHandleSendInvitation: props => () => props.onHandleContactSendInvitation(props.contact),
+  onHandleSendInvitation: props => () =>
+    props.onHandleContactSendInvitation(props.contact),
 })(ContactDetail)
