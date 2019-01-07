@@ -205,7 +205,6 @@ const TaskListItem = props => {
     userId,
     task,
     isSelected,
-    timeLine,
     isDragging,
     isMounted,
     noTaskFound,
