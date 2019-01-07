@@ -37,7 +37,7 @@ import {
 
 // Drag and Drop
 const ItemTypes = {
-  TASK: 'task'
+  TASK: 'task',
 }
 
 const taskSource = {
@@ -55,12 +55,21 @@ const taskSource = {
   },
 
   canDrag(props) {
-    const { alphabet, important, incomplete } = props.sort
-    return !alphabet
-      && !important
-      && !incomplete
-      && props.listType !== 'archived'
-      && props.listType !== 'inbox'
+    const { task, timeLine, sort } = props
+    const { followers, isCompleted } = task
+    const { alphabet, important, incomplete } = sort
+    const assignee = getAssigneeOfTask(followers)
+    const isFollowers = assignee !== null
+    const followerStatus = isFollowers ? assignee.status : 'new'
+    const isCollaborated =
+      followerStatus === 'pending' || followerStatus === 'accepted'
+    const isSort = alphabet || important || incomplete
+    const isMainList =
+      props.listType !== 'archived' && props.listType !== 'inbox'
+    const isLock = isCollaborated || isCompleted
+    const isLockForTimeline = timeLine && isLock
+
+    return !isSort && isMainList && !isLockForTimeline
   },
 }
 
@@ -88,7 +97,7 @@ const taskTarget = {
       }
 
       const dayOfWeek = now.isoWeekday()
-      const dayToNewWeek = (7 - dayOfWeek) + 1
+      const dayToNewWeek = 8 - dayOfWeek
       const add = date + dayToNewWeek
       if (add > dayOfMonth) {
         return false
@@ -101,7 +110,6 @@ const taskTarget = {
   },
 
   hover(props, monitor, component) {
-
     const canDrop = monitor.canDrop()
     if (!canDrop) {
       return
@@ -112,7 +120,7 @@ const taskTarget = {
     const hoverIndex = props.index
 
     // Drag index didn't change, do nothing
-    if ((dragSource.section === props.section) && (dragIndex === hoverIndex)) {
+    if (dragSource.section === props.section && dragIndex === hoverIndex) {
       return
     }
 
@@ -151,7 +159,7 @@ const taskTarget = {
 
     props.moveTask(move)
     // Set index and section
-    if ((dragSource.section !== props.section) && (hoverClientY > hoverMiddleY)) {
+    if (dragSource.section !== props.section && hoverClientY > hoverMiddleY) {
       // Dragging upwards to other section
       dragSource.index = hoverIndex + 1
     } else {
@@ -174,7 +182,7 @@ const taskTarget = {
     }
 
     props.dropTask(drop)
-  }
+  },
 }
 
 function collectDragSource(connect, monitor) {
@@ -193,11 +201,11 @@ function collectDropTarget(connect, monitor) {
 
 // TaskListItem
 const TaskListItem = props => {
-
   const {
     userId,
     task,
     isSelected,
+    timeLine,
     isDragging,
     isMounted,
     noTaskFound,
@@ -229,7 +237,7 @@ const TaskListItem = props => {
   const assignee = getAssigneeOfTask(task.followers)
   const isFollowers = assignee !== null
   const followerStatus = isFollowers ? assignee.status : 'new'
-  const isOwnerAcceptedTask = isOwner && (followerStatus === 'accepted')
+  const isOwnerAccepted = isOwner && followerStatus === 'accepted'
 
   // Date from dueDate
   const now = moment()
@@ -258,7 +266,7 @@ const TaskListItem = props => {
       return '#c1cad0'
     }
 
-    if (isOwnerAcceptedTask) {
+    if (isOwnerAccepted) {
       return '#f6f8f8'
     }
 
@@ -279,89 +287,111 @@ const TaskListItem = props => {
   }
 
   // Render component
-  return (
-    connectDragSource(
-      connectDropTarget(
-        <li>
-          {noTaskFound
-          ? <EmptyList>No tasks found</EmptyList>
-          : <TaskItem
-              key={task.id}
-              tabIndex="-1"
-              data-item-id={task.id}
-              onClick={onHandleClicked}
-              active={task.active}
-              selected={isSelected}
-              backgroundColor={backgroundColor}
-              completed={isCompletedMainList}
-              dragging={isDragging}
-              isMounted={isMounted}>
-              {!isArchivedList && !isInboxList &&
+  return connectDragSource(
+    connectDropTarget(
+      <li>
+        {noTaskFound ? (
+          <EmptyList>No tasks found</EmptyList>
+        ) : (
+          <TaskItem
+            key={task.id}
+            tabIndex="-1"
+            data-item-id={task.id}
+            onClick={onHandleClicked}
+            active={task.active}
+            selected={isSelected}
+            backgroundColor={backgroundColor}
+            completed={isCompletedMainList}
+            dragging={isDragging}
+            isMounted={isMounted}
+          >
+            {!isArchivedList && !isInboxList && (
               <Completed onClick={onHandleCompleteClicked}>
                 <Icon
                   icon={ICONS.TASK_CHECKED}
                   color={task.isCompleted ? ['#c2fee5'] : ['#D7E3EC']}
                   width={22}
-                  height={21} />
-              </Completed>}
-              {task.isCompleted && !isInboxList &&
+                  height={21}
+                />
+              </Completed>
+            )}
+            {task.isCompleted && !isInboxList && (
               <Archived
                 archived={isArchivedList}
-                onClick={onHandleArchiveClicked} >
+                onClick={onHandleArchiveClicked}
+              >
                 <Icon
                   icon={isArchivedList ? ICONS.NON_ARCHIVE : ICONS.ARCHIVE}
                   color={isArchivedList ? ['#282f34'] : ['#8c9ea9']}
                   width={24}
                   height={27}
                   scale={0.926}
-                  animation={!task.isCompleted ? null : {
-                    action: 'transition.expandIn',
-                    duration: 1000,
-                  }} />
-              </Archived>}
-              {isInboxList &&
+                  animation={
+                    !task.isCompleted
+                      ? null
+                      : {
+                          action: 'transition.expandIn',
+                          duration: 1000,
+                        }
+                  }
+                />
+              </Archived>
+            )}
+            {isInboxList && (
               <FollowerResponse>
                 <FollowerResponseButtons
                   acceptClicked={onHandleAcceptClicked}
-                  rejectClicked={onHandleRejectClicked} />
-              </FollowerResponse>}
-              <Content
-                marginLeft={contentMarginLeft}
-                followers={isFollowers}>
-                <SubjectTags>
-                  <Subject
-                    archived={isArchivedList}
-                    completed={isCompletedMainList}
-                    important={task.isImportant}
-                    description={isDescription}>
-                    <Linkify properties={{target: '_blank'}}>
-                      {task.subject}
-                    </Linkify>
-                  </Subject>
-                  <Tags>
-                    <TaskListTagItems
-                      tags={sortedTags}
-                      parentWidth={taskItemWidth}
-                      onTagClick={onHandleTagClicked} />
-                  </Tags>
-                </SubjectTags>
-                <DescriptionDueDate>
-                  {isDescription &&
-                  <Description completed={isCompletedMainList}>{description}</Description>}
-                  <DueDate
-                    title={fromNow}
-                    overdue={moment(dueDate) < now && !isArchivedList}
-                    completed={isCompletedMainList}
-                    description={isDescription}>{dueDateFormat}</DueDate>
-                </DescriptionDueDate>
-              </Content>
-              {isFollowers &&
+                  rejectClicked={onHandleRejectClicked}
+                />
+              </FollowerResponse>
+            )}
+            <Content marginLeft={contentMarginLeft} followers={isFollowers}>
+              <SubjectTags>
+                <Subject
+                  archived={isArchivedList}
+                  completed={isCompletedMainList}
+                  important={task.isImportant}
+                  description={isDescription}
+                >
+                  <Linkify properties={{ target: '_blank' }}>
+                    {task.subject}
+                  </Linkify>
+                </Subject>
+                <Tags>
+                  <TaskListTagItems
+                    tags={sortedTags}
+                    parentWidth={taskItemWidth}
+                    onTagClick={onHandleTagClicked}
+                  />
+                </Tags>
+              </SubjectTags>
+              <DescriptionDueDate>
+                {isDescription && (
+                  <Description completed={isCompletedMainList}>
+                    {description}
+                  </Description>
+                )}
+                <DueDate
+                  title={fromNow}
+                  overdue={moment(dueDate) < now && !isArchivedList}
+                  completed={isCompletedMainList}
+                  description={isDescription}
+                >
+                  {dueDateFormat}
+                </DueDate>
+              </DescriptionDueDate>
+            </Content>
+            {isFollowers && (
               <Followers>
-                <FollowerIcon status={followerStatus} defaultIcon={isInboxList || !isOwner} />
-              </Followers>}
-            </TaskItem>}
-        </li>
-      )
+                <FollowerIcon
+                  status={followerStatus}
+                  defaultIcon={isInboxList || !isOwner}
+                />
+              </Followers>
+            )}
+          </TaskItem>
+        )}
+      </li>
     )
   )
 }
@@ -375,6 +405,7 @@ TaskListItem.propTypes = {
   listType: PropTypes.string,
   selectedTags: PropTypes.object,
   isSelected: PropTypes.bool,
+  timeLine: PropTypes.bool,
   section: PropTypes.string,
   isDragging: PropTypes.bool,
   sort: PropTypes.object,
@@ -415,11 +446,13 @@ const checkPropsChange = (props, nextProps) => {
   const nextIsMounted = nextProps.isMounted
   const nextWindowWidth = nextProps.windowWidth
 
-  return (task.size >= 2 ? !task.equals(nextTask) : task === nextTask)
-    || (isSelected !== nextIsSelected)
-    || (isDragging !== nextIsDragging)
-    || (isMounted !== nextIsMounted)
-    || (windowWidth !== nextWindowWidth)
+  return (
+    (task.size >= 2 ? !task.equals(nextTask) : task === nextTask) ||
+    isSelected !== nextIsSelected ||
+    isDragging !== nextIsDragging ||
+    isMounted !== nextIsMounted ||
+    windowWidth !== nextWindowWidth
+  )
 }
 
 export default DragSource(ItemTypes.TASK, taskSource, collectDragSource)(
