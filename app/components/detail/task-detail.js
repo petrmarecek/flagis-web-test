@@ -60,7 +60,6 @@ import {
 } from './styles'
 
 const TaskDetail = props => {
-
   const {
     userId,
     task,
@@ -98,7 +97,7 @@ const TaskDetail = props => {
 
   // Data of current task
   const assignee = getAssigneeOfTask(task.followers)
-  const getBindingData = ({
+  const getBindingData = {
     id: task.id,
     subject: task.subject,
     createdBy: task.createdBy,
@@ -116,7 +115,7 @@ const TaskDetail = props => {
     isFollowers: assignee !== null,
     isOwner: task.createdById === userId,
     isArchivedOrInbox: task.isArchived || isInboxVisible,
-  })
+  }
 
   const {
     id,
@@ -144,11 +143,15 @@ const TaskDetail = props => {
     : infoMessages.taskDetail.acceptedRules
 
   // Conditionals
-  const isAcceptedStatus = followerStatus !== 'new' && followerStatus !== 'pending' && followerStatus !== 'rejected'
-  const isCollaborated = followerStatus === 'pending' || followerStatus === 'accepted'
+  const isAcceptedStatus =
+    followerStatus !== 'new' &&
+    followerStatus !== 'pending' &&
+    followerStatus !== 'rejected'
+  const isCollaborated =
+    followerStatus === 'pending' || followerStatus === 'accepted'
   const isOwnerCollaborated = isOwner && isCollaborated
-  const isOwnerAccepted = isOwner && (followerStatus === 'accepted')
-  const isAssigneeAccepted = !isOwner && (followerStatus === 'accepted')
+  const isOwnerAccepted = isOwner && followerStatus === 'accepted'
+  const isAssigneeAccepted = !isOwner && followerStatus === 'accepted'
   const isCompletedMainList = isCompleted && !isArchived
   const isArchivedOrCollaborated = isArchived || !isOwner
 
@@ -205,73 +208,94 @@ const TaskDetail = props => {
       <DetailMenu
         back={onHandleToggleList}
         previous={onHandlePrevious}
-        next={onHandleNext} />
+        next={onHandleNext}
+      />
       <DetailInner>
         <DetailContentTop
           animation={animation}
           completed={isCompletedMainList}
-          backgroundColor={backgroundColor}>
+          backgroundColor={backgroundColor}
+        >
           <DetailContentSubject taskDetail>
             <DetailSubject>
-              {isInboxVisible &&
-              <DetailSubjectTaskFollowerResponse>
-                <FollowerResponseButtons
-                  acceptClicked={onHandleAccept}
-                  rejectClicked={onHandleReject} />
-              </DetailSubjectTaskFollowerResponse>}
-              {!isInboxVisible && !isArchived && isFollowers && !isAcceptedStatus &&
-              <FollowerStatus
-                status={followerStatus}
-                animation={animation}
-                onSend={onHandleSend}/>}
-              {!isArchived && isAcceptedStatus &&
-              <DetailSubjectTaskCompleted
-                compelted={isCompleted}
-                onClick={onHandleComplete} >
-                <Icon
-                  icon={ICONS.TASK_CHECKED}
-                  color={isCompleted ? ['#c2fee5'] : ['#D7E3EC']}
-                  width={22}
-                  height={21} />
-              </DetailSubjectTaskCompleted>}
-              {isCompleted && animation && !isArchived && isAcceptedStatus &&
-              <DetailSubjectTaskArchived
-                archived={isArchived}
-                onClick={onHandleArchive}>
-                <Icon
-                  icon={ICONS.ARCHIVE}
-                  color={['#8c9ea9']}
-                  width={24}
-                  height={25}
-                  scale={0.926}
-                  animation={{
-                    action: 'transition.expandIn',
-                    duration: 1000,
-                }} />
-              </DetailSubjectTaskArchived>}
-              {isCompleted && !animation && !isArchived && isAcceptedStatus &&
-              <DetailSubjectTaskArchived
-                archived={isArchived}
-                onClick={onHandleArchive}>
-                <Icon
-                  icon={ICONS.ARCHIVE}
-                  color={["#8c9ea9"]}
-                  width={24}
-                  height={25}
-                  scale={0.926} />
-              </DetailSubjectTaskArchived>}
-              {isArchived &&
-              <DetailSubjectTaskArchived
-                archived={isArchived}
-                onClick={onHandleArchive}>
-                <Icon
-                  archived
-                  icon={ICONS.NON_ARCHIVE}
-                  color={["#282f34"]}
-                  width={24}
-                  height={27}
-                  scale={0.926} />
-              </DetailSubjectTaskArchived>}
+              {isInboxVisible && (
+                <DetailSubjectTaskFollowerResponse>
+                  <FollowerResponseButtons
+                    acceptClicked={onHandleAccept}
+                    rejectClicked={onHandleReject}
+                  />
+                </DetailSubjectTaskFollowerResponse>
+              )}
+              {!isInboxVisible &&
+                !isArchived &&
+                isFollowers &&
+                !isAcceptedStatus && (
+                  <FollowerStatus
+                    status={followerStatus}
+                    animation={animation}
+                    onSend={onHandleSend}
+                  />
+                )}
+              {!isArchived && isAcceptedStatus && (
+                <DetailSubjectTaskCompleted
+                  compelted={isCompleted}
+                  onClick={onHandleComplete}
+                >
+                  <Icon
+                    icon={ICONS.TASK_CHECKED}
+                    color={isCompleted ? ['#c2fee5'] : ['#D7E3EC']}
+                    width={22}
+                    height={21}
+                  />
+                </DetailSubjectTaskCompleted>
+              )}
+              {isCompleted && animation && !isArchived && isAcceptedStatus && (
+                <DetailSubjectTaskArchived
+                  archived={isArchived}
+                  onClick={onHandleArchive}
+                >
+                  <Icon
+                    icon={ICONS.ARCHIVE}
+                    color={['#8c9ea9']}
+                    width={24}
+                    height={25}
+                    scale={0.926}
+                    animation={{
+                      action: 'transition.expandIn',
+                      duration: 1000,
+                    }}
+                  />
+                </DetailSubjectTaskArchived>
+              )}
+              {isCompleted && !animation && !isArchived && isAcceptedStatus && (
+                <DetailSubjectTaskArchived
+                  archived={isArchived}
+                  onClick={onHandleArchive}
+                >
+                  <Icon
+                    icon={ICONS.ARCHIVE}
+                    color={['#8c9ea9']}
+                    width={24}
+                    height={25}
+                    scale={0.926}
+                  />
+                </DetailSubjectTaskArchived>
+              )}
+              {isArchived && (
+                <DetailSubjectTaskArchived
+                  archived={isArchived}
+                  onClick={onHandleArchive}
+                >
+                  <Icon
+                    archived
+                    icon={ICONS.NON_ARCHIVE}
+                    color={['#282f34']}
+                    width={24}
+                    height={27}
+                    scale={0.926}
+                  />
+                </DetailSubjectTaskArchived>
+              )}
               <span onClick={onHandleRemoveEventListener}>
                 <DetailSubjectTaskContentEditable
                   html={subject}
@@ -282,63 +306,73 @@ const TaskDetail = props => {
                   archived={isArchived}
                   marginLeft={subjectMarginLeft}
                   animation={animation}
-                  allowed={!isCompleted && !isInboxVisible && !isCollaborated} />
+                  allowed={!isCompleted && !isInboxVisible && !isCollaborated}
+                />
               </span>
             </DetailSubject>
           </DetailContentSubject>
           <DetailContentTagAutocomplete
             onClick={onHandleRemoveEventListener}
-            allowed={!isCompleted && !isArchivedOrInbox}>
-            {isArchivedOrInbox
-              ? <DetailContentTagAutocompleteTags>
-                  <TagItems tags={tags}/>
-                </DetailContentTagAutocompleteTags>
-              : <Autocomplete
-                  dataType="tags"
-                  location="taskDetailTags"
-                  placeholder="Add tags"
-                  selectedItems={{ tags: isTags === 0 ? null : tags }}
-                  parentId={id}
-                  onItemDelete={onHandleTagDelete}
-                  isAllowUpdate />}
+            allowed={!isCompleted && !isArchivedOrInbox}
+          >
+            {isArchivedOrInbox ? (
+              <DetailContentTagAutocompleteTags>
+                <TagItems tags={tags} />
+              </DetailContentTagAutocompleteTags>
+            ) : (
+              <Autocomplete
+                dataType="tags"
+                location="taskDetailTags"
+                placeholder="Add tags"
+                selectedItems={{ tags: isTags === 0 ? null : tags }}
+                parentId={id}
+                onItemDelete={onHandleTagDelete}
+                isAllowUpdate
+              />
+            )}
           </DetailContentTagAutocomplete>
-          {!isInboxVisible && isOwnerCollaborated &&
-          <DetailContentButton allowed={!isCompleted}>
-            <FollowerResponseButtons
-              takeBackClicked={() => onHandleFollowerDelete(assignee, 'isAssignee')}
-              rejectClicked={onHandleReject}
-              isTakeBack={isOwnerCollaborated}
-              isAccepted={isAssigneeAccepted} />
-          </DetailContentButton>}
-          {isOwner
-            ? <DetailContentIcon onClick={onHandleRemoveEventListener} >
-                <Icon
-                  icon={ICONS.TRASH}
-                  width={23}
-                  height={26}
-                  scale={1}
-                  color={["#ff8181"]}
-                  onClick={onHandleDelete}/>
-              </DetailContentIcon>
-            : <DetailContentIcon contactIcon>
-                <FollowerIcon defaultIcon/>
-              </DetailContentIcon>}
-          {isCollaborated && !isArchived && !isCompleted &&
-          <DetailContentIcon
-            title={ruleMessage}
-            animation >
-            <Icon
-              icon={ICONS.LOCK}
-              width={26}
-              height={26}
-              scale={0.68}
-              color={['#8C9DA9']}
-              title={ruleMessage} />
-          </DetailContentIcon>}
+          {!isArchived && !isInboxVisible && isCollaborated && (
+            <DetailContentButton allowed={!isCompleted}>
+              <FollowerResponseButtons
+                takeBackClicked={() =>
+                  onHandleFollowerDelete(assignee, 'isAssignee')
+                }
+                rejectClicked={onHandleReject}
+                isTakeBack={isOwnerCollaborated}
+                isAccepted={isAssigneeAccepted}
+              />
+            </DetailContentButton>
+          )}
+          {isOwner ? (
+            <DetailContentIcon onClick={onHandleRemoveEventListener}>
+              <Icon
+                icon={ICONS.TRASH}
+                width={23}
+                height={26}
+                scale={1}
+                color={['#ff8181']}
+                onClick={onHandleDelete}
+              />
+            </DetailContentIcon>
+          ) : (
+            <DetailContentIcon contactIcon>
+              <FollowerIcon defaultIcon />
+            </DetailContentIcon>
+          )}
+          {isCollaborated && !isArchived && !isCompleted && (
+            <DetailContentIcon title={ruleMessage} animation>
+              <Icon
+                icon={ICONS.LOCK}
+                width={26}
+                height={26}
+                scale={0.68}
+                color={['#8C9DA9']}
+                title={ruleMessage}
+              />
+            </DetailContentIcon>
+          )}
         </DetailContentTop>
-        <DetailContentCenter
-          allowed={!isCompleted}
-          animation={animation}>
+        <DetailContentCenter allowed={!isCompleted} animation={animation}>
           <DetailContentProperties>
             <DetailContentOptions allowed={!isCompleted && isOwner}>
               <DetailContentAddContact onClick={onHandleRemoveEventListener}>
@@ -346,78 +380,88 @@ const TaskDetail = props => {
                   {!isOwner ? 'From:' : 'To:'}
                 </DetailContentAddContactLabel>
                 <DetailContentAddContactContent isOwner={isOwner}>
-                  {isArchivedOrCollaborated &&
-                  <DetailContentAutocompleteContacts>
-                    <FollowerItems followers={!isOwner ? List().push(createdByFollower) : followers}/>
-                  </DetailContentAutocompleteContacts>}
-                  {!isArchived && isOwner &&
-                  <Autocomplete
-                    dataType="contacts"
-                    location="taskDetailContacts"
-                    placeholder="Add contact"
-                    selectedItems={{ contacts: isFollowers ? followers.map(follower => follower.profile) : null }}
-                    parentId={id}
-                    onItemDelete={onHandleFollowerDelete}
-                    isHideItemDelete={isOwnerCollaborated}
-                    isWithoutInput={isFollowers} />}
+                  {isArchivedOrCollaborated && (
+                    <DetailContentAutocompleteContacts>
+                      <FollowerItems
+                        followers={
+                          !isOwner ? List().push(createdByFollower) : followers
+                        }
+                      />
+                    </DetailContentAutocompleteContacts>
+                  )}
+                  {!isArchived && isOwner && (
+                    <Autocomplete
+                      dataType="contacts"
+                      location="taskDetailContacts"
+                      placeholder="Add contact"
+                      selectedItems={{
+                        contacts: isFollowers
+                          ? followers.map(follower => follower.profile)
+                          : null,
+                      }}
+                      parentId={id}
+                      onItemDelete={onHandleFollowerDelete}
+                      isHideItemDelete={isOwnerCollaborated}
+                      isWithoutInput={isFollowers}
+                    />
+                  )}
                 </DetailContentAddContactContent>
-                {!isInboxVisible && isOwner &&
-                <DetailContentAddContactIcon>
-                  <FollowerIcon status={followerStatus} iconScale={0.75}/>
-                </DetailContentAddContactIcon>}
+                {!isInboxVisible && isOwner && (
+                  <DetailContentAddContactIcon>
+                    <FollowerIcon status={followerStatus} iconScale={0.75} />
+                  </DetailContentAddContactIcon>
+                )}
               </DetailContentAddContact>
               <DetailContentDate allowed={!isCompleted && !isCollaborated}>
-                <DetailContentDateLabel>
-                  Start date
-                </DetailContentDateLabel>
+                <DetailContentDateLabel>Start date</DetailContentDateLabel>
                 <DetailContentDatePicker onClick={onHandleRemoveEventListener}>
                   <DatePicker
                     todayButton="Today"
-                    locale='en-gb'
+                    locale="en-gb"
                     showTimeSelect
                     timeFormat="HH:mm"
                     timeIntervals={15}
                     dateFormat={dateUtil.DEFAULT_DATE_TIME_FORMAT}
                     selected={startDate}
-                    onChange={onHandleStartDateChanged} />
+                    onChange={onHandleStartDateChanged}
+                  />
                 </DetailContentDatePicker>
               </DetailContentDate>
               <DetailContentDate allowed={!isCompleted && !isCollaborated}>
-                <DetailContentDateLabel>
-                  Due date
-                </DetailContentDateLabel>
+                <DetailContentDateLabel>Due date</DetailContentDateLabel>
                 <DetailContentDatePicker onClick={onHandleRemoveEventListener}>
                   <DatePicker
                     todayButton="Today"
-                    locale='en-gb'
+                    locale="en-gb"
                     showTimeSelect
                     timeFormat="HH:mm"
                     timeIntervals={15}
                     dateFormat={dateUtil.DEFAULT_DATE_TIME_FORMAT}
                     selected={dueDate}
-                    onChange={onHandleDueDateChanged} />
+                    onChange={onHandleDueDateChanged}
+                  />
                 </DetailContentDatePicker>
               </DetailContentDate>
               <DetailContentDate allowed={!isCompleted && !isCollaborated}>
-                <DetailContentDateLabel>
-                  Reminder date
-                </DetailContentDateLabel>
+                <DetailContentDateLabel>Reminder date</DetailContentDateLabel>
                 <DetailContentDatePicker onClick={onHandleRemoveEventListener}>
                   <DatePicker
                     todayButton="Today"
-                    locale='en-gb'
+                    locale="en-gb"
                     showTimeSelect
                     timeFormat="HH:mm"
                     timeIntervals={15}
                     dateFormat={dateUtil.DEFAULT_DATE_TIME_FORMAT}
                     selected={reminderDate}
-                    onChange={onHandleReminderDateChanged}/>
+                    onChange={onHandleReminderDateChanged}
+                  />
                 </DetailContentDatePicker>
               </DetailContentDate>
               <DetailContentImportant
                 onClick={onHandleToggleImportant}
                 allowed={!isCompleted && !isInboxVisible}
-                last>
+                last
+              >
                 <DetailContentImportantLabel important={isImportant}>
                   Important
                 </DetailContentImportantLabel>
@@ -427,52 +471,59 @@ const TaskDetail = props => {
               </DetailContentImportant>
             </DetailContentOptions>
             <DetailContentAttachments allowed={!isArchivedOrInbox}>
-              {attachments.isFetching &&
-              <Loader />}
-              {!attachments.isFetching &&
-              <AttachmentList
-                disabled={isArchivedOrInbox}
-                attachments={attachments}
-                attachmentDelete={onHandleAttachmentDelete} />}
-              {!isArchivedOrInbox && <FilePicker onFileUploaded={onHandleFileUploaded}/>}
+              {attachments.isFetching && <Loader />}
+              {!attachments.isFetching && (
+                <AttachmentList
+                  disabled={isArchivedOrInbox}
+                  attachments={attachments}
+                  attachmentDelete={onHandleAttachmentDelete}
+                />
+              )}
+              {!isArchivedOrInbox && (
+                <FilePicker onFileUploaded={onHandleFileUploaded} />
+              )}
             </DetailContentAttachments>
           </DetailContentProperties>
-          <DetailContentDescriptionTask allowed={!isCompleted && !isCollaborated}>
+          <DetailContentDescriptionTask
+            allowed={!isCompleted && !isCollaborated}
+          >
             <span onClick={onHandleRemoveEventListener}>
               <MarkdownEditableContainer
                 text={description === null ? '' : description}
-                placeholder='Add description'
+                placeholder="Add description"
                 onUpdate={onHandleDescriptionUpdate}
                 scrollStyle={{
                   height: 'calc(100vh - 232px)',
                   overflow: 'hidden',
-                }} />
+                }}
+              />
             </span>
           </DetailContentDescriptionTask>
           <DetailContentComments>
-            {comments.isFetching &&
-            <Loader />}
-            {!comments.isFetching &&
-            <CommentList comments={comments} />}
-            {!isArchived &&
-            <DetailContentCommentsAdd>
-              <DetailContentCommentsAddIcon>
-                <Icon
-                  icon={ICONS.COMMENT}
-                  color={["#8C9DA9"]}
-                  width={26}
-                  height={23} />
-              </DetailContentCommentsAddIcon>
-              <DetailContentCommentsAddInput>
-                <input
-                  id="addComment"
-                  onKeyUp={onHandleAddComment}
-                  type="text"
-                  name="addComment"
-                  placeholder="Add comment"
-                  onClick={onHandleRemoveEventListener} />
-              </DetailContentCommentsAddInput>
-            </DetailContentCommentsAdd>}
+            {comments.isFetching && <Loader />}
+            {!comments.isFetching && <CommentList comments={comments} />}
+            {!isArchived && (
+              <DetailContentCommentsAdd>
+                <DetailContentCommentsAddIcon>
+                  <Icon
+                    icon={ICONS.COMMENT}
+                    color={['#8C9DA9']}
+                    width={26}
+                    height={23}
+                  />
+                </DetailContentCommentsAddIcon>
+                <DetailContentCommentsAddInput>
+                  <input
+                    id="addComment"
+                    onKeyUp={onHandleAddComment}
+                    type="text"
+                    name="addComment"
+                    placeholder="Add comment"
+                    onClick={onHandleRemoveEventListener}
+                  />
+                </DetailContentCommentsAddInput>
+              </DetailContentCommentsAdd>
+            )}
           </DetailContentComments>
         </DetailContentCenter>
       </DetailInner>
@@ -600,14 +651,14 @@ export default compose(
       props.onHandleTaskFollowerDeleted(data)
     },
     onHandleStartDateChanged: props => date => {
-      const data = { task: props.task, date , typeDate: 'startDate' }
+      const data = { task: props.task, date, typeDate: 'startDate' }
       props.onHandleTaskDateChanged(data)
     },
     onHandleDueDateChanged: props => date => {
       if (date) {
         date.set({
-          'second': 0,
-          'millisecond': 0,
+          second: 0,
+          millisecond: 0,
         })
 
         if (date.hour() === 0 && date.minute() === 0) {
@@ -615,11 +666,11 @@ export default compose(
         }
       }
 
-      const data = { task: props.task, date , typeDate: 'dueDate' }
+      const data = { task: props.task, date, typeDate: 'dueDate' }
       props.onHandleTaskDateChanged(data)
     },
     onHandleReminderDateChanged: props => date => {
-      const data = { task: props.task, date , typeDate: 'reminderDate' }
+      const data = { task: props.task, date, typeDate: 'reminderDate' }
       props.onHandleTaskDateChanged(data)
     },
     onHandleToggleImportant: props => event => {
@@ -653,21 +704,21 @@ export default compose(
       props.onHandleTaskDescriptionUpdate(data)
     },
     onHandleAddComment: props => event => {
-      const isSubmit = (event.which === 13 || event.type === 'click')
+      const isSubmit = event.which === 13 || event.type === 'click'
       if (!isSubmit) {
         return
       }
 
       event.preventDefault()
       const value = event.target.value
-      if(value === '') {
+      if (value === '') {
         return
       }
 
       event.target.value = ''
       const comment = {
         content: { content: value },
-        taskId: props.task.id
+        taskId: props.task.id,
       }
 
       props.onHandleTaskAddComment(comment)
@@ -676,10 +727,10 @@ export default compose(
   lifecycle({
     componentDidMount() {
       const { task } = this.props
-        // Load attachments
-        this.props.onHandleFetchAttachment(task.id)
-        // Load comments
-        this.props.onHandleFetchComment(task.id)
-    }
+      // Load attachments
+      this.props.onHandleFetchAttachment(task.id)
+      // Load comments
+      this.props.onHandleFetchComment(task.id)
+    },
   })
 )(TaskDetail)
