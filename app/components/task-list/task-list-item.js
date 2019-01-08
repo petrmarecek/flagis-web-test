@@ -460,6 +460,7 @@ export default DragSource(ItemTypes.TASK, taskSource, collectDragSource)(
     withState('isMounted', 'setMounted', true),
     withHandlers({
       onHandleClicked: props => event => {
+        event.persist()
         const isInboxList = props.listType === 'inbox'
         const isMultiselect = event.ctrlKey || event.metaKey
 
