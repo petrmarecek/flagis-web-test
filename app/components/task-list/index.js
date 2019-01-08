@@ -307,10 +307,8 @@ export default compose(
         return {}
       },
       onHandleTaskSelect: (state, props) => (task, event) => {
-        console.log(event)
         const selectionInfo = getSelectionInfo(event, task, props.selectedTasks)
 
-        console.log(selectionInfo)
         props.selectTask(
           selectionInfo.newSelectedTasks,
           selectionInfo.isMultiSelection

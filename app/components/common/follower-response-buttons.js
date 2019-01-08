@@ -6,13 +6,13 @@ import styled, { keyframes } from 'styled-components'
 import { pulse } from 'react-animations'
 import { transition } from 'components/styled-components-mixins'
 
-const show = keyframes`${pulse}`;
+const show = keyframes`${pulse}`
 
 const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`;
+`
 
 const Button = styled.button`
   height: 26px;
@@ -20,18 +20,18 @@ const Button = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-right: ${props => props.rejected ? '0' : '6px'};
-  background-color: ${props => props.rejected ? '#FF6A6A' : '#44FFB1'};
+  margin-right: ${props => (props.rejected ? '0' : '6px')};
+  background-color: ${props => (props.rejected ? '#FF6A6A' : '#44FFB1')};
   font-size: 16px;
   color: #fff;
   border: none;
-  animation: ${props => props.animation ? `500ms linear ${show}` : 'none'};
+  animation: ${props => (props.animation ? `500ms linear ${show}` : 'none')};
 
   :hover {
     ${transition('500ms')}
     background-color: #293034;
   }
-`;
+`
 
 const FollowerResponseButtons = props => {
   const {
@@ -39,14 +39,16 @@ const FollowerResponseButtons = props => {
     isAccepted,
     onHandleTakeBackClicked,
     onHandleAcceptClicked,
-    onHandleRejectClicked
+    onHandleRejectClicked,
   } = props
 
   const getRender = () => {
     if (isTakeBack) {
       return (
         <Container>
-          <Button onClick={onHandleTakeBackClicked} rejected animation>TAKE BACK</Button>
+          <Button onClick={onHandleTakeBackClicked} rejected animation>
+            TAKE BACK
+          </Button>
         </Container>
       )
     }
@@ -54,7 +56,9 @@ const FollowerResponseButtons = props => {
     return (
       <Container>
         {!isAccepted && <Button onClick={onHandleAcceptClicked}>ACCEPT</Button>}
-        <Button onClick={onHandleRejectClicked} rejected>REJECT</Button>
+        <Button onClick={onHandleRejectClicked} rejected>
+          REJECT
+        </Button>
       </Container>
     )
   }
@@ -85,5 +89,5 @@ export default withHandlers({
   onHandleRejectClicked: props => event => {
     event.stopPropagation()
     props.rejectClicked()
-  }
+  },
 })(FollowerResponseButtons)
