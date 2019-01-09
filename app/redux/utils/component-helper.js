@@ -26,7 +26,14 @@ export function getSelectionInfo(event, task, selectedTasks) {
   }
 }
 
-export function setArchive(taskId, tasks, completedTasks, archivedTasks, entitiesTasks, selectedTasks) {
+export function setArchive(
+  taskId,
+  tasks,
+  completedTasks,
+  archivedTasks,
+  entitiesTasks,
+  selectedTasks
+) {
   let newArchiveTasksList = List()
   newArchiveTasksList = newArchiveTasksList.unshift(taskId)
   tasks = tasks.delete(tasks.indexOf(taskId))
@@ -39,10 +46,24 @@ export function setArchive(taskId, tasks, completedTasks, archivedTasks, entitie
       : selectedTasks.delete(taskId)
   }
 
-  return {newArchiveTasksList, tasks, completedTasks, archivedTasks, entitiesTasks, selectedTasks}
+  return {
+    newArchiveTasksList,
+    tasks,
+    completedTasks,
+    archivedTasks,
+    entitiesTasks,
+    selectedTasks,
+  }
 }
 
-export function cancelArchive(taskId, tasks, completedTasks, archivedTasks, entitiesTasks, selectedTasks) {
+export function cancelArchive(
+  taskId,
+  tasks,
+  completedTasks,
+  archivedTasks,
+  entitiesTasks,
+  selectedTasks
+) {
   let newTasks = List()
   newTasks = newTasks.unshift(taskId)
   tasks = tasks.unshift(taskId)
@@ -55,15 +76,31 @@ export function cancelArchive(taskId, tasks, completedTasks, archivedTasks, enti
       : selectedTasks.delete(taskId)
   }
 
-  return {newTasks, tasks, completedTasks, archivedTasks, entitiesTasks, selectedTasks}
+  return {
+    newTasks,
+    tasks,
+    completedTasks,
+    archivedTasks,
+    entitiesTasks,
+    selectedTasks,
+  }
 }
 
-export function archiveCompletedTasks(tasks, showCompletedTasks, completedTasks, archivedTasks, entitiesTasks, selectedTasks) {
+export function archiveCompletedTasks(
+  tasks,
+  showCompletedTasks,
+  completedTasks,
+  archivedTasks,
+  entitiesTasks,
+  selectedTasks
+) {
   const newArchiveTasksList = showCompletedTasks
 
   for (const completedTask of showCompletedTasks) {
     tasks = tasks.delete(tasks.indexOf(completedTask))
-    completedTasks = completedTasks.delete(completedTasks.indexOf(completedTask))
+    completedTasks = completedTasks.delete(
+      completedTasks.indexOf(completedTask)
+    )
     archivedTasks = archivedTasks.unshift(completedTask)
     entitiesTasks = entitiesTasks.setIn([completedTask, 'isArchived'], true)
     if (selectedTasks) {
@@ -73,13 +110,23 @@ export function archiveCompletedTasks(tasks, showCompletedTasks, completedTasks,
     }
   }
 
-  return {newArchiveTasksList, tasks, completedTasks, archivedTasks, entitiesTasks, selectedTasks}
+  return {
+    newArchiveTasksList,
+    tasks,
+    completedTasks,
+    archivedTasks,
+    entitiesTasks,
+    selectedTasks,
+  }
 }
 
 export function getTimeLineByDueDate(tasks) {
-  const now = moment().set({'hour': 0, 'minute': 0, 'second': 0, 'millisecond': 0})
+  const now = moment().set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
   const today = now.dayOfYear()
-  const tomorrow = now.clone().add(1, 'days').dayOfYear()
+  const tomorrow = now
+    .clone()
+    .add(1, 'days')
+    .dayOfYear()
   const week = now.isoWeek()
   const month = now.month()
   const year = now.year()
@@ -92,7 +139,7 @@ export function getTimeLineByDueDate(tasks) {
   const laterTasks = []
   const noDueDatesTasks = []
 
-  for(const task of tasks) {
+  for (const task of tasks) {
     const dueDate = moment(task.dueDate)
     const currentYear = dueDate.year() === year
 
@@ -136,12 +183,11 @@ export function getTimeLineByDueDate(tasks) {
     weekTasks,
     monthTasks,
     laterTasks,
-    noDueDatesTasks
+    noDueDatesTasks,
   }
 }
 
 export function getTagRelations(relations, parentRelations, tagId) {
-
   // Get relations for current tag
   const currentTagRelations = relations.get(tagId)
   if (!currentTagRelations) {
@@ -201,7 +247,7 @@ export function isObjectEmpty(obj) {
   return Object.getOwnPropertyNames(obj).length === 0
 }
 
-export const isStringEmpty = (str) => {
+export const isStringEmpty = str => {
   return str.trim().length === 0
 }
 
@@ -209,7 +255,9 @@ export const getHintDirectionRender = inputPositionTop => {
   const topHeight = constants.WINDOW_HEIGHT - inputPositionTop
   const maxHintsHeight = topHeight - constants.OFFSET
 
-  return maxHintsHeight <= constants.MIN_HINTS_HEIGHT ? 'bottomToTop' : 'topToBottom'
+  return maxHintsHeight <= constants.MIN_HINTS_HEIGHT
+    ? 'bottomToTop'
+    : 'topToBottom'
 }
 
 export function getAssigneeOfTask(followers) {
@@ -220,7 +268,11 @@ export function getAssigneeOfTask(followers) {
   let taskFollowers = followers
   let result = null
 
-  if (typeof taskFollowers === 'object' && !Array.isArray(taskFollowers) && !List.isList(taskFollowers)) {
+  if (
+    typeof taskFollowers === 'object' &&
+    !Array.isArray(taskFollowers) &&
+    !List.isList(taskFollowers)
+  ) {
     if (isObjectEmpty(taskFollowers)) {
       return null
     }
@@ -228,7 +280,9 @@ export function getAssigneeOfTask(followers) {
     taskFollowers = Object.values(taskFollowers)
   }
 
-  taskFollowers = Array.isArray(taskFollowers) ? taskFollowers : taskFollowers.toArray()
+  taskFollowers = Array.isArray(taskFollowers)
+    ? taskFollowers
+    : taskFollowers.toArray()
   if (taskFollowers.length === 0) {
     return null
   }
@@ -264,7 +318,7 @@ export const compareContactByEmail = (contactA, contactB) => {
 }
 
 export const getSortedTags = (tags, selectedTags) => {
-
+  tags = tags.filter(tag => tag !== undefined) // eslint-disable-line
   const orderedTagIds = tags.sort(compareTagByTitle).map(tag => tag.id)
   const tagsById = tags.reduce((acc, tag) => {
     acc[tag.id] = tag
@@ -275,7 +329,6 @@ export const getSortedTags = (tags, selectedTags) => {
 
   // First, put selected tags
   selectedTags.reverse().forEach(tagId => {
-
     // Do not add this tag if it is not present on the task
     // (e.g. when we delete that tag, but list of tasks is
     // not yet updated)
@@ -288,7 +341,6 @@ export const getSortedTags = (tags, selectedTags) => {
 
   // Second, add others
   orderedTagIds.forEach(tagId => {
-
     // Skip those that are already added
     if (selectedTags.includes(tagId)) {
       return
@@ -306,7 +358,7 @@ export const getWidthTagItems = tags => {
   tags.forEach(tag => {
     const character = tag.title.length
     const widthText = Math.floor(character * 7.5)
-    result += (widthText + 20)
+    result += widthText + 20
   })
 
   return result

@@ -102,7 +102,7 @@ const TaskDetail = props => {
     subject: task.subject,
     createdBy: task.createdBy,
     followerStatus: assignee !== null ? assignee.status : null,
-    tags: task.tags,
+    tags: task.tags.filter(tag => tag !== undefined), // eslint-disable-line
     followers: task.followers,
     startDate: dateUtil.toMoment(task.startDate),
     dueDate: dateUtil.toMoment(task.dueDate),
