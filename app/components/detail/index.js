@@ -35,7 +35,7 @@ import {
 import {
   fetchAttachment,
   createAttachment,
-  deleteAttachment
+  deleteAttachment,
 } from 'redux/store/attachments/attachments.actions'
 import {
   fetchComment,
@@ -50,10 +50,13 @@ import {
   selectContact,
   deselectContacts,
   updateContact,
-  sendInvitationContact
+  sendInvitationContact,
 } from 'redux/store/contacts/contacts.actions'
 import { getUserId } from 'redux/store/auth/auth.selectors'
-import { getDetail, getInboxTasksVisibility } from 'redux/store/app-state/app-state.selectors'
+import {
+  getDetail,
+  getInboxTasksVisibility,
+} from 'redux/store/app-state/app-state.selectors'
 import {
   getTasksItems,
   getCompletedTasksItems,
@@ -74,7 +77,7 @@ import {
 import {
   getCurrentContact,
   getNextContact,
-  getPreviousContact
+  getPreviousContact,
 } from 'redux/store/contacts/contacts.selectors'
 import { getEntitiesTasks } from 'redux/store/entities/entities.selectors'
 import {
@@ -88,7 +91,6 @@ import TagDetail from './tag-detail'
 import ContactDetail from './contact-detail'
 
 const Detail = props => {
-
   const {
     detail,
     isInboxVisible,
@@ -137,61 +139,68 @@ const Detail = props => {
 
   return (
     <DetailStyle>
-      {(detail.task || detail.archive || detail.inbox) &&
-      <TaskDetail
-        detail={detail}
-        userId={userId}
-        task={task}
-        animation={detail.animation}
-        attachments={attachments}
-        comments={comments}
-        isInboxVisible={isInboxVisible}
-        onHandleFetchAttachment={onHandleFetchAttachment}
-        onHandleFetchComment={onHandleFetchComment}
-        onHandleToggleList={onHandleToggleList}
-        onHandleNext={onHandleNext}
-        onHandlePrevious={onHandlePrevious}
-        onHandleTaskSetComplete={onHandleTaskSetComplete}
-        onHandleTaskArchive={onHandleTaskArchive}
-        onHandleTaskSend={onHandleTaskSend}
-        onHandleTaskAccept={onHandleTaskAccept}
-        onHandleTaskReject={onHandleTaskReject}
-        onHandleTaskSetIncomplete={onHandleTaskSetIncomplete}
-        onHandleTaskSubjectUpdate={onHandleTaskSubjectUpdate}
-        onHandleTaskTagDeleted={onHandleTaskTagDeleted}
-        onHandleTaskFollowerDeleted={onHandleTaskFollowerDeleted}
-        onHandleTaskDelete={onHandleTaskDelete}
-        onHandleTaskDateChanged={onHandleTaskDateChanged}
-        onHandleTaskToggleImportant={onHandleTaskToggleImportant}
-        onHandleTaskDescriptionUpdate={onHandleTaskDescriptionUpdate}
-        onHandleTaskAttachmentDelete={onHandleTaskAttachmentDelete}
-        onHandleTaskFileUploaded={onHandleTaskFileUploaded}
-        onHandleTaskAddComment={onHandleTaskAddComment} />}
+      {(detail.task || detail.archive || detail.inbox) && (
+        <TaskDetail
+          detail={detail}
+          userId={userId}
+          task={task}
+          animation={detail.animation}
+          attachments={attachments}
+          comments={comments}
+          isInboxVisible={isInboxVisible}
+          onHandleFetchAttachment={onHandleFetchAttachment}
+          onHandleFetchComment={onHandleFetchComment}
+          onHandleRemoveEventListener={onHandleRemoveEventListener}
+          onHandleToggleList={onHandleToggleList}
+          onHandleNext={onHandleNext}
+          onHandlePrevious={onHandlePrevious}
+          onHandleTaskSetComplete={onHandleTaskSetComplete}
+          onHandleTaskArchive={onHandleTaskArchive}
+          onHandleTaskSend={onHandleTaskSend}
+          onHandleTaskAccept={onHandleTaskAccept}
+          onHandleTaskReject={onHandleTaskReject}
+          onHandleTaskSetIncomplete={onHandleTaskSetIncomplete}
+          onHandleTaskSubjectUpdate={onHandleTaskSubjectUpdate}
+          onHandleTaskTagDeleted={onHandleTaskTagDeleted}
+          onHandleTaskFollowerDeleted={onHandleTaskFollowerDeleted}
+          onHandleTaskDelete={onHandleTaskDelete}
+          onHandleTaskDateChanged={onHandleTaskDateChanged}
+          onHandleTaskToggleImportant={onHandleTaskToggleImportant}
+          onHandleTaskDescriptionUpdate={onHandleTaskDescriptionUpdate}
+          onHandleTaskAttachmentDelete={onHandleTaskAttachmentDelete}
+          onHandleTaskFileUploaded={onHandleTaskFileUploaded}
+          onHandleTaskAddComment={onHandleTaskAddComment}
+        />
+      )}
 
-      {detail.tag &&
-      <TagDetail
-        tag={tag}
-        titles={titles}
-        onHandleRemoveEventListener={onHandleRemoveEventListener}
-        onHandleToggleList={onHandleToggleList}
-        onHandleNext={onHandleNext}
-        onHandlePrevious={onHandlePrevious}
-        onHandleTagTitleUpdate={onHandleTagTitleUpdate}
-        onHandleTagSetColor={onHandleTagSetColor}
-        onHandleTagDelete={onHandleTagDelete}
-        onHandleTagDescriptionUpdate={onHandleTagDescriptionUpdate} />}
+      {detail.tag && (
+        <TagDetail
+          tag={tag}
+          titles={titles}
+          onHandleRemoveEventListener={onHandleRemoveEventListener}
+          onHandleToggleList={onHandleToggleList}
+          onHandleNext={onHandleNext}
+          onHandlePrevious={onHandlePrevious}
+          onHandleTagTitleUpdate={onHandleTagTitleUpdate}
+          onHandleTagSetColor={onHandleTagSetColor}
+          onHandleTagDelete={onHandleTagDelete}
+          onHandleTagDescriptionUpdate={onHandleTagDescriptionUpdate}
+        />
+      )}
 
-      {detail.contact &&
-      <ContactDetail
-        contact={contact}
-        onHandleRemoveEventListener={onHandleRemoveEventListener}
-        onHandleToggleList={onHandleToggleList}
-        onHandleNext={onHandleNext}
-        onHandlePrevious={onHandlePrevious}
-        onHandleContactNicknameUpdate={onHandleContactNicknameUpdate}
-        onHandleContactDelete={onHandleContactDelete}
-        onHandleContactDescriptionUpdate={onHandleContactDescriptionUpdate}
-        onHandleContactSendInvitation={onHandleContactSendInvitation} />}
+      {detail.contact && (
+        <ContactDetail
+          contact={contact}
+          onHandleRemoveEventListener={onHandleRemoveEventListener}
+          onHandleToggleList={onHandleToggleList}
+          onHandleNext={onHandleNext}
+          onHandlePrevious={onHandlePrevious}
+          onHandleContactNicknameUpdate={onHandleContactNicknameUpdate}
+          onHandleContactDelete={onHandleContactDelete}
+          onHandleContactDescriptionUpdate={onHandleContactDescriptionUpdate}
+          onHandleContactSendInvitation={onHandleContactSendInvitation}
+        />
+      )}
     </DetailStyle>
   )
 }
@@ -309,7 +318,10 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   withHandlers({
     onHandleToggleList: props => () => {
       const { detail } = props
@@ -353,7 +365,10 @@ export default compose(
         props.deselectAnimation()
         props.fetchAttachment(nextTask.id)
         props.fetchComment(nextTask.id)
-        props.selectTask(selectionInfo.newSelectedTasks, selectionInfo.isMultiSelection)
+        props.selectTask(
+          selectionInfo.newSelectedTasks,
+          selectionInfo.isMultiSelection
+        )
         return
       }
 
@@ -373,18 +388,31 @@ export default compose(
       props.selectContact(nextContact.id)
     },
     onHandlePrevious: props => () => {
-      const { detail, previousTask, previousTag, previousContact, selectedTasks } = props
+      const {
+        detail,
+        previousTask,
+        previousTag,
+        previousContact,
+        selectedTasks,
+      } = props
 
       if (detail.task || detail.archive || detail.inbox) {
         if (!previousTask) {
           return
         }
 
-        const selectionInfo = getSelectionInfo(null, previousTask, selectedTasks)
+        const selectionInfo = getSelectionInfo(
+          null,
+          previousTask,
+          selectedTasks
+        )
         props.deselectAnimation()
         props.fetchAttachment(previousTask.id)
         props.fetchComment(previousTask.id)
-        props.selectTask(selectionInfo.newSelectedTasks, selectionInfo.isMultiSelection)
+        props.selectTask(
+          selectionInfo.newSelectedTasks,
+          selectionInfo.isMultiSelection
+        )
         return
       }
 
@@ -430,20 +458,22 @@ export default compose(
       props.deselectTasks()
       props.rejectTask(data)
     },
-    onHandleTaskSubjectUpdate: props => data => props.setSubject(data.task, data.subject),
-    onHandleTaskTagDeleted: props => data => props.removeTaskTag(data.task.id, data.tagInfo),
+    onHandleTaskSubjectUpdate: props => data =>
+      props.setSubject(data.task, data.subject),
+    onHandleTaskTagDeleted: props => data =>
+      props.removeTaskTag(data.task.id, data.tagInfo),
     onHandleTaskFollowerDeleted: props => data => {
       props.setAnimation()
-      props.removeTaskFollower(
-        data.taskId,
-        data.userId,
-        data.followerId
-      )
+      props.removeTaskFollower(data.taskId, data.userId, data.followerId)
     },
-    onHandleTaskDateChanged: props => data => props.setDate(data.task, data.date, data.typeDate),
-    onHandleTaskToggleImportant: props => data => props.requestToggleImportant(data),
-    onHandleTaskDescriptionUpdate: props => data => props.setDescription(data.task, data.description),
-    onHandleTaskAttachmentDelete: props => data => props.deleteAttachment(data.task.id, data.attachmentId),
+    onHandleTaskDateChanged: props => data =>
+      props.setDate(data.task, data.date, data.typeDate),
+    onHandleTaskToggleImportant: props => data =>
+      props.requestToggleImportant(data),
+    onHandleTaskDescriptionUpdate: props => data =>
+      props.setDescription(data.task, data.description),
+    onHandleTaskAttachmentDelete: props => data =>
+      props.deleteAttachment(data.task.id, data.attachmentId),
     onHandleTaskFileUploaded: props => data => props.createAttachment(data),
     onHandleTaskAddComment: props => data => props.createComment(data),
     onHandleTaskArchive: props => data => {
@@ -456,7 +486,13 @@ export default compose(
       const selectedTasks = props.selectedTasks
 
       if (isArchived) {
-        const nonArchive = cancelArchive(taskId, tasks, completedTasks, archivedTasks, entitiesTasks)
+        const nonArchive = cancelArchive(
+          taskId,
+          tasks,
+          completedTasks,
+          archivedTasks,
+          entitiesTasks
+        )
         props.deselectTasks()
         props.cancelArchiveTasks(
           nonArchive.newTasks,
@@ -473,7 +509,13 @@ export default compose(
         return
       }
 
-      const archive = setArchive(taskId, tasks, completedTasks, archivedTasks, entitiesTasks)
+      const archive = setArchive(
+        taskId,
+        tasks,
+        completedTasks,
+        archivedTasks,
+        entitiesTasks
+      )
       props.deselectTasks()
       props.setArchiveTasks(
         archive.newArchiveTasksList,
@@ -516,7 +558,7 @@ export default compose(
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
       })
-    }
+    },
   }),
   withHandlers({
     onHandleKeyDown: props => event => {
@@ -563,18 +605,24 @@ export default compose(
         return
       }
 
-      document.getElementById('user-container').addEventListener('click', props.onHandleClickOutSide, false)
+      document
+        .getElementById('user-container')
+        .addEventListener('click', props.onHandleClickOutSide, false)
       document.addEventListener('keydown', props.onHandleKeyDown, false)
-    }
+    },
   }),
   lifecycle({
     componentDidMount() {
-      document.getElementById('user-container').addEventListener('click', this.props.onHandleClickOutSide, false)
+      document
+        .getElementById('user-container')
+        .addEventListener('click', this.props.onHandleClickOutSide, false)
       document.addEventListener('keydown', this.props.onHandleKeyDown, false)
     },
     componentWillUnmount() {
-      document.getElementById('user-container').removeEventListener('click', this.props.onHandleClickOutSide, false)
+      document
+        .getElementById('user-container')
+        .removeEventListener('click', this.props.onHandleClickOutSide, false)
       document.removeEventListener('keydown', this.props.onHandleKeyDown, false)
-    }
+    },
   })
 )(Detail)
