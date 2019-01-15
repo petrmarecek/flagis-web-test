@@ -1,11 +1,14 @@
-import React, {PureComponent} from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { Map } from 'immutable'
 import { createPortal, findDOMNode } from 'react-dom'
 import domUtils from 'redux/utils/dom'
 import commonUtils from 'redux/utils/common'
 import { validateAddContact } from 'redux/utils/validate'
-import { isObjectEmpty, getHintDirectionRender } from 'redux/utils/component-helper'
+import {
+  isObjectEmpty,
+  getHintDirectionRender,
+} from 'redux/utils/component-helper'
 import { toast } from 'react-toastify'
 import { errorMessages } from 'utils/messages'
 import constants from 'utils/constants'
@@ -17,16 +20,13 @@ import { InputContainer, Input } from './styles'
 const getInputPosition = (location, ref) => {
   const position = domUtils.getOffset(ref)
   position.top += 30
-  position.left -= location === 'taskDetailTags'
-    ? 115
-    : 0
+  position.left -= location === 'taskDetailTags' ? 115 : 0
 
   return position
 }
 
 const withAutocompleteInput = WrappedComponent => {
   return class WithAutocompleteInput extends PureComponent {
-
     static propTypes = {
       location: PropTypes.string,
       dataType: PropTypes.string,
@@ -68,14 +68,17 @@ const withAutocompleteInput = WrappedComponent => {
       this.setState({ hintRef: ref })
     }
 
-    getViewPosition = (positionTop) => {
+    getViewPosition = positionTop => {
       const directionRender = getHintDirectionRender(positionTop)
       let top = positionTop + constants.TITLE_HEIGHT
       let bottom = constants.WINDOW_HEIGHT - constants.OFFSET
 
       if (directionRender === 'bottomToTop') {
         top = constants.OFFSET - constants.TITLE_HEIGHT
-        bottom = positionTop - constants.TITLE_HEIGHT - constants.AUTOCOMPLETE_INPUT_HEIGHT
+        bottom =
+          positionTop -
+          constants.TITLE_HEIGHT -
+          constants.AUTOCOMPLETE_INPUT_HEIGHT
       }
 
       return { top, bottom }
@@ -95,14 +98,14 @@ const withAutocompleteInput = WrappedComponent => {
 
       // Switch task in task-detail(tag-hints in task-detail)
       if (props.parentId !== parentId) {
-        return ({
+        return {
           hintsData: { [dataType]: hints[dataType] },
-          parentId: props.parentId
-        })
+          parentId: props.parentId,
+        }
       }
 
       // Show hints if hints were changed(tag-hints in task-detail)
-      if ((hints[dataType].length !== hintsData[dataType].length)) {
+      if (hints[dataType].length !== hintsData[dataType].length) {
         inputRef.focus()
 
         if (scrollRef) {
@@ -132,8 +135,11 @@ const withAutocompleteInput = WrappedComponent => {
       // Filter hints by value of input
       const hintsData = {
         [dataType]: !isInputMode
-          ? hints[dataType].filter(item => itemValue(item)[dataType].toLowerCase().startsWith(inputValue.toLowerCase()))
-          : hints[dataType]
+          ? hints[dataType].filter(item => {
+              const values = itemValue(item)[dataType]
+              return values.toLowerCase().startsWith(inputValue.toLowerCase())
+            })
+          : hints[dataType],
       }
 
       this.setState({
@@ -150,7 +156,15 @@ const withAutocompleteInput = WrappedComponent => {
     }
 
     onHandleKeyDown = event => {
-      const { showHints, selectIndex, inputRef, scrollRef, hintRef, hintsData, position } = this.state
+      const {
+        showHints,
+        selectIndex,
+        inputRef,
+        scrollRef,
+        hintRef,
+        hintsData,
+        position,
+      } = this.state
       const { dataType, onBlurTagTree } = this.props
       if (!showHints) {
         return
@@ -162,7 +176,6 @@ const withAutocompleteInput = WrappedComponent => {
       let index = selectIndex
 
       switch (event.which) {
-
         // escape
         case 27:
           inputRef.blur()
@@ -181,11 +194,10 @@ const withAutocompleteInput = WrappedComponent => {
 
         // arrow up key
         case 38:
-
           // Scrollbar is showed
           if (scrollRef !== null) {
             // if hint isn't showed, scroll top
-            if ((hintPosition.top - constants.HINT_HEIGHT) < viewPosition.top) {
+            if (hintPosition.top - constants.HINT_HEIGHT < viewPosition.top) {
               scrollRef.view.scrollTop -= constants.HINT_HEIGHT
             }
 
@@ -200,11 +212,13 @@ const withAutocompleteInput = WrappedComponent => {
 
         // arrow down key
         case 40:
-
           // Scrollbar is showed
           if (scrollRef !== null) {
             // if hint isn't showed, scroll bottom
-            if ((hintPosition.bottom + constants.HINT_HEIGHT) > viewPosition.bottom) {
+            if (
+              hintPosition.bottom + constants.HINT_HEIGHT >
+              viewPosition.bottom
+            ) {
               scrollRef.view.scrollTop += constants.HINT_HEIGHT
             }
 
@@ -237,8 +251,10 @@ const withAutocompleteInput = WrappedComponent => {
 
       // Filter hints by value of input
       const hintsData = {
-        [dataType]: hints[dataType]
-          .filter(item => itemValue(item)[dataType].toLowerCase().startsWith(value.toLowerCase()))
+        [dataType]: hints[dataType].filter(item => {
+          const values = itemValue(item)[dataType]
+          return values.toLowerCase().startsWith(value.toLowerCase())
+        }),
       }
 
       this.setState({ hintsData, value, selectIndex: 0 })
@@ -263,9 +279,16 @@ const withAutocompleteInput = WrappedComponent => {
 
     onHandleSubmit = (submitType = null) => {
       const { hintsData, selectIndex, value, inputRef } = this.state
-      const { location, parentId, dataType, validationItems, onBlurTagTree, isInputMode } = this.props
+      const {
+        location,
+        parentId,
+        dataType,
+        validationItems,
+        onBlurTagTree,
+        isInputMode,
+      } = this.props
 
-      // Click on Send Me button in tasksMenu for assignee filter
+      // Click on Sent Me button in tasksMenu for assignee filter
       if (submitType === 'sendMe') {
         // Select Hint
         this.props.hintSelected(location, { isSendMe: true })
@@ -280,7 +303,7 @@ const withAutocompleteInput = WrappedComponent => {
         return
       }
 
-      // Click on Send All button in tasksMenu for assignee filter
+      // Click on Sent All button in tasksMenu for assignee filter
       if (submitType === 'sendAll') {
         // Select Hint
         this.props.hintSelected(location, { isSendAll: true })
@@ -339,7 +362,7 @@ const withAutocompleteInput = WrappedComponent => {
         hint = {
           id: commonUtils.clientUid(),
           [itemType[dataType]]: value,
-          isNew: isNewHint
+          isNew: isNewHint,
         }
       }
 
@@ -408,7 +431,8 @@ const AutocompleteInput = props => {
       addHintRef={getHintRef}
       onSelectIndex={onHandleSelectIndex}
       onHandleClickOutside={onHandleClickOutside}
-      onSubmit={onHandleSubmit} />
+      onSubmit={onHandleSubmit}
+    />
   )
 
   return (
@@ -423,7 +447,8 @@ const AutocompleteInput = props => {
         onKeyDown={onHandleKeyDown}
         onChange={onHandleChange}
         mainSearch={location === 'mainSearch'}
-        value={value} />
+        value={value}
+      />
       {hintsElement && showHints && createPortal(hints, hintsElement)}
     </InputContainer>
   )

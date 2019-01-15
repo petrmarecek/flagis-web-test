@@ -17,8 +17,12 @@ import search from 'redux/services/search'
 import api from 'redux/utils/api'
 
 export function* defaultDisplay() {
-  const isArchivedTask = yield select(state => appStateSelectors.getArchivedTasksVisibility(state))
-  const isInboxTasks = yield select(state => appStateSelectors.getInboxTasksVisibility(state))
+  const isArchivedTask = yield select(state =>
+    appStateSelectors.getArchivedTasksVisibility(state)
+  )
+  const isInboxTasks = yield select(state =>
+    appStateSelectors.getInboxTasksVisibility(state)
+  )
 
   if (isArchivedTask) {
     yield put(appStateActions.hideArchivedTasks())
@@ -48,32 +52,38 @@ export function* hintSelected(action) {
   // Hint selected within main search context
   if (location === 'mainSearch') {
     if (isNewHint) {
-      toast.error(errorMessages.createEntity.notAllowedCreate('tag', 'Tag filter'), {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: constants.NOTIFICATION_ERROR_DURATION,
-      })
+      toast.error(
+        errorMessages.createEntity.notAllowedCreate('tag', 'Tag filter'),
+        {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: constants.NOTIFICATION_ERROR_DURATION,
+        }
+      )
 
       return
     }
 
-    const activeTags = yield select(state => tagSelectors.getActiveTagsIds(state))
+    const activeTags = yield select(state =>
+      tagSelectors.getActiveTagsIds(state)
+    )
     yield put(tagActions.selectActiveTags(activeTags.unshift(hint.id)))
     return
   }
 
   // Hint selected within tree context
   if (location === 'tagTree') {
-    yield put(treeActions.createTreeItem({
-      title: hint.title,
-      parentId: parentId,
-      order: Date.now()
-    }))
+    yield put(
+      treeActions.createTreeItem({
+        title: hint.title,
+        parentId: parentId,
+        order: Date.now(),
+      })
+    )
     return
   }
 
   // Hint(tag) selected within task detail context
   if (location === 'taskDetailTags') {
-
     // If tag is not yet defined, add it to the app
     if (isNewHint) {
       yield put(tagActions.addTag(hint))
@@ -102,8 +112,7 @@ export function* hintSelected(action) {
 
   // Hint(contact) selected within tasks menu filter
   if (location === 'tasksMenuFilterContacts') {
-
-    // Click on Send Me button in tasksMenu for assignee filter
+    // Click on Sent Me button in tasksMenu for assignee filter
     if (isSendMe) {
       const userId = yield select(state => authSelectors.getUserId(state))
 
@@ -111,7 +120,7 @@ export function* hintSelected(action) {
       return
     }
 
-    // Click on Send All button in tasksMenu for assignee filter
+    // Click on Sent All button in tasksMenu for assignee filter
     if (isSendAll) {
       yield put(tasksMenuActions.setActiveAssignee('sendAll'))
       return
@@ -119,10 +128,13 @@ export function* hintSelected(action) {
 
     // Not allowed create a new contact
     if (isNewHint) {
-      toast.error(errorMessages.createEntity.notAllowedCreate('contact', 'Filter'), {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: constants.NOTIFICATION_ERROR_DURATION,
-      })
+      toast.error(
+        errorMessages.createEntity.notAllowedCreate('contact', 'Filter'),
+        {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: constants.NOTIFICATION_ERROR_DURATION,
+        }
+      )
 
       return
     }
@@ -130,4 +142,3 @@ export function* hintSelected(action) {
     yield put(tasksMenuActions.setActiveAssignee(hint.id))
   }
 }
-

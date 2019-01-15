@@ -4,7 +4,10 @@ import onClickOutside from 'react-onclickoutside'
 import { withHandlers } from 'recompose'
 import ShadowScrollbar from '../common/shadow-scrollbar'
 import constants from '../../utils/constants'
-import { getHintDirectionRender, isStringEmpty} from '../../redux/utils/component-helper'
+import {
+  getHintDirectionRender,
+  isStringEmpty,
+} from '../../redux/utils/component-helper'
 
 import HintItem from './hints-item'
 
@@ -12,14 +15,15 @@ import { HintsContainer, Buttons, Button, Title, Hint } from './styles'
 
 const getTopHeight = (positionTop, directionRender) => {
   return directionRender === 'topToBottom'
-    ? (constants.WINDOW_HEIGHT - positionTop)
+    ? constants.WINDOW_HEIGHT - positionTop
     : positionTop
 }
 
 const getScroll = (hintsLength, positionTop, directionRender) => {
   const topHeight = getTopHeight(positionTop, directionRender)
   const maxHintsHeight = topHeight - constants.OFFSET
-  const hintsHeight = (hintsLength * constants.HINT_HEIGHT) + constants.TITLE_HEIGHT
+  const hintsHeight =
+    hintsLength * constants.HINT_HEIGHT + constants.TITLE_HEIGHT
   return hintsHeight >= maxHintsHeight
 }
 
@@ -40,7 +44,7 @@ const Hints = props => {
     getScrollRef,
     getHintRef,
     onHandleSubmit,
-    onHandleMouseOver
+    onHandleMouseOver,
   } = props
 
   const hintsLength = hints[dataType].length
@@ -55,20 +59,20 @@ const Hints = props => {
     shadowHeight: 20,
     boxShadowTop: 'inset 0 10px 10px -5px #fafafa',
     boxShadowBottom: 'inset 0 -10px 10px -5px #fafafa',
-    overflow: 'hidden'
+    overflow: 'hidden',
   }
 
   const getHintsData = () => {
     const typeHint = {
       tags: 'tag',
-      contacts: 'contact'
+      contacts: 'contact',
     }
 
     // No hint found
     if (noHintFound) {
       return {
         title: 'No hint found',
-        items: <Hint innerRef={ref => getHintRef(ref)} noHintFound/>
+        items: <Hint innerRef={ref => getHintRef(ref)} noHintFound />,
       }
     }
 
@@ -76,7 +80,15 @@ const Hints = props => {
     if (isCreateNewHint) {
       return {
         title: `Create a new ${typeHint[dataType]}`,
-        items: <Hint innerRef={ref => getHintRef(ref)} onClick={onHandleSubmit} selected>{value}</Hint>
+        items: (
+          <Hint
+            innerRef={ref => getHintRef(ref)}
+            onClick={onHandleSubmit}
+            selected
+          >
+            {value}
+          </Hint>
+        ),
       }
     }
 
@@ -92,7 +104,9 @@ const Hints = props => {
           dataType={dataType}
           selected={selectIndex === i}
           onSubmit={onHandleSubmit}
-          onMouseOver={onHandleMouseOver} />))
+          onMouseOver={onHandleMouseOver}
+        />
+      )),
     }
   }
 
@@ -100,53 +114,60 @@ const Hints = props => {
   const getRender = {
     topToBottom: (
       <HintsContainer position={{ top: position.top, left: position.left }}>
-        {isFilterContacts &&
-        <Buttons directionRender={directionRender}>
-          <Button onClick={() => onHandleSubmit('sendMe')} first>
-            Send Me
-          </Button>
-          <Button onClick={() => onHandleSubmit('sendAll')}>
-            Send All
-          </Button>
-        </Buttons>}
+        {isFilterContacts && (
+          <Buttons directionRender={directionRender}>
+            <Button onClick={() => onHandleSubmit('sendMe')} first>
+              Sent Me
+            </Button>
+            <Button onClick={() => onHandleSubmit('sendAll')}>Sent All</Button>
+          </Buttons>
+        )}
         <Title
           directionRender={directionRender}
-          isFilterContacts={isFilterContacts}>
+          isFilterContacts={isFilterContacts}
+        >
           {data.title}
         </Title>
-        {!isScroll
-          ? data.items
-          : <ShadowScrollbar
-              addScrollRef={getScrollRef}
-              style={scrollStyle}>{data.items}</ShadowScrollbar>}
+        {!isScroll ? (
+          data.items
+        ) : (
+          <ShadowScrollbar addScrollRef={getScrollRef} style={scrollStyle}>
+            {data.items}
+          </ShadowScrollbar>
+        )}
       </HintsContainer>
     ),
     bottomToTop: (
-      <HintsContainer position={{
-        bottom: (constants.WINDOW_HEIGHT - position.top  + constants.TITLE_HEIGHT),
-        left: position.left
-      }}>
-        {!isScroll
-          ? data.items
-          : <ShadowScrollbar
-              addScrollRef={getScrollRef}
-              style={scrollStyle}>{data.items}</ShadowScrollbar>}
+      <HintsContainer
+        position={{
+          bottom:
+            constants.WINDOW_HEIGHT - position.top + constants.TITLE_HEIGHT,
+          left: position.left,
+        }}
+      >
+        {!isScroll ? (
+          data.items
+        ) : (
+          <ShadowScrollbar addScrollRef={getScrollRef} style={scrollStyle}>
+            {data.items}
+          </ShadowScrollbar>
+        )}
         <Title
           directionRender={directionRender}
-          isFilterContacts={isFilterContacts}>
+          isFilterContacts={isFilterContacts}
+        >
           {data.title}
         </Title>
-        {isFilterContacts &&
-        <Buttons directionRender={directionRender}>
-          <Button onClick={() => onHandleSubmit('sendMe')} first>
-            Send Me
-          </Button>
-          <Button onClick={() => onHandleSubmit('sendAll')}>
-            Send All
-          </Button>
-        </Buttons>}
+        {isFilterContacts && (
+          <Buttons directionRender={directionRender}>
+            <Button onClick={() => onHandleSubmit('sendMe')} first>
+              Sent Me
+            </Button>
+            <Button onClick={() => onHandleSubmit('sendAll')}>Sent All</Button>
+          </Buttons>
+        )}
       </HintsContainer>
-    )
+    ),
   }
 
   return getRender[directionRender]
