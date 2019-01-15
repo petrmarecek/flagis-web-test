@@ -1,10 +1,10 @@
 import React from 'react'
-import TreeContainer from 'components/tag-tree/tree-container'
+import TagTreeContainer from 'components/tag-tree'
 
 const TagTreeContent = () => {
   return (
     <div>
-        <TreeContainer />
+      <TagTreeContainer />
     </div>
   )
 }

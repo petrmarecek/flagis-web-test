@@ -1,23 +1,23 @@
 import React from 'react'
 
 import LeftPanel from 'components/panels/left-panel'
-import TreeContainer from 'components/tag-tree/tree-container'
+import TagTreeContainer from 'components/tag-tree'
 import CenterPanel from 'components/panels/center-panel'
 import DashboardContent from 'components/contents/dashboard-content'
 
 const DashboardPage = () => {
   const centerPanelStyle = {
     margin: '10px 10px 0 10px',
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
   }
 
-  return(
+  return (
     <div>
       <LeftPanel>
-        <TreeContainer />
+        <TagTreeContainer />
       </LeftPanel>
       <CenterPanel style={centerPanelStyle}>
-        <DashboardContent/>
+        <DashboardContent />
       </CenterPanel>
     </div>
   )
