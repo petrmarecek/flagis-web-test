@@ -11,7 +11,11 @@ import { errorMessages } from 'utils/messages'
 import constants from 'utils/constants'
 
 import dateUtils from 'redux/utils/date'
-import { getAssigneeOfTask, getSortedTags } from 'redux/utils/component-helper'
+import {
+  getAssigneeOfTask,
+  getSortedTags,
+  isStringEmpty,
+} from 'redux/utils/component-helper'
 
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from '../icons/icon'
@@ -227,7 +231,7 @@ const TaskListItem = props => {
   const isInboxList = listType === 'inbox'
   const isOwner = task.createdById === userId
   const isCompletedMainList = task.isCompleted && !isArchivedList
-  const isDescription = task.description !== ''
+  const isDescription = !isStringEmpty(task.description)
 
   // Sorted tags
   const sortedTags = getSortedTags(task.tags, selectedTags)

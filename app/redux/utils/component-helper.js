@@ -3,6 +3,7 @@ import moment from 'moment'
 import showdown from 'showdown'
 import commonUtils from 'redux/utils/common'
 import constants from '../../utils/constants'
+import R from 'ramda'
 
 export function getSelectionInfo(event, task, selectedTasks) {
   let isMultiSelection = false
@@ -247,7 +248,13 @@ export function isObjectEmpty(obj) {
   return Object.getOwnPropertyNames(obj).length === 0
 }
 
+export const isString = R.is(String)
+
 export const isStringEmpty = str => {
+  if (!isString(str)) {
+    return false
+  }
+
   return str.trim().length === 0
 }
 
