@@ -4,7 +4,7 @@ import { withHandlers } from 'recompose'
 import {
   tagColor,
   getColorIndex,
-  getTagColor
+  getTagColor,
 } from 'redux/utils/component-helper'
 import { toast } from 'react-toastify'
 import { errorMessages } from 'utils/messages'
@@ -21,6 +21,7 @@ import {
   DetailContentSubject,
   DetailSubject,
   DetailSubjectTagColor,
+  ContentEditableWrapper,
   DetailSubjectTagContentEditable,
   DetailContentIcon,
   DetailContentCenter,
@@ -32,7 +33,6 @@ import {
 } from './styles'
 
 const TagDetail = props => {
-
   const {
     tag,
     onHandleTitleUpdate,
@@ -63,7 +63,8 @@ const TagDetail = props => {
       <DetailMenu
         back={onHandleToggleList}
         previous={onHandlePrevious}
-        next={onHandleNext} />
+        next={onHandleNext}
+      />
 
       <DetailInner>
         <DetailContentTop>
@@ -74,14 +75,16 @@ const TagDetail = props => {
                 width={37}
                 height={20}
                 scale={1.81}
-                color={[color]}/>
-              <span onClick={onHandleRemoveEventListener}>
+                color={[color]}
+              />
+              <ContentEditableWrapper onClick={onHandleRemoveEventListener}>
                 <DetailSubjectTagContentEditable
                   html={tag.title}
                   enforcePlainText
                   onChange={onHandleTitleUpdate}
-                  allowed />
-              </span>
+                  allowed
+                />
+              </ContentEditableWrapper>
             </DetailSubject>
           </DetailContentSubject>
           <DetailContentIcon onClick={onHandleRemoveEventListener}>
@@ -91,7 +94,8 @@ const TagDetail = props => {
               height={26}
               scale={1}
               color={['#ff8181']}
-              onClick={onHandleDelete}/>
+              onClick={onHandleDelete}
+            />
           </DetailContentIcon>
         </DetailContentTop>
         <DetailContentCenter column allowed>
@@ -103,7 +107,8 @@ const TagDetail = props => {
               <TagDetailColors
                 colors={tagColor}
                 colorIndex={colorIndex}
-                setColor={onHandleSetColor} />
+                setColor={onHandleSetColor}
+              />
             </DetailTagColorSelector>
           </DetailContentTagColor>
           <DetailContentDescriptionTag>
@@ -111,8 +116,9 @@ const TagDetail = props => {
               <MarkdownEditableContainer
                 text={description}
                 scrollStyle={scrollStyle}
-                placeholder='Add description'
-                onUpdate={onHandleDescriptionUpdate} />
+                placeholder="Add description"
+                onUpdate={onHandleDescriptionUpdate}
+              />
             </span>
           </DetailContentDescriptionTag>
         </DetailContentCenter>

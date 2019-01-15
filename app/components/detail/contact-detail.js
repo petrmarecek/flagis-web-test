@@ -15,6 +15,7 @@ import {
   DetailContentCenter,
   DetailContentProperties,
   DetailSubjectIconContact,
+  ContentEditableWrapper,
   DetailSubjectContactContentEditable,
   DetailContentDescriptionContact,
   MarkdownEditableContainer,
@@ -82,7 +83,7 @@ const ContactDetail = props => {
                   color={icon.color}
                 />
               </DetailSubjectIconContact>
-              <span onClick={onHandleRemoveEventListener}>
+              <ContentEditableWrapper onClick={onHandleRemoveEventListener}>
                 <DetailSubjectContactContentEditable
                   html={nickname}
                   placeholder="Add username"
@@ -90,7 +91,7 @@ const ContactDetail = props => {
                   onChange={onHandleNicknameUpdate}
                   allowed
                 />
-              </span>
+              </ContentEditableWrapper>
             </DetailSubject>
           </DetailContentSubject>
           <DetailContentIcon onClick={onHandleRemoveEventListener}>

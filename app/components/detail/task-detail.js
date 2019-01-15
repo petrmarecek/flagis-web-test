@@ -31,6 +31,7 @@ import {
   DetailSubjectTaskCompleted,
   DetailSubjectTaskArchived,
   DetailSubjectTaskFollowerResponse,
+  ContentEditableWrapper,
   DetailSubjectTaskContentEditable,
   DetailContentTagAutocomplete,
   DetailContentTagAutocompleteTags,
@@ -216,7 +217,7 @@ const TaskDetail = props => {
           completed={isCompletedMainList}
           backgroundColor={backgroundColor}
         >
-          <DetailContentSubject taskDetail>
+          <DetailContentSubject>
             <DetailSubject>
               {isInboxVisible && (
                 <DetailSubjectTaskFollowerResponse>
@@ -296,7 +297,7 @@ const TaskDetail = props => {
                   />
                 </DetailSubjectTaskArchived>
               )}
-              <span onClick={onHandleRemoveEventListener}>
+              <ContentEditableWrapper onClick={onHandleRemoveEventListener}>
                 <DetailSubjectTaskContentEditable
                   html={subject}
                   enforcePlainText
@@ -308,7 +309,7 @@ const TaskDetail = props => {
                   animation={animation}
                   allowed={!isCompleted && !isInboxVisible && !isCollaborated}
                 />
-              </span>
+              </ContentEditableWrapper>
             </DetailSubject>
           </DetailContentSubject>
           <DetailContentTagAutocomplete
