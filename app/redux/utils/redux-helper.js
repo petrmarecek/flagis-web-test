@@ -17,7 +17,7 @@ export function computeOrder(tasks, move) {
   }
 
   // Moved to the end
-  if (targetIndex === (tasks.length - 1)) {
+  if (targetIndex === tasks.length - 1) {
     // Subtract an hour to the order
     const hourInMs = 60 * 60 * 1000
     const prevItemsOrder = tasks[targetIndex].order
@@ -34,7 +34,7 @@ export function computeOrder(tasks, move) {
     nextItemsOrder = tasks[targetIndex + 1].order
   }
 
-  return nextItemsOrder + ((prevItemsOrder - nextItemsOrder) / 2)
+  return nextItemsOrder + (prevItemsOrder - nextItemsOrder) / 2
 }
 
 export function computeTreeSectionOrder(items, move) {
@@ -49,7 +49,6 @@ export function computeTreeSectionOrder(items, move) {
 
   // Moved to the top
   if (targetIndex === 0) {
-
     // Subtract an hour to the order
     const hourInMs = 60 * 60 * 1000
     const nextItemsOrder = itemsArray[targetIndex].order
@@ -57,7 +56,7 @@ export function computeTreeSectionOrder(items, move) {
   }
 
   // Moved to the end
-  if (targetIndex === (itemsArray.length - 1)) {
+  if (targetIndex === itemsArray.length - 1) {
     return dateUtil.getMilliseconds()
   }
 
@@ -71,7 +70,7 @@ export function computeTreeSectionOrder(items, move) {
     nextItemsOrder = itemsArray[targetIndex + 1].order
   }
 
-  return prevItemsOrder + ((nextItemsOrder - prevItemsOrder) / 2)
+  return prevItemsOrder + (nextItemsOrder - prevItemsOrder) / 2
 }
 
 export function computeTreeItemOrder(items, drop) {
@@ -86,7 +85,6 @@ export function computeTreeItemOrder(items, drop) {
 
   // Moved to the top
   if (targetIndex === 0) {
-
     // Subtract an hour to the order
     const hourInMs = 60 * 60 * 1000
     const nextItemsOrder = itemsArray[targetIndex].order
@@ -94,7 +92,7 @@ export function computeTreeItemOrder(items, drop) {
   }
 
   // Moved to the end
-  if (targetIndex === (itemsArray.length - 1)) {
+  if (targetIndex === itemsArray.length - 1) {
     // Subtract an hour to the order
     const hourInMs = 60 * 60 * 1000
     const nextItemsOrder = itemsArray[targetIndex].order
@@ -110,11 +108,19 @@ export function computeTreeItemOrder(items, drop) {
     nextItemsOrder = itemsArray[targetIndex].order
   }
 
-  return prevItemsOrder + ((nextItemsOrder - prevItemsOrder) / 2)
+  return prevItemsOrder + (nextItemsOrder - prevItemsOrder) / 2
 }
 
 export function computeTimeLine(tasks, move) {
-  const { sourceSection, sourceDueDate, targetSection, targetDueDate, targetIndex, bottom, direction } = move
+  const {
+    sourceSection,
+    sourceDueDate,
+    targetSection,
+    targetDueDate,
+    targetIndex,
+    bottom,
+    direction,
+  } = move
   const sectionTasks = getTimeLineByDueDate(tasks)[targetSection]
 
   // Move to the same section
@@ -124,35 +130,34 @@ export function computeTimeLine(tasks, move) {
 
   // Move to the empty section
   if (sectionTasks.length === 0) {
-
     if (targetSection === 'noDueDatesTasks') {
       return {
         dueDate: null,
-        orderTimeLine: null
+        orderTimeLine: null,
       }
     }
 
     const time = sourceDueDate
       ? {
-          'hour': moment(sourceDueDate).get('hour'),
-          'minute': moment(sourceDueDate).get('minute'),
-          'second': moment(sourceDueDate).get('second'),
-          'millisecond': moment(sourceDueDate).get('millisecond'),
+          hour: moment(sourceDueDate).get('hour'),
+          minute: moment(sourceDueDate).get('minute'),
+          second: moment(sourceDueDate).get('second'),
+          millisecond: moment(sourceDueDate).get('millisecond'),
         }
       : {
-          'hour': 23,
-          'minute': 45,
-          'second': 0,
-          'millisecond': 0,
+          hour: 23,
+          minute: 45,
+          second: 0,
+          millisecond: 0,
         }
 
     return {
       dueDate: targetDueDate.set({
-        'hour': time.hour,
-        'minute': time.minute,
-        'second': time.second,
-        'millisecond': time.millisecond,
-        orderTimeLine: null
+        hour: time.hour,
+        minute: time.minute,
+        second: time.second,
+        millisecond: time.millisecond,
+        orderTimeLine: null,
       }),
       orderTimeLine: null,
     }
@@ -168,28 +173,28 @@ export function computeTimeLine(tasks, move) {
     if (targetSection === 'noDueDatesTasks') {
       return {
         dueDate: null,
-        orderTimeLine
+        orderTimeLine,
       }
     }
 
     // Dragging upwards to other section
-    if ((sourceSection !== targetSection) && bottom) {
+    if (sourceSection !== targetSection && bottom) {
       orderTimeLine = new Date(nextOrderTimeLine - 1000).getTime()
 
       return {
         dueDate: moment(nextDueDate),
-        orderTimeLine
+        orderTimeLine,
       }
     }
 
     return {
       dueDate: moment(nextDueDate),
-      orderTimeLine
+      orderTimeLine,
     }
   }
 
   // Moved to the end of section
-  if (targetIndex === (sectionTasks.length - 1)) {
+  if (targetIndex === sectionTasks.length - 1) {
     const task = sectionTasks[targetIndex]
     const prevOrderTimeLIne = task.orderTimeLine
     const orderTimeLine = new Date(prevOrderTimeLIne - 1000).getTime()
@@ -198,13 +203,13 @@ export function computeTimeLine(tasks, move) {
     if (targetSection === 'noDueDatesTasks') {
       return {
         dueDate: null,
-        orderTimeLine
+        orderTimeLine,
       }
     }
 
     return {
       dueDate: moment(prevDueDate),
-      orderTimeLine
+      orderTimeLine,
     }
   }
 
@@ -221,17 +226,37 @@ export function computeTimeLine(tasks, move) {
     prevDueDate = sectionTasks[targetIndex].dueDate
   }
 
-  const orderTimeLine = nextOrderTimeLine + ((prevOrderTimeLine - nextOrderTimeLine) / 2)
+  const orderTimeLine =
+    nextOrderTimeLine + (prevOrderTimeLine - nextOrderTimeLine) / 2
   if (targetSection === 'noDueDatesTasks') {
     return {
       dueDate: null,
-      orderTimeLine
+      orderTimeLine,
     }
   }
 
   return {
     dueDate: moment(prevDueDate),
-    orderTimeLine
+    orderTimeLine,
   }
 }
 
+export function getIsArchivedTagsRelations(
+  tagId,
+  archivedItems,
+  entitiesTasks
+) {
+  const archivedTasks = archivedItems.map(taskId => entitiesTasks.get(taskId))
+  let result = false
+
+  for (const task of archivedTasks) {
+    const tags = task.tags
+
+    if (tags.includes(tagId)) {
+      result = true
+      break
+    }
+  }
+
+  return result
+}

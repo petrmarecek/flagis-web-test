@@ -5,8 +5,13 @@ import { toast } from 'react-toastify'
 import { errorMessages } from 'utils/messages'
 import constants from 'utils/constants'
 
+import { getIsArchivedTagsRelations } from '../../redux/utils/redux-helper'
 import { getUserId } from 'redux/store/auth/auth.selectors'
-import { hideDialog, setLoader, deselectLoader } from 'redux/store/app-state/app-state.actions'
+import {
+  hideDialog,
+  setLoader,
+  deselectLoader,
+} from 'redux/store/app-state/app-state.actions'
 import { getCurrentDialog } from 'redux/store/app-state/app-state.selectors'
 import {
   updateTreeItemTitle,
@@ -17,7 +22,10 @@ import {
   deleteTask,
   deselectTasks,
 } from 'redux/store/tasks/tasks.actions'
-import { deselectContacts, deleteContact } from 'redux/store/contacts/contacts.actions'
+import {
+  deselectContacts,
+  deleteContact,
+} from 'redux/store/contacts/contacts.actions'
 import {
   getSelectTasks,
   getSelectTasksTags,
@@ -60,7 +68,6 @@ import ConfirmTreeItemTagDeleteDialog from './confirm-tree-item-tag-delete-dialo
 import AddRemoveTagsDialog from './add-remove-tags-dialog'
 
 class Dialogs extends PureComponent {
-
   static propTypes = {
     currentDialog: PropTypes.object,
     tasks: PropTypes.object,
@@ -136,7 +143,6 @@ class Dialogs extends PureComponent {
     this.props.hideDialog()
   }
 
-
   // confirm-task-delete-dialog
   handleTaskDelete = deleteTasks => {
     if (!deleteTasks) {
@@ -147,8 +153,9 @@ class Dialogs extends PureComponent {
     let newTaskCompleteList = this.props.completedTasks
     let newArchivedTasks = this.props.archivedTasks
     let newTaskEntitiesList = this.props.entitiesTasks
-    deleteTasks = deleteTasks.filter(taskId =>
-      newTaskEntitiesList.get(taskId).createdById === this.props.userId
+    deleteTasks = deleteTasks.filter(
+      taskId =>
+        newTaskEntitiesList.get(taskId).createdById === this.props.userId
     )
 
     const originalData = {
@@ -160,7 +167,6 @@ class Dialogs extends PureComponent {
     }
 
     for (const taskId of deleteTasks) {
-
       newTasksList = newTasksList.includes(taskId)
         ? newTasksList.delete(newTasksList.indexOf(taskId))
         : newTasksList
@@ -173,7 +179,10 @@ class Dialogs extends PureComponent {
         ? newArchivedTasks.delete(newArchivedTasks.indexOf(taskId))
         : newArchivedTasks
 
-      newTaskEntitiesList = newTaskEntitiesList.setIn([taskId, 'isTrashed'], true)
+      newTaskEntitiesList = newTaskEntitiesList.setIn(
+        [taskId, 'isTrashed'],
+        true
+      )
     }
 
     this.props.hideDialog()
@@ -187,16 +196,24 @@ class Dialogs extends PureComponent {
       newTaskEntitiesList,
       originalData
     )
-
   }
 
   // confirm-tag-delete-dialog
   handleTagDelete = tag => {
     const tagId = tag.id
-    const tagsRelations = this.props.tagsRelations
-    const tagsReferences = this.props.tagsReferences
+    const {
+      tagsRelations,
+      tagsReferences,
+      archivedTasks,
+      entitiesTasks,
+    } = this.props
     const isReferenced = tagsReferences.has(tagId)
     const isTagsRelations = tagsRelations.has(tagId)
+    const isArchivedTagsRelations = getIsArchivedTagsRelations(
+      tagId,
+      archivedTasks,
+      entitiesTasks
+    )
 
     if (isReferenced) {
       toast.error(errorMessages.tags.referenceDeleteConflict, {
@@ -208,12 +225,28 @@ class Dialogs extends PureComponent {
 
     if (isTagsRelations) {
       if (tagsRelations.getIn([tagId]).size > 0) {
-        toast.error(errorMessages.tags.relationDeleteConflict, {
+        toast.error(errorMessages.tags.relationTaskDeleteConflict, {
           position: toast.POSITION.BOTTOM_RIGHT,
           autoClose: constants.NOTIFICATION_ERROR_DURATION,
         })
-       return
+        return
       }
+    }
+
+    if (archivedTasks.size === 0) {
+      toast.error(errorMessages.tags.emptyArchiveDeleteConflict, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: constants.NOTIFICATION_ERROR_DURATION,
+      })
+      return
+    }
+
+    if (isArchivedTagsRelations) {
+      toast.error(errorMessages.tags.relationArchiveDeleteConflict, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: constants.NOTIFICATION_ERROR_DURATION,
+      })
+      return
     }
 
     // Delete tag
@@ -279,13 +312,11 @@ class Dialogs extends PureComponent {
 
   // Get current dialog
   getDialog(currentDialog) {
-
     if (!currentDialog) {
       return null
     }
 
     switch (currentDialog.name) {
-
       case 'tree-item-update': {
         return (
           <UpdateTreeItemDialog
@@ -294,7 +325,8 @@ class Dialogs extends PureComponent {
             onDelete={this.handleTreeItemDelete}
             onUpdate={this.handleTreeItemUpdate}
             windowHeight={window.innerHeight}
-            windowWidth={window.innerWidth} />
+            windowWidth={window.innerWidth}
+          />
         )
       }
 
@@ -305,7 +337,8 @@ class Dialogs extends PureComponent {
             onHide={this.props.hideDialog}
             onDelete={this.handleTreeItemDelete}
             windowHeight={window.innerHeight}
-            windowWidth={window.innerWidth} />
+            windowWidth={window.innerWidth}
+          />
         )
       }
 
@@ -316,7 +349,8 @@ class Dialogs extends PureComponent {
             onHide={this.props.hideDialog}
             onDelete={this.handleTaskDelete}
             windowHeight={window.innerHeight}
-            windowWidth={window.innerWidth} />
+            windowWidth={window.innerWidth}
+          />
         )
       }
 
@@ -327,7 +361,8 @@ class Dialogs extends PureComponent {
             onHide={this.props.hideDialog}
             onDelete={this.handleTagDelete}
             windowHeight={window.innerHeight}
-            windowWidth={window.innerWidth} />
+            windowWidth={window.innerWidth}
+          />
         )
       }
 
@@ -338,7 +373,8 @@ class Dialogs extends PureComponent {
             onHide={this.props.hideDialog}
             onDelete={this.handleContactDelete}
             windowHeight={window.innerHeight}
-            windowWidth={window.innerWidth} />
+            windowWidth={window.innerWidth}
+          />
         )
       }
 
@@ -359,11 +395,13 @@ class Dialogs extends PureComponent {
             onHide={this.props.hideDialog}
             onSubmit={this.handleAddRemoveTagsSubmit}
             windowHeight={window.innerHeight}
-            windowWidth={window.innerWidth} />
+            windowWidth={window.innerWidth}
+          />
         )
       }
 
-      default: return null
+      default:
+        return null
     }
   }
 
@@ -372,11 +410,13 @@ class Dialogs extends PureComponent {
     return (
       <div>
         {dialog}
-        {Boolean(dialog) &&
-        <div
-          ref="overlay"
-          className="dialog-overlay dialog-overlay--visible"
-          onClick={this.handleHideDialog}/>}
+        {Boolean(dialog) && (
+          <div
+            ref="overlay"
+            className="dialog-overlay dialog-overlay--visible"
+            onClick={this.handleHideDialog}
+          />
+        )}
       </div>
     )
   }
@@ -401,7 +441,7 @@ const mapStateToProps = state => ({
   multiSelectRemoveTags: getMultiSelectRemoveTagsIds(state),
   multiSelectRemoveEntitiesTags: getMultiSelectRemoveTags(state),
   selectTasks: getSelectTasks(state),
-  userId: getUserId(state)
+  userId: getUserId(state),
 })
 
 const mapDispatchToProps = {
@@ -423,4 +463,7 @@ const mapDispatchToProps = {
   deleteContact,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dialogs)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Dialogs)

@@ -1,8 +1,8 @@
 export const errorMessages = {
-
   signIn: {
     unauthorized: 'Incorrect E-mail or Password.',
-    passwordResetRequired: 'Please, reset your password. Click on forgot your password?',
+    passwordResetRequired:
+      'Please, reset your password. Click on forgot your password?',
   },
 
   signUp: {
@@ -24,22 +24,32 @@ export const errorMessages = {
   tags: {
     createConflict: 'This tag has already been created.',
     titleConflict: 'This title has already been used.',
-    referenceDeleteConflict: 'The target tag cannot be deleted because it is referenced ' +
-    'in the filter tree. Please delete the referencing tree item first.',
-    relationDeleteConflict: 'The target tag cannot be deleted because it has relations ' +
-    'in tasks list. Please delete the relations first.',
+    referenceDeleteConflict:
+      'The target tag cannot be deleted because it is referenced ' +
+      'in the filter tree. Please delete the referencing tree item first.',
+    relationTaskDeleteConflict:
+      'The target tag cannot be deleted because it has relations ' +
+      'in tasks list. Please delete the relations first.',
+    emptyArchiveDeleteConflict:
+      'Please, check your archive list if there are relations between tasks and tags.',
+    relationArchiveDeleteConflict:
+      'The target tag cannot be deleted because it has relations ' +
+      'in archive tasks list. Please delete the relations first.',
   },
 
   treeItems: {
-    duplicatePathConflict: 'Cannot perform this move. Tree validation failed. ' +
-    'Tag duplication found in the result tree path.',
-    duplicateLevelConflict: 'Cannot perform this move. Tree validation failed. ' +
-    'The same tag found on the same tree level.',
+    duplicatePathConflict:
+      'Cannot perform this move. Tree validation failed. ' +
+      'Tag duplication found in the result tree path.',
+    duplicateLevelConflict:
+      'Cannot perform this move. Tree validation failed. ' +
+      'The same tag found on the same tree level.',
   },
 
   createEntity: {
     createConflict: item => `This ${item} has already been created.`,
-    notAllowedCreate: (item, location) => `Not allowed to create ${item} in ${location}.`,
+    notAllowedCreate: (item, location) =>
+      `Not allowed to create ${item} in ${location}.`,
   },
 
   sessionExpired: 'Your session has expired.',
@@ -83,7 +93,8 @@ export const infoMessages = {
   },
 
   taskDetail: {
-    acceptedRules: 'Not allowed to edit subject, dates and description of task!',
+    acceptedRules:
+      'Not allowed to edit subject, dates and description of task!',
     inboxRules: 'Allowed to add comments and accept/reject of task!',
-  }
+  },
 }
