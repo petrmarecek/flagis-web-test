@@ -1,6 +1,10 @@
-import { getTimeLineByDueDate } from 'redux/utils/component-helper'
+import {
+  getTimeLineByDueDate,
+  getAssigneeOfTask,
+} from 'redux/utils/component-helper'
 import moment from 'moment'
 import dateUtil from 'redux/utils/date'
+import R from 'ramda'
 
 // For task order nad filter group order in tag tree
 export function computeOrder(tasks, move) {
@@ -256,6 +260,43 @@ export function getIsArchivedTagsRelations(
       result = true
       break
     }
+  }
+
+  return result
+}
+
+export function getContactTasksRelations(contactId, entitiesTasks) {
+  let result = { isTask: false, isInbox: false, isArchived: false }
+  const isTakeLens = R.lensProp('isTask')
+  const isInboxLens = R.lensProp('isInbox')
+  const isArchivedLens = R.lensProp('isArchived')
+
+  for (const task of entitiesTasks) {
+    const { isArchived, followers } = task
+    const assignee = getAssigneeOfTask(followers)
+
+    if (!assignee) {
+      continue
+    }
+
+    const profileId = assignee.profile.id
+    const isInbox = assignee.status === 'pending'
+    if (profileId !== contactId) {
+      continue
+    }
+
+    if (isInbox && !result.isInbox) {
+      result = R.set(isInboxLens, true, result)
+      continue
+    }
+
+    if (isArchived && !result.isArchived) {
+      result = R.set(isArchivedLens, true, result)
+      continue
+    }
+
+    result = R.set(isTakeLens, true, result)
+    break
   }
 
   return result

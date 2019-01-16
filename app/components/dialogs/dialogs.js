@@ -5,7 +5,10 @@ import { toast } from 'react-toastify'
 import { errorMessages } from 'utils/messages'
 import constants from 'utils/constants'
 
-import { getIsArchivedTagsRelations } from '../../redux/utils/redux-helper'
+import {
+  getIsArchivedTagsRelations,
+  getContactTasksRelations,
+} from '../../redux/utils/redux-helper'
 import { getUserId } from 'redux/store/auth/auth.selectors'
 import {
   hideDialog,
@@ -32,6 +35,7 @@ import {
   getTasksItems,
   getCompletedTasksItems,
   getArchivedTasksItems,
+  getAllTasks,
 } from 'redux/store/tasks/tasks.selectors'
 import {
   deleteTag,
@@ -71,6 +75,7 @@ class Dialogs extends PureComponent {
   static propTypes = {
     currentDialog: PropTypes.object,
     tasks: PropTypes.object,
+    entitiesAllTasks: PropTypes.array,
     entitiesTasks: PropTypes.object,
     completedTasks: PropTypes.object,
     archivedTasks: PropTypes.object,
@@ -225,16 +230,19 @@ class Dialogs extends PureComponent {
 
     if (isTagsRelations) {
       if (tagsRelations.getIn([tagId]).size > 0) {
-        toast.error(errorMessages.tags.relationTaskDeleteConflict, {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          autoClose: constants.NOTIFICATION_ERROR_DURATION,
-        })
+        toast.error(
+          errorMessages.relations.relationDeleteConflict('tag', 'tasks'),
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: constants.NOTIFICATION_ERROR_DURATION,
+          }
+        )
         return
       }
     }
 
     if (archivedTasks.size === 0) {
-      toast.error(errorMessages.tags.emptyArchiveDeleteConflict, {
+      toast.error(errorMessages.relations.emptyListDeleteConflict('archive'), {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: constants.NOTIFICATION_ERROR_DURATION,
       })
@@ -242,10 +250,13 @@ class Dialogs extends PureComponent {
     }
 
     if (isArchivedTagsRelations) {
-      toast.error(errorMessages.tags.relationArchiveDeleteConflict, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: constants.NOTIFICATION_ERROR_DURATION,
-      })
+      toast.error(
+        errorMessages.relations.relationDeleteConflict('tag', 'archive tasks'),
+        {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: constants.NOTIFICATION_ERROR_DURATION,
+        }
+      )
       return
     }
 
@@ -264,6 +275,56 @@ class Dialogs extends PureComponent {
 
   // confirm-contact-delete-dialog
   handleContactDelete = contact => {
+    const { entitiesAllTasks, archivedTasks } = this.props
+    const relations = getContactTasksRelations(contact.id, entitiesAllTasks)
+
+    if (relations.isTask) {
+      toast.error(
+        errorMessages.relations.relationDeleteConflict('contact', 'tasks'),
+        {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: constants.NOTIFICATION_ERROR_DURATION,
+        }
+      )
+      return
+    }
+
+    if (relations.isInbox) {
+      toast.error(
+        errorMessages.relations.relationDeleteConflict(
+          'contact',
+          'inbox tasks'
+        ),
+        {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: constants.NOTIFICATION_ERROR_DURATION,
+        }
+      )
+      return
+    }
+
+    if (archivedTasks.size === 0) {
+      toast.error(errorMessages.relations.emptyListDeleteConflict('archive'), {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: constants.NOTIFICATION_ERROR_DURATION,
+      })
+      return
+    }
+
+    if (relations.isArchived) {
+      toast.error(
+        errorMessages.relations.relationDeleteConflict(
+          'contact',
+          'archive tasks'
+        ),
+        {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: constants.NOTIFICATION_ERROR_DURATION,
+        }
+      )
+      return
+    }
+
     this.props.hideDialog()
     this.props.deselectContacts()
     this.props.deleteContact(contact)
@@ -427,6 +488,7 @@ const mapStateToProps = state => ({
   tasks: getTasksItems(state),
   completedTasks: getCompletedTasksItems(state),
   archivedTasks: getArchivedTasksItems(state),
+  entitiesAllTasks: getAllTasks(state),
   entitiesTasks: getEntitiesTasks(state),
   tagsReferences: getTagsReferences(state),
   tagsRelations: getTagsRelations(state),

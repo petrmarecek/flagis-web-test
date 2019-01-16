@@ -7,17 +7,20 @@ import intersection from 'lodash/intersection'
 import { getUserId } from '../auth/auth.selectors'
 import {
   getArchivedTasksVisibility,
-  getInboxTasksVisibility
+  getInboxTasksVisibility,
 } from '../app-state/app-state.selectors'
 import {
   getEntitiesTasks,
   getEntitiesTags,
   getEntitiesFollowers,
-  getEntitiesContacts
+  getEntitiesContacts,
 } from '../entities/entities.selectors'
 import { getActiveTagsIds } from '../tags/tags.selectors'
 import { getTasksMenu } from '../tasks-menu/tasks-menu.selectors'
-import { compareTaskBySubject, getAssigneeOfTask } from '../../utils/component-helper'
+import {
+  compareTaskBySubject,
+  getAssigneeOfTask,
+} from '../../utils/component-helper'
 
 // ------ Helper functions ----------------------------------------------------
 
@@ -42,7 +45,6 @@ function filterByDateRange(range, tasks) {
 
   const rangeFilter = dateFilters[range]
   return tasks.filter(task => {
-
     // filter tasks without dueDate
     if (!task.dueDate) {
       return false
@@ -51,6 +53,39 @@ function filterByDateRange(range, tasks) {
     // include those which match filter or are overdue
     const dueDate = moment(task.dueDate)
     return rangeFilter(dueDate) || dueDate.isBefore(now)
+  })
+}
+
+/**
+ * Loads all task entities for given task IDs
+ * @param {Array} ids Array of all tasks
+ * @param {Object} data Object
+ * @returns {Array} array of tasks
+ */
+
+function loadAllTasks(ids, data) {
+  const {
+    entitiesTasks,
+    entitiesTags,
+    entitiesFollowers,
+    entitiesContacts,
+  } = data
+
+  return ids.map(taskId => {
+    const task = entitiesTasks.get(taskId)
+    const tags = task.tags.map(tagId => entitiesTags.get(tagId))
+    const createdBy = entitiesContacts.get(task.createdById)
+    const followers = task.followers.map(followerId => {
+      const follower = entitiesFollowers.get(followerId)
+      const profile = entitiesContacts.get(follower.userId)
+
+      return follower.set('profile', profile)
+    })
+
+    return task
+      .set('tags', tags)
+      .set('createdBy', createdBy)
+      .set('followers', followers)
   })
 }
 
@@ -70,12 +105,14 @@ function loadTasks(ids, data) {
     entitiesContacts,
     activeTagsIds,
     timeLine,
-    userId
+    userId,
   } = data
 
   // apply search filter
   if (tasksMenu.getIn(['filters', 'searchText'])) {
-    const foundIds = search.tasks.get(tasksMenu.getIn(['filters', 'searchText'])).map(item => item.ref)
+    const foundIds = search.tasks
+      .get(tasksMenu.getIn(['filters', 'searchText']))
+      .map(item => item.ref)
     ids = intersection(ids, foundIds)
   }
 
@@ -98,18 +135,20 @@ function loadTasks(ids, data) {
 
   // sort task by order
   tasks.sort((a, b) => {
-    if (a.order > b.order) return -1;
-    if (a.order < b.order) return 1;
+    if (a.order > b.order) return -1
+    if (a.order < b.order) return 1
 
-    return 0;
+    return 0
   })
 
   // apply tag search
   const activeTags = activeTagsIds
   if (activeTags.size !== 0) {
-    const tags = activeTags.map(tagId => {
-      return entitiesTags.get(tagId)
-    }).toList()
+    const tags = activeTags
+      .map(tagId => {
+        return entitiesTags.get(tagId)
+      })
+      .toList()
 
     tasks = findTasksByTags(tasks, tags)
   }
@@ -164,21 +203,21 @@ function loadTasks(ids, data) {
 
     // Sort tasks with dueDate by dueDate and orderTimeLine
     tasksDueDate.sort((a, b) => {
-      if (moment(a.dueDate) < moment(b.dueDate)) return -1;
-      if (moment(a.dueDate) > moment(b.dueDate)) return 1;
+      if (moment(a.dueDate) < moment(b.dueDate)) return -1
+      if (moment(a.dueDate) > moment(b.dueDate)) return 1
 
-      if (a.orderTimeLine > b.orderTimeLine) return -1;
-      if (a.orderTimeLine < b.orderTimeLine) return 1;
+      if (a.orderTimeLine > b.orderTimeLine) return -1
+      if (a.orderTimeLine < b.orderTimeLine) return 1
 
-      return 0;
+      return 0
     })
 
     // Sort tasks without dueDate by orderTimeLine
     tasksOthers.sort((a, b) => {
-      if (a.orderTimeLine > b.orderTimeLine) return -1;
-      if (a.orderTimeLine < b.orderTimeLine) return 1;
+      if (a.orderTimeLine > b.orderTimeLine) return -1
+      if (a.orderTimeLine < b.orderTimeLine) return 1
 
-      return 0;
+      return 0
     })
 
     tasks = tasksDueDate.concat(tasksOthers)
@@ -217,12 +256,14 @@ function loadArchiveTasks(ids, data) {
     entitiesTags,
     entitiesFollowers,
     entitiesContacts,
-    activeTagsIds
+    activeTagsIds,
   } = data
 
   // apply search filter
   if (tasksMenu.getIn(['filters', 'searchText'])) {
-    const foundIds = search.tasks.get(tasksMenu.getIn(['filters', 'searchText'])).map(item => item.ref)
+    const foundIds = search.tasks
+      .get(tasksMenu.getIn(['filters', 'searchText']))
+      .map(item => item.ref)
     ids = intersection(ids, foundIds)
   }
 
@@ -245,17 +286,19 @@ function loadArchiveTasks(ids, data) {
 
   // apply sort by archive date
   tasks.sort((a, b) => {
-    if(a.archivedAt > b.archivedAt) return -1;
-    if(a.archivedAt < b.archivedAt) return 1;
-    return 0;
+    if (a.archivedAt > b.archivedAt) return -1
+    if (a.archivedAt < b.archivedAt) return 1
+    return 0
   })
 
   // apply tag search
   const activeTags = activeTagsIds
   if (activeTags.size !== 0) {
-    const tags = activeTags.map(tagId => {
-      return entitiesTags.get(tagId)
-    }).toList()
+    const tags = activeTags
+      .map(tagId => {
+        return entitiesTags.get(tagId)
+      })
+      .toList()
 
     tasks = findTasksByTags(tasks, tags)
   }
@@ -263,7 +306,7 @@ function loadArchiveTasks(ids, data) {
   return tasks
 }
 
- /**
+/**
  * Loads task entities for given task IDs (only inbox tasks)
  * @param {Array} ids Array of tasks
  * @param {Object} data Object
@@ -297,10 +340,10 @@ function loadInboxTasks(ids, data) {
 
   // sort task by order
   tasks.sort((a, b) => {
-    if (a.order > b.order) return -1;
-    if (a.order < b.order) return 1;
+    if (a.order > b.order) return -1
+    if (a.order < b.order) return 1
 
-    return 0;
+    return 0
   })
 
   return tasks
@@ -342,7 +385,6 @@ function findTasksByTags(tasks, tags) {
     if (includes) {
       entities.push(task)
     }
-
   })
 
   return entities
@@ -352,19 +394,61 @@ function findTasksByTags(tasks, tags) {
 
 // Local selectors
 const getTasksIsFetching = state => state.getIn(['tasks', 'isFetching'])
-const getArchivedTasksIsFetching = state => state.getIn(['tasks', 'archived', 'isFetching'])
-const getInboxTasksIsFetching = state => state.getIn(['tasks', 'inbox', 'isFetching'])
+const getArchivedTasksIsFetching = state =>
+  state.getIn(['tasks', 'archived', 'isFetching'])
+const getInboxTasksIsFetching = state =>
+  state.getIn(['tasks', 'inbox', 'isFetching'])
 
 // Export selectors
 export const getTimeLine = state => state.getIn(['tasks', 'timeLine'])
 export const getTasksItems = state => state.getIn(['tasks', 'items'])
-export const getArchivedTasksItems = state => state.getIn(['tasks', 'archived', 'items'])
-export const getInboxTasksItems = state => state.getIn(['tasks', 'inbox', 'items'])
-export const getTaskTags = (state, taskId) => state.getIn(['entities', 'tasks', taskId, 'tags'])
-export const getCompletedTasksItems = state => state.getIn(['tasks', 'completed'])
+export const getArchivedTasksItems = state =>
+  state.getIn(['tasks', 'archived', 'items'])
+export const getInboxTasksItems = state =>
+  state.getIn(['tasks', 'inbox', 'items'])
+export const getTaskTags = (state, taskId) =>
+  state.getIn(['entities', 'tasks', taskId, 'tags'])
+export const getCompletedTasksItems = state =>
+  state.getIn(['tasks', 'completed'])
 export const getSelectionTasks = state => state.getIn(['tasks', 'selection'])
 
 // ------ Reselect selectors ----------------------------------------------------
+
+export const getAllTasks = createSelector(
+  getArchivedTasksItems,
+  getTasksItems,
+  getInboxTasksItems,
+  getEntitiesTasks,
+  getEntitiesTags,
+  getEntitiesFollowers,
+  getEntitiesContacts,
+  (
+    archivedTasksItems,
+    tasksItems,
+    InboxTasksItems,
+    entitiesTasks,
+    entitiesTags,
+    entitiesFollowers,
+    entitiesContacts
+  ) => {
+    let ids = tasksItems
+      .toSet()
+      .union(InboxTasksItems.toSet())
+      .toList()
+    ids = ids
+      .toSet()
+      .union(archivedTasksItems.toSet())
+      .toList()
+    const data = {
+      entitiesTasks,
+      entitiesTags,
+      entitiesFollowers,
+      entitiesContacts,
+    }
+
+    return loadAllTasks(ids.toArray(), data)
+  }
+)
 
 export const getTasks = createSelector(
   getArchivedTasksVisibility,
@@ -383,23 +467,24 @@ export const getTasks = createSelector(
   getEntitiesContacts,
   getActiveTagsIds,
   getUserId,
-  (isArchivedTasksVisible,
-   isInboxTasksVisible,
-   archivedTasksIsFetching,
-   archivedTasksItems,
-   tasksIsFetching,
-   tasksItems,
-   inboxTasksIsFetching,
-   InboxTasksItems,
-   tasksMenu,
-   timeLine,
-   entitiesTasks,
-   entitiesTags,
-   entitiesFollowers,
-   entitiesContacts,
-   activeTagsIds,
-   userId) => {
-
+  (
+    isArchivedTasksVisible,
+    isInboxTasksVisible,
+    archivedTasksIsFetching,
+    archivedTasksItems,
+    tasksIsFetching,
+    tasksItems,
+    inboxTasksIsFetching,
+    InboxTasksItems,
+    tasksMenu,
+    timeLine,
+    entitiesTasks,
+    entitiesTags,
+    entitiesFollowers,
+    entitiesContacts,
+    activeTagsIds,
+    userId
+  ) => {
     const data = {
       tasksMenu,
       entitiesTasks,
@@ -408,33 +493,33 @@ export const getTasks = createSelector(
       entitiesContacts,
       activeTagsIds,
       timeLine,
-      userId
+      userId,
     }
 
     // Load archived tasks
     if (isArchivedTasksVisible) {
-      return ({
+      return {
         isFetching: archivedTasksIsFetching,
         items: loadArchiveTasks(archivedTasksItems.toArray(), data),
         type: 'archived',
-      })
+      }
     }
 
     // Load inbox tasks
     if (isInboxTasksVisible) {
-      return ({
+      return {
         isFetching: inboxTasksIsFetching,
         items: loadInboxTasks(InboxTasksItems.toArray(), data),
         type: 'inbox',
-      })
+      }
     }
 
     // Load main tasks
-    return ({
+    return {
       isFetching: tasksIsFetching,
       items: loadTasks(tasksItems.toArray(), data),
       type: 'main',
-    })
+    }
   }
 )
 
@@ -448,16 +533,17 @@ export const getCompletedTasks = createSelector(
   getEntitiesContacts,
   getActiveTagsIds,
   getUserId,
-  (completedTasksItems,
-   tasksMenu,
-   timeLine,
-   entitiesTasks,
-   entitiesTags,
-   entitiesFollowers,
-   entitiesContacts,
-   activeTagsIds,
-   userId) => {
-
+  (
+    completedTasksItems,
+    tasksMenu,
+    timeLine,
+    entitiesTasks,
+    entitiesTags,
+    entitiesFollowers,
+    entitiesContacts,
+    activeTagsIds,
+    userId
+  ) => {
     const data = {
       tasksMenu,
       entitiesTasks,
@@ -466,12 +552,12 @@ export const getCompletedTasks = createSelector(
       entitiesContacts,
       activeTagsIds,
       timeLine,
-      userId
+      userId,
     }
 
-    return ({
-      items: loadTasks(completedTasksItems.toArray(), data)
-    })
+    return {
+      items: loadTasks(completedTasksItems.toArray(), data),
+    }
   }
 )
 
@@ -479,7 +565,6 @@ export const getCurrentTaskTags = createSelector(
   getEntitiesTasks,
   getSelectionTasks,
   (entitiesTasks, selectionTasks) => {
-
     const selectedTaskId = getSelectedTaskId(selectionTasks)
     if (!selectedTaskId) {
       return List()
@@ -499,16 +584,17 @@ export const getSelectTasks = createSelector(
   getEntitiesContacts,
   getActiveTagsIds,
   getUserId,
-  (selectionTasks,
-   tasksMenu,
-   timeLine,
-   entitiesTasks,
-   entitiesTags,
-   entitiesFollowers,
-   entitiesContacts,
-   activeTagsIds,
-   userId) => {
-
+  (
+    selectionTasks,
+    tasksMenu,
+    timeLine,
+    entitiesTasks,
+    entitiesTags,
+    entitiesFollowers,
+    entitiesContacts,
+    activeTagsIds,
+    userId
+  ) => {
     const data = {
       tasksMenu,
       entitiesTasks,
@@ -517,7 +603,7 @@ export const getSelectTasks = createSelector(
       entitiesContacts,
       activeTagsIds,
       timeLine,
-      userId
+      userId,
     }
 
     return loadTasks(selectionTasks.toArray(), data)
@@ -536,18 +622,19 @@ export const getTasksId = createSelector(
   getEntitiesContacts,
   getActiveTagsIds,
   getUserId,
-  (isArchivedTasksVisible,
-   archivedTasksItems,
-   tasksItems,
-   tasksMenu,
-   timeLine,
-   entitiesTasks,
-   entitiesTags,
-   entitiesFollowers,
-   entitiesContacts,
-   activeTagsIds,
-   userId) => {
-
+  (
+    isArchivedTasksVisible,
+    archivedTasksItems,
+    tasksItems,
+    tasksMenu,
+    timeLine,
+    entitiesTasks,
+    entitiesTags,
+    entitiesFollowers,
+    entitiesContacts,
+    activeTagsIds,
+    userId
+  ) => {
     const archived = isArchivedTasksVisible
     const data = {
       tasksMenu,
@@ -557,7 +644,7 @@ export const getTasksId = createSelector(
       entitiesContacts,
       activeTagsIds,
       timeLine,
-      userId
+      userId,
     }
 
     if (archived) {
@@ -567,7 +654,6 @@ export const getTasksId = createSelector(
 
     const tasks = loadTasks(tasksItems.toArray(), data)
     return List(tasks.map(task => task.id))
-
   }
 )
 
@@ -581,16 +667,17 @@ export const getCompletedTasksId = createSelector(
   getEntitiesContacts,
   getActiveTagsIds,
   getUserId,
-  (completedTasksItems,
-   tasksMenu,
-   timeLine,
-   entitiesTasks,
-   entitiesTags,
-   entitiesFollowers,
-   entitiesContacts,
-   activeTagsIds,
-   userId) => {
-
+  (
+    completedTasksItems,
+    tasksMenu,
+    timeLine,
+    entitiesTasks,
+    entitiesTags,
+    entitiesFollowers,
+    entitiesContacts,
+    activeTagsIds,
+    userId
+  ) => {
     const data = {
       tasksMenu,
       entitiesTasks,
@@ -599,7 +686,7 @@ export const getCompletedTasksId = createSelector(
       entitiesContacts,
       activeTagsIds,
       timeLine,
-      userId
+      userId,
     }
     const tasks = loadTasks(completedTasksItems.toArray(), data)
     return List(tasks.map(task => task.id))
@@ -612,8 +699,13 @@ export const getCurrentTask = createSelector(
   getEntitiesFollowers,
   getEntitiesContacts,
   getSelectionTasks,
-  (entitiesTasks, entitiesTags, entitiesFollowers, entitiesContacts, selectionTasks) => {
-
+  (
+    entitiesTasks,
+    entitiesTags,
+    entitiesFollowers,
+    entitiesContacts,
+    selectionTasks
+  ) => {
     const selectedTaskId = getSelectedTaskId(selectionTasks)
     if (!selectedTaskId) {
       return null
@@ -651,20 +743,22 @@ export const getNextTask = createSelector(
   getEntitiesContacts,
   getActiveTagsIds,
   getUserId,
-  (selectionTasks,
-   isArchivedTasksVisible,
-   archivedTasksItems,
-   isInboxTasksVisible,
-   InboxTasksItems,
-   tasksItems,
-   tasksMenu,
-   timeLine,
-   entitiesTasks,
-   entitiesTags,
-   entitiesFollowers,
-   entitiesContacts,
-   activeTagsIds,
-   userId) => {
+  (
+    selectionTasks,
+    isArchivedTasksVisible,
+    archivedTasksItems,
+    isInboxTasksVisible,
+    InboxTasksItems,
+    tasksItems,
+    tasksMenu,
+    timeLine,
+    entitiesTasks,
+    entitiesTags,
+    entitiesFollowers,
+    entitiesContacts,
+    activeTagsIds,
+    userId
+  ) => {
     const selectedTaskId = getSelectedTaskId(selectionTasks)
     if (!selectedTaskId) {
       return null
@@ -679,7 +773,7 @@ export const getNextTask = createSelector(
       entitiesContacts,
       activeTagsIds,
       timeLine,
-      userId
+      userId,
     }
 
     let typeTask = loadTasks(tasksItems.toArray(), data)
@@ -706,7 +800,7 @@ export const getNextTask = createSelector(
 
     const nextTaskId = typeTask.get(nextIndex)
     const nextTask = entitiesTasks.get(nextTaskId)
-    if(!nextTask) {
+    if (!nextTask) {
       return null
     }
 
@@ -729,20 +823,22 @@ export const getPreviousTask = createSelector(
   getEntitiesContacts,
   getActiveTagsIds,
   getUserId,
-  (selectionTasks,
-   isArchivedTasksVisible,
-   archivedTasksItems,
-   isInboxTasksVisible,
-   InboxTasksItems,
-   tasksItems,
-   tasksMenu,
-   timeLine,
-   entitiesTasks,
-   entitiesTags,
-   entitiesFollowers,
-   entitiesContacts,
-   activeTagsIds,
-   userId) => {
+  (
+    selectionTasks,
+    isArchivedTasksVisible,
+    archivedTasksItems,
+    isInboxTasksVisible,
+    InboxTasksItems,
+    tasksItems,
+    tasksMenu,
+    timeLine,
+    entitiesTasks,
+    entitiesTags,
+    entitiesFollowers,
+    entitiesContacts,
+    activeTagsIds,
+    userId
+  ) => {
     const selectedTaskId = getSelectedTaskId(selectionTasks)
     if (!selectedTaskId) {
       return null
@@ -757,7 +853,7 @@ export const getPreviousTask = createSelector(
       entitiesContacts,
       activeTagsIds,
       timeLine,
-      userId
+      userId,
     }
 
     let typeTask = loadTasks(tasksItems.toArray(), data)
@@ -796,15 +892,16 @@ export const getSelectTasksTags = createSelector(
   getSelectionTasks,
   getEntitiesTasks,
   (selectionTasks, entitiesTasks) => {
+    return selectionTasks
+      .map(taskId => {
+        const tagsList = entitiesTasks.getIn([taskId, 'tags'])
 
-    return selectionTasks.map(taskId => {
-      const tagsList = entitiesTasks.getIn([taskId, 'tags'])
+        if (tagsList.size === 0) {
+          return List()
+        }
 
-      if (tagsList.size === 0) {
-        return List()
-      }
-
-      return tagsList
-    }).toList()
+        return tagsList
+      })
+      .toList()
   }
 )

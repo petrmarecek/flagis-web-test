@@ -27,14 +27,14 @@ export const errorMessages = {
     referenceDeleteConflict:
       'The target tag cannot be deleted because it is referenced ' +
       'in the filter tree. Please delete the referencing tree item first.',
-    relationTaskDeleteConflict:
-      'The target tag cannot be deleted because it has relations ' +
-      'in tasks list. Please delete the relations first.',
-    emptyArchiveDeleteConflict:
-      'Please, check your archive list if there are relations between tasks and tags.',
-    relationArchiveDeleteConflict:
-      'The target tag cannot be deleted because it has relations ' +
-      'in archive tasks list. Please delete the relations first.',
+  },
+
+  relations: {
+    relationDeleteConflict: (target, list) =>
+      `The target ${target} cannot be deleted because it has relations ` +
+      `in ${list} list. Please delete the relations first.`,
+    emptyListDeleteConflict: list =>
+      `Please, check your ${list} list if there are relations between tasks and tags.`,
   },
 
   treeItems: {
