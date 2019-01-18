@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { DragSource, DropTarget } from 'react-dnd'
-import { compose, shouldUpdate, withHandlers, withState } from 'recompose'
+import { compose, shouldUpdate, withStateHandlers } from 'recompose'
 import { findDOMNode } from 'react-dom'
 import Linkify from 'react-linkify'
 import moment from 'moment'
@@ -148,6 +148,8 @@ const taskTarget = {
     }
 
     // Now we can perform move as the boundary has been crossed
+    const dragDirection = dragIndex < hoverIndex ? 'DOWN' : 'UP'
+    component.setState({ isMoved: dragDirection })
     const move = {
       source: props.listType,
       sourceTaskId: dragSource.task.id,
@@ -158,7 +160,7 @@ const taskTarget = {
       targetDueDate: props.task.dueDate,
       targetIndex: hoverIndex,
       bottom: hoverClientY > hoverMiddleY,
-      direction: dragIndex < hoverIndex ? 'DOWN' : 'UP',
+      direction: dragDirection,
     }
 
     props.moveTask(move)
@@ -211,6 +213,7 @@ const TaskListItem = props => {
     isSelected,
     isDragging,
     isMounted,
+    isMoved,
     noTaskFound,
     listType,
     selectedTags,
@@ -307,9 +310,15 @@ const TaskListItem = props => {
             completed={isCompletedMainList}
             dragging={isDragging}
             isMounted={isMounted}
+            isMoved={isMoved}
           >
             {!isArchivedList && !isInboxList && (
-              <Completed onClick={onHandleCompleteClicked}>
+              <Completed
+                onClick={e => {
+                  e.stopPropagation()
+                  onHandleCompleteClicked()
+                }}
+              >
                 <Icon
                   icon={ICONS.TASK_CHECKED}
                   color={task.isCompleted ? ['#c2fee5'] : ['#D7E3EC']}
@@ -321,7 +330,10 @@ const TaskListItem = props => {
             {task.isCompleted && !isInboxList && (
               <Archived
                 archived={isArchivedList}
-                onClick={onHandleArchiveClicked}
+                onClick={e => {
+                  e.stopPropagation()
+                  onHandleArchiveClicked()
+                }}
               >
                 <Icon
                   icon={isArchivedList ? ICONS.NON_ARCHIVE : ICONS.ARCHIVE}
@@ -405,6 +417,7 @@ TaskListItem.propTypes = {
   task: PropTypes.object,
   noTaskFound: PropTypes.bool,
   isMounted: PropTypes.bool,
+  isMoved: PropTypes.string,
   listType: PropTypes.string,
   selectedTags: PropTypes.object,
   isSelected: PropTypes.bool,
@@ -414,9 +427,9 @@ TaskListItem.propTypes = {
   sort: PropTypes.object,
   leftPanelWidth: PropTypes.number,
   windowWidth: PropTypes.number,
+  index: PropTypes.number,
 
   // Handlers
-  setMounted: PropTypes.func,
   onClick: PropTypes.func,
   onCompleteClick: PropTypes.func,
   moveTask: PropTypes.func,
@@ -440,13 +453,21 @@ TaskListItem.propTypes = {
 
 const checkPropsChange = (props, nextProps) => {
   // props
-  const { task, isSelected, isDragging, isMounted, windowWidth } = props
+  const {
+    task,
+    isSelected,
+    isDragging,
+    isMounted,
+    isMoved,
+    windowWidth,
+  } = props
 
   // nextProps
   const nextTask = nextProps.task
   const nextIsSelected = nextProps.isSelected
   const nextIsDragging = nextProps.isDragging
   const nextIsMounted = nextProps.isMounted
+  const nextIsMoved = nextProps.isMoved
   const nextWindowWidth = nextProps.windowWidth
 
   return (
@@ -454,6 +475,7 @@ const checkPropsChange = (props, nextProps) => {
     isSelected !== nextIsSelected ||
     isDragging !== nextIsDragging ||
     isMounted !== nextIsMounted ||
+    isMoved !== nextIsMoved ||
     windowWidth !== nextWindowWidth
   )
 }
@@ -461,28 +483,26 @@ const checkPropsChange = (props, nextProps) => {
 export default DragSource(ItemTypes.TASK, taskSource, collectDragSource)(
   compose(
     DropTarget(ItemTypes.TASK, taskTarget, collectDropTarget),
-    withState('isMounted', 'setMounted', true),
-    withHandlers({
-      onHandleClicked: props => event => {
-        event.persist()
+    withStateHandlers(() => ({ isMoved: null, isMounted: true }), {
+      onHandleClicked: (state, props) => event => {
         const isInboxList = props.listType === 'inbox'
         const isMultiselect = event.ctrlKey || event.metaKey
 
         // Not allowed multiselect in inbox list
         if (isMultiselect && isInboxList) {
-          return
+          return {}
         }
 
         // Click on link
         if (event.target.nodeName === 'A') {
-          return
+          return {}
         }
 
         props.onClick(props.task, event)
+        return {}
       },
-      onHandleTagClicked: props => tag => props.onTagClick(tag),
-      onHandleCompleteClicked: props => event => {
-        event.stopPropagation()
+      onHandleTagClicked: (state, props) => tag => props.onTagClick(tag),
+      onHandleCompleteClicked: (state, props) => () => {
         // Data of assignee
         const assignee = getAssigneeOfTask(props.task.followers)
         const isFollowers = assignee !== null
@@ -493,24 +513,22 @@ export default DragSource(ItemTypes.TASK, taskSource, collectDragSource)(
             position: toast.POSITION.BOTTOM_RIGHT,
             autoClose: constants.NOTIFICATION_ERROR_DURATION,
           })
-          return
+          return {}
         }
 
         props.onCompleteClick(props.task)
+        return {}
       },
-      onHandleArchiveClicked: props => event => {
-        event.stopPropagation()
-
+      onHandleArchiveClicked: (state, props) => () => {
         if (props.listType === 'archived') {
           window.setTimeout(() => props.cancelArchiveTasks(props.task.id), 400)
-          props.setMounted(false)
-          return
+          return { isMounted: false, isMoved: null }
         }
 
         window.setTimeout(() => props.setArchiveTasks(props.task.id), 400)
-        props.setMounted(false)
+        return { isMounted: false, isMoved: null }
       },
-      onHandleAcceptClicked: props => () => {
+      onHandleAcceptClicked: (state, props) => () => {
         const { id, followers } = props.task
         const assignee = getAssigneeOfTask(followers)
         const data = {
@@ -519,9 +537,9 @@ export default DragSource(ItemTypes.TASK, taskSource, collectDragSource)(
         }
 
         window.setTimeout(() => props.acceptTask(data), 400)
-        props.setMounted(false)
+        return { isMounted: false, isMoved: null }
       },
-      onHandleRejectClicked: props => () => {
+      onHandleRejectClicked: (state, props) => () => {
         const { task, listType } = props
         const data = {
           task,
@@ -529,7 +547,7 @@ export default DragSource(ItemTypes.TASK, taskSource, collectDragSource)(
         }
 
         window.setTimeout(() => props.rejectTask(data), 400)
-        props.setMounted(false)
+        return { isMounted: false, isMoved: null }
       },
     }),
     shouldUpdate(checkPropsChange)
