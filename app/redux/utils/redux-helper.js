@@ -8,7 +8,7 @@ import R from 'ramda'
 
 // For task order nad filter group order in tag tree
 export function computeOrder(tasks, move) {
-  const { targetIndex, direction } = move
+  const { targetIndex, direction, isActiveTags } = move
 
   // Moving just one task
   if (tasks.length === 1) {
@@ -17,15 +17,20 @@ export function computeOrder(tasks, move) {
 
   // Moved to the top
   if (targetIndex === 0) {
+    // Add a second to the order if tag filter is activated
+    if (isActiveTags) {
+      const prevItemsOrder = tasks[targetIndex].order
+      return new Date(prevItemsOrder + 1000).getTime()
+    }
+
     return dateUtil.getMilliseconds()
   }
 
   // Moved to the end
   if (targetIndex === tasks.length - 1) {
-    // Subtract an hour to the order
-    const hourInMs = 60 * 60 * 1000
+    // Subtract a second to the order
     const prevItemsOrder = tasks[targetIndex].order
-    return new Date(prevItemsOrder - hourInMs).getTime()
+    return new Date(prevItemsOrder - 1000).getTime()
   }
 
   // Moved in the middle

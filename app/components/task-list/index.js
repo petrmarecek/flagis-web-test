@@ -6,6 +6,7 @@ import debounce from 'lodash/debounce'
 import { toast } from 'react-toastify'
 import { successMessages } from 'utils/messages'
 import constants from 'utils/constants'
+import R from 'ramda'
 
 import {
   getArchivedTasksVisibility,
@@ -223,7 +224,9 @@ export default compose(
     {
       onInvokeMove: (state, props) => move => {
         const { sourceTaskId, targetSection } = move
+        const isActiveTags = props.selectedTags.size !== 0
         const tasks = props.tasks.items
+        move = R.assoc('isActiveTags', isActiveTags, move)
 
         // sort by Due Date
         if (targetSection) {
