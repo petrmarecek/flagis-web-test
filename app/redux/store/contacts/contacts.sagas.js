@@ -17,11 +17,19 @@ const CONTACTS = contactsActions.CONTACTS
 
 function* saveChangeFromFirestore(change, isGlobalProfile) {
   const { FULFILLED } = createLoadActions(CONTACTS.FIREBASE)
-  const contact = change.doc.data()
+  const { type, doc } = change
+  const contact = doc.data()
+
+  // Don't save changes if contact was deleted
+  if (type === 'removed') {
+    return
+  }
 
   // Prepare data
   const normalizeData = normalize(contact, schema.contact)
-  const entitiesContacts = yield select(state => entitiesSelectors.getEntitiesContacts(state))
+  const entitiesContacts = yield select(state =>
+    entitiesSelectors.getEntitiesContacts(state)
+  )
 
   if (isGlobalProfile && entitiesContacts.has(contact.id)) {
     const entitiesContact = entitiesContacts.get(contact.id)
@@ -36,9 +44,14 @@ function* saveChangeFromFirestore(change, isGlobalProfile) {
 }
 
 function* syncContactsChannel(channel, isGlobalProfile) {
-  while (true) { // eslint-disable-line
+  while (true) {
+    // eslint-disable-line
     const snapshot = yield take(channel)
-    yield all(snapshot.docChanges().map(change => call(saveChangeFromFirestore, change, isGlobalProfile)))
+    yield all(
+      snapshot
+        .docChanges()
+        .map(change => call(saveChangeFromFirestore, change, isGlobalProfile))
+    )
   }
 }
 
@@ -58,7 +71,7 @@ export function* fetchContacts() {
   const result = yield* fetch(CONTACTS.FETCH, {
     method: api.contacts.get,
     args: [],
-    schema: schema.contacts
+    schema: schema.contacts,
   })
 
   // Initialize search service
@@ -76,8 +89,7 @@ export function* createContact(action) {
     search.contacts.addItem(contact)
 
     yield put(contactsActions.addContact(contact))
-
-  } catch(err) {
+  } catch (err) {
     console.error(err)
   }
 }
@@ -89,7 +101,9 @@ export function* selectContacts(action) {
 }
 
 export function* deselectContacts() {
-  const isTagDetail = yield select(state => appStateSelectors.getContactDetail(state))
+  const isTagDetail = yield select(state =>
+    appStateSelectors.getContactDetail(state)
+  )
 
   if (isTagDetail) {
     yield put(appStateActions.deselectDetail('contact'))
@@ -106,8 +120,7 @@ export function* updateContacts(action) {
     // call server
     const updateData = { [type]: data }
     yield call(api.contacts.update, contact.id, updateData)
-
-  } catch(err) {
+  } catch (err) {
     // log error
     console.error('Error occured during contact update', err)
 
@@ -121,8 +134,7 @@ export function* sendInvitationContact(action) {
     // call server
     const contactId = action.payload.contactId
     yield call(api.contacts.invitation, contactId)
-
-  } catch(err) {
+  } catch (err) {
     // log error
     console.error('Error occured during send invitation to contact', err)
   }
@@ -142,8 +154,7 @@ export function* deleteContact(action) {
 
     // delete contact from the search index
     search.contacts.removeItem({ id: action.payload })
-
-  } catch(err) {
+  } catch (err) {
     // log error
     console.error('Error occured during contact delete', err)
 
