@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { withHandlers } from 'recompose'
+import { withStateHandlers } from 'recompose'
 import {
   tagColor,
   getColorIndex,
@@ -9,6 +9,7 @@ import {
 import { toast } from 'react-toastify'
 import { errorMessages } from 'utils/messages'
 import constants from 'utils/constants'
+import domUtils from 'redux/utils/dom'
 
 import TagDetailColors from 'components/detail/tag-detail-colors'
 import DetailMenu from 'components/detail/detail-menu'
@@ -35,6 +36,8 @@ import {
 const TagDetail = props => {
   const {
     tag,
+    tagColorsRef,
+    getTagColorsRef,
     onHandleTitleUpdate,
     onHandleSetColor,
     onHandleDelete,
@@ -49,14 +52,11 @@ const TagDetail = props => {
     return <div>Detail not found</div>
   }
 
-  const scrollStyle = {
-    height: 'calc(100vh - 294px)',
-    overflow: 'hidden',
-  }
-
   const colorIndex = getColorIndex(tag.colorIndex, tag.title)
   const color = getTagColor(colorIndex)
   const description = tag.description === null ? '' : tag.description
+  const tagColorElem = domUtils.getDimensions(tagColorsRef)
+  const offset = tagColorElem ? 235 + tagColorElem.height : 294
 
   return (
     <div>
@@ -65,7 +65,6 @@ const TagDetail = props => {
         previous={onHandlePrevious}
         next={onHandleNext}
       />
-
       <DetailInner>
         <DetailContentTop>
           <DetailContentSubject>
@@ -99,7 +98,7 @@ const TagDetail = props => {
           </DetailContentIcon>
         </DetailContentTop>
         <DetailContentCenter column allowed>
-          <DetailContentTagColor>
+          <DetailContentTagColor innerRef={getTagColorsRef}>
             <DetailTagColorSelector>
               <DetailTagColorSelectorLabel>
                 Select a color
@@ -115,9 +114,13 @@ const TagDetail = props => {
             <span onClick={onHandleRemoveEventListener}>
               <MarkdownEditableContainer
                 text={description}
-                scrollStyle={scrollStyle}
                 placeholder="Add description"
                 onUpdate={onHandleDescriptionUpdate}
+                editHeight={`calc(100vh - ${offset + 2}px)`}
+                scrollStyle={{
+                  height: `calc(100vh - ${offset}px)`,
+                  overflow: 'hidden',
+                }}
               />
             </span>
           </DetailContentDescriptionTag>
@@ -130,6 +133,9 @@ const TagDetail = props => {
 TagDetail.propTypes = {
   tag: PropTypes.object,
   titles: PropTypes.object,
+  windowWidth: PropTypes.number,
+  tagColorsRef: PropTypes.object,
+  getTagColorsRef: PropTypes.func,
   onHandleTitleUpdate: PropTypes.func,
   onHandleTagTitleUpdate: PropTypes.func,
   onHandleSetColor: PropTypes.func,
@@ -144,14 +150,15 @@ TagDetail.propTypes = {
   onHandlePrevious: PropTypes.func,
 }
 
-export default withHandlers({
-  onHandleTitleUpdate: props => event => {
+export default withStateHandlers(() => ({ tagColorsRef: null }), {
+  getTagColorsRef: () => ref => ({ tagColorsRef: ref }),
+  onHandleTitleUpdate: (state, props) => event => {
     const title = event.target.value
     const originalTitle = props.tag.title
     const titles = props.titles
 
     if (originalTitle === title || title === '') {
-      return
+      return {}
     }
 
     // Validation of title conflict
@@ -160,24 +167,27 @@ export default withHandlers({
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: constants.NOTIFICATION_ERROR_DURATION,
       })
-      return
+      return {}
     }
 
     const data = { tag: props.tag, title }
     props.onHandleTagTitleUpdate(data)
+    return {}
   },
-  onHandleSetColor: props => index => {
+  onHandleSetColor: (state, props) => index => {
     const data = { tag: props.tag, index }
     props.onHandleTagSetColor(data)
+    return {}
   },
-  onHandleDelete: props => () => props.onHandleTagDelete(props.tag),
-  onHandleDescriptionUpdate: props => event => {
+  onHandleDelete: (state, props) => () => props.onHandleTagDelete(props.tag),
+  onHandleDescriptionUpdate: (state, props) => event => {
     const description = event.target.value
     if (description === props.tag.description) {
-      return
+      return {}
     }
 
     const data = { tag: props.tag, description }
     props.onHandleTagDescriptionUpdate(data)
+    return {}
   },
 })(TagDetail)

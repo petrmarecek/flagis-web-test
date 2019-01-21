@@ -129,6 +129,7 @@ const placeholderColor = value => css`
 const commonInput = css`
   ${fontSub}
   ${boxSizing('border-box')}
+  ${borderRadius('0')}
   width: 100%;
   padding: 0 10px 0 10px;
   margin: 0 0 12px;

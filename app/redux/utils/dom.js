@@ -1,8 +1,12 @@
-
 export default {
+  getDimensions(elem) {
+    if (!elem) {
+      return null
+    }
 
+    return elem.getBoundingClientRect()
+  },
   getOffset(elem) {
-
     if (!elem) {
       return null
     }
@@ -11,14 +15,13 @@ export default {
 
     // Make sure element is not hidden (display: none) or disconnected
     if (rect.width || rect.height || elem.getClientRects().length) {
-      const docElem = document.documentElement;
+      const docElem = document.documentElement
       return {
         top: rect.top + window.pageYOffset - docElem.clientTop,
-        left: rect.left + window.pageXOffset - docElem.clientLeft
+        left: rect.left + window.pageXOffset - docElem.clientLeft,
       }
     }
 
     return null
-  }
-
+  },
 }

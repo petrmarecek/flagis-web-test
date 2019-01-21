@@ -56,6 +56,7 @@ import { getUserId } from 'redux/store/auth/auth.selectors'
 import {
   getDetail,
   getInboxTasksVisibility,
+  getWindow,
 } from 'redux/store/app-state/app-state.selectors'
 import {
   getTasksItems,
@@ -94,6 +95,7 @@ const Detail = props => {
   const {
     detail,
     isInboxVisible,
+    windowWidth,
 
     userId,
     task,
@@ -177,6 +179,7 @@ const Detail = props => {
         <TagDetail
           tag={tag}
           titles={titles}
+          windowWidth={windowWidth}
           onHandleRemoveEventListener={onHandleRemoveEventListener}
           onHandleToggleList={onHandleToggleList}
           onHandleNext={onHandleNext}
@@ -208,6 +211,7 @@ const Detail = props => {
 Detail.propTypes = {
   detail: PropTypes.object,
   isInboxVisible: PropTypes.bool,
+  windowWidth: PropTypes.number,
 
   userId: PropTypes.string,
   task: PropTypes.object,
@@ -256,6 +260,7 @@ Detail.propTypes = {
 const mapStateToProps = state => ({
   detail: getDetail(state),
   isInboxVisible: getInboxTasksVisibility(state),
+  windowWidth: getWindow(state).width,
 
   userId: getUserId(state),
   task: getCurrentTask(state),

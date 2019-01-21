@@ -421,7 +421,7 @@ const MarkdownEditableContainer = styled(MarkdownEditable)`
     padding-right: 13px;
     resize: none;
     width: 100%;
-    height: 100%;
+    height: ${props => (props.editHeight ? props.editHeight : '100%')};
     color: '#293034';
   }
 `
@@ -505,42 +505,40 @@ const DetailSubjectTagContentEditable = styled(ContentEditable)`
 `
 
 const DetailContentTagColor = styled.div`
-  margin: 0 17px;
+  padding: 0 17px;
+  max-width: 100%;
 `
 
 const DetailTagColorSelector = styled.div`
+  display: flex;
+  flex-direction: column;
   color: #8c9da9;
   font-size: 14px;
 `
 
 const DetailTagColorSelectorLabel = styled.div`
-  display: block;
   margin: 0 0 11px 0;
 `
 
 const DetailTagColorSelectorOptions = styled.ul`
-  &:after {
-    display: block;
-    content: '';
-    clear: both;
-  }
+  display: flex;
+  flex-wrap: wrap;
 `
 
 const DetailTagColorSelectorItems = styled.li`
+  flex: none;
   ${borderRadius('50%')}
   background-color: ${props => props.color};
   border: ${props => (props.selected ? '1px solid #293034' : 'none')};
-  float: left;
   width: 24px;
   height: 24px;
-  margin: 0 9px 20px 0;
+  margin: 0 10px 10px 0;
   list-style-type: none;
   cursor: pointer;
 `
 
 const DetailContentDescriptionTag = styled.div`
-  margin: 0 17px;
-  height: calc(100% - 69px);
+  margin: 10px 17px 0 17px;
 `
 
 // --------------------------------------- Contact detail ---------------------------------------

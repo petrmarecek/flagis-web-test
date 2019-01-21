@@ -166,6 +166,7 @@ const Content = styled.div`
 
 const SubjectTags = styled.div`
   display: flex;
+  z-index: 1;
 `
 
 const Subject = styled.div`
@@ -178,7 +179,6 @@ const Subject = styled.div`
   font-size: 18px;
   overflow: hidden;
   white-space: nowrap;
-  z-index: 1;
   color: ${props => (props.completed ? '#cfdbe4' : '#293034')};
   font-weight: ${props => (props.important ? 'bold' : 'normal')};
   text-decoration: ${props =>
@@ -190,11 +190,11 @@ const Subject = styled.div`
 const Tags = styled.div`
   flex: auto;
   margin: 5px 0 0 5px;
-  z-index: 1;
 `
 
 const DescriptionDueDate = styled.div`
   display: flex;
+  z-index: 1;
 `
 
 const Description = styled.div`
@@ -208,7 +208,6 @@ const Description = styled.div`
   overflow: hidden;
   color: ${props => (props.completed ? '#cfdbe4' : '#8C9DA9')};
   margin: -5px 0 5px 0;
-  z-index: 1;
 `
 
 const DueDate = styled.div`
