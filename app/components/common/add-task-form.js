@@ -15,13 +15,17 @@ import { getActiveTagsId } from 'redux/store/tags/tags.selectors'
 import { isStringEmpty } from '../../redux/utils/component-helper'
 
 import styled from 'styled-components'
-import { boxShadow, boxSizing, placeholderColor } from '../styled-components-mixins'
+import {
+  boxShadow,
+  boxSizing,
+  placeholderColor,
+} from '../styled-components-mixins'
 
 const AddForm = styled.form`
   margin-bottom: 6px;
-  background-color: white;
+  background-color: #fff;
   ${boxShadow('0 3px 4px 0 #d5dce0')}
-`;
+`
 
 const SubmitIcon = styled.div`
   ${boxSizing('border-box')}
@@ -32,15 +36,15 @@ const SubmitIcon = styled.div`
   padding: 11px 16px 10px 16px;
   width: 61px;
   cursor: pointer;
-  pointer-events: ${props => props.disabled ? 'none' : 'auto'};
-`;
+  pointer-events: ${props => (props.disabled ? 'none' : 'auto')};
+`
 
 const SubjectContainer = styled.div`
   position: relative;
   margin-right: 61px;
   padding: 0;
   height: 50px;
-`;
+`
 
 const Subject = styled.input`
   ${placeholderColor('#d7e3ec')}
@@ -53,27 +57,18 @@ const Subject = styled.input`
   padding: 10px 0 10px 17px;
   z-index: 5;
   margin: 0;
-  font-weight: ${props => props.isImportant ? 'bold' : 'normal'};
-`;
+  font-weight: ${props => (props.isImportant ? 'bold' : 'normal')};
+  background-color: #fff;
+`
 
 const AddTaskForm = ({ subject, tasksMenu, handleChange, handleSubmit }) => {
   const addButtonDisabled = isStringEmpty(subject)
-  const plusColor = addButtonDisabled
-    ? '#d7e3ec'
-    : '#44FFB1'
+  const plusColor = addButtonDisabled ? '#d7e3ec' : '#44FFB1'
 
   return (
-    <AddForm
-      autoComplete="off"
-      onSubmit={handleSubmit}>
-      <SubmitIcon
-        onClick={handleSubmit}
-        disabled={addButtonDisabled} >
-        <Icon
-          icon={ICONS.PLUS}
-          width={29}
-          height={29}
-          color={[plusColor]}/>
+    <AddForm autoComplete="off" onSubmit={handleSubmit}>
+      <SubmitIcon onClick={handleSubmit} disabled={addButtonDisabled}>
+        <Icon icon={ICONS.PLUS} width={29} height={29} color={[plusColor]} />
       </SubmitIcon>
       <SubjectContainer>
         <Subject
@@ -82,7 +77,8 @@ const AddTaskForm = ({ subject, tasksMenu, handleChange, handleSubmit }) => {
           placeholder="Add new task"
           value={subject}
           onChange={handleChange}
-          isImportant={tasksMenu.filters.important}/>
+          isImportant={tasksMenu.filters.important}
+        />
       </SubjectContainer>
     </AddForm>
   )
@@ -104,44 +100,47 @@ const mapStateToProps = state => ({
 const actionCreators = { createTask }
 
 export default compose(
-  connect(mapStateToProps, actionCreators),
-  withStateHandlers(
-    () => ({ subject: '' }),
-    {
-      handleChange: () => event => ({ subject: event.target.value }),
-      handleSubmit: ({ subject }, props) => event => {
-        const { tasksMenu, timeLine, tags } = props
-        const { filters } = tasksMenu
-        event.preventDefault()
+  connect(
+    mapStateToProps,
+    actionCreators
+  ),
+  withStateHandlers(() => ({ subject: '' }), {
+    handleChange: () => event => ({ subject: event.target.value }),
+    handleSubmit: ({ subject }, props) => event => {
+      const { tasksMenu, timeLine, tags } = props
+      const { filters } = tasksMenu
+      event.preventDefault()
 
-        if (isStringEmpty(subject)) {
-          return {}
-        }
+      if (isStringEmpty(subject)) {
+        return {}
+      }
 
-        // due date sorting algorithm or some date filter is activated
-        const dueDate = timeLine || filters.range
-          ? moment().startOf('day').set({
-            'hour': 23,
-            'minute': 45,
-            'second': 0,
-            'millisecond': 0
-          })
+      // due date sorting algorithm or some date filter is activated
+      const dueDate =
+        timeLine || filters.range
+          ? moment()
+              .startOf('day')
+              .set({
+                hour: 23,
+                minute: 45,
+                second: 0,
+                millisecond: 0,
+              })
           : null
 
-        props.createTask({
-          id: null,
-          clientId: commonUtils.uid(),
-          subject: subject,
-          description: '',
-          startDate: null,
-          reminderDate: null,
-          dueDate: dueDate,
-          isCompleted: false,
-          isImportant: filters.important,
-          tags: tags,
-        })
-        return { subject: '' }
-      }
-    }
-  )
+      props.createTask({
+        id: null,
+        clientId: commonUtils.uid(),
+        subject: subject,
+        description: '',
+        startDate: null,
+        reminderDate: null,
+        dueDate: dueDate,
+        isCompleted: false,
+        isImportant: filters.important,
+        tags: tags,
+      })
+      return { subject: '' }
+    },
+  })
 )(AddTaskForm)

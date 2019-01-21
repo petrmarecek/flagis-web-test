@@ -1,12 +1,18 @@
 import React from 'react'
-import {compose, lifecycle, withHandlers} from 'recompose'
+import { compose, lifecycle, withHandlers } from 'recompose'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form/immutable'
 import { ToastContainer, style } from 'react-toastify'
 
-import { deselectError, setLoader } from 'redux/store/app-state/app-state.actions'
-import { getLoader, getAppStateItem } from 'redux/store/app-state/app-state.selectors'
+import {
+  deselectError,
+  setLoader,
+} from 'redux/store/app-state/app-state.actions'
+import {
+  getLoader,
+  getAppStateItem,
+} from 'redux/store/app-state/app-state.selectors'
 import { controlRedirectTasks, login } from 'redux/store/auth/auth.actions'
 import { validateSignIn } from 'redux/utils/validate'
 
@@ -31,61 +37,66 @@ import {
 
 const SignIn = ({ errorSignIn, loader, location, handleSubmit, onSubmit }) => (
   <div className="landing-container">
-    <NavigationLanding location={location}/>
+    <NavigationLanding location={location} />
     <Form>
       <FormBody>
-          <FormBodyFields>
-            <FormErrors>
-              <ErrorList>
-                {errorSignIn.message &&
+        <FormBodyFields>
+          <FormErrors>
+            <ErrorList>
+              {errorSignIn.message && (
                 <ErrorListItem>
-                  <ErrorListItemText>
-                    {errorSignIn.message}
-                  </ErrorListItemText>
+                  <ErrorListItemText>{errorSignIn.message}</ErrorListItemText>
                   <ErrorListItemIcon
                     icon={ICONS.ERROR}
                     width={12}
                     height={14}
-                    color={["red"]}/>
-                </ErrorListItem>}
-              </ErrorList>
-            </FormErrors>
-            <FormRow>
-              <Field
-                id="email"
-                name="email"
-                type="text"
-                label="E-mail"
-                component={InputField} />
-            </FormRow>
-            <FormRow>
-              <Field
-                id="password"
-                name="password"
-                type="password"
-                label="Password"
-                component={InputField} />
-            </FormRow>
-            <FormRow>
-              <input
-                type="submit"
-                className="btn-default"
-                value="Sign In"
-                onClick={handleSubmit((values) => onSubmit(values))} />
-            </FormRow>
+                    color={['red']}
+                  />
+                </ErrorListItem>
+              )}
+            </ErrorList>
+          </FormErrors>
+          <FormRow>
+            <Field
+              id="email"
+              name="email"
+              type="text"
+              label="E-mail"
+              component={InputField}
+            />
+          </FormRow>
+          <FormRow>
+            <Field
+              id="password"
+              name="password"
+              type="password"
+              label="Password"
+              component={InputField}
+            />
+          </FormRow>
+          <FormRow>
+            <input
+              type="submit"
+              className="btn-default"
+              value="Sign In"
+              onClick={handleSubmit(values => onSubmit(values))}
+            />
+          </FormRow>
 
-            <FormRow pointer>
-              <FormLink to="/email-reset-password">Forgot your password?</FormLink>
-              <br/>
-              <br/>
-              <FormLink to="/sign-up">Register as a new user</FormLink>
-            </FormRow>
-
-          </FormBodyFields>
-        {loader &&
-        <FormLoader>
-          <Loader />
-        </FormLoader>}
+          <FormRow pointer>
+            <FormLink to="/email-reset-password">
+              Forgot your password?
+            </FormLink>
+            <br />
+            <br />
+            <FormLink to="/sign-up">Register as a new user</FormLink>
+          </FormRow>
+        </FormBodyFields>
+        {loader && (
+          <FormLoader>
+            <Loader />
+          </FormLoader>
+        )}
       </FormBody>
     </Form>
     <div className="floating-components">
@@ -115,7 +126,10 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   reduxForm({
     form: 'signIn',
     validate: validateSignIn,
@@ -125,7 +139,7 @@ export default compose(
       props.setLoader('form')
       props.login({
         email: values.get('email'),
-        password: values.get('password')
+        password: values.get('password'),
       })
     },
   }),
@@ -138,9 +152,9 @@ export default compose(
       style({
         BOTTOM_RIGHT: {
           bottom: '30px',
-          right: '25px'
-        }
+          right: '25px',
+        },
       })
-    }
+    },
   })
 )(SignIn)

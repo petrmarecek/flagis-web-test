@@ -12,17 +12,17 @@ const AddFieldStyle = styled.input`
   font-size: 18px;
   height: 30px;
   padding: 5px 0 5px 17px;
-  color: ${props => props.isError ? 'red' : 'black'};
-`;
+  color: ${props => (props.isError ? 'red' : 'black')};
+  background-color: #fff;
+`
 
 const AddField = props => {
-
   const {
     input: { value, onChange },
     meta: { touched, error },
     id,
     placeholder,
-    type
+    type,
   } = props
 
   return (
@@ -32,7 +32,8 @@ const AddField = props => {
       value={value}
       placeholder={placeholder}
       onChange={onChange}
-      isError={(touched && error)}/>
+      isError={touched && error}
+    />
   )
 }
 
@@ -45,4 +46,3 @@ AddField.propTypes = {
 }
 
 export default AddField
-

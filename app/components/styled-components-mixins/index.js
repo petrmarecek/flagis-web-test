@@ -109,22 +109,33 @@ const textOverflow = value => css`
 `
 
 const placeholderColor = value => css`
-  &::-webkit-input-placeholder {
-    color: ${value};
-  }
-  &:-moz-placeholder {
-    /!*firefox18-*!/
+  ::-webkit-input-placeholder {
     color: ${value};
   }
 
-  &::-moz-placeholder {
-    /!*firefox19+*!/
+  ::-moz-placeholder {
     color: ${value};
   }
 
-  &:-ms-input-placeholder {
+  :-moz-placeholder {
     color: ${value};
   }
+
+  :-ms-input-placeholder {
+    color: ${value};
+  }
+`
+
+const commonInput = css`
+  ${fontSub}
+  ${boxSizing('border-box')}
+  width: 100%;
+  padding: 0 10px 0 10px;
+  margin: 0 0 12px;
+  font-size: 24px;
+  border: none;
+  border-bottom: 1px solid #44ffb1;
+  background: none;
 `
 
 const commonInputSmall = css`
@@ -170,6 +181,7 @@ export {
   userSelect,
   textOverflow,
   placeholderColor,
+  commonInput,
   commonInputSmall,
   link,
   // Markdown
