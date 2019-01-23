@@ -86,7 +86,7 @@ const TaskListContainer = props => {
 
   const debouncedMoveTask = debounce(onInvokeMove, 10)
   const onMoveTask = move => debouncedMoveTask(move)
-  const offset = props.isVisibleArchivedTasks ? 154 : 194
+  const offset = props.isVisibleArchivedTasks ? 162 : 194
   const scrollStyle = {
     height: `calc(100vh - ${offset}px)`,
     shadowHeight: 20,
