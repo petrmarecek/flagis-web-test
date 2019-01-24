@@ -6,16 +6,16 @@ import { getColorIndex, getTagColor } from 'redux/utils/component-helper'
 import { Item, Text } from './styles'
 
 const TaskListTagItem = props => {
-
   const {
     tag,
     isCollapse,
+    isCompleted,
     isMouseEnter,
     onHandleClicked,
     onHandleMouseEnter,
     onHandleMouseLeave,
   } = props
-  
+
   const { id, colorIndex, title } = tag
   const tagColorIndex = getColorIndex(colorIndex, title)
   const tagColor = getTagColor(tagColorIndex)
@@ -28,10 +28,12 @@ const TaskListTagItem = props => {
       onMouseEnter={onHandleMouseEnter}
       onMouseLeave={onHandleMouseLeave}
       bgColor={tagColor}
-      isItemCollapse={collapse}>
-      <Text
-        bgColor={tagColor}
-        isItemCollapse={collapse}>{title}</Text>
+      isCompleted={isCompleted}
+      isItemCollapse={collapse}
+    >
+      <Text bgColor={tagColor} isItemCollapse={collapse}>
+        {title}
+      </Text>
     </Item>
   )
 }
@@ -39,6 +41,7 @@ const TaskListTagItem = props => {
 TaskListTagItem.propTypes = {
   tag: PropTypes.object,
   isCollapse: PropTypes.bool,
+  isCompleted: PropTypes.bool,
   isMouseEnter: PropTypes.bool,
   onHandleMouseEnter: PropTypes.func,
   onHandleMouseLeave: PropTypes.func,
@@ -47,17 +50,14 @@ TaskListTagItem.propTypes = {
 }
 
 export default compose(
-  withStateHandlers(
-    () => ({ isMouseEnter: false }),
-    {
-      onHandleMouseEnter: () => () => ({ isMouseEnter: true }),
-      onHandleMouseLeave: () => () => ({ isMouseEnter: false }),
-    }
-  ),
+  withStateHandlers(() => ({ isMouseEnter: false }), {
+    onHandleMouseEnter: () => () => ({ isMouseEnter: true }),
+    onHandleMouseLeave: () => () => ({ isMouseEnter: false }),
+  }),
   withHandlers({
     onHandleClicked: props => event => {
       event.stopPropagation()
       props.onHandleTagClicked(props.tag)
-    }
+    },
   })
 )(TaskListTagItem)

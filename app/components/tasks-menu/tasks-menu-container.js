@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import cx from 'classnames'
 import { OrderedSet } from 'immutable'
 import { connect } from 'react-redux'
 import { toast } from 'react-toastify'
@@ -46,7 +45,10 @@ import {
   hideMenuOption,
   deselectActiveAssignee,
 } from 'redux/store/tasks-menu/tasks-menu.actions'
-import { getTasksMenu, getTasksMenuFiltersActiveAssignee } from 'redux/store/tasks-menu/tasks-menu.selectors'
+import {
+  getTasksMenu,
+  getTasksMenuFiltersActiveAssignee,
+} from 'redux/store/tasks-menu/tasks-menu.selectors'
 import { archiveCompletedTasks } from 'redux/utils/component-helper'
 
 import SearchBox from 'components/common/search-box'
@@ -60,7 +62,6 @@ import TasksMenuMultiSelect from 'components/tasks-menu/tasks-menu-multi-select'
 import { TasksMenuFiltersActive } from './styles'
 
 class TasksMenuContainer extends PureComponent {
-
   static propTypes = {
     tasksId: PropTypes.object,
     showTasksId: PropTypes.object,
@@ -120,7 +121,7 @@ class TasksMenuContainer extends PureComponent {
     this.props.toggleNoTagsFilter()
   }
 
-  handleDeleteFilter = (filter) => {
+  handleDeleteFilter = filter => {
     this.setState({ isMounted: false })
     this.props.deleteFilter(filter)
   }
@@ -143,7 +144,14 @@ class TasksMenuContainer extends PureComponent {
     const entitiesTasks = this.props.entitiesTasks
     const selectedTasks = this.props.selectTasks
 
-    const archive = archiveCompletedTasks(tasks, showCompletedTasks, completedTasks, archivedTasks, entitiesTasks, selectedTasks)
+    const archive = archiveCompletedTasks(
+      tasks,
+      showCompletedTasks,
+      completedTasks,
+      archivedTasks,
+      entitiesTasks,
+      selectedTasks
+    )
 
     this.props.setLoader('global')
     this.props.setArchiveTasks(
@@ -175,89 +183,90 @@ class TasksMenuContainer extends PureComponent {
       return
     }
 
-    this.props.showDialog('task-delete-confirm', { tasks: this.props.selectTasks })
+    this.props.showDialog('task-delete-confirm', {
+      tasks: this.props.selectTasks,
+    })
   }
 
   render() {
     const isMultiSelect = this.props.multiSelect
     const isVisibleArchivedTasks = this.props.isVisibleArchivedTasks
     const isTimeLine = this.props.timeLine
-    const taskCount = isMultiSelect
-      ? this.props.selectTaskCount
-      : this.props.showTasksId.size
-
-    const taskCountCss = cx({
-      'task-count-indicator__inner': true,
-      'task-count-indicator__inner--multi-select': isMultiSelect,
-    })
 
     return (
       <div className="tasks-menu">
-
         <SearchBox
           onChange={this.handleSearchTextChange}
-          value={this.props.tasksMenu.filters.searchText} />
+          value={this.props.tasksMenu.filters.searchText}
+        />
 
         {!isMultiSelect && !isVisibleArchivedTasks && <TasksMenuNavigation />}
 
-        {isMultiSelect &&
-        <TasksMenuMultiSelect
-          onAddRemoveTags={this.handleAddRemoveTags}
-          onDelete={this.handleDelete}
-          auth={this.props.auth}
-          activeTags={this.props.activeTags}
-          isVisibleArchivedTasks={isVisibleArchivedTasks}
-          deselectTasks={this.props.deselectTasks} />}
+        {isMultiSelect && (
+          <TasksMenuMultiSelect
+            onAddRemoveTags={this.handleAddRemoveTags}
+            onDelete={this.handleDelete}
+            auth={this.props.auth}
+            activeTags={this.props.activeTags}
+            isVisibleArchivedTasks={isVisibleArchivedTasks}
+            deselectTasks={this.props.deselectTasks}
+          />
+        )}
 
-        {!isVisibleArchivedTasks && !isMultiSelect &&
-        <TasksMenuFiltersActive isFilterActive={this.props.tasksMenu.filters.active.size !== 0}>
-          {this.props.tasksMenu.filters.active.map((filter, key) => (
-            <TasksMenuFiltersActiveItem
-              key={key}
-              title={filter}
-              activeAssignee={this.props.activeAssignee}
-              onDeselectActiveAssignee={this.props.deselectActiveAssignee}
-              onDelete={this.handleDeleteFilter}/>
-          ))}
-        </TasksMenuFiltersActive>}
+        {!isVisibleArchivedTasks && !isMultiSelect && (
+          <TasksMenuFiltersActive
+            isFilterActive={this.props.tasksMenu.filters.active.size !== 0}
+          >
+            {this.props.tasksMenu.filters.active.map((filter, key) => (
+              <TasksMenuFiltersActiveItem
+                key={key}
+                title={filter}
+                activeAssignee={this.props.activeAssignee}
+                onDeselectActiveAssignee={this.props.deselectActiveAssignee}
+                onDelete={this.handleDeleteFilter}
+              />
+            ))}
+          </TasksMenuFiltersActive>
+        )}
 
-        {!isVisibleArchivedTasks && !isMultiSelect &&
-        <TasksMenuFilters
-          onToggleAssigneeFilter={this.handleAssigneeFilterToggle}
-          onChangeRangeFilter={this.handleRangeFilterChange}
-          onToggleImportantFilter={this.handleImportantFilterToggle}
-          onToggleUnimportantFilter={this.handleUnimportantFilterToggle}
-          onToggleNoTagsFilter={this.handleNoTagsFilterToggle}
-          visibleMenuFilter={this.props.visibleMenuFilter}
-          hideMenuFilter={this.props.hideMenuFilter}
-          hideMenuSort={this.props.hideMenuSort}
-          hideMenuOption={this.props.hideMenuOption}
-          tasksMenu={this.props.tasksMenu} />}
+        {!isVisibleArchivedTasks && !isMultiSelect && (
+          <TasksMenuFilters
+            onToggleAssigneeFilter={this.handleAssigneeFilterToggle}
+            onChangeRangeFilter={this.handleRangeFilterChange}
+            onToggleImportantFilter={this.handleImportantFilterToggle}
+            onToggleUnimportantFilter={this.handleUnimportantFilterToggle}
+            onToggleNoTagsFilter={this.handleNoTagsFilterToggle}
+            visibleMenuFilter={this.props.visibleMenuFilter}
+            hideMenuFilter={this.props.hideMenuFilter}
+            hideMenuSort={this.props.hideMenuSort}
+            hideMenuOption={this.props.hideMenuOption}
+            tasksMenu={this.props.tasksMenu}
+          />
+        )}
 
-        {!isVisibleArchivedTasks && !isMultiSelect && !isTimeLine &&
-        <TasksMenuSort
-          onToggleSortAlgorithm={this.handleSortAlgorithmToggle}
-          visibleMenuSort={this.props.visibleMenuSort}
-          hideMenuFilter={this.props.hideMenuFilter}
-          hideMenuSort={this.props.hideMenuSort}
-          hideMenuOption={this.props.hideMenuOption}
-          tasksMenu={this.props.tasksMenu} />}
+        {!isVisibleArchivedTasks && !isMultiSelect && !isTimeLine && (
+          <TasksMenuSort
+            onToggleSortAlgorithm={this.handleSortAlgorithmToggle}
+            visibleMenuSort={this.props.visibleMenuSort}
+            hideMenuFilter={this.props.hideMenuFilter}
+            hideMenuSort={this.props.hideMenuSort}
+            hideMenuOption={this.props.hideMenuOption}
+            tasksMenu={this.props.tasksMenu}
+          />
+        )}
 
-        {!isMultiSelect &&
-        <TasksMenuOptions
-          onArchiveCompletedTasks={this.handleArchiveCompletedTasks}
-          onSelectAllTasks={this.handleSelectAllTasks}
-          visibleMenuOption={this.props.visibleMenuOption}
-          hideMenuFilter={this.props.hideMenuFilter}
-          hideMenuSort={this.props.hideMenuSort}
-          hideMenuOption={this.props.hideMenuOption}
-          tasksMenu={this.props.tasksMenu}
-          isVisibleArchivedTasks={isVisibleArchivedTasks} />}
-
-        <span className="task-count-indicator">
-          <span className={taskCountCss}>{taskCount}</span>
-        </span>
-
+        {!isMultiSelect && (
+          <TasksMenuOptions
+            onArchiveCompletedTasks={this.handleArchiveCompletedTasks}
+            onSelectAllTasks={this.handleSelectAllTasks}
+            visibleMenuOption={this.props.visibleMenuOption}
+            hideMenuFilter={this.props.hideMenuFilter}
+            hideMenuSort={this.props.hideMenuSort}
+            hideMenuOption={this.props.hideMenuOption}
+            tasksMenu={this.props.tasksMenu}
+            isVisibleArchivedTasks={isVisibleArchivedTasks}
+          />
+        )}
       </div>
     )
   }
@@ -302,4 +311,7 @@ const mapDispatchToProps = {
   selectAllTask,
   deselectActiveAssignee,
 }
-export default connect(mapStateToProps, mapDispatchToProps)(TasksMenuContainer)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TasksMenuContainer)

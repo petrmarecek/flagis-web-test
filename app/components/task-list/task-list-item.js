@@ -261,7 +261,7 @@ const TaskListItem = props => {
   // Background color of task item
   const backgroundColor = () => {
     if (isSelected) {
-      return '#ffffd7'
+      return '#ecfff7'
     }
 
     if (isDragging) {
@@ -273,10 +273,23 @@ const TaskListItem = props => {
     }
 
     if (isOwnerAccepted) {
-      return '#f6f8f8'
+      return '#F6F7F8'
     }
 
     return '#fff'
+  }
+
+  // Background color of task item
+  const completedIconColor = () => {
+    if (task.isCompleted) {
+      return ['#44FFB1']
+    }
+
+    if (isOwnerAccepted) {
+      return ['#EBEBEB']
+    }
+
+    return ['#F4F4F4']
   }
 
   // Margin-left of content task
@@ -321,7 +334,7 @@ const TaskListItem = props => {
               >
                 <Icon
                   icon={ICONS.TASK_CHECKED}
-                  color={task.isCompleted ? ['#c2fee5'] : ['#D7E3EC']}
+                  color={completedIconColor()}
                   width={22}
                   height={21}
                 />
@@ -337,7 +350,7 @@ const TaskListItem = props => {
               >
                 <Icon
                   icon={isArchivedList ? ICONS.NON_ARCHIVE : ICONS.ARCHIVE}
-                  color={isArchivedList ? ['#282f34'] : ['#8c9ea9']}
+                  color={isArchivedList ? ['#282f34'] : ['#B1B5B8']}
                   width={24}
                   height={27}
                   scale={0.926}
@@ -376,6 +389,7 @@ const TaskListItem = props => {
                   <TaskListTagItems
                     tags={sortedTags}
                     parentWidth={taskItemWidth}
+                    isCompleted={task.isCompleted}
                     onTagClick={onHandleTagClicked}
                   />
                 </Tags>

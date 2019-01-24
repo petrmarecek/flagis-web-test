@@ -9,27 +9,29 @@ import styled from 'styled-components'
 
 const Container = styled.div`
   pointer-events: none;
-`;
+`
 
 const FollowerIcon = ({ status, iconScale, defaultIcon }) => {
   let scale = iconScale
   let followerStatus = status === null ? 'new' : status
-  let width = followerStatus === 'new'
-    ? Number(constants.NEW_FOLLOWER_ICON_WIDTH * scale)
-    : Number(constants.FOLLOWER_ICON_WIDTH * scale)
-  let height = followerStatus === 'new'
-    ? Number(constants.NEW_FOLLOWER_ICON__HEIGHT * scale)
-    : Number(constants.FOLLOWER_ICON_HEIGHT * scale)
+  let width =
+    followerStatus === 'new'
+      ? Number(constants.NEW_FOLLOWER_ICON_WIDTH * scale)
+      : Number(constants.FOLLOWER_ICON_WIDTH * scale)
+  let height =
+    followerStatus === 'new'
+      ? Number(constants.NEW_FOLLOWER_ICON__HEIGHT * scale)
+      : Number(constants.FOLLOWER_ICON_HEIGHT * scale)
 
   if (defaultIcon) {
-    scale = 1.33
-    followerStatus = 'contact_exist'
-    width = Number(constants.CONTACT_EXIST * scale)
-    height = Number(constants.CONTACT_EXIST * scale)
+    scale = 0.7
+    followerStatus = 'assignee_accepted'
+    width = Number(constants.ASSIGNEE_ACCEPTED_WIDTH * scale)
+    height = Number(constants.ASSIGNEE_ACCEPTED_HEIGHT * scale)
   }
 
   const color = {
-    contact_exist: ['#8C9DA9', '#fff'],
+    assignee_accepted: ['#E1E4E5'],
     new: ['#8C9DA9'],
     pending: ['#293034'],
     accepted: ['#44FFB1'],
@@ -37,7 +39,7 @@ const FollowerIcon = ({ status, iconScale, defaultIcon }) => {
   }
 
   const icons = {
-    contact_exist: 'CONTACT_EXIST',
+    assignee_accepted: 'INBOX',
     new: 'FOLLOWER_NEW',
     pending: 'FOLLOWER_PENDING',
     accepted: 'FOLLOWER_ACCEPTED',
@@ -51,7 +53,8 @@ const FollowerIcon = ({ status, iconScale, defaultIcon }) => {
         width={width}
         height={height}
         scale={scale}
-        color={color[followerStatus]} />
+        color={color[followerStatus]}
+      />
     </Container>
   )
 }

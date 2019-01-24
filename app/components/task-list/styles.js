@@ -101,7 +101,7 @@ const TaskItem = styled.div`
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: ${props => (props.selected ? '#ffffd7' : '#ecfff7')};
+    background-color: ${props => (props.selected ? '#ecfff7' : '#F6F7F8')};
     ${transform(props => (props.completed ? 'scaleX(1)' : 'scaleX(0)'))}
     ${transformOrigin('0 50%')}
     ${transition('transform 500ms ease-out')}
@@ -179,7 +179,7 @@ const Subject = styled.div`
   font-size: 18px;
   overflow: hidden;
   white-space: nowrap;
-  color: ${props => (props.completed ? '#cfdbe4' : '#293034')};
+  color: ${props => (props.completed ? '#D0D4D8' : '#293034')};
   font-weight: ${props => (props.important ? 'bold' : 'normal')};
   text-decoration: ${props =>
     props.completed || props.archived ? 'line-through' : 'none'};
@@ -206,7 +206,7 @@ const Description = styled.div`
   max-height: 18px;
   white-space: nowrap;
   overflow: hidden;
-  color: ${props => (props.completed ? '#cfdbe4' : '#8C9DA9')};
+  color: ${props => (props.completed ? '#D0D4D8' : '#8C9DA9')};
   margin: -5px 0 5px 0;
 `
 
@@ -242,29 +242,31 @@ const Followers = styled.div`
 
 const TagItems = styled.ul`
   display: flex;
-  list-style-type: none;
+  align-items: flex-end;
   justify-content: flex-end;
+  list-style-type: none;
+  height: 100%;
 `
 
 const Item = styled.li`
-  ${borderRadius('12px')}
-  margin: 0 6px 6px 0;
-  border: none;
-  padding: 0 10px 0 10px;
+  ${borderRadius('8px')}
   display: flex;
   align-items: center;
+  margin: 0 4px 8px 0;
   float: left;
-  height: 23px;
+  border: none;
+  height: 15px;
   background-color: ${props => props.bgColor};
-  max-width: ${props => (props.isItemCollapse ? '23px' : '120px')};
+  opacity: ${props => (props.isCompleted ? '0.4' : '1')};
+  max-width: ${props => (props.isItemCollapse ? '15px' : '120px')};
   ${transition('500ms')};
 `
 
 const Text = styled.div`
   ${textOverflow('ellipsis')}
   ${fontMain}
-  font-size: 14px;
-  line-height: 23px;
+  font-size: 12px;
+  padding: 0 5px;
   overflow: hidden;
   white-space: nowrap;
   color: ${props => (props.isItemCollapse ? props.bgColor : '#fff')};

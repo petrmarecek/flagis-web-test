@@ -6,19 +6,27 @@ import { getWidthTagItems } from '../../redux/utils/component-helper'
 import TaskListTagItem from './task-list-tag-item'
 import { TagItems } from './styles'
 
-const TaskListTagItems = ({ tags, parentWidth, onHandleTagClicked }) => {
+const TaskListTagItems = ({
+  tags,
+  parentWidth,
+  isCompleted,
+  onHandleTagClicked,
+}) => {
   const width = getWidthTagItems(tags)
   const maxTagsWidth = Math.floor(parentWidth / 2)
   const isCollapse = width > maxTagsWidth
 
   return (
     <TagItems>
-    {tags.map(tag => (
-      <TaskListTagItem
-        key={tag.id}
-        tag={tag}
-        isCollapse={isCollapse}
-        onHandleTagClicked={onHandleTagClicked} />))}
+      {tags.map(tag => (
+        <TaskListTagItem
+          key={tag.id}
+          tag={tag}
+          isCollapse={isCollapse}
+          isCompleted={isCompleted}
+          onHandleTagClicked={onHandleTagClicked}
+        />
+      ))}
     </TagItems>
   )
 }
@@ -26,6 +34,7 @@ const TaskListTagItems = ({ tags, parentWidth, onHandleTagClicked }) => {
 TaskListTagItems.propTypes = {
   tags: PropTypes.any,
   parentWidth: PropTypes.number,
+  isCompleted: PropTypes.bool,
   onTagClick: PropTypes.func,
   onHandleTagClicked: PropTypes.func,
 }
