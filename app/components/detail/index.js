@@ -6,14 +6,15 @@ import { DetailStyle } from './styles'
 import { toast } from 'react-toastify'
 import { successMessages } from 'utils/messages'
 import constants from 'utils/constants'
+import { routes } from 'utils/routes'
 import { List } from 'immutable'
 
+import { changeLocation } from 'redux/store/routing/routing.actions'
 import {
   deselectDetail,
   showDialog,
   setAnimation,
   deselectAnimation,
-  changeLocation,
 } from 'redux/store/app-state/app-state.actions'
 import {
   selectTask,
@@ -333,15 +334,15 @@ export default compose(
 
       if (detail.task || detail.archive || detail.inbox) {
         if (detail.task) {
-          props.changeLocation('/user/tasks')
+          props.changeLocation(routes.user.tasks)
         }
 
         if (detail.inbox) {
-          props.changeLocation('/user/inbox')
+          props.changeLocation(routes.user.inbox)
         }
 
         if (detail.archive) {
-          props.changeLocation('/user/account/archive')
+          props.changeLocation(routes.user.archive)
         }
 
         props.deselectAnimation()
@@ -350,12 +351,12 @@ export default compose(
       }
 
       if (detail.tag) {
-        props.changeLocation('/user/tags')
+        props.changeLocation(routes.user.tags)
         props.deselectTags()
         return
       }
 
-      props.changeLocation('/user/account/contacts')
+      props.changeLocation(routes.user.contacts)
       props.deselectContacts()
     },
     onHandleNext: props => () => {

@@ -1,16 +1,20 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
+import { routes } from 'utils/routes'
 import { compose, lifecycle } from 'recompose'
 
+// redux
+import { connect } from 'react-redux'
 import { changeLocation } from 'redux/store/app-state/app-state.actions'
 import { selectTask } from 'redux/store/tasks/tasks.actions'
-import { getTasksItems, getSelectionTasks } from 'redux/store/tasks/tasks.selectors'
 import { getRoutingPathname } from 'redux/store/routing/routing.selectors'
+import {
+  getTasksItems,
+  getSelectionTasks,
+} from 'redux/store/tasks/tasks.selectors'
 
-import LeftPanel from 'components/panels/left-panel'
+// components
 import CenterPanel from 'components/panels/center-panel'
-import TagTreeContent from 'components/contents/tag-tree-content'
 import DetailContent from 'components/contents/detail-content'
 import TasksContent from 'components/contents/tasks-content'
 
@@ -21,14 +25,7 @@ const TaskPage = ({ tasksItems, pathname }) => {
   const isTaskId = tasksItems.includes(taskId)
 
   return (
-    <div>
-      <LeftPanel>
-        <TagTreeContent/>
-      </LeftPanel>
-      <CenterPanel>
-        {isTaskId ? <DetailContent/> : <TasksContent/>}
-      </CenterPanel>
-    </div>
+    <CenterPanel>{isTaskId ? <DetailContent /> : <TasksContent />}</CenterPanel>
   )
 }
 
@@ -49,7 +46,10 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   lifecycle({
     componentDidUpdate() {
       const { tasksItems, pathname, selectTasksItems } = this.props
@@ -60,7 +60,7 @@ export default compose(
       let newSelectTaskItems = selectTasksItems
 
       if (!isTaskId) {
-        template = '/user/tasks'
+        template = routes.user.tasks
 
         if (tasksItems.size === 0) {
           return
@@ -79,6 +79,6 @@ export default compose(
 
       newSelectTaskItems = newSelectTaskItems.clear().add(taskId)
       this.props.selectTask(newSelectTaskItems, null)
-    }
+    },
   })
 )(TaskPage)

@@ -6,6 +6,7 @@ import includes from 'lodash/includes'
 import { toast } from 'react-toastify'
 import { errorMessages } from 'utils/messages'
 import constants from 'utils/constants'
+import { routes } from 'utils/routes'
 import { Map } from 'immutable'
 
 import {
@@ -134,8 +135,8 @@ export function* selectPath(action) {
   }
 
   const location = yield select(state => routingSelectors.getRoutingPathname(state))
-  if (location !== '/user/tasks') {
-    yield put(push('/user/tasks'))
+  if (location !== routes.user.tasks) {
+    yield put(push(routes.user.tasks))
   }
 
   const relatedTagIds = action.payload.map(treeItem => treeItem.tagId)

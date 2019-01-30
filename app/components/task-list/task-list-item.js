@@ -389,7 +389,7 @@ const TaskListItem = props => {
                   <TaskListTagItems
                     tags={sortedTags}
                     parentWidth={taskItemWidth}
-                    isCompleted={task.isCompleted}
+                    isCompleted={isCompletedMainList}
                     onTagClick={onHandleTagClicked}
                   />
                 </Tags>

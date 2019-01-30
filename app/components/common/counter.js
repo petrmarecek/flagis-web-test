@@ -10,8 +10,8 @@ const Item = styled.div`
   font-weight: bold;
   color: #293034;
   padding: 2px 5px;
-  background-color: #44FFB1;
-`;
+  background-color: #44ffb1;
+`
 
 const Counter = ({ count, className }) => (
   <div className={className}>

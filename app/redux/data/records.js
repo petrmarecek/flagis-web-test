@@ -4,12 +4,12 @@ import { Record, Map, OrderedSet, List, Set } from 'immutable'
 
 export const ListRecord = Record({
   isFetching: false,
-  items: List()
+  items: List(),
 })
 
 export const TreeRecord = Record({
   id: null,
-  childVisible: true
+  childVisible: true,
 })
 
 // ------ Partials ------------------------------------------------------------
@@ -38,7 +38,7 @@ export const Profile = Record({
 export const HintsContext = Record({
   source: null,
   parentId: null,
-  updatedTreeItem: null
+  updatedTreeItem: null,
 })
 
 export const Error = Record({
@@ -62,6 +62,15 @@ export const Detail = Record({
   tag: false,
   contact: false,
   animation: false,
+})
+
+export const PrimaryNavigation = Record({
+  hiddenNavigation: new Visibility(),
+})
+
+export const Navigation = Record({
+  primary: new PrimaryNavigation(),
+  account: new Visibility(),
 })
 
 export const MultiSelectTasks = Record({
@@ -106,6 +115,7 @@ export const AppStateStore = Record({
   archivedTasks: new Visibility(),
   inboxTasks: new Visibility(),
   detail: new Detail(),
+  navigation: new Navigation(),
   undoBox: null,
   currentDialog: null,
   changeName: new Error(),
@@ -114,15 +124,18 @@ export const AppStateStore = Record({
   signUp: new Error(),
 })
 
-export const AuthStore = Record({
-  isLogged: false,
-  accessToken: null,
-  expiresIn: null,
-  refreshToken: null,
-  newRefreshToken: false,
-  firebaseToken: null,
-  profile: null,
-}, 'auth')
+export const AuthStore = Record(
+  {
+    isLogged: false,
+    accessToken: null,
+    expiresIn: null,
+    refreshToken: null,
+    newRefreshToken: false,
+    firebaseToken: null,
+    profile: null,
+  },
+  'auth'
+)
 
 export const EntitiesStore = Record({
   tasks: Map(),
@@ -258,7 +271,7 @@ export const TagInfo = Record({
 
 export const Tree = Record({
   parentId: null,
-  items: List()
+  items: List(),
 })
 
 export const TreeItem = Record({
@@ -274,7 +287,7 @@ export const TreeItem = Record({
   createdById: null,
   childItems: List(),
   collapsed: false,
-  tag: null
+  tag: null,
 })
 
 export const Follower = Record({

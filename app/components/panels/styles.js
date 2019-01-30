@@ -1,6 +1,8 @@
 import styled from 'styled-components'
 import { boxSizing } from '../styled-components-mixins'
 
+/*------------------------------------------ Center Panel --------------------------------------*/
+
 const CenterPanelContainer = styled.div`
   margin: 0 10px 0 10px;
   position: absolute;
@@ -35,8 +37,9 @@ const CenterPanelScroll = styled.div`
   left: 0;
   right: 0;
 `
+/*------------------------------------------ Left Panel --------------------------------------*/
 
-const LeftPanelContainer = styled.div`
+const LeftPanelWrapper = styled.div`
   ${boxSizing('border-box')}
   background-color: ${props => (props.whiteBackground ? '#fff' : '#293034')};
   width: ${props => (props.width ? props.width : '290')}px;
@@ -61,5 +64,5 @@ export {
   CenterPanelTop,
   CenterPanelTitle,
   CenterPanelScroll,
-  LeftPanelContainer,
+  LeftPanelWrapper,
 }

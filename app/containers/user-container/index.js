@@ -9,25 +9,27 @@ import debounce from 'lodash/debounce'
 
 import { controlRedirectSignIn } from 'redux/store/auth/auth.actions'
 import { updateWindow } from 'redux/store/app-state/app-state.actions'
-import { getAppStateItem, getLoader } from 'redux/store/app-state/app-state.selectors'
+import {
+  getAppStateItem,
+  getLoader,
+} from 'redux/store/app-state/app-state.selectors'
 
-import Dialogs from 'components/dialogs/dialogs'
-import UndoBox from 'components/common/undo-box'
 import Loader from 'components/common/loader'
-import NavigationBar from 'components/navigation/navigation-bar'
+import LeftPanelPrimaryContent from 'components/contents/left-panel-primary-content'
 import TaskPage from 'containers/task-page'
 import TagPage from 'containers/tag-page'
 import InboxPage from 'containers/inbox-page'
+import ArchivePage from '../archive-page/'
+import ContactPage from '../contact-page/'
 import DashboardPage from 'containers/dashboard-page'
 import AccountContainer from 'containers/account-container'
+import Dialogs from 'components/dialogs/dialogs'
+import UndoBox from 'components/common/undo-box'
 
 class UserContainer extends PureComponent {
   static propTypes = {
     controlRedirectSignIn: PropTypes.func,
     updateWindow: PropTypes.func,
-    location: PropTypes.shape({
-      pathname: PropTypes.string.isRequired,
-    }).isRequired,
     match: PropTypes.any,
     undoBox: PropTypes.object,
     loader: PropTypes.bool,
@@ -45,8 +47,8 @@ class UserContainer extends PureComponent {
     style({
       BOTTOM_RIGHT: {
         bottom: '30px',
-        right: '25px'
-      }
+        right: '25px',
+      },
     })
   }
 
@@ -60,15 +62,15 @@ class UserContainer extends PureComponent {
       style({
         BOTTOM_RIGHT: {
           bottom: '90px',
-          right: '25px'
-        }
+          right: '25px',
+        },
       })
     } else {
       style({
         BOTTOM_RIGHT: {
           bottom: '30px',
-          right: '25px'
-        }
+          right: '25px',
+        },
       })
     }
   }
@@ -80,14 +82,34 @@ class UserContainer extends PureComponent {
   render() {
     return (
       <div id="user-container">
-        <NavigationBar location={this.props.location} />
-        <div className='page-overflow-fix'>
+        <div className="page-overflow-fix">
+          <LeftPanelPrimaryContent />
           <Switch>
-            <Route path={`${this.props.match.path}/tasks`} component={TaskPage} />
+            <Route
+              path={`${this.props.match.path}/tasks`}
+              component={TaskPage}
+            />
             <Route path={`${this.props.match.path}/tags`} component={TagPage} />
-            <Route path={`${this.props.match.path}/inbox`} component={InboxPage} />
-            <Route path={`${this.props.match.path}/dashboard`} component={DashboardPage} />
-            <Route path={`${this.props.match.path}/account`} component={AccountContainer} />
+            <Route
+              path={`${this.props.match.path}/inbox`}
+              component={InboxPage}
+            />
+            <Route
+              path={`${this.props.match.path}/dashboard`}
+              component={DashboardPage}
+            />
+            <Route
+              path={`${this.props.match.path}/archive`}
+              component={ArchivePage}
+            />
+            <Route
+              path={`${this.props.match.path}/contacts`}
+              component={ContactPage}
+            />
+            <Route
+              path={`${this.props.match.path}/account`}
+              component={AccountContainer}
+            />
           </Switch>
         </div>
         <div className="dialog-container">
@@ -111,9 +133,12 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   updateWindow,
-  controlRedirectSignIn
+  controlRedirectSignIn,
 }
 
 export default DragDropContext(HTML5Backend)(
-  connect(mapStateToProps, mapDispatchToProps)(UserContainer)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(UserContainer)
 )

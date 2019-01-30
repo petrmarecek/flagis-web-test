@@ -13,6 +13,7 @@ import * as tagSelectors from 'redux/store/tags/tags.selectors'
 import { toast } from 'react-toastify'
 import { errorMessages } from 'utils/messages'
 import constants from 'utils/constants'
+import { routes } from 'utils/routes'
 import search from 'redux/services/search'
 import api from 'redux/utils/api'
 
@@ -37,12 +38,7 @@ export function* defaultDisplay() {
   yield put(contactActions.deselectContacts())
   yield put(tasksMenuActions.resetTasksMenu())
   yield put(treeActions.selectPath([]))
-  yield put(push('/user/tasks'))
-}
-
-export function* changeLocation(action) {
-  const pathname = action.payload.pathname
-  yield put(push(pathname))
+  yield put(push(routes.user.tasks))
 }
 
 export function* hintSelected(action) {

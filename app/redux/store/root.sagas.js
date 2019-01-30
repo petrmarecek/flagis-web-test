@@ -10,6 +10,7 @@ import { COMMENTS } from './comments/comments.actions'
 import { ATTACHMENTS } from './attachments/attachments.actions'
 import { CONTACTS } from './contacts/contacts.actions'
 import { FOLLOWERS } from './followers/followers.actions'
+import { ROUTING } from './routing/routing.actions'
 
 import * as auth from './auth/auth.sagas'
 import * as task from './tasks/tasks.sagas'
@@ -21,12 +22,12 @@ import * as comment from './comments/comments.sagas'
 import * as attachment from './attachments/attachments.sagas'
 import * as contact from './contacts/contacts.sagas'
 import * as followers from './followers/followers.sagas'
+import * as routing from './routing/routing.sagas'
 
 export default function* root() {
   yield all([
     // app-state
     takeEvery(APP_STATE.DEFAULT_DISPLAY, appState.defaultDisplay),
-    takeEvery(APP_STATE.CHANGE_LOCATION, appState.changeLocation),
     takeEvery(APP_STATE.HINT_SELECTED, appState.hintSelected),
 
     // auth
@@ -84,8 +85,14 @@ export default function* root() {
     // task-menu
     takeEvery(TASKS_MENU.TOGGLE_ASSIGNEE_FILTER, taskMenu.toggleAssigneeFilter),
     takeEvery(TASKS_MENU.CHANGE_RANGE_FILTER, taskMenu.changeRangeFilter),
-    takeEvery(TASKS_MENU.TOGGLE_IMPORTANT_FILTER, taskMenu.toggleImportantFilter),
-    takeEvery(TASKS_MENU.TOGGLE_UNIMPORTANT_FILTER, taskMenu.toggleUnimportantFilter),
+    takeEvery(
+      TASKS_MENU.TOGGLE_IMPORTANT_FILTER,
+      taskMenu.toggleImportantFilter
+    ),
+    takeEvery(
+      TASKS_MENU.TOGGLE_UNIMPORTANT_FILTER,
+      taskMenu.toggleUnimportantFilter
+    ),
     takeEvery(TASKS_MENU.TOGGLE_NO_TAGS_FILTER, taskMenu.toggleNoTagsFilter),
     takeEvery(TASKS_MENU.DELETE_FILTER, taskMenu.deleteFilter),
 
@@ -123,5 +130,13 @@ export default function* root() {
     // followers
     takeEvery(FOLLOWERS.CREATE, followers.createFollower),
     takeEvery(FOLLOWERS.DELETE, followers.deleteFollower),
+
+    // routing
+    takeEvery(ROUTING.CHANGE_LOCATION, routing.changeLocation),
+    takeEvery(ROUTING.CHANGE_NAVIGATION, routing.changeNavigation),
+    takeEvery(
+      ROUTING.CHANGE_NAVIGATION_SECONDARY,
+      routing.changeNavigationSecondary
+    ),
   ])
 }

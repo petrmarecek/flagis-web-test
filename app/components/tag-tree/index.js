@@ -1,6 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
+import { routes } from 'utils/routes'
+import debounce from 'lodash/debounce'
+import { toast } from 'react-toastify'
+import { infoMessages } from 'utils/messages'
+import constants from 'utils/constants'
 import {
   compose,
   branch,
@@ -9,19 +13,10 @@ import {
   pure,
 } from 'recompose'
 
-import AddTagTreeItemForm from 'components/common/add-tag-tree-item-form'
-import TagTree from 'components/tag-tree/tag-tree'
-import Loader from 'components/common/loader'
-
-import { ICONS } from 'components/icons/icon-constants'
-import Icon from 'components/icons/icon'
-import ShadowScrollbar from 'components/common/shadow-scrollbar'
-
-import {
-  showDialog,
-  setDetail,
-  changeLocation,
-} from 'redux/store/app-state/app-state.actions'
+// redux
+import { connect } from 'react-redux'
+import { changeLocation } from 'redux/store/routing/routing.actions'
+import { showDialog, setDetail } from 'redux/store/app-state/app-state.actions'
 import { getLeftPanel } from 'redux/store/app-state/app-state.selectors'
 import { getNewRefreshToken } from 'redux/store/auth/auth.selectors'
 import { deselectTasks } from 'redux/store/tasks/tasks.actions'
@@ -45,11 +40,16 @@ import {
   getSections,
 } from 'redux/store/tree/tree.selectors'
 import { computeTreeSectionOrder } from 'redux/utils/redux-helper'
-import debounce from 'lodash/debounce'
-import { toast } from 'react-toastify'
-import { infoMessages } from 'utils/messages'
-import constants from 'utils/constants'
 
+// components
+import AddTagTreeItemForm from 'components/common/add-tag-tree-item-form'
+import TagTree from 'components/tag-tree/tag-tree'
+import Loader from 'components/common/loader'
+import ShadowScrollbar from 'components/common/shadow-scrollbar'
+import Icon from 'components/icons/icon'
+import { ICONS } from 'components/icons/icon-constants'
+
+// styles
 import { CollabsibleContent } from '../styled-components-mixins'
 import { Wrapper, AddSection, AddSectionText, AddSectionIcon } from './styles'
 
@@ -280,7 +280,7 @@ export default compose(
         if (treeItem.parentId) {
           // Redirect to tag content
           props.deselectTasks()
-          props.changeLocation('/user/tags')
+          props.changeLocation(routes.user.tags)
 
           // Show tag detail
           props.selectTag(treeItem.tag.id)

@@ -1,18 +1,25 @@
-import React  from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
+import { routes } from 'utils/routes'
 import { compose, lifecycle } from 'recompose'
 
-import { changeLocation, visibleInboxTasks } from 'redux/store/app-state/app-state.actions'
+// redux
+import { connect } from 'react-redux'
 import { selectTask } from 'redux/store/tasks/tasks.actions'
-import { getInboxTasksItems, getSelectionTasks } from 'redux/store/tasks/tasks.selectors'
 import { getRoutingPathname } from 'redux/store/routing/routing.selectors'
+import {
+  changeLocation,
+  visibleInboxTasks,
+} from 'redux/store/app-state/app-state.actions'
+import {
+  getInboxTasksItems,
+  getSelectionTasks,
+} from 'redux/store/tasks/tasks.selectors'
 
-import LeftPanel from 'components/panels/left-panel'
-import TagTreeContent from 'components/contents/tag-tree-content'
+// components
 import CenterPanel from 'components/panels/center-panel'
-import InboxContent from 'components/contents/inbox-content'
 import DetailContent from 'components/contents/detail-content'
+import InboxContent from 'components/contents/inbox-content'
 
 const InboxPage = ({ inboxItems, pathname }) => {
   const template = '/user/inbox/'
@@ -21,14 +28,7 @@ const InboxPage = ({ inboxItems, pathname }) => {
   const isTaskId = inboxItems.includes(taskId)
 
   return (
-    <div>
-      <LeftPanel>
-        <TagTreeContent/>
-      </LeftPanel>
-      <CenterPanel>
-        {isTaskId ? <DetailContent/> : <InboxContent/>}
-      </CenterPanel>
-    </div>
+    <CenterPanel>{isTaskId ? <DetailContent /> : <InboxContent />}</CenterPanel>
   )
 }
 
@@ -50,14 +50,13 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   lifecycle({
     componentDidUpdate() {
-      const {
-        inboxItems,
-        pathname,
-        selectTasksItems
-      } = this.props
+      const { inboxItems, pathname, selectTasksItems } = this.props
 
       let template = '/user/inbox/'
       const numberTemplate = template.length
@@ -69,7 +68,7 @@ export default compose(
       this.props.visibleInboxTasks()
 
       if (!isTaskId) {
-        template = '/user/inbox'
+        template = routes.user.inbox
 
         if (inboxItems.size === 0) {
           return
@@ -88,6 +87,6 @@ export default compose(
 
       newSelectTaskItems = newSelectTaskItems.clear().add(taskId)
       this.props.selectTask(newSelectTaskItems, null)
-    }
+    },
   })
 )(InboxPage)

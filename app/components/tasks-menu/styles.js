@@ -10,10 +10,10 @@ import {
   boxShadow,
   fontMain,
   transform,
-  userSelect
+  userSelect,
 } from '../styled-components-mixins/'
 
-const fade = keyframes`${fadeIn}`;
+const fade = keyframes`${fadeIn}`
 const TasksMenuItem = styled.div`
   ${boxSizing('border-box')}
   height: 100%;
@@ -24,7 +24,7 @@ const TasksMenuItem = styled.div`
   justify-content: center;
   align-items: center;
   animation: 600ms ${fade};
-`;
+`
 
 // ---------------------------------- TasksMenuFiltersActive ----------------------------------
 const TasksMenuFiltersActive = styled.ul`
@@ -37,10 +37,10 @@ const TasksMenuFiltersActive = styled.ul`
   float: right;
   color: #282f34;
   white-space: nowrap;
-`;
+`
 
-const flipIn = keyframes`${flipInX}`;
-const flipOut = keyframes`${flipOutX}`;
+const flipIn = keyframes`${flipInX}`
+const flipOut = keyframes`${flipOutX}`
 const FilterActiveItem = styled.li`
   ${borderRadius('15px')}
   display: flex;
@@ -52,17 +52,18 @@ const FilterActiveItem = styled.li`
   background-color: #fff;
   padding: 0 10px 0 18px;
   font-size: 14px;
-  animation: ${props => props.isMounted ? `${flipIn} 500ms` : `${flipOut} 500ms`};
-`;
+  animation: ${props =>
+    props.isMounted ? `${flipIn} 500ms` : `${flipOut} 500ms`};
+`
 const FilterActiveItemIcon = styled.div`
   ${borderRadius('15px')}
   width: auto;
-`;
+`
 
 const FilterActiveItemTitle = styled.div`
   font-weight: bold;
-  margin: ${props => props.isAssignee ? '0 10px 2px 10px' : '0 10px 2px 0'};
-`;
+  margin: ${props => (props.isAssignee ? '0 10px 2px 10px' : '0 10px 2px 0')};
+`
 
 const FilterActiveItemAutocomplete = styled.div`
   display: flex;
@@ -74,41 +75,7 @@ const FilterActiveItemAutocomplete = styled.div`
   margin: 0 10px 0 0;
   border-left: 2px solid #e7eced;
   border-right: 2px solid #e7eced;
-`;
-
-// ---------------------------------- TasksMenuNavigation ----------------------------------
-const NavigationContainer = styled.div`
-  display: flex;
-  ${borderRadius('5px')}
-  margin-top: 3px;
-`;
-
-const Button = styled.div`
-  ${boxSizing('border-box')}
-  ${borderRadius(props => props.radius ? props.radius : '0')}
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 25px;
-  cursor: pointer;
-  width: 35px;
-  border-width: ${props => props.first ? '1px' : '1px 1px 1px 0'};
-  border-style: solid;
-  border-color: ${props => props.active ? '#8C9DA9' : '#C1CAD0'};
-  pointer-events: ${props => props.active ? 'none' : 'auto'};
-  background-color: ${props => props.active ? '#8C9DA9' : '#E7ECED'};
-
-  &:hover {
-    background-color: #8C9DA9;
-    border: 1px solid #8C9DA9;
-
-    svg {
-      path {
-        fill: #fff;
-      }
-    }
-  }
-`;
+`
 
 // ---------------------------------------- MenuBox ----------------------------------------
 const MenuBoxContainer = styled(MenuBox)`
@@ -118,13 +85,14 @@ const MenuBoxContainer = styled(MenuBox)`
   right: 10px;
   top: 48px;
   z-index: 100;
-  border: 1px solid #C1CAD0;
+  border: 1px solid #c1cad0;
   background-color: #fff;
   font-size: 14px;
-  color: #616F78;
+  color: #616f78;
   padding: 20px 15px 0 0;
 
-  :before, :after {
+  :before,
+  :after {
     content: '';
     display: block;
     position: absolute;
@@ -136,7 +104,7 @@ const MenuBoxContainer = styled(MenuBox)`
   :before {
     top: -18px;
     right: ${props => props.trianglePosition}px;
-    border-color: transparent transparent #C1CAD0 transparent;
+    border-color: transparent transparent #c1cad0 transparent;
     border-width: 9px;
   }
 
@@ -146,7 +114,7 @@ const MenuBoxContainer = styled(MenuBox)`
     border-color: transparent transparent #fff transparent;
     border-width: 8px;
   }
-`;
+`
 
 const MenuBoxGroup = styled(MenuBoxGroupItems)`
   ${fontMain}
@@ -169,17 +137,17 @@ const MenuBoxGroup = styled(MenuBoxGroupItems)`
       fill: #282f34;
     }
   }
-`;
+`
 
 const MenuBoxItemIcon = styled(MenuBoxItem)`
   display: inline-block;
   margin: 0 11px 0 22px;
-  pointer-events: ${props => props.active ? 'none' : 'auto'};
+  pointer-events: ${props => (props.active ? 'none' : 'auto')};
 
   path {
-    fill: ${props => props.active ? '#282f34' : '#8c9ea9'};
+    fill: ${props => (props.active ? '#282f34' : '#8c9ea9')};
   }
-`;
+`
 
 const MenuBoxItemTitle = styled(MenuBoxItem)`
   ${userSelect('none')};
@@ -187,8 +155,8 @@ const MenuBoxItemTitle = styled(MenuBoxItem)`
   cursor: pointer;
   margin: 0 8px;
   padding: 0;
-  color: ${props => props.active ? '#293034' : '#8c9ea9'} ;
-  pointer-events: ${props => props.active ? 'none' : 'auto'};
+  color: ${props => (props.active ? '#293034' : '#8c9ea9')};
+  pointer-events: ${props => (props.active ? 'none' : 'auto')};
 
   &:after {
     ${transform('scaleX(0)')}
@@ -205,8 +173,8 @@ const MenuBoxItemTitle = styled(MenuBoxItem)`
     }
   }
 
-  border-bottom: ${props => props.active ? '1px solid #293034' : '0'}
-`;
+  border-bottom: ${props => (props.active ? '1px solid #293034' : '0')};
+`
 
 export {
   TasksMenuItem,
@@ -215,8 +183,6 @@ export {
   FilterActiveItemIcon,
   FilterActiveItemTitle,
   FilterActiveItemAutocomplete,
-  NavigationContainer,
-  Button,
   MenuBoxContainer,
   MenuBoxGroup,
   MenuBoxItemIcon,

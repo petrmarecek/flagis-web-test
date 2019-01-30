@@ -1,47 +1,45 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+
+// redux
 import { connect } from 'react-redux'
 import { compose, withHandlers } from 'recompose'
 import { resizeLeftPanel } from 'redux/store/app-state/app-state.actions'
 import { getLeftPanel } from 'redux/store/app-state/app-state.selectors'
-import { getRoutingPathname } from 'redux/store/routing/routing.selectors'
+
+// components
 import ResizeHandle from 'components/common/resize-handle'
-import { LeftPanelContainer } from './styles'
 
-const LeftPanel = ({ children, leftPanel, location, onHandleResize }) => {
-  const isAccountPage = location.includes('/user/account')
+// styles
+import { LeftPanelWrapper } from './styles'
 
-  return (
-    <LeftPanelContainer
-      width={leftPanel.width}
-      whiteBackground={isAccountPage}>
-      {!isAccountPage &&
-      <ResizeHandle onResize={onHandleResize} />}
-      {children}
-    </LeftPanelContainer>
-  )
-}
+const LeftPanel = ({ children, leftPanel, onHandleResize }) => (
+  <LeftPanelWrapper width={leftPanel.width}>
+    <ResizeHandle onResize={onHandleResize} />
+    {children}
+  </LeftPanelWrapper>
+)
 
 LeftPanel.propTypes = {
-  children: PropTypes.object.isRequired,
+  children: PropTypes.array.isRequired,
   leftPanel: PropTypes.object,
-  location: PropTypes.string,
   onHandleResize: PropTypes.func,
-  resizeLeftPanel: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = state => ({
   leftPanel: getLeftPanel(state),
-  location: getRoutingPathname(state),
 })
 
 const mapDispatchToProps = {
-  resizeLeftPanel
+  resizeLeftPanel,
 }
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   withHandlers({
     onHandleResize: props => position => props.resizeLeftPanel(position.x),
-  }),
+  })
 )(LeftPanel)

@@ -526,7 +526,7 @@ export function* selectTask(action) {
     yield put(appStateActions.hideMultiSelect())
 
     if (archivedTasksVisible) {
-      yield put(push(`/user/account/archive/${taskId}`))
+      yield put(push(`/user/archive/${taskId}`))
       yield put(appStateActions.setDetail('archive'))
       return
     }

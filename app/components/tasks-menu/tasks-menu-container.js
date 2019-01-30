@@ -52,7 +52,7 @@ import {
 import { archiveCompletedTasks } from 'redux/utils/component-helper'
 
 import SearchBox from 'components/common/search-box'
-import TasksMenuNavigation from 'components/tasks-menu/tasks-menu-navigation'
+import NavigationSecondary from 'components/navigation/navigation-secondary'
 import TasksMenuFilters from 'components/tasks-menu/tasks-menu-filters'
 import TasksMenuFiltersActiveItem from 'components/tasks-menu/tasks-menu-filters-active-item'
 import TasksMenuSort from 'components/tasks-menu//tasks-menu-sort'
@@ -200,7 +200,7 @@ class TasksMenuContainer extends PureComponent {
           value={this.props.tasksMenu.filters.searchText}
         />
 
-        {!isMultiSelect && !isVisibleArchivedTasks && <TasksMenuNavigation />}
+        {!isMultiSelect && !isVisibleArchivedTasks && <NavigationSecondary />}
 
         {isMultiSelect && (
           <TasksMenuMultiSelect

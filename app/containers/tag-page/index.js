@@ -1,18 +1,22 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
+import { routes } from 'utils/routes'
 import { compose, lifecycle } from 'recompose'
 
-import { changeLocation, setDetail } from 'redux/store/app-state/app-state.actions'
+// redux
+import { connect } from 'react-redux'
 import { selectTag } from 'redux/store/tags/tags.actions'
 import { getTagsItems, getCurrentTagId } from 'redux/store/tags/tags.selectors'
 import { getRoutingPathname } from 'redux/store/routing/routing.selectors'
+import {
+  changeLocation,
+  setDetail,
+} from 'redux/store/app-state/app-state.actions'
 
-import TagsContent from 'components/contents/tags-content'
-import DetailContent from 'components/contents/detail-content'
-import LeftPanel from 'components/panels/left-panel'
+// components
 import CenterPanel from 'components/panels/center-panel'
-import TagTreeContent from 'components/contents/tag-tree-content'
+import DetailContent from 'components/contents/detail-content'
+import TagsContent from 'components/contents/tags-content'
 
 const TagPage = ({ tagsItems, pathname }) => {
   const template = '/user/tags/'
@@ -21,14 +25,7 @@ const TagPage = ({ tagsItems, pathname }) => {
   const isTagId = tagsItems.includes(tagId)
 
   return (
-    <div>
-      <LeftPanel>
-        <TagTreeContent/>
-      </LeftPanel>
-      <CenterPanel>
-        {isTagId ? <DetailContent/> : <TagsContent/>}
-      </CenterPanel>
-    </div>
+    <CenterPanel>{isTagId ? <DetailContent /> : <TagsContent />}</CenterPanel>
   )
 }
 
@@ -50,14 +47,13 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   lifecycle({
     componentDidUpdate() {
-      const {
-        tagsItems,
-        pathname,
-        currentTagId
-      } = this.props
+      const { tagsItems, pathname, currentTagId } = this.props
 
       let template = '/user/tags/'
       const numberTemplate = template.length
@@ -65,7 +61,7 @@ export default compose(
       const isTagId = tagsItems.includes(tagId)
 
       if (!isTagId) {
-        template = '/user/tags'
+        template = routes.user.tags
 
         if (tagsItems.size === 0) {
           return
@@ -84,6 +80,6 @@ export default compose(
 
       this.props.selectTag(tagId)
       this.props.setDetail('tag')
-    }
+    },
   })
 )(TagPage)

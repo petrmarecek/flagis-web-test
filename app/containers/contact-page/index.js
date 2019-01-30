@@ -1,24 +1,19 @@
-import React  from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
 
+// redux
+import { connect } from 'react-redux'
 import { getContactDetail } from 'redux/store/app-state/app-state.selectors'
 
-import LeftPanel from 'components/panels/left-panel'
+// components
 import CenterPanel from 'components/panels/center-panel'
-import AccountMenu from 'components/account-menu/'
-import ContactContent from 'components/contents/contact-content'
 import DetailContent from 'components/contents/detail-content'
+import ContactContent from 'components/contents/contact-content'
 
 const ContactPage = ({ contactDetail }) => (
-  <div>
-    <LeftPanel>
-      <AccountMenu/>
-    </LeftPanel>
-    <CenterPanel>
-      {contactDetail ? <DetailContent/> : <ContactContent/>}
-    </CenterPanel>
-  </div>
+  <CenterPanel>
+    {contactDetail ? <DetailContent /> : <ContactContent />}
+  </CenterPanel>
 )
 
 ContactPage.propTypes = {
@@ -31,4 +26,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {}
 
-export default connect(mapStateToProps, mapDispatchToProps)(ContactPage)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ContactPage)

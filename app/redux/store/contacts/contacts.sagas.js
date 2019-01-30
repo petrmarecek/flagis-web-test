@@ -97,7 +97,7 @@ export function* createContact(action) {
 export function* selectContacts(action) {
   const { contactId } = action.payload
 
-  yield put(push(`/user/account/contacts/${contactId}`))
+  yield put(push(`/user/contacts/${contactId}`))
 }
 
 export function* deselectContacts() {

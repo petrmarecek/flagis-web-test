@@ -1,11 +1,21 @@
 import { push } from 'react-router-redux'
 import { delay } from 'redux-saga'
-import { all, fork, cancel, call, put, race, take, select } from 'redux-saga/effects'
+import {
+  all,
+  fork,
+  cancel,
+  call,
+  put,
+  race,
+  take,
+  select,
+} from 'redux-saga/effects'
 import { toast } from 'react-toastify'
 import { REHYDRATE } from 'redux-persist'
 import { Map } from 'immutable'
 import { errorMessages, successMessages } from 'utils/messages'
 import constants from 'utils/constants'
+import { routes } from 'utils/routes'
 
 import * as authActions from 'redux/store/auth/auth.actions'
 import * as appStateActions from 'redux/store/app-state/app-state.actions'
@@ -15,10 +25,16 @@ import * as treeActions from 'redux/store/tree/tree.actions'
 import * as contactsActions from 'redux/store/contacts/contacts.actions'
 import * as authSelectors from 'redux/store/auth/auth.selectors'
 import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'
-import { initTasksData, initInboxTasksData } from 'redux/store/tasks/tasks.sagas'
+import {
+  initTasksData,
+  initInboxTasksData,
+} from 'redux/store/tasks/tasks.sagas'
 import { initTagsData } from 'redux/store/tags/tags.sagas'
 import { initTagTreeItemsData } from 'redux/store/tree/tree.sagas'
-import { initContactsData, initGlobalContactsData } from 'redux/store/contacts/contacts.sagas'
+import {
+  initContactsData,
+  initGlobalContactsData,
+} from 'redux/store/contacts/contacts.sagas'
 import { createLoadActions } from 'redux/store/common.sagas'
 import api from 'redux/utils/api'
 import firebase from 'redux/utils/firebase'
@@ -27,8 +43,8 @@ import dateUtil from 'redux/utils/date'
 const AUTH = authActions.AUTH
 
 export function* initDataFlow() {
-
-  while (true) { // eslint-disable-line
+  while (true) {
+    // eslint-disable-line
     const initTime = dateUtil.getDateToISOString()
     const loginActions = createLoadActions(AUTH.LOGIN)
     const tokenActions = createLoadActions(AUTH.REFRESH_TOKEN)
@@ -71,7 +87,9 @@ export function* initDataFlow() {
     yield cancel(globalContactsSyncing)
 
     // Cancel snapshot for comments and attachments from firestore
-    const { task, inbox } = yield select(state => appStateSelectors.getDetail(state))
+    const { task, inbox } = yield select(state =>
+      appStateSelectors.getDetail(state)
+    )
     if (task) {
       yield put(appStateActions.deselectDetail('task'))
     }
@@ -93,7 +111,8 @@ export function* authFlow() {
     cleanStore()
   }
 
-  while (true) { // eslint-disable-line
+  while (true) {
+    // eslint-disable-line
 
     // login or register
     if (!auth) {
@@ -118,14 +137,13 @@ export function* authFlow() {
 
     const { logOutAction } = yield race({
       logOutAction: take(AUTH.LOGOUT),
-      refreshTokenLoop: call(tokenLoop, auth)
+      refreshTokenLoop: call(tokenLoop, auth),
     })
 
     if (logOutAction !== null) {
       yield call(logout)
       auth = null
     }
-
   }
 }
 
@@ -139,14 +157,13 @@ export function* initEmail(action) {
       firstName: null,
       lastName: null,
       createdAt: null,
-      updatedAt: null
+      updatedAt: null,
     }
 
     yield put(authActions.updateProfile(profile))
   } catch (err) {
-    const redirectAction = push('/sign-in')
+    const redirectAction = push(routes.signIn)
     yield put(redirectAction)
-
   }
 }
 
@@ -154,7 +171,7 @@ export function* controlRedirectSignIn() {
   const auth = yield select(state => authSelectors.getAuth(state))
 
   if (!auth.isLogged) {
-    const redirectAction = push('/sign-in')
+    const redirectAction = push(routes.signIn)
     yield put(redirectAction)
   }
 }
@@ -163,7 +180,7 @@ export function* controlRedirectTasks() {
   const auth = yield select(state => authSelectors.getAuth(state))
 
   if (auth.isLogged) {
-    const redirectAction = push('/user/tasks')
+    const redirectAction = push(routes.user.tasks)
     yield put(redirectAction)
   }
 }
@@ -179,9 +196,10 @@ export function* changeName(action) {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
     })
-
   } catch (err) {
-    yield put(appStateActions.setError('changeName', errorMessages.somethingWrong))
+    yield put(
+      appStateActions.setError('changeName', errorMessages.somethingWrong)
+    )
     yield put(appStateActions.deselectLoader('form'))
   }
 }
@@ -196,9 +214,13 @@ export function* changePassword(action) {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
     })
-
   } catch (err) {
-    yield put(appStateActions.setError('changePassword', errorMessages.changePassword.badRequest))
+    yield put(
+      appStateActions.setError(
+        'changePassword',
+        errorMessages.changePassword.badRequest
+      )
+    )
     yield put(appStateActions.deselectLoader('form'))
   }
 }
@@ -207,7 +229,7 @@ export function* emailResetPassword(action) {
   try {
     yield call(api.users.emailResetPassword, action.payload)
     yield put(appStateActions.deselectLoader('form'))
-    yield put(appStateActions.changeLocation('/sign-in'))
+    yield put(push(routes.signIn))
 
     // delay for render sign-in component
     yield delay(100)
@@ -217,10 +239,9 @@ export function* emailResetPassword(action) {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
     })
-
   } catch (err) {
     yield put(appStateActions.deselectLoader('form'))
-    yield put(appStateActions.changeLocation('/sign-in'))
+    yield put(push(routes.signIn))
 
     // delay for render sign-in component
     yield delay(100)
@@ -235,10 +256,9 @@ export function* emailResetPassword(action) {
 
 export function* resetPassword(action) {
   try {
-
     yield call(api.users.resetPassword, action.payload)
     yield put(appStateActions.deselectLoader('form'))
-    yield put(appStateActions.changeLocation('/sign-in'))
+    yield put(push(routes.signIn))
 
     // delay for render sign-in component
     yield delay(100)
@@ -248,10 +268,9 @@ export function* resetPassword(action) {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
     })
-
   } catch (err) {
     yield put(appStateActions.deselectLoader('form'))
-    yield put(appStateActions.changeLocation('/sign-in'))
+    yield put(push(routes.sisgnIn))
 
     // delay for render sign-in component
     yield delay(100)
@@ -268,21 +287,18 @@ export function* resetPassword(action) {
 
 function getRedirectPathname() {
   const { pathname } = window.location
-  const tasksTemplate = '/user/tasks'
-  const inboxTemplate = '/user/inbox'
-  const tagsTemplate = '/user/tags'
-  const numberTasksTemplate = tasksTemplate.length
-  const numberInboxTemplate = inboxTemplate.length
-  const numberTagsTemplate = tagsTemplate.length
-  const isTasksPathname = pathname.substring(0, numberTasksTemplate) === tasksTemplate
-  const isInboxPathname = pathname.substring(0, numberInboxTemplate) === inboxTemplate
-  const isTagsPathname = pathname.substring(0, numberTagsTemplate) === tagsTemplate
+  const { user } = routes
+  const isTasksPathname =
+    pathname.substring(0, user.tasks.length) === user.tasks
+  const isInboxPathname =
+    pathname.substring(0, user.inbox.length) === user.inbox
+  const isTagsPathname = pathname.substring(0, user.tags.length) === user.tags
 
   if (isTasksPathname || isInboxPathname || isTagsPathname) {
     return pathname
   }
 
-  return tasksTemplate
+  return user.tasks
 }
 
 function* setTokens({ accessToken, firebaseToken }) {
@@ -310,24 +326,35 @@ function* authorizeUser(authApiCall, action) {
     yield put(appStateActions.deselectLoader('form'))
 
     // redirect
-    const redirectAction = push('/user/tasks')
+    const redirectAction = push(routes.user.tasks)
     yield put(redirectAction)
 
     return auth
-
   } catch (error) {
     yield put({ type: REJECTED, error })
 
     if (action.type === 'AUTH/LOGIN') {
       if (error.response.data.type === 'PasswordResetRequired') {
-        yield put(appStateActions.setError('signIn', errorMessages.signIn.passwordResetRequired))
+        yield put(
+          appStateActions.setError(
+            'signIn',
+            errorMessages.signIn.passwordResetRequired
+          )
+        )
       } else {
-        yield put(appStateActions.setError('signIn', errorMessages.signIn.unauthorized))
+        yield put(
+          appStateActions.setError('signIn', errorMessages.signIn.unauthorized)
+        )
       }
     }
 
-    if (action.type === 'AUTH/SIGN_UP' || action.type === 'AUTH/SIGN_UP_INVITATION') {
-      yield put(appStateActions.setError('signUp', errorMessages.signUp.conflict))
+    if (
+      action.type === 'AUTH/SIGN_UP' ||
+      action.type === 'AUTH/SIGN_UP_INVITATION'
+    ) {
+      yield put(
+        appStateActions.setError('signUp', errorMessages.signUp.conflict)
+      )
     }
 
     yield put(appStateActions.deselectLoader('form'))
@@ -349,21 +376,23 @@ function* logout() {
   yield call(firebase.signOut)
 
   // redirect
-  const redirectAction = push('/sign-in')
+  const redirectAction = push(routes.signIn)
   yield put(redirectAction)
 }
 
 function* tokenLoop(auth) {
   const { PENDING, FULFILLED, REJECTED } = createLoadActions(AUTH.REFRESH_TOKEN)
 
-  while (true) { // eslint-disable-line
+  while (true) {
+    // eslint-disable-line
     yield put({ type: PENDING })
 
     try {
       const data = {
-        userId: auth.profile instanceof Map
-          ? auth.profile.get('id')
-          : auth.profile.id,
+        userId:
+          auth.profile instanceof Map
+            ? auth.profile.get('id')
+            : auth.profile.id,
         refreshToken: auth.refreshToken,
       }
 
@@ -383,7 +412,6 @@ function* tokenLoop(auth) {
       yield put(redirectAction)
 
       yield call(delay, response.expiresIn - constants.MIN_TOKEN_LIFESPAN)
-
     } catch (error) {
       yield put({ type: REJECTED })
       yield call(logout)
@@ -391,5 +419,4 @@ function* tokenLoop(auth) {
       return
     }
   }
-
 }

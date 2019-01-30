@@ -1,11 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { routes } from 'utils/routes'
 import { Link } from 'react-router-dom'
 import Logo from 'assets/img/logo.svg'
 
 const NavigationLanding = ({ isLogoNav, location }) => {
-  const signInBtnDisabled = location.pathname === '/sign-in'
-  const signUpBtnDisabled = location.pathname === '/sign-up'
+  const signInBtnDisabled = location.pathname === routes.signIn
+  const signUpBtnDisabled = location.pathname === routes.signUp
 
   return (
     <nav className="navbar-landing">
@@ -16,21 +17,24 @@ const NavigationLanding = ({ isLogoNav, location }) => {
           </Link>
         </div>
 
-        {!isLogoNav &&
-        <div className="navbar-landing__link-up">
-          <Link
-            className="form-link form-link__button-in"
-            to="/sign-in"
-            disabled={signInBtnDisabled}>
-            Sign in
-          </Link>
-          <Link
-            className="form-link form-link__button-up"
-            to="/sign-up"
-            disabled={signUpBtnDisabled}>
-            Sign up for Free
-          </Link>
-        </div>}
+        {!isLogoNav && (
+          <div className="navbar-landing__link-up">
+            <Link
+              className="form-link form-link__button-in"
+              to="/sign-in"
+              disabled={signInBtnDisabled}
+            >
+              Sign in
+            </Link>
+            <Link
+              className="form-link form-link__button-up"
+              to="/sign-up"
+              disabled={signUpBtnDisabled}
+            >
+              Sign up for Free
+            </Link>
+          </div>
+        )}
       </div>
     </nav>
   )

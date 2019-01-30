@@ -1,7 +1,6 @@
 import React from 'react'
 
-import LeftPanel from 'components/panels/left-panel'
-import TagTreeContainer from 'components/tag-tree'
+// components
 import CenterPanel from 'components/panels/center-panel'
 import DashboardContent from 'components/contents/dashboard-content'
 
@@ -12,14 +11,9 @@ const DashboardPage = () => {
   }
 
   return (
-    <div>
-      <LeftPanel>
-        <TagTreeContainer />
-      </LeftPanel>
-      <CenterPanel style={centerPanelStyle}>
-        <DashboardContent />
-      </CenterPanel>
-    </div>
+    <CenterPanel style={centerPanelStyle}>
+      <DashboardContent />
+    </CenterPanel>
   )
 }
 
