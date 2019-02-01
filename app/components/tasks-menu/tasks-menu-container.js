@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
+import cx from 'classnames'
 import { OrderedSet } from 'immutable'
 import { connect } from 'react-redux'
 import { toast } from 'react-toastify'
@@ -184,6 +185,14 @@ class TasksMenuContainer extends PureComponent {
     const isMultiSelect = this.props.multiSelect
     const isVisibleArchivedTasks = this.props.isVisibleArchivedTasks
     const isTimeLine = this.props.timeLine
+    const taskCount = isMultiSelect
+      ? this.props.selectTaskCount
+      : this.props.showTasksId.size
+
+    const taskCountCss = cx({
+      'task-count-indicator__inner': true,
+      'task-count-indicator__inner--multi-select': isMultiSelect,
+    })
 
     return (
       <div className="tasks-menu">
@@ -251,6 +260,12 @@ class TasksMenuContainer extends PureComponent {
             tasksMenu={this.props.tasksMenu}
             isVisibleArchivedTasks={isVisibleArchivedTasks}
           />
+        )}
+
+        {isVisibleArchivedTasks && (
+          <span className="task-count-indicator">
+            <span className={taskCountCss}>{taskCount}</span>
+          </span>
         )}
       </div>
     )
