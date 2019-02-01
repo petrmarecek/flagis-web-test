@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import onClickOutside from 'react-onclickoutside'
 import { withStateHandlers } from 'recompose'
 
 import { ICONS } from 'components/icons/icon-constants'
@@ -109,5 +110,16 @@ export default withStateHandlers(
           return {}
       }
     },
+    handleClickOutside: ({ isVisibleInput }, props) => () => {
+      if (!isVisibleInput && props.value) {
+        return {}
+      }
+
+      if (props.value) {
+        return {}
+      }
+
+      return { isVisibleInput: false }
+    },
   }
-)(SearchBox)
+)(onClickOutside(SearchBox))
