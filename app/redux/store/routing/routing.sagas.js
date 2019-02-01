@@ -18,6 +18,7 @@ export function* changeNavigation(action) {
   yield put(taskActions.deselectTasks())
   yield put(tagActions.deselectTags())
   yield put(contactActions.deselectContacts())
+  yield put(taskActions.cancelTimeLine())
 
   if (type === 'inbox') {
     yield put(appStateActions.visibleInboxTasks())
