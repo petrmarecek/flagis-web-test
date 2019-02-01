@@ -53,6 +53,12 @@ export default compose(
     componentDidUpdate() {
       const { tagsItems, pathname, currentTagId } = this.props
 
+      // redirect to tasks
+      if (pathname === routes.user.tasks) {
+        this.props.changeLocation(routes.user.tasks)
+        return
+      }
+
       let template = '/user/tags/'
       const numberTemplate = template.length
       const tagId = pathname.substring(numberTemplate)

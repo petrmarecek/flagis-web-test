@@ -8,6 +8,7 @@ import { updateTaskSearch } from 'redux/store/tasks/tasks.actions'
 import { getTasksSearch } from 'redux/store/tasks/tasks.selectors'
 
 // components
+import MainSearch from 'components/common/main-search'
 import SearchBox from 'components/common/search-box'
 import TaskListContainer from '../task-list'
 import TasksMenuContainer from '../tasks-menu/tasks-menu-container'
@@ -34,7 +35,8 @@ const ArchivedTitle = styled.div`
 const ArchiveContent = ({ search, onHandleSearchChange }) => (
   <div>
     <CenterPanelTop>
-      <CenterPanelTopPrimary flexEnd>
+      <CenterPanelTopPrimary>
+        <MainSearch />
         <SearchBox value={search} onChange={onHandleSearchChange} />
       </CenterPanelTopPrimary>
       <CenterPanelTopSecondary flexEnd>

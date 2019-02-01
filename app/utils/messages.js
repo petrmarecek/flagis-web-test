@@ -96,5 +96,6 @@ export const infoMessages = {
     acceptedRules:
       'Not allowed to edit subject, dates and description of task!',
     inboxRules: 'Allowed to add comments and accept/reject of task!',
+    completedRules: 'Allowed to only complete and archive of task!',
   },
 }

@@ -56,6 +56,12 @@ export default compose(
     componentDidUpdate() {
       const { inboxItems, pathname, selectTasksItems } = this.props
 
+      // redirect to tasks
+      if (pathname === routes.user.tasks) {
+        this.props.changeLocation(routes.user.tasks)
+        return
+      }
+
       let template = '/user/inbox/'
       const numberTemplate = template.length
       const taskId = pathname.substring(numberTemplate)

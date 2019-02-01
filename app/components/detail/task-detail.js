@@ -139,9 +139,13 @@ const TaskDetail = props => {
   } = getBindingData
 
   // Variables
-  const ruleMessage = isInboxVisible
-    ? infoMessages.taskDetail.inboxRules
+  let ruleMessage = isCompleted
+    ? infoMessages.taskDetail.completedRules
     : infoMessages.taskDetail.acceptedRules
+
+  if (isInboxVisible) {
+    ruleMessage = infoMessages.taskDetail.inboxRules
+  }
 
   // Conditionals
   const isAcceptedStatus =
@@ -150,6 +154,7 @@ const TaskDetail = props => {
     followerStatus !== 'rejected'
   const isCollaborated =
     followerStatus === 'pending' || followerStatus === 'accepted'
+  const isCollaboratedOrCompleted = isCollaborated || isCompleted
   const isOwnerCollaborated = isOwner && isCollaborated
   const isOwnerAccepted = isOwner && followerStatus === 'accepted'
   const isAssigneeAccepted = !isOwner && followerStatus === 'accepted'
@@ -169,7 +174,7 @@ const TaskDetail = props => {
     }
 
     if (isOwnerAccepted) {
-      return '#f6f8f8'
+      return '#F6F7F8'
     }
 
     return '#fff'
@@ -360,7 +365,7 @@ const TaskDetail = props => {
               <FollowerIcon defaultIcon />
             </DetailContentIcon>
           )}
-          {isCollaborated && !isArchived && !isCompleted && (
+          {isCollaboratedOrCompleted && (
             <DetailContentIcon title={ruleMessage} animation>
               <Icon
                 icon={ICONS.LOCK}
@@ -471,7 +476,7 @@ const TaskDetail = props => {
                 </DetailContentImportantContent>
               </DetailContentImportant>
             </DetailContentOptions>
-            <DetailContentAttachments allowed={!isArchivedOrInbox}>
+            <DetailContentAttachments>
               {attachments.isFetching && <Loader />}
               {!attachments.isFetching && (
                 <AttachmentList

@@ -65,7 +65,7 @@ const DetailContentTop = styled.div`
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #ecfff7;
+    background-color: #F6F7F8;
     ${transform(props => (props.completed ? 'scaleX(1)' : 'scaleX(0)'))}
     ${transformOrigin('0 50%')}
     ${transition(props =>
@@ -124,6 +124,7 @@ const DetailContentButton = styled.div`
 const DetailContentIcon = styled.div`
   ${boxSizing('border-box')}
   display: flex;
+  justify-content: center;
   align-items: center;
   pointer-events: auto;
   flex: 0 0 35px;
@@ -142,22 +143,6 @@ const DetailContentCenter = styled.div`
   flex-direction: ${props => (props.column ? 'column' : 'row')};
   padding: 21px 0 22px 0;
   pointer-events: ${props => (props.allowed ? 'auto' : 'none')};
-
-  :before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ecfff7;
-    ${borderRadius('4px 4px 0 0')}
-    ${transform(props => (props.allowed ? 'scaleX(0)' : 'scaleX(1)'))}
-    ${transformOrigin('0 50%')}
-    ${transition(props =>
-      props.animation ? 'transform 500ms ease-out' : 'none'
-    )}
-  }
 `
 
 const DetailContentProperties = styled.div`
@@ -273,25 +258,25 @@ const DetailContentDatePicker = styled.div`
     z-index: 2;
 
     .react-datepicker {
-      .border-radius(5px 0 5px 5px);
+      ${borderRadius('5px 0 5px 5px')}
 
       .react-datepicker__header {
-        .border-radius(5px 0 0 0);
+        ${borderRadius('5px 0 0 0')}
       }
 
       .react-datepicker__today-button {
-        .border-radius(0 0 5px 5px);
+        ${borderRadius('0 0 5px 5px')}
       }
 
       .react-datepicker__time-container {
-        .border-radius(0 5px 5px 0);
+        ${borderRadius('0 5px 5px 0')}
 
         .react-datepicker__header {
-          .border-radius(0 5px 0 0);
+          ${borderRadius('0 5px 0  0')}
         }
 
         .react-datepicker__time {
-          .border-radius(0 0 5px 0);
+          ${borderRadius('0 0 5px 0')}
         }
       }
     }
@@ -304,7 +289,6 @@ const DetailContentAttachments = styled.div`
   justify-content: space-between;
   height: 100%;
   z-index: 1;
-  pointer-events: ${props => (props.allowed ? 'auto' : 'none')};
 `
 
 const DetailContentComments = styled.div`

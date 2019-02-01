@@ -12,6 +12,7 @@ export const TREE = {
   SHOW_ADD_CONTROL: 'TREE/SHOW_ADD_CONTROL',
   HIDE_ADD_CONTROL: 'TREE/HIDE_ADD_CONTROL',
   SELECT_PATH: 'TREE/SELECT_PATH',
+  RESET_SELECT_PATH: 'TREE/RESET_SELECT_PATH',
   DESELECT_PATH: 'TREE/DESELECT_PATH',
   COLLAPSE: 'TREE/COLLAPSE',
 
@@ -25,25 +26,25 @@ export const addTreeItem = item => ({
   type: TREE.ADD,
   payload: item,
   meta: {
-    schema: schema.treeItem
-  }
+    schema: schema.treeItem,
+  },
 })
 
 // Payload format: { parentId, title, isSection }
 export const createTreeItem = item => ({
   type: TREE.CREATE,
-  payload: item
+  payload: item,
 })
 
 export const fetchTree = () => ({
-  type: TREE.FETCH
+  type: TREE.FETCH,
 })
 
 export const showTreeItemAddControl = parentTreeItemId => ({
   type: TREE.SHOW_ADD_CONTROL,
   payload: {
-    parentTreeItemId
-  }
+    parentTreeItemId,
+  },
 })
 
 export const hideTreeItemAddControl = () => ({
@@ -55,6 +56,10 @@ export const selectPath = treeItems => ({
   payload: treeItems,
 })
 
+export const resetSelectPath = () => ({
+  type: TREE.RESET_SELECT_PATH,
+})
+
 export const deselectPath = () => ({
   type: TREE.DESELECT_PATH,
 })
@@ -64,21 +69,21 @@ export const updateTreeItemTitle = (treeItem, title) => ({
   payload: {
     treeItem,
     title,
-  }
+  },
 })
 
 export const deleteTreeItem = originalData => ({
   type: TREE.DELETE,
   payload: {
-    originalData
-  }
+    originalData,
+  },
 })
 
 export const collapse = treeItem => ({
   type: TREE.COLLAPSE,
   payload: {
-    treeItem
-  }
+    treeItem,
+  },
 })
 
 export const dropTreeItem = dropResult => ({
@@ -95,7 +100,7 @@ export const moveSection = (sectionId, order) => ({
   type: TREE.MOVE_SECTION,
   payload: {
     sectionId,
-    order
+    order,
   },
 })
 

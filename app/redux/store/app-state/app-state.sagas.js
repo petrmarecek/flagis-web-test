@@ -7,7 +7,6 @@ import * as tagActions from 'redux/store/tags/tags.actions'
 import * as treeActions from 'redux/store/tree/tree.actions'
 import * as contactActions from 'redux/store/contacts/contacts.actions'
 import * as followerActions from 'redux/store/followers/followers.actions'
-import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'
 import * as authSelectors from 'redux/store/auth/auth.selectors'
 import * as tagSelectors from 'redux/store/tags/tags.selectors'
 import { toast } from 'react-toastify'
@@ -18,27 +17,15 @@ import search from 'redux/services/search'
 import api from 'redux/utils/api'
 
 export function* defaultDisplay() {
-  const isArchivedTask = yield select(state =>
-    appStateSelectors.getArchivedTasksVisibility(state)
-  )
-  const isInboxTasks = yield select(state =>
-    appStateSelectors.getInboxTasksVisibility(state)
-  )
-
-  if (isArchivedTask) {
-    yield put(appStateActions.hideArchivedTasks())
-  }
-
-  if (isInboxTasks) {
-    yield put(appStateActions.hideInboxTasks())
-  }
-
+  yield put(appStateActions.hideArchivedTasks())
+  yield put(appStateActions.hideInboxTasks())
   yield put(taskActions.deselectTasks())
+  yield put(taskActions.cancelTimeLine())
   yield put(taskActions.updateTaskSearch(''))
   yield put(tagActions.deselectTags())
   yield put(contactActions.deselectContacts())
   yield put(tasksMenuActions.resetTasksMenu())
-  yield put(treeActions.selectPath([]))
+  yield put(treeActions.resetSelectPath())
   yield put(push(routes.user.tasks))
 }
 

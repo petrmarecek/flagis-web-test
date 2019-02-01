@@ -1,5 +1,13 @@
 import { normalize } from 'normalizr'
-import { all, take, cancelled, fork, call, put, select } from 'redux-saga/effects'
+import {
+  all,
+  take,
+  cancelled,
+  fork,
+  call,
+  put,
+  select,
+} from 'redux-saga/effects'
 import { push } from 'react-router-redux'
 import intersection from 'lodash/intersection'
 import includes from 'lodash/includes'
@@ -9,14 +17,11 @@ import constants from 'utils/constants'
 import { routes } from 'utils/routes'
 import { Map } from 'immutable'
 
-import {
-  createLoadActions,
-  fetch,
-  mainUndo,
-} from 'redux/store/common.sagas'
+import { createLoadActions, fetch, mainUndo } from 'redux/store/common.sagas'
 import * as appStateActions from 'redux/store/app-state/app-state.actions'
 import * as taskActions from 'redux/store/tasks/tasks.actions'
 import * as tagActions from 'redux/store/tags/tags.actions'
+import * as contactActions from 'redux/store/contacts/contacts.actions'
 import * as treeActions from 'redux/store/tree/tree.actions'
 import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'
 import * as authSelectors from 'redux/store/auth/auth.selectors'
@@ -37,9 +42,15 @@ function* saveChangeFromFirestore(change) {
 
   // Prepare data
   const normalizeData = normalize(treeItem, schema.treeItem)
-  const storeAddControlParentId = yield select(state => treeSelectors.getAddControlParentId(state))
-  const storeSelection = yield select(state => treeSelectors.getSelectionTree(state))
-  let storeActiveTags = yield select(state => tagSelectors.getActiveTagsIds(state))
+  const storeAddControlParentId = yield select(state =>
+    treeSelectors.getAddControlParentId(state)
+  )
+  const storeSelection = yield select(state =>
+    treeSelectors.getSelectionTree(state)
+  )
+  let storeActiveTags = yield select(state =>
+    tagSelectors.getActiveTagsIds(state)
+  )
   const { id, isDeleted, tagId } = treeItem
 
   // Delete treeItem
@@ -59,26 +70,29 @@ function* saveChangeFromFirestore(change) {
       storeActiveTags = storeActiveTags.filter(activeId => activeId !== tagId)
       yield put(tagActions.setActiveTags(storeActiveTags))
     }
-
   }
 
   //TODO: Delete treeItem -> Hide add control panel and deselect tags
 
   // Save changes to store
-  yield put({type: FULFILLED, payload: normalizeData})
+  yield put({ type: FULFILLED, payload: normalizeData })
 }
 
 function* syncTagTreeItemsChannel(channel) {
   const { REJECTED } = createLoadActions(TREE.FIREBASE)
 
   try {
-    while (true) { // eslint-disable-line
+    while (true) {
+      // eslint-disable-line
       const snapshot = yield take(channel)
-      yield all(snapshot.docChanges().map(change => call(saveChangeFromFirestore, change)))
+      yield all(
+        snapshot
+          .docChanges()
+          .map(change => call(saveChangeFromFirestore, change))
+      )
     }
-  } catch(err) {
+  } catch (err) {
     yield put({ type: REJECTED, err })
-
   } finally {
     if (yield cancelled()) {
       channel.close()
@@ -90,7 +104,7 @@ export function* fetchTree() {
   yield* fetch(TREE.FETCH, {
     method: api.tree.get,
     args: [],
-    schema: schema.trees
+    schema: schema.trees,
   })
 }
 
@@ -102,7 +116,6 @@ export function* initTagTreeItemsData(initTime) {
 
 export function* createTreeItem(action) {
   try {
-
     // hide controls for adding tree items
     yield put(treeActions.hideTreeItemAddControl())
 
@@ -111,7 +124,7 @@ export function* createTreeItem(action) {
     const data = {
       title: action.payload.title,
       parentId: action.payload.parentId,
-      order: action.payload.order
+      order: action.payload.order,
     }
 
     // call server
@@ -119,28 +132,52 @@ export function* createTreeItem(action) {
 
     // add tree item to the store
     yield put(treeActions.addTreeItem(item))
-
   } catch (error) {
     // TODO: Error
   }
 }
 
 export function* selectPath(action) {
+  const relatedTagIds = action.payload.map(treeItem => treeItem.tagId)
+
+  // deselect tasks, tags, contacts
   yield put(taskActions.deselectTasks())
   yield put(tagActions.deselectTags())
+  yield put(contactActions.deselectContacts())
 
-  const isInboxTasks = yield select(state => appStateSelectors.getInboxTasksVisibility(state))
+  // hide inbox
+  const isInboxTasks = yield select(state =>
+    appStateSelectors.getInboxTasksVisibility(state)
+  )
+
   if (isInboxTasks) {
     yield put(appStateActions.hideInboxTasks())
   }
 
-  const location = yield select(state => routingSelectors.getRoutingPathname(state))
-  if (location !== routes.user.tasks) {
+  // redirect to archive
+  const isArchivedTasks = yield select(state =>
+    appStateSelectors.getArchivedTasksVisibility(state)
+  )
+
+  if (isArchivedTasks) {
+    yield put(tagActions.setActiveTags(relatedTagIds))
+    return
+  }
+
+  // other pages -> redirect to tasks-page
+  const pathname = yield select(state =>
+    routingSelectors.getRoutingPathname(state)
+  )
+
+  if (pathname !== routes.user.tasks) {
     yield put(push(routes.user.tasks))
   }
 
-  const relatedTagIds = action.payload.map(treeItem => treeItem.tagId)
   yield put(tagActions.setActiveTags(relatedTagIds))
+}
+
+export function* resetSelectPath() {
+  yield put(tagActions.setActiveTags([]))
 }
 
 export function* updateTreeItem(action) {
@@ -153,40 +190,46 @@ export function* updateTreeItem(action) {
   const { PENDING, FULFILLED, REJECTED } = createLoadActions(TREE.UPDATE)
 
   try {
-
     // optimistic update
     yield put({
       type: PENDING,
-      payload: action.payload
+      payload: action.payload,
     })
 
     // call api
-    const result = yield call(api.tree.updateTitle, action.payload.treeItem.id, action.payload.title)
+    const result = yield call(
+      api.tree.updateTitle,
+      action.payload.treeItem.id,
+      action.payload.title
+    )
 
     yield put({
       type: FULFILLED,
       payload: result,
       meta: {
-        schema: schema.treeItem
-      }
+        schema: schema.treeItem,
+      },
     })
 
     // update tags in global search if tree item is selected
     if (treeStore.selection.includes(originalTreeItem.id)) {
       const newTagId = result.tag.id
-      let activeTags = yield select(state => tagSelectors.getActiveTagsIds(state))
+      let activeTags = yield select(state =>
+        tagSelectors.getActiveTagsIds(state)
+      )
 
       // replace old tag by new tag id
-      activeTags = activeTags.update(activeTags.indexOf(originalTreeItem.tagId), () => newTagId)
+      activeTags = activeTags.update(
+        activeTags.indexOf(originalTreeItem.tagId),
+        () => newTagId
+      )
 
       yield put(tagActions.setActiveTags(activeTags))
     }
-
   } catch (e) {
-
     yield put({
       type: REJECTED,
-      payload: originalTreeItem
+      payload: originalTreeItem,
     })
 
     console.log(e)
@@ -194,13 +237,12 @@ export function* updateTreeItem(action) {
 }
 
 export function* deleteTreeItem(action) {
-
   // Call server
   yield* fetch(TREE.DELETE, {
     method: api.tree.delete,
     args: [action.payload.originalData.id],
     schema: null,
-    payload: action.payload
+    payload: action.payload,
   })
 
   // Set action for undo
@@ -255,12 +297,10 @@ export function* undoDeleteTreeItem(action) {
   } catch (err) {
     console.error(err)
   }
-
 }
 
 // TODO: this is too long --> split
 export function* dropTreeItem(action) {
-
   const storeData = yield select(state => ({
     treeMap: treeSelectors.getTreeItemsByParent(state),
     treeEntities: entitiesSelectors.getEntitiesTreeItems(state),
@@ -270,19 +310,33 @@ export function* dropTreeItem(action) {
   const sourceItemId = action.payload.dragSource.id
   const targetItemId = action.payload.dragTarget.id
   const sourceParentId = findParent(storeData.treeMap, sourceItemId)
-  const targetParentId = action.payload.dropPosition === 'MIDDLE' ? targetItemId : findParent(storeData.treeMap, targetItemId)
+  const targetParentId =
+    action.payload.dropPosition === 'MIDDLE'
+      ? targetItemId
+      : findParent(storeData.treeMap, targetItemId)
 
   // Run validations
-  const targetParentsTags = treeItemsToTags(storeData.treeEntities, findParentsRecursive(storeData.treeMap, targetItemId))
+  const targetParentsTags = treeItemsToTags(
+    storeData.treeEntities,
+    findParentsRecursive(storeData.treeMap, targetItemId)
+  )
   const targetTag = treeItemToTag(storeData.treeEntities, targetItemId)
-  const sourceChildTags = treeItemsToTags(storeData.treeEntities, findChildrenRecursive(storeData.treeMap, sourceItemId))
+  const sourceChildTags = treeItemsToTags(
+    storeData.treeEntities,
+    findChildrenRecursive(storeData.treeMap, sourceItemId)
+  )
   const sourceTag = treeItemToTag(storeData.treeEntities, sourceItemId)
 
   // Validate parents-children conflicts (when target parents contain similar tag that source with children that the
   // tree path to the leaf will contain a duplicate tag)
-  const isParentColision = action.payload.dropPosition !== 'MIDDLE'
-    ? intersection(targetParentsTags, [sourceTag, ...sourceChildTags]).length !== 0
-    : intersection([targetTag, ...targetParentsTags], [sourceTag, ...sourceChildTags]).length !== 0
+  const isParentColision =
+    action.payload.dropPosition !== 'MIDDLE'
+      ? intersection(targetParentsTags, [sourceTag, ...sourceChildTags])
+          .length !== 0
+      : intersection(
+          [targetTag, ...targetParentsTags],
+          [sourceTag, ...sourceChildTags]
+        ).length !== 0
 
   if (isParentColision) {
     toast.error(errorMessages.treeItems.duplicatePathConflict, {
@@ -294,7 +348,10 @@ export function* dropTreeItem(action) {
 
   // Validate siblings conflict
   if (sourceParentId !== targetParentId) {
-    const siblingsTagsIds = treeItemsToTags(storeData.treeEntities, findChildren(storeData.treeMap, targetParentId))
+    const siblingsTagsIds = treeItemsToTags(
+      storeData.treeEntities,
+      findChildren(storeData.treeMap, targetParentId)
+    )
     const sourceTagId = treeItemToTag(storeData.treeEntities, sourceItemId)
     if (includes(siblingsTagsIds, sourceTagId)) {
       toast.error(errorMessages.treeItems.duplicateLevelConflict, {
@@ -309,11 +366,18 @@ export function* dropTreeItem(action) {
     // Call server
     let order = Date.now()
     if (action.payload.dropPosition !== 'MIDDLE') {
-      const children = yield select(state => treeSelectors.getTree(state, targetParentId))
+      const children = yield select(state =>
+        treeSelectors.getTree(state, targetParentId)
+      )
       const direction = action.payload.dropPosition
       const targetIndex = children.findIndex(item => item.id === targetItemId)
 
-      order = computeTreeItemOrder(children, { targetIndex, direction, sourceParentId, targetParentId })
+      order = computeTreeItemOrder(children, {
+        targetIndex,
+        direction,
+        sourceParentId,
+        targetParentId,
+      })
     }
 
     const update = {
@@ -324,20 +388,21 @@ export function* dropTreeItem(action) {
     yield call(api.tree.updateParent, sourceItemId, update)
 
     // Perform move
-    yield put(treeActions.moveTreeItem({
-      position: action.payload.dropPosition,
-      source: action.payload.dragSource,
-      target: action.payload.dragTarget,
-      targetParentId,
-      order
-    }))
+    yield put(
+      treeActions.moveTreeItem({
+        position: action.payload.dropPosition,
+        source: action.payload.dragSource,
+        target: action.payload.dragTarget,
+        targetParentId,
+        order,
+      })
+    )
   } catch (err) {
     console.error(err, 'Unable to update parent.')
   }
 }
 
 export function* dropSection(action) {
-
   try {
     // Call server
     const sourceUpdate = {
@@ -361,8 +426,8 @@ function* deleteChildItems(treeItem) {
   yield put({
     type: PENDING,
     payload: {
-      originalData: treeItem
-    }
+      originalData: treeItem,
+    },
   })
 }
 
@@ -371,7 +436,6 @@ function findParent(map, treeItemId) {
 }
 
 function findParentsRecursive(map, treeItemId) {
-
   // Parent of current item
   const parentId = findParent(map, treeItemId)
   if (!parentId) {
@@ -385,13 +449,10 @@ function findParentsRecursive(map, treeItemId) {
 }
 
 function findChildren(map, treeItemId) {
-  return map.has(treeItemId)
-    ? map.get(treeItemId).toArray()
-    : []
+  return map.has(treeItemId) ? map.get(treeItemId).toArray() : []
 }
 
 function findChildrenRecursive(map, treeItemId) {
-
   // My children
   let children = findChildren(map, treeItemId)
 
