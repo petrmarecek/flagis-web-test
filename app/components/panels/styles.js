@@ -51,9 +51,19 @@ const CenterPanelScroll = styled.div`
       return '10px'
     }
 
-    return props.middleOffsetTop ? '152px' : '104px'
+    if (props.middleOffsetPrimaryTop) {
+      return '152px'
+    }
+
+    return props.middleOffsetSecondaryTop ? '108px' : '104px'
   }};
-  bottom: ${props => (props.smallOffsetBottom ? '10px' : '30px')};
+  bottom: ${props => {
+    if (props.smallOffsetBottom) {
+      return '10px'
+    }
+
+    return props.nonOffsetBottom ? '0' : '30px'
+  }};
   left: 0;
   right: 0;
 `
