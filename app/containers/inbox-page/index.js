@@ -6,11 +6,9 @@ import { compose, lifecycle } from 'recompose'
 // redux
 import { connect } from 'react-redux'
 import { selectTask } from 'redux/store/tasks/tasks.actions'
+import { changeLocation } from 'redux/store/routing/routing.actions'
 import { getRoutingPathname } from 'redux/store/routing/routing.selectors'
-import {
-  changeLocation,
-  visibleInboxTasks,
-} from 'redux/store/app-state/app-state.actions'
+import { visibleInboxTasks } from 'redux/store/app-state/app-state.actions'
 import {
   getInboxTasksItems,
   getSelectionTasks,

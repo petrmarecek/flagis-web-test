@@ -35,7 +35,6 @@ import {
   toggleUnimportantFilter,
   toggleNoTagsFilter,
   deleteFilter,
-  changeSearchText,
   toggleSortAlgorithm,
   visibleMenuFilter,
   hideMenuFilter,
@@ -51,8 +50,6 @@ import {
 } from 'redux/store/tasks-menu/tasks-menu.selectors'
 import { archiveCompletedTasks } from 'redux/utils/component-helper'
 
-import SearchBox from 'components/common/search-box'
-import NavigationSecondary from 'components/navigation/navigation-secondary'
 import TasksMenuFilters from 'components/tasks-menu/tasks-menu-filters'
 import TasksMenuFiltersActiveItem from 'components/tasks-menu/tasks-menu-filters-active-item'
 import TasksMenuSort from 'components/tasks-menu//tasks-menu-sort'
@@ -75,7 +72,6 @@ class TasksMenuContainer extends PureComponent {
     toggleUnimportantFilter: PropTypes.func,
     toggleNoTagsFilter: PropTypes.func,
     deleteFilter: PropTypes.func,
-    changeSearchText: PropTypes.func,
     toggleSortAlgorithm: PropTypes.func,
     deselectTasks: PropTypes.func,
     setArchiveTasks: PropTypes.func,
@@ -124,10 +120,6 @@ class TasksMenuContainer extends PureComponent {
   handleDeleteFilter = filter => {
     this.setState({ isMounted: false })
     this.props.deleteFilter(filter)
-  }
-
-  handleSearchTextChange = value => {
-    this.props.changeSearchText(value)
   }
 
   // Sort
@@ -195,13 +187,6 @@ class TasksMenuContainer extends PureComponent {
 
     return (
       <div className="tasks-menu">
-        <SearchBox
-          onChange={this.handleSearchTextChange}
-          value={this.props.tasksMenu.filters.searchText}
-        />
-
-        {!isMultiSelect && !isVisibleArchivedTasks && <NavigationSecondary />}
-
         {isMultiSelect && (
           <TasksMenuMultiSelect
             onAddRemoveTags={this.handleAddRemoveTags}
@@ -296,7 +281,6 @@ const mapDispatchToProps = {
   toggleUnimportantFilter,
   toggleNoTagsFilter,
   deleteFilter,
-  changeSearchText,
   toggleSortAlgorithm,
   showDialog,
   setLoader,

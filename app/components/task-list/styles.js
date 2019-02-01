@@ -11,6 +11,7 @@ import {
 } from '../styled-components-mixins'
 
 /*----------------------------------- Task List ----------------------------------------------*/
+
 const TaskListItems = styled.ul`
   clear: both;
 

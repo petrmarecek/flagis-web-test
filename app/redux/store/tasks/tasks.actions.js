@@ -13,6 +13,7 @@ export const TASKS = {
   SELECT: 'TASK/SELECT',
   SELECT_ALL: 'TASK/SELECT_ALL',
   DESELECT: 'TASK/DESELECT',
+  UPDATE_SEARCH: 'TASK/UPDATE_SEARCH',
   SET_COMPLETE: 'TASK/SET_COMPLETE',
   SET_INCOMPLETE: 'TASK/SET_INCOMPLETE',
   SET_ARCHIVE: 'TASK/SET_ARCHIVE',
@@ -46,15 +47,15 @@ export const TASKS = {
 }
 
 export const fetchTasks = () => ({
-  type: TASKS.FETCH
+  type: TASKS.FETCH,
 })
 
 export const fetchInboxTasks = () => ({
-  type: TASKS.FETCH_INBOX
+  type: TASKS.FETCH_INBOX,
 })
 
 export const fetchArchivedTasks = () => ({
-  type: TASKS.FETCH_ARCHIVED
+  type: TASKS.FETCH_ARCHIVED,
 })
 
 export const createTask = taskWithTags => ({
@@ -75,31 +76,45 @@ export const selectTask = (taskList, isMultiSelect) => ({
   payload: {
     taskList,
     isMultiSelect,
-  }
+  },
 })
 
 export const selectAllTask = taskList => ({
   type: TASKS.SELECT_ALL,
   payload: {
-    taskList
-  }
+    taskList,
+  },
 })
 
 export const deselectTasks = () => ({
   type: TASKS.DESELECT,
 })
 
+export const updateTaskSearch = search => ({
+  type: TASKS.UPDATE_SEARCH,
+  payload: {
+    search,
+  },
+})
+
 export const setComplete = taskId => ({
   type: TASKS.SET_COMPLETE,
-  payload: { taskId }
+  payload: { taskId },
 })
 
 export const setIncomplete = taskId => ({
   type: TASKS.SET_INCOMPLETE,
-  payload: { taskId }
+  payload: { taskId },
 })
 
-export const setArchiveTasks = (newArchiveTasksList, tasksList, completedList, archivedList, entitiesList, selectedList) => ({
+export const setArchiveTasks = (
+  newArchiveTasksList,
+  tasksList,
+  completedList,
+  archivedList,
+  entitiesList,
+  selectedList
+) => ({
   type: TASKS.SET_ARCHIVE,
   payload: {
     newArchiveTasksList,
@@ -107,11 +122,18 @@ export const setArchiveTasks = (newArchiveTasksList, tasksList, completedList, a
     completedList,
     archivedList,
     entitiesList,
-    selectedList
-  }
+    selectedList,
+  },
 })
 
-export const cancelArchiveTasks = (newTasksList, tasksList, completedList, archivedList, entitiesList, selectedList) => ({
+export const cancelArchiveTasks = (
+  newTasksList,
+  tasksList,
+  completedList,
+  archivedList,
+  entitiesList,
+  selectedList
+) => ({
   type: TASKS.CANCEL_ARCHIVE,
   payload: {
     newTasksList,
@@ -119,8 +141,8 @@ export const cancelArchiveTasks = (newTasksList, tasksList, completedList, archi
     completedList,
     archivedList,
     entitiesList,
-    selectedList
-  }
+    selectedList,
+  },
 })
 
 export const requestToggleImportant = task => ({
@@ -148,7 +170,7 @@ export const setOrderTimeLine = (task, dueDate, orderTimeLine) => ({
   payload: {
     task,
     dueDate,
-    orderTimeLine
+    orderTimeLine,
   },
 })
 
@@ -187,37 +209,37 @@ export const moveTimeLineTask = (taskId, dueDate, orderTimeLine) => ({
 export const replaceTask = task => ({
   type: TASKS.REPLACE,
   payload: task,
-  meta: { schema: schema.task }
+  meta: { schema: schema.task },
 })
 
 export const addTask = task => ({
   type: TASKS.ADD,
   payload: task,
-  meta: { schema: schema.task }
+  meta: { schema: schema.task },
 })
 
 export const addTaskTag = (taskId, tag) => ({
   type: TASKS.ADD_TASK_TAG,
   payload: {
     taskId,
-    tag
-  }
+    tag,
+  },
 })
 
 export const addTaskFollower = (taskId, followerId) => ({
   type: TASKS.ADD_TASK_FOLLOWER,
   payload: {
     taskId,
-    followerId
-  }
+    followerId,
+  },
 })
 
 export const removeTaskTag = (taskId, tag) => ({
   type: TASKS.REMOVE_TASK_TAG,
   payload: {
     taskId,
-    tag
-  }
+    tag,
+  },
 })
 
 export const removeTaskFollower = (taskId, userId, followerId) => ({
@@ -225,8 +247,8 @@ export const removeTaskFollower = (taskId, userId, followerId) => ({
   payload: {
     taskId,
     userId,
-    followerId
-  }
+    followerId,
+  },
 })
 
 export const addRemoveTaskTags = (taskId, addTags, removeTags) => ({
@@ -234,27 +256,34 @@ export const addRemoveTaskTags = (taskId, addTags, removeTags) => ({
   payload: {
     taskId,
     addTags,
-    removeTags
-  }
+    removeTags,
+  },
 })
 
 export const addTaskTagStore = (taskId, tag) => ({
   type: TASKS.ADD_TASK_TAG_STORE,
   payload: {
     taskId,
-    tag
-  }
+    tag,
+  },
 })
 
 export const removeTaskTagStore = (taskId, tag) => ({
   type: TASKS.REMOVE_TASK_TAG_STORE,
   payload: {
     taskId,
-    tag
-  }
+    tag,
+  },
 })
 
-export const deleteTask = (taskDeleteList, taskList, taskCompleteList, taskArchiveList, taskEntitiesList, originalData) => ({
+export const deleteTask = (
+  taskDeleteList,
+  taskList,
+  taskCompleteList,
+  taskArchiveList,
+  taskEntitiesList,
+  originalData
+) => ({
   type: TASKS.DELETE,
   payload: {
     taskDeleteList,
@@ -263,32 +292,31 @@ export const deleteTask = (taskDeleteList, taskList, taskCompleteList, taskArchi
     taskArchiveList,
     taskEntitiesList,
     originalData,
-  }
+  },
 })
 
 export const removeTaskFromLists = taskId => ({
   type: TASKS.REMOVE_FROM_LISTS,
-  payload: { taskId }
+  payload: { taskId },
 })
 
 export const sendTask = (taskId, followerId) => ({
   type: TASKS.SEND,
   payload: {
     taskId,
-    followerId
-  }
+    followerId,
+  },
 })
 
 export const acceptTask = (taskId, followerId) => ({
   type: TASKS.ACCEPT,
   payload: {
     taskId,
-    followerId
-  }
+    followerId,
+  },
 })
 
 export const rejectTask = originalData => ({
   type: TASKS.REJECT,
-  payload: { originalData }
+  payload: { originalData },
 })
-

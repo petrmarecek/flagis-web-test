@@ -63,7 +63,7 @@ const TasksMenuFiltersActiveItem = ({
             width={14}
             height={16}
             scale={0.66}
-            color={['#8c9ea9']}
+            color={['#B1B5B8']}
             onClick={onHandleDelete}
           />
         </FilterActiveItemIcon>
@@ -90,7 +90,7 @@ const TasksMenuFiltersActiveItem = ({
           icon={ICONS.CROSS_SIMPLE}
           width={14}
           height={14}
-          color={['#8c9ea9']}
+          color={['#B1B5B8']}
           hoverColor={['#282f34']}
           onClick={onHandleDelete}
         />

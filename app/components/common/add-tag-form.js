@@ -20,54 +20,54 @@ import {
 } from '../styled-components-mixins'
 
 const AddForm = styled.form`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 6px;
   background-color: #fff;
-  ${boxShadow('0 3px 4px 0 #d5dce0')}
+  height: 38px;
+  ${boxShadow('0 0 6px 0 #C7C7C7')}
 `
 
 const SubmitIcon = styled.div`
   ${boxSizing('border-box')}
-  display: inline-block;
-  float: right;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 0 0 55px;
+  height: 38px;
   margin: 0;
-  height: 30px;
-  padding: 7px 20px;
-  width: 56px;
   cursor: pointer;
   pointer-events: ${props => (props.disabled ? 'none' : 'auto')};
 `
 
 const SubjectContainer = styled.div`
-  margin-right: 56px;
+  position: relative;
   padding: 0;
+  height: auto;
+  width: 100%;
 `
 
 const Subject = styled.input`
-  ${placeholderColor('#d7e3ec')}
+  ${placeholderColor('#CECECE')}
   ${boxSizing('border-box')}
-  width: 100%;
   border: none;
-  font-size: 16px;
-  height: 30px;
-  padding: 5px 0 5px 10px;
+  width: 100%;
+  font-size: 18px;
+  line-height: 36px;
+  z-index: 5;
+  padding-left: 17px;
+  margin: 0;
+  font-weight: ${props => (props.isImportant ? 'bold' : 'normal')};
   background-color: #fff;
 `
 
 const AddTagForm = ({ title, handleChange, handleSubmit }) => {
   const addButtonDisabled = isStringEmpty(title)
-  const plusColor = addButtonDisabled ? '#d7e3ec' : '#44FFB1'
+  const plusColor = addButtonDisabled ? '#C7C7C7' : '#44FFB1'
 
   return (
     <AddForm autoComplete="off" onSubmit={handleSubmit}>
-      <SubmitIcon onClick={handleSubmit} disabled={addButtonDisabled}>
-        <Icon
-          icon={ICONS.PLUS}
-          width={16}
-          height={16}
-          scale={0.55}
-          color={[plusColor]}
-        />
-      </SubmitIcon>
       <SubjectContainer>
         <Subject
           type="text"
@@ -77,6 +77,15 @@ const AddTagForm = ({ title, handleChange, handleSubmit }) => {
           onChange={handleChange}
         />
       </SubjectContainer>
+      <SubmitIcon onClick={handleSubmit} disabled={addButtonDisabled}>
+        <Icon
+          icon={ICONS.PLUS}
+          width={16}
+          height={16}
+          scale={0.55}
+          color={[plusColor]}
+        />
+      </SubmitIcon>
     </AddForm>
   )
 }

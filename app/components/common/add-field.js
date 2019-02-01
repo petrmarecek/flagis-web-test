@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { placeholderColor, boxSizing } from '../styled-components-mixins'
 
 const AddFieldStyle = styled.input`
-  ${placeholderColor('#d7e3ec')}
+  ${placeholderColor('#CECECE')}
   ${boxSizing('border-box')}
   width: 100%;
   border: none;

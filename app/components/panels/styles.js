@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { boxSizing } from '../styled-components-mixins'
 
 /*------------------------------------------ Center Panel --------------------------------------*/
@@ -20,19 +20,39 @@ const CenterPanelTop = styled.div`
   z-index: 10;
 `
 
-const CenterPanelTitle = styled.div`
-  height: 14px;
-  font-size: 14px;
-  font-weight: bold;
-  text-align: left;
-  color: #282f34;
-  border-top: 2px solid #fff;
-  padding: 9px 0 9px 10px;
+const centerPanelTopCss = css`
+  display: flex;
+  justify-content: ${props => (props.flexEnd ? 'flex-end' : 'space-between')};
+  align-items: center;
+  width: 100%;
+`
+
+const CenterPanelTopPrimary = styled.div`
+  ${centerPanelTopCss}
+  height: 60px;
+  padding: 0 20px 0 17px;
+  border-bottom: 1px solid rgba(151, 151, 151, 0.2);
+`
+
+const CenterPanelTopSecondary = styled.div`
+  ${centerPanelTopCss};
+  height: 48px;
+  padding: 0 10px 0 17px;
 `
 
 const CenterPanelScroll = styled.div`
   position: absolute;
-  top: ${props => (props.largeOffsetTop ? '112px' : '84px')};
+  top: ${props => {
+    if (props.largeOffsetTop) {
+      return '172px'
+    }
+
+    if (props.smallOffsetTop) {
+      return '10px'
+    }
+
+    return props.middleOffsetTop ? '152px' : '104px'
+  }};
   bottom: ${props => (props.smallOffsetBottom ? '10px' : '30px')};
   left: 0;
   right: 0;
@@ -62,7 +82,8 @@ const LeftPanelWrapper = styled.div`
 export {
   CenterPanelContainer,
   CenterPanelTop,
-  CenterPanelTitle,
+  CenterPanelTopPrimary,
+  CenterPanelTopSecondary,
   CenterPanelScroll,
   LeftPanelWrapper,
 }

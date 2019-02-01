@@ -7,11 +7,9 @@ import { compose, lifecycle } from 'recompose'
 import { connect } from 'react-redux'
 import { selectTag } from 'redux/store/tags/tags.actions'
 import { getTagsItems, getCurrentTagId } from 'redux/store/tags/tags.selectors'
+import { changeLocation } from 'redux/store/routing/routing.actions'
 import { getRoutingPathname } from 'redux/store/routing/routing.selectors'
-import {
-  changeLocation,
-  setDetail,
-} from 'redux/store/app-state/app-state.actions'
+import { setDetail } from 'redux/store/app-state/app-state.actions'
 
 // components
 import CenterPanel from 'components/panels/center-panel'

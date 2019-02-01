@@ -90,7 +90,6 @@ export const TasksFilters = Record({
   important: false,
   unimportant: false,
   noTags: false,
-  searchText: '',
 })
 
 export const TasksSort = Record({
@@ -155,6 +154,7 @@ export const TaskStore = Record({
   inbox: new ListRecord(),
   timeLine: false,
   selection: OrderedSet(),
+  search: '',
 })
 
 export const CommentStore = Record({

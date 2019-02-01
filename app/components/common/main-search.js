@@ -20,20 +20,21 @@ const Search = styled.div`
   justify-content: flex-start;
   color: #ccc;
   height: 60px;
-`;
+`
 
 const SearchIcon = styled(Icon)`
-  margin-right: 10px;
-`;
+  margin-right: 5px;
+`
 
 const MainSearch = ({ tags, handleClearFilter, handleItemDelete }) => (
   <Search>
     <SearchIcon
       icon={ICONS.TAG_FILTER}
-      width={19}
-      height={25}
-      scale={1.25}
-      color={["#8c9ea9"]}/>
+      width={15}
+      height={20}
+      scale={0.86}
+      color={['#B1B5B8']}
+    />
     <Autocomplete
       dataType="tags"
       location="mainSearch"
@@ -41,10 +42,10 @@ const MainSearch = ({ tags, handleClearFilter, handleItemDelete }) => (
       selectedItems={tags.size === 0 ? { tags: null } : { tags }}
       parentId={null}
       onItemDelete={handleItemDelete}
-      onClearFilter={tags.size === 0 ? null : handleClearFilter} />
+      onClearFilter={tags.size === 0 ? null : handleClearFilter}
+    />
   </Search>
 )
-
 
 MainSearch.propTypes = {
   tags: PropTypes.object.isRequired,
@@ -62,7 +63,10 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   withHandlers({
     handleClearFilter: props => () => props.selectActiveTags(List()),
     handleItemDelete: props => tagToDelete => {
@@ -72,6 +76,6 @@ export default compose(
         .filter(id => id !== tagToDelete.id)
 
       props.selectActiveTags(tagIds)
-    }
+    },
   })
 )(MainSearch)

@@ -15,7 +15,6 @@ import {
 const OFFSET = 50
 
 export default class TasksMenuOptions extends PureComponent {
-
   static propTypes = {
     onArchiveCompletedTasks: PropTypes.func,
     onSelectAllTasks: PropTypes.func,
@@ -28,7 +27,10 @@ export default class TasksMenuOptions extends PureComponent {
   }
 
   componentDidMount() {
-    velocity(this.refs.options, 'transition.fadeIn', { duration: 600, display: 'flex' })
+    velocity(this.refs.options, 'transition.fadeIn', {
+      duration: 600,
+      display: 'flex',
+    })
   }
 
   handleClick = () => {
@@ -57,49 +59,55 @@ export default class TasksMenuOptions extends PureComponent {
   render() {
     const isVisibleArchivedTasks = this.props.isVisibleArchivedTasks
     const { menu } = this.props.tasksMenu.options
-
-    const iconColor = menu.isVisible
-      ? '#282f34'
-      : '#8c9ea9'
+    const iconColor = menu.isVisible ? '#282f34' : '#B1B5B8'
 
     return (
       <div
         ref="options"
         className="tasks-menu__item"
-        onClick={this.handleClick} >
+        onClick={this.handleClick}
+      >
         <Icon
           icon={ICONS.OPTIONS}
           width={7}
           height={25}
           scale={1.08}
           color={[iconColor]}
-          hoverColor={["#282f34"]} />
-        {menu.isVisible &&
-        <MenuBoxContainer
-          animation="transition.fadeIn"
-          menuIcon={this.refs.options}
-          clickOutsideMenu={this.handleClick}
-          trianglePosition={this.getCenterIconPosition} >
-          <MenuBoxGroup>
-            <MenuBoxItemIcon
-              icon={ICONS.SELECT}
-              iconScale={1.06}
-              onChange={this.props.onSelectAllTasks} />
-            <MenuBoxItemTitle
-              title="Select all tasks"
-              onChange={this.props.onSelectAllTasks} />
-          </MenuBoxGroup>
-          {!isVisibleArchivedTasks &&
-          <MenuBoxGroup>
-            <MenuBoxItemIcon
-              icon={ICONS.ARCHIVE}
-              iconScale={0.59}
-              onChange={this.props.onArchiveCompletedTasks} />
-            <MenuBoxItemTitle
-              title="Archive completed tasks"
-              onChange={this.props.onArchiveCompletedTasks} />
-          </MenuBoxGroup>}
-        </MenuBoxContainer>}
+          hoverColor={['#282f34']}
+        />
+        {menu.isVisible && (
+          <MenuBoxContainer
+            animation="transition.fadeIn"
+            menuIcon={this.refs.options}
+            clickOutsideMenu={this.handleClick}
+            trianglePosition={this.getCenterIconPosition}
+          >
+            <MenuBoxGroup>
+              <MenuBoxItemIcon
+                icon={ICONS.SELECT}
+                iconScale={1.06}
+                onChange={this.props.onSelectAllTasks}
+              />
+              <MenuBoxItemTitle
+                title="Select all tasks"
+                onChange={this.props.onSelectAllTasks}
+              />
+            </MenuBoxGroup>
+            {!isVisibleArchivedTasks && (
+              <MenuBoxGroup>
+                <MenuBoxItemIcon
+                  icon={ICONS.ARCHIVE}
+                  iconScale={0.59}
+                  onChange={this.props.onArchiveCompletedTasks}
+                />
+                <MenuBoxItemTitle
+                  title="Archive completed tasks"
+                  onChange={this.props.onArchiveCompletedTasks}
+                />
+              </MenuBoxGroup>
+            )}
+          </MenuBoxContainer>
+        )}
       </div>
     )
   }

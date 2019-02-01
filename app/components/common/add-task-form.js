@@ -27,8 +27,8 @@ const AddForm = styled.form`
   align-items: center;
   margin-bottom: 6px;
   background-color: #fff;
-  ${boxShadow('0 0 6px 0 #C7C7C7')}
   height: 58px;
+  ${boxShadow('0 0 6px 0 #C7C7C7')}
 `
 
 const SubmitIcon = styled.div`

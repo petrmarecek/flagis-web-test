@@ -112,36 +112,40 @@ const ShowMoreTitle = styled.div`
 /*------------------------------ Navigation Secondary ----------------------------------*/
 
 const NavigationSecondaryWrapper = styled.div`
+  flex: 1;
   display: flex;
+  font-size: 14px;
   ${borderRadius('5px')}
-  margin-top: 3px;
 `
 
 const SecondaryButton = styled.div`
-  ${boxSizing('border-box')}
-  ${borderRadius(props => (props.radius ? props.radius : '0'))}
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 25px;
+  ${fontMain}
+  ${userSelect('none')};
+  display: inline-block;
   cursor: pointer;
-  width: 35px;
-  border-width: ${props => (props.first ? '1px' : '1px 1px 1px 0')};
-  border-style: solid;
-  border-color: ${props => (props.active ? '#8C9DA9' : '#C1CAD0')};
+  margin: 0 14px 0 0;
+  padding: 0;
+  color: ${props => (props.active ? '#293034' : '#B1B5B8')};
   pointer-events: ${props => (props.active ? 'none' : 'auto')};
-  background-color: ${props => (props.active ? '#8C9DA9' : '#E7ECED')};
 
-  &:hover {
-    background-color: #8c9da9;
-    border: 1px solid #8c9da9;
+  :after {
+    ${transform('scaleX(0)')}
+    ${transition('transform 250ms ease-in-out')}
+    display: block;
+    content: '';
+    margin-top: 2px;
+    border-bottom: 1px solid #293034;
+  }
 
-    svg {
-      path {
-        fill: #fff;
-      }
+  :hover {
+    color: #293034;
+
+    :after {
+      ${transform('scaleX(1)')}
     }
   }
+
+  border-bottom: ${props => (props.active ? '1px solid #293034' : '0')};
 `
 
 /*------------------------------ Navigation Default -----------------------------*/

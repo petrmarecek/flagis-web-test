@@ -37,7 +37,7 @@ const TasksMenuFilters = props => {
   } = tasksMenu.filters
 
   const OFFSET = 50
-  const iconColor = active.size !== 0 || menu.isVisible ? '#282f34' : '#8c9ea9'
+  const iconColor = active.size !== 0 || menu.isVisible ? '#282f34' : '#B1B5B8'
   const getCenterIconPosition = () => {
     const position = domUtils.getOffset(filterRef)
     return window.innerWidth - position.left - OFFSET

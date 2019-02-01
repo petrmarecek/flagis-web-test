@@ -12,9 +12,11 @@ import {
 // -------------------------------------- Autocompelete --------------------------------------------------
 const AutocompleteContainer = styled.ul`
   ${boxSizing('border-box')}
+  display: flex;
+  align-items: center;
   margin: 0;
   float: ${props => (props.taskDetailTags ? 'right' : 'none')};
-  padding: ${props => (props.taskDetailTags ? '0' : '8px 0 0')};
+  padding: ${props => (props.paddingTop ? '0' : '8px 0 0')};
   height: auto !important;
   list-style-type: none;
   cursor: text;
@@ -34,11 +36,11 @@ const Clear = styled.li`
   justify-content: center;
   align-items: center;
   float: left;
-  border: 1px solid #8c9da9;
-  height: 23px;
-  width: 23px;
+  border: 1px solid #b1b5b8;
+  height: 20px;
+  width: 20px;
   cursor: pointer;
-  margin: 0 5px 0 0;
+  margin: 0 0 0 4px;
 `
 
 const Search = styled.li`
@@ -62,10 +64,10 @@ const InputContainer = styled.div`
 `
 
 const Input = styled.input`
-  ${placeholderColor('#8c9da9')}
+  ${placeholderColor(props => (props.mainSearch ? '#B1B5B8' : '#8c9da9'))}
   ${fontSub}
   position: relative;
-  color: ${props => (props.mainSearch ? '#fff' : '#555')};
+  color: #555;
   background: none repeat scroll 0 0 transparent !important;
   border: 0 none !important;
   outline: 0 none;
@@ -73,8 +75,8 @@ const Input = styled.input`
   box-shadow: none;
   cursor: text;
   margin: 0 !important;
-  padding: 1px 0 3px 0;
-  font-size: ${props => (props.mainSearch ? '15px' : '14px')};
+  padding: ${props => (props.mainSearch ? '1px 0 0 0' : '1px 0 3px 0')};
+  font-size: 14px;
   width: 100%;
 
   :active {
@@ -95,7 +97,7 @@ const TagContainer = styled.li`
   ${fontMain}
   ${borderRadius('12px')}
   background-color: ${props => props.tagColor};
-  margin: 0 6px 6px 0;
+  margin: ${props => (props.mainSearch ? '0 6px 0 0' : '0 6px 6px 0')};
   border: none;
   padding: 0 10px 0 10px;
   display: flex;

@@ -1,22 +1,27 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import { compose, branch, renderComponent, withStateHandlers } from 'recompose'
+import moment from 'moment'
 import debounce from 'lodash/debounce'
+import R from 'ramda'
+import constants from 'utils/constants'
 import { toast } from 'react-toastify'
 import { successMessages } from 'utils/messages'
-import constants from 'utils/constants'
-import R from 'ramda'
+import { compose, branch, renderComponent, withStateHandlers } from 'recompose'
 
-import {
-  getArchivedTasksVisibility,
-  getLeftPanel,
-  getWindow,
-} from 'redux/store/app-state/app-state.selectors'
+// redux
+import { connect } from 'react-redux'
 import { getNewRefreshToken, getUserId } from 'redux/store/auth/auth.selectors'
 import { getEntitiesTasks } from 'redux/store/entities/entities.selectors'
 import { selectActiveTags } from 'redux/store/tags/tags.actions'
 import { getActiveTagsIds } from 'redux/store/tags/tags.selectors'
+import { getTasksMenuSort } from 'redux/store/tasks-menu/tasks-menu.selectors'
+import { computeOrder, computeTimeLine } from 'redux/utils/redux-helper'
+import {
+  getArchivedTasksVisibility,
+  getInboxTasksVisibility,
+  getLeftPanel,
+  getWindow,
+} from 'redux/store/app-state/app-state.selectors'
 import {
   selectTask,
   setComplete,
@@ -40,19 +45,19 @@ import {
   getSelectionTasks,
   getTasks,
 } from 'redux/store/tasks/tasks.selectors'
-import { getTasksMenuSort } from 'redux/store/tasks-menu/tasks-menu.selectors'
 import {
   getSelectionInfo,
   setArchive,
   cancelArchive,
   getAssigneeOfTask,
 } from 'redux/utils/component-helper'
-import { computeOrder, computeTimeLine } from 'redux/utils/redux-helper'
 
+// components
 import Loader from 'components/common/loader'
 import ShadowScrollbar from 'components/common/shadow-scrollbar'
-import TaskList from 'components/task-list/task-list'
-import moment from 'moment'
+import TaskList from './task-list'
+
+// styles
 import { EmptyList } from 'components/styled-components-mixins'
 
 const TaskListContainer = props => {
@@ -63,6 +68,7 @@ const TaskListContainer = props => {
     selectedTags,
     selectedTasks,
     isVisibleArchivedTasks,
+    isVisibleInbox,
     timeLine,
     sort,
     leftPanelWidth,
@@ -86,7 +92,12 @@ const TaskListContainer = props => {
 
   const debouncedMoveTask = debounce(onInvokeMove, 10)
   const onMoveTask = move => debouncedMoveTask(move)
-  const offset = props.isVisibleArchivedTasks ? 162 : 194
+  let offset = props.isVisibleArchivedTasks ? 162 : 202
+
+  if (isVisibleInbox) {
+    offset = 20
+  }
+
   const scrollStyle = {
     height: `calc(100vh - ${offset}px)`,
     shadowHeight: 20,
@@ -134,6 +145,7 @@ TaskListContainer.propTypes = {
   selectedTags: PropTypes.object,
   selectedTasks: PropTypes.object,
   isVisibleArchivedTasks: PropTypes.bool,
+  isVisibleInbox: PropTypes.bool,
   timeLine: PropTypes.bool,
   sort: PropTypes.object,
   leftPanelWidth: PropTypes.number,
@@ -185,6 +197,7 @@ const mapStateToProps = state => ({
   timeLine: getTimeLine(state),
   sort: getTasksMenuSort(state),
   isVisibleArchivedTasks: getArchivedTasksVisibility(state),
+  isVisibleInbox: getInboxTasksVisibility(state),
   leftPanelWidth: getLeftPanel(state).width,
   windowWidth: getWindow(state).width,
 })

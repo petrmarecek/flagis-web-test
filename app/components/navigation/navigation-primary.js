@@ -12,10 +12,7 @@ import {
   primaryHiddenNavigationVisible,
   primaryHiddenNavigationHide,
 } from 'redux/store/app-state/app-state.actions'
-import {
-  getTimeLine,
-  getInboxTasksItems,
-} from 'redux/store/tasks/tasks.selectors'
+import { getInboxTasksItems } from 'redux/store/tasks/tasks.selectors'
 
 // components
 import { ICONS } from 'components/icons/icon-constants'
@@ -35,7 +32,6 @@ import {
 
 const NavigationPrimary = props => {
   const {
-    timeLine,
     inboxCount,
     pathname,
     isVisibleMore,
@@ -49,8 +45,7 @@ const NavigationPrimary = props => {
   } = props
 
   const { user } = routes
-  const isTasksActive =
-    pathname.substring(0, user.tasks.length) === user.tasks && !timeLine
+  const isTasksActive = pathname.substring(0, user.tasks.length) === user.tasks
   const isTagsActive = pathname.substring(0, user.tags.length) === user.tags
   const isInboxActive = pathname.substring(0, user.inbox.length) === user.inbox
   const isArchiveActive =
@@ -138,7 +133,6 @@ const NavigationPrimary = props => {
 }
 
 NavigationPrimary.propTypes = {
-  timeLine: PropTypes.bool,
   inboxCount: PropTypes.number,
   pathname: PropTypes.string,
   isVisibleMore: PropTypes.bool,
@@ -154,7 +148,6 @@ NavigationPrimary.propTypes = {
 }
 
 const mapStateToProps = state => ({
-  timeLine: getTimeLine(state),
   inboxCount: getInboxTasksItems(state).size,
   pathname: getRoutingPathname(state),
   isVisibleMore: getPrimaryHiddenNavigationVisibility(state),

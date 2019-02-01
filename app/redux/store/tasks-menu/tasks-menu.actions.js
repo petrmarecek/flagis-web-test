@@ -7,7 +7,6 @@ export const TASKS_MENU = {
   TOGGLE_IMPORTANT_FILTER: 'TASKS-MENU/TOGGLE_IMPORTANT_FILTER',
   TOGGLE_UNIMPORTANT_FILTER: 'TASKS-MENU/TOGGLE_UNIMPORTANT_FILTER',
   TOGGLE_NO_TAGS_FILTER: 'TASKS-MENU/TOGGLE_NO_TAGS_FILTER',
-  CHANGE_SEARCH_TEXT_FILTER: 'TASKS-MENU/CHANGE_SEARCH_TEXT_FILTER',
   SET_ACTIVE_ASSIGNEE: 'TASKS-MENU/SET_ACTIVE_ASSIGNEE',
   DESELECT_ACTIVE_ASSIGNEE: 'TASKS-MENU/DESELECT_ACTIVE_ASSIGNEE',
   ADD_ACTIVE_FILTER: 'TASKS-MENU/ADD_ACTIVE_FILTER',
@@ -33,34 +32,29 @@ export const resetTasksMenu = () => ({
 // ------ Filters -----------------------------------------------------------
 
 export const toggleAssigneeFilter = () => ({
-  type: TASKS_MENU.TOGGLE_ASSIGNEE_FILTER
+  type: TASKS_MENU.TOGGLE_ASSIGNEE_FILTER,
 })
 
 export const changeRangeFilter = value => ({
   type: TASKS_MENU.CHANGE_RANGE_FILTER,
-  value
+  value,
 })
 
 export const toggleImportantFilter = () => ({
-  type: TASKS_MENU.TOGGLE_IMPORTANT_FILTER
+  type: TASKS_MENU.TOGGLE_IMPORTANT_FILTER,
 })
 
 export const toggleUnimportantFilter = () => ({
-  type: TASKS_MENU.TOGGLE_UNIMPORTANT_FILTER
+  type: TASKS_MENU.TOGGLE_UNIMPORTANT_FILTER,
 })
 
 export const toggleNoTagsFilter = () => ({
-  type: TASKS_MENU.TOGGLE_NO_TAGS_FILTER
-})
-
-export const changeSearchText = value => ({
-  type: TASKS_MENU.CHANGE_SEARCH_TEXT_FILTER,
-  payload: { value }
+  type: TASKS_MENU.TOGGLE_NO_TAGS_FILTER,
 })
 
 export const setActiveAssignee = assignee => ({
   type: TASKS_MENU.SET_ACTIVE_ASSIGNEE,
-  payload: { assignee }
+  payload: { assignee },
 })
 
 export const deselectActiveAssignee = () => ({
@@ -69,49 +63,48 @@ export const deselectActiveAssignee = () => ({
 
 export const addActiveFilter = filter => ({
   type: TASKS_MENU.ADD_ACTIVE_FILTER,
-  payload: { filter }
+  payload: { filter },
 })
 
 export const deleteActiveFilter = filter => ({
   type: TASKS_MENU.DELETE_ACTIVE_FILTER,
-  payload: { filter }
+  payload: { filter },
 })
 
 export const deleteFilter = filter => ({
   type: TASKS_MENU.DELETE_FILTER,
-  payload: { filter }
+  payload: { filter },
 })
 
 export const visibleMenuFilter = () => ({
-  type: TASKS_MENU.VISIBLE_MENU_FILTER
+  type: TASKS_MENU.VISIBLE_MENU_FILTER,
 })
 
 export const hideMenuFilter = () => ({
-  type: TASKS_MENU.HIDE_MENU_FILTER
+  type: TASKS_MENU.HIDE_MENU_FILTER,
 })
 
 // ------ Sort --------------------------------------------------------------
 
 export const toggleSortAlgorithm = algorithm => ({
   type: TASKS_MENU.TOGGLE_SORT_ALGORITHM,
-  payload: { algorithm }
+  payload: { algorithm },
 })
 
 export const visibleMenuSort = () => ({
-  type: TASKS_MENU.VISIBLE_MENU_SORT
+  type: TASKS_MENU.VISIBLE_MENU_SORT,
 })
 
 export const hideMenuSort = () => ({
-  type: TASKS_MENU.HIDE_MENU_SORT
+  type: TASKS_MENU.HIDE_MENU_SORT,
 })
 
 // ------ Options -----------------------------------------------------------
 
-
 export const visibleMenuOption = () => ({
-  type: TASKS_MENU.VISIBLE_MENU_OPTION
+  type: TASKS_MENU.VISIBLE_MENU_OPTION,
 })
 
 export const hideMenuOption = () => ({
-  type: TASKS_MENU.HIDE_MENU_OPTION
+  type: TASKS_MENU.HIDE_MENU_OPTION,
 })

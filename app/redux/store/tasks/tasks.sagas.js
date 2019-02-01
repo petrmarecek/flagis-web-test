@@ -256,11 +256,9 @@ export function* fetchTasks() {
   search.tasks.addItems(result)
 
   // Reset full text search
-  const text = yield select(state =>
-    taskMenuSelectors.getTasksMenuFiltersItem(state, 'searchText')
-  )
-  yield put(taskMenuActions.changeSearchText(''))
-  yield put(taskMenuActions.changeSearchText(text))
+  const text = yield select(state => taskSelectors.getTasksSearch(state))
+  yield put(taskActions.updateTaskSearch(''))
+  yield put(taskActions.updateTaskSearch(text))
 }
 
 export function* fetchArchivedTasks() {
@@ -292,11 +290,9 @@ export function* fetchArchivedTasks() {
   search.tasks.addItems(result)
 
   // Reset full text search
-  const text = yield select(state =>
-    taskMenuSelectors.getTasksMenuFiltersItem(state, 'searchText')
-  )
-  yield put(taskMenuActions.changeSearchText(''))
-  yield put(taskMenuActions.changeSearchText(text))
+  const text = yield select(state => taskSelectors.getTasksSearch(state))
+  yield put(taskActions.updateTaskSearch(''))
+  yield put(taskActions.updateTaskSearch(text))
 }
 
 export function* fetchInboxTasks() {

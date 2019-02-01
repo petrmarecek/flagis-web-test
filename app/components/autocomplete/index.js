@@ -5,7 +5,10 @@ import { compose, withHandlers } from 'recompose'
 import { connect } from 'react-redux'
 import { hintSelected } from 'redux/store/app-state/app-state.actions'
 import { getTags, getTagsTitle } from 'redux/store/tags/tags.selectors'
-import { getContacts, getContactsEmail } from 'redux/store/contacts/contacts.selectors'
+import {
+  getContacts,
+  getContactsEmail,
+} from 'redux/store/contacts/contacts.selectors'
 
 import AutocompleteItems from 'components/autocomplete/autocomplete-items'
 import AutocompleteInput from 'components/autocomplete/autocomplete-input'
@@ -15,7 +18,6 @@ import { ICONS } from 'components/icons/icon-constants'
 import { AutocompleteContainer, Clear, Search } from './styles'
 
 const Autocomplete = props => {
-
   const {
     location,
     dataType,
@@ -38,41 +40,53 @@ const Autocomplete = props => {
     onHandleDeselectInput,
     onHandleHintSelected,
   } = props
+  const paddingTop = location === 'taskDetailTags' || location === 'mainSearch'
+  const taskDetailTags = location === 'taskDetailTags'
 
   return (
-    <AutocompleteContainer taskDetailTags={location === 'taskDetailTags'}>
-      {!isWithoutItems &&
-      <AutocompleteItems
-        items={selectedItems}
-        dataType={dataType}
-        onDelete={onHandleItemDelete}
-        isHideDelete={isHideItemDelete}/>}
-      {!isWithoutItems && onClearFilter &&
-      <Clear onClick={onHandleClearFilter}>
-        <Icon
-          icon={ICONS.CROSS_SIMPLE}
-          width={11}
-          height={11}
-          scale={0.78}
-          color={["#8c9da9"]} />
-      </Clear>}
-      {!isWithoutInput &&
-      <Search key="search" taskDetailTags={location === 'taskDetailTags'}>
-        <AutocompleteInput
-          location={location}
+    <AutocompleteContainer
+      taskDetailTags={taskDetailTags}
+      paddingTop={paddingTop}
+    >
+      {!isWithoutItems && (
+        <AutocompleteItems
+          items={selectedItems}
           dataType={dataType}
-          hints={hints}
-          validationItems={validationItems}
-          isAllowUpdate={isAllowUpdate}
-          placeholder={placeholder}
-          inputValue={inputValue}
-          isInputMode={isInputMode}
-          parentId={parentId}
-          onBlurTagTree={onBlurTagTree}
-          onAddInputRef={onHandleAddInputRef}
-          hintSelected={onHandleHintSelected}
-          onDeselectInput={onHandleDeselectInput} />
-      </Search>}
+          location={location}
+          onDelete={onHandleItemDelete}
+          isHideDelete={isHideItemDelete}
+        />
+      )}
+      {!isWithoutItems && onClearFilter && (
+        <Clear onClick={onHandleClearFilter}>
+          <Icon
+            icon={ICONS.CROSS_SIMPLE}
+            width={10}
+            height={10}
+            scale={0.71}
+            color={['#B1B5B8']}
+          />
+        </Clear>
+      )}
+      {!isWithoutInput && (
+        <Search key="search" taskDetailTags={location === 'taskDetailTags'}>
+          <AutocompleteInput
+            location={location}
+            dataType={dataType}
+            hints={hints}
+            validationItems={validationItems}
+            isAllowUpdate={isAllowUpdate}
+            placeholder={placeholder}
+            inputValue={inputValue}
+            isInputMode={isInputMode}
+            parentId={parentId}
+            onBlurTagTree={onBlurTagTree}
+            onAddInputRef={onHandleAddInputRef}
+            hintSelected={onHandleHintSelected}
+            onDeselectInput={onHandleDeselectInput}
+          />
+        </Search>
+      )}
     </AutocompleteContainer>
   )
 }
@@ -113,12 +127,12 @@ const mapStateToProps = (state, props) => {
   const storeData = {
     tags: {
       data: getTags(state).items,
-      validationItems: getTagsTitle(state)
+      validationItems: getTagsTitle(state),
     },
     contacts: {
       data: getContacts(state).items,
-      validationItems: getContactsEmail(state)
-    }
+      validationItems: getContactsEmail(state),
+    },
   }
 
   // validationItems for create new item
@@ -127,7 +141,11 @@ const mapStateToProps = (state, props) => {
 
   if (selectedItems[dataType] !== null) {
     // From data for hints remove selectedItems
-    data = R.differenceWith(eqA, storeData[dataType].data, selectedItems[dataType].toArray())
+    data = R.differenceWith(
+      eqA,
+      storeData[dataType].data,
+      selectedItems[dataType].toArray()
+    )
 
     // Get value of item for input mode
     if (isInputMode) {
@@ -144,7 +162,7 @@ const mapStateToProps = (state, props) => {
     inputValue,
     validationItems,
     hints: {
-      [dataType]: data
+      [dataType]: data,
     },
   }
 }
@@ -152,7 +170,10 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = { hintSelected }
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   withHandlers({
     onHandleDeselectInput: props => () => props.onDeselectInput(),
     onHandleItemDelete: props => item => props.onItemDelete(item),
@@ -165,6 +186,7 @@ export default compose(
         props.onAddInputRef(ref)
       }
     },
-    onHandleHintSelected: props => (location, context, hint) => props.hintSelected(location, context, hint),
+    onHandleHintSelected: props => (location, context, hint) =>
+      props.hintSelected(location, context, hint),
   })
 )(Autocomplete)

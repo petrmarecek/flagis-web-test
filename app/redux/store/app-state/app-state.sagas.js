@@ -34,6 +34,7 @@ export function* defaultDisplay() {
   }
 
   yield put(taskActions.deselectTasks())
+  yield put(taskActions.updateTaskSearch(''))
   yield put(tagActions.deselectTags())
   yield put(contactActions.deselectContacts())
   yield put(tasksMenuActions.resetTasksMenu())
