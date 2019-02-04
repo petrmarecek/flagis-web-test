@@ -1,12 +1,17 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import domUtils from 'redux/utils/dom'
+import constants from 'utils/constants'
 import { withStateHandlers } from 'recompose'
 
+// component
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
+
+// styles
 import {
   TasksMenuItem,
+  IconWrapper,
   MenuBoxContainer,
   MenuBoxGroup,
   MenuBoxItemIcon,
@@ -36,22 +41,17 @@ const TasksMenuFilters = props => {
     noTags,
   } = tasksMenu.filters
 
-  const OFFSET = 50
   const iconColor = active.size !== 0 || menu.isVisible ? '#282f34' : '#B1B5B8'
   const getCenterIconPosition = () => {
     const position = domUtils.getOffset(filterRef)
-    return window.innerWidth - position.left - OFFSET
+    return window.innerWidth - position.left - constants.TASKS_MENU_ICON_OFFSET
   }
 
   return (
     <TasksMenuItem innerRef={getFilterRef} onClick={onHandleClick}>
-      <Icon
-        icon={ICONS.FILTER}
-        width={23}
-        height={25}
-        color={[iconColor]}
-        hoverColor={['#282f34']}
-      />
+      <IconWrapper iconColor={iconColor} hoverIconColor="#282f34">
+        <Icon icon={ICONS.FILTER} width={19} height={20} scale={0.8} />
+      </IconWrapper>
       {menu.isVisible && (
         <MenuBoxContainer
           animation="transition.fadeIn"

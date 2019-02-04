@@ -20,10 +20,31 @@ const TasksMenuItem = styled.div`
   width: 40px;
   margin: 0 0 0 10px;
   flex-shrink: 0;
+  animation: 600ms ${fade};
+`
+
+const IconWrapper = styled.div`
+  ${boxSizing('border-box')}
   display: flex;
   justify-content: center;
   align-items: center;
-  animation: 600ms ${fade};
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
+
+  svg {
+    path {
+      fill: ${props => props.iconColor};
+    }
+  }
+
+  :hover {
+    svg {
+      path {
+        fill: ${props => props.hoverIconColor};
+      }
+    }
+  }
 `
 
 // ---------------------------------- TasksMenuFiltersActive ----------------------------------
@@ -82,7 +103,7 @@ const MenuBoxContainer = styled(MenuBox)`
   ${borderRadius('5px')}
   ${boxShadow('0px 1px 6px 1px rgba(163,163,163,0.5)')}
   position: absolute;
-  right: 10px;
+  right: 0;
   top: 48px;
   z-index: 100;
   border: 1px solid #c1cad0;
@@ -178,6 +199,7 @@ const MenuBoxItemTitle = styled(MenuBoxItem)`
 
 export {
   TasksMenuItem,
+  IconWrapper,
   TasksMenuFiltersActive,
   FilterActiveItem,
   FilterActiveItemIcon,

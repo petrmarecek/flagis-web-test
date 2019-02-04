@@ -28,4 +28,7 @@ export default {
   // Tag-Tree
   TAG_TREE_ITEM_HEIGHT: 27,
   TAG_TREE_SECTION_HEIGHT: 32,
+
+  // Tasks-menu
+  TASKS_MENU_ICON_OFFSET: 50,
 }

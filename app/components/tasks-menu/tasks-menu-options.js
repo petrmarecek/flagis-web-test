@@ -1,114 +1,128 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
-import velocity from 'velocity-animate'
+import constants from 'utils/constants'
 import domUtils from 'redux/utils/dom'
+import { withStateHandlers } from 'recompose'
 
+// components
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
+
+// styles
 import {
+  TasksMenuItem,
+  IconWrapper,
   MenuBoxContainer,
   MenuBoxGroup,
   MenuBoxItemIcon,
   MenuBoxItemTitle,
 } from './styles'
 
-const OFFSET = 50
+const TasksMenuOptions = props => {
+  const {
+    tasksMenu,
+    optionsRef,
+    getOptionsRef,
+    onHandleClick,
+    onHandleArchiveCompletedTasks,
+    onHandleSelectAllTasks,
+    isVisibleArchivedTasks,
+  } = props
 
-export default class TasksMenuOptions extends PureComponent {
-  static propTypes = {
-    onArchiveCompletedTasks: PropTypes.func,
-    onSelectAllTasks: PropTypes.func,
-    visibleMenuOption: PropTypes.func,
-    hideMenuFilter: PropTypes.func,
-    hideMenuSort: PropTypes.func,
-    hideMenuOption: PropTypes.func,
-    tasksMenu: PropTypes.object,
-    isVisibleArchivedTasks: PropTypes.bool,
+  const { menu } = tasksMenu.options
+  const iconColor = menu.isVisible ? '#282f34' : '#B1B5B8'
+  const getCenterIconPosition = () => {
+    const position = domUtils.getOffset(optionsRef)
+    return window.innerWidth - position.left - constants.TASKS_MENU_ICON_OFFSET
   }
 
-  componentDidMount() {
-    velocity(this.refs.options, 'transition.fadeIn', {
-      duration: 600,
-      display: 'flex',
-    })
-  }
-
-  handleClick = () => {
-    if (this.props.tasksMenu.options.menu.isVisible) {
-      this.props.hideMenuOption()
-      return
-    }
-
-    if (this.props.tasksMenu.filters.menu.isVisible) {
-      this.props.hideMenuFilter()
-    }
-
-    if (this.props.tasksMenu.sort.menu.isVisible) {
-      this.props.hideMenuSort()
-    }
-
-    this.props.visibleMenuOption()
-  }
-
-  getCenterIconPosition = () => {
-    const { options } = this.refs
-    const position = domUtils.getOffset(options)
-    return window.innerWidth - position.left - OFFSET
-  }
-
-  render() {
-    const isVisibleArchivedTasks = this.props.isVisibleArchivedTasks
-    const { menu } = this.props.tasksMenu.options
-    const iconColor = menu.isVisible ? '#282f34' : '#B1B5B8'
-
-    return (
-      <div
-        ref="options"
-        className="tasks-menu__item"
-        onClick={this.handleClick}
-      >
-        <Icon
-          icon={ICONS.OPTIONS}
-          width={7}
-          height={25}
-          scale={1.08}
-          color={[iconColor]}
-          hoverColor={['#282f34']}
-        />
-        {menu.isVisible && (
-          <MenuBoxContainer
-            animation="transition.fadeIn"
-            menuIcon={this.refs.options}
-            clickOutsideMenu={this.handleClick}
-            trianglePosition={this.getCenterIconPosition}
-          >
+  return (
+    <TasksMenuItem
+      innerRef={getOptionsRef}
+      className="tasks-menu__item"
+      onClick={onHandleClick}
+    >
+      <IconWrapper iconColor={iconColor} hoverIconColor="#282f34">
+        <Icon icon={ICONS.OPTIONS} width={6} height={20} scale={0.86} />
+      </IconWrapper>
+      {menu.isVisible && (
+        <MenuBoxContainer
+          animation="transition.fadeIn"
+          menuIcon={optionsRef}
+          clickOutsideMenu={onHandleClick}
+          trianglePosition={getCenterIconPosition}
+        >
+          <MenuBoxGroup>
+            <MenuBoxItemIcon
+              icon={ICONS.SELECT}
+              iconScale={1.06}
+              onChange={onHandleSelectAllTasks}
+            />
+            <MenuBoxItemTitle
+              title="Select all tasks"
+              onChange={onHandleSelectAllTasks}
+            />
+          </MenuBoxGroup>
+          {!isVisibleArchivedTasks && (
             <MenuBoxGroup>
               <MenuBoxItemIcon
-                icon={ICONS.SELECT}
-                iconScale={1.06}
-                onChange={this.props.onSelectAllTasks}
+                icon={ICONS.ARCHIVE}
+                iconScale={0.59}
+                onChange={onHandleArchiveCompletedTasks}
               />
               <MenuBoxItemTitle
-                title="Select all tasks"
-                onChange={this.props.onSelectAllTasks}
+                title="Archive completed tasks"
+                onChange={onHandleArchiveCompletedTasks}
               />
             </MenuBoxGroup>
-            {!isVisibleArchivedTasks && (
-              <MenuBoxGroup>
-                <MenuBoxItemIcon
-                  icon={ICONS.ARCHIVE}
-                  iconScale={0.59}
-                  onChange={this.props.onArchiveCompletedTasks}
-                />
-                <MenuBoxItemTitle
-                  title="Archive completed tasks"
-                  onChange={this.props.onArchiveCompletedTasks}
-                />
-              </MenuBoxGroup>
-            )}
-          </MenuBoxContainer>
-        )}
-      </div>
-    )
-  }
+          )}
+        </MenuBoxContainer>
+      )}
+    </TasksMenuItem>
+  )
 }
+
+TasksMenuOptions.propTypes = {
+  tasksMenu: PropTypes.object,
+  optionsRef: PropTypes.object,
+  isVisibleArchivedTasks: PropTypes.bool,
+  getOptionsRef: PropTypes.func,
+  onHandleClick: PropTypes.func,
+  onArchiveCompletedTasks: PropTypes.func,
+  onHandleArchiveCompletedTasks: PropTypes.func,
+  onSelectAllTasks: PropTypes.func,
+  onHandleSelectAllTasks: PropTypes.func,
+  visibleMenuOption: PropTypes.func,
+  hideMenuFilter: PropTypes.func,
+  hideMenuSort: PropTypes.func,
+  hideMenuOption: PropTypes.func,
+}
+
+export default withStateHandlers(() => ({ optionsRef: null }), {
+  getOptionsRef: () => ref => ({ optionsRef: ref }),
+  onHandleClick: (state, props) => () => {
+    if (props.tasksMenu.options.menu.isVisible) {
+      props.hideMenuOption()
+      return {}
+    }
+
+    if (props.tasksMenu.filters.menu.isVisible) {
+      props.hideMenuFilter()
+    }
+
+    if (props.tasksMenu.sort.menu.isVisible) {
+      props.hideMenuSort()
+    }
+
+    props.visibleMenuOption()
+    return {}
+  },
+  onHandleArchiveCompletedTasks: (state, props) => () => {
+    props.onArchiveCompletedTasks()
+    return {}
+  },
+  onHandleSelectAllTasks: (state, props) => () => {
+    props.onSelectAllTasks()
+    return {}
+  },
+})(TasksMenuOptions)

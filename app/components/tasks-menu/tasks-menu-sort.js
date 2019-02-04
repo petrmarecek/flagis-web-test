@@ -1,34 +1,39 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import domUtils from 'redux/utils/dom'
+import constants from 'utils/constants'
 import { withStateHandlers } from 'recompose'
 
+// components
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
+
+// styles
 import {
   TasksMenuItem,
+  IconWrapper,
   MenuBoxContainer,
   MenuBoxGroup,
   MenuBoxItemIcon,
   MenuBoxItemTitle,
 } from './styles'
 
-const TasksMenuSort = ({
-  tasksMenu,
-  sortRef,
-  getSortRef,
-  onHandleClick,
-  onHandleSortAlgorithmToggle,
-}) => {
-  const OFFSET = 50
+const TasksMenuSort = props => {
+  const {
+    tasksMenu,
+    sortRef,
+    getSortRef,
+    onHandleClick,
+    onHandleSortAlgorithmToggle,
+  } = props
+
+  const { defaultSort, alphabet, important, incomplete, menu } = tasksMenu.sort
   const getCenterIconPosition = () => {
     const position = domUtils.getOffset(sortRef)
-    return window.innerWidth - position.left - OFFSET
+    return window.innerWidth - position.left - constants.TASKS_MENU_ICON_OFFSET
   }
 
   const getActiveIcon = () => {
-    const { alphabet, important, incomplete } = tasksMenu.sort
-
     if (alphabet) {
       return ICONS.SORT_ALPHABET
     }
@@ -44,19 +49,14 @@ const TasksMenuSort = ({
     return ICONS.SORT_DEFAULT
   }
 
-  const { defaultSort, alphabet, important, incomplete, menu } = tasksMenu.sort
   const icon = getActiveIcon()
   const iconColor = !defaultSort || menu.isVisible ? '#282f34' : '#B1B5B8'
 
   return (
     <TasksMenuItem innerRef={getSortRef} onClick={onHandleClick}>
-      <Icon
-        icon={icon}
-        width={24}
-        height={24}
-        color={[iconColor]}
-        hoverColor={['#282f34']}
-      />
+      <IconWrapper iconColor={iconColor} hoverIconColor="#282f34">
+        <Icon icon={icon} width={20} height={20} scale={0.83} />
+      </IconWrapper>
       {menu.isVisible && (
         <MenuBoxContainer
           animation="transition.fadeIn"
