@@ -21,7 +21,7 @@ import { ICONS } from 'components/icons/icon-constants'
 import Icon from '../icons/icon'
 import FollowerResponseButtons from '../common/follower-response-buttons'
 import TaskListTagItems from './task-list-tag-items'
-import FollowerIcon from '../common/follower-icon'
+import FollowerIconPrimary from '../common/follower-icon-primary'
 
 import { EmptyList } from 'components/styled-components-mixins'
 import {
@@ -412,8 +412,9 @@ const TaskListItem = props => {
             </Content>
             {isFollowers && (
               <Followers>
-                <FollowerIcon
+                <FollowerIconPrimary
                   status={followerStatus}
+                  isCompleted={isCompletedMainList}
                   defaultIcon={isInboxList || !isOwner}
                 />
               </Followers>

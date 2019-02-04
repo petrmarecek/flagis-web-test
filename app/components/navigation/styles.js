@@ -52,7 +52,7 @@ const PrimaryButton = styled.div`
   color: ${props => (props.active ? 'white' : '#676D71')};
   border-width: ${props => (props.active ? '1px 0 1px 3px' : '0 0 0 3px')};
   border-color: ${props =>
-    props.active ? 'rgba(151, 151, 151, 0.2) #43ffb1' : '#293034'};
+    props.active ? 'rgba(151, 151, 151, 0.2) #43ffb1' : '#1C2124'};
 
   :hover {
     color: white;

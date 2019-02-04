@@ -215,7 +215,9 @@ const TagTreeItem = props => {
               </ItemTagIcon>
               <ItemTitle>{treeItem.tag.title}</ItemTitle>
               {!isHover ? (
-                <ItemRelations>{currentTagRelations.size}</ItemRelations>
+                <ItemRelations selected={selection.includes(treeItem.id)}>
+                  {currentTagRelations.size}
+                </ItemRelations>
               ) : (
                 <ItemIcons>
                   {renderArrowIcon(treeItem.childItems)}

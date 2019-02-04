@@ -2,16 +2,18 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import constants from '../../utils/constants'
 
+// components
 import Icon from '../icons/icon'
 import { ICONS } from '../icons/icon-constants'
 
+// styles
 import styled from 'styled-components'
 
-const Container = styled.div`
+const Wrapper = styled.div`
   pointer-events: none;
 `
 
-const FollowerIcon = ({ status, iconScale, defaultIcon }) => {
+const FollowerIconSecondary = ({ status, iconScale, defaultIcon }) => {
   let scale = iconScale
   let followerStatus = status === null ? 'new' : status
   let width =
@@ -47,7 +49,7 @@ const FollowerIcon = ({ status, iconScale, defaultIcon }) => {
   }
 
   return (
-    <Container>
+    <Wrapper>
       <Icon
         icon={ICONS[icons[followerStatus]]}
         width={width}
@@ -55,18 +57,18 @@ const FollowerIcon = ({ status, iconScale, defaultIcon }) => {
         scale={scale}
         color={color[followerStatus]}
       />
-    </Container>
+    </Wrapper>
   )
 }
 
-FollowerIcon.defaultProps = {
+FollowerIconSecondary.defaultProps = {
   iconScale: 1,
 }
 
-FollowerIcon.propTypes = {
+FollowerIconSecondary.propTypes = {
   status: PropTypes.string,
   defaultIcon: PropTypes.bool,
   iconScale: PropTypes.number,
 }
 
-export default FollowerIcon
+export default FollowerIconSecondary

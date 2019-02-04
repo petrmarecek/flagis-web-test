@@ -58,7 +58,7 @@ const Subject = styled.input`
   font-size: 18px;
   line-height: 56px;
   z-index: 5;
-  padding-left: 17px;
+  padding-left: 24px;
   margin: 0;
   font-weight: ${props => (props.isImportant ? 'bold' : 'normal')};
   background-color: #fff;

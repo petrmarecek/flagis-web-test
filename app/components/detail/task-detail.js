@@ -13,7 +13,7 @@ import DetailMenu from 'components/detail/detail-menu'
 import FollowerStatus from 'components/common/follower-status'
 import FollowerResponseButtons from '../common/follower-response-buttons'
 import Autocomplete from 'components/autocomplete'
-import FollowerIcon from '../common/follower-icon'
+import FollowerIconSecondary from '../common/follower-icon-secondary'
 import FilePicker from 'components/common/file-picker'
 import AttachmentList from 'components/attachment-list/attachment-list'
 import CommentList from 'components/comment-list/comment-list'
@@ -362,7 +362,7 @@ const TaskDetail = props => {
             </DetailContentIcon>
           ) : (
             <DetailContentIcon contactIcon>
-              <FollowerIcon defaultIcon />
+              <FollowerIconSecondary defaultIcon />
             </DetailContentIcon>
           )}
           {isCollaboratedOrCompleted && (
@@ -414,7 +414,10 @@ const TaskDetail = props => {
                 </DetailContentAddContactContent>
                 {!isInboxVisible && isOwner && (
                   <DetailContentAddContactIcon>
-                    <FollowerIcon status={followerStatus} iconScale={0.75} />
+                    <FollowerIconSecondary
+                      status={followerStatus}
+                      iconScale={0.75}
+                    />
                   </DetailContentAddContactIcon>
                 )}
               </DetailContentAddContact>

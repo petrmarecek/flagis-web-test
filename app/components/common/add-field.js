@@ -11,7 +11,7 @@ const AddFieldStyle = styled.input`
   border: none;
   font-size: 18px;
   height: 30px;
-  padding: 5px 0 5px 17px;
+  padding: 5px 0 5px 24px;
   color: ${props => (props.isError ? 'red' : 'black')};
   background-color: #fff;
 `

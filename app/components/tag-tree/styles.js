@@ -181,9 +181,9 @@ const Item = styled.div`
   line-height: ${constants.TAG_TREE_ITEM_HEIGHT}px;
   cursor: pointer;
   font-size: 16px;
-  color: #fff;
   padding: 0 65px 0 34px;
   margin-bottom: 5px;
+  color: ${props => (props.selected ? '#fff' : '#A2A2A2')};
   background-color: ${props => (props.active ? '#F5F5F5' : '#1C2124')};
   ${props => (props.dragOver ? dragOver : null)}
   ${props => (props.dragOverTop ? dragOverTop : null)}
@@ -213,7 +213,7 @@ const ItemTitle = styled.div`
 `
 
 const ItemRelations = styled.div`
-  color: #fff;
+  color: ${props => (props.selected ? '#fff' : '#A2A2A2')};
   position: absolute;
   right: 15px;
   top: 0;
