@@ -71,7 +71,7 @@ const CenterPanelScroll = styled.div`
 
 const LeftPanelWrapper = styled.div`
   ${boxSizing('border-box')}
-  background-color: ${props => (props.whiteBackground ? '#fff' : '#293034')};
+  background-color: ${props => (props.whiteBackground ? '#fff' : '#1C2124')};
   width: ${props => (props.width ? props.width : '290')}px;
   position: absolute;
   top: 0;

@@ -32,6 +32,7 @@ const NavigationPrimaryWrapper = styled.div`
   ${transition('height 300ms ease-out')}
   height: ${props => (props.isVisibleMore ? '209px' : '133px')};
   position: relative;
+  margin-bottom: 20px;
 `
 
 const NavigationPrimaryHidden = styled.div`

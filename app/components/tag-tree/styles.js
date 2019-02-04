@@ -15,7 +15,7 @@ const Wrapper = styled.div`
   position: absolute;
   width: 100%;
   top: 0;
-  bottom: 60px;
+  bottom: 0;
   left: 0;
   padding: 26px 20px 0 30px;
 `
@@ -24,7 +24,7 @@ const AddSection = styled.div`
   display: flex;
   position: absolute;
   width: 100%;
-  background-color: #293034;
+  background-color: #1c2124;
   bottom: 0;
   left: 0;
   flex-direction: row;
@@ -67,7 +67,7 @@ const SectionHeader = styled.div`
   color: #fff;
   height: 29px;
   line-height: 29px;
-  background-color: #293034;
+  background-color: #1c2124;
   font-weight: 500;
   font-size: 20px;
   border-bottom: 1px solid #44ffb1;
@@ -184,7 +184,7 @@ const Item = styled.div`
   color: #fff;
   padding: 0 65px 0 34px;
   margin-bottom: 5px;
-  background-color: ${props => (props.active ? '#F5F5F5' : '#293034')};
+  background-color: ${props => (props.active ? '#F5F5F5' : '#1C2124')};
   ${props => (props.dragOver ? dragOver : null)}
   ${props => (props.dragOverTop ? dragOverTop : null)}
   ${props => (props.dragOverBottom ? dragOverBottom : null)}
@@ -209,7 +209,7 @@ const ItemTitle = styled.div`
   overflow: hidden;
   white-space: nowrap;
   max-width: 100%;
-  maxwidth: calc(100% - 30px);
+  max-width: calc(100% - 15px);
 `
 
 const ItemRelations = styled.div`

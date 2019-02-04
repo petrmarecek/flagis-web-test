@@ -38,7 +38,7 @@ const AddItem = styled.div`
 `
 
 const AddSection = styled.div`
-  background-color: #293034;
+  background-color: #1c2124;
   border-bottom: 1px solid #44ffb1 !important;
 `
 
@@ -59,7 +59,7 @@ const ItemInput = styled.div`
 
 const SectionInput = styled.div`
   input {
-    background-color: #293034;
+    background-color: #1c2124;
     font-size: 20px;
     color: #fff !important;
     border: none !important;

@@ -17,7 +17,10 @@ import {
 import { connect } from 'react-redux'
 import { changeLocation } from 'redux/store/routing/routing.actions'
 import { showDialog, setDetail } from 'redux/store/app-state/app-state.actions'
-import { getLeftPanel } from 'redux/store/app-state/app-state.selectors'
+import {
+  getLeftPanel,
+  getPrimaryHiddenNavigationVisibility,
+} from 'redux/store/app-state/app-state.selectors'
 import { getNewRefreshToken } from 'redux/store/auth/auth.selectors'
 import { deselectTasks } from 'redux/store/tasks/tasks.actions'
 import { selectTag } from 'redux/store/tags/tags.actions'
@@ -61,6 +64,7 @@ const TagTreeContainer = props => {
     tagsRelations,
     tree,
     leftPanel,
+    isVisibleMoreNavigation,
 
     // state
     showAddControl,
@@ -83,8 +87,9 @@ const TagTreeContainer = props => {
 
   const debouncedMoveSection = debounce(onInvokeMove, 10)
   const onMoveSection = move => debouncedMoveSection(move)
+  const offset = isVisibleMoreNavigation ? 337 : 261
   const scrollStyle = {
-    height: 'calc(100vh - 120px)',
+    height: `calc(100vh - ${offset}px)`,
     shadowHeight: 30,
     boxShadowTop: 'inset 0 30px 30px -15px rgba(41, 48, 52, 1)',
     boxShadowBottom: 'inset 0 -30px 30px -15px  rgba(41, 48, 52, 1)',
@@ -153,6 +158,7 @@ TagTreeContainer.propTypes = {
   tree: PropTypes.object,
   sections: PropTypes.object,
   leftPanel: PropTypes.object,
+  isVisibleMoreNavigation: PropTypes.bool,
 
   // state
   showAddControl: PropTypes.bool,
@@ -197,6 +203,7 @@ const mapStateToProps = state => ({
   addControlParentId: getAddControlParentId(state),
   tagsRelations: getTagsRelations(state),
   leftPanel: getLeftPanel(state),
+  isVisibleMoreNavigation: getPrimaryHiddenNavigationVisibility(state),
 })
 
 const mapDispatchToProps = {
