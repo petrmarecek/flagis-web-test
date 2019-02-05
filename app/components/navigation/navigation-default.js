@@ -46,13 +46,13 @@ const NavigationDefault = ({
         innerRef={getAccountRef}
         title="Account"
         isVisibleAccountNavigation={isVisibleAccountNavigation}
+        onClick={onHandleClickAccount}
       >
         <TriangleIcon
           icon={ICONS.TRIANGLE}
           width={11}
           height={5}
           color={['#41474b']}
-          onClick={onHandleClickAccount}
         />
         <Icon
           icon={ICONS.CONTACT_EXIST}
@@ -60,7 +60,6 @@ const NavigationDefault = ({
           height={30}
           scale={1.42}
           color={['#8C9DA9', '#fff']}
-          onClick={onHandleClickAccount}
         />
       </AccountWrapper>
       {isVisibleAccountNavigation && (
