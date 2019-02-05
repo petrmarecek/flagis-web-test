@@ -33,8 +33,8 @@ const TagListContainer = ({
   const scrollStyle = {
     height: 'calc(100vh - 114px)',
     shadowHeight: 20,
-    boxShadowTop: 'inset 0 10px 10px -5px rgba(231, 236, 237, 1)',
-    boxShadowBottom: 'inset 0 -10px 10px -5px  rgba(231, 236, 237, 1)',
+    boxShadowTop: 'inset 0 10px 10px -5px rgba(239, 239, 239, 1)',
+    boxShadowBottom: 'inset 0 -10px 10px -5px  rgba(239, 239, 239, 1)',
     overflow: 'hidden',
   }
 
