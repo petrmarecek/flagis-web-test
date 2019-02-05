@@ -117,9 +117,9 @@ const Hints = props => {
         {isFilterContacts && (
           <Buttons directionRender={directionRender}>
             <Button onClick={() => onHandleSubmit('sendMe')} first>
-              Sent Me
+              Me
             </Button>
-            <Button onClick={() => onHandleSubmit('sendAll')}>Sent All</Button>
+            <Button onClick={() => onHandleSubmit('sendAll')}>All</Button>
           </Buttons>
         )}
         <Title
@@ -161,9 +161,9 @@ const Hints = props => {
         {isFilterContacts && (
           <Buttons directionRender={directionRender}>
             <Button onClick={() => onHandleSubmit('sendMe')} first>
-              Sent Me
+              Me
             </Button>
-            <Button onClick={() => onHandleSubmit('sendAll')}>Sent All</Button>
+            <Button onClick={() => onHandleSubmit('sendAll')}>All</Button>
           </Buttons>
         )}
       </HintsContainer>
