@@ -1,50 +1,56 @@
 import styled, { keyframes } from 'styled-components'
+import {
+  borderRadius,
+  boxShadow,
+  textOverflow,
+} from 'components/styled-components-mixins'
 import { fadeInUp } from 'react-animations'
 
-const fadeUp = keyframes`${fadeInUp}`;
+// components
+import Counter from 'components/common/counter'
 
-const ItemContainer = styled.li`
+const fadeUp = keyframes`${fadeInUp}`
+
+const Item = styled.li`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
   overflow: hidden;
   list-style-type: none;
   font-size: 16px;
-  margin: 0 0 4px;
-  cursor: pointer;
-  position: relative;
-  background-color: ${props => props.selected ? '#ffffd7' : '#fff'};
-  animation: 400ms ${fadeUp};
-`;
-
-const Item = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
   height: 30px;
-`;
+  margin: 0 0 4px;
+  padding: 0 20px 0 10px;
+  cursor: pointer;
+  background-color: ${props => (props.selected ? '#ffffd7' : '#fff')};
+  animation: 400ms ${fadeUp};
+`
 
 const ItemIcon = styled.div`
+  flex: 0 0 35px;
+`
+
+const TitleRelationsWrapper = styled.div`
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  height: 100%;
-  margin: 0 10px;
-`;
+  justify-content: space-between;
+  flex: 1 1 auto;
+`
 
 const ItemTitle = styled.div`
-  display: flex;
-  align-items: center;
-  height: 100%;
-  justify-content: flex-start;
-`;
+  flex: 1 1 auto;
+  margin-left: 10px;
+  ${textOverflow('ellipsis')}
+  white-space: nowrap;
+  overflow: hidden;
+`
 
-const ItemTagRelations = styled.div`
-  position: absolute;
-  right: 20px;
-`;
+const ItemTagRelations = styled(Counter)`
+  flex: 0 0 auto;
+  font-size: 11px;
+  background-color: #efefef;
+  ${borderRadius('10px')}
+  ${boxShadow('0 2px 4px 0 rgba(0, 0, 0, 0.5)')}
+`
 
-export {
-  ItemContainer,
-  Item,
-  ItemIcon,
-  ItemTitle,
-  ItemTagRelations,
-}
+export { Item, ItemIcon, TitleRelationsWrapper, ItemTitle, ItemTagRelations }

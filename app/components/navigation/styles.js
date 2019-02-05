@@ -74,6 +74,9 @@ const PrimaryButtonText = styled.div`
 const InboxCounter = styled(Counter)`
   position: absolute;
   right: 30px;
+  font-size: 11px;
+  background-color: #44ffb1;
+  ${borderRadius('10px')}
 `
 
 const ShowMoreButton = styled.span`

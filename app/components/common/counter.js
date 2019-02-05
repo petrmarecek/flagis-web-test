@@ -5,12 +5,10 @@ import styled from 'styled-components'
 import { borderRadius } from '../styled-components-mixins/'
 
 const Item = styled.div`
-  ${borderRadius('7px')}
-  font-size: 11;
+  ${borderRadius('10px')}
   font-weight: bold;
   color: #293034;
   padding: 2px 5px;
-  background-color: #44ffb1;
 `
 
 const Counter = ({ count, className }) => (

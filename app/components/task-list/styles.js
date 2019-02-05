@@ -212,7 +212,7 @@ const Description = styled.div`
 `
 
 const DueDate = styled.div`
-  flex: 10 0 60px;
+  flex: 10 0 65px;
   height: 18px;
   line-height: 18px;
   right: 18px;

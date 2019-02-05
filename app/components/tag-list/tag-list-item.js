@@ -4,13 +4,13 @@ import { withHandlers } from 'recompose'
 
 import { getColorIndex, getTagColor } from '../../redux/utils/component-helper'
 
-import { ICONS } from "../icons/icon-constants"
+import { ICONS } from '../icons/icon-constants'
 import Icon from '../icons/icon'
 
 import {
-  ItemContainer,
   Item,
   ItemIcon,
+  TitleRelationsWrapper,
   ItemTitle,
   ItemTagRelations,
 } from './styles'
@@ -20,26 +20,23 @@ const TagItem = ({ tag, selected, tagRelations, onHandleClick }) => {
   const tagColor = getTagColor(colorIndex)
 
   return (
-    <ItemContainer
-      key={tag.id}
-      onClick={onHandleClick}
-      selected={selected}>
-      <Item>
-        <ItemIcon >
-          <Icon
-            icon={ICONS.TAG}
-            width={37}
-            height={20}
-            scale={1.81}
-            color={[tagColor]}/>
-        </ItemIcon>
+    <Item key={tag.id} onClick={onHandleClick} selected={selected}>
+      <ItemIcon>
+        <Icon
+          icon={ICONS.TAG}
+          width={37}
+          height={20}
+          scale={1.81}
+          color={[tagColor]}
+        />
+      </ItemIcon>
+      <TitleRelationsWrapper>
         <ItemTitle>{tag.title}</ItemTitle>
-        {tagRelations &&
-        <ItemTagRelations title='Number of tasks'>
-          {tagRelations}
-        </ItemTagRelations>}
-      </Item>
-    </ItemContainer>
+        {tagRelations && (
+          <ItemTagRelations count={tagRelations} title="Number of tasks" />
+        )}
+      </TitleRelationsWrapper>
+    </Item>
   )
 }
 
@@ -52,5 +49,5 @@ TagItem.propTypes = {
 }
 
 export default withHandlers({
-  onHandleClick: props => () => props.onClick(props.tag.id)
+  onHandleClick: props => () => props.onClick(props.tag.id),
 })(TagItem)
