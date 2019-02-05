@@ -30,17 +30,17 @@ const CollabsibleContent = styled.div`
 
 /* ----------------------------- Fonts -----------------------------------*/
 const fontMain = css`
-  font-family: 'Source Sans Pro', 'Segoe UI', sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-weight: 400;
 `
 
 const fontSub = css`
-  font-family: 'Source Sans Pro', 'Segoe UI', sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-weight: 300;
 `
 
 const fontBold = css`
-  font-family: 'Source Sans Pro', 'Segoe UI', sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-weight: 600;
 `
 

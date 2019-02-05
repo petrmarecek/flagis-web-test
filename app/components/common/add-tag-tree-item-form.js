@@ -7,7 +7,6 @@ import { getTagsOfTree } from '../../redux/store/tree/tree.selectors'
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
 import Autocomplete from 'components/autocomplete'
-import AddTagTreeSectionForm from 'components/common/add-tag-tree-section-form'
 
 import styled, { css } from 'styled-components'
 import { fontMain } from '../styled-components-mixins'
@@ -37,11 +36,6 @@ const AddItem = styled.div`
   height: 26px;
 `
 
-const AddSection = styled.div`
-  background-color: #1c2124;
-  border-bottom: 1px solid #44ffb1 !important;
-`
-
 const TagIcon = styled.span`
   display: block;
   position: absolute;
@@ -57,46 +51,10 @@ const ItemInput = styled.div`
   }
 `
 
-const SectionInput = styled.div`
-  input {
-    background-color: #1c2124;
-    font-size: 20px;
-    color: #fff !important;
-    border: none !important;
-  }
-`
-
-const isEmpty = title => {
-  return title === null || title.trim() === ''
-}
-
 const AddTagTreeItemForm = props => {
-  const {
-    parentId,
-    selectedItems,
-    onHandleAddInputRef,
-    onHandleOnBlur,
-    onHandleSubmit,
-    onHandleSubmitting,
-  } = props
+  const { parentId, selectedItems, onHandleAddInputRef, onHandleOnBlur } = props
 
-  const isSection = parentId === null
-  const renderSectionAddForm = (
-    <Wrapper>
-      <AddSection>
-        <SectionInput>
-          <AddTagTreeSectionForm
-            placeholder="Add new section"
-            onAddInputRef={onHandleAddInputRef}
-            onCancel={onHandleOnBlur}
-            onSubmiting={onHandleSubmitting}
-            onSubmit={onHandleSubmit}
-          />
-        </SectionInput>
-      </AddSection>
-    </Wrapper>
-  )
-  const renderItemAddForm = (
+  return (
     <Wrapper>
       <AddItem>
         <TagIcon>
@@ -118,8 +76,6 @@ const AddTagTreeItemForm = props => {
       </AddItem>
     </Wrapper>
   )
-
-  return isSection ? renderSectionAddForm : renderItemAddForm
 }
 
 AddTagTreeItemForm.propTypes = {
@@ -131,8 +87,6 @@ AddTagTreeItemForm.propTypes = {
   setInputRef: PropTypes.func,
   onHandleAddInputRef: PropTypes.func,
   onHandleOnBlur: PropTypes.func,
-  onHandleSubmit: PropTypes.func,
-  onHandleSubmitting: PropTypes.func,
 }
 
 const mapStateToProps = (state, props) => ({
@@ -146,32 +100,6 @@ export default compose(
   withHandlers({
     onHandleAddInputRef: props => ref => props.setInputRef(ref),
     onHandleOnBlur: props => () => props.onCancel(),
-    onHandleSubmit: props => tag => {
-      // Get result of the add form
-      const result = {
-        title: tag.title,
-        parentId: props.parentId,
-        order: Date.now(),
-      }
-
-      // Validate
-      if (isEmpty(tag.title)) {
-        props.onCancel()
-        return
-      }
-
-      // Propagate
-      props.onSubmit(result)
-    },
-    onHandleSubmitting: () => event => {
-      // Validate not empty
-      if (isEmpty(event.title)) {
-        event.canceled = true
-        return
-      }
-
-      // TODO: Validate name conflict
-    },
   }),
   lifecycle({
     componentDidMount() {

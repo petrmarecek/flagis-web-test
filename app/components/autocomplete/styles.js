@@ -77,6 +77,7 @@ const Input = styled.input`
   margin: 0 !important;
   padding: ${props => (props.mainSearch ? '1px 0 0 0' : '1px 0 3px 0')};
   font-size: 14px;
+  font-weight: 500;
   width: 100%;
 
   :active {

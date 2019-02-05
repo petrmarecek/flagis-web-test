@@ -55,7 +55,7 @@ const Subject = styled.input`
   ${boxSizing('border-box')}
   border: none;
   width: 100%;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 56px;
   z-index: 5;
   padding-left: 24px;

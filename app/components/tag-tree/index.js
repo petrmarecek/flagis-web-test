@@ -15,12 +15,9 @@ import {
 
 // redux
 import { connect } from 'react-redux'
-import { changeLocation } from 'redux/store/routing/routing.actions'
+import { changeNavigation } from 'redux/store/routing/routing.actions'
 import { showDialog, setDetail } from 'redux/store/app-state/app-state.actions'
-import {
-  getLeftPanel,
-  getPrimaryHiddenNavigationVisibility,
-} from 'redux/store/app-state/app-state.selectors'
+import { getPrimaryHiddenNavigationVisibility } from 'redux/store/app-state/app-state.selectors'
 import { getNewRefreshToken } from 'redux/store/auth/auth.selectors'
 import { deselectTasks } from 'redux/store/tasks/tasks.actions'
 import { selectTag } from 'redux/store/tags/tags.actions'
@@ -45,7 +42,6 @@ import {
 import { computeTreeSectionOrder } from 'redux/utils/redux-helper'
 
 // components
-import AddTagTreeItemForm from 'components/common/add-tag-tree-item-form'
 import TagTree from 'components/tag-tree/tag-tree'
 import Loader from 'components/common/loader'
 import ShadowScrollbar from 'components/common/shadow-scrollbar'
@@ -63,21 +59,15 @@ const TagTreeContainer = props => {
     selection,
     tagsRelations,
     tree,
-    leftPanel,
     isVisibleMoreNavigation,
-
-    // state
-    showAddControl,
 
     // handlers
     onInvokeMove,
     onHandleDropSection,
     onHandleAddTreeItem,
-    onHandleAddButtonClicked,
     onHandleTreeItemsSelected,
     onHandleSubitemCreated,
-    onHandleAddSectionSubmit,
-    onHandleAddSectionCancel,
+    onHandleAddSection,
     onHandleAddItemCancel,
     onHandleEditTreeItem,
     onHandleDeleteTreeItem,
@@ -87,13 +77,14 @@ const TagTreeContainer = props => {
 
   const debouncedMoveSection = debounce(onInvokeMove, 10)
   const onMoveSection = move => debouncedMoveSection(move)
-  const offset = isVisibleMoreNavigation ? 337 : 261
+  const offset = isVisibleMoreNavigation ? 326 : 250
   const scrollStyle = {
     height: `calc(100vh - ${offset}px)`,
     shadowHeight: 30,
-    boxShadowTop: 'inset 0 30px 30px -15px rgba(41, 48, 52, 1)',
-    boxShadowBottom: 'inset 0 -30px 30px -15px  rgba(41, 48, 52, 1)',
+    boxShadowTop: 'inset 0 30px 30px -15px rgba(28, 33, 36, 1)',
+    boxShadowBottom: 'inset 0 -30px 30px -15px  rgba(28, 33, 36, 1)',
     overflow: 'hidden',
+    top: '10px',
   }
   const verticalStyle = {
     backgroundColor: 'rgba(255, 255, 255, 0.4)',
@@ -110,7 +101,6 @@ const TagTreeContainer = props => {
               selection={selection}
               addControlParentId={addControlParentId}
               tagsRelations={tagsRelations}
-              maxWidth={leftPanel.width}
               onMoveSection={onMoveSection}
               onTreeItemSelected={onHandleTreeItemsSelected}
               onSubitemCreated={onHandleSubitemCreated}
@@ -122,27 +112,20 @@ const TagTreeContainer = props => {
               onDrop={onHandleDrop}
               onDropSection={onHandleDropSection}
             />
-            {showAddControl && (
-              <AddTagTreeItemForm
-                parentId={null}
-                onSubmit={onHandleAddSectionSubmit}
-                onCancel={onHandleAddSectionCancel}
-              />
-            )}
           </CollabsibleContent>
         </Wrapper>
       </ShadowScrollbar>
-      <AddSection onClick={onHandleAddButtonClicked}>
-        <AddSectionText>Add new filter group</AddSectionText>
+      <AddSection onClick={onHandleAddSection}>
         <AddSectionIcon>
           <Icon
             icon={ICONS.PLUS}
             width={15}
             height={15}
             scale={0.52}
-            color={['#fff']}
+            color={['#676D71']}
           />
         </AddSectionIcon>
+        <AddSectionText>Add separator</AddSectionText>
       </AddSection>
     </div>
   )
@@ -157,7 +140,6 @@ TagTreeContainer.propTypes = {
   tagsRelations: PropTypes.object,
   tree: PropTypes.object,
   sections: PropTypes.object,
-  leftPanel: PropTypes.object,
   isVisibleMoreNavigation: PropTypes.bool,
 
   // state
@@ -167,11 +149,9 @@ TagTreeContainer.propTypes = {
   onInvokeMove: PropTypes.func,
   onHandleDropSection: PropTypes.func,
   onHandleAddTreeItem: PropTypes.func,
-  onHandleAddButtonClicked: PropTypes.func,
   onHandleTreeItemsSelected: PropTypes.func,
   onHandleSubitemCreated: PropTypes.func,
-  onHandleAddSectionSubmit: PropTypes.func,
-  onHandleAddSectionCancel: PropTypes.func,
+  onHandleAddSection: PropTypes.func,
   onHandleAddItemCancel: PropTypes.func,
   onHandleEditTreeItem: PropTypes.func,
   onHandleDeleteTreeItem: PropTypes.func,
@@ -202,7 +182,6 @@ const mapStateToProps = state => ({
   selection: getSelectionTree(state),
   addControlParentId: getAddControlParentId(state),
   tagsRelations: getTagsRelations(state),
-  leftPanel: getLeftPanel(state),
   isVisibleMoreNavigation: getPrimaryHiddenNavigationVisibility(state),
 })
 
@@ -218,7 +197,7 @@ const mapDispatchToProps = {
   dropSection,
   selectTag,
   setDetail,
-  changeLocation,
+  changeNavigation,
   deselectTasks,
 }
 
@@ -231,90 +210,79 @@ export default compose(
     props => props.isNewRefreshToken || props.isFetching,
     renderComponent(Loader)
   ),
-  withStateHandlers(
-    () => ({
-      showAddControl: false,
-      order: null,
-      top: 0,
-    }),
-    {
-      onInvokeMove: (state, props) => move => {
-        const { sourceSectionId } = move
-        const { sections } = props
-        const order = computeTreeSectionOrder(sections, move)
+  withStateHandlers(() => ({ order: null }), {
+    onInvokeMove: (state, props) => move => {
+      const { sourceSectionId } = move
+      const { sections } = props
+      const order = computeTreeSectionOrder(sections, move)
 
-        if (order === null) {
-          return {}
-        }
+      if (order === null) {
+        return {}
+      }
 
-        props.moveSection(sourceSectionId, order)
-        return { order }
-      },
-      onHandleDropSection: ({ order }, props) => drop => {
-        const { sourceSection } = drop
-        props.dropSection(sourceSection, order)
-        return {}
-      },
-      onHandleAddTreeItem: (state, props) => parentTreeItemId => {
-        props.showTreeItemAddControl(parentTreeItemId)
-        return {}
-      },
-      onHandleAddButtonClicked: () => () => ({ showAddControl: true }),
-      onHandleTreeItemsSelected: (state, props) => selectedTreeItems => {
-        props.selectPath(selectedTreeItems)
-        return {}
-      },
-      onHandleSubitemCreated: (state, props) => treeItemInfo => {
-        props.createTreeItem(treeItemInfo)
-        return {}
-      },
-      onHandleAddSectionSubmit: (state, props) => treeItemInfo => {
-        props.createTreeItem({
-          title: treeItemInfo.title,
-          parentId: null,
-          order: Date.now(),
+      props.moveSection(sourceSectionId, order)
+      return { order }
+    },
+    onHandleDropSection: ({ order }, props) => drop => {
+      const { sourceSection } = drop
+      props.dropSection(sourceSection, order)
+      return {}
+    },
+    onHandleAddTreeItem: (state, props) => parentTreeItemId => {
+      props.showTreeItemAddControl(parentTreeItemId)
+      return {}
+    },
+    onHandleTreeItemsSelected: (state, props) => selectedTreeItems => {
+      props.selectPath(selectedTreeItems)
+      return {}
+    },
+    onHandleSubitemCreated: (state, props) => treeItemInfo => {
+      props.createTreeItem(treeItemInfo)
+      return {}
+    },
+    onHandleAddSection: (state, props) => () => {
+      props.createTreeItem({
+        title: 'Add title',
+        parentId: null,
+        order: Date.now(),
+      })
+
+      return {}
+    },
+    onHandleAddItemCancel: (state, props) => () => {
+      props.hideTreeItemAddControl()
+      return {}
+    },
+    onHandleEditTreeItem: (state, props) => treeItem => {
+      if (treeItem.parentId) {
+        // Redirect to tag content
+        props.changeNavigation(routes.user.tags)
+
+        // Show tag detail
+        props.selectTag(treeItem.tag.id)
+        props.setDetail('tag')
+        toast.info(infoMessages.treeItems.edit, {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: constants.NOTIFICATION_INFO_DURATION,
         })
+        return {}
+      }
 
-        // hide add control
-        return { showAddControl: false }
-      },
-      onHandleAddSectionCancel: () => () => ({ showAddControl: false }),
-      onHandleAddItemCancel: (state, props) => () => {
-        props.hideTreeItemAddControl()
-        return {}
-      },
-      onHandleEditTreeItem: (state, props) => treeItem => {
-        if (treeItem.parentId) {
-          // Redirect to tag content
-          props.deselectTasks()
-          props.changeLocation(routes.user.tags)
-
-          // Show tag detail
-          props.selectTag(treeItem.tag.id)
-          props.setDetail('tag')
-          toast.info(infoMessages.treeItems.edit, {
-            position: toast.POSITION.BOTTOM_RIGHT,
-            autoClose: constants.NOTIFICATION_INFO_DURATION,
-          })
-          return {}
-        }
-
-        props.showDialog('tree-item-update', { treeItem })
-        return {}
-      },
-      onHandleDeleteTreeItem: (state, props) => treeItem => {
-        props.showDialog('tree-item-tag-delete-confirm', { treeItem })
-        return {}
-      },
-      onHandleCollapse: (state, props) => treeItem => {
-        props.collapse(treeItem)
-        return {}
-      },
-      onHandleDrop: (state, props) => dropResult => {
-        props.dropTreeItem(dropResult)
-        return {}
-      },
-    }
-  ),
+      props.showDialog('tree-section-delete-confirm', { treeItem })
+      return {}
+    },
+    onHandleDeleteTreeItem: (state, props) => treeItem => {
+      props.showDialog('tree-item-tag-delete-confirm', { treeItem })
+      return {}
+    },
+    onHandleCollapse: (state, props) => treeItem => {
+      props.collapse(treeItem)
+      return {}
+    },
+    onHandleDrop: (state, props) => dropResult => {
+      props.dropTreeItem(dropResult)
+      return {}
+    },
+  }),
   pure
 )(TagTreeContainer)

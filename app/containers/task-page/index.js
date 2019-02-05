@@ -53,6 +53,15 @@ export default compose(
   lifecycle({
     componentDidUpdate() {
       const { tasksItems, pathname, selectTasksItems } = this.props
+      const { user } = routes
+
+      // redirect to tags detail
+      const isTagsPage = pathname.substring(0, user.tags.length) === user.tags
+      if (isTagsPage) {
+        this.props.changeLocation(pathname)
+        return
+      }
+
       let template = '/user/tasks/'
       const numberTemplate = template.length
       const taskId = pathname.substring(numberTemplate)
@@ -60,7 +69,7 @@ export default compose(
       let newSelectTaskItems = selectTasksItems
 
       if (!isTaskId) {
-        template = routes.user.tasks
+        template = user.tasks
 
         if (tasksItems.size === 0) {
           return

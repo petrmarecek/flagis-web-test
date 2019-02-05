@@ -12,8 +12,6 @@ import TagTreeItems from 'components/tag-tree/tag-tree-items'
 import {
   SectionWrapper,
   SectionHeader,
-  SectionHeaderTitle,
-  SectionHeaderIcons,
   SectionHeaderIcon,
   SectionContent,
   SectionFooter,
@@ -117,7 +115,6 @@ const TagTreeSection = props => {
     addControlParentId,
     selection,
     tagsRelations,
-    maxWidth,
     isDragging,
 
     // Handlers
@@ -130,8 +127,8 @@ const TagTreeSection = props => {
     onTreeItemSelected,
     onDrop,
     onHandleAddChildClicked,
+    onHandleDeleteIconClicked,
     onHandleCollapse,
-    onHandleEditIconClicked,
 
     // Drag and Drop
     connectDragSource,
@@ -139,16 +136,20 @@ const TagTreeSection = props => {
   } = props
 
   const parents = [section.id]
-  const styleWidth = { maxWidth: maxWidth - 125 }
   const renderArrowIcon = children => {
     const title = section.collapsed ? 'Expand' : 'Collapse'
     return children.size > 0 ? (
-      <SectionHeaderIcon title={title} arrow collapsed={section.collapsed}>
+      <SectionHeaderIcon
+        title={title}
+        leftOffset
+        animation
+        collapsed={section.collapsed}
+      >
         <Icon
           icon={ICONS.ARROW_DOUBLE_DOWN}
-          width={13}
-          height={15}
-          scale={1.07}
+          width={10}
+          height={12}
+          scale={0.85}
           color={['#fff']}
           onClick={onHandleCollapse}
         />
@@ -161,21 +162,18 @@ const TagTreeSection = props => {
       <li>
         <SectionWrapper dragging={isDragging} collapsed={section.collapsed}>
           <SectionHeader>
-            <SectionHeaderTitle style={styleWidth}>
-              {section.title}
-            </SectionHeaderTitle>
-            <SectionHeaderIcons>
-              <SectionHeaderIcon title="Edit">
-                <Icon
-                  icon={ICONS.PENCIL}
-                  width={15}
-                  height={15}
-                  color={['#fff']}
-                  onClick={onHandleEditIconClicked}
-                />
-              </SectionHeaderIcon>
-              {renderArrowIcon(section.childItems)}
-            </SectionHeaderIcons>
+            <SectionHeaderIcon leftOffset title="Delete">
+              <Icon
+                icon={ICONS.TRASH}
+                width={12}
+                height={13}
+                scale={0.5}
+                color={['#fff']}
+                hoverColor={['#ff8181']}
+                onClick={onHandleDeleteIconClicked}
+              />
+            </SectionHeaderIcon>
+            {renderArrowIcon(section.childItems)}
           </SectionHeader>
           <SectionContent>
             <TagTreeItems
@@ -196,15 +194,12 @@ const TagTreeSection = props => {
               treeItem={section}
             />
             {!section.collapsed && (
-              <SectionFooter title="Add filter" addSubtag>
-                <Icon
-                  icon={ICONS.PLUS}
-                  width={15}
-                  height={15}
-                  scale={0.52}
-                  color={['#fff']}
-                  onClick={onHandleAddChildClicked}
-                />
+              <SectionFooter
+                title="Add filter"
+                onClick={onHandleAddChildClicked}
+                addSubtag
+              >
+                <Icon icon={ICONS.PLUS} width={15} height={15} scale={0.52} />
               </SectionFooter>
             )}
           </SectionContent>
@@ -220,7 +215,6 @@ TagTreeSection.propTypes = {
   addControlParentId: PropTypes.string,
   selection: PropTypes.object,
   tagsRelations: PropTypes.object,
-  maxWidth: PropTypes.number,
   isDragging: PropTypes.bool,
   index: PropTypes.number,
 
@@ -236,8 +230,8 @@ TagTreeSection.propTypes = {
   onMoveSection: PropTypes.func.isRequired,
   onDropSection: PropTypes.func.isRequired,
   onHandleAddChildClicked: PropTypes.func,
+  onHandleDeleteIconClicked: PropTypes.func,
   onHandleCollapse: PropTypes.func,
-  onHandleEditIconClicked: PropTypes.func,
 
   // Drag and Drop
   connectDragSource: PropTypes.func.isRequired,
@@ -260,13 +254,13 @@ export default DragSource(
         event.stopPropagation()
         props.onAddChild(props.section.id)
       },
+      onHandleDeleteIconClicked: props => event => {
+        event.stopPropagation()
+        props.onTreeItemEdit(props.section.toJS())
+      },
       onHandleCollapse: props => event => {
         event.stopPropagation()
         props.onCollapse(props.section)
-      },
-      onHandleEditIconClicked: props => event => {
-        event.stopPropagation()
-        props.onTreeItemEdit(props.section.toJS())
       },
     })
   )(TagTreeSection)

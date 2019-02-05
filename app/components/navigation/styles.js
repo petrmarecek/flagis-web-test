@@ -32,7 +32,6 @@ const NavigationPrimaryWrapper = styled.div`
   ${transition('height 300ms ease-out')}
   height: ${props => (props.isVisibleMore ? '209px' : '133px')};
   position: relative;
-  margin-bottom: 20px;
 `
 
 const NavigationPrimaryHidden = styled.div`
@@ -69,7 +68,7 @@ const PrimaryButton = styled.div`
 
 const PrimaryButtonText = styled.div`
   margin-left: 20px;
-  font-size: 16px;
+  font-size: 14px;
 `
 
 const InboxCounter = styled(Counter)`
@@ -107,7 +106,8 @@ const ShowMoreButton = styled.span`
 `
 
 const ShowMoreTitle = styled.div`
-  font-size: 14px;
+  font-size: 12px;
+  font-weight: 500;
 `
 
 /*------------------------------ Navigation Secondary ----------------------------------*/

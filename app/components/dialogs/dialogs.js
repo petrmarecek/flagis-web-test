@@ -16,10 +16,7 @@ import {
   deselectLoader,
 } from 'redux/store/app-state/app-state.actions'
 import { getCurrentDialog } from 'redux/store/app-state/app-state.selectors'
-import {
-  updateTreeItemTitle,
-  deleteTreeItem,
-} from 'redux/store/tree/tree.actions'
+import { deleteTreeItem } from 'redux/store/tree/tree.actions'
 import {
   addRemoveTaskTags,
   deleteTask,
@@ -67,7 +64,7 @@ import {
 import ConfirmTaskDeleteDialog from './confirm-task-delete-dialog'
 import ConfirmTagDeleteDialog from './confirm-tag-delete-dialog'
 import ConfirmContactDeleteDialog from './confirm-contact-delete-dialog'
-import UpdateTreeItemDialog from './update-tree-item-dialog'
+import ConfirmTreeSectionDeleteDialog from './confirm-tree-section-delete-dialog'
 import ConfirmTreeItemTagDeleteDialog from './confirm-tree-item-tag-delete-dialog'
 import AddRemoveTagsDialog from './add-remove-tags-dialog'
 
@@ -85,7 +82,6 @@ class Dialogs extends PureComponent {
     hideDialog: PropTypes.func.isRequired,
     setLoader: PropTypes.func.isRequired,
     deselectLoader: PropTypes.func.isRequired,
-    updateTreeItemTitle: PropTypes.func.isRequired,
     deleteTreeItem: PropTypes.func.isRequired,
     deleteTask: PropTypes.func.isRequired,
     deleteTag: PropTypes.func.isRequired,
@@ -136,13 +132,8 @@ class Dialogs extends PureComponent {
     this.props.hideDialog()
   }
 
-  // update-tree-item-dialog
-  // update-tree-item-tag-dialog
-  handleTreeItemUpdate = (treeItem, title) => {
-    this.props.updateTreeItemTitle(treeItem, title)
-    this.props.hideDialog()
-  }
-
+  // confirm-tree-section-delete-dialog
+  // confirm-tree-item-tag-delete-dialog
   handleTreeItemDelete = treeItem => {
     this.props.deleteTreeItem(treeItem)
     this.props.hideDialog()
@@ -378,13 +369,12 @@ class Dialogs extends PureComponent {
     }
 
     switch (currentDialog.name) {
-      case 'tree-item-update': {
+      case 'tree-section-delete-confirm': {
         return (
-          <UpdateTreeItemDialog
+          <ConfirmTreeSectionDeleteDialog
             data={currentDialog.data}
             onHide={this.props.hideDialog}
             onDelete={this.handleTreeItemDelete}
-            onUpdate={this.handleTreeItemUpdate}
             windowHeight={window.innerHeight}
             windowWidth={window.innerWidth}
           />
@@ -507,7 +497,6 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  updateTreeItemTitle,
   deleteTreeItem,
   hideDialog,
   setLoader,

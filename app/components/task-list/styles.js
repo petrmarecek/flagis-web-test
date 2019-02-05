@@ -177,7 +177,7 @@ const Subject = styled.div`
   margin: ${props => (props.description ? '5px 0' : '14px 0 0 0')};
   height: 23px;
   line-height: 23px;
-  font-size: 18px;
+  font-size: 16px;
   overflow: hidden;
   white-space: nowrap;
   color: ${props => (props.completed ? '#D0D4D8' : '#293034')};

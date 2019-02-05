@@ -17,35 +17,40 @@ const Wrapper = styled.div`
   top: 0;
   bottom: 0;
   left: 0;
-  padding: 26px 20px 0 30px;
+  padding: 0 20px 0 30px;
 `
 
 const AddSection = styled.div`
   display: flex;
+  align-items: center;
   position: absolute;
   width: 100%;
+  height: 47px;
   background-color: #1c2124;
   bottom: 0;
   left: 0;
   flex-direction: row;
+  color: #676d71;
   cursor: pointer;
-`
 
-const AddSectionText = styled.div`
-  flex: 3;
-  border-top: 1px solid #43ffb1;
-  color: #fff;
-  margin: 0 0 23px 28px;
-  padding: 8px 0 0 3px;
-  font-size: 14px;
+  :hover {
+    color: #fff;
+
+    svg {
+      path {
+        fill: #fff;
+      }
+    }
+  }
 `
 
 const AddSectionIcon = styled.div`
-  flex: 1;
-  margin: 0 28px 24px 0;
-  padding: 8px 13px 0 0;
-  border-top: 1px solid #43ffb1;
+  margin: 0 10px 0 28px;
   text-align: right;
+`
+
+const AddSectionText = styled.div`
+  font-size: 14px;
 `
 
 /* ---------------------------- Tag-Tree Section -------------------------------- */
@@ -62,37 +67,34 @@ const SectionWrapper = styled.div`
 
 const SectionHeader = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  align-items: top;
+  justify-content: flex-end;
+  height: 24px;
   color: #fff;
-  height: 29px;
-  line-height: 29px;
   background-color: #1c2124;
   font-weight: 500;
   font-size: 20px;
   border-bottom: 1px solid #44ffb1;
   cursor: pointer;
   padding: 0 13px 0 3px;
-`
 
-const SectionHeaderTitle = styled.div`
-  ${textOverflow('ellipsis')}
-  white-space: nowrap;
-  float: left;
-  max-width: 165px;
-  overflow: hidden;
-`
+  svg {
+    ${transition('opacity 100ms ease-out')}
+    opacity: 0;
+  }
 
-const SectionHeaderIcons = styled.div`
-  display: flex;
-  align-items: center;
+  :hover {
+    svg {
+      opacity: 1;
+    }
+  }
 `
 
 const SectionHeaderIcon = styled.span`
   width: ${props => (props.addSubtag ? '100%' : 'auto')};
   margin-top: ${props => (props.addSubtag ? '14px' : '0')};
-  margin-left: ${props => (props.arrow ? '16px' : '0')};
-  ${transition(props => (props.arrow ? 'all 0.1s ease-out' : 'none'))}
+  margin-left: ${props => (props.leftOffset ? '10px' : '0')};
+  ${transition(props => (props.animation ? 'all 0.1s ease-out' : 'none'))}
   ${transform(props => (props.collapsed ? 'rotate(90deg)' : 'rotate(0deg)'))}
 `
 
@@ -105,13 +107,28 @@ const SectionFooter = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 40px;
+  height: 25px;
+  cursor: pointer;
+
+  svg {
+    path {
+      fill: #676d71;
+    }
+  }
+
+  :hover {
+    svg {
+      path {
+        fill: #fff;
+      }
+    }
+  }
 `
 
 /* ---------------------------- Tag-Tree Items -------------------------------- */
 
 const ItemsList = styled.ul`
-  padding: ${props => (props.root ? '21px 0 0 0' : '0 0 0 26px')};
+  padding: ${props => (props.root ? '10px 0 0 0' : '0 0 0 26px')};
   display: ${props => (props.collapsed ? 'none' : 'block')};
 `
 
@@ -180,7 +197,7 @@ const Item = styled.div`
   height: ${constants.TAG_TREE_ITEM_HEIGHT}px;
   line-height: ${constants.TAG_TREE_ITEM_HEIGHT}px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 14px;
   padding: 0 65px 0 34px;
   margin-bottom: 5px;
   color: ${props => (props.selected ? '#fff' : '#A2A2A2')};
@@ -193,13 +210,14 @@ const Item = styled.div`
   :hover {
     ${borderRadius('13px')}
     background-color: #4d5457;
+    color: #fff;
   }
 `
 
 const ItemTagIcon = styled.div`
   position: absolute;
   left: 7px;
-  top: -3px;
+  top: -1px;
 `
 
 const ItemTitle = styled.div`
@@ -251,8 +269,6 @@ export {
   // Tag-Tree Section
   SectionWrapper,
   SectionHeader,
-  SectionHeaderTitle,
-  SectionHeaderIcons,
   SectionHeaderIcon,
   SectionContent,
   SectionFooter,

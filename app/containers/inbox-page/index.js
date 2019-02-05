@@ -55,10 +55,18 @@ export default compose(
   lifecycle({
     componentDidUpdate() {
       const { inboxItems, pathname, selectTasksItems } = this.props
+      const { user } = routes
 
       // redirect to tasks
-      if (pathname === routes.user.tasks) {
-        this.props.changeLocation(routes.user.tasks)
+      if (pathname === user.tasks) {
+        this.props.changeLocation(user.tasks)
+        return
+      }
+
+      // redirect to tags detail
+      const isTagsPage = pathname.substring(0, user.tags.length) === user.tags
+      if (isTagsPage) {
+        this.props.changeLocation(pathname)
         return
       }
 
@@ -72,7 +80,7 @@ export default compose(
       this.props.visibleInboxTasks()
 
       if (!isTaskId) {
-        template = routes.user.inbox
+        template = user.inbox
 
         if (inboxItems.size === 0) {
           return
