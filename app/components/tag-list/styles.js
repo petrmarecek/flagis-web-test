@@ -20,7 +20,6 @@ const Item = styled.li`
   font-size: 16px;
   height: 30px;
   margin: 0 0 4px;
-  padding: 0 20px 0 10px;
   cursor: pointer;
   background-color: ${props => (props.selected ? '#ffffd7' : '#fff')};
   animation: 400ms ${fadeUp};
@@ -28,29 +27,25 @@ const Item = styled.li`
 
 const ItemIcon = styled.div`
   flex: 0 0 35px;
-`
-
-const TitleRelationsWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex: 1 1 auto;
+  position: absolute;
+  left: 10px;
 `
 
 const ItemTitle = styled.div`
   flex: 1 1 auto;
-  margin-left: 10px;
+  margin: 0 65px 0 55px;
   ${textOverflow('ellipsis')}
   white-space: nowrap;
   overflow: hidden;
 `
 
 const ItemTagRelations = styled(Counter)`
-  flex: 0 0 auto;
   font-size: 11px;
   background-color: #efefef;
+  position: absolute;
+  right: 20px;
   ${borderRadius('10px')}
   ${boxShadow('0 2px 4px 0 rgba(0, 0, 0, 0.5)')}
 `
 
-export { Item, ItemIcon, TitleRelationsWrapper, ItemTitle, ItemTagRelations }
+export { Item, ItemIcon, ItemTitle, ItemTagRelations }

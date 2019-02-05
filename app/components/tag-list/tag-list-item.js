@@ -7,13 +7,7 @@ import { getColorIndex, getTagColor } from '../../redux/utils/component-helper'
 import { ICONS } from '../icons/icon-constants'
 import Icon from '../icons/icon'
 
-import {
-  Item,
-  ItemIcon,
-  TitleRelationsWrapper,
-  ItemTitle,
-  ItemTagRelations,
-} from './styles'
+import { Item, ItemIcon, ItemTitle, ItemTagRelations } from './styles'
 
 const TagItem = ({ tag, selected, tagRelations, onHandleClick }) => {
   const colorIndex = getColorIndex(tag.colorIndex, tag.title)
@@ -30,12 +24,10 @@ const TagItem = ({ tag, selected, tagRelations, onHandleClick }) => {
           color={[tagColor]}
         />
       </ItemIcon>
-      <TitleRelationsWrapper>
-        <ItemTitle>{tag.title}</ItemTitle>
-        {tagRelations && (
-          <ItemTagRelations count={tagRelations} title="Number of tasks" />
-        )}
-      </TitleRelationsWrapper>
+      <ItemTitle>{tag.title}</ItemTitle>
+      {tagRelations && (
+        <ItemTagRelations count={5000} title="Number of tasks" />
+      )}
     </Item>
   )
 }

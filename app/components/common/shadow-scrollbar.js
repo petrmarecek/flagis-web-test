@@ -29,7 +29,7 @@ const ShadowScrollbar = props => {
     pointerEvents: 'none',
     height: style.shadowHeight,
     boxShadow: style.boxShadowTop,
-    zIndex: 100,
+    zIndex: 1,
   }
 
   const shadowBottomStyle = {
@@ -40,7 +40,7 @@ const ShadowScrollbar = props => {
     pointerEvents: 'none',
     height: style.shadowHeight,
     boxShadow: style.boxShadowBottom,
-    zIndex: 100,
+    zIndex: 1,
   }
 
   const scrollbars = verticalStyle ? (
