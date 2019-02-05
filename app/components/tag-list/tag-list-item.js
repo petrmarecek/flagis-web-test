@@ -26,7 +26,7 @@ const TagItem = ({ tag, selected, tagRelations, onHandleClick }) => {
       </ItemIcon>
       <ItemTitle>{tag.title}</ItemTitle>
       {tagRelations && (
-        <ItemTagRelations count={5000} title="Number of tasks" />
+        <ItemTagRelations count={tagRelations} title="Number of tasks" />
       )}
     </Item>
   )
