@@ -13,7 +13,7 @@ import DetailMenu from 'components/detail/detail-menu'
 import FollowerStatus from 'components/common/follower-status'
 import FollowerResponseButtons from '../common/follower-response-buttons'
 import Autocomplete from 'components/autocomplete'
-import FollowerIconSecondary from '../common/follower-icon-secondary'
+import FollowerIcon from '../common/follower-icon'
 import FilePicker from 'components/common/file-picker'
 import AttachmentList from 'components/attachment-list/attachment-list'
 import CommentList from 'components/comment-list/comment-list'
@@ -349,20 +349,14 @@ const TaskDetail = props => {
               />
             </DetailContentButton>
           )}
-          {isOwner ? (
-            <DetailContentIcon onClick={onHandleRemoveEventListener}>
-              <Icon
-                icon={ICONS.TRASH}
-                width={23}
-                height={26}
-                scale={1}
-                color={['#ff8181']}
-                onClick={onHandleDelete}
-              />
-            </DetailContentIcon>
-          ) : (
+          {isFollowers && (
             <DetailContentIcon contactIcon>
-              <FollowerIconSecondary defaultIcon />
+              <FollowerIcon
+                status={followerStatus}
+                assigneeInbox={isInboxVisible || !isOwner}
+                isCompleted={isCompletedMainList}
+                animation={animation}
+              />
             </DetailContentIcon>
           )}
           {isCollaboratedOrCompleted && (
@@ -374,6 +368,18 @@ const TaskDetail = props => {
                 scale={0.68}
                 color={['#8C9DA9']}
                 title={ruleMessage}
+              />
+            </DetailContentIcon>
+          )}
+          {isOwner && (
+            <DetailContentIcon onClick={onHandleRemoveEventListener}>
+              <Icon
+                icon={ICONS.TRASH}
+                width={23}
+                height={26}
+                scale={1}
+                color={['#ff8181']}
+                onClick={onHandleDelete}
               />
             </DetailContentIcon>
           )}
@@ -412,14 +418,15 @@ const TaskDetail = props => {
                     />
                   )}
                 </DetailContentAddContactContent>
-                {!isInboxVisible && isOwner && (
-                  <DetailContentAddContactIcon>
-                    <FollowerIconSecondary
-                      status={followerStatus}
-                      iconScale={0.75}
-                    />
-                  </DetailContentAddContactIcon>
-                )}
+                <DetailContentAddContactIcon>
+                  <Icon
+                    icon={ICONS.FOLLOWER_NEW}
+                    width={14}
+                    height={16}
+                    scale={0.66}
+                    color={['#8C9DA9']}
+                  />
+                </DetailContentAddContactIcon>
               </DetailContentAddContact>
               <DetailContentDate allowed={!isCompleted && !isCollaborated}>
                 <DetailContentDateLabel>Start date</DetailContentDateLabel>

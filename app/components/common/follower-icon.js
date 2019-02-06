@@ -21,8 +21,8 @@ const Wrapper = styled.div`
   pointer-events: none;
   width: 35px;
   height: 30px;
-  opacity: ${props => (props.isCompleted && !props.defaultIcon ? '0.4' : '1')};
-  ${transition('opacity 400ms ease-out')}
+  opacity: ${props => (props.isCompleted ? '0.4' : '1')};
+  ${transition(props => (props.animation ? 'opacity 400ms ease-out' : 'none'))}
 `
 
 const IconStatus = styled.div`
@@ -39,33 +39,28 @@ const IconAccount = styled(Icon)`
   bottom: 0;
 `
 
-const FollowerIconSecondary = ({ status, isCompleted, defaultIcon }) => {
-  const followerStatus = status === null ? 'new' : status
+const FollowerIcon = ({ status, animation, assigneeInbox, isCompleted }) => {
+  let followerStatus = status === null ? 'new' : status
+  followerStatus = assigneeInbox ? 'assigneeInbox' : followerStatus
 
   const color = {
+    new: ['#8C9DA9'],
+    assigneeInbox: ['#fff', '#293034', '#fff'],
     pending: ['#fff', '#293034', '#fff'],
     accepted: ['#fff', '#44FFB1', '#fff'],
     rejected: ['#fff', '#FF6A6A', '#fff'],
   }
 
   const icons = {
-    pending: 'FOLLOWER_PENDING_PRIMARY',
-    accepted: 'FOLLOWER_ACCEPTED_PRIMARY',
-    rejected: 'FOLLOWER_REJECTED_PRIMARY',
+    new: 'FOLLOWER_NEW',
+    assigneeInbox: 'FOLLOWER_INBOX',
+    pending: 'FOLLOWER_PENDING',
+    accepted: 'FOLLOWER_ACCEPTED',
+    rejected: 'FOLLOWER_REJECTED',
   }
 
-  return defaultIcon ? (
-    <Wrapper isCompleted={isCompleted} defaultIcon={defaultIcon}>
-      <Icon
-        icon={ICONS.INBOX}
-        width={22}
-        height={15}
-        scale={0.7}
-        color={['#E1E4E5']}
-      />
-    </Wrapper>
-  ) : (
-    <Wrapper isCompleted={isCompleted} defaultIcon={defaultIcon}>
+  return (
+    <Wrapper isCompleted={isCompleted} animation={animation}>
       <IconAccount
         icon={ICONS.CONTACT_EXIST}
         width={30}
@@ -73,22 +68,25 @@ const FollowerIconSecondary = ({ status, isCompleted, defaultIcon }) => {
         scale={1.42}
         color={['#8C9DA9', '#fff']}
       />
-      <IconStatus>
-        <Icon
-          icon={ICONS[icons[followerStatus]]}
-          width={16}
-          height={16}
-          color={color[followerStatus]}
-        />
-      </IconStatus>
+      {followerStatus !== 'new' && (
+        <IconStatus>
+          <Icon
+            icon={ICONS[icons[followerStatus]]}
+            width={16}
+            height={16}
+            color={color[followerStatus]}
+          />
+        </IconStatus>
+      )}
     </Wrapper>
   )
 }
 
-FollowerIconSecondary.propTypes = {
+FollowerIcon.propTypes = {
   status: PropTypes.string,
+  animation: PropTypes.bool,
+  assigneeInbox: PropTypes.bool,
   isCompleted: PropTypes.bool,
-  defaultIcon: PropTypes.bool,
 }
 
-export default FollowerIconSecondary
+export default FollowerIcon
