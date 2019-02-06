@@ -2,17 +2,13 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Switch, Route } from 'react-router-dom'
 
-import EditProfilePage from '../edit-profile-page/'
-import ChangePasswordPage from '../change-password-page/'
+// containers
+import SettingsContainer from 'containers/settings-container'
 
 const AccountContainer = ({ match }) => (
   <div>
     <Switch>
-      <Route path={`${match.path}/edit-profile`} component={EditProfilePage} />
-      <Route
-        path={`${match.path}/change-password`}
-        component={ChangePasswordPage}
-      />
+      <Route path={`${match.path}/settings`} component={SettingsContainer} />
     </Switch>
   </div>
 )

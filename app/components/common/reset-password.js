@@ -1,12 +1,15 @@
 import React from 'react'
-import {compose, lifecycle, withHandlers} from 'recompose'
+import { compose, lifecycle, withHandlers } from 'recompose'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form/immutable'
 
 import { setLoader } from 'redux/store/app-state/app-state.actions'
 import { getLoader } from 'redux/store/app-state/app-state.selectors'
-import { controlRedirectTasks, resetPassword } from 'redux/store/auth/auth.actions'
+import {
+  controlRedirectTasks,
+  resetPassword,
+} from 'redux/store/auth/auth.actions'
 import { validateResetPassword } from 'redux/utils/validate'
 
 import NavigationLanding from 'components/navigation/navigation-landing'
@@ -14,6 +17,7 @@ import InputField from 'components/common/input-field'
 import Loader from 'components/common/loader'
 
 import {
+  ButttonDefault,
   Form,
   FormBody,
   FormBodyFields,
@@ -26,35 +30,38 @@ const ResetPassword = ({ loader, location, handleSubmit, onSubmit }) => (
     <NavigationLanding location={location} isLogoNav />
     <Form>
       <FormBody>
-          <FormBodyFields>
-            <FormRow>
-                <Field
-                  id="newPassword"
-                  name="newPassword"
-                  type="password"
-                  label="New password"
-                  component={InputField}/>
-            </FormRow>
-            <FormRow>
-                <Field
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  type="password"
-                  label="Password confirmation"
-                  component={InputField}/>
-            </FormRow>
-            <FormRow>
-              <input
-                type="submit"
-                className="btn-default"
-                value="Submit"
-                onClick={handleSubmit((values) => onSubmit(values))}/>
-            </FormRow>
-          </FormBodyFields>
-        {loader &&
-        <FormLoader>
-          <Loader />
-        </FormLoader>}
+        <FormBodyFields>
+          <FormRow>
+            <Field
+              id="newPassword"
+              name="newPassword"
+              type="password"
+              label="New password"
+              component={InputField}
+            />
+          </FormRow>
+          <FormRow>
+            <Field
+              id="confirmPassword"
+              name="confirmPassword"
+              type="password"
+              label="Password confirmation"
+              component={InputField}
+            />
+          </FormRow>
+          <FormRow>
+            <ButttonDefault
+              type="submit"
+              value="Submit"
+              onClick={handleSubmit(values => onSubmit(values))}
+            />
+          </FormRow>
+        </FormBodyFields>
+        {loader && (
+          <FormLoader>
+            <Loader />
+          </FormLoader>
+        )}
       </FormBody>
     </Form>
   </div>
@@ -78,7 +85,10 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   reduxForm({
     form: 'resetPassword',
     validate: validateResetPassword,
@@ -97,6 +107,6 @@ export default compose(
   lifecycle({
     componentWillMount() {
       this.props.controlRedirectTasks()
-    }
+    },
   })
 )(ResetPassword)

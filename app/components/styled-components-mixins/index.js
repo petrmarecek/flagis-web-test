@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components'
-import { markdownStyles } from './markdown-styles'
+
+// forms
 import {
   Form,
   FormBody,
@@ -13,6 +14,9 @@ import {
   FormRow,
   FormLink,
 } from './forms'
+
+// markdown
+import { markdownStyles } from './markdown-styles'
 
 /* ----------------------------- Common -----------------------------------*/
 const EmptyList = styled.div`
@@ -163,6 +167,67 @@ const link = css`
   }
 `
 
+/* ----------------------------- Buttons -----------------------------------*/
+
+const button = css`
+  ${fontMain}
+  outline: none;
+  display: block;
+  float: right;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 8px 24px;
+  text-decoration: none;
+  border: none;
+`
+
+const ButttonDefault = styled.input`
+  ${button}
+  ${borderRadius('23px')}
+
+  color: #fff;
+  background-color: #293034;
+
+  :hover {
+    background-color: #3b454b;
+  }
+`
+
+const ButttonDialogGreen = styled.input`
+  ${button}
+  color: #293034;
+  background-color: #fff;
+  border-bottom: 5px solid #00ffc7;
+
+  :hover {
+    background-color: #00ffc7;
+  }
+`
+
+const ButttonDialogRed = styled.input`
+  ${button}
+  color: #fff;
+  background-color: #293034;
+
+  border-bottom: 5px solid #ff9d9d;
+
+  :hover {
+    background-color: #ff9d9d;
+  }
+`
+
+const ButttonDialogGray = styled.input`
+  ${button}
+  color: #fff;
+  background-color: #293034;
+
+  border-bottom: 5px solid #9caebd;
+
+  :hover {
+    background-color: #9caebd;
+  }
+`
+
 export {
   // Common
   EmptyList,
@@ -185,8 +250,11 @@ export {
   commonInput,
   commonInputSmall,
   link,
-  // Markdown
-  markdownStyles,
+  // Buttons
+  ButttonDefault,
+  ButtonDialogGreen,
+  ButtonDialogRed,
+  ButtonDialogGray,
   // Forms
   Form,
   FormBody,
@@ -199,4 +267,6 @@ export {
   ErrorListItemText,
   FormRow,
   FormLink,
+  // Markdown
+  markdownStyles,
 }

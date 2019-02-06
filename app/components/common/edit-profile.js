@@ -2,10 +2,16 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Field, reduxForm } from 'redux-form/immutable'
 import { connect } from 'react-redux'
-import {compose, lifecycle, withHandlers} from 'recompose'
+import { compose, lifecycle, withHandlers } from 'recompose'
 
-import { deselectError, setLoader } from 'redux/store/app-state/app-state.actions'
-import { getChangeNameForm, getLoader } from 'redux/store/app-state/app-state.selectors'
+import {
+  deselectError,
+  setLoader,
+} from 'redux/store/app-state/app-state.actions'
+import {
+  getChangeNameForm,
+  getLoader,
+} from 'redux/store/app-state/app-state.selectors'
 import { changeName } from 'redux/store/auth/auth.actions'
 import { getUsername } from 'redux/store/auth/auth.selectors'
 import { validateChangeName } from 'redux/utils/validate'
@@ -15,6 +21,7 @@ import Loader from 'components/common/loader'
 import { ICONS } from 'components/icons/icon-constants'
 
 import {
+  ButttonDefault,
   Form,
   FormBody,
   FormBodyFields,
@@ -28,22 +35,22 @@ import {
 } from '../styled-components-mixins/'
 
 const EditProfile = ({ errorChangeName, loader, handleSubmit, onSubmit }) => (
-  <Form>
+  <Form unmargin leftPadding>
     <FormBody onSubmit={handleSubmit(values => onSubmit(values))}>
       <FormBodyFields>
         <FormErrors>
           <ErrorList>
-            {errorChangeName.message &&
+            {errorChangeName.message && (
               <ErrorListItem>
-                <ErrorListItemText>
-                  {errorChangeName.message}
-                </ErrorListItemText>
+                <ErrorListItemText>{errorChangeName.message}</ErrorListItemText>
                 <ErrorListItemIcon
                   icon={ICONS.ERROR}
                   width={12}
                   height={14}
-                  color={["red"]}/>
-              </ErrorListItem>}
+                  color={['red']}
+                />
+              </ErrorListItem>
+            )}
           </ErrorList>
         </FormErrors>
         <FormRow>
@@ -52,7 +59,8 @@ const EditProfile = ({ errorChangeName, loader, handleSubmit, onSubmit }) => (
             name="firstName"
             type="text"
             label="First Name"
-            component={InputField}/>
+            component={InputField}
+          />
         </FormRow>
         <FormRow>
           <Field
@@ -60,19 +68,18 @@ const EditProfile = ({ errorChangeName, loader, handleSubmit, onSubmit }) => (
             name="lastName"
             type="text"
             label="Last Name"
-            component={InputField}/>
+            component={InputField}
+          />
         </FormRow>
-        <FormRow >
-          <input
-            type="submit"
-            className="btn-default"
-            value="Change name"/>
+        <FormRow>
+          <ButttonDefault type="submit" value="Update Profile" />
         </FormRow>
       </FormBodyFields>
-      {loader &&
-      <FormLoader>
-        <Loader />
-      </FormLoader>}
+      {loader && (
+        <FormLoader>
+          <Loader />
+        </FormLoader>
+      )}
     </FormBody>
   </Form>
 )
@@ -87,7 +94,7 @@ EditProfile.propTypes = {
 const mapStateToProps = state => ({
   errorChangeName: getChangeNameForm(state),
   loader: getLoader(state).form,
-  initialValues: getUsername(state)
+  initialValues: getUsername(state),
 })
 
 const mapDispatchToProps = {
@@ -97,7 +104,10 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   reduxForm({
     form: 'changeName',
     validate: validateChangeName,
@@ -123,11 +133,11 @@ export default compose(
         firstName: firstName,
         lastName: lastName,
       })
-    }
+    },
   }),
   lifecycle({
     componentDidMount() {
       this.props.deselectError('changeName')
-    }
+    },
   })
 )(EditProfile)

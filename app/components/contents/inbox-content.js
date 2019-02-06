@@ -7,7 +7,7 @@ import TaskListContainer from '../task-list'
 import { CenterPanelScroll } from '../panels/styles'
 
 const InboxContent = () => (
-  <CenterPanelScroll smallOffsetTop smallOffsetBottom>
+  <CenterPanelScroll offsetTop={10} offsetBottom={10}>
     <TaskListContainer />
   </CenterPanelScroll>
 )

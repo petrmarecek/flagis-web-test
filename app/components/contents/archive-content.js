@@ -35,7 +35,7 @@ const ArchivedTitle = styled.div`
 const ArchiveContent = ({ search, onHandleSearchChange }) => (
   <div>
     <CenterPanelTop>
-      <CenterPanelTopPrimary>
+      <CenterPanelTopPrimary bottomBorder>
         <MainSearch />
         <SearchBox value={search} onChange={onHandleSearchChange} />
       </CenterPanelTopPrimary>
@@ -44,7 +44,7 @@ const ArchiveContent = ({ search, onHandleSearchChange }) => (
       </CenterPanelTopSecondary>
     </CenterPanelTop>
     <ArchivedTitle>Archived Tasks</ArchivedTitle>
-    <CenterPanelScroll middleOffsetPrimaryTop smallOffsetBottom>
+    <CenterPanelScroll offsetTop={152} offsetBottom={10}>
       <TaskListContainer />
     </CenterPanelScroll>
   </div>

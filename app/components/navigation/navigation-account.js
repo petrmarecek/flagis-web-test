@@ -25,11 +25,11 @@ const NavigationAccount = props => {
     pathname,
     accountRef,
     onHandleClick,
-    onHandleClickChangePassword,
-    onHandleClickEditProfile,
+    onHandleClickSettings,
     onHandleClickLogOut,
   } = props
-  const { account } = routes.user
+  const { settings } = routes.user.account
+  const isSettings = pathname.substring(0, settings.length) === settings
 
   return (
     <div onClick={onHandleClick}>
@@ -40,32 +40,17 @@ const NavigationAccount = props => {
       >
         <MenuBoxGroup>
           <MenuBoxItemIcon
-            icon={ICONS.ACCOUNT}
+            icon={ICONS.COG_WHEEL}
             iconScale={0.72}
-            active={pathname === account.editProfile}
-            type="editProfile"
-            onChange={onHandleClickEditProfile}
+            active={isSettings}
+            type="settings"
+            onChange={onHandleClickSettings}
           />
           <MenuBoxItemTitle
-            title="Edit My Profile"
-            active={pathname === account.editProfile}
-            type="editProfile"
-            onChange={onHandleClickEditProfile}
-          />
-        </MenuBoxGroup>
-        <MenuBoxGroup>
-          <MenuBoxItemIcon
-            icon={ICONS.LOCK}
-            iconScale={0.42}
-            active={pathname === account.changePassword}
-            type="changePassword"
-            onChange={onHandleClickChangePassword}
-          />
-          <MenuBoxItemTitle
-            title="Change Password"
-            active={pathname === account.changePassword}
-            type="changePassword"
-            onChange={onHandleClickChangePassword}
+            title="Settings"
+            active={isSettings}
+            type="settings"
+            onChange={onHandleClickSettings}
           />
         </MenuBoxGroup>
         <MenuBoxGroup>
@@ -86,8 +71,7 @@ NavigationAccount.propTypes = {
   accountRef: PropTypes.object,
   onClick: PropTypes.func,
   onHandleClick: PropTypes.func,
-  onHandleClickEditProfile: PropTypes.func,
-  onHandleClickChangePassword: PropTypes.func,
+  onHandleClickSettings: PropTypes.func,
   onHandleClickLogOut: PropTypes.func,
 }
 
@@ -108,9 +92,7 @@ export default compose(
   withHandlers({
     onHandleClick: props => () => props.onClick(),
     onHandleClickLogOut: props => () => props.logout(),
-    onHandleClickEditProfile: props => () =>
-      props.changeNavigation(routes.user.account.editProfile),
-    onHandleClickChangePassword: props => () =>
-      props.changeNavigation(routes.user.account.changePassword),
+    onHandleClickSettings: props => () =>
+      props.changeNavigation(routes.user.account.settings.editProfile),
   })
 )(NavigationAccount)

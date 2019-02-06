@@ -4,18 +4,18 @@ import Icon from '../icons/icon'
 
 const Form = styled.div`
   max-width: 400px;
-  margin: 120px auto 0;
-  padding: 20px;
-`;
+  margin: ${props => (props.unmargin ? '0' : '120px auto 0')};
+  padding: ${props => (props.leftPadding ? '5px 0 0 24px' : '120px auto 0')};
+`
 
 const FormBody = styled.form`
   display: block;
   position: relative;
-`;
+`
 
 const FormBodyFields = styled.div`
   padding: 10px;
-`;
+`
 
 const FormLoader = styled.div`
   position: absolute;
@@ -28,15 +28,15 @@ const FormLoader = styled.div`
   display: flex;
   align-items: center;
   opacity: 0.8;
-`;
+`
 
 const FormErrors = styled.div`
   margin-bottom: 40px;
-`;
+`
 
 const ErrorList = styled.ul`
   list-style-type: none;
-`;
+`
 
 const ErrorListItem = styled.li`
   display: flex;
@@ -46,26 +46,26 @@ const ErrorListItem = styled.li`
   margin-bottom: 20px;
   padding: 5px 10px;
   color: red;
-`;
+`
 
 const ErrorListItemText = styled.div`
   flex: 19;
-`;
+`
 
 const ErrorListItemIcon = styled(Icon)`
   flex: 1;
-`;
+`
 
 const FormRow = styled.div`
   margin-top: 20px;
-  cursor: ${props => props.pointer ? 'pointer' : 'auto'}
-`;
+  cursor: ${props => (props.pointer ? 'pointer' : 'auto')};
+`
 
 const FormLink = styled(Link)`
-  color: #8C9DA9;
+  color: #8c9da9;
   font-size: 14px;
   cursor: pointer;
-`;
+`
 
 export {
   Form,
@@ -80,6 +80,3 @@ export {
   FormRow,
   FormLink,
 }
-
-
-

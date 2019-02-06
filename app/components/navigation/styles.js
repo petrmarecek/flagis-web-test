@@ -55,7 +55,7 @@ const PrimaryButton = styled.div`
 
   :hover {
     color: white;
-    border-width: 1px 0 1px 3px;
+    border-width: ${props => (props.active ? '1px 0 1px 3px' : '0 0 0 3px')};
     border-color: rgba(151, 151, 151, 0.2) #43ffb1;
 
     svg {
@@ -280,6 +280,30 @@ const MenuBoxItemTitle = styled(MenuBoxItem)`
   border-bottom: ${props => (props.active ? '1px solid #293034' : '0')};
 `
 
+/*------------------------------ Navigation Account Settings ----------------------------------*/
+
+const NavigationAccountSettingsWrapper = styled.div`
+  display: flex;
+  font-size: 16px;
+  margin-left: 17px;
+  height: 100%;
+`
+
+const SettingsButton = styled.div`
+  display: flex;
+  align-items: flex-end;
+  padding: 0 5px 5px 5px;
+  margin-right: 34px;
+  color: ${props => (props.active ? '#1C2124' : '#B1B5B8')};
+  border-bottom: ${props =>
+    props.active ? '3px solid #44FFB1' : '3px solid #fff'};
+
+  :hover {
+    color: #1c2124;
+    border-bottom: 3px solid #44ffb1;
+  }
+`
+
 export {
   // Common
   TriangleIcon,
@@ -302,4 +326,7 @@ export {
   MenuBoxGroup,
   MenuBoxItemIcon,
   MenuBoxItemTitle,
+  // Navigation account settings
+  NavigationAccountSettingsWrapper,
+  SettingsButton,
 }

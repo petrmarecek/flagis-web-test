@@ -1,12 +1,15 @@
 import React from 'react'
-import {compose, lifecycle, withHandlers} from 'recompose'
+import { compose, lifecycle, withHandlers } from 'recompose'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form/immutable'
 
 import { setLoader } from 'redux/store/app-state/app-state.actions'
 import { getLoader } from 'redux/store/app-state/app-state.selectors'
-import { controlRedirectTasks, emailResetPassword } from 'redux/store/auth/auth.actions'
+import {
+  controlRedirectTasks,
+  emailResetPassword,
+} from 'redux/store/auth/auth.actions'
 import { validateEmailResetPassword } from 'redux/utils/validate'
 
 import NavigationLanding from 'components/navigation/navigation-landing'
@@ -14,6 +17,7 @@ import InputField from 'components/common/input-field'
 import Loader from 'components/common/loader'
 
 import {
+  ButttonDefault,
   Form,
   FormBody,
   FormBodyFields,
@@ -33,20 +37,22 @@ const EmailResetPassword = ({ loader, location, handleSubmit, onSubmit }) => (
               name="email"
               type="text"
               label="E-mail"
-              component={InputField}/>
+              component={InputField}
+            />
           </FormRow>
           <FormRow>
-            <input
+            <ButttonDefault
               type="submit"
-              className="btn-default"
               value="Submit"
-              onClick={handleSubmit((values) => onSubmit(values))}/>
+              onClick={handleSubmit(values => onSubmit(values))}
+            />
           </FormRow>
         </FormBodyFields>
-        {loader &&
-        <FormLoader>
-          <Loader />
-        </FormLoader>}
+        {loader && (
+          <FormLoader>
+            <Loader />
+          </FormLoader>
+        )}
       </FormBody>
     </Form>
   </div>
@@ -70,7 +76,10 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   reduxForm({
     form: 'emailResetPassword',
     validate: validateEmailResetPassword,
@@ -85,6 +94,6 @@ export default compose(
   lifecycle({
     componentWillMount() {
       this.props.controlRedirectTasks()
-    }
+    },
   })
 )(EmailResetPassword)

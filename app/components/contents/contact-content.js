@@ -27,7 +27,7 @@ const ContactContent = ({ search, onHandleSearchChange }) => (
       </CenterPanelTopPrimary>
       <AddContactForm />
     </CenterPanelTop>
-    <CenterPanelScroll smallOffsetBottom>
+    <CenterPanelScroll offsetTop={104} offsetBottom={10}>
       <ContactListContainer />
     </CenterPanelScroll>
   </div>

@@ -27,7 +27,7 @@ const TagsContent = ({ search, onHandleSearchChange }) => (
       </CenterPanelTopPrimary>
       <AddTagForm />
     </CenterPanelTop>
-    <CenterPanelScroll smallOffsetBottom>
+    <CenterPanelScroll offsetTop={104} offsetBottom={10}>
       <TagListContainer />
     </CenterPanelScroll>
   </div>

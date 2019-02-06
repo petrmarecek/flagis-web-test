@@ -22,6 +22,7 @@ import Loader from 'components/common/loader'
 import { ICONS } from 'components/icons/icon-constants'
 
 import {
+  ButttonDefault,
   Form,
   FormBody,
   FormBodyFields,
@@ -75,9 +76,8 @@ const SignIn = ({ errorSignIn, loader, location, handleSubmit, onSubmit }) => (
             />
           </FormRow>
           <FormRow>
-            <input
+            <ButttonDefault
               type="submit"
-              className="btn-default"
               value="Sign In"
               onClick={handleSubmit(values => onSubmit(values))}
             />

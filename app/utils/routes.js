@@ -14,8 +14,10 @@ export const routes = {
     dashboard: '/user/dashboard',
 
     account: {
-      editProfile: '/user/account/edit-profile',
-      changePassword: '/user/account/change-password',
+      settings: {
+        editProfile: '/user/account/settings/edit-profile',
+        changePassword: '/user/account/settings/change-password',
+      },
     },
   },
 }

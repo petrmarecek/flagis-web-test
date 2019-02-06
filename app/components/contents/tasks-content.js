@@ -36,7 +36,7 @@ const TasksContent = ({
 }) => (
   <div>
     <CenterPanelTop>
-      <CenterPanelTopPrimary>
+      <CenterPanelTopPrimary bottomBorder>
         <MainSearch />
         <SearchBox value={search} onChange={onHandleSearchChange} />
       </CenterPanelTopPrimary>
@@ -46,7 +46,7 @@ const TasksContent = ({
       </CenterPanelTopSecondary>
       <AddTaskForm />
     </CenterPanelTop>
-    <CenterPanelScroll largeOffsetTop>
+    <CenterPanelScroll offsetTop={172} offsetBottom={30}>
       <TaskListContainer />
     </CenterPanelScroll>
     <TasksProgressBar />

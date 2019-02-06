@@ -4,28 +4,27 @@ import { connect } from 'react-redux'
 
 import { getLeftPanel } from 'redux/store/app-state/app-state.selectors'
 
-import { CenterPanelContainer } from './styles'
+import { CenterPanelWrapper } from './styles'
 
 const CenterPanel = ({ leftPanel, children, style }) => (
-  <CenterPanelContainer
-    id="center-panel"
-    left={leftPanel.width}
-    style={style}>
+  <CenterPanelWrapper id="center-panel" left={leftPanel.width} style={style}>
     {children}
-  </CenterPanelContainer>
+  </CenterPanelWrapper>
 )
 
 CenterPanel.propTypes = {
   leftPanel: PropTypes.object,
-  children: PropTypes.object,
+  children: PropTypes.any,
   style: PropTypes.object,
 }
 
 const mapStateToProps = state => ({
-  leftPanel: getLeftPanel(state)
+  leftPanel: getLeftPanel(state),
 })
 
 const mapDispatchToProps = {}
 
-export default connect(mapStateToProps, mapDispatchToProps)(CenterPanel)
-
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CenterPanel)

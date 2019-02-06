@@ -34,7 +34,7 @@ const DashboardContent = ({
 }) => (
   <div>
     <CenterPanelTop>
-      <CenterPanelTopPrimary>
+      <CenterPanelTopPrimary bottomBorder>
         <MainSearch />
         <SearchBox value={search} onChange={onHandleSearchChange} />
       </CenterPanelTopPrimary>
@@ -43,7 +43,7 @@ const DashboardContent = ({
         <TasksMenuContainer />
       </CenterPanelTopSecondary>
     </CenterPanelTop>
-    <CenterPanelScroll middleOffsetSecondaryTop nonOffsetBottom>
+    <CenterPanelScroll offsetTop={108} offsetBottom={0}>
       <Dashboard />
     </CenterPanelScroll>
   </div>

@@ -3,7 +3,7 @@ import { boxSizing } from '../styled-components-mixins'
 
 /*------------------------------------------ Center Panel --------------------------------------*/
 
-const CenterPanelContainer = styled.div`
+const CenterPanelWrapper = styled.div`
   margin: 0 10px 0 10px;
   position: absolute;
   top: 0;
@@ -31,39 +31,22 @@ const CenterPanelTopPrimary = styled.div`
   ${centerPanelTopCss}
   height: 60px;
   padding: 0 20px 0 17px;
-  border-bottom: 1px solid rgba(151, 151, 151, 0.2);
+  border-bottom: ${props =>
+    props.bottomBorder ? '1px solid rgba(151, 151, 151, 0.2)' : 'none'};
 `
 
 const CenterPanelTopSecondary = styled.div`
   ${centerPanelTopCss};
   height: 48px;
   padding: 0 10px 0 17px;
+  border-bottom: ${props =>
+    props.bottomBorder ? '1px solid rgba(151, 151, 151, 0.2)' : 'none'};
 `
 
 const CenterPanelScroll = styled.div`
   position: absolute;
-  top: ${props => {
-    if (props.largeOffsetTop) {
-      return '172px'
-    }
-
-    if (props.smallOffsetTop) {
-      return '10px'
-    }
-
-    if (props.middleOffsetPrimaryTop) {
-      return '152px'
-    }
-
-    return props.middleOffsetSecondaryTop ? '108px' : '104px'
-  }};
-  bottom: ${props => {
-    if (props.smallOffsetBottom) {
-      return '10px'
-    }
-
-    return props.nonOffsetBottom ? '0' : '30px'
-  }};
+  top: ${props => props.offsetTop}px;
+  bottom: ${props => props.offsetBottom}px;
   left: 0;
   right: 0;
 `
@@ -90,7 +73,7 @@ const LeftPanelWrapper = styled.div`
 `
 
 export {
-  CenterPanelContainer,
+  CenterPanelWrapper,
   CenterPanelTop,
   CenterPanelTopPrimary,
   CenterPanelTopSecondary,

@@ -4,9 +4,19 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form/immutable'
 
-import { deselectError, setLoader } from 'redux/store/app-state/app-state.actions'
-import { getAppStateItem, getLoader } from 'redux/store/app-state/app-state.selectors'
-import { controlRedirectTasks, signUp, initEmail } from 'redux/store/auth/auth.actions'
+import {
+  deselectError,
+  setLoader,
+} from 'redux/store/app-state/app-state.actions'
+import {
+  getAppStateItem,
+  getLoader,
+} from 'redux/store/app-state/app-state.selectors'
+import {
+  controlRedirectTasks,
+  signUp,
+  initEmail,
+} from 'redux/store/auth/auth.actions'
 import { getUserEmail } from 'redux/store/auth/auth.selectors'
 import { validateSignUp } from 'redux/utils/validate'
 
@@ -16,6 +26,7 @@ import Loader from 'components/common/loader'
 import { ICONS } from 'components/icons/icon-constants'
 
 import {
+  ButttonDefault,
   Form,
   FormBody,
   FormBodyFields,
@@ -29,7 +40,7 @@ import {
   FormLink,
 } from '../styled-components-mixins'
 
-const getToken = (pathname) => {
+const getToken = pathname => {
   const numberCharacter = '/sign-up/'.length
   return pathname.substring(numberCharacter)
 }
@@ -37,25 +48,25 @@ const getToken = (pathname) => {
 const SignUp = ({ errorSignUp, loader, location, handleSubmit, onSubmit }) => {
   const tokenLength = getToken(location.pathname).length
 
-  return(
+  return (
     <div className="landing-container">
-      <NavigationLanding location={location}/>
+      <NavigationLanding location={location} />
       <Form>
         <FormBody onSubmit={handleSubmit(values => onSubmit(values))}>
           <FormBodyFields>
             <FormErrors>
               <ErrorList>
-                {errorSignUp.message &&
-                <ErrorListItem>
-                  <ErrorListItemText>
-                    {errorSignUp.message}
-                  </ErrorListItemText>
-                  <ErrorListItemIcon
-                    icon={ICONS.ERROR}
-                    width={12}
-                    height={14}
-                    color={["red"]}/>
-                </ErrorListItem>}
+                {errorSignUp.message && (
+                  <ErrorListItem>
+                    <ErrorListItemText>{errorSignUp.message}</ErrorListItemText>
+                    <ErrorListItemIcon
+                      icon={ICONS.ERROR}
+                      width={12}
+                      height={14}
+                      color={['red']}
+                    />
+                  </ErrorListItem>
+                )}
               </ErrorList>
             </FormErrors>
             <FormRow>
@@ -64,7 +75,8 @@ const SignUp = ({ errorSignUp, loader, location, handleSubmit, onSubmit }) => {
                 name="firstName"
                 type="text"
                 label="First name"
-                component={InputField}/>
+                component={InputField}
+              />
             </FormRow>
             <FormRow>
               <Field
@@ -72,7 +84,8 @@ const SignUp = ({ errorSignUp, loader, location, handleSubmit, onSubmit }) => {
                 name="lastName"
                 type="text"
                 label="Last Name"
-                component={InputField}/>
+                component={InputField}
+              />
             </FormRow>
             <FormRow>
               <Field
@@ -81,7 +94,8 @@ const SignUp = ({ errorSignUp, loader, location, handleSubmit, onSubmit }) => {
                 type="text"
                 label="E-mail"
                 disabled={tokenLength !== 0}
-                component={InputField}/>
+                component={InputField}
+              />
             </FormRow>
             <FormRow>
               <Field
@@ -89,7 +103,8 @@ const SignUp = ({ errorSignUp, loader, location, handleSubmit, onSubmit }) => {
                 name="newPassword"
                 type="password"
                 label="Password"
-                component={InputField}/>
+                component={InputField}
+              />
             </FormRow>
             <FormRow>
               <Field
@@ -97,24 +112,24 @@ const SignUp = ({ errorSignUp, loader, location, handleSubmit, onSubmit }) => {
                 name="confirmPassword"
                 type="password"
                 label="Password confirmation"
-                component={InputField}/>
+                component={InputField}
+              />
             </FormRow>
-            <FormRow >
-              <input
-                type="submit"
-                className="btn-default"
-                value="Sign Up" />
+            <FormRow>
+              <ButttonDefault type="submit" value="Sign Up" />
             </FormRow>
 
             <FormRow pointer>
-              <FormLink to="/sign-in">Already have an account? Sign In!</FormLink>
+              <FormLink to="/sign-in">
+                Already have an account? Sign In!
+              </FormLink>
             </FormRow>
-
           </FormBodyFields>
-          {loader &&
-          <FormLoader>
-            <Loader />
-          </FormLoader>}
+          {loader && (
+            <FormLoader>
+              <Loader />
+            </FormLoader>
+          )}
         </FormBody>
       </Form>
     </div>
@@ -140,7 +155,7 @@ const mapStateToProps = (state, props) => {
   return {
     errorSignUp: getAppStateItem(state, 'signUp'),
     loader: getLoader(state).form,
-    initialValues: { email }
+    initialValues: { email },
   }
 }
 
@@ -153,7 +168,10 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   reduxForm({
     form: 'signUp',
     validate: validateSignUp,

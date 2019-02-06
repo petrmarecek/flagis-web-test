@@ -2,10 +2,16 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Field, reduxForm } from 'redux-form/immutable'
 import { connect } from 'react-redux'
-import {compose, lifecycle, withHandlers} from 'recompose'
+import { compose, lifecycle, withHandlers } from 'recompose'
 
-import { deselectError, setLoader } from 'redux/store/app-state/app-state.actions'
-import { getChangePasswordForm, getLoader } from 'redux/store/app-state/app-state.selectors'
+import {
+  deselectError,
+  setLoader,
+} from 'redux/store/app-state/app-state.actions'
+import {
+  getChangePasswordForm,
+  getLoader,
+} from 'redux/store/app-state/app-state.selectors'
 import { changePassword } from 'redux/store/auth/auth.actions'
 import { validateChangePassword } from 'redux/utils/validate'
 import { afterSubmitChangePassword } from 'redux/utils/form-submit'
@@ -15,6 +21,7 @@ import Loader from 'components/common/loader'
 import { ICONS } from 'components/icons/icon-constants'
 
 import {
+  ButttonDefault,
   Form,
   FormBody,
   FormBodyFields,
@@ -27,23 +34,30 @@ import {
   FormRow,
 } from '../styled-components-mixins/'
 
-const ChangePassword = ({ errorChangePassword, loader, handleSubmit, onSubmit }) => (
-  <Form>
+const ChangePassword = ({
+  errorChangePassword,
+  loader,
+  handleSubmit,
+  onSubmit,
+}) => (
+  <Form unmargin leftPadding>
     <FormBody onSubmit={handleSubmit(values => onSubmit(values))}>
       <FormBodyFields>
         <FormErrors>
           <ErrorList>
-            {errorChangePassword.message &&
-            <ErrorListItem>
-              <ErrorListItemText>
-                {errorChangePassword.message}
-              </ErrorListItemText>
-              <ErrorListItemIcon
-                icon={ICONS.ERROR}
-                width={12}
-                height={14}
-                color={["red"]}/>
-            </ErrorListItem>}
+            {errorChangePassword.message && (
+              <ErrorListItem>
+                <ErrorListItemText>
+                  {errorChangePassword.message}
+                </ErrorListItemText>
+                <ErrorListItemIcon
+                  icon={ICONS.ERROR}
+                  width={12}
+                  height={14}
+                  color={['red']}
+                />
+              </ErrorListItem>
+            )}
           </ErrorList>
         </FormErrors>
         <FormRow>
@@ -52,7 +66,8 @@ const ChangePassword = ({ errorChangePassword, loader, handleSubmit, onSubmit })
             name="oldPassword"
             type="password"
             label="Old Password"
-            component={InputField}/>
+            component={InputField}
+          />
         </FormRow>
         <FormRow>
           <Field
@@ -60,7 +75,8 @@ const ChangePassword = ({ errorChangePassword, loader, handleSubmit, onSubmit })
             name="newPassword"
             type="password"
             label="New Password"
-            component={InputField}/>
+            component={InputField}
+          />
         </FormRow>
         <FormRow>
           <Field
@@ -68,19 +84,18 @@ const ChangePassword = ({ errorChangePassword, loader, handleSubmit, onSubmit })
             name="confirmPassword"
             type="password"
             label="Confirmation"
-            component={InputField}/>
+            component={InputField}
+          />
         </FormRow>
-        <FormRow >
-          <input
-            type="submit"
-            className="btn-default"
-            value="Change password"/>
+        <FormRow>
+          <ButttonDefault type="submit" value="Change password" />
         </FormRow>
       </FormBodyFields>
-      {loader &&
-      <FormLoader>
-        <Loader />
-      </FormLoader>}
+      {loader && (
+        <FormLoader>
+          <Loader />
+        </FormLoader>
+      )}
     </FormBody>
   </Form>
 )
@@ -104,7 +119,10 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   reduxForm({
     form: 'changePassword',
     validate: validateChangePassword,
@@ -117,11 +135,11 @@ export default compose(
         oldPassword: values.get('oldPassword'),
         newPassword: values.get('newPassword'),
       })
-    }
+    },
   }),
   lifecycle({
     componentDidMount() {
       this.props.deselectError('changePassword')
-    }
+    },
   })
 )(ChangePassword)
