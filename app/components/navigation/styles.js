@@ -86,7 +86,7 @@ const ShowMoreButton = styled.span`
   position: absolute;
   bottom: 0;
   color: #41474b;
-  padding-right: 20px;
+  padding-right: 28px;
   width: 100%;
   cursor: pointer;
 

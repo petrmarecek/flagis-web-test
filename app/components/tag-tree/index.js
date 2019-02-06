@@ -45,12 +45,10 @@ import { computeTreeSectionOrder } from 'redux/utils/redux-helper'
 import TagTree from 'components/tag-tree/tag-tree'
 import Loader from 'components/common/loader'
 import ShadowScrollbar from 'components/common/shadow-scrollbar'
-import Icon from 'components/icons/icon'
-import { ICONS } from 'components/icons/icon-constants'
 
 // styles
 import { CollabsibleContent } from '../styled-components-mixins'
-import { Wrapper, AddSection, AddSectionText, AddSectionIcon } from './styles'
+import { Wrapper, AddSection, AddSectionText } from './styles'
 
 const TagTreeContainer = props => {
   const {
@@ -116,16 +114,7 @@ const TagTreeContainer = props => {
         </Wrapper>
       </ShadowScrollbar>
       <AddSection onClick={onHandleAddSection}>
-        <AddSectionIcon>
-          <Icon
-            icon={ICONS.PLUS}
-            width={15}
-            height={15}
-            scale={0.52}
-            color={['#676D71']}
-          />
-        </AddSectionIcon>
-        <AddSectionText>Add separator</AddSectionText>
+        <AddSectionText>Add New Group</AddSectionText>
       </AddSection>
     </div>
   )

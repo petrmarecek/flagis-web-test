@@ -35,22 +35,12 @@ const AddSection = styled.div`
 
   :hover {
     color: #fff;
-
-    svg {
-      path {
-        fill: #fff;
-      }
-    }
   }
 `
 
-const AddSectionIcon = styled.div`
-  margin: 0 10px 0 28px;
-  text-align: right;
-`
-
 const AddSectionText = styled.div`
-  font-size: 14px;
+  margin-left: 28px;
+  font-size: 12px;
 `
 
 /* ---------------------------- Tag-Tree Section -------------------------------- */
@@ -74,9 +64,9 @@ const SectionHeader = styled.div`
   background-color: #1c2124;
   font-weight: 500;
   font-size: 20px;
-  border-bottom: 1px solid #44ffb1;
+  border-bottom: 1px solid #41474b;
   cursor: pointer;
-  padding: 0 13px 0 3px;
+  margin: 0 14px 0 7px;
 
   svg {
     ${transition('opacity 100ms ease-out')}
@@ -84,6 +74,8 @@ const SectionHeader = styled.div`
   }
 
   :hover {
+    border-bottom: 1px solid #44ffb1;
+
     svg {
       opacity: 1;
     }
@@ -105,18 +97,14 @@ const SectionContent = styled.span`
 const SectionFooter = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
   width: 100%;
-  height: 25px;
+  height: 45px;
+  color: #676d71;
   cursor: pointer;
 
-  svg {
-    path {
-      fill: #676d71;
-    }
-  }
-
   :hover {
+    color: #fff;
+
     svg {
       path {
         fill: #fff;
@@ -125,10 +113,25 @@ const SectionFooter = styled.div`
   }
 `
 
+const AddFilterIcon = styled.span`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 25px;
+  width: 25px;
+  background-color: #2b3033;
+  margin: 0 10px 0 4px;
+  ${borderRadius('50%')}
+`
+
+const AddFilterText = styled.span`
+  font-size: 14px;
+`
+
 /* ---------------------------- Tag-Tree Items -------------------------------- */
 
 const ItemsList = styled.ul`
-  padding: ${props => (props.root ? '10px 0 0 0' : '0 0 0 26px')};
+  padding: ${props => (props.root ? '15px 0 0 0' : '0 0 0 26px')};
   display: ${props => (props.collapsed ? 'none' : 'block')};
 `
 
@@ -265,13 +268,14 @@ export {
   Wrapper,
   AddSection,
   AddSectionText,
-  AddSectionIcon,
   // Tag-Tree Section
   SectionWrapper,
   SectionHeader,
   SectionHeaderIcon,
   SectionContent,
   SectionFooter,
+  AddFilterIcon,
+  AddFilterText,
   // Tag-Tree Items
   ItemsList,
   // Tag-Tree Item

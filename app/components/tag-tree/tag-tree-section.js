@@ -15,6 +15,8 @@ import {
   SectionHeaderIcon,
   SectionContent,
   SectionFooter,
+  AddFilterIcon,
+  AddFilterText,
 } from './styles'
 
 const TagTreeSectionDragDrop = {
@@ -199,7 +201,16 @@ const TagTreeSection = props => {
                 onClick={onHandleAddChildClicked}
                 addSubtag
               >
-                <Icon icon={ICONS.PLUS} width={15} height={15} scale={0.52} />
+                <AddFilterIcon>
+                  <Icon
+                    icon={ICONS.PLUS}
+                    width={15}
+                    height={15}
+                    scale={0.52}
+                    color={['#979797']}
+                  />
+                </AddFilterIcon>
+                <AddFilterText>Add New Filter</AddFilterText>
               </SectionFooter>
             )}
           </SectionContent>
