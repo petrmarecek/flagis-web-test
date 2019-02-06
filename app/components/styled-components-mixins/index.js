@@ -193,41 +193,6 @@ const ButttonDefault = styled.input`
   }
 `
 
-const ButttonDialogGreen = styled.input`
-  ${button}
-  color: #293034;
-  background-color: #fff;
-  border-bottom: 5px solid #00ffc7;
-
-  :hover {
-    background-color: #00ffc7;
-  }
-`
-
-const ButttonDialogRed = styled.input`
-  ${button}
-  color: #fff;
-  background-color: #293034;
-
-  border-bottom: 5px solid #ff9d9d;
-
-  :hover {
-    background-color: #ff9d9d;
-  }
-`
-
-const ButttonDialogGray = styled.input`
-  ${button}
-  color: #fff;
-  background-color: #293034;
-
-  border-bottom: 5px solid #9caebd;
-
-  :hover {
-    background-color: #9caebd;
-  }
-`
-
 export {
   // Common
   EmptyList,
@@ -252,9 +217,6 @@ export {
   link,
   // Buttons
   ButttonDefault,
-  ButtonDialogGreen,
-  ButtonDialogRed,
-  ButtonDialogGray,
   // Forms
   Form,
   FormBody,
