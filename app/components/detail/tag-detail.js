@@ -81,6 +81,7 @@ const TagDetail = props => {
                   html={tag.title}
                   enforcePlainText
                   onChange={onHandleTitleUpdate}
+                  marginLeft="10px"
                   allowed
                 />
               </ContentEditableWrapper>

@@ -362,7 +362,7 @@ const ContentEditableStyles = css`
   )};
   color: ${props =>
     props.completed && !props.archived ? '#D7E3EC' : '#293034'};
-  margin-left: ${props => (props.marginLeft ? props.marginLeft : '45px')};
+  margin-left: ${props => props.marginLeft};
   text-decoration: ${props =>
     props.completed || props.archived ? 'line-through' : 'none'};
   font-weight: ${props => (props.important ? 'bold' : 'normal')};
@@ -478,14 +478,11 @@ const DetailContentDescriptionTask = styled.div`
 
 // --------------------------------------- Tag detail ---------------------------------------
 const DetailSubjectTagColor = styled(Icon)`
-  position: absolute;
   pointer-events: none;
-  left: 4px;
 `
 
 const DetailSubjectTagContentEditable = styled(ContentEditable)`
   ${ContentEditableStyles}
-  margin-left: 50px;
 `
 
 const DetailContentTagColor = styled.div`
@@ -527,8 +524,7 @@ const DetailContentDescriptionTag = styled.div`
 
 // --------------------------------------- Contact detail ---------------------------------------
 const DetailSubjectIconContact = styled.div`
-  position: absolute;
-  left: 5px;
+  pointer-events: none;
   margin: ${props => (props.isUser ? '0 5px' : '-2px 5px')};
 `
 

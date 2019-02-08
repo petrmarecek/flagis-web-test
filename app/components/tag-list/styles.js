@@ -27,13 +27,12 @@ const Item = styled.li`
 
 const ItemIcon = styled.div`
   flex: 0 0 35px;
-  position: absolute;
-  left: 10px;
+  margin-left: 10px;
 `
 
 const ItemTitle = styled.div`
   flex: 1 1 auto;
-  margin: 0 65px 0 55px;
+  margin: 0 10px 0 10px;
   ${textOverflow('ellipsis')}
   white-space: nowrap;
   overflow: hidden;
@@ -42,8 +41,7 @@ const ItemTitle = styled.div`
 const ItemTagRelations = styled(Counter)`
   font-size: 11px;
   background-color: #efefef;
-  position: absolute;
-  right: 20px;
+  margin-right: 20px;
   ${borderRadius('10px')}
   ${boxShadow('0 2px 4px 0 rgba(0, 0, 0, 0.5)')}
 `

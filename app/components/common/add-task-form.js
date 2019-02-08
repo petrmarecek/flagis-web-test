@@ -56,7 +56,7 @@ const Subject = styled.input`
   border: none;
   width: 100%;
   font-size: 16px;
-  line-height: 56px;
+  height: 56px;
   z-index: 5;
   padding-left: 24px;
   margin: 0;
