@@ -204,7 +204,7 @@ const Item = styled.div`
   padding: 0 65px 0 34px;
   margin-bottom: 5px;
   color: ${props => (props.selected ? '#fff' : '#A2A2A2')};
-  background-color: ${props => (props.active ? '#F5F5F5' : '#1C2124')};
+  background-color: #1C2124;
   ${props => (props.dragOver ? dragOver : null)}
   ${props => (props.dragOverTop ? dragOverTop : null)}
   ${props => (props.dragOverBottom ? dragOverBottom : null)}

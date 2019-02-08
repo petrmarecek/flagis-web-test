@@ -201,7 +201,6 @@ const TagTreeItem = props => {
               onClick={onHandleClicked}
               onMouseEnter={onHandleSetHover}
               onMouseLeave={onHandleUnsetHover}
-              active={treeItem.active}
               selected={selection.includes(treeItem.id)}
               {...draggingData}
             >

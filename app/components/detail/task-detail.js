@@ -192,7 +192,7 @@ const TaskDetail = props => {
 
     if (isFollowers && followerStatus !== 'accepted') {
       if (followerStatus === 'pending') {
-        return '190px'
+        return '200px'
       }
 
       if (followerStatus === 'rejected') {
