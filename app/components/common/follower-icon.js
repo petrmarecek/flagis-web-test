@@ -27,8 +27,8 @@ const Wrapper = styled.div`
 
 const IconStatus = styled.div`
   position: absolute;
-  right: 0;
-  top: 0;
+  right: ${props => (props.assigneeInbox ? '25px' : 0)};
+  top: ${props => (props.assigneeInbox ? '6px' : 0)};
   ${borderRadius('7px')}
   ${boxShadow('0 2px 4px 0 rgba(0, 0, 0, 0.5)')}
 `
@@ -46,7 +46,7 @@ const FollowerIcon = ({ status, animation, assigneeInbox, isCompleted }) => {
   const color = {
     new: ['#8C9DA9'],
     assigneeInbox: ['#fff', '#293034', '#fff'],
-    pending: ['#fff', '#293034', '#fff'],
+    pending: ['#fff', '#8C9DA9', '#fff'],
     accepted: ['#fff', '#44FFB1', '#fff'],
     rejected: ['#fff', '#FF6A6A', '#fff'],
   }
@@ -69,7 +69,7 @@ const FollowerIcon = ({ status, animation, assigneeInbox, isCompleted }) => {
         color={['#8C9DA9', '#fff']}
       />
       {followerStatus !== 'new' && (
-        <IconStatus>
+        <IconStatus assigneeInbox={followerStatus === 'assigneeInbox'}>
           <Icon
             icon={ICONS[icons[followerStatus]]}
             width={16}

@@ -117,7 +117,7 @@ const DetailContentButton = styled.div`
   flex: 0 0 117px;
   display: flex;
   align-items: center;
-  margin-right: 7px;
+  margin-right: 15px;
   pointer-events: ${props => (props.allowed ? 'auto' : 'none')};
 `
 
