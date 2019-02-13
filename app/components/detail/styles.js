@@ -106,6 +106,8 @@ const DetailContentTagAutocomplete = styled.div`
   padding-top: 12px;
   max-width: 70%;
   pointer-events: ${props => (props.allowed ? 'auto' : 'none')};
+  opacity: ${props => (props.isCompleted ? '0.4' : '1')};
+  ${transition(props => (props.animation ? 'opacity 400ms ease-out' : 'none'))}
 `
 
 const DetailContentTagAutocompleteTags = styled.ul`
@@ -120,6 +122,8 @@ const DetailContentButton = styled.div`
   align-items: center;
   margin-right: 15px;
   pointer-events: ${props => (props.allowed ? 'auto' : 'none')};
+  opacity: ${props => (props.isCompleted ? '0.4' : '1')};
+  ${transition(props => (props.animation ? 'opacity 400ms ease-out' : 'none'))}
 `
 
 const DetailContentIcon = styled.div`
@@ -133,6 +137,8 @@ const DetailContentIcon = styled.div`
   padding-right: 6px;
   animation: ${props =>
     props.animation ? `500ms linear 1s ${tadaAnimation}` : 'none'};
+  opacity: ${props => (props.isCompleted ? '0.4' : '1')};
+  ${transition(props => (props.animation ? 'opacity 400ms ease-out' : 'none'))}
 `
 
 const DetailContentCenter = styled.div`

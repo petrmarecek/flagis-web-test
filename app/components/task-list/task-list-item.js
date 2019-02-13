@@ -428,6 +428,7 @@ const TaskListItem = props => {
                   status={followerStatus}
                   assigneeInbox={isInboxList || !isOwner}
                   isCompleted={isCompletedMainList}
+                  animation
                 />
               </Followers>
             )}

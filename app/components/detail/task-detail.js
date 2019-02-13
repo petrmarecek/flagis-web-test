@@ -320,6 +320,8 @@ const TaskDetail = props => {
           <DetailContentTagAutocomplete
             onClick={onHandleRemoveEventListener}
             allowed={!isCompleted && !isArchivedOrInbox}
+            isCompleted={isCompletedMainList}
+            animation
           >
             {isArchivedOrInbox ? (
               <DetailContentTagAutocompleteTags>
@@ -338,7 +340,11 @@ const TaskDetail = props => {
             )}
           </DetailContentTagAutocomplete>
           {!isArchived && !isInboxVisible && isCollaborated && (
-            <DetailContentButton allowed={!isCompleted}>
+            <DetailContentButton
+              allowed={!isCompleted}
+              isCompleted={isCompletedMainList}
+              animation
+            >
               <FollowerResponseButtons
                 takeBackClicked={() =>
                   onHandleFollowerDelete(assignee, 'isAssignee')
