@@ -4,7 +4,7 @@ import Icon from '../icons/icon'
 
 const CommentListContainer = styled.div`
   padding: 3px 20px 3px 3px;
-`;
+`
 
 const CommentItemContainer = styled.li`
   display: block;
@@ -12,7 +12,7 @@ const CommentItemContainer = styled.li`
   font-size: 14px;
   margin: 20px 0;
   position: relative;
-  color: #8C9DA9;
+  color: #8c9da9;
 
   :first-of-type {
     margin-top: 0;
@@ -21,20 +21,20 @@ const CommentItemContainer = styled.li`
   :last-of-type {
     margin-bottom: 0;
   }
-`;
+`
 
 const CommentItemIcon = styled(Icon)`
   position: absolute;
   display: block;
   top: 3px;
   left: 6px;
-`;
+`
 
 const CommentItemAuthor = styled.div`
   display: inline-block;
   margin-left: 37px;
-  color: #3E484F;
-`;
+  color: #3e484f;
+`
 
 const CommentItemDate = styled.div`
   display: inline-block;
@@ -42,14 +42,14 @@ const CommentItemDate = styled.div`
   margin: 2px 0 0 0;
   float: right;
   color: #c1cad0;
-`;
+`
 
 const CommentItemContent = styled.div`
   display: block;
   margin: 4px 0 0 37px;
   word-wrap: break-word;
   ${link}
-`;
+`
 
 export {
   CommentListContainer,

@@ -17,7 +17,10 @@ import {
 import { connect } from 'react-redux'
 import { changeNavigation } from 'redux/store/routing/routing.actions'
 import { showDialog, setDetail } from 'redux/store/app-state/app-state.actions'
-import { getPrimaryHiddenNavigationVisibility } from 'redux/store/app-state/app-state.selectors'
+import {
+  getPrimaryHiddenNavigationVisibility,
+  getColorTheme,
+} from 'redux/store/app-state/app-state.selectors'
 import { getNewRefreshToken } from 'redux/store/auth/auth.selectors'
 import { deselectTasks } from 'redux/store/tasks/tasks.actions'
 import { selectTag } from 'redux/store/tags/tags.actions'
@@ -57,6 +60,7 @@ const TagTreeContainer = props => {
     selection,
     tagsRelations,
     tree,
+    colorTheme,
     isVisibleMoreNavigation,
 
     // handlers
@@ -109,11 +113,12 @@ const TagTreeContainer = props => {
               onCollapse={onHandleCollapse}
               onDrop={onHandleDrop}
               onDropSection={onHandleDropSection}
+              colorTheme={colorTheme}
             />
           </CollabsibleContent>
         </Wrapper>
       </ShadowScrollbar>
-      <AddSection onClick={onHandleAddSection}>
+      <AddSection onClick={onHandleAddSection} colorTheme={colorTheme}>
         <AddSectionText>Add New Group</AddSectionText>
       </AddSection>
     </div>
@@ -128,6 +133,7 @@ TagTreeContainer.propTypes = {
   selection: PropTypes.object,
   tagsRelations: PropTypes.object,
   tree: PropTypes.object,
+  colorTheme: PropTypes.string,
   sections: PropTypes.object,
   isVisibleMoreNavigation: PropTypes.bool,
 
@@ -167,6 +173,7 @@ const mapStateToProps = state => ({
   isFetching: getTreeItemsIsFetching(state),
   isNewRefreshToken: getNewRefreshToken(state),
   tree: getTree(state),
+  colorTheme: getColorTheme(state),
   sections: getSections(state),
   selection: getSelectionTree(state),
   addControlParentId: getAddControlParentId(state),

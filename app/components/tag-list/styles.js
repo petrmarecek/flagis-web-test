@@ -21,7 +21,7 @@ const Item = styled.li`
   height: 30px;
   margin: 0 0 4px;
   cursor: pointer;
-  background-color: ${props => (props.selected ? '#ffffd7' : '#fff')};
+  background-color: ${props => (props.selected ? '#ecfff7' : '#fff')};
   animation: 400ms ${fadeUp};
 `
 

@@ -41,7 +41,7 @@ const TasksMenuFilters = props => {
     noTags,
   } = tasksMenu.filters
 
-  const iconColor = active.size !== 0 || menu.isVisible ? '#282f34' : '#B1B5B8'
+  const iconColor = active.size !== 0 || menu.isVisible ? '#293034' : '#B1B5B8'
   const getCenterIconPosition = () => {
     const position = domUtils.getOffset(filterRef)
     return window.innerWidth - position.left - constants.TASKS_MENU_ICON_OFFSET
@@ -49,7 +49,7 @@ const TasksMenuFilters = props => {
 
   return (
     <TasksMenuItem innerRef={getFilterRef} onClick={onHandleClick}>
-      <IconWrapper iconColor={iconColor} hoverIconColor="#282f34">
+      <IconWrapper iconColor={iconColor} hoverIconColor="#293034">
         <Icon icon={ICONS.FILTER} width={19} height={20} scale={0.8} />
       </IconWrapper>
       {menu.isVisible && (

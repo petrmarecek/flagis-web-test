@@ -18,7 +18,7 @@ const Search = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-  color: #ccc;
+  color: #cecece;
   height: 60px;
 `
 

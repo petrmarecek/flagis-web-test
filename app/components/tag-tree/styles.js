@@ -6,6 +6,7 @@ import {
   transform,
   transition,
 } from '../styled-components-mixins'
+import colors from 'components/styled-components-mixins/colors'
 import constants from 'utils/constants'
 
 /* ---------------------------- Tag-Tree Container -------------------------------- */
@@ -26,15 +27,15 @@ const AddSection = styled.div`
   position: absolute;
   width: 100%;
   height: 47px;
-  background-color: #1c2124;
+  background-color: transparent;
   bottom: 0;
   left: 0;
   flex-direction: row;
-  color: #676d71;
+  color: ${props => colors[props.colorTheme].addNewGroup};
   cursor: pointer;
 
   :hover {
-    color: #fff;
+    color: ${props => colors[props.colorTheme].addNewGroupHover};
   }
 `
 
@@ -61,10 +62,11 @@ const SectionHeader = styled.div`
   justify-content: flex-end;
   height: 24px;
   color: #fff;
-  background-color: #1c2124;
+  background-color: transparent;
   font-weight: 500;
   font-size: 20px;
-  border-bottom: 1px solid #41474b;
+  border-bottom: 1px solid
+    ${props => colors[props.colorTheme].tagTreeSectionBorder};
   cursor: pointer;
   margin: 0 14px 0 7px;
 
@@ -74,7 +76,7 @@ const SectionHeader = styled.div`
   }
 
   :hover {
-    border-bottom: 1px solid #44ffb1;
+    border-bottom: 1px solid ${colors.tagTreeSectionBorderHover};
 
     svg {
       opacity: 1;
@@ -99,15 +101,15 @@ const SectionFooter = styled.div`
   align-items: center;
   width: 100%;
   height: 45px;
-  color: #676d71;
+  color: ${props => colors[props.colorTheme].tagTreeAddFilterText};
   cursor: pointer;
 
   :hover {
-    color: #fff;
+    color: ${props => colors[props.colorTheme].tagTreeAddFilterHover};
 
     svg {
       path {
-        fill: #fff;
+        fill: ${props => colors[props.colorTheme].tagTreeAddFilterHover};
       }
     }
   }
@@ -119,7 +121,8 @@ const AddFilterIcon = styled.span`
   justify-content: center;
   height: 25px;
   width: 25px;
-  background-color: #2b3033;
+  background-color: ${props =>
+    colors[props.colorTheme].tagTreeAddFilterIconBackground};
   margin: 0 10px 0 4px;
   ${borderRadius('50%')}
 `
@@ -189,8 +192,9 @@ const ItemWrapper = styled.div`
 const itemSelected = css`
   ${borderRadius('13px')}
   font-weight: bold;
-  color: #fff;
-  background-color: #4d5457;
+  color: ${props => colors[props.colorTheme].tagTreeItemHover};
+  background-color: ${props =>
+    colors[props.colorTheme].tagTreeItemBackgroundHover};
 `
 
 const Item = styled.div`
@@ -203,8 +207,11 @@ const Item = styled.div`
   font-size: 14px;
   padding: 0 65px 0 34px;
   margin-bottom: 5px;
-  color: ${props => (props.selected ? '#fff' : '#A2A2A2')};
-  background-color: #1C2124;
+  color: ${props =>
+    props.selected
+      ? colors[props.colorTheme].tagTreeItemHover
+      : colors.tagTreeItem};
+  background-color: transparent;
   ${props => (props.dragOver ? dragOver : null)}
   ${props => (props.dragOverTop ? dragOverTop : null)}
   ${props => (props.dragOverBottom ? dragOverBottom : null)}
@@ -212,8 +219,9 @@ const Item = styled.div`
 
   :hover {
     ${borderRadius('13px')}
-    background-color: #4d5457;
-    color: #fff;
+    background-color: ${props =>
+      colors[props.colorTheme].tagTreeItemBackgroundHover};
+    color: ${props => colors[props.colorTheme].tagTreeItemHover};
   }
 `
 
@@ -234,7 +242,10 @@ const ItemTitle = styled.div`
 `
 
 const ItemRelations = styled.div`
-  color: ${props => (props.selected ? '#fff' : '#A2A2A2')};
+  color: ${props =>
+    props.selected
+      ? colors[props.colorTheme].tagTreeItemHover
+      : colors.tagTreeItem};
   position: absolute;
   right: 15px;
   top: 0;

@@ -56,7 +56,7 @@ const TasksMenuFiltersActive = styled.ul`
   width: auto;
   height: 100%;
   float: right;
-  color: #282f34;
+  color: #293034;
   white-space: nowrap;
 `
 
@@ -155,7 +155,7 @@ const MenuBoxGroup = styled(MenuBoxGroupItems)`
     }
 
     path {
-      fill: #282f34;
+      fill: #293034;
     }
   }
 `
@@ -166,7 +166,7 @@ const MenuBoxItemIcon = styled(MenuBoxItem)`
   pointer-events: ${props => (props.active ? 'none' : 'auto')};
 
   path {
-    fill: ${props => (props.active ? '#282f34' : '#8c9ea9')};
+    fill: ${props => (props.active ? '#293034' : '#8C9DA9')};
   }
 `
 
@@ -176,7 +176,7 @@ const MenuBoxItemTitle = styled(MenuBoxItem)`
   cursor: pointer;
   margin: 0 8px;
   padding: 0;
-  color: ${props => (props.active ? '#293034' : '#8c9ea9')};
+  color: ${props => (props.active ? '#293034' : '#8C9DA9')};
   pointer-events: ${props => (props.active ? 'none' : 'auto')};
 
   &:after {

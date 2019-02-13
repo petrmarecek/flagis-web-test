@@ -31,7 +31,7 @@ const Label = styled.label`
   top: 5px;
   cursor: auto;
   font-size: 24px;
-  color: #8c9ea9;
+  color: #8C9DA9;
   transition: all 0.125s ease-out;
   ${props => (props.isFocused ? activeLabel : null)}
 `

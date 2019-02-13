@@ -14,7 +14,7 @@ const DetailMenu = props => {
           width={23}
           height={18}
           color={["#8C9DA9"]}
-          hoverColor={["#00FFC7"]}
+          hoverColor={["#44FFB1"]}
           onClick={props.back}/>
       </LeftMenu>
       <RightMenu>
@@ -23,14 +23,14 @@ const DetailMenu = props => {
           width={11}
           height={17}
           color={["#8C9DA9"]}
-          hoverColor={["#00FFC7"]}
+          hoverColor={["#44FFB1"]}
           onClick={props.previous}/>
         <Icon
           icon={ICONS.ARROW_SIMPLE_RIGHT}
           width={11}
           height={17}
           color={["#8C9DA9"]}
-          hoverColor={["#00FFC7"]}
+          hoverColor={["#44FFB1"]}
           onClick={props.next}/>
       </RightMenu>
     </Menu>

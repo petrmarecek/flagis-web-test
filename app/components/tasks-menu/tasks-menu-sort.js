@@ -50,11 +50,11 @@ const TasksMenuSort = props => {
   }
 
   const icon = getActiveIcon()
-  const iconColor = !defaultSort || menu.isVisible ? '#282f34' : '#B1B5B8'
+  const iconColor = !defaultSort || menu.isVisible ? '#293034' : '#B1B5B8'
 
   return (
     <TasksMenuItem innerRef={getSortRef} onClick={onHandleClick}>
-      <IconWrapper iconColor={iconColor} hoverIconColor="#282f34">
+      <IconWrapper iconColor={iconColor} hoverIconColor="#293034">
         <Icon icon={icon} width={20} height={20} scale={0.83} />
       </IconWrapper>
       {menu.isVisible && (

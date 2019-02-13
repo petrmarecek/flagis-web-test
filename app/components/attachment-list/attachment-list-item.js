@@ -25,7 +25,7 @@ const AttachmentListItem = ({ attachment, disabled, onHandleAttachmentDelete }) 
       height={11}
       scale={0.78}
       color={["#8c9da9"]}
-      hoverColor={["#282f34"]}
+      hoverColor={["#293034"]}
       onClick={onHandleAttachmentDelete}/>}
     <AttachmentItemFileName>
       <a href={attachment.url} target="_blank">{attachment.fileName}</a>

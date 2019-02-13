@@ -7,6 +7,7 @@ import {
   transition,
   userSelect,
 } from '../styled-components-mixins'
+import colors from 'components/styled-components-mixins/colors'
 
 // components
 import Icon from 'components/icons/icon'
@@ -48,19 +49,25 @@ const PrimaryButton = styled.div`
   cursor: pointer;
   padding: 0 20px 0 27px;
   border-style: solid;
-  color: ${props => (props.active ? 'white' : '#676D71')};
+  color: ${props =>
+    props.active
+      ? colors[props.colorTheme].navigationPrimaryHover
+      : colors[props.colorTheme].navigationPrimary};
   border-width: ${props => (props.active ? '1px 0 1px 3px' : '0 0 0 3px')};
   border-color: ${props =>
-    props.active ? 'rgba(151, 151, 151, 0.2) #43ffb1' : '#1C2124'};
+    props.active
+      ? `rgba(151, 151, 151, 0.2)  ${colors.navigationPrimaryBorderHover}`
+      : colors[props.colorTheme].navigationPrimaryBorder};
 
   :hover {
-    color: white;
+    color: ${props => colors[props.colorTheme].navigationPrimaryHover};
     border-width: ${props => (props.active ? '1px 0 1px 3px' : '0 0 0 3px')};
-    border-color: rgba(151, 151, 151, 0.2) #43ffb1;
+    border-color: rgba(151, 151, 151, 0.2)
+      ${colors.navigationPrimaryBorderHover};
 
     svg {
       path {
-        fill: white;
+        fill: ${props => colors[props.colorTheme].navigationPrimaryHover};
       }
     }
   }
@@ -85,7 +92,7 @@ const ShowMoreButton = styled.span`
   align-items: center;
   position: absolute;
   bottom: 0;
-  color: #41474b;
+  color: ${props => colors[props.colorTheme].navigationPrimaryShowMore};
   padding-right: 28px;
   width: 100%;
   cursor: pointer;
@@ -98,11 +105,11 @@ const ShowMoreButton = styled.span`
   }
 
   :hover {
-    color: #676d71;
+    color: ${colors.navigationPrimaryShowMoreHover};
 
     svg {
       path {
-        fill: #676d71;
+        fill: ${colors.navigationPrimaryShowMoreHover};
       }
     }
   }
@@ -175,7 +182,7 @@ const AccountWrapper = styled.div`
   :hover {
     svg:nth-of-type(1) {
       path {
-        fill: #676d71;
+        fill: ${colors.navigationDefaultTriangleHover};
       }
     }
   }
@@ -238,7 +245,7 @@ const MenuBoxGroup = styled(MenuBoxGroupItems)`
     }
 
     path {
-      fill: #282f34;
+      fill: #293034;
     }
   }
 `
@@ -249,7 +256,7 @@ const MenuBoxItemIcon = styled(MenuBoxItem)`
   pointer-events: ${props => (props.active ? 'none' : 'auto')};
 
   path {
-    fill: ${props => (props.active ? '#282f34' : '#8c9ea9')};
+    fill: ${props => (props.active ? '#293034' : '#8C9DA9')};
   }
 `
 
@@ -259,7 +266,7 @@ const MenuBoxItemTitle = styled(MenuBoxItem)`
   cursor: pointer;
   margin: 0 8px;
   padding: 0;
-  color: ${props => (props.active ? '#293034' : '#8c9ea9')};
+  color: ${props => (props.active ? '#293034' : '#8C9DA9')};
   pointer-events: ${props => (props.active ? 'none' : 'auto')};
 
   &:after {
@@ -294,6 +301,7 @@ const SettingsButton = styled.div`
   align-items: flex-end;
   padding: 0 5px 5px 5px;
   margin-right: 34px;
+  cursor: pointer;
   color: ${props => (props.active ? '#1C2124' : '#B1B5B8')};
   border-bottom: ${props =>
     props.active ? '3px solid #44FFB1' : '3px solid #fff'};

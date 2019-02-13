@@ -5,6 +5,7 @@ import { Switch, Route } from 'react-router-dom'
 // containers
 import EditProfilePage from '../edit-profile-page/'
 import ChangePasswordPage from '../change-password-page/'
+import ColorThemePage from '../color-theme-page/'
 
 // components
 import CenterPanel from 'components/panels/center-panel'
@@ -26,7 +27,7 @@ const SettingsTitle = styled.div`
 `
 
 const SettingsContainer = ({ match }) => (
-  <CenterPanel style={{ backgroundColor: '#fff', margin: 0 }}>
+  <CenterPanel style={{ backgroundColor: '#fff', margin: '0 0 0 1px' }}>
     <CenterPanelTop>
       <CenterPanelTopPrimary>
         <SettingsTitle>Settings</SettingsTitle>
@@ -41,6 +42,7 @@ const SettingsContainer = ({ match }) => (
         path={`${match.path}/change-password`}
         component={ChangePasswordPage}
       />
+      <Route path={`${match.path}/color-theme`} component={ColorThemePage} />
     </Switch>
   </CenterPanel>
 )

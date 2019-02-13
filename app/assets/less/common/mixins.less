@@ -1,18 +1,17 @@
-﻿@import "fonts.less";
-@import "lesshat.less";
+﻿@import 'fonts.less';
+@import 'lesshat.less';
 
 @image-root: '/Content/images';
 
 @cl-brand: #293034;
 @cl-brand-sub: #293034;
-@cl-brand-tx: #44FFB1;
-@cl-tx-command: #44FFB1;
+@cl-brand-tx: #44ffb1;
+@cl-tx-command: #44ffb1;
 /*@cl-brand: #444952;*/
 
 .bg-image(@image-name) {
-
-    @image-url: "@{image-root}/@{image-name}";
-    background-image: url("@{image-url}");
+    @image-url: '@{image-root}/@{image-name}';
+    background-image: url('@{image-url}');
 }
 
 .text-overflow(@overflow) {
@@ -26,11 +25,13 @@
         .font-sub();
     }
 
-    :-moz-placeholder { /* Firefox 18- */
+    :-moz-placeholder {
+        /* Firefox 18- */
         .font-sub();
     }
 
-    ::-moz-placeholder { /* Firefox 19+ */
+    ::-moz-placeholder {
+        /* Firefox 19+ */
         .font-sub();
     }
 
@@ -44,11 +45,13 @@
         color: @color;
     }
 
-    &:-moz-placeholder { /* Firefox 18- */
+    &:-moz-placeholder {
+        /* Firefox 18- */
         color: @color;
     }
 
-    &::-moz-placeholder { /* Firefox 19+ */
+    &::-moz-placeholder {
+        /* Firefox 19+ */
         color: @color;
     }
 
@@ -64,7 +67,7 @@
 
 .input-shadow-focused() {
     outline: none;
-    .box-shadow(0 0 5px #4E4E4E, 0 0 0 1px #D4D4D4  inset);
+    .box-shadow(0 0 5px #4e4e4e, 0 0 0 1px #d4d4d4 inset);
 }
 
 .common-input() {
@@ -86,12 +89,12 @@
     padding: 2px;
     font-size: 14px;
     border: none;
-    border-bottom: 1px solid #D7E3EC;
+    border-bottom: 1px solid #d7e3ec;
 }
 
 .common-input-light() {
     padding: 8px;
-    border: 1px solid #eee;
+    border: 1px solid #efefef;
     margin-top: -1px;
 
     .font-sub();
@@ -110,30 +113,78 @@
 }
 
 .tag-colors() {
-    &.cl-0  { background-color: #F7BED2; }
-    &.cl-1  { background-color: #F99C9C; }
-    &.cl-2  { background-color: #D36363; }
-    &.cl-3  { background-color: #C55B79; }
-    &.cl-4  { background-color: #D88C69; }
-    &.cl-5  { background-color: #E4B25F; }
-    &.cl-6  { background-color: #F7CE4D; }
-    &.cl-7  { background-color: #E4DB27; }
-    &.cl-8  { background-color: #7BA6DE; }
-    &.cl-9  { background-color: #52C2D9; }
-    &.cl-10  { background-color: #4DCBBD; }
-    &.cl-11  { background-color: #9EDB5B; }
-    &.cl-12  { background-color: #5BDBA3; }
-    &.cl-13  { background-color: #3FB198; }
-    &.cl-14  { background-color: #B3AD36; }
-    &.cl-15  { background-color: #C8C629; }
-    &.cl-16  { background-color: #34A2EE; }
-    &.cl-17  { background-color: #6999B9; }
-    &.cl-18  { background-color: #9188E3; }
-    &.cl-19  { background-color: #E197F0; }
-    &.cl-20  { background-color: #F288C1; }
-    &.cl-21  { background-color: #D28CB2; }
-    &.cl-22  { background-color: #ADB09F; }
-    &.cl-23  { background-color: #6F8083; }
+    &.cl-0 {
+        background-color: #f7bed2;
+    }
+    &.cl-1 {
+        background-color: #f99c9c;
+    }
+    &.cl-2 {
+        background-color: #d36363;
+    }
+    &.cl-3 {
+        background-color: #c55b79;
+    }
+    &.cl-4 {
+        background-color: #d88c69;
+    }
+    &.cl-5 {
+        background-color: #e4b25f;
+    }
+    &.cl-6 {
+        background-color: #f7ce4d;
+    }
+    &.cl-7 {
+        background-color: #e4db27;
+    }
+    &.cl-8 {
+        background-color: #7ba6de;
+    }
+    &.cl-9 {
+        background-color: #52c2d9;
+    }
+    &.cl-10 {
+        background-color: #4dcbbd;
+    }
+    &.cl-11 {
+        background-color: #9edb5b;
+    }
+    &.cl-12 {
+        background-color: #5bdba3;
+    }
+    &.cl-13 {
+        background-color: #3fb198;
+    }
+    &.cl-14 {
+        background-color: #b3ad36;
+    }
+    &.cl-15 {
+        background-color: #c8c629;
+    }
+    &.cl-16 {
+        background-color: #34a2ee;
+    }
+    &.cl-17 {
+        background-color: #6999b9;
+    }
+    &.cl-18 {
+        background-color: #9188e3;
+    }
+    &.cl-19 {
+        background-color: #e197f0;
+    }
+    &.cl-20 {
+        background-color: #f288c1;
+    }
+    &.cl-21 {
+        background-color: #d28cb2;
+    }
+    &.cl-22 {
+        background-color: #adb09f;
+    }
+    &.cl-23 {
+        background-color: #6f8083;
+    }
 }
 
 .disable-selection {
@@ -146,11 +197,11 @@
 }
 
 .clearfix() {
-  &:after {
-    content: "";
-    display: table;
-    clear: both;
-  }
+    &:after {
+        content: '';
+        display: table;
+        clear: both;
+    }
 }
 
 .scrollbar-hidden() {

@@ -117,6 +117,7 @@ export const AppStateStore = Record({
   navigation: new Navigation(),
   undoBox: null,
   currentDialog: null,
+  colorTheme: 'standard',
   changeName: new Error(),
   changePassword: new Error(),
   signIn: new Error(),

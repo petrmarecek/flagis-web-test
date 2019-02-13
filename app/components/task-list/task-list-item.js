@@ -350,7 +350,7 @@ const TaskListItem = props => {
               >
                 <Icon
                   icon={isArchivedList ? ICONS.NON_ARCHIVE : ICONS.ARCHIVE}
-                  color={isArchivedList ? ['#282f34'] : ['#B1B5B8']}
+                  color={isArchivedList ? ['#293034'] : ['#B1B5B8']}
                   width={24}
                   height={27}
                   scale={0.926}

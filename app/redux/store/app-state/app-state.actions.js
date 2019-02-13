@@ -52,6 +52,9 @@ export const APP_STATE = {
 
   // Hints
   HINT_SELECTED: 'APP-STATE/HINT_SELECTED',
+
+  // Color Theme
+  TOGGLE_COLOR_THEME: 'APP-STATE/TOGGLE_COLOR_THEME',
 }
 
 // ------ Window --------------------------------------------------------------------
@@ -216,4 +219,11 @@ export const hintSelected = (location, context, hint) => ({
     context,
     hint,
   },
+})
+
+// ------ Color Theme -----------------------------------------------------------
+
+export const toggleColorTheme = theme => ({
+  type: APP_STATE.TOGGLE_COLOR_THEME,
+  payload: { theme },
 })

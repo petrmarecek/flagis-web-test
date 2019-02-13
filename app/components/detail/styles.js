@@ -26,6 +26,7 @@ const DetailStyle = styled.div`
 
   ::-webkit-scrollbar-track {
     border-radius: 10px;
+    box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.3);
     -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.3);
   }
 
@@ -428,7 +429,7 @@ const DetailSubjectTaskCompleted = styled.div`
   :hover {
     svg {
       path {
-        fill: ${props => (props.completed ? '#D7E3EC' : '#00FFC7')};
+        fill: ${props => (props.completed ? '#D7E3EC' : '#44FFB1')};
       }
     }
   }
@@ -450,7 +451,7 @@ const DetailSubjectTaskArchived = styled.div`
   :hover {
     svg {
       path {
-        fill: ${props => (props.archived ? '#8c9ea9' : '#282f34')};
+        fill: ${props => (props.archived ? '#8C9DA9' : '#293034')};
       }
     }
   }

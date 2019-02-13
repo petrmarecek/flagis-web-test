@@ -1,10 +1,10 @@
-﻿@import "../../common/fonts.less";
-@import "../../common/mixins.less";
+﻿@import '../../common/fonts.less';
+@import '../../common/mixins.less';
 
 /* ------ Variables ------------------------------------------------------------------------------- */
-@tagPanel-cl-bg-shadow: #BDBDBD;
+@tagPanel-cl-bg-shadow: #bdbdbd;
 @taskitem-cl-br: #808080;
-@cl-bg-tagitem-active: #F5F5F5;
+@cl-bg-tagitem-active: #f5f5f5;
 @cl-bg-tagitem-hover: #4d5457;
 @cl-br-tagitem: #fafafa;
 @cl-tx-icon: #fff;
@@ -19,9 +19,8 @@
 @cl-tx-section: #fff;
 @cl-tx-add-section: #fff;
 @cl-bg-section: #fff;
-@cl-br-section: #E4E4E4;
-@cl-line: #43FFB1;
-
+@cl-br-section: #e4e4e4;
+@cl-line: #44FFB1;
 
 /* ------ Mixins ---------------------------------------------------------------------------------- */
 .tree-item-style() {
@@ -49,7 +48,6 @@
 }
 
 .icon(@content, @color, @fontSize, @float, @width, @height) {
-
     display: block;
     width: @width;
     height: @height;
@@ -69,7 +67,6 @@
 }
 
 .icon-mdi(@content, @color, @fontSize, @float, @width, @height) {
-
     display: block;
     width: @width;
     height: @height;
@@ -104,7 +101,7 @@
     .box-sizing(border-box);
 
     .collapsible-content {
-       overflow: hidden;
+        overflow: hidden;
 
         &.dragging {
             overflow: visible;
@@ -140,7 +137,6 @@
             border-bottom: 1px solid @cl-brand-tx !important;
 
             .input-container {
-
                 input {
                     background-color: @cl-bg-folder;
                     font-size: 20px;
@@ -152,9 +148,9 @@
 
         .input-container input {
             .font-main();
-            color: #91a19a;
+            color: #a2a2a2;
             padding: 3px;
-            border: 1px solid #DADADA;
+            border: 1px solid #dadada;
         }
     }
 }

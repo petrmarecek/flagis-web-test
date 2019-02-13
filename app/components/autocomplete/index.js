@@ -2,6 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import R from 'ramda'
 import { compose, withHandlers } from 'recompose'
+
+// redux
 import { connect } from 'react-redux'
 import { hintSelected } from 'redux/store/app-state/app-state.actions'
 import { getTags, getTagsTitle } from 'redux/store/tags/tags.selectors'
@@ -10,11 +12,13 @@ import {
   getContactsEmail,
 } from 'redux/store/contacts/contacts.selectors'
 
+// components
 import AutocompleteItems from 'components/autocomplete/autocomplete-items'
 import AutocompleteInput from 'components/autocomplete/autocomplete-input'
 import Icon from 'components/icons/icon'
 import { ICONS } from 'components/icons/icon-constants'
 
+// styles
 import { AutocompleteContainer, Clear, Search } from './styles'
 
 const Autocomplete = props => {
@@ -40,14 +44,10 @@ const Autocomplete = props => {
     onHandleDeselectInput,
     onHandleHintSelected,
   } = props
-  const paddingTop = location === 'taskDetailTags' || location === 'mainSearch'
   const taskDetailTags = location === 'taskDetailTags'
 
   return (
-    <AutocompleteContainer
-      taskDetailTags={taskDetailTags}
-      paddingTop={paddingTop}
-    >
+    <AutocompleteContainer taskDetailTags={taskDetailTags}>
       {!isWithoutItems && (
         <AutocompleteItems
           items={selectedItems}

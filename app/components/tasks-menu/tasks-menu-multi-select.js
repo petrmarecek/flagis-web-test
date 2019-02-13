@@ -119,7 +119,7 @@ export default class TasksMenuMultiSelect extends PureComponent {
           width={26}
           height={26}
           scale={0.46}
-          color={["#8C9DA9"]}
+          color={["#B1B5B8"]}
           hoverColor={["#293034"]}
           className="multi-select__items"
           onClick={this.handleDownload}/> */}

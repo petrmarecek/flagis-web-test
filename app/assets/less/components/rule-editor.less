@@ -1,5 +1,5 @@
-﻿@import "../common/lesshat.less";
-@import "../common/mixins.less";
+﻿@import '../common/lesshat.less';
+@import '../common/mixins.less';
 
 /* ------ Variables ------------------------------------------------------------------------------- */
 @ruleeditor-cl-tx-label: #68afda;
@@ -28,7 +28,9 @@
     }
 
     .rule-condition {
-        .subject, .operator, .operand {
+        .subject,
+        .operator,
+        .operand {
             display: inline-block;
             margin: 0 10px 0 0;
         }
@@ -72,15 +74,25 @@
         &.header {
             background-image: none;
             padding: 5px 10px;
-            color: #666;
+            color: #676d71;
             .box-shadow(none);
 
-            .rule-actions, .rule-equation, .rule-tags, .rule-completeaction, .rule-matches, .rule-enabled {
+            .rule-actions,
+            .rule-equation,
+            .rule-tags,
+            .rule-completeaction,
+            .rule-matches,
+            .rule-enabled {
                 font-size: 11px;
             }
         }
 
-        .rule-actions, .rule-equation, .rule-tags, .rule-completeaction, .rule-matches, .rule-enabled {
+        .rule-actions,
+        .rule-equation,
+        .rule-tags,
+        .rule-completeaction,
+        .rule-matches,
+        .rule-enabled {
             display: inline-block;
             font-size: 15px;
             padding: 0 10px;
@@ -93,10 +105,10 @@
 
             .icon {
                 margin: 5px;
-                color: #cccccc;
+                color: #cecece;
 
                 &:hover {
-                    color: #222222;
+                    color: #1c2124;
                     cursor: pointer;
                 }
             }
@@ -105,7 +117,9 @@
         .rule-equation {
             width: 30%;
 
-            .subject, .operator, .operand {
+            .subject,
+            .operator,
+            .operand {
                 font-weight: bold;
             }
         }
@@ -121,8 +135,8 @@
                 padding: 2px 5px;
                 display: block;
                 float: left;
-                color: #222222;
-                .gradient(linear-gradient(to bottom, #eee, #ddd));
+                color: #1c2124;
+                .gradient(linear-gradient(to bottom, #efefef, #ddd));
                 .box-shadow(1px 1px 3px #aaa);
             }
         }
@@ -131,17 +145,18 @@
             width: 15%;
         }
 
-        .rule-matches, .rule-enabled {
+        .rule-matches,
+        .rule-enabled {
             width: 5%;
         }
 
-         .rule-matches {
-             .progress {
-                 .bg-image('spiffygif_22x22.gif');
-                 display: block;
-                 width: 22px;
-                 height: 22px;
-             }
-         }
+        .rule-matches {
+            .progress {
+                .bg-image('spiffygif_22x22.gif');
+                display: block;
+                width: 22px;
+                height: 22px;
+            }
+        }
     }
 }

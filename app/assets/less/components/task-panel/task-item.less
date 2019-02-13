@@ -1,19 +1,19 @@
-﻿@import "../../common/lesshat.less";
-@import "../../common/fonts.less";
-@import "../../common/mixins.less";
+﻿@import '../../common/lesshat.less';
+@import '../../common/fonts.less';
+@import '../../common/mixins.less';
 
 /* ------ Variables ------------------------------------------------------------------------------- */
-@cl-txt-icon: #D7E3EC;
+@cl-txt-icon: #d7e3ec;
 @cl-txt-icon-hover: #293034;
 @cl-txt-default-completed: #cfdbe4;
-@cl-txt-important-icon-active: #FF9D9D;
-@cl-txt-important-icon-completed: #FFDDDD;
+@cl-txt-important-icon-active: #ff6a6a;
+@cl-txt-important-icon-completed: #ffdddd;
 @cl-txt-task: #293034;
-@cl-txt-task-description: #8C9DA9;
+@cl-txt-task-description: #8c9da9;
 @cl-bg: white;
 @cl-bg-archived: #c1cad0;
 @cl-bg-completed: #f6f7f8;
-@cl-bg-selected: #ffffd7;
+@cl-bg-selected: #ecfff7;
 @cl-txt-overdue: #ff6a6a;
 
 @cl-task-item-shadow: #ddd;
@@ -32,9 +32,9 @@
     background-color: @cl-bg;
 
     &:before {
-        content: "";
+        content: '';
         position: absolute;
-        z-index:-1;
+        z-index: -1;
         top: 0;
         left: 0;
         right: 0;
@@ -177,11 +177,10 @@
             color: @cl-txt-overdue;
             font-weight: 600;
 
-          .completed & {
+            .completed & {
                 color: @cl-txt-task-description;
                 font-weight: normal;
             }
-
         }
 
         .task-item.followers & {

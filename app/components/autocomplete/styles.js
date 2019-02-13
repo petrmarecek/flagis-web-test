@@ -16,7 +16,7 @@ const AutocompleteContainer = styled.ul`
   align-items: center;
   margin: 0;
   float: ${props => (props.taskDetailTags ? 'right' : 'none')};
-  padding: ${props => (props.paddingTop ? '0' : '8px 0 0')};
+  padding: 0;
   height: auto !important;
   list-style-type: none;
   cursor: text;
@@ -67,7 +67,7 @@ const Input = styled.input`
   ${placeholderColor(props => (props.mainSearch ? '#B1B5B8' : '#8c9da9'))}
   ${fontSub}
   position: relative;
-  color: #555;
+  color: #676d71;
   background: none repeat scroll 0 0 transparent !important;
   border: 0 none !important;
   outline: 0 none;

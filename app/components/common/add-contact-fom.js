@@ -26,7 +26,7 @@ const AddForm = styled.form`
   margin-bottom: 6px;
   background-color: #fff;
   height: 38px;
-  ${boxShadow('0 0 6px 0 #C7C7C7')}
+  ${boxShadow('0 0 6px 0 #CECECE')}
 `
 
 const SubmitIcon = styled.div`
@@ -50,7 +50,7 @@ const SubjectContainer = styled.div`
 
 const AddContactForm = ({ valid, handleSubmit, onSubmit }) => {
   const addButtonDisabled = !valid
-  const plusColor = addButtonDisabled ? '#C7C7C7' : '#44FFB1'
+  const plusColor = addButtonDisabled ? '#CECECE' : '#44FFB1'
 
   return (
     <AddForm

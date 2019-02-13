@@ -9,6 +9,10 @@ import {
   accountNavigationVisible,
   accountNavigationHide,
 } from 'redux/store/app-state/app-state.actions'
+import {
+  getColorTheme,
+  getAccountNavigationVisibility,
+} from 'redux/store/app-state/app-state.selectors'
 import { getRoutingPathname } from 'redux/store/routing/routing.selectors'
 
 // components
@@ -22,9 +26,10 @@ import {
   NavigationDefaultWrapper,
   AccountWrapper,
 } from './styles'
-import { getAccountNavigationVisibility } from 'redux/store/app-state/app-state.selectors'
+import colors from 'components/styled-components-mixins/colors'
 
 const NavigationDefault = ({
+  colorTheme,
   isVisibleAccountNavigation,
   accountRef,
   getAccountRef,
@@ -37,7 +42,7 @@ const NavigationDefault = ({
         icon={ICONS.LOGO}
         width={67}
         height={24}
-        color={['#fff']}
+        color={[colors[colorTheme].logoIcon]}
         onClick={onHandleClickLogo}
       />
     </div>
@@ -47,19 +52,20 @@ const NavigationDefault = ({
         title="Account"
         isVisibleAccountNavigation={isVisibleAccountNavigation}
         onClick={onHandleClickAccount}
+        colorTheme={colorTheme}
       >
         <TriangleIcon
           icon={ICONS.TRIANGLE}
           width={11}
           height={5}
-          color={['#41474b']}
+          color={[colors[colorTheme].navigationDefaultTriangle]}
         />
         <Icon
           icon={ICONS.CONTACT_EXIST}
           width={30}
           height={30}
           scale={1.42}
-          color={['#8C9DA9', '#fff']}
+          color={colors.contactExistIcon}
         />
       </AccountWrapper>
       {isVisibleAccountNavigation && (
@@ -74,6 +80,7 @@ const NavigationDefault = ({
 
 NavigationDefault.propTypes = {
   pathname: PropTypes.string,
+  colorTheme: PropTypes.string,
   isVisibleAccountNavigation: PropTypes.bool,
   accountRef: PropTypes.object,
   getAccountRef: PropTypes.func,
@@ -83,6 +90,7 @@ NavigationDefault.propTypes = {
 
 const mapStateToProps = state => ({
   pathname: getRoutingPathname(state),
+  colorTheme: getColorTheme(state),
   isVisibleAccountNavigation: getAccountNavigationVisibility(state),
 })
 

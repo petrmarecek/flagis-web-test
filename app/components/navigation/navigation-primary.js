@@ -7,7 +7,10 @@ import { compose, withState, withHandlers } from 'recompose'
 import { connect } from 'react-redux'
 import { changeNavigation } from 'redux/store/routing/routing.actions'
 import { getRoutingPathname } from 'redux/store/routing/routing.selectors'
-import { getPrimaryHiddenNavigationVisibility } from 'redux/store/app-state/app-state.selectors'
+import {
+  getPrimaryHiddenNavigationVisibility,
+  getColorTheme,
+} from 'redux/store/app-state/app-state.selectors'
 import {
   primaryHiddenNavigationVisible,
   primaryHiddenNavigationHide,
@@ -29,11 +32,13 @@ import {
   ShowMoreButton,
   ShowMoreTitle,
 } from './styles'
+import colors from 'components/styled-components-mixins/colors'
 
 const NavigationPrimary = props => {
   const {
     inboxCount,
     pathname,
+    colorTheme,
     isVisibleMore,
     isDisplayMore,
     onHandleClickMore,
@@ -55,33 +60,57 @@ const NavigationPrimary = props => {
 
   return (
     <NavigationPrimaryWrapper isVisibleMore={isVisibleMore}>
-      <PrimaryButton active={isTasksActive} onClick={onHandleClickTasks}>
+      <PrimaryButton
+        active={isTasksActive}
+        onClick={onHandleClickTasks}
+        colorTheme={colorTheme}
+      >
         <Icon
           icon={ICONS.TASKS}
           width={18}
           height={16}
           scale={0.72}
-          color={isTasksActive ? ['white'] : ['#676D71']}
+          color={
+            isTasksActive
+              ? [colors[colorTheme].navigationPrimaryHover]
+              : [colors[colorTheme].navigationPrimary]
+          }
         />
         <PrimaryButtonText>My Tasks</PrimaryButtonText>
       </PrimaryButton>
-      <PrimaryButton active={isTagsActive} onClick={onHandleClickTags}>
+      <PrimaryButton
+        active={isTagsActive}
+        onClick={onHandleClickTags}
+        colorTheme={colorTheme}
+      >
         <Icon
           icon={ICONS.TAG_MULTI}
           width={18}
           height={11}
           scale={0.9}
-          color={isTagsActive ? ['white'] : ['#676D71']}
+          color={
+            isTagsActive
+              ? [colors[colorTheme].navigationPrimaryHover]
+              : [colors[colorTheme].navigationPrimary]
+          }
         />
         <PrimaryButtonText>Tags</PrimaryButtonText>
       </PrimaryButton>
-      <PrimaryButton active={isInboxActive} onClick={onHandleClickInbox}>
+      <PrimaryButton
+        active={isInboxActive}
+        onClick={onHandleClickInbox}
+        colorTheme={colorTheme}
+      >
         <Icon
           icon={ICONS.INBOX}
           width={18}
           height={13}
           scale={0.58}
-          color={isInboxActive ? ['white'] : ['#676D71']}
+          color={
+            isInboxActive
+              ? [colors[colorTheme].navigationPrimaryHover]
+              : [colors[colorTheme].navigationPrimary]
+          }
         />
         <PrimaryButtonText>Inbox</PrimaryButtonText>
         {inboxCount > 0 && <InboxCounter count={inboxCount} />}
@@ -91,6 +120,7 @@ const NavigationPrimary = props => {
           <PrimaryButton
             active={isArchiveActive}
             onClick={onHandleClickArchive}
+            colorTheme={colorTheme}
           >
             <Icon
               icon={ICONS.ARCHIVED}
@@ -98,31 +128,44 @@ const NavigationPrimary = props => {
               width={18}
               height={16}
               scale={1.05}
-              color={isArchiveActive ? ['white'] : ['#676D71']}
+              color={
+                isArchiveActive
+                  ? [colors[colorTheme].navigationPrimaryHover]
+                  : [colors[colorTheme].navigationPrimary]
+              }
             />
             <PrimaryButtonText>Archived Tasks</PrimaryButtonText>
           </PrimaryButton>
           <PrimaryButton
             active={isContactsActive}
             onClick={onHandleClickContacts}
+            colorTheme={colorTheme}
           >
             <Icon
               icon={ICONS.CONTACTS}
               width={18}
               height={14}
               scale={0.6}
-              color={isContactsActive ? ['white'] : ['#676D71']}
+              color={
+                isContactsActive
+                  ? [colors[colorTheme].navigationPrimaryHover]
+                  : [colors[colorTheme].navigationPrimary]
+              }
             />
             <PrimaryButtonText>Contacts</PrimaryButtonText>
           </PrimaryButton>
         </NavigationPrimaryHidden>
       )}
-      <ShowMoreButton onClick={onHandleClickMore} isVisibleMore={isVisibleMore}>
+      <ShowMoreButton
+        onClick={onHandleClickMore}
+        isVisibleMore={isVisibleMore}
+        colorTheme={colorTheme}
+      >
         <TriangleIcon
           icon={ICONS.TRIANGLE}
           width={11}
           height={5}
-          color={['#41474b']}
+          color={[colors[colorTheme].navigationPrimaryShowMore]}
         />
         <ShowMoreTitle>
           {isVisibleMore ? 'Show less' : 'Show more'}
@@ -135,6 +178,7 @@ const NavigationPrimary = props => {
 NavigationPrimary.propTypes = {
   inboxCount: PropTypes.number,
   pathname: PropTypes.string,
+  colorTheme: PropTypes.string,
   isVisibleMore: PropTypes.bool,
   isDisplayMore: PropTypes.bool,
   setDisplayMore: PropTypes.func,
@@ -150,6 +194,7 @@ NavigationPrimary.propTypes = {
 const mapStateToProps = state => ({
   inboxCount: getInboxTasksItems(state).size,
   pathname: getRoutingPathname(state),
+  colorTheme: getColorTheme(state),
   isVisibleMore: getPrimaryHiddenNavigationVisibility(state),
 })
 

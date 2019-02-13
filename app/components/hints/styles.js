@@ -69,7 +69,7 @@ const Hint = styled.li`
   overflow:hidden;
   max-width: 200px;
   cursor: ${props => props.noHintFound ? 'auto' : 'pointer'};
-  background-color: ${props => props.selected ? '#69fec0' : '#fff'};
+  background-color: ${props => props.selected ? '#44FFB1' : '#fff'};
   font-weight: ${props => props.selected ? 'bold' : 'normal'};
 `;
 

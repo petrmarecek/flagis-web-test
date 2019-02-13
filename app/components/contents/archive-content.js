@@ -27,7 +27,7 @@ const ArchivedTitle = styled.div`
   font-size: 14px;
   font-weight: bold;
   text-align: left;
-  color: #282f34;
+  color: #293034;
   border-top: 2px solid #fff;
   padding: 9px 0 9px 10px;
 `

@@ -4,11 +4,12 @@ import { compose, withHandlers } from 'recompose'
 import { DragSource, DropTarget } from 'react-dnd'
 import { findDOMNode } from 'react-dom'
 
+// components
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
-
 import TagTreeItems from 'components/tag-tree/tag-tree-items'
 
+// styles
 import {
   SectionWrapper,
   SectionHeader,
@@ -18,6 +19,7 @@ import {
   AddFilterIcon,
   AddFilterText,
 } from './styles'
+import colors from 'components/styled-components-mixins/colors'
 
 const TagTreeSectionDragDrop = {
   type: 'tree-section',
@@ -115,6 +117,7 @@ const TagTreeSection = props => {
     // Data
     section,
     addControlParentId,
+    colorTheme,
     selection,
     tagsRelations,
     isDragging,
@@ -152,7 +155,8 @@ const TagTreeSection = props => {
           width={10}
           height={12}
           scale={0.85}
-          color={['#fff']}
+          color={[colors.tagTreeSectionIcon]}
+          hoverColor={[colors[colorTheme].tagTreeSectionIconHover]}
           onClick={onHandleCollapse}
         />
       </SectionHeaderIcon>
@@ -163,15 +167,15 @@ const TagTreeSection = props => {
     connectDropTarget(
       <li>
         <SectionWrapper dragging={isDragging} collapsed={section.collapsed}>
-          <SectionHeader>
+          <SectionHeader colorTheme={colorTheme}>
             <SectionHeaderIcon leftOffset title="Delete">
               <Icon
                 icon={ICONS.TRASH}
                 width={12}
                 height={13}
                 scale={0.5}
-                color={['#fff']}
-                hoverColor={['#ff8181']}
+                color={[colors.tagTreeSectionIcon]}
+                hoverColor={[colors.trashHover]}
                 onClick={onHandleDeleteIconClicked}
               />
             </SectionHeaderIcon>
@@ -194,20 +198,22 @@ const TagTreeSection = props => {
               parents={parents}
               parentTagRelations={null}
               treeItem={section}
+              colorTheme={colorTheme}
             />
             {!section.collapsed && (
               <SectionFooter
                 title="Add filter"
                 onClick={onHandleAddChildClicked}
                 addSubtag
+                colorTheme={colorTheme}
               >
-                <AddFilterIcon>
+                <AddFilterIcon colorTheme={colorTheme}>
                   <Icon
                     icon={ICONS.PLUS}
                     width={15}
                     height={15}
                     scale={0.52}
-                    color={['#979797']}
+                    color={[colors.tagTreeAddFilterIcon]}
                   />
                 </AddFilterIcon>
                 <AddFilterText>Add New Filter</AddFilterText>
@@ -224,6 +230,7 @@ TagTreeSection.propTypes = {
   // Data
   section: PropTypes.object,
   addControlParentId: PropTypes.string,
+  colorTheme: PropTypes.string,
   selection: PropTypes.object,
   tagsRelations: PropTypes.object,
   isDragging: PropTypes.bool,

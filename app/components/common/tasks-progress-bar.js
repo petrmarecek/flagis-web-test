@@ -25,7 +25,7 @@ const Count = styled.div`
   ${fontMain}
   position: absolute;
   white-space: nowrap;
-  color: #8c9ea9;
+  color: #8C9DA9;
   bottom: 0;
   right: 195px;
   font-size: 12px;
@@ -52,7 +52,7 @@ const CompletedBar = styled.span`
   float: left;
   z-index: 20;
   height: 4px;
-  background-color: #43ffb1;
+  background-color: #44FFB1;
 `
 
 const TasksProgressBar = ({ tasksCount, completedTasksCount }) => {

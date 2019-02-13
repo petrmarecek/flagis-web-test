@@ -17,10 +17,12 @@ import {
   getTagRelations,
 } from 'redux/utils/component-helper'
 
+// components
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
 import TreeItemList from 'components/tag-tree/tag-tree-items'
 
+// styles
 import {
   ItemWrapper,
   Item,
@@ -31,6 +33,7 @@ import {
   ItemIcon,
   ItemChildren,
 } from './styles'
+import colors from 'components/styled-components-mixins/colors'
 
 const TagTreeItemDragDrop = {
   type: 'tree-item',
@@ -131,6 +134,7 @@ const TagTreeItem = props => {
     isDragging,
     isHover,
     dropPosition,
+    colorTheme,
 
     // Handlers
     onAddChild,
@@ -185,7 +189,7 @@ const TagTreeItem = props => {
           width={10}
           height={12}
           scale={0.85}
-          color={['#fff']}
+          color={[colors[colorTheme].tagTreeItemIcon]}
           onClick={onHandleCollapse}
         />
       </ItemIcon>
@@ -202,6 +206,7 @@ const TagTreeItem = props => {
               onMouseEnter={onHandleSetHover}
               onMouseLeave={onHandleUnsetHover}
               selected={selection.includes(treeItem.id)}
+              colorTheme={colorTheme}
               {...draggingData}
             >
               <ItemTagIcon>
@@ -214,7 +219,10 @@ const TagTreeItem = props => {
               </ItemTagIcon>
               <ItemTitle>{treeItem.tag.title}</ItemTitle>
               {!isHover ? (
-                <ItemRelations selected={selection.includes(treeItem.id)}>
+                <ItemRelations
+                  selected={selection.includes(treeItem.id)}
+                  colorTheme={colorTheme}
+                >
                   {currentTagRelations.size}
                 </ItemRelations>
               ) : (
@@ -226,8 +234,8 @@ const TagTreeItem = props => {
                       width={12}
                       height={13}
                       scale={0.5}
-                      color={['#fff']}
-                      hoverColor={['#ff8181']}
+                      color={[colors[colorTheme].tagTreeItemIcon]}
+                      hoverColor={[colors.trashHover]}
                       onClick={onHandleDeleteIconClicked}
                     />
                   </ItemIcon>
@@ -237,7 +245,7 @@ const TagTreeItem = props => {
                       width={11}
                       height={11}
                       scale={0.73}
-                      color={['#fff']}
+                      color={[colors[colorTheme].tagTreeItemIcon]}
                       onClick={onHandleEditIconClicked}
                     />
                   </ItemIcon>
@@ -247,7 +255,7 @@ const TagTreeItem = props => {
                       width={12}
                       height={12}
                       scale={0.38}
-                      color={['#fff']}
+                      color={[colors[colorTheme].tagTreeItemIcon]}
                       onClick={onHandleAddChildClicked}
                     />
                   </ItemIcon>
@@ -273,6 +281,7 @@ const TagTreeItem = props => {
             selection={selection}
             tagsRelations={tagsRelations}
             treeItem={treeItem}
+            colorTheme={colorTheme}
           />
         </ItemChildren>
       </ItemWrapper>
@@ -292,6 +301,7 @@ TagTreeItem.propTypes = {
   isDragging: PropTypes.bool.isRequired,
   isHover: PropTypes.bool,
   dropPosition: PropTypes.string,
+  colorTheme: PropTypes.string,
 
   // Handlers
   onAddChild: PropTypes.func,

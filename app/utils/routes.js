@@ -17,6 +17,7 @@ export const routes = {
       settings: {
         editProfile: '/user/account/settings/edit-profile',
         changePassword: '/user/account/settings/change-password',
+        colorTheme: '/user/account/settings/color-theme',
       },
     },
   },

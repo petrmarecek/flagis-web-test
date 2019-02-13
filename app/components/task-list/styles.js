@@ -39,7 +39,7 @@ const TimeLine = styled.ul`
     content: '';
     width: 2px;
     height: 8px;
-    background: #e8ecee;
+    background: #efefef;
     left: 11px;
     top: 0;
     position: absolute;
@@ -68,7 +68,7 @@ const TimeLineText = styled.p`
   font-size: 14px;
   font-weight: 600;
   text-align: left;
-  color: #8c9ea9;
+  color: #8c9da9;
 `
 
 /*----------------------------------- Task List Item ----------------------------------------------*/
@@ -124,7 +124,7 @@ const Completed = styled.div`
   :hover {
     svg {
       path {
-        fill: #00ffc7;
+        fill: #44ffb1;
       }
     }
   }
@@ -145,7 +145,7 @@ const Archived = styled.div`
   :hover {
     svg {
       path {
-        fill: ${props => (props.archived ? '#8c9ea9' : '#282f34')};
+        fill: ${props => (props.archived ? '#8C9DA9' : '#293034')};
       }
     }
   }
@@ -180,7 +180,7 @@ const Subject = styled.div`
   font-size: 16px;
   overflow: hidden;
   white-space: nowrap;
-  color: ${props => (props.completed ? '#D0D4D8' : '#293034')};
+  color: ${props => (props.completed ? '#CECECE' : '#293034')};
   font-weight: ${props => (props.important ? 'bold' : 'normal')};
   text-decoration: ${props =>
     props.completed || props.archived ? 'line-through' : 'none'};
@@ -207,7 +207,7 @@ const Description = styled.div`
   max-height: 18px;
   white-space: nowrap;
   overflow: hidden;
-  color: ${props => (props.completed ? '#D0D4D8' : '#8C9DA9')};
+  color: ${props => (props.completed ? '#CECECE' : '#8C9DA9')};
   margin: -5px 0 5px 0;
 `
 

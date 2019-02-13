@@ -37,7 +37,6 @@ const AutocompleteItem = ({
             height={11}
             scale={0.78}
             color={['#fff']}
-            hoverColor={['#eee']}
             onClick={onHandleDelete}
           />
         )}

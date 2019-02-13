@@ -262,7 +262,7 @@ const TaskDetail = props => {
                 >
                   <Icon
                     icon={ICONS.ARCHIVE}
-                    color={['#8c9ea9']}
+                    color={['#8C9DA9']}
                     width={24}
                     height={25}
                     scale={0.926}
@@ -280,7 +280,7 @@ const TaskDetail = props => {
                 >
                   <Icon
                     icon={ICONS.ARCHIVE}
-                    color={['#8c9ea9']}
+                    color={['#8C9DA9']}
                     width={24}
                     height={25}
                     scale={0.926}
@@ -295,7 +295,7 @@ const TaskDetail = props => {
                   <Icon
                     archived
                     icon={ICONS.NON_ARCHIVE}
-                    color={['#282f34']}
+                    color={['#293034']}
                     width={24}
                     height={27}
                     scale={0.926}
@@ -378,7 +378,7 @@ const TaskDetail = props => {
                 width={23}
                 height={26}
                 scale={1}
-                color={['#ff8181']}
+                color={['#FF6A6A']}
                 onClick={onHandleDelete}
               />
             </DetailContentIcon>

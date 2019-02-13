@@ -91,7 +91,7 @@ const TasksMenuFiltersActiveItem = ({
           width={14}
           height={14}
           color={['#B1B5B8']}
-          hoverColor={['#282f34']}
+          hoverColor={['#293034']}
           onClick={onHandleDelete}
         />
       </FilterActiveItemIcon>

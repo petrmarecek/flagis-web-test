@@ -1,26 +1,25 @@
-﻿@import "../common/lesshat.less";
-@import "../common/fonts.less";
-@import "../common/mixins.less";
+﻿@import '../common/lesshat.less';
+@import '../common/fonts.less';
+@import '../common/mixins.less';
 
 /* ------ Variables ------------------------------------------------------------------------------- */
 @cl-txt-input: #555;
-@cl-txt-input-tree: #91a19a;
+@cl-txt-input-tree: #a2a2a2;
 @cl-br-multiselect: #fff;
 @cl-bg-multiselect: #fff;
-@cl-br-multiselect-hover: #eee;
-@cl-bg-multiselect-item: #ccc;
-@cl-br-multiselect-item: #eee;
-@cl-bg-multiselect-item-delete: #222;
-@cl-br-multiselect-item-delete: #222;
+@cl-br-multiselect-hover: #efefef;
+@cl-bg-multiselect-item: #cecece;
+@cl-br-multiselect-item: #efefef;
+@cl-bg-multiselect-item-delete: #1c2124;
+@cl-br-multiselect-item-delete: #1c2124;
 @cl-txt-multiselect-item-delete: #333;
-@cl-bg-hint-hover: lighten(#44FFB1, 30%);
-@cl-bg-hint-active: lighten(#44FFB1, 20%);
-@cl-br-hint: #D7E3EC;
+@cl-bg-hint-hover: lighten(#44ffb1, 30%);
+@cl-bg-hint-active: lighten(#44ffb1, 20%);
+@cl-br-hint: #d7e3ec;
 @cl-bg-hint-item-section: #fff;
 
 /* ------ Component ------------------------------------------------------------------------------- */
 .tag-autocomplete {
-
     &--large input {
         color: white;
         font-size: 15px;
@@ -41,7 +40,7 @@
         }
 
         &:after {
-            content: "";
+            content: '';
             display: block;
             clear: both;
         }
@@ -73,11 +72,10 @@
         }
 
         &:after {
-            content: "";
+            content: '';
             clear: both;
         }
     }
-
 
     &__input-container {
         position: relative;
@@ -111,7 +109,6 @@
     }
 }
 
-
 .tag-hint {
     position: absolute;
     left: 0;
@@ -122,7 +119,6 @@
     min-width: 180px;
     font-size: 15px;
     border: 1px solid @cl-br-hint;
-
 
     .tag-hint__item-section {
         background-color: @cl-bg-hint-item-section;
@@ -142,7 +138,7 @@
         padding: 5px 10px;
         cursor: pointer;
         white-space: nowrap;
-        overflow:hidden;
+        overflow: hidden;
         .text-overflow(ellipsis);
         max-width: 200px;
 

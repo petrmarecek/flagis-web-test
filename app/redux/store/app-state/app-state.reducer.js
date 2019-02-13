@@ -107,6 +107,9 @@ export default typeToReducer(
 
     [APP_STATE.DIALOG_HIDE]: state => state.setIn(['currentDialog'], null),
 
+    [APP_STATE.TOGGLE_COLOR_THEME]: (state, action) =>
+      state.setIn(['colorTheme'], action.payload.theme),
+
     [AUTH.LOGOUT]: () => new AppStateStore(),
   },
   new AppStateStore()

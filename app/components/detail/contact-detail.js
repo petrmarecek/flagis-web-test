@@ -100,7 +100,7 @@ const ContactDetail = props => {
               width={23}
               height={26}
               scale={1}
-              color={['#ff8181']}
+              color={['#FF6A6A']}
               onClick={onHandleDelete}
             />
           </DetailContentIcon>

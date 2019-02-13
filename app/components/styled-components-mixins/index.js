@@ -189,7 +189,7 @@ const ButttonDefault = styled.input`
   background-color: #293034;
 
   :hover {
-    background-color: #3b454b;
+    background-color: #3E484F;
   }
 `
 

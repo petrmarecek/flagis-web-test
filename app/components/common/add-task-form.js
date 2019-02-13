@@ -28,7 +28,7 @@ const AddForm = styled.form`
   margin-bottom: 6px;
   background-color: #fff;
   height: 58px;
-  ${boxShadow('0 0 6px 0 #C7C7C7')}
+  ${boxShadow('0 0 6px 0 #CECECE')}
 `
 
 const SubmitIcon = styled.div`
@@ -66,7 +66,7 @@ const Subject = styled.input`
 
 const AddTaskForm = ({ subject, tasksMenu, handleChange, handleSubmit }) => {
   const addButtonDisabled = isStringEmpty(subject)
-  const plusColor = addButtonDisabled ? '#C7C7C7' : '#44FFB1'
+  const plusColor = addButtonDisabled ? '#CECECE' : '#44FFB1'
 
   return (
     <AddForm autoComplete="off" onSubmit={handleSubmit}>

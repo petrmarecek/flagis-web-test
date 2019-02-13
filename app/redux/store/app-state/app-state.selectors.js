@@ -52,6 +52,7 @@ export const getPrimaryHiddenNavigationVisibility = state =>
 export const getAccountNavigationVisibility = state =>
   state.getIn(['appState', 'navigation', 'account', 'isVisible'])
 export const getLoader = state => state.getIn(['appState', 'loader'])
+export const getColorTheme = state => state.getIn(['appState', 'colorTheme'])
 
 // ------ Reselect selectors ----------------------------------------------------
 
