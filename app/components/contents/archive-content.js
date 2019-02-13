@@ -14,23 +14,12 @@ import TaskListContainer from '../task-list'
 import TasksMenuContainer from '../tasks-menu/tasks-menu-container'
 
 // styles
-import styled from 'styled-components'
 import {
   CenterPanelTop,
   CenterPanelTopPrimary,
   CenterPanelTopSecondary,
   CenterPanelScroll,
 } from '../panels/styles'
-
-const ArchivedTitle = styled.div`
-  height: 14px;
-  font-size: 14px;
-  font-weight: bold;
-  text-align: left;
-  color: #293034;
-  border-top: 2px solid #fff;
-  padding: 9px 0 9px 10px;
-`
 
 const ArchiveContent = ({ search, onHandleSearchChange }) => (
   <div>
@@ -43,8 +32,7 @@ const ArchiveContent = ({ search, onHandleSearchChange }) => (
         <TasksMenuContainer />
       </CenterPanelTopSecondary>
     </CenterPanelTop>
-    <ArchivedTitle>Archived Tasks</ArchivedTitle>
-    <CenterPanelScroll offsetTop={152} offsetBottom={10}>
+    <CenterPanelScroll offsetTop={108} offsetBottom={10}>
       <TaskListContainer />
     </CenterPanelScroll>
   </div>

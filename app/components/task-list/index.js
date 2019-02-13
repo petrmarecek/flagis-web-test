@@ -92,7 +92,7 @@ const TaskListContainer = props => {
 
   const debouncedMoveTask = debounce(onInvokeMove, 10)
   const onMoveTask = move => debouncedMoveTask(move)
-  let offset = props.isVisibleArchivedTasks ? 162 : 202
+  let offset = props.isVisibleArchivedTasks ? 118 : 202
 
   if (isVisibleInbox) {
     offset = 20
