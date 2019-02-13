@@ -371,7 +371,12 @@ const withAutocompleteInput = WrappedComponent => {
 
       // Reset state
       this.setState({ showHints: false, value: isInputMode ? hintValue : '' })
+
+      // Reset input
+      inputRef.value = ''
       inputRef.blur()
+
+      // Hide autocomplete in tag-tree
       if (onBlurTagTree) {
         onBlurTagTree()
       }
