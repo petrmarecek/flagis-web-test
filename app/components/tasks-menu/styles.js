@@ -74,16 +74,16 @@ const FilterActiveItem = styled.li`
   padding: 0 10px 0 18px;
   font-size: 14px;
   animation: ${props =>
-    props.isMounted ? `${flipIn} 500ms` : `${flipOut} 500ms`};
+    props.isMounted ? `${flipIn} 250ms` : `${flipOut} 250ms`};
 `
+
 const FilterActiveItemIcon = styled.div`
-  ${borderRadius('15px')}
-  width: auto;
+  margin: 0 0 2px 0;
 `
 
 const FilterActiveItemTitle = styled.div`
   font-weight: bold;
-  margin: ${props => (props.isAssignee ? '0 10px 2px 10px' : '0 10px 2px 0')};
+  margin: ${props => (props.isAssignee ? '0 10px 0 10px' : '0 10px 0 0')};
 `
 
 const FilterActiveItemAutocomplete = styled.div`
@@ -92,7 +92,7 @@ const FilterActiveItemAutocomplete = styled.div`
   justify-content: center;
   width: 100%;
   height: 100%;
-  padding: 0 0 6px 0;
+  padding: 2px 0 0 0;
   margin: 0 10px 0 0;
   border-left: 2px solid #e7eced;
   border-right: 2px solid #e7eced;

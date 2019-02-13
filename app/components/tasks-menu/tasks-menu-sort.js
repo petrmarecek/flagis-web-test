@@ -103,7 +103,7 @@ const TasksMenuSort = props => {
               onChange={onHandleSortAlgorithmToggle}
             />
             <MenuBoxItemTitle
-              title="Sort by Bold"
+              title="Sort by Importance"
               type="important"
               active={important}
               onChange={onHandleSortAlgorithmToggle}

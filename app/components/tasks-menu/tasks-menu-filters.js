@@ -107,7 +107,7 @@ const TasksMenuFilters = props => {
               onChange={onHandleToggleImportantFilter}
             />
             <MenuBoxItemTitle
-              title="Bold"
+              title="Important"
               active={important}
               onChange={onHandleToggleImportantFilter}
             />

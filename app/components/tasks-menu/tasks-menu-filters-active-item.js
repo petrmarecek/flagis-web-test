@@ -48,7 +48,7 @@ const TasksMenuFiltersActiveItem = ({
         break
 
       default:
-        filterTitle = 'Bold'
+        filterTitle = 'Important'
     }
 
     return filterTitle
@@ -113,7 +113,7 @@ TasksMenuFiltersActiveItem.propTypes = {
 export default compose(
   withStateHandlers(
     () => ({
-      delayTime: 500,
+      delayTime: 250,
       isMounted: true,
     }),
     {
