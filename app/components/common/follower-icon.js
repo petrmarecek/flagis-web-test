@@ -15,11 +15,10 @@ import {
 
 const Wrapper = styled.div`
   display: flex;
-  justify-content: center;
   align-items: center;
   position: relative;
   pointer-events: none;
-  width: 35px;
+  width: ${props => (props.isAssignee ? '48px' : '35px')};
   height: 30px;
   opacity: ${props => (props.isCompleted ? '0.4' : '1')};
   ${transition(props => (props.animation ? 'opacity 400ms ease-out' : 'none'))}
@@ -27,16 +26,14 @@ const Wrapper = styled.div`
 
 const IconStatus = styled.div`
   position: absolute;
-  right: ${props => (props.assigneeInbox ? '25px' : 0)};
-  top: ${props => (props.assigneeInbox ? '6px' : 0)};
+  right: 0;
+  top: 0;
   ${borderRadius('7px')}
   ${boxShadow('0 2px 4px 0 rgba(0, 0, 0, 0.5)')}
 `
 
 const IconAccount = styled(Icon)`
-  position: absolute;
-  left: 0;
-  bottom: 0;
+  margin-right: ${props => (props.isAssignee ? '5px' : '0')};
 `
 
 const FollowerIcon = ({ status, animation, assigneeInbox, isCompleted }) => {
@@ -45,7 +42,7 @@ const FollowerIcon = ({ status, animation, assigneeInbox, isCompleted }) => {
 
   const color = {
     new: ['#8C9DA9'],
-    assigneeInbox: ['#fff', '#293034', '#fff'],
+    assigneeInbox: ['#e1e4e5'],
     pending: ['#fff', '#8C9DA9', '#fff'],
     accepted: ['#fff', '#44FFB1', '#fff'],
     rejected: ['#fff', '#FF6A6A', '#fff'],
@@ -53,23 +50,40 @@ const FollowerIcon = ({ status, animation, assigneeInbox, isCompleted }) => {
 
   const icons = {
     new: 'FOLLOWER_NEW',
-    assigneeInbox: 'FOLLOWER_INBOX',
+    assigneeInbox: 'INBOX',
     pending: 'FOLLOWER_PENDING',
     accepted: 'FOLLOWER_ACCEPTED',
     rejected: 'FOLLOWER_REJECTED',
   }
 
+  const isAssignee = followerStatus === 'assigneeInbox'
+  const isFollower = followerStatus !== 'new'
+
   return (
-    <Wrapper isCompleted={isCompleted} animation={animation}>
+    <Wrapper
+      isCompleted={isCompleted}
+      animation={animation}
+      isAssignee={isAssignee}
+    >
       <IconAccount
         icon={ICONS.CONTACT_EXIST}
-        width={30}
-        height={30}
-        scale={1.42}
+        width={isAssignee ? 21 : 30}
+        height={isAssignee ? 21 : 30}
+        scale={isAssignee ? 1 : 1.42}
         color={['#8C9DA9', '#fff']}
+        isAssignee={isAssignee}
       />
-      {followerStatus !== 'new' && (
-        <IconStatus assigneeInbox={followerStatus === 'assigneeInbox'}>
+      {isAssignee && (
+        <Icon
+          icon={ICONS[icons[followerStatus]]}
+          width={22}
+          height={15}
+          scale={0.68}
+          color={color[followerStatus]}
+        />
+      )}
+      {isFollower && !isAssignee && (
+        <IconStatus>
           <Icon
             icon={ICONS[icons[followerStatus]]}
             width={16}

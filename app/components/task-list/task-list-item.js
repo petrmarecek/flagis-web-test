@@ -305,6 +305,15 @@ const TaskListItem = props => {
     return '50px'
   }
 
+  // Margin-right of content task
+  const contentMarginRight = () => {
+    if (!isFollowers) {
+      return '15px'
+    }
+
+    return isInboxList || !isOwner ? '76px' : '63px'
+  }
+
   // Render component
   return connectDragSource(
     connectDropTarget(
@@ -373,7 +382,10 @@ const TaskListItem = props => {
                 />
               </FollowerResponse>
             )}
-            <Content marginLeft={contentMarginLeft} followers={isFollowers}>
+            <Content
+              marginLeft={contentMarginLeft}
+              marginRight={contentMarginRight}
+            >
               <SubjectTags>
                 <Subject
                   archived={isArchivedList}
@@ -411,7 +423,7 @@ const TaskListItem = props => {
               </DescriptionDueDate>
             </Content>
             {isFollowers && (
-              <Followers>
+              <Followers assigneeInbox={isInboxList || !isOwner}>
                 <FollowerIcon
                   status={followerStatus}
                   assigneeInbox={isInboxList || !isOwner}

@@ -161,7 +161,7 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: ${props => props.marginLeft};
-  margin-right: ${props => (props.followers ? '70px' : '15px')};
+  margin-right: ${props => props.marginRight};
   ${transition('margin 500ms ease-out')};
 `
 
@@ -230,9 +230,10 @@ const DueDate = styled.div`
 const Followers = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
   height: 50px;
-  width: 70px;
+  width: ${props => (props.assigneeInbox ? '76px' : '63px')};
+  padding-right: 17px;
   position: absolute;
   right: 0;
   top: 0;

@@ -10,6 +10,7 @@ const colors = {
   bayOfHope: '#c1cad0',
   americanSilver: '#cecece',
   snowShadow: '#d7e3ec',
+  coldWind: '#e1e4e5',
   crystalBell: '#efefef',
   whitePorcelain: '#fafafa',
   white: '#fff',
