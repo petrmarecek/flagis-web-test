@@ -3,12 +3,12 @@ import PropTypes from 'prop-types'
 import { withStateHandlers } from 'recompose'
 
 import styled, { css } from 'styled-components'
-import { commonInput } from '../styled-components-mixins'
+import { commonInput, commonInputSmall } from '../styled-components-mixins'
 
 const activeLabel = css`
   left: 0;
   top: -14px;
-  font-size: 13px;
+  font-size: 12px;
 `
 
 const Field = styled.div`
@@ -17,7 +17,7 @@ const Field = styled.div`
 `
 
 const Input = styled.input`
-  ${commonInput}
+  ${props => (props.smallSize ? commonInputSmall : commonInput)}
   width: 100%;
   color: ${props => (props.error ? 'red' : '#293034')};
   border-color: ${props => (props.error ? 'red' : '#44ffb1')};
@@ -30,8 +30,8 @@ const Label = styled.label`
   left: 5px;
   top: 5px;
   cursor: auto;
-  font-size: 24px;
-  color: #8C9DA9;
+  font-size: ${props => (props.smallSize ? '18px' : '24px')};
+  color: #8c9da9;
   transition: all 0.125s ease-out;
   ${props => (props.isFocused ? activeLabel : null)}
 `
@@ -43,6 +43,7 @@ const InputField = props => {
     label,
     id,
     type,
+    smallSize,
     disabled,
     isFocused,
     onHandleFocus,
@@ -60,8 +61,13 @@ const InputField = props => {
         onFocus={onHandleFocus}
         onBlur={onHandleBlur}
         error={Boolean(touched && error)}
+        smallSize={smallSize}
       />
-      <Label htmlFor={id} isFocused={Boolean(value || isFocused)}>
+      <Label
+        htmlFor={id}
+        isFocused={Boolean(value || isFocused)}
+        smallSize={smallSize}
+      >
         {label}
       </Label>
     </Field>
@@ -74,6 +80,7 @@ InputField.propTypes = {
   meta: PropTypes.object.isRequired,
   type: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
+  smallSize: PropTypes.bool,
   disabled: PropTypes.bool,
   isFocused: PropTypes.bool,
   onHandleFocus: PropTypes.func,

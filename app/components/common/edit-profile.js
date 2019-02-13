@@ -21,7 +21,7 @@ import Loader from 'components/common/loader'
 import { ICONS } from 'components/icons/icon-constants'
 
 import {
-  ButttonDefault,
+  ButttonDefaultSmall,
   Form,
   FormBody,
   FormBodyFields,
@@ -59,6 +59,7 @@ const EditProfile = ({ errorChangeName, loader, handleSubmit, onSubmit }) => (
             name="firstName"
             type="text"
             label="First Name"
+            smallSize
             component={InputField}
           />
         </FormRow>
@@ -68,11 +69,12 @@ const EditProfile = ({ errorChangeName, loader, handleSubmit, onSubmit }) => (
             name="lastName"
             type="text"
             label="Last Name"
+            smallSize
             component={InputField}
           />
         </FormRow>
         <FormRow>
-          <ButttonDefault type="submit" value="Update Profile" />
+          <ButttonDefaultSmall type="submit" value="Update Profile" />
         </FormRow>
       </FormBodyFields>
       {loader && (

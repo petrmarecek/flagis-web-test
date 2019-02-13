@@ -130,28 +130,36 @@ const placeholderColor = value => css`
   }
 `
 
-const commonInput = css`
+const input = css`
   ${fontSub}
   ${boxSizing('border-box')}
   ${borderRadius('0')}
   width: 100%;
-  padding: 0 10px 0 10px;
-  margin: 0 0 12px;
-  font-size: 24px;
   border: none;
-  border-bottom: 1px solid #44ffb1;
   background: none;
 `
 
+const commonInput = css`
+  ${input}
+  margin: 0 0 12px;
+  padding: 0 10px 0 10px;
+  font-size: 24px;
+  border-bottom: 1px solid #44ffb1;
+`
+
 const commonInputSmall = css`
-  ${fontSub}
-  ${boxSizing('border-box')}
-  width: 100%;
+  ${input}
+  margin: 0 0 12px;
+  padding: 0 10px 0 10px;
+  font-size: 18px;
+  border-bottom: 1px solid #44ffb1;
+`
+
+const commonCommentInputSmall = css`
+  ${input}
   padding: 2px;
   font-size: 14px;
-  border: none;
   border-bottom: 1px solid #d7e3ec;
-  background-color: transparent;
 `
 
 const link = css`
@@ -179,18 +187,25 @@ const button = css`
   padding: 8px 24px;
   text-decoration: none;
   border: none;
-`
 
-const ButttonDefault = styled.input`
-  ${button}
   ${borderRadius('23px')}
 
   color: #fff;
   background-color: #293034;
 
   :hover {
-    background-color: #3E484F;
+    background-color: #3e484f;
   }
+`
+
+const ButttonDefault = styled.input`
+  ${button}
+  font-size: 18px;
+`
+
+const ButttonDefaultSmall = styled.input`
+  ${button}
+  font-size: 14px;
 `
 
 export {
@@ -214,9 +229,11 @@ export {
   placeholderColor,
   commonInput,
   commonInputSmall,
+  commonCommentInputSmall,
   link,
   // Buttons
   ButttonDefault,
+  ButttonDefaultSmall,
   // Forms
   Form,
   FormBody,

@@ -21,7 +21,7 @@ import Loader from 'components/common/loader'
 import { ICONS } from 'components/icons/icon-constants'
 
 import {
-  ButttonDefault,
+  ButttonDefaultSmall,
   Form,
   FormBody,
   FormBodyFields,
@@ -66,6 +66,7 @@ const ChangePassword = ({
             name="oldPassword"
             type="password"
             label="Old Password"
+            smallSize
             component={InputField}
           />
         </FormRow>
@@ -75,6 +76,7 @@ const ChangePassword = ({
             name="newPassword"
             type="password"
             label="New Password"
+            smallSize
             component={InputField}
           />
         </FormRow>
@@ -84,11 +86,12 @@ const ChangePassword = ({
             name="confirmPassword"
             type="password"
             label="Confirmation"
+            smallSize
             component={InputField}
           />
         </FormRow>
         <FormRow>
-          <ButttonDefault type="submit" value="Change password" />
+          <ButttonDefaultSmall type="submit" value="Change password" />
         </FormRow>
       </FormBodyFields>
       {loader && (

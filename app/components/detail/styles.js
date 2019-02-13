@@ -9,7 +9,7 @@ import {
   transform,
   transformOrigin,
   borderRadius,
-  commonInputSmall,
+  commonCommentInputSmall,
   markdownStyles,
   fontMain,
 } from '../styled-components-mixins/'
@@ -318,7 +318,7 @@ const DetailContentCommentsAddInput = styled.div`
 
   input {
     ${placeholderColor('#8c9da9')}
-    ${commonInputSmall}
+    ${commonCommentInputSmall}
   }
 `
 
