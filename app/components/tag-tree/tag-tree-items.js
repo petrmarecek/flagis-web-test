@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import R from 'ramda'
 
-import AddTagTreeItemForm from 'components/common/add-tag-tree-item-form'
+import AddTagTreeItemSectionForm from 'components/common/add-tag-tree-item-section-form'
 import TreeItem from 'components/tag-tree/tag-tree-item'
 
 import { ItemsList } from './styles'
@@ -22,7 +22,7 @@ const TagTreeItems = props => {
         <TreeItem key={item.id} treeItem={item} {...propsData} />
       ))}
       {addControlParentId === treeItem.id && (
-        <AddTagTreeItemForm
+        <AddTagTreeItemSectionForm
           parentId={treeItem.id}
           onCancel={onAddControlCancel}
           onSubmit={onSubitemCreated}

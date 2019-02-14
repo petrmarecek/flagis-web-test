@@ -1,8 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { compose, withHandlers } from 'recompose'
+import { compose, withHandlers, withStateHandlers } from 'recompose'
 import { DragSource, DropTarget } from 'react-dnd'
 import { findDOMNode } from 'react-dom'
+import { isStringEmpty } from 'redux/utils/component-helper'
 
 // components
 import { ICONS } from 'components/icons/icon-constants'
@@ -13,6 +14,7 @@ import TagTreeItems from 'components/tag-tree/tag-tree-items'
 import {
   SectionWrapper,
   SectionHeader,
+  SectionHeaderTitle,
   SectionHeaderIcon,
   SectionContent,
   SectionFooter,
@@ -121,8 +123,11 @@ const TagTreeSection = props => {
     selection,
     tagsRelations,
     isDragging,
+    maxWidth,
+    title,
 
     // Handlers
+    getInputRef,
     onAddChild,
     onAddControlCancel,
     onCollapse,
@@ -134,6 +139,9 @@ const TagTreeSection = props => {
     onHandleAddChildClicked,
     onHandleDeleteIconClicked,
     onHandleCollapse,
+    onHandleChangeTitle,
+    onHandleSubmitTitle,
+    onHandleKeyDown,
 
     // Drag and Drop
     connectDragSource,
@@ -141,11 +149,12 @@ const TagTreeSection = props => {
   } = props
 
   const parents = [section.id]
+  const styleWidth = { width: maxWidth - 125 }
   const renderArrowIcon = children => {
-    const title = section.collapsed ? 'Expand' : 'Collapse'
+    const titleIcon = section.collapsed ? 'Expand' : 'Collapse'
     return children.size > 0 ? (
       <SectionHeaderIcon
-        title={title}
+        title={titleIcon}
         leftOffset
         animation
         collapsed={section.collapsed}
@@ -168,6 +177,16 @@ const TagTreeSection = props => {
       <li>
         <SectionWrapper dragging={isDragging} collapsed={section.collapsed}>
           <SectionHeader colorTheme={colorTheme}>
+            <SectionHeaderTitle
+              type="text"
+              value={title}
+              onChange={onHandleChangeTitle}
+              onBlur={onHandleSubmitTitle}
+              onKeyDown={onHandleKeyDown}
+              onSubmit={onHandleSubmitTitle}
+              innerRef={getInputRef}
+              style={styleWidth}
+            />
             <SectionHeaderIcon leftOffset title="Delete">
               <Icon
                 icon={ICONS.TRASH}
@@ -235,8 +254,14 @@ TagTreeSection.propTypes = {
   tagsRelations: PropTypes.object,
   isDragging: PropTypes.bool,
   index: PropTypes.number,
+  maxWidth: PropTypes.number,
+
+  // state
+  title: PropTypes.string,
+  inputRef: PropTypes.object,
 
   // Handlers
+  getInputRef: PropTypes.func,
   onAddChild: PropTypes.func,
   onAddControlCancel: PropTypes.func,
   onCollapse: PropTypes.func,
@@ -244,12 +269,16 @@ TagTreeSection.propTypes = {
   onTreeItemEdit: PropTypes.func,
   onTreeItemDelete: PropTypes.func,
   onTreeItemSelected: PropTypes.func,
+  onUpdateSectionTitle: PropTypes.func,
   onDrop: PropTypes.func.isRequired,
   onMoveSection: PropTypes.func.isRequired,
   onDropSection: PropTypes.func.isRequired,
   onHandleAddChildClicked: PropTypes.func,
   onHandleDeleteIconClicked: PropTypes.func,
   onHandleCollapse: PropTypes.func,
+  onHandleChangeTitle: PropTypes.func,
+  onHandleResetTitle: PropTypes.func,
+  onHandleSubmitTitle: PropTypes.func,
 
   // Drag and Drop
   connectDragSource: PropTypes.func.isRequired,
@@ -267,6 +296,26 @@ export default DragSource(
       TagTreeSectionDragDrop.sectionTarget,
       TagTreeSectionDragDrop.collectDropTarget
     ),
+    withStateHandlers(
+      props => ({ inputRef: null, title: props.section.title }),
+      {
+        getInputRef: () => ref => ({ inputRef: ref }),
+        onHandleChangeTitle: ({ inputRef }) => () => ({
+          title: inputRef.value,
+        }),
+        onHandleResetTitle: (state, props) => () => ({
+          title: props.section.title,
+        }),
+        onHandleSubmitTitle: ({ title }, props) => () => {
+          if (isStringEmpty(title)) {
+            return { title: props.section.title }
+          }
+
+          props.onUpdateSectionTitle(props.section, title)
+          return {}
+        },
+      }
+    ),
     withHandlers({
       onHandleAddChildClicked: props => event => {
         event.stopPropagation()
@@ -279,6 +328,26 @@ export default DragSource(
       onHandleCollapse: props => event => {
         event.stopPropagation()
         props.onCollapse(props.section)
+      },
+      onHandleKeyDown: props => event => {
+        switch (event.which) {
+          // escape
+          case 27:
+            event.preventDefault()
+            props.onHandleResetTitle()
+            props.inputRef.blur()
+            return
+
+          // sumit (enter key)
+          case 13:
+            event.preventDefault()
+            props.onHandleSubmitTitle()
+            props.inputRef.blur()
+            return
+
+          default:
+            return
+        }
       },
     })
   )(TagTreeSection)

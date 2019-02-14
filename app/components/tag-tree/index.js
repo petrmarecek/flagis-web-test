@@ -18,14 +18,16 @@ import { connect } from 'react-redux'
 import { changeNavigation } from 'redux/store/routing/routing.actions'
 import { showDialog, setDetail } from 'redux/store/app-state/app-state.actions'
 import {
-  getPrimaryHiddenNavigationVisibility,
+  getLeftPanel,
   getColorTheme,
+  getPrimaryHiddenNavigationVisibility,
 } from 'redux/store/app-state/app-state.selectors'
 import { getNewRefreshToken } from 'redux/store/auth/auth.selectors'
 import { deselectTasks } from 'redux/store/tasks/tasks.actions'
 import { selectTag } from 'redux/store/tags/tags.actions'
 import { getTagsRelations } from 'redux/store/tags/tags.selectors'
 import {
+  updateTreeItemTitle,
   showTreeItemAddControl,
   hideTreeItemAddControl,
   createTreeItem,
@@ -48,9 +50,11 @@ import { computeTreeSectionOrder } from 'redux/utils/redux-helper'
 import TagTree from 'components/tag-tree/tag-tree'
 import Loader from 'components/common/loader'
 import ShadowScrollbar from 'components/common/shadow-scrollbar'
+import AddTagTreeItemSectionForm from 'components/common/add-tag-tree-item-section-form'
 
 // styles
 import { CollabsibleContent } from '../styled-components-mixins'
+import colors from 'components/styled-components-mixins/colors'
 import { Wrapper, AddSection, AddSectionText } from './styles'
 
 const TagTreeContainer = props => {
@@ -62,6 +66,10 @@ const TagTreeContainer = props => {
     tree,
     colorTheme,
     isVisibleMoreNavigation,
+    leftPanel,
+
+    // state
+    showAddControl,
 
     // handlers
     onInvokeMove,
@@ -69,7 +77,10 @@ const TagTreeContainer = props => {
     onHandleAddTreeItem,
     onHandleTreeItemsSelected,
     onHandleSubitemCreated,
-    onHandleAddSection,
+    onHandleAddButtonClicked,
+    onHandleAddSectionCancel,
+    onHandleAddSectionSubmit,
+    onHandleUpdateSectionTitle,
     onHandleAddItemCancel,
     onHandleEditTreeItem,
     onHandleDeleteTreeItem,
@@ -83,8 +94,12 @@ const TagTreeContainer = props => {
   const scrollStyle = {
     height: `calc(100vh - ${offset}px)`,
     shadowHeight: 30,
-    boxShadowTop: 'inset 0 30px 30px -15px rgba(28, 33, 36, 1)',
-    boxShadowBottom: 'inset 0 -30px 30px -15px  rgba(28, 33, 36, 1)',
+    boxShadowTop: `inset 0 30px 30px -15px ${
+      colors[colorTheme].tagTreeShadowScrollbar
+    }`,
+    boxShadowBottom: `inset 0 -30px 30px -15px ${
+      colors[colorTheme].tagTreeShadowScrollbar
+    }`,
     overflow: 'hidden',
     top: '10px',
   }
@@ -110,15 +125,24 @@ const TagTreeContainer = props => {
               onTreeItemDelete={onHandleDeleteTreeItem}
               onAddChild={onHandleAddTreeItem}
               onAddControlCancel={onHandleAddItemCancel}
+              onUpdateSectionTitle={onHandleUpdateSectionTitle}
               onCollapse={onHandleCollapse}
               onDrop={onHandleDrop}
               onDropSection={onHandleDropSection}
+              maxWidth={leftPanel.width}
               colorTheme={colorTheme}
             />
+            {showAddControl && (
+              <AddTagTreeItemSectionForm
+                parentId={null}
+                onSubmit={onHandleAddSectionSubmit}
+                onCancel={onHandleAddSectionCancel}
+              />
+            )}
           </CollabsibleContent>
         </Wrapper>
       </ShadowScrollbar>
-      <AddSection onClick={onHandleAddSection} colorTheme={colorTheme}>
+      <AddSection onClick={onHandleAddButtonClicked} colorTheme={colorTheme}>
         <AddSectionText>Add New Group</AddSectionText>
       </AddSection>
     </div>
@@ -136,6 +160,7 @@ TagTreeContainer.propTypes = {
   colorTheme: PropTypes.string,
   sections: PropTypes.object,
   isVisibleMoreNavigation: PropTypes.bool,
+  leftPanel: PropTypes.object,
 
   // state
   showAddControl: PropTypes.bool,
@@ -146,6 +171,10 @@ TagTreeContainer.propTypes = {
   onHandleAddTreeItem: PropTypes.func,
   onHandleTreeItemsSelected: PropTypes.func,
   onHandleSubitemCreated: PropTypes.func,
+  onHandleAddButtonClicked: PropTypes.func,
+  onHandleAddSectionCancel: PropTypes.func,
+  onHandleAddSectionSubmit: PropTypes.func,
+  onHandleUpdateSectionTitle: PropTypes.func,
   onHandleAddSection: PropTypes.func,
   onHandleAddItemCancel: PropTypes.func,
   onHandleEditTreeItem: PropTypes.func,
@@ -154,6 +183,7 @@ TagTreeContainer.propTypes = {
   onHandleDrop: PropTypes.func,
 
   // actions
+  updateTreeItemTitle: PropTypes.func,
   collapse: PropTypes.func,
   dropTreeItem: PropTypes.func,
   createTreeItem: PropTypes.func,
@@ -179,9 +209,11 @@ const mapStateToProps = state => ({
   addControlParentId: getAddControlParentId(state),
   tagsRelations: getTagsRelations(state),
   isVisibleMoreNavigation: getPrimaryHiddenNavigationVisibility(state),
+  leftPanel: getLeftPanel(state),
 })
 
 const mapDispatchToProps = {
+  updateTreeItemTitle,
   showTreeItemAddControl,
   hideTreeItemAddControl,
   createTreeItem,
@@ -206,7 +238,7 @@ export default compose(
     props => props.isNewRefreshToken || props.isFetching,
     renderComponent(Loader)
   ),
-  withStateHandlers(() => ({ order: null }), {
+  withStateHandlers(() => ({ showAddControl: false, order: null }), {
     onInvokeMove: (state, props) => move => {
       const { sourceSectionId } = move
       const { sections } = props
@@ -236,13 +268,19 @@ export default compose(
       props.createTreeItem(treeItemInfo)
       return {}
     },
-    onHandleAddSection: (state, props) => () => {
+    onHandleAddButtonClicked: () => () => ({ showAddControl: true }),
+    onHandleAddSectionCancel: () => () => ({ showAddControl: false }),
+    onHandleAddSectionSubmit: (state, props) => title => {
       props.createTreeItem({
-        title: 'Add title',
+        title,
         parentId: null,
         order: Date.now(),
       })
 
+      return { showAddControl: false }
+    },
+    onHandleUpdateSectionTitle: (state, props) => (section, title) => {
+      props.updateTreeItemTitle(section, title)
       return {}
     },
     onHandleAddItemCancel: (state, props) => () => {

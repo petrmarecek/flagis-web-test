@@ -43,9 +43,13 @@ export default {
   // tag-tree
   tagTreeSectionBorderHover: colors.hanumanGreen,
   tagTreeSectionIcon: colors.greyOfDarkness,
+  tagTreeSectionInput: colors.greyOfDarkness,
   tagTreeItem: colors.greyOfDarkness,
   tagTreeAddItem: colors.greyOfDarkness,
   tagTreeAddFilterIcon: colors.greyOfDarkness,
+  tagTreeAddFilterInput: colors.greyOfDarkness,
+  tagTreeAddFilterInputPlaceholder: colors.greyOfDarkness,
+  tagTreeAddNewGroupInputPlaceholder: colors.greyOfDarkness,
 
   standard: {
     // left-panel
@@ -64,14 +68,17 @@ export default {
     // tag-tree
     tagTreeSectionBorder: colors.midnightHour,
     tagTreeSectionIconHover: colors.white,
+    tagTreeSectionInputFocus: colors.white,
     tagTreeItemIcon: colors.white,
     tagTreeItemHover: colors.white,
     tagTreeItemBackgroundHover: colors.midnightHour,
     tagTreeAddFilterHover: colors.white,
     tagTreeAddFilterIconBackground: colors.aztec,
     tagTreeAddFilterText: colors.midnightHour,
-    addNewGroup: colors.midnightHour,
-    addNewGroupHover: colors.white,
+    tagTreeAddNewGroupInput: colors.white,
+    tagTreeAddNewGroup: colors.midnightHour,
+    tagTreeAddNewGroupHover: colors.white,
+    tagTreeShadowScrollbar: colors.darkJungleGreen,
   },
   light: {
     // left-panel
@@ -90,13 +97,16 @@ export default {
     // tag-tree
     tagTreeSectionBorder: colors.greyOfDarkness,
     tagTreeSectionIconHover: colors.darkJungleGreen,
+    tagTreeSectionInputFocus: colors.darkJungleGreen,
     tagTreeItemIcon: colors.darkJungleGreen,
     tagTreeItemHover: colors.darkJungleGreen,
     tagTreeItemBackgroundHover: colors.crystalBell,
     tagTreeAddFilterHover: colors.darkJungleGreen,
     tagTreeAddFilterIconBackground: colors.crystalBell,
     tagTreeAddFilterText: colors.greyOfDarkness,
-    addNewGroup: colors.greyOfDarkness,
-    addNewGroupHover: colors.darkJungleGreen,
+    tagTreeAddNewGroupInput: colors.darkJungleGreen,
+    tagTreeAddNewGroup: colors.greyOfDarkness,
+    tagTreeAddNewGroupHover: colors.darkJungleGreen,
+    tagTreeShadowScrollbar: colors.white,
   },
 }

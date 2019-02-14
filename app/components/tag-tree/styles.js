@@ -31,11 +31,11 @@ const AddSection = styled.div`
   bottom: 0;
   left: 0;
   flex-direction: row;
-  color: ${props => colors[props.colorTheme].addNewGroup};
+  color: ${props => colors[props.colorTheme].tagTreeAddNewGroup};
   cursor: pointer;
 
   :hover {
-    color: ${props => colors[props.colorTheme].addNewGroupHover};
+    color: ${props => colors[props.colorTheme].tagTreeAddNewGroupHover};
   }
 `
 
@@ -51,7 +51,7 @@ const SectionWrapper = styled.div`
   font-weight: normal;
   position: relative;
   display: block;
-  margin-bottom: ${props => (props.collapsed ? '40px' : '0')};
+  margin-bottom: ${props => (props.collapsed ? '30px' : '20px')};
   opacity: ${props => (props.dragging ? '0' : '1')};
   overflow: hidden;
 `
@@ -59,12 +59,12 @@ const SectionWrapper = styled.div`
 const SectionHeader = styled.div`
   display: flex;
   align-items: top;
-  justify-content: flex-end;
+  justify-content: space-between;
   height: 24px;
-  color: #fff;
   background-color: transparent;
   font-weight: 500;
   font-size: 20px;
+  padding: 0 5px;
   border-bottom: 1px solid
     ${props => colors[props.colorTheme].tagTreeSectionBorder};
   cursor: pointer;
@@ -75,13 +75,33 @@ const SectionHeader = styled.div`
     opacity: 0;
   }
 
+  input {
+    :focus {
+      color: ${props => colors[props.colorTheme].tagTreeSectionInputFocus};
+    }
+  }
+
   :hover {
     border-bottom: 1px solid ${colors.tagTreeSectionBorderHover};
 
     svg {
       opacity: 1;
     }
+
+    input {
+      color: ${props => colors[props.colorTheme].tagTreeSectionInputFocus};
+    }
   }
+`
+const SectionHeaderTitle = styled.input`
+  padding: 5px 0 0 0;
+  font-size: 12px;
+  overflow: hidden;
+  white-space: nowrap;
+  border: none;
+  color: ${colors.tagTreeSectionInput};
+  background-color: transparent;
+  ${textOverflow('ellipsis')}
 `
 
 const SectionHeaderIcon = styled.span`
@@ -263,7 +283,7 @@ const ItemIcons = styled.div`
 const ItemIcon = styled.div`
   float: right;
   margin: ${props => props.iconMargin};
-  ${transition(props => (props.arrow ? 'all 0.1s ease-out' : 'none'))}
+  ${transition(props => (props.animation ? 'all 0.1s ease-out' : 'none'))}
   ${transform(props =>
     props.collapsed ? 'rotate(90deg)' : 'rotate(0deg)'
   )}
@@ -282,6 +302,7 @@ export {
   // Tag-Tree Section
   SectionWrapper,
   SectionHeader,
+  SectionHeaderTitle,
   SectionHeaderIcon,
   SectionContent,
   SectionFooter,

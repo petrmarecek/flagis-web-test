@@ -182,6 +182,7 @@ const TagTreeItem = props => {
       <ItemIcon
         title={title}
         iconMargin="0 6px 0 6px"
+        animation
         collapsed={treeItem.collapsed}
       >
         <Icon
