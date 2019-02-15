@@ -356,11 +356,23 @@ const TaskDetail = props => {
             </DetailContentButton>
           )}
           {isFollowers && (
-            <DetailContentIcon contactIcon>
+            <DetailContentIcon
+              contactIcon
+              title={
+                !isOwner
+                  ? createdByFollower.profile.nickname
+                  : assignee.profile.nickname
+              }
+            >
               <FollowerIcon
                 status={followerStatus}
                 assigneeInbox={isInboxVisible || !isOwner}
                 isCompleted={isCompletedMainList}
+                nickname={
+                  !isOwner
+                    ? createdByFollower.profile.nickname
+                    : assignee.profile.nickname
+                }
                 animation={animation}
               />
             </DetailContentIcon>

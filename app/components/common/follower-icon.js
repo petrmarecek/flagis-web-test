@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 // components
+import Avatar from 'react-avatar'
 import Icon from '../icons/icon'
 import { ICONS } from '../icons/icon-constants'
 
@@ -32,11 +33,17 @@ const IconStatus = styled.div`
   ${boxShadow('0 2px 4px 0 rgba(0, 0, 0, 0.5)')}
 `
 
-const IconAccount = styled(Icon)`
+const IconAccount = styled.div`
   margin-right: ${props => (props.isAssignee ? '5px' : '0')};
 `
 
-const FollowerIcon = ({ status, animation, assigneeInbox, isCompleted }) => {
+const FollowerIcon = ({
+  status,
+  nickname,
+  animation,
+  assigneeInbox,
+  isCompleted,
+}) => {
   let followerStatus = status === null ? 'new' : status
   followerStatus = assigneeInbox ? 'assigneeInbox' : followerStatus
 
@@ -65,14 +72,14 @@ const FollowerIcon = ({ status, animation, assigneeInbox, isCompleted }) => {
       animation={animation}
       isAssignee={isAssignee}
     >
-      <IconAccount
-        icon={ICONS.CONTACT_EXIST}
-        width={isAssignee ? 21 : 30}
-        height={isAssignee ? 21 : 30}
-        scale={isAssignee ? 1 : 1.42}
-        color={['#8C9DA9', '#fff']}
-        isAssignee={isAssignee}
-      />
+      <IconAccount isAssignee={isAssignee}>
+        <Avatar
+          name={nickname}
+          size={isAssignee ? '20' : '30'}
+          textSizeRatio={2}
+          round
+        />
+      </IconAccount>
       {isAssignee && (
         <Icon
           icon={ICONS[icons[followerStatus]]}
@@ -98,6 +105,7 @@ const FollowerIcon = ({ status, animation, assigneeInbox, isCompleted }) => {
 
 FollowerIcon.propTypes = {
   status: PropTypes.string,
+  nickname: PropTypes.string,
   animation: PropTypes.bool,
   assigneeInbox: PropTypes.bool,
   isCompleted: PropTypes.bool,

@@ -31,6 +31,7 @@ const colors = {
 export default {
   // default
   contactExistIcon: [colors.lostAtSea, colors.white],
+  defaultAvatar: colors.lostAtSea,
   trashHover: colors.pompelmo,
 
   // navigation-default

@@ -102,7 +102,7 @@ export const infoMessages = {
   activities: type => {
     switch (type) {
       case 'TASKS/CREATE':
-        return 'Tasks was created'
+        return 'Task was created'
 
       default:
         return ''

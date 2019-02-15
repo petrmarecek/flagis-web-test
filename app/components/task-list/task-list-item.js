@@ -236,6 +236,12 @@ const TaskListItem = props => {
   const isCompletedMainList = task.isCompleted && !isArchivedList
   const isDescription = !isStringEmpty(task.description)
 
+  // Data about owner of task
+  const createdByFollower = {
+    id: task.createdBy.id,
+    profile: task.createdBy,
+  }
+
   // Sorted tags
   const sortedTags = getSortedTags(task.tags, selectedTags)
 
@@ -423,11 +429,23 @@ const TaskListItem = props => {
               </DescriptionDueDate>
             </Content>
             {isFollowers && (
-              <Followers assigneeInbox={isInboxList || !isOwner}>
+              <Followers
+                assigneeInbox={isInboxList || !isOwner}
+                title={
+                  !isOwner
+                    ? createdByFollower.profile.nickname
+                    : assignee.profile.nickname
+                }
+              >
                 <FollowerIcon
                   status={followerStatus}
                   assigneeInbox={isInboxList || !isOwner}
                   isCompleted={isCompletedMainList}
+                  nickname={
+                    !isOwner
+                      ? createdByFollower.profile.nickname
+                      : assignee.profile.nickname
+                  }
                   animation
                 />
               </Followers>
