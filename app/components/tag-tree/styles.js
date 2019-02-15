@@ -18,7 +18,7 @@ const Wrapper = styled.div`
   top: 0;
   bottom: 0;
   left: 0;
-  padding: 0 20px 0 30px;
+  padding: 0 20px 0 24px;
 `
 
 const AddSection = styled.div`
