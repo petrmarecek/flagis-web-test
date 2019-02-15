@@ -1,7 +1,11 @@
 import { List } from 'immutable'
 import moment from 'moment'
 import { getSelectionTasks } from '../tasks/tasks.selectors'
-import { getEntitiesComments, getEntitiesContacts } from '../entities/entities.selectors'
+import {
+  getEntitiesComments,
+  getEntitiesContacts,
+  getEntitiesActivities,
+} from '../entities/entities.selectors'
 import { createSelector } from 'reselect'
 
 // ------ Helper functions ----------------------------------------------------
@@ -13,38 +17,46 @@ import { createSelector } from 'reselect'
  */
 
 function loadComments(data) {
-  const { selectionTasks, entitiesComments, entitiesContacts } = data
-  let comments = List()
+  const {
+    selectionTasks,
+    entitiesComments,
+    entitiesContacts,
+    entitiesActivities,
+  } = data
 
+  let result = List()
   const taskId = selectionTasks.last()
-  const entitiesCommentsItems = entitiesComments
-    .filter(comment => comment.taskId === taskId)
-    .filter(comment => !comment.isDeleted)
+  let entitiesCommentsItems = entitiesComments.filter(
+    comment => comment.taskId === taskId && !comment.isDeleted
+  )
 
+  const entitiesActivitiesItems = entitiesActivities.filter(
+    comment => comment.taskId === taskId
+  )
+
+  entitiesCommentsItems = entitiesCommentsItems.concat(entitiesActivitiesItems)
   // Get values from map without keys
   entitiesCommentsItems.forEach(comment => {
-
     // prepare author of comment for existing contact
     if (entitiesContacts.has(comment.createdById)) {
-      const { createdById, author } = comment
-      const { isContact, nickname } = entitiesContacts.get(createdById)
-      const newAuthor = isContact ? nickname : author
+      const { createdById } = comment
+      const { nickname } = entitiesContacts.get(createdById)
 
-      comment = comment.set('author', newAuthor)
+      comment = comment.set('author', nickname)
     }
 
-    comments = comments.push(comment)
+    result = result.push(comment)
   })
 
   // Sort by createdAt
-  comments = comments.sort((a, b) => {
-    if (moment(a.createdAt) < moment(b.createdAt)) return -1;
-    if (moment(a.createdAt) > moment(b.createdAt)) return 1;
+  result = result.sort((a, b) => {
+    if (moment(a.createdAt) < moment(b.createdAt)) return -1
+    if (moment(a.createdAt) > moment(b.createdAt)) return 1
 
-    return 0;
+    return 0
   })
 
-  return comments
+  return result
 }
 
 // ------ Selectors -------------------------------------------------------------
@@ -59,12 +71,24 @@ export const getComments = createSelector(
   getSelectionTasks,
   getEntitiesComments,
   getEntitiesContacts,
-  (commentsIsFetching, selectionTasks, entitiesComments, entitiesContacts) => {
-    const data = { selectionTasks, entitiesComments, entitiesContacts }
+  getEntitiesActivities,
+  (
+    commentsIsFetching,
+    selectionTasks,
+    entitiesComments,
+    entitiesContacts,
+    entitiesActivities
+  ) => {
+    const data = {
+      selectionTasks,
+      entitiesComments,
+      entitiesContacts,
+      entitiesActivities,
+    }
 
-    return ({
+    return {
       isFetching: commentsIsFetching,
-      items: loadComments(data)
-    })
+      items: loadComments(data),
+    }
   }
 )

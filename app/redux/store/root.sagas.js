@@ -6,6 +6,7 @@ import { TASKS } from './tasks/tasks.actions'
 import { TASKS_MENU } from './tasks-menu/tasks-menu.actions'
 import { TREE } from './tree/tree.actions'
 import { TAGS } from './tags/tags.actions'
+import { ACTIVITIES } from './activities/activities.actions'
 import { COMMENTS } from './comments/comments.actions'
 import { ATTACHMENTS } from './attachments/attachments.actions'
 import { CONTACTS } from './contacts/contacts.actions'
@@ -18,6 +19,7 @@ import * as taskMenu from './tasks-menu/tasks-menu.sagas'
 import * as tag from './tags/tags.sagas'
 import * as tree from './tree/tree.sagas'
 import * as appState from './app-state/app-state.sagas'
+import * as activities from './activities/activities.sagas'
 import * as comment from './comments/comments.sagas'
 import * as attachment from './attachments/attachments.sagas'
 import * as contact from './contacts/contacts.sagas'
@@ -69,6 +71,10 @@ export default function* root() {
     takeEvery(TASKS.UNDO_REJECT, task.undoRejectTask),
     takeEvery(TASKS.DELETE, task.deleteTask),
     takeEvery(TASKS.UNDO_DELETE, task.undoDeleteTask),
+
+    // activities
+    takeLatest(ACTIVITIES.FETCH, activities.fetchActivities),
+    fork(activities.initActivitiesData),
 
     // comments
     takeLatest(COMMENTS.FETCH, comment.fetchComment),

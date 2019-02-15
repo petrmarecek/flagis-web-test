@@ -751,6 +751,8 @@ export default compose(
       const { task } = this.props
       // Load attachments
       this.props.onHandleFetchAttachment(task.id)
+      // Load activities
+      this.props.onHandleFetchActivities(task.id)
       // Load comments
       this.props.onHandleFetchComment(task.id)
     },

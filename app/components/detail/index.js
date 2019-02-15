@@ -38,6 +38,7 @@ import {
   createAttachment,
   deleteAttachment,
 } from 'redux/store/attachments/attachments.actions'
+import { fetchActivities } from 'redux/store/activities/activities.actions'
 import {
   fetchComment,
   createComment,
@@ -103,6 +104,7 @@ const Detail = props => {
     attachments,
     comments,
     onHandleFetchAttachment,
+    onHandleFetchActivities,
     onHandleFetchComment,
     onHandleTaskSetComplete,
     onHandleTaskSetIncomplete,
@@ -152,6 +154,7 @@ const Detail = props => {
           comments={comments}
           isInboxVisible={isInboxVisible}
           onHandleFetchAttachment={onHandleFetchAttachment}
+          onHandleFetchActivities={onHandleFetchActivities}
           onHandleFetchComment={onHandleFetchComment}
           onHandleRemoveEventListener={onHandleRemoveEventListener}
           onHandleToggleList={onHandleToggleList}
@@ -219,6 +222,7 @@ Detail.propTypes = {
   attachments: PropTypes.object,
   comments: PropTypes.object,
   onHandleFetchAttachment: PropTypes.func,
+  onHandleFetchActivities: PropTypes.func,
   onHandleFetchComment: PropTypes.func,
   onHandleTaskSetComplete: PropTypes.func,
   onHandleTaskSetIncomplete: PropTypes.func,
@@ -301,6 +305,7 @@ const mapDispatchToProps = {
   fetchAttachment,
   createAttachment,
   deleteAttachment,
+  fetchActivities,
   fetchComment,
   createComment,
   sendTask,
@@ -370,6 +375,7 @@ export default compose(
         const selectionInfo = getSelectionInfo(null, nextTask, selectedTasks)
         props.deselectAnimation()
         props.fetchAttachment(nextTask.id)
+        props.fetchActivities(nextTask.id)
         props.fetchComment(nextTask.id)
         props.selectTask(
           selectionInfo.newSelectedTasks,
@@ -414,6 +420,7 @@ export default compose(
         )
         props.deselectAnimation()
         props.fetchAttachment(previousTask.id)
+        props.fetchActivities(previousTask.id)
         props.fetchComment(previousTask.id)
         props.selectTask(
           selectionInfo.newSelectedTasks,
@@ -439,6 +446,7 @@ export default compose(
     },
 
     onHandleFetchAttachment: props => data => props.fetchAttachment(data),
+    onHandleFetchActivities: props => data => props.fetchActivities(data),
     onHandleFetchComment: props => data => props.fetchComment(data),
     onHandleTaskSetComplete: props => data => {
       props.setAnimation()

@@ -141,6 +141,7 @@ export const EntitiesStore = Record({
   tasks: Map(),
   tags: Map(),
   treeItems: Map(),
+  activities: Map(),
   comments: Map(),
   attachments: Map(),
   followers: Map(),
@@ -156,6 +157,10 @@ export const TaskStore = Record({
   timeLine: false,
   selection: OrderedSet(),
   search: '',
+})
+
+export const ActivitiesStore = Record({
+  isFetching: false,
 })
 
 export const CommentStore = Record({
@@ -234,6 +239,17 @@ export const Comment = Record({
   taskId: null,
   createdById: null,
   isDeleted: null,
+})
+
+export const Activities = Record({
+  id: null,
+  type: null,
+  data: null,
+  author: null,
+  createdAt: null,
+  updatedAt: null,
+  taskId: null,
+  createdById: null,
 })
 
 export const Attachment = Record({

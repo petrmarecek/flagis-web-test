@@ -2,16 +2,17 @@
  * Combine all reducers in this file and export the combined reducers.
  */
 
-import { combineReducers } from 'redux-immutable';
-import { fromJS } from 'immutable';
-import { LOCATION_CHANGE } from 'react-router-redux';
-import { reducer as formReducer} from 'redux-form/immutable'
+import { combineReducers } from 'redux-immutable'
+import { fromJS } from 'immutable'
+import { LOCATION_CHANGE } from 'react-router-redux'
+import { reducer as formReducer } from 'redux-form/immutable'
 
-import languageProviderReducer from 'containers/language-provider/reducer';
+import languageProviderReducer from 'containers/language-provider/reducer'
 import appState from 'redux/store/app-state/app-state.reducer'
 import auth from 'redux/store/auth/auth.reducer'
 import entities from 'redux/store/entities/entities.reducer'
 import tasks from 'redux/store/tasks/tasks.reducer'
+import activities from 'redux/store/activities/activities.reducer'
 import comments from 'redux/store/comments/comments.reducer'
 import attachments from 'redux/store/attachments/attachments.reducer'
 import tasksMenu from 'redux/store/tasks-menu/tasks-menu.reducer'
@@ -31,7 +32,7 @@ import contacts from 'redux/store/contacts/contacts.reducer'
 // Initial routing state
 const routeInitialState = fromJS({
   location: null,
-});
+})
 
 /**
  * Merge route into the global application state
@@ -42,9 +43,9 @@ function routeReducer(state = routeInitialState, action) {
     case LOCATION_CHANGE:
       return state.merge({
         location: action.payload,
-      });
+      })
     default:
-      return state;
+      return state
   }
 }
 
@@ -57,6 +58,7 @@ export default function createReducer(injectedReducers) {
     auth,
     entities,
     tasks,
+    activities,
     comments,
     attachments,
     tasksMenu,
@@ -68,5 +70,5 @@ export default function createReducer(injectedReducers) {
     route: routeReducer,
     language: languageProviderReducer,
     ...injectedReducers,
-  });
+  })
 }

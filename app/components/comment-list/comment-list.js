@@ -12,7 +12,7 @@ import { CommentListContainer } from './styles'
 const CommentList = ({ comments, userId }) => {
   const scrollStyle = {
     height: `calc(100vh - 232px)`,
-    overflow: 'hidden'
+    overflow: 'hidden',
   }
 
   return (
@@ -22,15 +22,18 @@ const CommentList = ({ comments, userId }) => {
           scrollbar.scrollToBottom()
         }
       }}
-      style={scrollStyle}>
+      style={scrollStyle}
+    >
       <CommentListContainer>
         <ul>
-          {!comments.isFetching && comments.items.map(comment => (
-            <CommentListItem
-              key={comment.id}
-              comment={comment}
-              userId={userId} />
-          ))}
+          {!comments.isFetching &&
+            comments.items.map(comment => (
+              <CommentListItem
+                key={comment.id}
+                comment={comment}
+                userId={userId}
+              />
+            ))}
         </ul>
       </CommentListContainer>
     </Scrollbars>

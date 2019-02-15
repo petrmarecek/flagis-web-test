@@ -98,4 +98,14 @@ export const infoMessages = {
     inboxRules: 'Allowed to add comments and accept/reject of task!',
     completedRules: 'Allowed to only complete and archive of task!',
   },
+
+  activities: type => {
+    switch (type) {
+      case 'TASKS/CREATE':
+        return 'Tasks was created'
+
+      default:
+        return ''
+    }
+  },
 }
