@@ -14,7 +14,7 @@ import {
   getAccountNavigationVisibility,
 } from 'redux/store/app-state/app-state.selectors'
 import { getRoutingPathname } from 'redux/store/routing/routing.selectors'
-import { getUsername } from 'redux/store/auth/auth.selectors'
+import { getUsername, getUserImage } from 'redux/store/auth/auth.selectors'
 
 // components
 import Avatar from 'react-avatar'
@@ -33,6 +33,7 @@ import colors from 'components/styled-components-mixins/colors'
 const NavigationDefault = ({
   colorTheme,
   username,
+  imageUrl,
   isVisibleAccountNavigation,
   accountRef,
   getAccountRef,
@@ -65,15 +66,16 @@ const NavigationDefault = ({
             color={[colors[colorTheme].navigationDefaultTriangle]}
           />
           <Avatar
+            src={imageUrl}
+            size="30"
+            textSizeRatio={2}
+            color={colors.defaultAvatar}
+            round
             name={`${
               username !== null
                 ? `${username.firstName} ${username.lastName}`
                 : ''
             }`}
-            size="30"
-            textSizeRatio={2}
-            color={colors.defaultAvatar}
-            round
           />
         </AccountWrapper>
         {isVisibleAccountNavigation && (
@@ -89,6 +91,7 @@ const NavigationDefault = ({
 
 NavigationDefault.propTypes = {
   pathname: PropTypes.string,
+  imageUrl: PropTypes.string,
   colorTheme: PropTypes.string,
   username: PropTypes.object,
   isVisibleAccountNavigation: PropTypes.bool,
@@ -100,6 +103,7 @@ NavigationDefault.propTypes = {
 
 const mapStateToProps = state => ({
   pathname: getRoutingPathname(state),
+  imageUrl: getUserImage(state),
   colorTheme: getColorTheme(state),
   username: getUsername(state),
   isVisibleAccountNavigation: getAccountNavigationVisibility(state),

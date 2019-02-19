@@ -204,6 +204,10 @@ export function* changeName(action) {
   }
 }
 
+export function* changeUserImage() {
+  //TODO: Update profile
+}
+
 export function* changePassword(action) {
   try {
     yield call(api.users.password, action.payload)

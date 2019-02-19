@@ -1,9 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Field, reduxForm } from 'redux-form/immutable'
-import { connect } from 'react-redux'
 import { compose, lifecycle, withHandlers } from 'recompose'
 
+// redux
+import { connect } from 'react-redux'
 import {
   deselectError,
   setLoader,
@@ -11,15 +12,19 @@ import {
 import {
   getChangeNameForm,
   getLoader,
+  getColorTheme,
 } from 'redux/store/app-state/app-state.selectors'
-import { changeName } from 'redux/store/auth/auth.actions'
-import { getUsername } from 'redux/store/auth/auth.selectors'
+import { changeName, changeUserImage } from 'redux/store/auth/auth.actions'
+import { getUsername, getUserImage } from 'redux/store/auth/auth.selectors'
 import { validateChangeName } from 'redux/utils/validate'
 
+// components
+import ImagePicker from 'components/common/image-picker'
 import InputField from 'components/common/input-field'
 import Loader from 'components/common/loader'
 import { ICONS } from 'components/icons/icon-constants'
 
+// styles
 import {
   ButttonDefaultSmall,
   Form,
@@ -34,75 +39,101 @@ import {
   FormRow,
 } from '../styled-components-mixins/'
 
-const EditProfile = ({ errorChangeName, loader, handleSubmit, onSubmit }) => (
-  <Form unmargin leftPadding>
-    <FormBody onSubmit={handleSubmit(values => onSubmit(values))}>
-      <FormBodyFields>
-        <FormErrors>
-          <ErrorList>
-            {errorChangeName.message && (
-              <ErrorListItem>
-                <ErrorListItemText>{errorChangeName.message}</ErrorListItemText>
-                <ErrorListItemIcon
-                  icon={ICONS.ERROR}
-                  width={12}
-                  height={14}
-                  color={['red']}
-                />
-              </ErrorListItem>
-            )}
-          </ErrorList>
-        </FormErrors>
-        <FormRow>
-          <Field
-            id="firstName"
-            name="firstName"
-            type="text"
-            label="First Name"
-            smallSize
-            component={InputField}
-          />
-        </FormRow>
-        <FormRow>
-          <Field
-            id="lastName"
-            name="lastName"
-            type="text"
-            label="Last Name"
-            smallSize
-            component={InputField}
-          />
-        </FormRow>
-        <FormRow>
-          <ButttonDefaultSmall type="submit" value="Update Profile" />
-        </FormRow>
-      </FormBodyFields>
-      {loader && (
-        <FormLoader>
-          <Loader />
-        </FormLoader>
-      )}
-    </FormBody>
-  </Form>
+const EditProfile = ({
+  errorChangeName,
+  imageUrl,
+  initialValues,
+  colorTheme,
+  loader,
+  handleSubmit,
+  onSubmit,
+  handleChangeUserImage,
+}) => (
+  <div>
+    <ImagePicker
+      imageUrl={imageUrl}
+      username={initialValues}
+      colorTheme={colorTheme}
+      onChangeImage={handleChangeUserImage}
+    />
+    <Form unmargin leftPadding>
+      <FormBody onSubmit={handleSubmit(values => onSubmit(values))}>
+        <FormBodyFields>
+          <FormErrors>
+            <ErrorList>
+              {errorChangeName.message && (
+                <ErrorListItem>
+                  <ErrorListItemText>
+                    {errorChangeName.message}
+                  </ErrorListItemText>
+                  <ErrorListItemIcon
+                    icon={ICONS.ERROR}
+                    width={12}
+                    height={14}
+                    color={['red']}
+                  />
+                </ErrorListItem>
+              )}
+            </ErrorList>
+          </FormErrors>
+          <FormRow>
+            <Field
+              id="firstName"
+              name="firstName"
+              type="text"
+              label="First Name"
+              smallSize
+              component={InputField}
+            />
+          </FormRow>
+          <FormRow>
+            <Field
+              id="lastName"
+              name="lastName"
+              type="text"
+              label="Last Name"
+              smallSize
+              component={InputField}
+            />
+          </FormRow>
+          <FormRow>
+            <ButttonDefaultSmall type="submit" value="Update Profile" />
+          </FormRow>
+        </FormBodyFields>
+        {loader && (
+          <FormLoader>
+            <Loader />
+          </FormLoader>
+        )}
+      </FormBody>
+    </Form>
+  </div>
 )
 
 EditProfile.propTypes = {
   errorChangeName: PropTypes.object,
+  initialValues: PropTypes.object,
+  imageUrl: PropTypes.string,
+  colorTheme: PropTypes.string,
   loader: PropTypes.bool,
   handleSubmit: PropTypes.func,
+  handleChangeUserImage: PropTypes.func,
   onSubmit: PropTypes.func,
 }
 
 const mapStateToProps = state => ({
   errorChangeName: getChangeNameForm(state),
-  loader: getLoader(state).form,
+  imageUrl: getUserImage(state),
+  colorTheme: getColorTheme(state),
   initialValues: getUsername(state),
+  loader: getLoader(state).form,
 })
 
 const mapDispatchToProps = {
   changeName,
   setLoader,
   deselectError,
+  changeUserImage,
 }
 
 export default compose(
@@ -136,6 +167,8 @@ export default compose(
         lastName: lastName,
       })
     },
+    handleChangeUserImage: props => image =>
+      props.changeUserImage(image !== null ? image.url : image),
   }),
   lifecycle({
     componentDidMount() {

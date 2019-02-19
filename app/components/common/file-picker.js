@@ -12,16 +12,16 @@ import styled from 'styled-components'
 
 const AddAttachment = styled.div`
   margin-top: 10px;
-`;
+`
 
 const PinIcon = styled(Icon)`
   vertical-align: middle;
   padding-right: 8px;
-`;
+`
 
 const Button = styled.button`
   font-size: 14px;
-  color: #8C9DA9;
+  color: #8c9da9;
   border: none;
   background-color: transparent;
   line-height: 26px;
@@ -34,7 +34,7 @@ const Button = styled.button`
   :hover {
     color: #293034;
   }
-`;
+`
 
 const FilePicker = ({ handleClick }) => (
   <AddAttachment>
@@ -42,8 +42,9 @@ const FilePicker = ({ handleClick }) => (
       icon={ICONS.PIN}
       width={23}
       height={26}
-      color={["#8C9DA9"]}
-      onClick={handleClick}/>
+      color={['#8C9DA9']}
+      onClick={handleClick}
+    />
     <Button onClick={handleClick}>Add attachment</Button>
   </AddAttachment>
 )
@@ -56,8 +57,8 @@ FilePicker.propTypes = {
 
 export default withHandlers({
   handleClick: props => () => {
-    filepicker.pick({language: 'en'}, (blob) => {
+    filepicker.pick({ language: 'en' }, blob => {
       props.onFileUploaded(blob)
     })
-  }
+  },
 })(FilePicker)

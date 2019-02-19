@@ -33,6 +33,7 @@ export const Profile = Record({
   email: null,
   firstName: null,
   lastName: null,
+  image: null,
 })
 
 export const HintsContext = Record({

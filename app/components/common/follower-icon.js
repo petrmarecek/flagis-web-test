@@ -49,7 +49,7 @@ const FollowerIcon = ({
 
   const color = {
     new: ['#8C9DA9'],
-    assigneeInbox: ['#e1e4e5'],
+    assigneeInbox: ['#b1b5b8'],
     pending: ['#fff', '#8C9DA9', '#fff'],
     accepted: ['#fff', '#44FFB1', '#fff'],
     rejected: ['#fff', '#FF6A6A', '#fff'],

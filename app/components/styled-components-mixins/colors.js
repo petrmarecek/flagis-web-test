@@ -80,6 +80,10 @@ export default {
     tagTreeAddNewGroup: colors.midnightHour,
     tagTreeAddNewGroupHover: colors.white,
     tagTreeShadowScrollbar: colors.darkJungleGreen,
+
+    // image-picker
+    imagePickerButton: colors.astrocopusGrey,
+    imagePickerButtonHover: colors.darkJungleGreen,
   },
   light: {
     // left-panel
@@ -109,5 +113,9 @@ export default {
     tagTreeAddNewGroup: colors.greyOfDarkness,
     tagTreeAddNewGroupHover: colors.darkJungleGreen,
     tagTreeShadowScrollbar: colors.white,
+
+    // image-picker
+    imagePickerButton: colors.astrocopusGrey,
+    imagePickerButtonHover: colors.darkJungleGreen,
   },
 }

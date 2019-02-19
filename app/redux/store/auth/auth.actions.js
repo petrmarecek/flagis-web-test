@@ -7,6 +7,7 @@ export const AUTH = {
   LOGOUT: 'AUTH/LOGOUT',
   UPDATE_PROFILE: 'AUTH/UPDATE_PROFILE',
   CHANGE_NAME: 'AUTH/CHANGE_NAME',
+  CHANGE_USER_IMAGE: 'AUTH/CHANGE_USER_IMAGE',
   CHANGE_PASSWORD: 'AUTH/CHANGE_PASSWORD',
   EMAIL_RESET_PASSWORD: 'AUTH/EMAIL_RESET_PASSWORD',
   RESET_PASSWORD: 'AUTH/RESET_PASSWORD',
@@ -23,44 +24,49 @@ export const controlRedirectTasks = () => ({
 
 export const signUp = userData => ({
   type: AUTH.SIGN_UP,
-  payload: userData
+  payload: userData,
 })
 
 export const initEmail = invitationId => ({
   type: AUTH.INIT_EMAIL,
-  payload: { invitationId }
+  payload: { invitationId },
 })
 
 export const login = userData => ({
   type: AUTH.LOGIN,
-  payload: userData
+  payload: userData,
 })
 
 export const updateProfile = profile => ({
   type: AUTH.UPDATE_PROFILE,
-  payload: { profile }
+  payload: { profile },
 })
 
 export const changeName = userData => ({
   type: AUTH.CHANGE_NAME,
-  payload: userData
+  payload: userData,
+})
+
+export const changeUserImage = userData => ({
+  type: AUTH.CHANGE_USER_IMAGE,
+  payload: userData,
 })
 
 export const changePassword = userData => ({
   type: AUTH.CHANGE_PASSWORD,
-  payload: userData
+  payload: userData,
 })
 
 export const emailResetPassword = userData => ({
   type: AUTH.EMAIL_RESET_PASSWORD,
-  payload: userData
+  payload: userData,
 })
 
 export const resetPassword = userData => ({
   type: AUTH.RESET_PASSWORD,
-  payload: userData
+  payload: userData,
 })
 
 export const logout = () => ({
-  type: AUTH.LOGOUT
+  type: AUTH.LOGOUT,
 })
