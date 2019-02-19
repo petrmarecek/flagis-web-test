@@ -15,7 +15,11 @@ import {
   getColorTheme,
 } from 'redux/store/app-state/app-state.selectors'
 import { changeName, changeUserImage } from 'redux/store/auth/auth.actions'
-import { getUsername, getUserImage } from 'redux/store/auth/auth.selectors'
+import {
+  getUsername,
+  getUserImage,
+  getUserEmail,
+} from 'redux/store/auth/auth.selectors'
 import { validateChangeName } from 'redux/utils/validate'
 
 // components
@@ -41,6 +45,7 @@ import {
 
 const EditProfile = ({
   errorChangeName,
+  email,
   imageUrl,
   initialValues,
   colorTheme,
@@ -52,6 +57,7 @@ const EditProfile = ({
   <div>
     <ImagePicker
       imageUrl={imageUrl}
+      email={email}
       username={initialValues}
       colorTheme={colorTheme}
       onChangeImage={handleChangeUserImage}
@@ -113,6 +119,7 @@ const EditProfile = ({
 EditProfile.propTypes = {
   errorChangeName: PropTypes.object,
   initialValues: PropTypes.object,
+  email: PropTypes.string,
   imageUrl: PropTypes.string,
   colorTheme: PropTypes.string,
   loader: PropTypes.bool,
@@ -123,6 +130,7 @@ EditProfile.propTypes = {
 
 const mapStateToProps = state => ({
   errorChangeName: getChangeNameForm(state),
+  email: getUserEmail(state),
   imageUrl: getUserImage(state),
   colorTheme: getColorTheme(state),
   initialValues: getUsername(state),

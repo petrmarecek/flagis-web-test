@@ -53,6 +53,9 @@ export default {
   tagTreeAddNewGroupInputPlaceholder: colors.greyOfDarkness,
 
   standard: {
+    // default
+    primaryText: colors.darkJungleGreen,
+
     // left-panel
     leftPanelBackground: colors.darkJungleGreen,
 
@@ -86,6 +89,9 @@ export default {
     imagePickerButtonHover: colors.darkJungleGreen,
   },
   light: {
+    // default
+    primaryText: colors.darkJungleGreen,
+
     // left-panel
     leftPanelBackground: colors.white,
 

@@ -7,7 +7,7 @@ import { withHandlers } from 'recompose'
 import Avatar from 'react-avatar'
 
 // styles
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import colors from 'components/styled-components-mixins/colors'
 import { fontMain, transition } from 'components/styled-components-mixins'
 
@@ -22,12 +22,21 @@ const UserImage = styled.div`
   height: 90px;
 `
 
-const Button = styled.div`
+const textCss = css`
   ${fontMain}
   font-size: 14px;
-  color: ${props => colors[props.colorTheme].imagePickerButton};
   margin: 0 0 7px 0;
+`
+
+const Email = styled.div`
+  ${textCss}
+  color: ${props => colors[props.colorTheme].primaryText};
+`
+
+const Button = styled.div`
+  ${textCss}
   cursor: pointer;
+  color: ${props => colors[props.colorTheme].imagePickerButton};
 
   :hover {
     color: ${props => colors[props.colorTheme].imagePickerButtonHover};
@@ -37,6 +46,7 @@ const Button = styled.div`
 
 const ImagePicker = ({
   imageUrl,
+  email,
   username,
   colorTheme,
   onHandleChangeImage,
@@ -57,6 +67,7 @@ const ImagePicker = ({
         }`}
       />
     </UserImage>
+    <Email colorTheme={colorTheme}>{email}</Email>
     <Button onClick={onHandleChangeImage} colorTheme={colorTheme}>
       Change profile photo
     </Button>
@@ -68,6 +79,7 @@ const ImagePicker = ({
 
 ImagePicker.propTypes = {
   imageUrl: PropTypes.string,
+  email: PropTypes.string,
   username: PropTypes.object,
   colorTheme: PropTypes.string,
   onChangeImage: PropTypes.func,
