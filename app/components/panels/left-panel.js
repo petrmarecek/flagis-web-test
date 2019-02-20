@@ -5,10 +5,8 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { compose, withHandlers } from 'recompose'
 import { resizeLeftPanel } from 'redux/store/app-state/app-state.actions'
-import {
-  getLeftPanel,
-  getColorTheme,
-} from 'redux/store/app-state/app-state.selectors'
+import { getLeftPanel } from 'redux/store/app-state/app-state.selectors'
+import { getColorTheme } from 'redux/store/auth/auth.selectors'
 
 // components
 import ResizeHandle from 'components/common/resize-handle'

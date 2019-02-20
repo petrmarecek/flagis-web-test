@@ -4,8 +4,8 @@ import { compose, withHandlers } from 'recompose'
 
 // redux
 import { connect } from 'react-redux'
-import { toggleColorTheme } from 'redux/store/app-state/app-state.actions'
-import { getColorTheme } from 'redux/store/app-state/app-state.selectors'
+import { toggleColorTheme } from 'redux/store/auth/auth.actions'
+import { getColorTheme } from 'redux/store/auth/auth.selectors'
 
 // images
 import ColorThemeStandard from 'assets/img/color-theme-standard.png'

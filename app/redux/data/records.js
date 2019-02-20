@@ -42,6 +42,10 @@ export const HintsContext = Record({
   updatedTreeItem: null,
 })
 
+export const Settings = Record({
+  colorTheme: null,
+})
+
 export const Error = Record({
   error: false,
   message: null,
@@ -118,7 +122,6 @@ export const AppStateStore = Record({
   navigation: new Navigation(),
   undoBox: null,
   currentDialog: null,
-  colorTheme: 'standard',
   changeName: new Error(),
   changePassword: new Error(),
   signIn: new Error(),
@@ -133,6 +136,7 @@ export const AuthStore = Record(
     refreshToken: null,
     newRefreshToken: false,
     firebaseToken: null,
+    settings: new Settings(),
     profile: null,
   },
   'auth'

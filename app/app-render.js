@@ -17,17 +17,21 @@ import MainLoader from 'components/common/main-loader'
 const persistConfig = {
   storage: localforage,
   whitelist: ['auth'],
-  transforms: [immutableTransform({
-    records: [auth],
-    whitelist: ['auth'],
-  })],
+  transforms: [
+    immutableTransform({
+      records: [auth],
+      whitelist: ['auth'],
+    }),
+  ],
 }
 
 // get access token and set to api
 getStoredState(persistConfig, (err, restoredState) => {
-  if (typeof restoredState === 'object'
-    && typeof restoredState.auth === 'object'
-    && restoredState.auth.accessToken) {
+  if (
+    typeof restoredState === 'object' &&
+    typeof restoredState.auth === 'object' &&
+    restoredState.auth.accessToken
+  ) {
     api.setApiToken(restoredState.auth.accessToken)
   }
 
@@ -49,14 +53,14 @@ export default class AppRender extends PureComponent {
     this.state = { rehydrated: false }
   }
 
-  componentDidMount(){
+  componentDidMount() {
     persistStore(this.props.store, persistConfig, () => {
       this.setState({ rehydrated: true })
     })
   }
 
   render() {
-    if(!this.state.rehydrated){
+    if (!this.state.rehydrated) {
       return <MainLoader />
     }
 

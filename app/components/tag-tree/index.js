@@ -19,10 +19,9 @@ import { changeNavigation } from 'redux/store/routing/routing.actions'
 import { showDialog, setDetail } from 'redux/store/app-state/app-state.actions'
 import {
   getLeftPanel,
-  getColorTheme,
   getPrimaryHiddenNavigationVisibility,
 } from 'redux/store/app-state/app-state.selectors'
-import { getNewRefreshToken } from 'redux/store/auth/auth.selectors'
+import { getNewRefreshToken, getColorTheme } from 'redux/store/auth/auth.selectors'
 import { deselectTasks } from 'redux/store/tasks/tasks.actions'
 import { selectTag } from 'redux/store/tags/tags.actions'
 import { getTagsRelations } from 'redux/store/tags/tags.selectors'

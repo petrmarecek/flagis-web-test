@@ -12,13 +12,13 @@ import {
 import {
   getChangeNameForm,
   getLoader,
-  getColorTheme,
 } from 'redux/store/app-state/app-state.selectors'
 import { changeName, changeUserImage } from 'redux/store/auth/auth.actions'
 import {
   getUsername,
   getUserImage,
   getUserEmail,
+  getColorTheme,
 } from 'redux/store/auth/auth.selectors'
 import { validateChangeName } from 'redux/utils/validate'
 

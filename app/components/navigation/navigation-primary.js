@@ -7,15 +7,13 @@ import { compose, withState, withHandlers } from 'recompose'
 import { connect } from 'react-redux'
 import { changeNavigation } from 'redux/store/routing/routing.actions'
 import { getRoutingPathname } from 'redux/store/routing/routing.selectors'
-import {
-  getPrimaryHiddenNavigationVisibility,
-  getColorTheme,
-} from 'redux/store/app-state/app-state.selectors'
+import { getPrimaryHiddenNavigationVisibility } from 'redux/store/app-state/app-state.selectors'
+import { getColorTheme } from 'redux/store/auth/auth.selectors'
+import { getInboxTasksItems } from 'redux/store/tasks/tasks.selectors'
 import {
   primaryHiddenNavigationVisible,
   primaryHiddenNavigationHide,
 } from 'redux/store/app-state/app-state.actions'
-import { getInboxTasksItems } from 'redux/store/tasks/tasks.selectors'
 
 // components
 import { ICONS } from 'components/icons/icon-constants'

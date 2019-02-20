@@ -9,12 +9,13 @@ import {
   accountNavigationVisible,
   accountNavigationHide,
 } from 'redux/store/app-state/app-state.actions'
-import {
-  getColorTheme,
-  getAccountNavigationVisibility,
-} from 'redux/store/app-state/app-state.selectors'
+import { getAccountNavigationVisibility } from 'redux/store/app-state/app-state.selectors'
 import { getRoutingPathname } from 'redux/store/routing/routing.selectors'
-import { getUsername, getUserImage } from 'redux/store/auth/auth.selectors'
+import {
+  getUsername,
+  getUserImage,
+  getColorTheme,
+} from 'redux/store/auth/auth.selectors'
 
 // components
 import Avatar from 'react-avatar'

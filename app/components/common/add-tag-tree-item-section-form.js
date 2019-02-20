@@ -5,7 +5,7 @@ import { isStringEmpty } from 'redux/utils/component-helper'
 
 // redux
 import { connect } from 'react-redux'
-import { getColorTheme } from '../../redux/store/app-state/app-state.selectors'
+import { getColorTheme } from '../../redux/store/auth/auth.selectors'
 import { getTagsOfTree } from '../../redux/store/tree/tree.selectors'
 
 // component

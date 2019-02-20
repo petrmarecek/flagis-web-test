@@ -5,6 +5,12 @@ export const getAuth = state => state.getIn(['auth'])
 export const getNewRefreshToken = state =>
   state.getIn(['auth', 'newRefreshToken'])
 
+export const getColorTheme = state => {
+  const colorTheme = state.getIn(['auth', 'settings', 'colorTheme'])
+
+  return colorTheme === null ? 'standard' : colorTheme
+}
+
 export const getUserId = state => {
   if (!state.getIn(['auth', 'profile'])) {
     return null
