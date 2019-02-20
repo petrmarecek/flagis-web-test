@@ -61,6 +61,9 @@ const TaskList = props => {
       dueDate: date[typeDate],
       tags: List(),
       followers: List(),
+      createdBy: {
+        id: null,
+      },
     }
 
     return (
