@@ -49,8 +49,8 @@ const ImagePicker = ({
   email,
   username,
   colorTheme,
-  onHandleChangeImage,
-  onHandleClearImage,
+  onHandleChangePhoto,
+  onHandleClearPhoto,
 }) => (
   <Wrapper>
     <UserImage>
@@ -68,10 +68,10 @@ const ImagePicker = ({
       />
     </UserImage>
     <Email colorTheme={colorTheme}>{email}</Email>
-    <Button onClick={onHandleChangeImage} colorTheme={colorTheme}>
+    <Button onClick={onHandleChangePhoto} colorTheme={colorTheme}>
       Change profile photo
     </Button>
-    <Button onClick={onHandleClearImage} colorTheme={colorTheme}>
+    <Button onClick={onHandleClearPhoto} colorTheme={colorTheme}>
       Clear photo
     </Button>
   </Wrapper>
@@ -82,13 +82,13 @@ ImagePicker.propTypes = {
   email: PropTypes.string,
   username: PropTypes.object,
   colorTheme: PropTypes.string,
-  onChangeImage: PropTypes.func,
-  onHandleChangeImage: PropTypes.func,
-  onHandleClearImage: PropTypes.func,
+  onChangePhoto: PropTypes.func,
+  onHandleChangePhoto: PropTypes.func,
+  onHandleClearPhoto: PropTypes.func,
 }
 
 export default withHandlers({
-  onHandleChangeImage: props => () => {
+  onHandleChangePhoto: props => () => {
     const { imageUrl } = props
     const { security } = filestackConf
     const client = filestackConf.filestackInit
@@ -113,7 +113,7 @@ export default withHandlers({
       maxSize: Math.pow(2, 19),
       onUploadDone: files => {
         const file = files.filesUploaded[0]
-        props.onChangeImage(file)
+        props.onChangePhoto(file)
 
         if (fileKey !== null) {
           client.remove(fileKey, security)
@@ -123,7 +123,7 @@ export default withHandlers({
 
     client.picker(options).open()
   },
-  onHandleClearImage: props => () => {
+  onHandleClearPhoto: props => () => {
     const { imageUrl } = props
     const { security } = filestackConf
     const client = filestackConf.filestackInit
@@ -135,6 +135,6 @@ export default withHandlers({
       client.remove(fileKey, security)
     }
 
-    props.onChangeImage(null)
+    props.onChangePhoto(null)
   },
 })(ImagePicker)

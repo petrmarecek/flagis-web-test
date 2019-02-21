@@ -13,7 +13,7 @@ import { getAccountNavigationVisibility } from 'redux/store/app-state/app-state.
 import { getRoutingPathname } from 'redux/store/routing/routing.selectors'
 import {
   getUsername,
-  getUserImage,
+  getUserPhoto,
   getColorTheme,
 } from 'redux/store/auth/auth.selectors'
 
@@ -104,7 +104,7 @@ NavigationDefault.propTypes = {
 
 const mapStateToProps = state => ({
   pathname: getRoutingPathname(state),
-  imageUrl: getUserImage(state),
+  imageUrl: getUserPhoto(state),
   colorTheme: getColorTheme(state),
   username: getUsername(state),
   isVisibleAccountNavigation: getAccountNavigationVisibility(state),

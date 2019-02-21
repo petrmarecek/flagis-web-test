@@ -13,10 +13,10 @@ import {
   getChangeNameForm,
   getLoader,
 } from 'redux/store/app-state/app-state.selectors'
-import { changeName, changeUserImage } from 'redux/store/auth/auth.actions'
+import { changeName, changeUserPhoto } from 'redux/store/auth/auth.actions'
 import {
   getUsername,
-  getUserImage,
+  getUserPhoto,
   getUserEmail,
   getColorTheme,
 } from 'redux/store/auth/auth.selectors'
@@ -52,7 +52,7 @@ const EditProfile = ({
   loader,
   handleSubmit,
   onSubmit,
-  handleChangeUserImage,
+  handleChangeUserPhoto,
 }) => (
   <div>
     <ImagePicker
@@ -60,7 +60,7 @@ const EditProfile = ({
       email={email}
       username={initialValues}
       colorTheme={colorTheme}
-      onChangeImage={handleChangeUserImage}
+      onChangePhoto={handleChangeUserPhoto}
     />
     <Form unmargin leftPadding>
       <FormBody onSubmit={handleSubmit(values => onSubmit(values))}>
@@ -124,14 +124,14 @@ EditProfile.propTypes = {
   colorTheme: PropTypes.string,
   loader: PropTypes.bool,
   handleSubmit: PropTypes.func,
-  handleChangeUserImage: PropTypes.func,
+  handleChangeUserPhoto: PropTypes.func,
   onSubmit: PropTypes.func,
 }
 
 const mapStateToProps = state => ({
   errorChangeName: getChangeNameForm(state),
   email: getUserEmail(state),
-  imageUrl: getUserImage(state),
+  imageUrl: getUserPhoto(state),
   colorTheme: getColorTheme(state),
   initialValues: getUsername(state),
   loader: getLoader(state).form,
@@ -141,7 +141,7 @@ const mapDispatchToProps = {
   changeName,
   setLoader,
   deselectError,
-  changeUserImage,
+  changeUserPhoto,
 }
 
 export default compose(
@@ -175,8 +175,8 @@ export default compose(
         lastName: lastName,
       })
     },
-    handleChangeUserImage: props => image =>
-      props.changeUserImage(image !== null ? image.url : image),
+    handleChangeUserPhoto: props => image =>
+      props.changeUserPhoto(image !== null ? image.url : image),
   }),
   lifecycle({
     componentDidMount() {

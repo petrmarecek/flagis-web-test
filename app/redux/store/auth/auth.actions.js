@@ -7,7 +7,7 @@ export const AUTH = {
   LOGOUT: 'AUTH/LOGOUT',
   UPDATE_PROFILE: 'AUTH/UPDATE_PROFILE',
   CHANGE_NAME: 'AUTH/CHANGE_NAME',
-  CHANGE_USER_IMAGE: 'AUTH/CHANGE_USER_IMAGE',
+  CHANGE_USER_PHOTO: 'AUTH/CHANGE_USER_PHOTO',
   CHANGE_PASSWORD: 'AUTH/CHANGE_PASSWORD',
   EMAIL_RESET_PASSWORD: 'AUTH/EMAIL_RESET_PASSWORD',
   RESET_PASSWORD: 'AUTH/RESET_PASSWORD',
@@ -48,8 +48,8 @@ export const changeName = userData => ({
   payload: userData,
 })
 
-export const changeUserImage = userData => ({
-  type: AUTH.CHANGE_USER_IMAGE,
+export const changeUserPhoto = userData => ({
+  type: AUTH.CHANGE_USER_PHOTO,
   payload: userData,
 })
 

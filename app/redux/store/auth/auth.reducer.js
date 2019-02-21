@@ -26,12 +26,6 @@ export default typeToReducer(
 
     [AUTH.UPDATE_PROFILE]: (state, action) =>
       state.setIn(['profile'], new Profile(action.payload.profile)),
-
-    [AUTH.CHANGE_USER_IMAGE]: (state, action) =>
-      state.setIn(['profile', 'image'], action.payload),
-
-    [AUTH.TOGGLE_COLOR_THEME]: (state, action) =>
-      state.setIn(['settings', 'colorTheme'], action.payload.theme),
   },
   new AuthStore()
 )

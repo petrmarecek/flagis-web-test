@@ -28,22 +28,23 @@ export const Position = Record({
   left: 0,
 })
 
+export const Settings = Record({
+  colorTheme: null,
+})
+
 export const Profile = Record({
   id: null,
   email: null,
   firstName: null,
   lastName: null,
-  image: null,
+  photo: null,
+  settings: new Settings(),
 })
 
 export const HintsContext = Record({
   source: null,
   parentId: null,
   updatedTreeItem: null,
-})
-
-export const Settings = Record({
-  colorTheme: null,
 })
 
 export const Error = Record({
@@ -145,8 +146,7 @@ export const AuthStore = Record(
     refreshToken: null,
     newRefreshToken: false,
     firebaseToken: null,
-    settings: new Settings(),
-    profile: null,
+    profile: new Profile(),
   },
   'auth'
 )

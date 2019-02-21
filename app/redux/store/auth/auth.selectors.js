@@ -2,13 +2,30 @@
 
 // Export selectors
 export const getAuth = state => state.getIn(['auth'])
+
+export const getUserProfile = state => {
+  if (!state.getIn(['auth', 'profile'])) {
+    return null
+  }
+
+  return state.getIn(['auth', 'profile'])
+}
+
 export const getNewRefreshToken = state =>
   state.getIn(['auth', 'newRefreshToken'])
 
 export const getColorTheme = state => {
-  const colorTheme = state.getIn(['auth', 'settings', 'colorTheme'])
+  if (!state.getIn(['auth', 'profile'])) {
+    return null
+  }
 
-  return colorTheme === null ? 'standard' : colorTheme
+  const settings = state.getIn(['auth', 'profile', 'settings'])
+  if (settings === null) {
+    return 'standard'
+  }
+
+  const isColorTheme = settings.hasOwnProperty('colorTheme')
+  return isColorTheme ? settings.colorTheme : 'standard'
 }
 
 export const getUserId = state => {
@@ -46,10 +63,10 @@ export const getUsername = state => {
   }
 }
 
-export const getUserImage = state => {
+export const getUserPhoto = state => {
   if (!state.getIn(['auth', 'profile'])) {
     return null
   }
 
-  return state.getIn(['auth', 'profile', 'image'])
+  return state.getIn(['auth', 'profile', 'photo'])
 }

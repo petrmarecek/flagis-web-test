@@ -187,16 +187,23 @@ export function* controlRedirectTasks() {
 
 export function* changeName(action) {
   try {
+    // call server
     const profile = yield call(api.users.update, action.payload)
+
+    // save profile to redux-store
     yield put(authActions.updateProfile(profile))
+
+    // deselect form for change name
     yield put(appStateActions.deselectError('changeName'))
     yield put(appStateActions.deselectLoader('form'))
 
+    // show notification of successful profile update
     toast.success(successMessages.changeName, {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
     })
   } catch (err) {
+    // show notification of unsuccessful profile update
     yield put(
       appStateActions.setError('changeName', errorMessages.somethingWrong)
     )
@@ -204,8 +211,26 @@ export function* changeName(action) {
   }
 }
 
-export function* changeUserImage() {
-  //TODO: Update profile
+export function* changeUserPhoto(action) {
+  const photo = action.payload
+
+  // call server
+  const profile = yield call(api.users.update, { photo })
+
+  // save profile to redux-store
+  yield put(authActions.updateProfile(profile))
+}
+
+export function* toggleColorTheme(action) {
+  const settings = { colorTheme: action.payload.theme }
+
+  // call server
+  const profile = yield call(api.users.update, {
+    settings: JSON.stringify(settings),
+  })
+
+  // save profile to redux-store
+  yield put(authActions.updateProfile(profile))
 }
 
 export function* changePassword(action) {
