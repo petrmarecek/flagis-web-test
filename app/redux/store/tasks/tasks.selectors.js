@@ -267,7 +267,7 @@ function loadArchiveTasks(ids, data) {
   let tasks = ids.map(taskId => {
     const task = entitiesTasks.get(taskId)
     const tags = task.tags.map(tagId => entitiesTags.get(tagId))
-    const createdBy = entitiesContacts.get(task.creadtedById)
+    const createdBy = entitiesContacts.get(task.createdById)
     const followers = task.followers.map(followerId => {
       const follower = entitiesFollowers.get(followerId)
       const profile = entitiesContacts.get(follower.userId)

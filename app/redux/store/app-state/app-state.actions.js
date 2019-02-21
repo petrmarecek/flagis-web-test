@@ -27,6 +27,10 @@ export const APP_STATE = {
   SET_DETAIL: 'APP-STATE/SET_DETAIL',
   DESELECT_DETAIL: 'APP-STATE/DESELECT_DETAIL',
 
+  // Scrollbar
+  SET_SCROLLBAR_POSITION: 'APP-STATE/SET_SCROLLBAR_POSITION',
+  RESET_SCROLLBAR_POSITION: 'APP-STATE/RESET_SCROLLBAR_POSITION',
+
   // Navigation
   PRIMARY_HIDDEN_NAVIGATION_VISIBLE:
     'APP-STATE/PRIMARY_HIDDEN_NAVIGATION_VISIBLE',
@@ -131,6 +135,20 @@ export const deselectDetail = detail => ({
   payload: {
     detail,
   },
+})
+
+// ------ Scrollbar -----------------------------------------------------------
+
+export const setScrollbarPosition = (list, position) => ({
+  type: APP_STATE.SET_SCROLLBAR_POSITION,
+  payload: {
+    list,
+    position,
+  },
+})
+
+export const resetScrollbarPosition = () => ({
+  type: APP_STATE.RESET_SCROLLBAR_POSITION,
 })
 
 // ------ Navigation ------------------------------------------------------------

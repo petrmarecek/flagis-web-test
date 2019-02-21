@@ -52,6 +52,10 @@ export const getPrimaryHiddenNavigationVisibility = state =>
 export const getAccountNavigationVisibility = state =>
   state.getIn(['appState', 'navigation', 'account', 'isVisible'])
 export const getLoader = state => state.getIn(['appState', 'loader'])
+export const getScrollbarPosition = (state, list) => {
+  const position = state.getIn(['appState', 'scrollbarPosition', list])
+  return position === null ? 0 : position
+}
 
 // ------ Reselect selectors ----------------------------------------------------
 

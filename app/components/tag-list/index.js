@@ -10,7 +10,11 @@ import {
   getTagsRelations,
 } from 'redux/store/tags/tags.selectors'
 import { selectTag } from 'redux/store/tags/tags.actions'
-import { setDetail } from 'redux/store/app-state/app-state.actions'
+import {
+  setDetail,
+  setScrollbarPosition,
+} from 'redux/store/app-state/app-state.actions'
+import { getScrollbarPosition } from 'redux/store/app-state/app-state.selectors'
 
 // components
 import TagListItem from 'components/tag-list/tag-list-item'
@@ -23,8 +27,10 @@ import { EmptyList } from 'components/styled-components-mixins'
 const TagListContainer = ({
   tags,
   currentTag,
+  scrollbarPosition,
   tagsRelations,
   onHandleTagClick,
+  onHandleSetScrollbarPosition,
 }) => {
   if (tags.items.length === 0) {
     return <EmptyList>No tags found</EmptyList>
@@ -39,7 +45,11 @@ const TagListContainer = ({
   }
 
   return (
-    <ShadowScrollbar style={scrollStyle}>
+    <ShadowScrollbar
+      style={scrollStyle}
+      position={scrollbarPosition}
+      setPosition={onHandleSetScrollbarPosition}
+    >
       <ul>
         {tags.items.map(tag => (
           <TagListItem
@@ -60,21 +70,25 @@ const TagListContainer = ({
 TagListContainer.propTypes = {
   tags: PropTypes.object,
   currentTag: PropTypes.string,
+  scrollbarPosition: PropTypes.number,
   tagsRelations: PropTypes.object,
   selectTag: PropTypes.func,
   setDetail: PropTypes.func,
   onHandleTagClick: PropTypes.func,
+  onHandleSetScrollbarPosition: PropTypes.func,
 }
 
 const mapStateToProps = state => ({
   tags: getVisibleTags(state),
   currentTag: getCurrentTagId(state),
   tagsRelations: getTagsRelations(state),
+  scrollbarPosition: getScrollbarPosition(state, 'tag'),
 })
 
 const mapDispatchToProps = {
   selectTag,
   setDetail,
+  setScrollbarPosition,
 }
 
 export default compose(
@@ -88,5 +102,7 @@ export default compose(
       props.selectTag(tagId)
       props.setDetail('tag')
     },
+    onHandleSetScrollbarPosition: props => position =>
+      props.setScrollbarPosition('tag', position),
   })
 )(TagListContainer)

@@ -1,133 +1,129 @@
-import React from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { withStateHandlers } from 'recompose'
 import { findDOMNode } from 'react-dom'
 import { Scrollbars } from 'react-custom-scrollbars'
 
-const ShadowScrollbar = props => {
-  const {
-    style,
-    verticalStyle,
-    children,
-    getScrollRef,
-    getShadowTopRef,
-    getShadowBottomRef,
-    handleDrag,
-    handleUpdate,
-  } = props
-
-  const containerStyle = {
-    position: 'relative',
-    ...style,
+export default class ShadowScrollbar extends PureComponent {
+  static propTypes = {
+    style: PropTypes.object,
+    position: PropTypes.number,
+    verticalStyle: PropTypes.object,
+    children: PropTypes.any,
+    setPosition: PropTypes.func,
+    addScrollRef: PropTypes.func,
+    handleDrag: PropTypes.func,
+    handleUpdate: PropTypes.func,
+    handleScrollStop: PropTypes.func,
   }
 
-  const shadowTopStyle = {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    pointerEvents: 'none',
-    height: style.shadowHeight,
-    boxShadow: style.boxShadowTop,
-    zIndex: 1,
+  componentDidMount() {
+    const { scrollRef } = this.refs
+    window.setTimeout(() => {
+      if (this.props.addScrollRef) {
+        this.props.addScrollRef(scrollRef)
+      }
+
+      if (this.props.position) {
+        scrollRef.view.scrollTop = this.props.position
+      }
+    }, 1)
   }
 
-  const shadowBottomStyle = {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    pointerEvents: 'none',
-    height: style.shadowHeight,
-    boxShadow: style.boxShadowBottom,
-    zIndex: 1,
+  handleUpdate = values => {
+    const { shadowTopRef, shadowBottomRef } = this.refs
+    const { scrollTop, scrollHeight, clientHeight } = values
+    const shadowTopOpacity = (1 / 20) * Math.min(scrollTop, 20)
+    const bottomScrollTop = scrollHeight - clientHeight
+    const shadowBottomOpacity =
+      (1 / 20) * (bottomScrollTop - Math.max(scrollTop, bottomScrollTop - 20))
+    shadowTopRef.style.opacity = shadowTopOpacity
+    shadowBottomRef.style.opacity = shadowBottomOpacity
   }
 
-  const scrollbars = verticalStyle ? (
-    <Scrollbars
-      ref={getScrollRef}
-      renderThumbVertical={scrollProps => (
-        <div {...scrollProps} style={verticalStyle} />
-      )}
-      onDragEnter={handleDrag}
-      onUpdate={handleUpdate}
-      children={children}
-    />
-  ) : (
-    <Scrollbars
-      ref={getScrollRef}
-      onDragEnter={handleDrag}
-      onUpdate={handleUpdate}
-      children={children}
-    />
-  )
+  handleScrollStop = () => {
+    const { scrollRef } = this.refs
+    // save scrollbar position to redux store
+    if (this.props.setPosition) {
+      this.props.setPosition(scrollRef.view.scrollTop)
+    }
+  }
 
-  return (
-    <div style={containerStyle}>
-      {scrollbars}
-      <div ref={getShadowTopRef} style={shadowTopStyle} />
-      <div ref={getShadowBottomRef} style={shadowBottomStyle} />
-    </div>
-  )
+  handleDrag = values => {
+    // Position of tasks list
+    const { scrollRef } = this.refs
+    const { left, top, right, bottom } = findDOMNode(
+      scrollRef
+    ).getBoundingClientRect()
+    // Current position of mouse
+    const { clientX, clientY } = values
+    const conditionX = clientX >= left && clientX <= right
+    const conditionTopY = clientY >= top && clientY <= top + 50
+    const conditionBottomY = clientY >= bottom - 50 && clientY <= bottom
+
+    // Scroll to top
+    if (conditionX && conditionTopY) {
+      scrollRef.view.scrollTop -= 10
+    }
+
+    // Scroll to bottom
+    if (conditionX && conditionBottomY) {
+      scrollRef.view.scrollTop += 10
+    }
+  }
+
+  render() {
+    const containerStyle = {
+      position: 'relative',
+      ...this.props.style,
+    }
+
+    const shadowTopStyle = {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      pointerEvents: 'none',
+      height: this.props.style.shadowHeight,
+      boxShadow: this.props.style.boxShadowTop,
+      zIndex: 1,
+    }
+
+    const shadowBottomStyle = {
+      position: 'absolute',
+      bottom: 0,
+      left: 0,
+      right: 0,
+      pointerEvents: 'none',
+      height: this.props.style.shadowHeight,
+      boxShadow: this.props.style.boxShadowBottom,
+      zIndex: 1,
+    }
+
+    return (
+      <div style={containerStyle}>
+        {this.props.verticalStyle ? (
+          <Scrollbars
+            ref="scrollRef"
+            renderThumbVertical={scrollProps => (
+              <div {...scrollProps} style={this.props.verticalStyle} />
+            )}
+            onDragEnter={this.handleDrag}
+            onUpdate={this.handleUpdate}
+            onScrollStop={this.handleScrollStop}
+            children={this.props.children}
+          />
+        ) : (
+          <Scrollbars
+            ref="scrollRef"
+            onDragEnter={this.handleDrag}
+            onUpdate={this.handleUpdate}
+            onScrollStop={this.handleScrollStop}
+            children={this.props.children}
+          />
+        )}
+        <div ref="shadowTopRef" style={shadowTopStyle} />
+        <div ref="shadowBottomRef" style={shadowBottomStyle} />
+      </div>
+    )
+  }
 }
-
-ShadowScrollbar.propTypes = {
-  style: PropTypes.object,
-  verticalStyle: PropTypes.object,
-  children: PropTypes.any,
-  addScrollRef: PropTypes.func,
-  getScrollRef: PropTypes.func,
-  getShadowTopRef: PropTypes.func,
-  getShadowBottomRef: PropTypes.func,
-  handleDrag: PropTypes.func,
-  handleUpdate: PropTypes.func,
-}
-
-export default withStateHandlers(
-  () => ({
-    scrollRef: null,
-    shadowTopRef: null,
-    shadowBottomRef: null,
-  }),
-  {
-    getShadowTopRef: () => ref => ({ shadowTopRef: ref }),
-    getShadowBottomRef: () => ref => ({ shadowBottomRef: ref }),
-    getScrollRef: (state, props) => ref => {
-      if (props.addScrollRef) {
-        props.addScrollRef(ref)
-      }
-
-      return { scrollRef: ref }
-    },
-    handleUpdate: ({ shadowTopRef, shadowBottomRef }) => values => {
-      const { scrollTop, scrollHeight, clientHeight } = values
-      const shadowTopOpacity = (1 / 20) * Math.min(scrollTop, 20)
-      const bottomScrollTop = scrollHeight - clientHeight
-      const shadowBottomOpacity =
-        (1 / 20) * (bottomScrollTop - Math.max(scrollTop, bottomScrollTop - 20))
-      shadowTopRef.style.opacity = shadowTopOpacity
-      shadowBottomRef.style.opacity = shadowBottomOpacity
-    },
-    handleDrag: ({ scrollRef }) => values => {
-      // Position of tasks list
-      const { left, top, right, bottom } = findDOMNode(
-        scrollRef
-      ).getBoundingClientRect()
-      // Current position of mouse
-      const { clientX, clientY } = values
-      const conditionX = clientX >= left && clientX <= right
-      const conditionTopY = clientY >= top && clientY <= top + 50
-      const conditionBottomY = clientY >= bottom - 50 && clientY <= bottom
-
-      // Scroll to top
-      if (conditionX && conditionTopY) {
-        scrollRef.view.scrollTop -= 10
-      }
-
-      // Scroll to bottom
-      if (conditionX && conditionBottomY) {
-        scrollRef.view.scrollTop += 10
-      }
-    },
-  }
-)(ShadowScrollbar)

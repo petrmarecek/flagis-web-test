@@ -7,7 +7,11 @@ import { compose, branch, renderComponent, withHandlers } from 'recompose'
 
 // redux
 import { connect } from 'react-redux'
-import { setDetail } from 'redux/store/app-state/app-state.actions'
+import {
+  setDetail,
+  setScrollbarPosition,
+} from 'redux/store/app-state/app-state.actions'
+import { getScrollbarPosition } from 'redux/store/app-state/app-state.selectors'
 import {
   selectContact,
   sendInvitationContact,
@@ -24,8 +28,10 @@ import { EmptyList } from 'components/styled-components-mixins'
 
 const ContactListContainer = ({
   contacts,
+  scrollbarPosition,
   onHandleClickContact,
   onHandleClickInvitation,
+  onHandleSetScrollbarPosition,
 }) => {
   if (contacts.items.length === 0) {
     return <EmptyList>No contacts found</EmptyList>
@@ -40,7 +46,11 @@ const ContactListContainer = ({
   }
 
   return (
-    <ShadowScrollbar style={scrollStyle}>
+    <ShadowScrollbar
+      style={scrollStyle}
+      position={scrollbarPosition}
+      setPosition={onHandleSetScrollbarPosition}
+    >
       <ul>
         {contacts.items.map(contact => (
           <ContactListItem
@@ -57,18 +67,22 @@ const ContactListContainer = ({
 
 ContactListContainer.propTypes = {
   contacts: PropTypes.object,
+  scrollbarPosition: PropTypes.number,
   onHandleClickContact: PropTypes.func,
   onHandleClickInvitation: PropTypes.func,
+  onHandleSetScrollbarPosition: PropTypes.func,
 }
 
 const mapStateToProps = state => ({
   contacts: getVisibleContacts(state),
+  scrollbarPosition: getScrollbarPosition(state, 'contact'),
 })
 
 const mapDispatchToProps = {
   setDetail,
   selectContact,
   sendInvitationContact,
+  setScrollbarPosition,
 }
 
 export default compose(
@@ -89,5 +103,7 @@ export default compose(
         autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
       })
     },
+    onHandleSetScrollbarPosition: props => position =>
+      props.setScrollbarPosition('contact', position),
   })
 )(ContactListContainer)

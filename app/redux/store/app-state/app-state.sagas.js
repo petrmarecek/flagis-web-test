@@ -24,6 +24,7 @@ export function* defaultDisplay() {
   yield put(taskActions.updateTaskSearch(''))
   yield put(tagActions.deselectTags())
   yield put(contactActions.deselectContacts())
+  yield put(appStateActions.resetScrollbarPosition())
   yield put(tasksMenuActions.resetTasksMenu())
   yield put(treeActions.resetSelectPath())
   yield put(push(routes.user.tasks))

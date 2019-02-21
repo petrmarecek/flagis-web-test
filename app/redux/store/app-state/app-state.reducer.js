@@ -53,6 +53,20 @@ export default typeToReducer(
         true
       ),
 
+    [APP_STATE.SET_SCROLLBAR_POSITION]: (state, action) =>
+      state.setIn(
+        ['scrollbarPosition', action.payload.list],
+        action.payload.position
+      ),
+
+    [APP_STATE.RESET_SCROLLBAR_POSITION]: state =>
+      state
+        .setIn(['scrollbarPosition', 'task'], null)
+        .setIn(['scrollbarPosition', 'tag'], null)
+        .setIn(['scrollbarPosition', 'inbox'], null)
+        .setIn(['scrollbarPosition', 'archived'], null)
+        .setIn(['scrollbarPosition', 'contact'], null),
+
     [APP_STATE.PRIMARY_HIDDEN_NAVIGATION_HIDE]: state =>
       state.setIn(
         ['navigation', 'primary', 'hiddenNavigation', 'isVisible'],

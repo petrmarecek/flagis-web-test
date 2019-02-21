@@ -60,6 +60,14 @@ export const Loader = Record({
   global: false,
 })
 
+export const Lists = Record({
+  task: null,
+  tag: null,
+  inbox: null,
+  archived: null,
+  contact: null,
+})
+
 export const Detail = Record({
   task: false,
   archive: false,
@@ -119,6 +127,7 @@ export const AppStateStore = Record({
   archivedTasks: new Visibility(),
   inboxTasks: new Visibility(),
   detail: new Detail(),
+  scrollbarPosition: new Lists(),
   navigation: new Navigation(),
   undoBox: null,
   currentDialog: null,

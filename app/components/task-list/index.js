@@ -16,11 +16,13 @@ import { selectActiveTags } from 'redux/store/tags/tags.actions'
 import { getActiveTagsIds } from 'redux/store/tags/tags.selectors'
 import { getTasksMenuSort } from 'redux/store/tasks-menu/tasks-menu.selectors'
 import { computeOrder, computeTimeLine } from 'redux/utils/redux-helper'
+import { setScrollbarPosition } from 'redux/store/app-state/app-state.actions'
 import {
   getArchivedTasksVisibility,
   getInboxTasksVisibility,
   getLeftPanel,
   getWindow,
+  getScrollbarPosition,
 } from 'redux/store/app-state/app-state.selectors'
 import {
   selectTask,
@@ -73,6 +75,7 @@ const TaskListContainer = props => {
     sort,
     leftPanelWidth,
     windowWidth,
+    scrollbarPosition,
 
     // handlers
     onInvokeMove,
@@ -84,6 +87,7 @@ const TaskListContainer = props => {
     onHandleCancelArchiveTasks,
     onHandleAcceptTask,
     onHandleRejectTask,
+    onHandleSetScrollbarPosition,
   } = props
 
   if (!tasks.isFetching && tasks.items.length === 0 && !timeLine) {
@@ -107,7 +111,11 @@ const TaskListContainer = props => {
   }
 
   return (
-    <ShadowScrollbar style={scrollStyle}>
+    <ShadowScrollbar
+      style={scrollStyle}
+      position={scrollbarPosition}
+      setPosition={onHandleSetScrollbarPosition}
+    >
       <TaskList
         userId={userId}
         listType={tasks.type}
@@ -150,6 +158,7 @@ TaskListContainer.propTypes = {
   sort: PropTypes.object,
   leftPanelWidth: PropTypes.number,
   windowWidth: PropTypes.number,
+  scrollbarPosition: PropTypes.number,
 
   // state
   dueDate: PropTypes.object,
@@ -166,6 +175,7 @@ TaskListContainer.propTypes = {
   onHandleCancelArchiveTasks: PropTypes.func,
   onHandleAcceptTask: PropTypes.func,
   onHandleRejectTask: PropTypes.func,
+  onHandleSetScrollbarPosition: PropTypes.func,
 
   // actions
   selectTask: PropTypes.func,
@@ -182,25 +192,32 @@ TaskListContainer.propTypes = {
   acceptTask: PropTypes.func,
   rejectTask: PropTypes.func,
   removeTaskFollower: PropTypes.func,
+  setScrollbarPosition: PropTypes.func,
 }
 
-const mapStateToProps = state => ({
-  userId: getUserId(state),
-  tasks: getTasks(state),
-  isNewRefreshToken: getNewRefreshToken(state),
-  tasksId: getTasksItems(state),
-  completedTasks: getCompletedTasksItems(state),
-  archivedTasks: getArchivedTasksItems(state),
-  entitiesTasks: getEntitiesTasks(state),
-  selectedTasks: getSelectionTasks(state),
-  selectedTags: getActiveTagsIds(state),
-  timeLine: getTimeLine(state),
-  sort: getTasksMenuSort(state),
-  isVisibleArchivedTasks: getArchivedTasksVisibility(state),
-  isVisibleInbox: getInboxTasksVisibility(state),
-  leftPanelWidth: getLeftPanel(state).width,
-  windowWidth: getWindow(state).width,
-})
+const mapStateToProps = state => {
+  const { type } = getTasks(state)
+  const list = type === 'main' ? 'task' : type
+
+  return {
+    userId: getUserId(state),
+    tasks: getTasks(state),
+    isNewRefreshToken: getNewRefreshToken(state),
+    tasksId: getTasksItems(state),
+    completedTasks: getCompletedTasksItems(state),
+    archivedTasks: getArchivedTasksItems(state),
+    entitiesTasks: getEntitiesTasks(state),
+    selectedTasks: getSelectionTasks(state),
+    selectedTags: getActiveTagsIds(state),
+    timeLine: getTimeLine(state),
+    sort: getTasksMenuSort(state),
+    isVisibleArchivedTasks: getArchivedTasksVisibility(state),
+    isVisibleInbox: getInboxTasksVisibility(state),
+    leftPanelWidth: getLeftPanel(state).width,
+    windowWidth: getWindow(state).width,
+    scrollbarPosition: getScrollbarPosition(state, list),
+  }
+}
 
 const mapDispatchToProps = {
   selectTask,
@@ -217,6 +234,7 @@ const mapDispatchToProps = {
   acceptTask,
   rejectTask,
   removeTaskFollower,
+  setScrollbarPosition,
 }
 
 export default compose(
@@ -428,6 +446,12 @@ export default compose(
       },
       onHandleRejectTask: (state, props) => data => {
         props.rejectTask(data)
+        return {}
+      },
+      onHandleSetScrollbarPosition: (state, props) => position => {
+        const { type } = props.tasks
+
+        props.setScrollbarPosition(type === 'main' ? 'task' : type, position)
         return {}
       },
     }
