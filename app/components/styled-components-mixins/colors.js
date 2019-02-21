@@ -83,6 +83,7 @@ export default {
     tagTreeAddNewGroup: colors.midnightHour,
     tagTreeAddNewGroupHover: colors.white,
     tagTreeShadowScrollbar: colors.darkJungleGreen,
+    tagTreeScrollbar: colors.batman,
 
     // image-picker
     imagePickerButton: colors.astrocopusGrey,
@@ -119,6 +120,7 @@ export default {
     tagTreeAddNewGroup: colors.greyOfDarkness,
     tagTreeAddNewGroupHover: colors.darkJungleGreen,
     tagTreeShadowScrollbar: colors.white,
+    tagTreeScrollbar: colors.coldWind,
 
     // image-picker
     imagePickerButton: colors.astrocopusGrey,

@@ -21,7 +21,10 @@ import {
   getLeftPanel,
   getPrimaryHiddenNavigationVisibility,
 } from 'redux/store/app-state/app-state.selectors'
-import { getNewRefreshToken, getColorTheme } from 'redux/store/auth/auth.selectors'
+import {
+  getNewRefreshToken,
+  getColorTheme,
+} from 'redux/store/auth/auth.selectors'
 import { deselectTasks } from 'redux/store/tasks/tasks.actions'
 import { selectTag } from 'redux/store/tags/tags.actions'
 import { getTagsRelations } from 'redux/store/tags/tags.selectors'
@@ -103,7 +106,7 @@ const TagTreeContainer = props => {
     top: '10px',
   }
   const verticalStyle = {
-    backgroundColor: 'rgba(255, 255, 255, 0.4)',
+    backgroundColor: colors[colorTheme].tagTreeScrollbar,
     borderRadius: 3,
   }
 
