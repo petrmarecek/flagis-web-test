@@ -370,8 +370,12 @@ const TaskDetail = props => {
                 isCompleted={isCompletedMainList}
                 nickname={
                   !isOwner
-                    ? createdByFollower.profile.nickname
-                    : assignee.profile.nickname
+                    ? createdByFollower.profile.nickname === null
+                      ? createdByFollower.profile.email
+                      : createdByFollower.profile.nickname
+                    : assignee.profile.nickname === null
+                    ? assignee.profile.email
+                    : createdByFollower.profile.nickname
                 }
                 animation={animation}
               />
