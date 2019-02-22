@@ -82,7 +82,7 @@ const NavigationDefault = ({
         {isVisibleAccountNavigation && (
           <NavigationAccount
             accountRef={accountRef}
-            onClick={onHandleClickAccount}
+            onClickOutSide={onHandleClickAccount}
           />
         )}
       </div>

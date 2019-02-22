@@ -24,7 +24,7 @@ const NavigationAccount = props => {
   const {
     pathname,
     accountRef,
-    onHandleClick,
+    onHandleClickOutSide,
     onHandleClickSettings,
     onHandleClickLogOut,
   } = props
@@ -32,45 +32,43 @@ const NavigationAccount = props => {
   const isSettings = pathname.substring(0, settings.length) === settings
 
   return (
-    <div onClick={onHandleClick}>
-      <MenuBoxWrapper
-        animation="transition.fadeIn"
-        menuIcon={accountRef}
-        clickOutsideMenu={onHandleClick}
-      >
-        <MenuBoxGroup>
-          <MenuBoxItemIcon
-            icon={ICONS.COG_WHEEL}
-            iconScale={0.72}
-            active={isSettings}
-            type="settings"
-            onChange={onHandleClickSettings}
-          />
-          <MenuBoxItemTitle
-            title="Settings"
-            active={isSettings}
-            type="settings"
-            onChange={onHandleClickSettings}
-          />
-        </MenuBoxGroup>
-        <MenuBoxGroup>
-          <MenuBoxItemIcon
-            icon={ICONS.LOG_OUT}
-            iconScale={1}
-            onChange={onHandleClickLogOut}
-          />
-          <MenuBoxItemTitle title="Log Out" onChange={onHandleClickLogOut} />
-        </MenuBoxGroup>
-      </MenuBoxWrapper>
-    </div>
+    <MenuBoxWrapper
+      animation="transition.fadeIn"
+      menuIcon={accountRef}
+      clickOutsideMenu={onHandleClickOutSide}
+    >
+      <MenuBoxGroup>
+        <MenuBoxItemIcon
+          icon={ICONS.COG_WHEEL}
+          iconScale={0.72}
+          active={isSettings}
+          type="settings"
+          onChange={onHandleClickSettings}
+        />
+        <MenuBoxItemTitle
+          title="Settings"
+          active={isSettings}
+          type="settings"
+          onChange={onHandleClickSettings}
+        />
+      </MenuBoxGroup>
+      <MenuBoxGroup>
+        <MenuBoxItemIcon
+          icon={ICONS.LOG_OUT}
+          iconScale={1}
+          onChange={onHandleClickLogOut}
+        />
+        <MenuBoxItemTitle title="Log Out" onChange={onHandleClickLogOut} />
+      </MenuBoxGroup>
+    </MenuBoxWrapper>
   )
 }
 
 NavigationAccount.propTypes = {
   pathname: PropTypes.string,
   accountRef: PropTypes.object,
-  onClick: PropTypes.func,
-  onHandleClick: PropTypes.func,
+  onClickOutSide: PropTypes.func,
+  onHandleClickOutSide: PropTypes.func,
   onHandleClickSettings: PropTypes.func,
   onHandleClickLogOut: PropTypes.func,
 }
@@ -90,9 +88,11 @@ export default compose(
     mapDispatchToProps
   ),
   withHandlers({
-    onHandleClick: props => () => props.onClick(),
+    onHandleClickOutSide: props => () => props.onClickOutSide(),
     onHandleClickLogOut: props => () => props.logout(),
-    onHandleClickSettings: props => () =>
-      props.changeNavigation(routes.user.account.settings.editProfile),
+    onHandleClickSettings: props => () => {
+      props.onClickOutSide()
+      props.changeNavigation(routes.user.account.settings.editProfile)
+    },
   })
 )(NavigationAccount)
