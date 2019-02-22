@@ -39,11 +39,12 @@ const ItemTitle = styled.div`
 `
 
 const ItemTagRelations = styled(Counter)`
-  font-size: 11px;
-  background-color: #efefef;
+  font-size: 12px;
+  background-color: #e1e4e5;
   margin-right: 20px;
-  ${borderRadius('10px')}
-  ${boxShadow('0 2px 4px 0 rgba(0, 0, 0, 0.5)')}
+  min-width: 26px;
+  height: 16px;
+  ${borderRadius('14px')}
 `
 
 export { Item, ItemIcon, ItemTitle, ItemTagRelations }

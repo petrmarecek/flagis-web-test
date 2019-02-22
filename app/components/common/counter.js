@@ -9,6 +9,7 @@ const Item = styled.div`
   font-weight: bold;
   color: #293034;
   padding: 2px 5px;
+  text-align: center;
 `
 
 const Counter = ({ count, className }) => (
