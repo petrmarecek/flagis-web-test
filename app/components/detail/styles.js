@@ -224,12 +224,8 @@ const DetailContentImportantLabel = styled.div`
 `
 
 const DetailContentImportantContent = styled.div`
-  margin: -11px 5px 0 0;
+  margin: -15px 5px 0 0;
   float: right;
-
-  span {
-    font-weight: bold;
-  }
 `
 
 const DetailContentDate = styled.div`

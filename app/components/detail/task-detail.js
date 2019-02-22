@@ -5,10 +5,10 @@ import 'react-datepicker/dist/react-datepicker.css'
 import { compose, withHandlers, lifecycle } from 'recompose'
 import { List } from 'immutable'
 import { infoMessages } from 'utils/messages'
-
 import dateUtil from 'redux/utils/date'
 import { getAssigneeOfTask } from 'redux/utils/component-helper'
 
+// components
 import DetailMenu from 'components/detail/detail-menu'
 import FollowerStatus from 'components/common/follower-status'
 import FollowerResponseButtons from '../common/follower-response-buttons'
@@ -23,6 +23,7 @@ import TagItems from '../common/tag-items'
 import Icon from 'components/icons/icon'
 import { ICONS } from 'components/icons/icon-constants'
 
+// styles
 import {
   DetailInner,
   DetailContentTop,
@@ -59,6 +60,7 @@ import {
   DetailContentCommentsAddIcon,
   DetailContentCommentsAddInput,
 } from './styles'
+import colors from 'components/styled-components-mixins/colors'
 
 const TaskDetail = props => {
   const {
@@ -504,7 +506,13 @@ const TaskDetail = props => {
                   Important
                 </DetailContentImportantLabel>
                 <DetailContentImportantContent>
-                  B<span>/B</span>
+                  <Icon
+                    icon={ICONS.IMPORTANT}
+                    width={16}
+                    height={16}
+                    scale={0.24}
+                    color={colors.defaultIcon}
+                  />
                 </DetailContentImportantContent>
               </DetailContentImportant>
             </DetailContentOptions>

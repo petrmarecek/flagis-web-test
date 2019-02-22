@@ -33,6 +33,7 @@ export default {
   contactExistIcon: [colors.lostAtSea, colors.white],
   defaultAvatar: colors.lostAtSea,
   trashHover: colors.pompelmo,
+  defaultIcon: colors.lostAtSea,
 
   // navigation-default
   navigationDefaultTriangleHover: colors.batman,

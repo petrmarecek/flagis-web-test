@@ -39,7 +39,7 @@ const TasksMenuSort = props => {
     }
 
     if (important) {
-      return ICONS.SORT_BOLD
+      return ICONS.SORT_IMPORTANT
     }
 
     if (incomplete) {
@@ -98,8 +98,8 @@ const TasksMenuSort = props => {
             <MenuBoxItemIcon
               active={important}
               type="important"
-              icon={ICONS.BOLD}
-              iconScale={1.33}
+              icon={ICONS.IMPORTANT}
+              iconScale={0.24}
               onChange={onHandleSortAlgorithmToggle}
             />
             <MenuBoxItemTitle

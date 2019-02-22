@@ -102,8 +102,8 @@ const TasksMenuFilters = props => {
           <MenuBoxGroup>
             <MenuBoxItemIcon
               active={important || unimportant}
-              icon={ICONS.BOLD}
-              iconScale={1.33}
+              icon={ICONS.IMPORTANT}
+              iconScale={0.24}
               onChange={onHandleToggleImportantFilter}
             />
             <MenuBoxItemTitle
