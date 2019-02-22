@@ -15,8 +15,13 @@ export const getNewRefreshToken = state =>
   state.getIn(['auth', 'newRefreshToken'])
 
 export const getColorTheme = state => {
-  if (!state.getIn(['auth', 'profile'])) {
-    return null
+  const profile = state.getIn(['auth', 'profile'])
+  if (!profile) {
+    return 'standard'
+  }
+
+  if (!profile.has('settings')) {
+    return 'standard'
   }
 
   const settings = state.getIn(['auth', 'profile', 'settings'])
@@ -64,7 +69,12 @@ export const getUsername = state => {
 }
 
 export const getUserPhoto = state => {
-  if (!state.getIn(['auth', 'profile'])) {
+  const profile = state.getIn(['auth', 'profile'])
+  if (!profile) {
+    return null
+  }
+
+  if (!profile.has('photo')) {
     return null
   }
 
