@@ -17,7 +17,7 @@ import {
 } from './styles'
 
 const CommentListItem = ({ comment, userId }) => {
-  const { createdById, createdAt, author, content, type } = comment
+  const { createdById, createdAt, author, content, type, data } = comment
   const dateText = dateUtil.formatDateTime(createdAt)
   const icon = type
     ? { type: ICONS.INFO, width: 14, height: 15, scale: 1 }
@@ -39,7 +39,7 @@ const CommentListItem = ({ comment, userId }) => {
       <CommentItemContent>
         {type ? (
           <div style={{ fontWeight: 'bold' }}>
-            {infoMessages.activities(type)}
+            {infoMessages.activities(type, data)}
           </div>
         ) : (
           <Linkify properties={{ target: '_blank' }}>{content}</Linkify>
