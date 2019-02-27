@@ -44,7 +44,7 @@ const ContactDetail = props => {
   const nickname = contact.nickname === null ? '' : contact.nickname
   const description = contact.description === null ? '' : contact.description
   const scrollStyle = {
-    height: 'calc(100vh - 232px)',
+    height: 'calc(100vh - 172px)',
     overflow: 'hidden',
   }
 
@@ -52,7 +52,7 @@ const ContactDetail = props => {
     icon: ICONS.CONTACT_EXIST,
     height: 23,
     width: 28,
-    color: ['#8C9DA9', '#fff'],
+    color: ['#b1b5b8', '#fff'],
   }
 
   if (!contact.isUser) {
@@ -60,7 +60,7 @@ const ContactDetail = props => {
       icon: ICONS.CONTACT_NO_EXIST,
       height: 23,
       width: 28,
-      color: ['#8C9DA9', '#fff', '#FF6A6A'],
+      color: ['#b1b5b8', '#fff', '#FF6A6A'],
     }
   }
 
@@ -130,7 +130,7 @@ const ContactDetail = props => {
                       icon={ICONS.SEND_INVITE}
                       width={17}
                       height={16}
-                      color={['#8C9DA9']}
+                      color={['#b1b5b8']}
                     />
                     <span>Invite</span>
                   </DetailContentContactDataContent>

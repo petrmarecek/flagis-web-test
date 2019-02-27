@@ -56,7 +56,7 @@ const TagDetail = props => {
   const color = getTagColor(colorIndex)
   const description = tag.description === null ? '' : tag.description
   const tagColorElem = domUtils.getDimensions(tagColorsRef)
-  const offset = tagColorElem ? 235 + tagColorElem.height : 294
+  const offset = tagColorElem ? 175 + tagColorElem.height : 234
 
   return (
     <div>

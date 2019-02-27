@@ -47,9 +47,11 @@ import {
   DetailContentAddContactIcon,
   DetailContentAutocompleteContacts,
   DetailContentDate,
+  DetailContentDateIcon,
   DetailContentDateLabel,
   DetailContentDatePicker,
   DetailContentImportant,
+  DetailContentImportantIcon,
   DetailContentImportantLabel,
   DetailContentImportantContent,
   DetailContentAttachments,
@@ -60,7 +62,6 @@ import {
   DetailContentCommentsAddIcon,
   DetailContentCommentsAddInput,
 } from './styles'
-import colors from 'components/styled-components-mixins/colors'
 
 const TaskDetail = props => {
   const {
@@ -182,6 +183,19 @@ const TaskDetail = props => {
     return '#fff'
   }
 
+  // Background color of task item
+  const completedIconColor = () => {
+    if (task.isCompleted) {
+      return ['#44FFB1']
+    }
+
+    if (isOwnerAccepted) {
+      return ['#EBEBEB']
+    }
+
+    return ['#F4F4F4']
+  }
+
   // Margin-left of subject
   const subjectMarginLeft = () => {
     if (isArchived) {
@@ -251,7 +265,7 @@ const TaskDetail = props => {
                 >
                   <Icon
                     icon={ICONS.TASK_CHECKED}
-                    color={isCompleted ? ['#c2fee5'] : ['#D7E3EC']}
+                    color={completedIconColor()}
                     width={22}
                     height={21}
                   />
@@ -387,10 +401,10 @@ const TaskDetail = props => {
             <DetailContentIcon title={ruleMessage} animation>
               <Icon
                 icon={ICONS.LOCK}
-                width={26}
-                height={26}
-                scale={0.68}
-                color={['#8C9DA9']}
+                width={19}
+                height={25}
+                scale={1.25}
+                color={['#B1B5B8']}
                 title={ruleMessage}
               />
             </DetailContentIcon>
@@ -412,6 +426,15 @@ const TaskDetail = props => {
           <DetailContentProperties>
             <DetailContentOptions allowed={!isCompleted && isOwner}>
               <DetailContentAddContact onClick={onHandleRemoveEventListener}>
+                <DetailContentAddContactIcon>
+                  <Icon
+                    icon={ICONS.CONTACTS}
+                    width={15}
+                    height={11}
+                    scale={0.5}
+                    color={['#B1B5B8']}
+                  />
+                </DetailContentAddContactIcon>
                 <DetailContentAddContactLabel changeColor>
                   {!isOwner ? 'From:' : 'To:'}
                 </DetailContentAddContactLabel>
@@ -442,17 +465,14 @@ const TaskDetail = props => {
                     />
                   )}
                 </DetailContentAddContactContent>
-                <DetailContentAddContactIcon>
-                  <Icon
-                    icon={ICONS.FOLLOWER_NEW}
-                    width={14}
-                    height={16}
-                    scale={0.66}
-                    color={['#8C9DA9']}
-                  />
-                </DetailContentAddContactIcon>
               </DetailContentAddContact>
               <DetailContentDate allowed={!isCompleted && !isCollaborated}>
+                <DetailContentDateIcon
+                  icon={ICONS.START_DATE}
+                  height={12}
+                  width={12}
+                  color={['#B1B5B8']}
+                />
                 <DetailContentDateLabel>Start date</DetailContentDateLabel>
                 <DetailContentDatePicker onClick={onHandleRemoveEventListener}>
                   <DatePicker
@@ -468,6 +488,12 @@ const TaskDetail = props => {
                 </DetailContentDatePicker>
               </DetailContentDate>
               <DetailContentDate allowed={!isCompleted && !isCollaborated}>
+                <DetailContentDateIcon
+                  icon={ICONS.DUE_DATE}
+                  height={12}
+                  width={12}
+                  color={['#B1B5B8']}
+                />
                 <DetailContentDateLabel>Due date</DetailContentDateLabel>
                 <DetailContentDatePicker onClick={onHandleRemoveEventListener}>
                   <DatePicker
@@ -483,7 +509,15 @@ const TaskDetail = props => {
                 </DetailContentDatePicker>
               </DetailContentDate>
               <DetailContentDate allowed={!isCompleted && !isCollaborated}>
-                <DetailContentDateLabel>Reminder date</DetailContentDateLabel>
+                <DetailContentDateIcon
+                  icon={ICONS.REMINDER_DATE}
+                  height={13}
+                  width={15}
+                  color={['#B1B5B8']}
+                />
+                <DetailContentDateLabel reminder>
+                  Reminder date
+                </DetailContentDateLabel>
                 <DetailContentDatePicker onClick={onHandleRemoveEventListener}>
                   <DatePicker
                     todayButton="Today"
@@ -502,18 +536,17 @@ const TaskDetail = props => {
                 allowed={!isCompleted && !isInboxVisible}
                 last
               >
+                <DetailContentImportantIcon
+                  icon={ICONS.IMPORTANT}
+                  width={16}
+                  height={16}
+                  scale={0.24}
+                  color={['#B1B5B8']}
+                />
                 <DetailContentImportantLabel important={isImportant}>
                   Important
                 </DetailContentImportantLabel>
-                <DetailContentImportantContent>
-                  <Icon
-                    icon={ICONS.IMPORTANT}
-                    width={16}
-                    height={16}
-                    scale={0.24}
-                    color={colors.defaultIcon}
-                  />
-                </DetailContentImportantContent>
+                <DetailContentImportantContent isChecked={isImportant} />
               </DetailContentImportant>
             </DetailContentOptions>
             <DetailContentAttachments>
@@ -539,7 +572,7 @@ const TaskDetail = props => {
                 placeholder="Add description"
                 onUpdate={onHandleDescriptionUpdate}
                 scrollStyle={{
-                  height: 'calc(100vh - 232px)',
+                  height: 'calc(100vh - 172px)',
                   overflow: 'hidden',
                 }}
               />
@@ -553,7 +586,7 @@ const TaskDetail = props => {
                 <DetailContentCommentsAddIcon>
                   <Icon
                     icon={ICONS.COMMENT}
-                    color={['#8C9DA9']}
+                    color={['#1c2124']}
                     width={26}
                     height={23}
                   />

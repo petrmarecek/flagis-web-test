@@ -16,9 +16,12 @@ import {
   CommentItemContent,
 } from './styles'
 
+/* eslint-disable no-undefined */
+
 const CommentListItem = ({ comment, userId }) => {
   const { createdById, createdAt, author, content, type, data } = comment
   const dateText = dateUtil.formatDateTime(createdAt)
+  const isAssigneeComment = type === undefined && createdById !== userId
   const icon = type
     ? { type: ICONS.INFO, width: 14, height: 15, scale: 1 }
     : createdById === userId
@@ -32,11 +35,11 @@ const CommentListItem = ({ comment, userId }) => {
         width={icon.width}
         height={icon.height}
         scale={icon.scale}
-        color={['#8C9DA9']}
+        color={['#B1B5B8']}
       />
       <CommentItemAuthor>{author}</CommentItemAuthor>
       <CommentItemDate>{dateText}</CommentItemDate>
-      <CommentItemContent>
+      <CommentItemContent isAssigneeComment={isAssigneeComment}>
         {type ? (
           <div style={{ fontWeight: 'bold' }}>
             {infoMessages.activities(type, data)}

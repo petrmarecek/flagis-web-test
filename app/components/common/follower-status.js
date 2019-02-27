@@ -42,7 +42,7 @@ const Button = styled.button`
 
 const Title = styled.span`
   font-size: 16px;
-  line-height: 26px;
+  line-height: 25px;
   color: ${props => props.color};
   animation: ${props =>
     props.animation ? `500ms ${hide}, 500ms ${show} linear 500ms` : 'none'};

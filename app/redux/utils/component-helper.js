@@ -240,6 +240,7 @@ export function getTagColor(index) {
 
 export function markdownToHTML(markdown) {
   const converter = new showdown.Converter()
+  converter.setOption('simpleLineBreaks', true)
   return converter.makeHtml(markdown)
 }
 

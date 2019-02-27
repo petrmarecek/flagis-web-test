@@ -10,25 +10,34 @@ import {
   AttachmentItemFileName,
 } from './styles'
 
-const AttachmentListItem = ({ attachment, disabled, onHandleAttachmentDelete }) => (
+const AttachmentListItem = ({
+  attachment,
+  disabled,
+  onHandleAttachmentDelete,
+}) => (
   <AttachmentItemContainer>
     <AttachmentItemIconFile
       icon={ICONS.FILE_EMPTY}
       width={18}
       height={18}
       scale={0.56}
-      color={["#8C9DA9"]}/>
-    {!disabled &&
-    <AttachmentItemIconRemove
-      icon={ICONS.CROSS_SIMPLE}
-      width={11}
-      height={11}
-      scale={0.78}
-      color={["#8c9da9"]}
-      hoverColor={["#293034"]}
-      onClick={onHandleAttachmentDelete}/>}
+      color={['#B1B5B8']}
+    />
+    {!disabled && (
+      <AttachmentItemIconRemove
+        icon={ICONS.CROSS_SIMPLE}
+        width={11}
+        height={11}
+        scale={0.78}
+        color={['#e1e4e5']}
+        hoverColor={['#1c2124']}
+        onClick={onHandleAttachmentDelete}
+      />
+    )}
     <AttachmentItemFileName>
-      <a href={attachment.url} target="_blank">{attachment.fileName}</a>
+      <a href={attachment.url} target="_blank">
+        {attachment.fileName}
+      </a>
     </AttachmentItemFileName>
   </AttachmentItemContainer>
 )
@@ -44,5 +53,5 @@ export default withHandlers({
   onHandleAttachmentDelete: props => event => {
     event.preventDefault()
     props.attachmentDelete(props.attachment.id)
-  }
+  },
 })(AttachmentListItem)

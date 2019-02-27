@@ -11,41 +11,35 @@ filepicker.setKey('A7hMFRb7XS6KIA4fg4DChz')
 import styled from 'styled-components'
 
 const AddAttachment = styled.div`
+  display: flex;
+  align-items: center;
   margin-top: 10px;
-`
-
-const PinIcon = styled(Icon)`
-  vertical-align: middle;
-  padding-right: 8px;
+  cursor: pointer;
 `
 
 const Button = styled.button`
   font-size: 14px;
-  color: #8c9da9;
+  color: #1c2124;
   border: none;
   background-color: transparent;
-  line-height: 26px;
+  margin-left: 10px;
   padding: 0;
 
   :active {
     outline: none;
   }
-
-  :hover {
-    color: #293034;
-  }
 `
 
 const FilePicker = ({ handleClick }) => (
-  <AddAttachment>
-    <PinIcon
+  <AddAttachment onClick={handleClick}>
+    <Icon
       icon={ICONS.PIN}
       width={23}
       height={26}
-      color={['#8C9DA9']}
+      color={['#1C2124']}
       onClick={handleClick}
     />
-    <Button onClick={handleClick}>Add attachment</Button>
+    <Button>Add attachment</Button>
   </AddAttachment>
 )
 

@@ -7,7 +7,7 @@ const markdownStyles = css`
   h4,
   h5,
   h6 {
-    color: #293034;
+    color: #1c2124;
     font-weight: bold;
   }
 
@@ -123,7 +123,7 @@ const markdownStyles = css`
     color: #fff;
     padding: 4px 6px;
     border-radius: 5px;
-    background-color: #293034;
+    background-color: #1c2124;
   }
 
   code,
@@ -131,18 +131,18 @@ const markdownStyles = css`
     font-family: Monaco, monospace;
     font-size: 12px;
     border-radius: 3px;
-    background-color: #e7eced;
+    background-color: #d7e3ec;
     color: inherit;
   }
 
   p code {
-    border: 1px solid #293034;
+    border: 1px solid #1c2124;
     margin: 0 2px;
     padding: 0 5px;
   }
 
   pre {
-    border: 1px solid #293034;
+    border: 1px solid #1c2124;
     overflow: auto;
     padding: 4px 8px;
   }

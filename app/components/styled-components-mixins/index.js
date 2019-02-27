@@ -159,7 +159,7 @@ const commonCommentInputSmall = css`
   ${input}
   padding: 2px;
   font-size: 14px;
-  border-bottom: 1px solid #d7e3ec;
+  border-bottom: 1px solid #e1e4e5;
 `
 
 const link = css`

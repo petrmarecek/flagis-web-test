@@ -3,7 +3,6 @@ import { textOverflow } from 'components/styled-components-mixins'
 import Icon from '../icons/icon'
 
 const AttachmentListContainer = styled.div`
-  padding-right: 20px;
   position: absolute;
   right: 0;
   bottom: 0;
@@ -15,12 +14,25 @@ const AttachmentItemContainer = styled.li`
   display: block;
   list-style-type: none;
   font-size: 14px;
-  margin: 2px 0;
   position: relative;
-  color: #8c9da9;
+  margin: 2px 0 0 0;
+  border-bottom: 1px solid #e1e4e5;
 
   :last-of-type {
     margin-bottom: 15px;
+    border-bottom: 1px solid #fff;
+  }
+
+  :hover {
+    svg:first-of-type {
+      path {
+        fill: #1c2124;
+      }
+    }
+
+    a {
+      color: #1c2124;
+    }
   }
 `
 
@@ -34,22 +46,19 @@ const AttachmentItemIconFile = styled(Icon)`
 const AttachmentItemIconRemove = styled(Icon)`
   position: absolute;
   display: block;
-  right: 3px;
+  right: 9px;
   top: 6px;
 `
 
 const AttachmentItemFileName = styled.div`
-  margin: 0 20px 15px 35px;
+  margin: 0 30px 2px 35px;
   line-height: 25px;
   overflow: hidden;
+  white-space: nowrap;
   ${textOverflow('ellipsis')}
 
   a {
-    color: #8c9da9;
-
-    :hover {
-      color: #676d71;
-    }
+    color: #b1b5b8;
   }
 `
 

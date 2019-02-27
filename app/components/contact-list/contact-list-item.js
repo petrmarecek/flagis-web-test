@@ -9,17 +9,21 @@ import {
   ContactItemTitle,
   ContactItemInvite,
   ContactItemInviteIcon,
-  ContactItemInviteText
+  ContactItemInviteText,
 } from './styles'
 
 import { ICONS } from '../icons/icon-constants'
 
-const ContactItem = ({ contact, onHandleClickContact, onHandleClickInvitation }) => {
+const ContactItem = ({
+  contact,
+  onHandleClickContact,
+  onHandleClickInvitation,
+}) => {
   let icon = {
     icon: ICONS.CONTACT_EXIST,
     height: 21,
     width: 21,
-    color: ['#8C9DA9', '#fff'],
+    color: ['#b1b5b8', '#fff'],
   }
 
   if (!contact.isUser) {
@@ -27,35 +31,34 @@ const ContactItem = ({ contact, onHandleClickContact, onHandleClickInvitation })
       icon: ICONS.CONTACT_NO_EXIST,
       height: 23,
       width: 28,
-      color: ['#8C9DA9', '#fff', '#FF6A6A'],
+      color: ['#b1b5b8', '#fff', '#FF6A6A'],
     }
   }
 
-  const title = contact.nickname !== null
-    ? contact.nickname
-    : contact.email
+  const title = contact.nickname !== null ? contact.nickname : contact.email
 
-  return(
-    <ContactItemContainer
-      key={contact.id}
-      onClick={onHandleClickContact}>
+  return (
+    <ContactItemContainer key={contact.id} onClick={onHandleClickContact}>
       <ContactItemIcon
         icon={icon.icon}
         width={icon.width}
         height={icon.height}
-        color={icon.color} />
+        color={icon.color}
+      />
       <ContactItemTitleWrapper>
         <ContactItemTitle isUser={contact.isUser}>{title}</ContactItemTitle>
       </ContactItemTitleWrapper>
-      {!contact.isInvited && !contact.isUser &&
-      <ContactItemInvite onClick={onHandleClickInvitation}>
-        <ContactItemInviteIcon
-          icon={ICONS.SEND_INVITE}
-          width={17}
-          height={16}
-          color={['#8C9DA9']} />
-        <ContactItemInviteText>Invite</ContactItemInviteText>
-      </ContactItemInvite>}
+      {!contact.isInvited && !contact.isUser && (
+        <ContactItemInvite onClick={onHandleClickInvitation}>
+          <ContactItemInviteIcon
+            icon={ICONS.SEND_INVITE}
+            width={17}
+            height={16}
+            color={['#b1b5b8']}
+          />
+          <ContactItemInviteText>Invite</ContactItemInviteText>
+        </ContactItemInvite>
+      )}
     </ContactItemContainer>
   )
 }
@@ -74,6 +77,6 @@ export default compose(
     onHandleClickInvitation: props => event => {
       event.stopPropagation()
       props.onClickInvitation(props.contact.id)
-    }
-  }),
+    },
+  })
 )(ContactItem)

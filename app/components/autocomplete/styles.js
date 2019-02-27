@@ -13,6 +13,7 @@ import {
 const AutocompleteContainer = styled.ul`
   ${boxSizing('border-box')}
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   margin: 0;
   float: ${props => (props.taskDetailTags ? 'right' : 'none')};

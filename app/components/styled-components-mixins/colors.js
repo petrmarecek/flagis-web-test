@@ -30,8 +30,8 @@ const colors = {
 
 export default {
   // default
-  contactExistIcon: [colors.lostAtSea, colors.white],
-  defaultAvatar: colors.lostAtSea,
+  contactExistIcon: [colors.astrocopusGrey, colors.white],
+  defaultAvatar: colors.astrocopusGrey,
   trashHover: colors.pompelmo,
   defaultIcon: colors.lostAtSea,
 

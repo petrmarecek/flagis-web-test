@@ -12,7 +12,6 @@ const CommentItemContainer = styled.li`
   font-size: 14px;
   margin: 20px 0;
   position: relative;
-  color: #8c9da9;
 
   :first-of-type {
     margin-top: 0;
@@ -33,21 +32,22 @@ const CommentItemIcon = styled(Icon)`
 const CommentItemAuthor = styled.div`
   display: inline-block;
   margin-left: 37px;
-  color: #3e484f;
+  color: #b1b5b8;
 `
 
 const CommentItemDate = styled.div`
   display: inline-block;
   font-size: 12px;
   margin: 2px 0 0 0;
+  color: #b1b5b8;
   float: right;
-  color: #c1cad0;
 `
 
 const CommentItemContent = styled.div`
   display: block;
   margin: 4px 0 0 37px;
   word-wrap: break-word;
+  color: ${props => (props.isAssigneeComment ? '#1c2124' : '#b1b5b8')};
   ${link}
 `
 

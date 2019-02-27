@@ -1,6 +1,7 @@
 import styled, { css, keyframes } from 'styled-components'
 import ContentEditable from '../common/content-editable'
 import MarkdownEditable from '../common/markdown-editable'
+import ToggleSwitch from '../common/toggle-switch'
 import Icon from '../icons/icon'
 import {
   boxSizing,
@@ -165,44 +166,36 @@ const DetailContentOptions = styled.div`
   pointer-events: ${props => (props.allowed ? 'auto' : 'none')};
 `
 
-const detailContentOptionsItem = css`
-  position: relative;
-  color: #8c9da9;
-  padding: 0 0 2px 0;
-  border-bottom: 1px solid #d7e3ec;
-`
-
 const detailContentOptionsItemLabel = css`
-  margin: 0 0 0 3px;
   font-size: 14px;
-  color: ${props => (props.changeColor ? '#293034' : '#8c9da9')};
+  color: ${props => (props.changeColor ? '#293034' : '#b1b5b8')};
   font-weight: ${props => (props.important ? 'bold' : 'normal')};
 `
 
 const DetailContentAddContact = styled.div`
-  ${detailContentOptionsItem}
-  margin: 0 0 10px 0;
-  cursor: default;
-  padding: 10px 0 2px 0;
-`
-
-const DetailContentAddContactLabel = styled.div`
-  ${detailContentOptionsItemLabel}
   position: relative;
-`
-
-const DetailContentAddContactContent = styled.div`
-  position: absolute;
-  left: ${props => (!props.isOwner ? '45px' : '26px')};
-  right: ${props => (!props.isOwner ? '5px' : '35px')};
-  bottom: -5px;
+  margin: 0 0 10px 0;
+  padding-top: 24px;
+  border-bottom: 1px solid #e1e4e5;
 `
 
 const DetailContentAddContactIcon = styled.div`
   position: absolute;
-  right: 5px;
-  bottom: 2px;
+  left: 7px;
+  bottom: 5px;
   pointer-events: none;
+`
+
+const DetailContentAddContactLabel = styled.div`
+  ${detailContentOptionsItemLabel}
+  position: absolute;
+  left: 30px;
+  bottom: 4px;
+  pointer-events: none;
+`
+
+const DetailContentAddContactContent = styled.div`
+  margin: 0 5px -3px ${props => (!props.isOwner ? '70px' : '55px')};
 `
 
 const DetailContentAutocompleteContacts = styled.ul`
@@ -213,19 +206,31 @@ const DetailContentAutocompleteContacts = styled.ul`
 `
 
 const DetailContentImportant = styled.div`
-  ${detailContentOptionsItem}
-  margin: 10px 0;
+  position: relative;
+  margin: 0 0 10px 0;
+  padding-top: 24px;
   pointer-events: ${props => (props.allowed ? 'auto' : 'none')};
+  border-bottom: 1px solid #e1e4e5;
   cursor: pointer;
+`
+
+const DetailContentImportantIcon = styled(Icon)`
+  position: absolute;
+  left: 7px;
+  bottom: 4px;
 `
 
 const DetailContentImportantLabel = styled.div`
   ${detailContentOptionsItemLabel}
+  position: absolute;
+  left: 30px;
+  bottom: 4px;
 `
 
-const DetailContentImportantContent = styled.div`
-  margin: -15px 5px 0 0;
-  float: right;
+const DetailContentImportantContent = styled(ToggleSwitch)`
+  position: absolute;
+  bottom: 4px;
+  right: 5px;
 `
 
 const DetailContentDate = styled.div`
@@ -233,12 +238,20 @@ const DetailContentDate = styled.div`
   pointer-events: ${props => (props.allowed ? 'auto' : 'none')};
 `
 
+const DetailContentDateIcon = styled(Icon)`
+  position: absolute;
+  top: 7px;
+  left: ${props => (props.reminder ? '5px' : '7px')};
+  z-index: 1;
+  pointer-events: none;
+`
+
 const DetailContentDateLabel = styled.div`
   position: absolute;
-  top: 10px;
-  left: 3px;
+  top: 7px;
+  left: 30px;
   z-index: 1;
-  color: #8c9da9;
+  color: #b1b5b8;
   font-size: 14px;
   pointer-events: none;
 `
@@ -319,7 +332,7 @@ const DetailContentCommentsAddInput = styled.div`
   position: relative;
 
   input {
-    ${placeholderColor('#8c9da9')}
+    ${placeholderColor('#1c2124')}
     ${commonCommentInputSmall}
   }
 `
@@ -372,28 +385,30 @@ const ContentEditableStyles = css`
   pointer-events: ${props => (props.allowed ? 'auto' : 'none')};
 
   :empty:before {
-    color: #8c9da9;
+    color: #b1b5b8;
     content: attr(data-placeholder);
   }
 `
 
 // --------------------------------------- Markdown editable ---------------------------------------
 const MarkdownEditableContainer = styled(MarkdownEditable)`
+  ${fontMain}
   ${boxSizing('border-box')}
+  position: relative;
   padding: 15px 2px 15px 15px;
-  border: 1px solid #d7e3ec;
+  border: 1px solid #e1e4e5;
   width: 100%;
   height: 100%;
   font-size: 14px;
   cursor: text;
 
   .markdown__html {
-    ${fontMain}
     ${markdownStyles}
+    color: #1c2124;
     padding-right: 13px;
 
     :empty:before {
-      color: #8c9da9;
+      color: #b1b5b8;
       display: block;
       padding: 2px;
       content: attr(data-placeholder);
@@ -401,15 +416,13 @@ const MarkdownEditableContainer = styled(MarkdownEditable)`
   }
 
   .markdown__edit {
-    ${placeholderColor('#8c9da9')}
-    font-family: 'Source Sans Pro', 'Segoe UI', sans-serif;
-    font-weight: 300;
+    ${placeholderColor('#1c2124')}
+    color: #1c2124;
     border: none;
     padding-right: 13px;
     resize: none;
     width: 100%;
     height: ${props => (props.editHeight ? props.editHeight : '100%')};
-    color: '#293034';
   }
 `
 
@@ -496,7 +509,7 @@ const DetailContentTagColor = styled.div`
 const DetailTagColorSelector = styled.div`
   display: flex;
   flex-direction: column;
-  color: #8c9da9;
+  color: #b1b5b8;
   font-size: 14px;
 `
 
@@ -542,11 +555,11 @@ const DetailContentDescriptionContact = styled.div`
 
 const DetailContentContactData = styled.div`
   position: relative;
-  color: #8c9da9;
+  color: #b1b5b8;
   font-size: 14px;
   padding: 0 0 2px 0;
   margin: 10px 0;
-  border-bottom: 1px solid #d7e3ec;
+  border-bottom: 1px solid #e1e4e5;
   height: 22px;
 `
 
@@ -567,17 +580,17 @@ const DetailContentContactDataContent = styled.div`
     margin: 0 0 0 10px;
     font-size: 14px;
     font-weight: bold;
-    color: #8c9da9;
+    color: #b1b5b8;
   }
 
   :hover {
     span {
-      color: ${props => (props.button ? '#293034' : '#8c9da9')};
+      color: ${props => (props.button ? '#293034' : '#b1b5b8')};
     }
 
     svg {
       path {
-        fill: ${props => (props.button ? '#293034' : '#8c9da9')};
+        fill: ${props => (props.button ? '#293034' : '#b1b5b8')};
       }
     }
   }
@@ -602,9 +615,11 @@ export {
   DetailContentAddContactIcon,
   DetailContentAutocompleteContacts,
   DetailContentDate,
+  DetailContentDateIcon,
   DetailContentDateLabel,
   DetailContentDatePicker,
   DetailContentImportant,
+  DetailContentImportantIcon,
   DetailContentImportantLabel,
   DetailContentImportantContent,
   DetailContentAttachments,

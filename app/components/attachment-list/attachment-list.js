@@ -8,8 +8,8 @@ import { AttachmentListContainer } from './styles'
 
 const AttachmentList = ({ attachments, attachmentDelete, disabled }) => {
   const scrollStyle = {
-    height: `calc(100vh - 390px)`,
-    overflow: 'hidden'
+    height: `calc(100vh - 360px)`,
+    overflow: 'hidden',
   }
 
   return (
@@ -19,16 +19,19 @@ const AttachmentList = ({ attachments, attachmentDelete, disabled }) => {
           scrollbar.scrollToBottom()
         }
       }}
-      style={scrollStyle} >
+      style={scrollStyle}
+    >
       <AttachmentListContainer>
         <ul>
-          {!attachments.isFetching && attachments.items.map(attachment => (
-            <AttachmentListItem
-              key={attachment.id}
-              attachment={attachment}
-              attachmentDelete={attachmentDelete}
-              disabled={disabled}/>
-          ))}
+          {!attachments.isFetching &&
+            attachments.items.map(attachment => (
+              <AttachmentListItem
+                key={attachment.id}
+                attachment={attachment}
+                attachmentDelete={attachmentDelete}
+                disabled={disabled}
+              />
+            ))}
         </ul>
       </AttachmentListContainer>
     </Scrollbars>

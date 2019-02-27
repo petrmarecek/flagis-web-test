@@ -13,25 +13,28 @@ const DetailMenu = props => {
           icon={ICONS.ARROW_LEFT}
           width={23}
           height={18}
-          color={["#8C9DA9"]}
-          hoverColor={["#44FFB1"]}
-          onClick={props.back}/>
+          color={['#a2a2a2']}
+          hoverColor={['#44FFB1']}
+          onClick={props.back}
+        />
       </LeftMenu>
       <RightMenu>
         <Icon
           icon={ICONS.ARROW_SIMPLE_LEFT}
           width={11}
           height={17}
-          color={["#8C9DA9"]}
-          hoverColor={["#44FFB1"]}
-          onClick={props.previous}/>
+          color={['#a2a2a2']}
+          hoverColor={['#44FFB1']}
+          onClick={props.previous}
+        />
         <Icon
           icon={ICONS.ARROW_SIMPLE_RIGHT}
           width={11}
           height={17}
-          color={["#8C9DA9"]}
-          hoverColor={["#44FFB1"]}
-          onClick={props.next}/>
+          color={['#a2a2a2']}
+          hoverColor={['#44FFB1']}
+          onClick={props.next}
+        />
       </RightMenu>
     </Menu>
   )
