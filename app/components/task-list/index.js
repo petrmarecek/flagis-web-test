@@ -115,6 +115,7 @@ const TaskListContainer = props => {
       style={scrollStyle}
       position={scrollbarPosition}
       setPosition={onHandleSetScrollbarPosition}
+      isToggleTaskList={timeLine}
     >
       <TaskList
         userId={userId}

@@ -9,6 +9,7 @@ export default class ShadowScrollbar extends PureComponent {
     position: PropTypes.number,
     verticalStyle: PropTypes.object,
     children: PropTypes.any,
+    isToggleTaskList: PropTypes.bool,
     setPosition: PropTypes.func,
     addScrollRef: PropTypes.func,
     handleDrag: PropTypes.func,
@@ -16,8 +17,22 @@ export default class ShadowScrollbar extends PureComponent {
     handleScrollStop: PropTypes.func,
   }
 
+  componentDidUpdate(prevProps) {
+    const { position, isToggleTaskList } = this.props
+    const { scrollRef } = this.refs
+
+    if (prevProps.position > 0 && position === 0) {
+      scrollRef.view.scrollTop = position
+    }
+
+    if (prevProps.isToggleTaskList !== isToggleTaskList) {
+      scrollRef.view.scrollTop = 0
+    }
+  }
+
   componentDidMount() {
     const { scrollRef } = this.refs
+
     window.setTimeout(() => {
       if (this.props.addScrollRef) {
         this.props.addScrollRef(scrollRef)
