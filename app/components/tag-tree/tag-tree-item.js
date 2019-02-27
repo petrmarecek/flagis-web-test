@@ -132,7 +132,6 @@ const TagTreeItem = props => {
     addControlParentId,
     isOver,
     isDragging,
-    isHover,
     dropPosition,
     colorTheme,
 
@@ -144,8 +143,6 @@ const TagTreeItem = props => {
     onSubitemCreated,
     onTreeItemEdit,
     onTreeItemDelete,
-    onHandleSetHover,
-    onHandleUnsetHover,
     onHandleTreeItemSelected,
     onHandleClicked,
     onHandleCollapse,
@@ -204,8 +201,6 @@ const TagTreeItem = props => {
           <div>
             <Item
               onClick={onHandleClicked}
-              onMouseEnter={onHandleSetHover}
-              onMouseLeave={onHandleUnsetHover}
               selected={selection.includes(treeItem.id)}
               colorTheme={colorTheme}
               {...draggingData}
@@ -219,49 +214,47 @@ const TagTreeItem = props => {
                 />
               </ItemTagIcon>
               <ItemTitle>{treeItem.tag.title}</ItemTitle>
-              {!isHover ? (
-                <ItemRelations
-                  selected={selection.includes(treeItem.id)}
-                  colorTheme={colorTheme}
-                >
-                  {currentTagRelations.size}
-                </ItemRelations>
-              ) : (
-                <ItemIcons>
-                  {renderArrowIcon(treeItem.childItems)}
-                  <ItemIcon title="Delete" iconMargin="0 4px 0 0">
-                    <Icon
-                      icon={ICONS.TRASH}
-                      width={12}
-                      height={13}
-                      scale={0.5}
-                      color={[colors[colorTheme].tagTreeItemIcon]}
-                      hoverColor={[colors.trashHover]}
-                      onClick={onHandleDeleteIconClicked}
-                    />
-                  </ItemIcon>
-                  <ItemIcon title="Go to edit tag" iconMargin="0 10px 0 0">
-                    <Icon
-                      icon={ICONS.PENCIL}
-                      width={11}
-                      height={11}
-                      scale={0.73}
-                      color={[colors[colorTheme].tagTreeItemIcon]}
-                      onClick={onHandleEditIconClicked}
-                    />
-                  </ItemIcon>
-                  <ItemIcon title="Add sub filter" iconMargin="0 10px 0 0">
-                    <Icon
-                      icon={ICONS.PLUS}
-                      width={12}
-                      height={12}
-                      scale={0.38}
-                      color={[colors[colorTheme].tagTreeItemIcon]}
-                      onClick={onHandleAddChildClicked}
-                    />
-                  </ItemIcon>
-                </ItemIcons>
-              )}
+              <ItemRelations
+                className="tag-tree-item--relations"
+                selected={selection.includes(treeItem.id)}
+                colorTheme={colorTheme}
+              >
+                {currentTagRelations.size}
+              </ItemRelations>
+              <ItemIcons className="tag-tree-item--icons">
+                {renderArrowIcon(treeItem.childItems)}
+                <ItemIcon title="Delete" iconMargin="0 4px 0 0">
+                  <Icon
+                    icon={ICONS.TRASH}
+                    width={12}
+                    height={13}
+                    scale={0.5}
+                    color={[colors[colorTheme].tagTreeItemIcon]}
+                    hoverColor={[colors.trashHover]}
+                    onClick={onHandleDeleteIconClicked}
+                  />
+                </ItemIcon>
+                <ItemIcon title="Go to edit tag" iconMargin="0 10px 0 0">
+                  <Icon
+                    icon={ICONS.PENCIL}
+                    width={11}
+                    height={11}
+                    scale={0.73}
+                    color={[colors[colorTheme].tagTreeItemIcon]}
+                    onClick={onHandleEditIconClicked}
+                  />
+                </ItemIcon>
+                <ItemIcon title="Add sub filter" iconMargin="0 10px 0 0">
+                  <Icon
+                    icon={ICONS.PLUS}
+                    width={12}
+                    height={12}
+                    scale={0.38}
+                    color={[colors[colorTheme].tagTreeItemIcon]}
+                    onClick={onHandleAddChildClicked}
+                  />
+                </ItemIcon>
+              </ItemIcons>
             </Item>
           </div>
         )}
@@ -300,7 +293,6 @@ TagTreeItem.propTypes = {
   addControlParentId: PropTypes.string,
   isOver: PropTypes.bool.isRequired,
   isDragging: PropTypes.bool.isRequired,
-  isHover: PropTypes.bool,
   dropPosition: PropTypes.string,
   colorTheme: PropTypes.string,
 
@@ -313,8 +305,6 @@ TagTreeItem.propTypes = {
   onTreeItemEdit: PropTypes.func,
   onTreeItemDelete: PropTypes.func,
   onTreeItemSelected: PropTypes.func,
-  onHandleSetHover: PropTypes.func,
-  onHandleUnsetHover: PropTypes.func,
   onHandleTreeItemSelected: PropTypes.func,
   onHandleClicked: PropTypes.func,
   onHandleCollapse: PropTypes.func,
@@ -337,7 +327,7 @@ const checkPropsChange = (props, nextProps) => {
     tagsRelations,
     parentTagRelations,
     dropPosition,
-    isHover,
+    colorTheme,
   } = props
   const tagRelations = getTagRelations(
     tagsRelations,
@@ -353,7 +343,7 @@ const checkPropsChange = (props, nextProps) => {
   const nextTagsRelations = nextProps.tagsRelations
   const nextParentTagRelations = nextProps.parentTagRelations
   const nextDropPosition = nextProps.dropPosition
-  const nextIsHover = nextProps.isHover
+  const nextColorTheme = nextProps.colorTheme
   const nextTagRelations = getTagRelations(
     nextTagsRelations,
     nextParentTagRelations,
@@ -362,7 +352,7 @@ const checkPropsChange = (props, nextProps) => {
 
   return (
     !treeItem.equals(nextTreeItem) ||
-    isHover !== nextIsHover ||
+    colorTheme !== nextColorTheme ||
     tagRelations !== nextTagRelations ||
     (dropPosition !== nextDropPosition || isOver !== nextIsOver) ||
     (!selection.equals(nextSelection) &&
@@ -386,10 +376,7 @@ export default DragSource(
       TagTreeItemDragDrop.taskTarget,
       TagTreeItemDragDrop.collectDropTarget
     ),
-    withStateHandlers(() => ({ dropPosition: '', isHover: false }), {
-      onHandleSetHover: () => () => ({ isHover: true }),
-      onHandleUnsetHover: () => () => ({ isHover: false }),
-    }),
+    withStateHandlers(() => ({ dropPosition: '' }), {}),
     withHandlers({
       onHandleTreeItemSelected: props => selectedTreeItems => {
         selectedTreeItems.push(props.treeItem.toJS())

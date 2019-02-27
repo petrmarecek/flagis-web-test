@@ -237,11 +237,27 @@ const Item = styled.div`
   ${props => (props.dragOverBottom ? dragOverBottom : null)}
   ${props => (props.selected ? itemSelected : null)}
 
+  .tag-tree-item--relations {
+    visibility: visible;
+  }
+
+  .tag-tree-item--icons {
+    visibility: hidden;
+  }
+
   :hover {
     ${borderRadius('13px')}
     background-color: ${props =>
       colors[props.colorTheme].tagTreeItemBackgroundHover};
     color: ${props => colors[props.colorTheme].tagTreeItemHover};
+
+    .tag-tree-item--relations {
+      visibility: hidden;
+    }
+
+    .tag-tree-item--icons {
+      visibility: visible;
+    }
   }
 `
 
