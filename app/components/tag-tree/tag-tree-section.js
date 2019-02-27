@@ -136,6 +136,7 @@ const TagTreeSection = props => {
     onTreeItemDelete,
     onTreeItemSelected,
     onDrop,
+    onHandleTitleClicked,
     onHandleAddChildClicked,
     onHandleDeleteIconClicked,
     onHandleCollapse,
@@ -180,6 +181,7 @@ const TagTreeSection = props => {
             <SectionHeaderTitle
               type="text"
               value={title}
+              onClick={onHandleTitleClicked}
               onChange={onHandleChangeTitle}
               onBlur={onHandleSubmitTitle}
               onKeyDown={onHandleKeyDown}
@@ -275,6 +277,7 @@ TagTreeSection.propTypes = {
   onDropSection: PropTypes.func.isRequired,
   onHandleAddChildClicked: PropTypes.func,
   onHandleDeleteIconClicked: PropTypes.func,
+  onHandleTitleClicked: PropTypes.func,
   onHandleCollapse: PropTypes.func,
   onHandleChangeTitle: PropTypes.func,
   onHandleResetTitle: PropTypes.func,
@@ -300,6 +303,13 @@ export default DragSource(
       props => ({ inputRef: null, title: props.section.title }),
       {
         getInputRef: () => ref => ({ inputRef: ref }),
+        onHandleTitleClicked: ({ inputRef }) => () => {
+          // fix problem for IE with double click
+          window.setTimeout(() => {
+            inputRef.blur()
+            inputRef.focus()
+          }, 1)
+        },
         onHandleChangeTitle: ({ inputRef }) => () => ({
           title: inputRef.value,
         }),
@@ -307,6 +317,10 @@ export default DragSource(
           title: props.section.title,
         }),
         onHandleSubmitTitle: ({ title }, props) => () => {
+          if (title === props.section.title) {
+            return {}
+          }
+
           if (isStringEmpty(title)) {
             return { title: props.section.title }
           }
