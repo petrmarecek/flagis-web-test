@@ -195,7 +195,26 @@ const DetailContentAddContactLabel = styled.div`
 `
 
 const DetailContentAddContactContent = styled.div`
-  margin: 0 5px -3px ${props => (!props.isOwner ? '70px' : '55px')};
+  margin: 0 ${props => (props.isUnknownContact ? '22px' : '5px')} -3px ${props => (!props.isOwner ? '70px' : '55px')};
+`
+
+const DetailContentAddNewContact = styled.span`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  right: 5px;
+  bottom: 4px;
+  height: 18px;
+  width: 18px;
+  background-color: #b1b5b8;
+  ${borderRadius('50%')}
+  pointer-events: auto;
+  cursor: pointer;
+
+  :hover {
+    background-color: #44ffb1;
+  }
 `
 
 const DetailContentAutocompleteContacts = styled.ul`
@@ -613,6 +632,7 @@ export {
   DetailContentAddContactLabel,
   DetailContentAddContactContent,
   DetailContentAddContactIcon,
+  DetailContentAddNewContact,
   DetailContentAutocompleteContacts,
   DetailContentDate,
   DetailContentDateIcon,

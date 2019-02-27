@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { compose, lifecycle, withHandlers } from 'recompose'
 import { DetailStyle } from './styles'
 import { toast } from 'react-toastify'
-import { successMessages } from 'utils/messages'
+import { successMessages, errorMessages } from 'utils/messages'
 import constants from 'utils/constants'
 import { routes } from 'utils/routes'
 import { List } from 'immutable'
@@ -53,6 +53,7 @@ import {
   deselectContacts,
   updateContact,
   sendInvitationContact,
+  createContact,
 } from 'redux/store/contacts/contacts.actions'
 import { getUserId } from 'redux/store/auth/auth.selectors'
 import {
@@ -81,6 +82,7 @@ import {
   getCurrentContact,
   getNextContact,
   getPreviousContact,
+  getContactsEmail,
 } from 'redux/store/contacts/contacts.selectors'
 import { getEntitiesTasks } from 'redux/store/entities/entities.selectors'
 import {
@@ -122,6 +124,7 @@ const Detail = props => {
     onHandleTaskAttachmentDelete,
     onHandleTaskFileUploaded,
     onHandleTaskAddComment,
+    onHandleTaskAddNewContact,
 
     tag,
     titles,
@@ -171,6 +174,7 @@ const Detail = props => {
           onHandleTaskFollowerDeleted={onHandleTaskFollowerDeleted}
           onHandleTaskDelete={onHandleTaskDelete}
           onHandleTaskDateChanged={onHandleTaskDateChanged}
+          onHandleTaskAddNewContact={onHandleTaskAddNewContact}
           onHandleTaskToggleImportant={onHandleTaskToggleImportant}
           onHandleTaskDescriptionUpdate={onHandleTaskDescriptionUpdate}
           onHandleTaskAttachmentDelete={onHandleTaskAttachmentDelete}
@@ -234,6 +238,7 @@ Detail.propTypes = {
   onHandleTaskTagDeleted: PropTypes.func,
   onHandleTaskFollowerDeleted: PropTypes.func,
   onHandleTaskDelete: PropTypes.func,
+  onHandleTaskAddNewContact: PropTypes.func,
   onHandleTaskDateChanged: PropTypes.func,
   onHandleTaskToggleImportant: PropTypes.func,
   onHandleTaskDescriptionUpdate: PropTypes.func,
@@ -278,6 +283,7 @@ const mapStateToProps = state => ({
   completedTasks: getCompletedTasksItems(state),
   archivedTasks: getArchivedTasksItems(state),
   entitiesTasks: getEntitiesTasks(state),
+  validEmails: getContactsEmail(state),
 
   tag: getCurrentTag(state),
   titles: getTagsTitle(state),
@@ -311,6 +317,7 @@ const mapDispatchToProps = {
   sendTask,
   acceptTask,
   rejectTask,
+  createContact,
 
   selectTag,
   deselectTags,
@@ -482,6 +489,25 @@ export default compose(
     },
     onHandleTaskDateChanged: props => data =>
       props.setDate(data.task, data.date, data.typeDate),
+    onHandleTaskAddNewContact: props => email => {
+      const { validEmails } = props
+
+      if (validEmails.includes(email.toLowerCase())) {
+        toast.error(errorMessages.createEntity.createConflict('contact'), {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: constants.NOTIFICATION_ERROR_DURATION,
+        })
+
+        return
+      }
+
+      toast.success(successMessages.contacts.create, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: constants.NOTIFICATION_ERROR_DURATION,
+      })
+
+      props.createContact(email)
+    },
     onHandleTaskToggleImportant: props => data =>
       props.requestToggleImportant(data),
     onHandleTaskDescriptionUpdate: props => data =>

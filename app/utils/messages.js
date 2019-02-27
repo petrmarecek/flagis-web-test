@@ -74,6 +74,7 @@ export const successMessages = {
   },
 
   contacts: {
+    create: 'Contact was created.',
     sendInvitation: 'Invitation has been sent to the Contact.',
   },
 

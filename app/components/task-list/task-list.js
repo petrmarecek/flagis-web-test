@@ -63,6 +63,8 @@ const TaskList = props => {
       followers: List(),
       createdBy: {
         id: null,
+        isContact: false,
+        email: null,
       },
     }
 

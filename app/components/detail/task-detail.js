@@ -45,6 +45,7 @@ import {
   DetailContentAddContactLabel,
   DetailContentAddContactContent,
   DetailContentAddContactIcon,
+  DetailContentAddNewContact,
   DetailContentAutocompleteContacts,
   DetailContentDate,
   DetailContentDateIcon,
@@ -80,6 +81,7 @@ const TaskDetail = props => {
     onHandleTagDelete,
     onHandleFollowerDelete,
     onHandleDelete,
+    onHandleAddNewContact,
     onHandleStartDateChanged,
     onHandleDueDateChanged,
     onHandleReminderDateChanged,
@@ -163,6 +165,8 @@ const TaskDetail = props => {
   const isAssigneeAccepted = !isOwner && followerStatus === 'accepted'
   const isCompletedMainList = isCompleted && !isArchived
   const isArchivedOrCollaborated = isArchived || !isOwner
+  const isUnknownContact =
+    isAssigneeAccepted && !isCompleted && !createdBy.isContact
 
   // Data about owner of task
   const createdByFollower = {
@@ -438,7 +442,10 @@ const TaskDetail = props => {
                 <DetailContentAddContactLabel changeColor>
                   {!isOwner ? 'From:' : 'To:'}
                 </DetailContentAddContactLabel>
-                <DetailContentAddContactContent isOwner={isOwner}>
+                <DetailContentAddContactContent
+                  isOwner={isOwner}
+                  isUnknownContact={isUnknownContact}
+                >
                   {isArchivedOrCollaborated && (
                     <DetailContentAutocompleteContacts>
                       <FollowerItems
@@ -465,6 +472,21 @@ const TaskDetail = props => {
                     />
                   )}
                 </DetailContentAddContactContent>
+                {isUnknownContact && (
+                  <DetailContentAddNewContact
+                    onClick={() =>
+                      onHandleAddNewContact(createdByFollower.profile.email)
+                    }
+                  >
+                    <Icon
+                      icon={ICONS.PLUS}
+                      width={10}
+                      height={10}
+                      scale={0.34}
+                      color={['#fff']}
+                    />
+                  </DetailContentAddNewContact>
+                )}
               </DetailContentAddContact>
               <DetailContentDate allowed={!isCompleted && !isCollaborated}>
                 <DetailContentDateIcon
@@ -639,6 +661,8 @@ TaskDetail.propTypes = {
   onHandleTaskDelete: PropTypes.func,
   onHandleStartDateChanged: PropTypes.func,
   onHandleDueDateChanged: PropTypes.func,
+  onHandleTaskAddNewContact: PropTypes.func,
+  onHandleAddNewContact: PropTypes.func,
   onHandleReminderDateChanged: PropTypes.func,
   onHandleTaskDateChanged: PropTypes.func,
   onHandleToggleImportant: PropTypes.func,
@@ -729,6 +753,8 @@ export default compose(
 
       props.onHandleTaskFollowerDeleted(data)
     },
+    onHandleAddNewContact: props => email =>
+      props.onHandleTaskAddNewContact(email),
     onHandleStartDateChanged: props => date => {
       const data = { task: props.task, date, typeDate: 'startDate' }
       props.onHandleTaskDateChanged(data)
