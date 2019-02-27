@@ -9,6 +9,7 @@ import removeMd from 'remove-markdown'
 import { toast } from 'react-toastify'
 import { errorMessages } from 'utils/messages'
 import constants from 'utils/constants'
+import { markdownToHTML } from '../../redux/utils/component-helper'
 
 import dateUtils from 'redux/utils/date'
 import {
@@ -259,7 +260,19 @@ const TaskListItem = props => {
 
   // Description
   let description = isDescription ? task.description : ''
+  description = markdownToHTML(description)
+  const indexOfBr = description.indexOf('br />')
+  const indexOfEndHtmlTag = description.indexOf('</')
+
+  if (indexOfBr !== -1 && indexOfBr < indexOfEndHtmlTag) {
+    description = description.substr(0, description.indexOf('br />') + 5)
+  } else {
+    description = description.substr(0, description.indexOf('</'))
+  }
+
   description = removeMd(description)
+  description =
+    description.length > 88 ? description.substr(0, 87) : description
 
   // Task-Item width
   const taskItemWidth = windowWidth - leftPanelWidth - 20
