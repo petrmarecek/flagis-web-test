@@ -108,7 +108,6 @@ export default function* root() {
     takeEvery(TREE.CREATE, tree.createTreeItem),
     takeLatest(TREE.FETCH, tree.fetchTree),
     takeEvery(TREE.SELECT_PATH, tree.selectPath),
-    takeEvery(TREE.RESET_SELECT_PATH, tree.resetSelectPath),
     takeEvery(TREE.UPDATE, tree.updateTreeItem),
     takeEvery(TREE.DELETE, tree.deleteTreeItem),
     takeEvery(TREE.UNDO_DELETE, tree.undoDeleteTreeItem),

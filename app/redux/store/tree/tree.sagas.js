@@ -176,10 +176,6 @@ export function* selectPath(action) {
   yield put(tagActions.setActiveTags(relatedTagIds))
 }
 
-export function* resetSelectPath() {
-  yield put(tagActions.setActiveTags([]))
-}
-
 export function* updateTreeItem(action) {
   // hide controls for adding tree items
   yield put(appStateActions.hideDialog())

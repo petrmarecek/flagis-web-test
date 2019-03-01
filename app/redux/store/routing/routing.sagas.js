@@ -20,6 +20,7 @@ export function* changeNavigation(action) {
   yield put(contactActions.deselectContacts())
   yield put(taskActions.cancelTimeLine())
   yield put(appStateActions.resetScrollbarPosition())
+  yield put(tagActions.selectActiveTags([]))
 
   if (type === 'inbox') {
     yield put(appStateActions.visibleInboxTasks())

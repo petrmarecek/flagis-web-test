@@ -12,7 +12,6 @@ export const TREE = {
   SHOW_ADD_CONTROL: 'TREE/SHOW_ADD_CONTROL',
   HIDE_ADD_CONTROL: 'TREE/HIDE_ADD_CONTROL',
   SELECT_PATH: 'TREE/SELECT_PATH',
-  RESET_SELECT_PATH: 'TREE/RESET_SELECT_PATH',
   DESELECT_PATH: 'TREE/DESELECT_PATH',
   COLLAPSE: 'TREE/COLLAPSE',
 
@@ -54,10 +53,6 @@ export const hideTreeItemAddControl = () => ({
 export const selectPath = treeItems => ({
   type: TREE.SELECT_PATH,
   payload: treeItems,
-})
-
-export const resetSelectPath = () => ({
-  type: TREE.RESET_SELECT_PATH,
 })
 
 export const deselectPath = () => ({
