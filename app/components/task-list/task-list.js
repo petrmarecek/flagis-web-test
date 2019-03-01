@@ -61,6 +61,7 @@ const TaskList = props => {
       dueDate: date[typeDate],
       tags: List(),
       followers: List(),
+      description: '',
       createdBy: {
         id: null,
         isContact: false,
