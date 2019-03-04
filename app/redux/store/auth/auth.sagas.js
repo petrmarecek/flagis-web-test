@@ -16,6 +16,7 @@ import { Map } from 'immutable'
 import { errorMessages, successMessages } from 'utils/messages'
 import constants from 'utils/constants'
 import { routes } from 'utils/routes'
+import date from '../../utils/date'
 
 import * as authActions from 'redux/store/auth/auth.actions'
 import * as appStateActions from 'redux/store/app-state/app-state.actions'
@@ -35,7 +36,7 @@ import {
   initContactsData,
   initGlobalContactsData,
 } from 'redux/store/contacts/contacts.sagas'
-import { createLoadActions } from 'redux/store/common.sagas'
+import { createLoadActions, callApi } from 'redux/store/common.sagas'
 import api from 'redux/utils/api'
 import firebase from 'redux/utils/firebase'
 import dateUtil from 'redux/utils/date'
@@ -188,7 +189,7 @@ export function* controlRedirectTasks() {
 export function* changeName(action) {
   try {
     // call server
-    const profile = yield call(api.users.update, action.payload)
+    const profile = yield callApi(api.users.update, action.payload)
 
     // save profile to redux-store
     yield put(authActions.updateProfile(profile))
@@ -215,7 +216,7 @@ export function* changeUserPhoto(action) {
   const photo = action.payload
 
   // call server
-  const profile = yield call(api.users.update, { photo })
+  const profile = yield callApi(api.users.update, { photo })
 
   // save profile to redux-store
   yield put(authActions.updateProfile(profile))
@@ -225,7 +226,7 @@ export function* toggleColorTheme(action) {
   const settings = { colorTheme: action.payload.theme }
 
   // call server
-  const profile = yield call(api.users.update, {
+  const profile = yield callApi(api.users.update, {
     settings: JSON.stringify(settings),
   })
 
@@ -235,7 +236,7 @@ export function* toggleColorTheme(action) {
 
 export function* changePassword(action) {
   try {
-    yield call(api.users.password, action.payload)
+    yield callApi(api.users.password, action.payload)
     yield put(appStateActions.deselectError('changePassword'))
     yield put(appStateActions.deselectLoader('form'))
 
@@ -349,7 +350,13 @@ function* authorizeUser(authApiCall, action) {
     yield call(setTokens, auth)
 
     // dispatch action with auth data
-    yield put({ type: FULFILLED, payload: auth })
+    yield put({
+      type: FULFILLED,
+      payload: {
+        expiresAt: date.getExpiresAt(auth.expiresIn),
+        ...auth,
+      },
+    })
 
     // hide loader
     yield put(appStateActions.deselectLoader('form'))
@@ -433,14 +440,23 @@ function* tokenLoop(auth) {
       // set access token and firebase token
       yield call(setTokens, response)
 
-      yield put({ type: FULFILLED, payload: response })
+      yield put({
+        type: FULFILLED,
+        payload: {
+          expiresAt: date.getExpiresAt(response.expiresIn),
+          ...response,
+        },
+      })
 
       // redirect
       const redirectPathname = getRedirectPathname()
       const redirectAction = push(redirectPathname)
       yield put(redirectAction)
 
-      yield call(delay, response.expiresIn - constants.MIN_TOKEN_LIFESPAN)
+      yield race({
+        action: take(AUTH.REFRESH_TOKEN),
+        delay: call(delay, response.expiresIn - constants.MIN_TOKEN_LIFESPAN),
+      })
     } catch (error) {
       yield put({ type: REJECTED })
       yield call(logout)

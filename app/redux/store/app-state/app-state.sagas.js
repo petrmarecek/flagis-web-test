@@ -1,4 +1,4 @@
-import { put, select, call } from 'redux-saga/effects'
+import { put, select } from 'redux-saga/effects'
 import { push } from 'react-router-redux'
 import * as appStateActions from 'redux/store/app-state/app-state.actions'
 import * as taskActions from 'redux/store/tasks/tasks.actions'
@@ -11,6 +11,7 @@ import * as authSelectors from 'redux/store/auth/auth.selectors'
 import * as tagSelectors from 'redux/store/tags/tags.selectors'
 import { toast } from 'react-toastify'
 import { errorMessages } from 'utils/messages'
+import { callApi } from 'redux/store/common.sagas'
 import constants from 'utils/constants'
 import { routes } from 'utils/routes'
 import search from 'redux/services/search'
@@ -86,7 +87,7 @@ export function* hintSelected(action) {
     if (isNewHint) {
       const email = profile.email
       const data = { email }
-      profile = yield call(api.contacts.create, data)
+      profile = yield callApi(api.contacts.create, data)
 
       // Add contact to search index
       search.contacts.addItem(profile)

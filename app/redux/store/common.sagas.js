@@ -1,14 +1,41 @@
-import { call, put, take, spawn, race } from 'redux-saga/effects'
+import { call, put, take, spawn, race, select } from 'redux-saga/effects'
 import { delay } from 'redux-saga'
 import { toast } from 'react-toastify'
+import moment from 'moment'
 import { errorMessages } from 'utils/messages'
 import constants from 'utils/constants'
 import _ from 'lodash'
 
+import { AUTH } from './auth/auth.actions'
 import * as appStateActions from 'redux/store/app-state/app-state.actions'
 import { logout } from 'redux/store/auth/auth.actions'
 import { deselectTasks } from 'redux/store/tasks/tasks.actions'
 import { deselectTags } from 'redux/store/tags/tags.actions'
+import { getAuth } from './auth/auth.selectors'
+
+/**
+ * Call api if access token is valid
+ * @param {Object} action Definition of action
+ * @param {Object} args Other agrguments of function
+ */
+export function* callApi(action, ...args) {
+  const { FULFILLED } = createLoadActions(AUTH.REFRESH_TOKEN)
+  const { expiresAt } = yield select(getAuth)
+
+  // Auth token is expired
+  if (moment().isSameOrAfter(expiresAt)) {
+    // Create new
+    yield put({
+      type: AUTH.REFRESH_TOKEN,
+    })
+
+    // And wait for response
+    yield take(FULFILLED)
+  }
+
+  // Call API
+  return yield call(action, ...args)
+}
 
 /**
  * Creates common action types for fetch action type
@@ -48,17 +75,19 @@ export function* fetch(actionType, fetchDef) {
     // dispatch fetch pending action
     yield put({
       type: PENDING,
-      payload: fetchDef.payload || {}
+      payload: fetchDef.payload || {},
     })
 
     // call server & dispatch result
     const args = fetchDef.args || []
-    result = yield call(fetchDef.method, ...args)
+    result = yield callApi(fetchDef.method, ...args)
 
     // add userId for repare data of follower in normalizr schema
     if (fetchDef.userId) {
       const userId = fetchDef.userId
-      _.forEach(result, (task, key) => {result[key] = _.assign({ userId }, task)})
+      _.forEach(result, (task, key) => {
+        result[key] = _.assign({ userId }, task)
+      })
     }
 
     // dispatch fetch fulfilled action
@@ -73,7 +102,6 @@ export function* fetch(actionType, fetchDef) {
     }
 
     yield put(fulfilledAction)
-
   } catch (err) {
     // TODO: After fix in backend delete logout
     // logout if access token is invalid
@@ -109,13 +137,16 @@ function* onUndo(action, name) {
 
   // reset delay if action for undo was dispatched
   const { undo } = yield race({
-    undo: take(act => act.type === 'APP-STATE/UNDO_ACTIVE' && act.undoType === undoType),
-    undoAction: take(act =>
-      act.type === 'TASK/REJECT' ||
-      act.type === 'TASK/DELETE' ||
-      act.type === 'TAGS/DELETE' ||
-      act.type === 'TREE/DELETE' ||
-      act.type === 'CONTACTS/DELETE'
+    undo: take(
+      act => act.type === 'APP-STATE/UNDO_ACTIVE' && act.undoType === undoType
+    ),
+    undoAction: take(
+      act =>
+        act.type === 'TASK/REJECT' ||
+        act.type === 'TASK/DELETE' ||
+        act.type === 'TAGS/DELETE' ||
+        act.type === 'TREE/DELETE' ||
+        act.type === 'CONTACTS/DELETE'
     ),
     timeout: call(delay, 8000),
   })

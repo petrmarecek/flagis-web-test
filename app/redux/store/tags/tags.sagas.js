@@ -1,4 +1,12 @@
-import { all, put, call, select, cancelled, fork, take } from 'redux-saga/effects'
+import {
+  all,
+  put,
+  call,
+  select,
+  cancelled,
+  fork,
+  take,
+} from 'redux-saga/effects'
 import { normalize } from 'normalizr'
 import { push } from 'react-router-redux'
 
@@ -12,7 +20,12 @@ import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'
 import * as tagActions from 'redux/store/tags/tags.actions'
 import * as tagSelectors from 'redux/store/tags/tags.selectors'
 import { deselectPath } from 'redux/store/tree/tree.actions'
-import { fetch, mainUndo, createLoadActions } from 'redux/store/common.sagas'
+import {
+  fetch,
+  mainUndo,
+  createLoadActions,
+  callApi,
+} from 'redux/store/common.sagas'
 import api from 'redux/utils/api'
 import schema from 'redux/data/schema'
 import search from 'redux/services/search'
@@ -27,7 +40,9 @@ function* saveChangeFromFirestore(change) {
   // Prepare data
   const normalizeData = normalize(tag, schema.tag)
   const storeItems = yield select(state => tagSelectors.getTagsItems(state))
-  const isDetailVisible = yield select(state => appStateSelectors.getDetail(state))
+  const isDetailVisible = yield select(state =>
+    appStateSelectors.getDetail(state)
+  )
 
   const { id, isDeleted } = tag
 
@@ -42,7 +57,6 @@ function* saveChangeFromFirestore(change) {
 
   // Delete tag
   if (isDeleted) {
-
     // Close tag detail
     if (isDetailVisible.tag) {
       yield put(appStateActions.deselectDetail('tag'))
@@ -60,13 +74,17 @@ function* syncTagsChannel(channel) {
   const { REJECTED } = createLoadActions(TAGS.FIREBASE)
 
   try {
-    while (true) { // eslint-disable-line
+    while (true) {
+      // eslint-disable-line
       const snapshot = yield take(channel)
-      yield all(snapshot.docChanges().map(change => call(saveChangeFromFirestore, change)))
+      yield all(
+        snapshot
+          .docChanges()
+          .map(change => call(saveChangeFromFirestore, change))
+      )
     }
-  } catch(err) {
+  } catch (err) {
     yield put({ type: REJECTED, err })
-
   } finally {
     if (yield cancelled()) {
       channel.close()
@@ -78,7 +96,7 @@ export function* fetchTags() {
   const result = yield* fetch(tagActions.TAGS.FETCH, {
     method: api.tags.list,
     args: [],
-    schema: schema.tags
+    schema: schema.tags,
   })
 
   // Initialize search service
@@ -101,14 +119,14 @@ export function* createTag(action) {
   try {
     // call server and create a new tag
     const data = action.payload.tag
-    const tag = yield call(api.tags.create, data)
+    const tag = yield callApi(api.tags.create, data)
 
     // add the tag to the search index
     search.tags.addItem(tag)
 
     // add the tag to store
     yield put(tagActions.addTag(tag))
-  } catch(err) {
+  } catch (err) {
     toast.error(errorMessages.tags.createConflict, {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: constants.NOTIFICATION_ERROR_DURATION,
@@ -123,7 +141,9 @@ export function* selectTags(action) {
 }
 
 export function* deselectTags() {
-  const isTagDetail = yield select(state => appStateSelectors.getDetail(state).tag)
+  const isTagDetail = yield select(
+    state => appStateSelectors.getDetail(state).tag
+  )
 
   if (isTagDetail) {
     yield put(appStateActions.deselectDetail('tag'))
@@ -139,9 +159,8 @@ export function* update(action) {
   try {
     // call server
     const updateData = { [type]: data }
-    yield call(api.tags.update, tag.id, updateData)
-
-  } catch(err) {
+    yield callApi(api.tags.update, tag.id, updateData)
+  } catch (err) {
     // log error
     console.error('Error occured during tag update', err)
 
@@ -157,7 +176,9 @@ export function* deleteTag(action) {
     schema: null,
   })
 
-  yield put(tagActions.deleteTagsRelations(action.payload.originalData.id, null))
+  yield put(
+    tagActions.deleteTagsRelations(action.payload.originalData.id, null)
+  )
   yield* mainUndo(action, 'tagDelete')
 
   // delete tag from the search index

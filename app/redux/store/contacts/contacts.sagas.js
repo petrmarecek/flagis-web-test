@@ -7,7 +7,12 @@ import * as contactsActions from 'redux/store/contacts/contacts.actions'
 import * as appStateActions from 'redux/store/app-state/app-state.actions'
 import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'
 import * as entitiesSelectors from 'redux/store/entities/entities.selectors'
-import { fetch, mainUndo, createLoadActions } from 'redux/store/common.sagas'
+import {
+  fetch,
+  mainUndo,
+  createLoadActions,
+  callApi,
+} from 'redux/store/common.sagas'
 import api from 'redux/utils/api'
 import search from 'redux/services/search'
 import schema from 'redux/data/schema'
@@ -83,7 +88,7 @@ export function* createContact(action) {
   try {
     const email = action.payload.email
     const data = { email }
-    const contact = yield call(api.contacts.create, data)
+    const contact = yield callApi(api.contacts.create, data)
 
     // add the contact to the search index
     search.contacts.addItem(contact)
@@ -119,7 +124,7 @@ export function* updateContacts(action) {
   try {
     // call server
     const updateData = { [type]: data }
-    yield call(api.contacts.update, contact.id, updateData)
+    yield callApi(api.contacts.update, contact.id, updateData)
   } catch (err) {
     // log error
     console.error('Error occured during contact update', err)
@@ -133,7 +138,7 @@ export function* sendInvitationContact(action) {
   try {
     // call server
     const contactId = action.payload.contactId
-    yield call(api.contacts.invitation, contactId)
+    yield callApi(api.contacts.invitation, contactId)
   } catch (err) {
     // log error
     console.error('Error occured during send invitation to contact', err)

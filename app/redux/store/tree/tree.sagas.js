@@ -17,7 +17,12 @@ import constants from 'utils/constants'
 import { routes } from 'utils/routes'
 import { Map } from 'immutable'
 
-import { createLoadActions, fetch, mainUndo } from 'redux/store/common.sagas'
+import {
+  createLoadActions,
+  fetch,
+  mainUndo,
+  callApi,
+} from 'redux/store/common.sagas'
 import * as appStateActions from 'redux/store/app-state/app-state.actions'
 import * as taskActions from 'redux/store/tasks/tasks.actions'
 import * as tagActions from 'redux/store/tags/tags.actions'
@@ -128,7 +133,7 @@ export function* createTreeItem(action) {
     }
 
     // call server
-    const item = yield call(api.tree.create, data)
+    const item = yield callApi(api.tree.create, data)
 
     // add tree item to the store
     yield put(treeActions.addTreeItem(item))
@@ -193,7 +198,7 @@ export function* updateTreeItem(action) {
     })
 
     // call api
-    const result = yield call(
+    const result = yield callApi(
       api.tree.updateTitle,
       action.payload.treeItem.id,
       action.payload.title
@@ -279,7 +284,7 @@ export function* undoDeleteTreeItem(action) {
       }
 
       // call server
-      const treeItem = yield call(api.tree.create, createData)
+      const treeItem = yield callApi(api.tree.create, createData)
 
       // add tree item to the store
       yield put(treeActions.addTreeItem(treeItem))
@@ -381,7 +386,7 @@ export function* dropTreeItem(action) {
       order,
     }
 
-    yield call(api.tree.updateParent, sourceItemId, update)
+    yield callApi(api.tree.updateParent, sourceItemId, update)
 
     // Perform move
     yield put(
@@ -406,7 +411,11 @@ export function* dropSection(action) {
       order: action.payload.order,
     }
 
-    yield call(api.tree.updateParent, action.payload.section.id, sourceUpdate)
+    yield callApi(
+      api.tree.updateParent,
+      action.payload.section.id,
+      sourceUpdate
+    )
   } catch (err) {
     console.error(err, 'Unable to update position for section.')
   }

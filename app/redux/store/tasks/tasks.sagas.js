@@ -3,7 +3,12 @@ import { delay } from 'redux-saga'
 import { push } from 'react-router-redux'
 import { all, take, call, put, select, fork, race } from 'redux-saga/effects'
 import _ from 'lodash'
-import { createLoadActions, fetch, mainUndo } from 'redux/store/common.sagas'
+import {
+  createLoadActions,
+  fetch,
+  mainUndo,
+  callApi,
+} from 'redux/store/common.sagas'
 import * as appStateActions from 'redux/store/app-state/app-state.actions'
 import * as taskActions from 'redux/store/tasks/tasks.actions'
 import * as tagsActions from 'redux/store/tags/tags.actions'
@@ -310,7 +315,7 @@ export function* createTask(action) {
       dueDate: action.payload.dueDate,
       tags: action.payload.tags,
     }
-    const task = yield call(api.tasks.create, data)
+    const task = yield callApi(api.tasks.create, data)
 
     if (action.payload.isImportant) {
       yield put(taskActions.requestToggleImportant(task))
@@ -452,7 +457,7 @@ export function* setOrder(action) {
     const update = { order }
 
     // call server
-    const updatedTask = yield call(api.tasks.update, taskId, update)
+    const updatedTask = yield callApi(api.tasks.update, taskId, update)
 
     // update task in the search index
     search.tasks.updateItem(updatedTask)
@@ -470,7 +475,7 @@ export function* setOrderTimeLine(action) {
     const update = { dueDate, orderTimeLine }
 
     // call server
-    const updatedTask = yield call(api.tasks.update, taskId, update)
+    const updatedTask = yield callApi(api.tasks.update, taskId, update)
 
     // update task in the search index
     search.tasks.updateItem(updatedTask)
@@ -637,7 +642,7 @@ export function* removeTaskTag(action) {
       .toJS()
 
     // Update list on the server
-    yield call(api.tasks.setTags, taskId, tags)
+    yield callApi(api.tasks.setTags, taskId, tags)
   } catch (err) {
     console.error(err)
     // TODO: revert to original state
@@ -687,7 +692,7 @@ export function* addRemoveTaskTags(action) {
     tags = tags.map(tagId => ({ id: tagId })).toJS()
 
     // Update list on the server
-    yield call(api.tasks.setTags, taskId, tags)
+    yield callApi(api.tasks.setTags, taskId, tags)
   } catch (err) {
     console.error(err)
     // TODO: revert to original state
@@ -707,14 +712,14 @@ export function* sendTask(action) {
   const { taskId } = action.payload
   const { send } = api.followers
 
-  yield call(send, taskId)
+  yield callApi(send, taskId)
 }
 
 export function* acceptTask(action) {
   const { taskId } = action.payload
   const { accept } = api.followers
 
-  yield call(accept, taskId)
+  yield callApi(accept, taskId)
 }
 
 export function* rejectTask(action) {
@@ -748,8 +753,8 @@ export function* rejectTask(action) {
     autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
   })
 
-  // Call API
-  yield call(reject, task.id)
+  // call API
+  yield callApi(reject, task.id)
 }
 
 export function* undoRejectTask(action) {
@@ -783,7 +788,7 @@ function* saveTaskTagRelation(taskId, tag) {
       .toJS()
 
     // Send them to server
-    const resultTagList = yield call(() => api.tasks.setTags(taskId, tags))
+    const resultTagList = yield callApi(() => api.tasks.setTags(taskId, tags))
 
     // If we added a new task --> replace instance with the server one
     if (tag.isNew) {
@@ -824,7 +829,7 @@ function* setTaskField(task, fieldName, newFieldValue) {
 
 function* updateTask(taskId, update) {
   // call server
-  let updatedTask = yield call(api.tasks.update, taskId, update)
+  let updatedTask = yield callApi(api.tasks.update, taskId, update)
 
   // update task in the search index
   search.tasks.updateItem(updatedTask)

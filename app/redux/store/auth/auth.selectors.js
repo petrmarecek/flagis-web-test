@@ -3,6 +3,17 @@
 // Export selectors
 export const getAuth = state => state.getIn(['auth'])
 
+export const getAuthRequest = state => {
+  if (!state.auth.isLogged) {
+    return null
+  }
+
+  return {
+    refreshToken: state.auth.get('refreshToken'),
+    userId: state.auth.get('profile').get('id'),
+  }
+}
+
 export const getUserProfile = state => {
   if (!state.getIn(['auth', 'profile'])) {
     return null

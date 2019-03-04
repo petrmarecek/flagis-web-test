@@ -5,9 +5,15 @@ import typeToReducer from 'type-to-reducer'
 export default typeToReducer(
   {
     [AUTH.REFRESH_TOKEN]: {
-      PENDING: state => state.setIn(['newRefreshToken'], true),
+      PENDING: state => state.set('newRefreshToken', true),
 
-      FULFILLED: state => state.setIn(['newRefreshToken'], false),
+      FULFILLED: (state, action) =>
+        state
+          .set('accessToken', action.payload.accessToken)
+          .set('expiresAt', action.payload.expiresAt)
+          .set('expiresIn', action.payload.expiresIn)
+          .set('firebaseToken', action.payload.firebaseToken)
+          .set('newRefreshToken', false),
     },
 
     [AUTH.LOGIN]: {
@@ -17,6 +23,7 @@ export default typeToReducer(
           accessToken: action.payload.accessToken,
           refreshToken: action.payload.refreshToken,
           expiresIn: action.payload.expiresIn,
+          expiresAt: action.payload.expiresAt,
           firebaseToken: action.payload.firebaseToken,
           profile: new Profile(action.payload.profile),
         }),

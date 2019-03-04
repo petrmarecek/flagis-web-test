@@ -25,6 +25,10 @@ export default {
     return moment(dateStr)
   },
 
+  getExpiresAt(expiresIn) {
+    return moment().add(expiresIn, 'ms')
+  },
+
   getMilliseconds() {
     return new Date().valueOf()
   },

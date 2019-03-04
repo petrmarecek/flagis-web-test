@@ -1,7 +1,6 @@
 import {
   all,
   select,
-  call,
   cancelled,
   cancel,
   fork,
@@ -13,7 +12,7 @@ import { normalize } from 'normalizr'
 import * as appStateActions from 'redux/store/app-state/app-state.actions'
 import * as activitiesActions from 'redux/store/activities/activities.actions'
 import * as taskSelectors from 'redux/store/tasks/tasks.selectors'
-import { fetch, createLoadActions } from 'redux/store/common.sagas'
+import { fetch, createLoadActions, callApi } from 'redux/store/common.sagas'
 import api from 'redux/utils/api'
 import schema from 'redux/data/schema'
 import firebase from 'redux/utils/firebase'
@@ -43,7 +42,7 @@ function* syncActivitiesChannel(channel) {
       yield all(
         snapshot
           .docChanges()
-          .map(change => call(saveChangeFromFirestore, change))
+          .map(change => callApi(saveChangeFromFirestore, change))
       )
     }
   } catch (err) {
