@@ -458,6 +458,11 @@ const TaskListItem = props => {
                   status={followerStatus}
                   assigneeInbox={isInboxList || !isOwner}
                   isCompleted={isCompletedMainList}
+                  photo={
+                    !isOwner
+                      ? createdByFollower.profile.photo
+                      : assignee.profile.photo
+                  }
                   nickname={
                     !isOwner
                       ? createdByFollower.profile.nickname === null

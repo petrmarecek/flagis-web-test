@@ -39,6 +39,7 @@ const IconAccount = styled.div`
 
 const FollowerIcon = ({
   status,
+  photo,
   nickname,
   animation,
   assigneeInbox,
@@ -74,6 +75,7 @@ const FollowerIcon = ({
     >
       <IconAccount isAssignee={isAssignee}>
         <Avatar
+          src={photo}
           name={nickname}
           size={isAssignee ? '20' : '30'}
           textSizeRatio={2}
@@ -105,6 +107,7 @@ const FollowerIcon = ({
 
 FollowerIcon.propTypes = {
   status: PropTypes.string,
+  photo: PropTypes.string,
   nickname: PropTypes.string,
   animation: PropTypes.bool,
   assigneeInbox: PropTypes.bool,

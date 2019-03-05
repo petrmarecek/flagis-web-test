@@ -2,10 +2,13 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { withHandlers } from 'recompose'
 
+// components
+import Avatar from 'react-avatar'
 import DetailMenu from './detail-menu'
 import Icon from '../icons/icon'
 import { ICONS } from '../icons/icon-constants'
 
+// styles
 import {
   DetailInner,
   DetailContentTop,
@@ -48,22 +51,6 @@ const ContactDetail = props => {
     overflow: 'hidden',
   }
 
-  let icon = {
-    icon: ICONS.CONTACT_EXIST,
-    height: 23,
-    width: 28,
-    color: ['#b1b5b8', '#fff'],
-  }
-
-  if (!contact.isUser) {
-    icon = {
-      icon: ICONS.CONTACT_NO_EXIST,
-      height: 23,
-      width: 28,
-      color: ['#b1b5b8', '#fff', '#FF6A6A'],
-    }
-  }
-
   return (
     <div>
       <DetailMenu
@@ -76,12 +63,22 @@ const ContactDetail = props => {
           <DetailContentSubject>
             <DetailSubject>
               <DetailSubjectIconContact isUser={contact.isUser}>
-                <Icon
-                  icon={icon.icon}
-                  width={icon.width}
-                  height={icon.height}
-                  color={icon.color}
-                />
+                {contact.isUser ? (
+                  <Avatar
+                    src={contact.photo}
+                    name={nickname}
+                    size={21}
+                    textSizeRatio={2}
+                    round
+                  />
+                ) : (
+                  <Icon
+                    icon={ICONS.CONTACT_NO_EXIST}
+                    width={28}
+                    height={23}
+                    color={['#b1b5b8', '#fff', '#FF6A6A']}
+                  />
+                )}
               </DetailSubjectIconContact>
               <ContentEditableWrapper onClick={onHandleRemoveEventListener}>
                 <DetailSubjectContactContentEditable

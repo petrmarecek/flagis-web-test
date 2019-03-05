@@ -394,6 +394,11 @@ const TaskDetail = props => {
                 status={followerStatus}
                 assigneeInbox={isInboxVisible || !isOwner}
                 isCompleted={isCompletedMainList}
+                photo={
+                  !isOwner
+                    ? createdByFollower.profile.photo
+                    : assignee.profile.photo
+                }
                 nickname={
                   !isOwner
                     ? createdByFollower.profile.nickname === null

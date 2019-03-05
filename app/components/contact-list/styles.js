@@ -16,7 +16,7 @@ const ContactItemContainer = styled.li`
   animation: 400ms ${fadeUp};
 `
 
-const ContactItemIcon = styled(Icon)`
+const ContactItemIcon = styled.div`
   position: absolute;
   left: 15px;
   display: flex;

@@ -2,6 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { compose, withHandlers } from 'recompose'
 
+// components
+import Avatar from 'react-avatar'
+import Icon from '../icons/icon'
+import { ICONS } from '../icons/icon-constants'
+
+// styles
 import {
   ContactItemContainer,
   ContactItemIcon,
@@ -12,56 +18,48 @@ import {
   ContactItemInviteText,
 } from './styles'
 
-import { ICONS } from '../icons/icon-constants'
-
 const ContactItem = ({
   contact,
   onHandleClickContact,
   onHandleClickInvitation,
-}) => {
-  let icon = {
-    icon: ICONS.CONTACT_EXIST,
-    height: 21,
-    width: 21,
-    color: ['#b1b5b8', '#fff'],
-  }
-
-  if (!contact.isUser) {
-    icon = {
-      icon: ICONS.CONTACT_NO_EXIST,
-      height: 23,
-      width: 28,
-      color: ['#b1b5b8', '#fff', '#FF6A6A'],
-    }
-  }
-
-  const title = contact.nickname !== null ? contact.nickname : contact.email
-
-  return (
-    <ContactItemContainer key={contact.id} onClick={onHandleClickContact}>
-      <ContactItemIcon
-        icon={icon.icon}
-        width={icon.width}
-        height={icon.height}
-        color={icon.color}
-      />
-      <ContactItemTitleWrapper>
-        <ContactItemTitle isUser={contact.isUser}>{title}</ContactItemTitle>
-      </ContactItemTitleWrapper>
-      {!contact.isInvited && !contact.isUser && (
-        <ContactItemInvite onClick={onHandleClickInvitation}>
-          <ContactItemInviteIcon
-            icon={ICONS.SEND_INVITE}
-            width={17}
-            height={16}
-            color={['#b1b5b8']}
-          />
-          <ContactItemInviteText>Invite</ContactItemInviteText>
-        </ContactItemInvite>
+}) => (
+  <ContactItemContainer key={contact.id} onClick={onHandleClickContact}>
+    <ContactItemIcon>
+      {contact.isUser ? (
+        <Avatar
+          src={contact.photo}
+          name={contact.nickname !== null ? contact.nickname : contact.email}
+          size={21}
+          textSizeRatio={2}
+          round
+        />
+      ) : (
+        <Icon
+          icon={ICONS.CONTACT_NO_EXIST}
+          width={28}
+          height={23}
+          color={['#b1b5b8', '#fff', '#FF6A6A']}
+        />
       )}
-    </ContactItemContainer>
-  )
-}
+    </ContactItemIcon>
+    <ContactItemTitleWrapper>
+      <ContactItemTitle isUser={contact.isUser}>
+        {contact.nickname !== null ? contact.nickname : contact.email}
+      </ContactItemTitle>
+    </ContactItemTitleWrapper>
+    {!contact.isInvited && !contact.isUser && (
+      <ContactItemInvite onClick={onHandleClickInvitation}>
+        <ContactItemInviteIcon
+          icon={ICONS.SEND_INVITE}
+          width={17}
+          height={16}
+          color={['#b1b5b8']}
+        />
+        <ContactItemInviteText>Invite</ContactItemInviteText>
+      </ContactItemInvite>
+    )}
+  </ContactItemContainer>
+)
 
 ContactItem.propTypes = {
   contact: PropTypes.object,

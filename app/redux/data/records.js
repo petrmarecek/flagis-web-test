@@ -348,4 +348,5 @@ export const Contact = Record({
   isContact: false,
   isEmailNotificationEnabled: true,
   isInvited: false,
+  photo: null,
 })
