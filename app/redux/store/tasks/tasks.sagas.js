@@ -110,6 +110,17 @@ function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
       !storeItems.includes(id) &&
       storeInboxItems.includes(id)
     ) {
+      // Show notification
+      toast.success(successMessages.tasks.accepted, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+      })
+
+      // Close inbox detail
+      if (isDetailVisible.inbox && storeSelectionItem === id) {
+        yield put(appStateActions.deselectDetail('inbox'))
+      }
+
       // Update task in search
       search.tasks.updateItem(task)
     }

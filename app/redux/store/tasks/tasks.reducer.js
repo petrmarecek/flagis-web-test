@@ -1,5 +1,6 @@
 import { List } from 'immutable'
 import typeToReducer from 'type-to-reducer'
+import { getAssigneeOfTask } from 'redux/utils/component-helper'
 
 import { AUTH } from 'redux/store/auth/auth.actions'
 import { TASKS } from 'redux/store/tasks/tasks.actions'
@@ -209,9 +210,21 @@ function completedTasks(tasks) {
 
 function updateTasksListsFromFirestore(state, action) {
   const { entities, result } = action.payload
-  const { id, isInbox, isCompleted, isArchived, isTrashed } = entities.tasks[
-    result
-  ]
+  const followers = entities.hasOwnProperty('followers')
+    ? entities.followers
+    : {}
+  const assignee = getAssigneeOfTask(Object.values(followers))
+  const status = assignee === null ? assignee : assignee.status
+  const {
+    id,
+    isInbox,
+    isCompleted,
+    isArchived,
+    isTrashed,
+    createdById,
+    userId,
+  } = entities.tasks[result]
+  const isOwner = createdById === userId
 
   let newItems = state.getIn(['items'])
   let newCompleted = state.getIn(['completed'])
@@ -227,6 +240,31 @@ function updateTasksListsFromFirestore(state, action) {
 
     return { newItems, newInbox, newCompleted, newArchived, newSelection }
   }
+
+  // Accepted task
+  if (
+    status === 'accepted' &&
+    !isOwner &&
+    !isInbox &&
+    !isArchived &&
+    !isTrashed
+  ) {
+    if (!newItems.includes(id)) {
+      newItems = newItems.push(id)
+
+      if (newSelection.includes(id)) {
+        newSelection = newSelection.filter(taskId => taskId !== id)
+      }
+    }
+
+    if (newInbox.includes(id)) {
+      newInbox = newInbox.filter(taskId => taskId !== id)
+    }
+
+    return { newItems, newInbox, newCompleted, newArchived, newSelection }
+  }
+
+  // TODO: rejected task
 
   // Uncompleted task
   if (!isCompleted && !isArchived && !isTrashed) {
