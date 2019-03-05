@@ -68,7 +68,7 @@ const TimeLineText = styled.p`
   font-size: 14px;
   font-weight: 600;
   text-align: left;
-  color: #8c9da9;
+  color: #b1b5b8;
 `
 
 /*----------------------------------- Task List Item ----------------------------------------------*/

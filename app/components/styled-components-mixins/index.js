@@ -20,7 +20,7 @@ import { markdownStyles } from './markdown-styles'
 
 /* ----------------------------- Common -----------------------------------*/
 const EmptyList = styled.div`
-  color: #8c9da9;
+  color: #b1b5b8;
   text-align: center;
   font-style: italic;
   font-size: 16px;
