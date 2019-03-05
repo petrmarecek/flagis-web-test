@@ -14,12 +14,14 @@ import {
   markdownStyles,
   fontMain,
 } from '../styled-components-mixins/'
-import { tada } from 'react-animations'
+import { tada, fadeOutLeft, fadeOutRight } from 'react-animations'
 
 // --------------------------------------- Animations ---------------------------------------
 const tadaAnimation = keyframes`${tada}`
+const leftHideDetailAnimation = keyframes`${fadeOutLeft}`
+const rightHideDetailAnimation = keyframes`${fadeOutRight}`
 
-// --------------------------------------- Detail ---------------------------------------
+// --------------------------------------- Detail -------------------------------------------
 const DetailStyle = styled.div`
   ::-webkit-scrollbar {
     width: 5px;
@@ -47,6 +49,12 @@ const DetailInner = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  animation: ${props =>
+    props.isMounted === false
+      ? props.isRejected
+        ? `${rightHideDetailAnimation} 400ms`
+        : `${leftHideDetailAnimation} 400ms`
+      : 'none'};
 `
 
 const DetailContentTop = styled.div`

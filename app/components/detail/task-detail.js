@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
-import { compose, withHandlers, lifecycle } from 'recompose'
+import { compose, withHandlers, withStateHandlers, lifecycle } from 'recompose'
 import { List } from 'immutable'
 import { infoMessages } from 'utils/messages'
 import dateUtil from 'redux/utils/date'
@@ -71,6 +71,8 @@ const TaskDetail = props => {
     attachments,
     comments,
     isInboxVisible,
+    isMounted,
+    isRejected,
     animation,
     onHandleComplete,
     onHandleArchive,
@@ -236,7 +238,7 @@ const TaskDetail = props => {
         previous={onHandlePrevious}
         next={onHandleNext}
       />
-      <DetailInner>
+      <DetailInner isMounted={isMounted} isRejected={isRejected}>
         <DetailContentTop
           animation={animation}
           completed={isCompletedMainList}
@@ -636,6 +638,8 @@ TaskDetail.propTypes = {
   detail: PropTypes.object,
   userId: PropTypes.string,
   task: PropTypes.object,
+  isMounted: PropTypes.bool,
+  isRejected: PropTypes.bool,
   animation: PropTypes.bool,
   attachments: PropTypes.object,
   comments: PropTypes.object,
@@ -683,9 +687,35 @@ TaskDetail.propTypes = {
 }
 
 export default compose(
+  withStateHandlers(() => ({ isMounted: true, isRejected: false }), {
+    onHandleArchive: (state, props) => () => {
+      window.setTimeout(() => props.onHandleTaskArchive(props.task), 400)
+      return { isMounted: false }
+    },
+    onHandleAccept: (state, props) => () => {
+      const { id, followers } = props.task
+      const assignee = getAssigneeOfTask(followers)
+      const data = {
+        taskId: id,
+        followerId: assignee.id,
+      }
+
+      window.setTimeout(() => props.onHandleTaskAccept(data), 400)
+      return { isMounted: false }
+    },
+    onHandleReject: (state, props) => () => {
+      const { task, detail } = props
+      const data = {
+        task,
+        type: detail.inbox ? 'inbox' : 'task',
+      }
+
+      window.setTimeout(() => props.onHandleTaskReject(data), 400)
+      return { isMounted: false, isRejected: true }
+    },
+  }),
   withHandlers({
-    onHandleComplete: props => event => {
-      event.stopPropagation()
+    onHandleComplete: props => () => {
       const { id } = props.task
 
       if (!props.task.isCompleted) {
@@ -693,10 +723,6 @@ export default compose(
       } else {
         props.onHandleTaskSetIncomplete(id)
       }
-    },
-    onHandleArchive: props => event => {
-      event.stopPropagation()
-      props.onHandleTaskArchive(props.task)
     },
     onHandleSend: props => () => {
       const { id, followers } = props.task
@@ -707,25 +733,6 @@ export default compose(
       }
 
       props.onHandleTaskSend(data)
-    },
-    onHandleAccept: props => () => {
-      const { id, followers } = props.task
-      const assignee = getAssigneeOfTask(followers)
-      const data = {
-        taskId: id,
-        followerId: assignee.id,
-      }
-
-      props.onHandleTaskAccept(data)
-    },
-    onHandleReject: props => () => {
-      const { task, detail } = props
-      const data = {
-        task,
-        type: detail.inbox ? 'inbox' : 'task',
-      }
-
-      props.onHandleTaskReject(data)
     },
     onHandleSubjectUpdate: props => event => {
       const subject = event.target.value
