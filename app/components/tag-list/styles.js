@@ -1,9 +1,5 @@
 import styled, { keyframes } from 'styled-components'
-import {
-  borderRadius,
-  boxShadow,
-  textOverflow,
-} from 'components/styled-components-mixins'
+import { borderRadius, textOverflow } from 'components/styled-components-mixins'
 import { fadeInUp } from 'react-animations'
 
 // components
