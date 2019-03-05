@@ -31,11 +31,10 @@ export default {
     return eventChannel(emit => ref.onSnapshot(emit))
   },
 
-  getActivitiesChannel: (taskId, initTime, userId) => {
+  getActivitiesChannel: (taskId, initTime) => {
     const ref = db
       .collection('activities')
       .where('taskId', '==', taskId)
-      .where('createdById', '==', userId)
       .where('updatedAt', '>', initTime)
 
     return eventChannel(emit => ref.onSnapshot(emit))
