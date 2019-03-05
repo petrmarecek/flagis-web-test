@@ -382,7 +382,11 @@ const TaskDetail = props => {
               contactIcon
               title={
                 !isOwner
-                  ? createdByFollower.profile.nickname
+                  ? createdByFollower.profile.nickname === null
+                    ? createdByFollower.profile.email
+                    : createdByFollower.profile.nickname
+                  : assignee.profile.nickname === null
+                  ? assignee.profile.email
                   : assignee.profile.nickname
               }
             >
@@ -397,7 +401,7 @@ const TaskDetail = props => {
                       : createdByFollower.profile.nickname
                     : assignee.profile.nickname === null
                     ? assignee.profile.email
-                    : createdByFollower.profile.nickname
+                    : assignee.profile.nickname
                 }
                 animation={animation}
               />

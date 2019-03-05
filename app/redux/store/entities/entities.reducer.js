@@ -410,10 +410,24 @@ function saveTasks(payload, state) {
   const { profile, createdBy } = payload.entities
   const profiles = profile ? _.assign(profile, createdBy) : createdBy
 
+  // filter contacts
+  const entitiesContacts = state.get('contacts')
+  const filterProfiles = profiles
+    ? Object.keys(profiles)
+        .filter(key => {
+          const contact = entitiesContacts.get(key)
+          return contact ? !contact.isContact : true
+        })
+        .reduce((result, key) => {
+          result[key] = profiles[key]
+          return result
+        }, {})
+    : null
+
   const rawTasks = payload.entities.tasks || {}
   const rawTags = payload.entities.tags || {}
   const rawFollowers = payload.entities.followers || {}
-  const rawContacts = profiles || {}
+  const rawContacts = filterProfiles || {}
   const contacts = convertToImmutable(rawContacts, records.Contact)
   const followers = convertToImmutable(rawFollowers, records.Follower)
   const tags = convertToImmutable(rawTags, records.Tag)

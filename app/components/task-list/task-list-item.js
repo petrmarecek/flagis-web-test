@@ -446,7 +446,11 @@ const TaskListItem = props => {
                 assigneeInbox={isInboxList || !isOwner}
                 title={
                   !isOwner
-                    ? createdByFollower.profile.nickname
+                    ? createdByFollower.profile.nickname === null
+                      ? createdByFollower.profile.email
+                      : createdByFollower.profile.nickname
+                    : assignee.profile.nickname === null
+                    ? assignee.profile.email
                     : assignee.profile.nickname
                 }
               >
@@ -461,7 +465,7 @@ const TaskListItem = props => {
                         : createdByFollower.profile.nickname
                       : assignee.profile.nickname === null
                       ? assignee.profile.email
-                      : createdByFollower.profile.nickname
+                      : assignee.profile.nickname
                   }
                   animation
                 />
