@@ -11,6 +11,7 @@ import { normalize } from 'normalizr'
 
 import * as appStateActions from 'redux/store/app-state/app-state.actions'
 import * as activitiesActions from 'redux/store/activities/activities.actions'
+import * as authSelectors from 'redux/store/auth/auth.selectors'
 import * as taskSelectors from 'redux/store/tasks/tasks.selectors'
 import { fetch, createLoadActions, callApi } from 'redux/store/common.sagas'
 import api from 'redux/utils/api'
@@ -68,13 +69,14 @@ export function* initActivitiesData() {
     let detail = (yield take(APP_STATE.SET_DETAIL)).payload.detail
 
     if (detail === 'task' || detail === 'inbox') {
+      const userId = yield select(state => authSelectors.getUserId(state))
       const initTime = dateUtil.getDateToISOString()
       const taskId = yield select(state =>
         taskSelectors.getSelectionTasks(state).first()
       )
 
       // Start syncing task comments with firestore
-      const channel = firebase.getActivitiesChannel(taskId, initTime)
+      const channel = firebase.getActivitiesChannel(taskId, initTime, userId)
       const activitiesSyncing = yield fork(syncActivitiesChannel, channel)
 
       // Wait for cancel
