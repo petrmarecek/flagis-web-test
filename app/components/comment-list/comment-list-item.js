@@ -20,7 +20,7 @@ import {
 
 const CommentListItem = ({ comment, userId }) => {
   const { createdById, createdAt, author, content, type, data } = comment
-  const dateText = dateUtil.formatDateTime(createdAt)
+  const dateText = dateUtil.formatDateTimePrimary(createdAt)
   const isAssigneeComment = type === undefined && createdById !== userId
   const icon = type
     ? { type: ICONS.INFO, width: 14, height: 15, scale: 1 }

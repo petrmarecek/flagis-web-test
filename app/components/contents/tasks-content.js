@@ -15,6 +15,7 @@ import {
 import MainSearch from 'components/common/main-search'
 import SearchBox from 'components/common/search-box'
 import NavigationSecondary from 'components/navigation/navigation-secondary'
+import NavigationNotifications from 'components/navigation/navigation-notifications'
 import TasksMenuContainer from 'components/tasks-menu/tasks-menu-container'
 import AddTaskForm from 'components/common/add-task-form'
 import TaskListContainer from '../task-list'
@@ -24,6 +25,8 @@ import TasksProgressBar from 'components/common/tasks-progress-bar'
 import {
   CenterPanelTop,
   CenterPanelTopPrimary,
+  CenterPanelTopPrimaryLeft,
+  CenterPanelTopPrimaryRight,
   CenterPanelTopSecondary,
   CenterPanelScroll,
 } from '../panels/styles'
@@ -37,8 +40,13 @@ const TasksContent = ({
   <div>
     <CenterPanelTop>
       <CenterPanelTopPrimary bottomBorder>
-        <MainSearch />
-        <SearchBox value={search} onChange={onHandleSearchChange} />
+        <CenterPanelTopPrimaryLeft>
+          <MainSearch />
+        </CenterPanelTopPrimaryLeft>
+        <CenterPanelTopPrimaryRight flexEnd>
+          <SearchBox value={search} onChange={onHandleSearchChange} />
+          <NavigationNotifications />
+        </CenterPanelTopPrimaryRight>
       </CenterPanelTopPrimary>
       <CenterPanelTopSecondary smallOffsetPadding>
         {!isMultiSelect && !isVisibleArchive && <NavigationSecondary />}

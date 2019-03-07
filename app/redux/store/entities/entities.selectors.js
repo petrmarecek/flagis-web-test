@@ -11,6 +11,8 @@ export const getEntitiesAttachments = state =>
   state.getIn(['entities', 'attachments'])
 export const getEntitiesActivities = state =>
   state.getIn(['entities', 'activities'])
+export const getEntitiesNotifications = state =>
+  state.getIn(['entities', 'notifications'])
 export const getEntitiesComments = state =>
   state.getIn(['entities', 'comments'])
 export const getEntitiesContacts = state =>

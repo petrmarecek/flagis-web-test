@@ -409,6 +409,10 @@ export const getTaskTags = (state, taskId) =>
 export const getCompletedTasksItems = state =>
   state.getIn(['tasks', 'completed'])
 export const getSelectionTasks = state => state.getIn(['tasks', 'selection'])
+export const getTaskById = (state, taskId) => {
+  const entitiesTasks = getEntitiesTasks(state)
+  return entitiesTasks.get(taskId)
+}
 
 // ------ Reselect selectors ----------------------------------------------------
 

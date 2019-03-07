@@ -92,6 +92,10 @@ export default {
     get: taskId => api.get(`tasks/${taskId}/activities`).then(res => res.data),
   },
 
+  notifications: {
+    get: () => api.get(`notifications`).then(res => res.data),
+  },
+
   comments: {
     create: (taskId, content) =>
       api.post(`tasks/${taskId}/comments`, content).then(res => res.data),

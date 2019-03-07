@@ -9,6 +9,7 @@ import { TASKS } from 'redux/store/tasks/tasks.actions'
 import { TREE } from 'redux/store/tree/tree.actions'
 import { TAGS } from 'redux/store/tags/tags.actions'
 import { ACTIVITIES } from 'redux/store/activities/activities.actions'
+import { NOTIFICATIONS } from 'redux/store/notifications/notifications.actions'
 import { COMMENTS } from 'redux/store/comments/comments.actions'
 import { ATTACHMENTS } from 'redux/store/attachments/attachments.actions'
 import { CONTACTS } from 'redux/store/contacts/contacts.actions'
@@ -273,6 +274,16 @@ export default typeToReducer(
       FULFILLED: (state, action) => saveActivities(action.payload, state),
     },
 
+    // ------ Notifications ----------------------------------------------------------
+
+    [NOTIFICATIONS.FETCH]: {
+      FULFILLED: (state, action) => saveNotifications(action.payload, state),
+    },
+
+    [NOTIFICATIONS.FIREBASE]: {
+      FULFILLED: (state, action) => saveNotifications(action.payload, state),
+    },
+
     // ------ Comments ----------------------------------------------------------
 
     [COMMENTS.FETCH]: {
@@ -445,6 +456,16 @@ function saveActivities(payload, state) {
   const activities = convertToImmutable(rawActivities, records.Activities)
 
   return state.mergeIn(['activities'], activities)
+}
+
+function saveNotifications(payload, state) {
+  const rawNotifications = payload.entities.notification || {}
+  const notifications = convertToImmutable(
+    rawNotifications,
+    records.Notification
+  )
+
+  return state.mergeIn(['notifications'], notifications)
 }
 
 function saveComments(payload, state) {

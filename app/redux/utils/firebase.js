@@ -31,6 +31,15 @@ export default {
     return eventChannel(emit => ref.onSnapshot(emit))
   },
 
+  getNotificationsChannel: (userId, initTime) => {
+    const ref = db
+      .collection('notifications')
+      .where('userId', '==', userId)
+      .where('updatedAt', '>', initTime)
+
+    return eventChannel(emit => ref.onSnapshot(emit))
+  },
+
   getActivitiesChannel: (taskId, initTime) => {
     const ref = db
       .collection('activities')

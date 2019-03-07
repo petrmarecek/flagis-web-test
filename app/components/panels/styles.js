@@ -26,6 +26,7 @@ const centerPanelTopCss = css`
   justify-content: ${props => (props.flexEnd ? 'flex-end' : 'space-between')};
   align-items: center;
   width: 100%;
+  ${boxSizing('border-box')}
 `
 
 const CenterPanelTopPrimary = styled.div`
@@ -34,6 +35,17 @@ const CenterPanelTopPrimary = styled.div`
   padding: 0 20px 0 17px;
   border-bottom: ${props =>
     props.bottomBorder ? '1px solid rgba(151, 151, 151, 0.2)' : 'none'};
+`
+
+const CenterPanelTopPrimaryLeft = styled.div`
+  ${centerPanelTopCss}
+  flex: 1 1 auto;
+`
+
+const CenterPanelTopPrimaryRight = styled.div`
+  ${centerPanelTopCss}
+  margin: 0 0 0 40px;
+  flex: 1 1 80px;
 `
 
 const CenterPanelTopSecondary = styled.div`
@@ -77,6 +89,8 @@ export {
   CenterPanelWrapper,
   CenterPanelTop,
   CenterPanelTopPrimary,
+  CenterPanelTopPrimaryLeft,
+  CenterPanelTopPrimaryRight,
   CenterPanelTopSecondary,
   CenterPanelScroll,
   LeftPanelWrapper,

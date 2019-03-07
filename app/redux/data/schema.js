@@ -67,6 +67,13 @@ const tasks = new schema.Array(task)
 const activitie = new schema.Entity('activitie', {}, { idAttribute: 'id' })
 const activities = new schema.Array(activitie)
 
+const notification = new schema.Entity(
+  'notification',
+  {},
+  { idAttribute: 'id' }
+)
+const notifications = new schema.Array(notification)
+
 const comment = new schema.Entity('comment', {}, { idAttribute: 'id' })
 const comments = new schema.Array(comment)
 
@@ -94,6 +101,8 @@ export default {
   trees,
   activitie,
   activities,
+  notification,
+  notifications,
   comment,
   comments,
   attachment,

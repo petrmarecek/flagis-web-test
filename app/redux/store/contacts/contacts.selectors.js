@@ -38,6 +38,10 @@ const getCurrentContactId = state => state.getIn(['contacts', 'current'])
 
 // Export selectors
 export const getContactsSearch = state => state.getIn(['contacts', 'search'])
+export const getContactById = (state, contactId) => {
+  const entitiesContacts = getEntitiesContacts(state)
+  return entitiesContacts.get(contactId)
+}
 
 // ------ Reselect selectors ----------------------------------------------------
 
@@ -45,13 +49,13 @@ export const getContacts = createSelector(
   getContactsIsFetching,
   getEntitiesContacts,
   (contactsIsFetching, entitiesContacts) => {
-
-    return ({
+    return {
       isFetching: contactsIsFetching,
       items: entitiesContacts
         .filter(contact => contact.isContact)
-        .sort(compareContactByEmail).toArray(),
-    })
+        .sort(compareContactByEmail)
+        .toArray(),
+    }
   }
 )
 
@@ -62,10 +66,10 @@ export const getVisibleContacts = createSelector(
   (contactsIsFetching, contactsSearch, entitiesContacts) => {
     const data = { contactsSearch, entitiesContacts }
 
-    return ({
+    return {
       isFetching: contactsIsFetching,
       items: loadContact(data),
-    })
+    }
   }
 )
 
@@ -73,7 +77,6 @@ export const getCurrentContact = createSelector(
   getCurrentContactId,
   getEntitiesContacts,
   (currentContactId, entitiesContacts) => {
-
     if (!currentContactId) {
       return null
     }
@@ -88,7 +91,6 @@ export const getNextContact = createSelector(
   getContactsSearch,
   getEntitiesContacts,
   (isContactDetail, contactId, contactsSearch, entitiesContacts) => {
-
     if (!isContactDetail) {
       return null
     }
@@ -121,7 +123,6 @@ export const getPreviousContact = createSelector(
   getContactsSearch,
   getEntitiesContacts,
   (isContactDetail, contactId, contactsSearch, entitiesContacts) => {
-
     if (!isContactDetail) {
       return null
     }
@@ -150,10 +151,10 @@ export const getPreviousContact = createSelector(
 
 export const getContactsEmail = createSelector(
   getEntitiesContacts,
-  (entitiesContacts) => {
-
+  entitiesContacts => {
     return entitiesContacts
       .filter(contact => contact.isContact)
-      .map(contact => contact.email.toLowerCase()).toList()
+      .map(contact => contact.email.toLowerCase())
+      .toList()
   }
 )

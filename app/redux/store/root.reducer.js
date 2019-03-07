@@ -13,6 +13,7 @@ import auth from 'redux/store/auth/auth.reducer'
 import entities from 'redux/store/entities/entities.reducer'
 import tasks from 'redux/store/tasks/tasks.reducer'
 import activities from 'redux/store/activities/activities.reducer'
+import notifications from 'redux/store/notifications/notifications.reducer'
 import comments from 'redux/store/comments/comments.reducer'
 import attachments from 'redux/store/attachments/attachments.reducer'
 import tasksMenu from 'redux/store/tasks-menu/tasks-menu.reducer'
@@ -59,6 +60,7 @@ export default function createReducer(injectedReducers) {
     entities,
     tasks,
     activities,
+    notifications,
     comments,
     attachments,
     tasksMenu,

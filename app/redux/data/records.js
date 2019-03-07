@@ -67,6 +67,7 @@ export const Lists = Record({
   inbox: null,
   archived: null,
   contact: null,
+  notification: null,
 })
 
 export const Detail = Record({
@@ -157,6 +158,7 @@ export const EntitiesStore = Record({
   tags: Map(),
   treeItems: Map(),
   activities: Map(),
+  notifications: Map(),
   comments: Map(),
   attachments: Map(),
   followers: Map(),
@@ -175,6 +177,10 @@ export const TaskStore = Record({
 })
 
 export const ActivitiesStore = Record({
+  isFetching: false,
+})
+
+export const NotificationStore = Record({
   isFetching: false,
 })
 
@@ -265,6 +271,17 @@ export const Activities = Record({
   updatedAt: null,
   taskId: null,
   createdById: null,
+})
+
+export const Notification = Record({
+  id: null,
+  type: null,
+  data: null,
+  readAt: null,
+  createdAt: null,
+  updatedAt: null,
+  taskId: null,
+  userId: null,
 })
 
 export const Attachment = Record({

@@ -312,6 +312,26 @@ const SettingsButton = styled.div`
   }
 `
 
+/*------------------------------ Navigation Notifications -----------------------------*/
+
+const NavigationNotificationsWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  position: relative;
+  flex: 0 0 45px;
+  height: 60px;
+`
+
+const NotificationsCounter = styled(Counter)`
+  position: absolute;
+  right: -8px;
+  top: 12px;
+  font-size: 11px;
+  background-color: #44ffb1;
+  ${borderRadius('10px')}
+`
+
 export {
   // Common
   TriangleIcon,
@@ -337,4 +357,7 @@ export {
   // Navigation account settings
   NavigationAccountSettingsWrapper,
   SettingsButton,
+  // Navigation Notifications
+  NavigationNotificationsWrapper,
+  NotificationsCounter,
 }

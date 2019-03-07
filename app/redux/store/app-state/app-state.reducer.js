@@ -65,7 +65,8 @@ export default typeToReducer(
         .setIn(['scrollbarPosition', 'tag'], null)
         .setIn(['scrollbarPosition', 'inbox'], null)
         .setIn(['scrollbarPosition', 'archived'], null)
-        .setIn(['scrollbarPosition', 'contact'], null),
+        .setIn(['scrollbarPosition', 'contact'], null)
+        .setIn(['scrollbarPosition', 'notification'], null),
 
     [APP_STATE.PRIMARY_HIDDEN_NAVIGATION_HIDE]: state =>
       state.setIn(

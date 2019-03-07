@@ -21,6 +21,7 @@ import date from '../../utils/date'
 import * as authActions from 'redux/store/auth/auth.actions'
 import * as appStateActions from 'redux/store/app-state/app-state.actions'
 import * as taskActions from 'redux/store/tasks/tasks.actions'
+import * as notificationActions from 'redux/store/notifications/notifications.actions'
 import * as tagActions from 'redux/store/tags/tags.actions'
 import * as treeActions from 'redux/store/tree/tree.actions'
 import * as contactsActions from 'redux/store/contacts/contacts.actions'
@@ -32,6 +33,7 @@ import {
 } from 'redux/store/tasks/tasks.sagas'
 import { initTagsData } from 'redux/store/tags/tags.sagas'
 import { initTagTreeItemsData } from 'redux/store/tree/tree.sagas'
+import { initNotificationsData } from 'redux/store/notifications/notifications.sagas'
 import {
   initContactsData,
   initGlobalContactsData,
@@ -59,6 +61,7 @@ export function* initDataFlow() {
     yield put(contactsActions.fetchContacts())
     yield put(tagActions.fetchTagsRelations())
     yield put(taskActions.fetchTasks())
+    yield put(notificationActions.fetchNotifications())
     yield put(taskActions.fetchInboxTasks())
     yield put(treeActions.fetchTree())
 
@@ -70,6 +73,7 @@ export function* initDataFlow() {
       tagTreeItemsSyncing,
       contactsSyncing,
       globalContactsSyncing,
+      notificationsSyncing,
     } = yield all({
       tasksSyncing: fork(initTasksData, initTime),
       inboxTasksSyncing: fork(initInboxTasksData, initTime),
@@ -77,6 +81,7 @@ export function* initDataFlow() {
       tagTreeItemsSyncing: fork(initTagTreeItemsData, initTime),
       contactsSyncing: fork(initContactsData, initTime),
       globalContactsSyncing: fork(initGlobalContactsData, initTime),
+      notificationsSyncing: fork(initNotificationsData, initTime),
     })
 
     yield take(AUTH.LOGOUT)
@@ -86,6 +91,7 @@ export function* initDataFlow() {
     yield cancel(tagTreeItemsSyncing)
     yield cancel(contactsSyncing)
     yield cancel(globalContactsSyncing)
+    yield cancel(notificationsSyncing)
 
     // Cancel snapshot for comments and attachments from firestore
     const { task, inbox } = yield select(state =>

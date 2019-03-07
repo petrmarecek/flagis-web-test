@@ -13,8 +13,18 @@ export default {
     return date !== null ? moment(date).format(DEFAULT_DATE_FORMAT) : ''
   },
 
-  formatDateTime(date) {
+  formatDateTimePrimary(date) {
     return date !== null ? moment(date).format(DEFAULT_DATE_TIME_FORMAT) : ''
+  },
+
+  formatDateTimeSecondary(date) {
+    if (date === null) {
+      return ''
+    }
+
+    const dateFormat = moment(date).format(DEFAULT_DATE_FORMAT)
+    const timeFormat = moment(date).format(DEFAULT_TIME_FORMAT)
+    return `${dateFormat} (${timeFormat})`
   },
 
   toMoment(dateStr) {

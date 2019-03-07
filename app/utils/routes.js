@@ -12,6 +12,7 @@ export const routes = {
     archive: '/user/archive',
     contacts: '/user/contacts',
     dashboard: '/user/dashboard',
+    notifications: '/user/notifications',
 
     account: {
       settings: {

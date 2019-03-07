@@ -21,6 +21,7 @@ import TagPage from 'containers/tag-page'
 import InboxPage from 'containers/inbox-page'
 import ArchivePage from '../archive-page/'
 import ContactPage from '../contact-page/'
+import NotificationPage from '../notification-page/'
 import DashboardPage from 'containers/dashboard-page'
 import AccountContainer from 'containers/account-container'
 import Dialogs from 'components/dialogs/dialogs'
@@ -105,6 +106,10 @@ class UserContainer extends PureComponent {
             <Route
               path={`${this.props.match.path}/contacts`}
               component={ContactPage}
+            />
+            <Route
+              path={`${this.props.match.path}/notifications`}
+              component={NotificationPage}
             />
             <Route
               path={`${this.props.match.path}/account`}

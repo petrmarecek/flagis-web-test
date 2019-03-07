@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { compose, withHandlers } from 'recompose'
+import { withHandlers } from 'recompose'
 
 // components
 import Avatar from 'react-avatar'
@@ -18,7 +18,7 @@ import {
   ContactItemInviteText,
 } from './styles'
 
-const ContactItem = ({
+const ContactListItem = ({
   contact,
   onHandleClickContact,
   onHandleClickInvitation,
@@ -61,7 +61,7 @@ const ContactItem = ({
   </ContactItemContainer>
 )
 
-ContactItem.propTypes = {
+ContactListItem.propTypes = {
   contact: PropTypes.object,
   onClickContact: PropTypes.func,
   onHandleClickContact: PropTypes.func,
@@ -69,12 +69,10 @@ ContactItem.propTypes = {
   onHandleClickInvitation: PropTypes.func,
 }
 
-export default compose(
-  withHandlers({
-    onHandleClickContact: props => () => props.onClickContact(props.contact.id),
-    onHandleClickInvitation: props => event => {
-      event.stopPropagation()
-      props.onClickInvitation(props.contact.id)
-    },
-  })
-)(ContactItem)
+export default withHandlers({
+  onHandleClickContact: props => () => props.onClickContact(props.contact.id),
+  onHandleClickInvitation: props => event => {
+    event.stopPropagation()
+    props.onClickInvitation(props.contact.id)
+  },
+})(ContactListItem)

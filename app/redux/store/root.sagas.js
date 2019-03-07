@@ -7,6 +7,7 @@ import { TASKS_MENU } from './tasks-menu/tasks-menu.actions'
 import { TREE } from './tree/tree.actions'
 import { TAGS } from './tags/tags.actions'
 import { ACTIVITIES } from './activities/activities.actions'
+import { NOTIFICATIONS } from './notifications/notifications.actions'
 import { COMMENTS } from './comments/comments.actions'
 import { ATTACHMENTS } from './attachments/attachments.actions'
 import { CONTACTS } from './contacts/contacts.actions'
@@ -20,6 +21,7 @@ import * as tag from './tags/tags.sagas'
 import * as tree from './tree/tree.sagas'
 import * as appState from './app-state/app-state.sagas'
 import * as activities from './activities/activities.sagas'
+import * as notifications from './notifications/notifications.sagas'
 import * as comment from './comments/comments.sagas'
 import * as attachment from './attachments/attachments.sagas'
 import * as contact from './contacts/contacts.sagas'
@@ -77,6 +79,9 @@ export default function* root() {
     // activities
     takeLatest(ACTIVITIES.FETCH, activities.fetchActivities),
     fork(activities.initActivitiesData),
+
+    // activities
+    takeLatest(NOTIFICATIONS.FETCH, notifications.fetchNotifications),
 
     // comments
     takeLatest(COMMENTS.FETCH, comment.fetchComment),
