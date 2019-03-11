@@ -1,12 +1,17 @@
 import styled from 'styled-components'
+import { fontMain } from 'components/styled-components-mixins'
 import { link } from '../styled-components-mixins/'
-import Icon from '../icons/icon'
 
-const CommentListContainer = styled.div`
+/*--------------------------------- Comment List ----------------------------*/
+
+const ListWrapper = styled.div`
   padding: 3px 20px 3px 3px;
 `
 
-const CommentItemContainer = styled.li`
+/*--------------------------------- Comment Item ----------------------------*/
+
+const ItemWrapper = styled.li`
+  ${fontMain}
   display: block;
   list-style-type: none;
   font-size: 14px;
@@ -22,20 +27,20 @@ const CommentItemContainer = styled.li`
   }
 `
 
-const CommentItemIcon = styled(Icon)`
+const UserPhoto = styled.span`
   position: absolute;
   display: block;
-  top: 3px;
-  left: 6px;
+  top: 0;
+  left: 0;
 `
 
-const CommentItemAuthor = styled.div`
+const Author = styled.div`
   display: inline-block;
   margin-left: 37px;
   color: #b1b5b8;
 `
 
-const CommentItemDate = styled.div`
+const Date = styled.div`
   display: inline-block;
   font-size: 12px;
   margin: 2px 0 0 0;
@@ -43,7 +48,7 @@ const CommentItemDate = styled.div`
   float: right;
 `
 
-const CommentItemContent = styled.div`
+const Content = styled.div`
   display: block;
   margin: 4px 0 0 37px;
   word-wrap: break-word;
@@ -51,11 +56,4 @@ const CommentItemContent = styled.div`
   ${link}
 `
 
-export {
-  CommentListContainer,
-  CommentItemContainer,
-  CommentItemIcon,
-  CommentItemAuthor,
-  CommentItemDate,
-  CommentItemContent,
-}
+export { ListWrapper, ItemWrapper, UserPhoto, Author, Date, Content }

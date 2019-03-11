@@ -1,13 +1,16 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+// redux
 import { connect } from 'react-redux'
 import { getUserId } from 'redux/store/auth/auth.selectors'
 
+// components
 import CommentListItem from 'components/comment-list/comment-list-item'
 import { Scrollbars } from 'react-custom-scrollbars'
 
-import { CommentListContainer } from './styles'
+// styles
+import { ListWrapper } from './styles'
 
 const CommentList = ({ comments, userId }) => {
   const scrollStyle = {
@@ -24,7 +27,7 @@ const CommentList = ({ comments, userId }) => {
       }}
       style={scrollStyle}
     >
-      <CommentListContainer>
+      <ListWrapper>
         <ul>
           {!comments.isFetching &&
             comments.items.map(comment => (
@@ -35,7 +38,7 @@ const CommentList = ({ comments, userId }) => {
               />
             ))}
         </ul>
-      </CommentListContainer>
+      </ListWrapper>
     </Scrollbars>
   )
 }

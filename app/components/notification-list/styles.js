@@ -10,7 +10,7 @@ import { fadeInUp } from 'react-animations'
 const fadeUp = keyframes`${fadeInUp}`
 
 /*--------------------------------- Notification Item ----------------------------*/
-const NotificationItemWrapper = styled.li`
+const ItemWrapper = styled.li`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -66,4 +66,4 @@ const Icons = styled.div`
   }
 `
 
-export { NotificationItemWrapper, Indicator, User, Date, Title, Icons }
+export { ItemWrapper, Indicator, User, Date, Title, Icons }

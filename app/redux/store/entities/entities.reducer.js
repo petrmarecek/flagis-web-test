@@ -452,7 +452,29 @@ function saveTasks(payload, state) {
 }
 
 function saveActivities(payload, state) {
-  const rawActivities = payload.entities.activitie || {}
+  // filter activities
+  const filterActivities = Object.values(payload.entities.activitie)
+    .filter(activitie => {
+      const { type, data } = activitie
+      const newData =
+        type === 'TASKS/UPDATE' && data !== null ? Object.keys(data.new)[0] : ''
+
+      return (
+        newData !== 'archivedAt' &&
+        newData !== 'madeImportantAt' &&
+        newData !== 'subject' &&
+        newData !== 'description' &&
+        type !== 'TASKS/UPDATE-TAGS' &&
+        type !== 'TASKS/ADD-FOLLOWER' &&
+        type !== 'TASKS/DELETE-FOLLOWER'
+      )
+    })
+    .reduce((result, activitie) => {
+      result[activitie.id] = payload.entities.activitie[activitie.id]
+      return result
+    }, {})
+
+  const rawActivities = filterActivities || {}
   const activities = convertToImmutable(rawActivities, records.Activities)
 
   return state.mergeIn(['activities'], activities)

@@ -15,14 +15,7 @@ import Icon from 'components/icons/icon'
 import { ICONS } from 'components/icons/icon-constants'
 
 // styles
-import {
-  NotificationItemWrapper,
-  Indicator,
-  User,
-  Date,
-  Title,
-  Icons,
-} from './styles'
+import { ItemWrapper, Indicator, User, Date, Title, Icons } from './styles'
 
 const NotificationListItem = ({ notification, task, profile }) => {
   const { type, readAt, createdAt } = notification
@@ -35,7 +28,7 @@ const NotificationListItem = ({ notification, task, profile }) => {
   const taskSubject = subject !== null ? `${subject.substring(0, 10)}...` : ''
 
   return (
-    <NotificationItemWrapper>
+    <ItemWrapper>
       {!isRead && <Indicator />}
       <User>From: {profileName}</User>
       <Date>{date}</Date>
@@ -53,7 +46,7 @@ const NotificationListItem = ({ notification, task, profile }) => {
           hoverColor={['#FF6A6A']}
         />
       </Icons>
-    </NotificationItemWrapper>
+    </ItemWrapper>
   )
 }
 
