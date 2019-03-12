@@ -1,27 +1,25 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+// components
 import AttachmentListItem from 'components/attachment-list/attachment-list-item'
-import { Scrollbars } from 'react-custom-scrollbars'
+import ShadowScrollbar from 'components/common/shadow-scrollbar'
 
-import { AttachmentListContainer } from './styles'
+// styles
+import { ListWrapper } from './styles'
 
 const AttachmentList = ({ attachments, attachmentDelete, disabled }) => {
   const scrollStyle = {
-    height: `calc(100vh - 360px)`,
+    height: `calc(100vh - 172px)`,
+    shadowHeight: 20,
+    boxShadowTop: 'inset 0 10px 10px -5px #fff',
+    boxShadowBottom: 'inset 0 -10px 10px -5px #fff',
     overflow: 'hidden',
   }
 
   return (
-    <Scrollbars
-      ref={scrollbar => {
-        if (scrollbar !== null) {
-          scrollbar.scrollToBottom()
-        }
-      }}
-      style={scrollStyle}
-    >
-      <AttachmentListContainer>
+    <ShadowScrollbar style={scrollStyle} isScrollBottom>
+      <ListWrapper>
         <ul>
           {!attachments.isFetching &&
             attachments.items.map(attachment => (
@@ -33,8 +31,8 @@ const AttachmentList = ({ attachments, attachmentDelete, disabled }) => {
               />
             ))}
         </ul>
-      </AttachmentListContainer>
-    </Scrollbars>
+      </ListWrapper>
+    </ShadowScrollbar>
   )
 }
 

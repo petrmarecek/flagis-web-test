@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { textOverflow } from 'components/styled-components-mixins'
 import Icon from '../icons/icon'
 
-const AttachmentListContainer = styled.div`
+const ListWrapper = styled.div`
   position: absolute;
   right: 0;
   bottom: 0;
@@ -10,7 +10,7 @@ const AttachmentListContainer = styled.div`
   max-height: 100%;
 `
 
-const AttachmentItemContainer = styled.li`
+const ItemWrapper = styled.li`
   display: block;
   list-style-type: none;
   font-size: 14px;
@@ -36,21 +36,21 @@ const AttachmentItemContainer = styled.li`
   }
 `
 
-const AttachmentItemIconFile = styled(Icon)`
+const IconFile = styled(Icon)`
   position: absolute;
   display: block;
   top: 3px;
   left: 8px;
 `
 
-const AttachmentItemIconRemove = styled(Icon)`
+const IconRemove = styled(Icon)`
   position: absolute;
   display: block;
   right: 9px;
   top: 6px;
 `
 
-const AttachmentItemFileName = styled.div`
+const FileName = styled.div`
   margin: 0 30px 2px 35px;
   line-height: 25px;
   overflow: hidden;
@@ -62,10 +62,4 @@ const AttachmentItemFileName = styled.div`
   }
 `
 
-export {
-  AttachmentListContainer,
-  AttachmentItemContainer,
-  AttachmentItemIconFile,
-  AttachmentItemIconRemove,
-  AttachmentItemFileName,
-}
+export { ListWrapper, ItemWrapper, IconFile, IconRemove, FileName }
