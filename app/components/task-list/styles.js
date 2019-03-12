@@ -251,13 +251,11 @@ const TagItems = styled.ul`
 `
 
 const Item = styled.li`
-  ${borderRadius('8px')}
-  display: flex;
-  align-items: center;
+  ${borderRadius('9px')}
   margin: 0 4px 8px 0;
   float: left;
   border: none;
-  height: 15px;
+  height: 18px;
   background-color: ${props => props.bgColor};
   opacity: ${props => (props.isCompleted ? '0.4' : '1')};
   max-width: ${props => (props.isItemCollapse ? '15px' : '120px')};
@@ -267,8 +265,11 @@ const Item = styled.li`
 const Text = styled.div`
   ${textOverflow('ellipsis')}
   ${fontMain}
+  display: flex;
+  align-items: center;
+  height: 18px;
   font-size: 12px;
-  padding: 0 5px;
+  padding: 0 6px;
   overflow: hidden;
   white-space: nowrap;
   color: ${props => (props.isItemCollapse ? props.bgColor : '#fff')};
