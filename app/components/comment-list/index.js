@@ -7,7 +7,7 @@ import { getUserId } from 'redux/store/auth/auth.selectors'
 
 // components
 import CommentListItem from 'components/comment-list/comment-list-item'
-import { Scrollbars } from 'react-custom-scrollbars'
+import ShadowScrollbar from 'components/common/shadow-scrollbar'
 
 // styles
 import { ListWrapper } from './styles'
@@ -15,18 +15,14 @@ import { ListWrapper } from './styles'
 const CommentList = ({ comments, userId }) => {
   const scrollStyle = {
     height: `calc(100vh - 172px)`,
+    shadowHeight: 20,
+    boxShadowTop: 'inset 0 10px 10px -5px #fff',
+    boxShadowBottom: 'inset 0 -10px 10px -5px #fff',
     overflow: 'hidden',
   }
 
   return (
-    <Scrollbars
-      ref={scrollbar => {
-        if (scrollbar !== null) {
-          scrollbar.scrollToBottom()
-        }
-      }}
-      style={scrollStyle}
-    >
+    <ShadowScrollbar style={scrollStyle} isScrollBottom>
       <ListWrapper>
         <ul>
           {!comments.isFetching &&
@@ -39,7 +35,7 @@ const CommentList = ({ comments, userId }) => {
             ))}
         </ul>
       </ListWrapper>
-    </Scrollbars>
+    </ShadowScrollbar>
   )
 }
 

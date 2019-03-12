@@ -10,6 +10,7 @@ export default class ShadowScrollbar extends PureComponent {
     verticalStyle: PropTypes.object,
     children: PropTypes.any,
     isToggleTaskList: PropTypes.bool,
+    isScrollBottom: PropTypes.bool,
     setPosition: PropTypes.func,
     addScrollRef: PropTypes.func,
     handleDrag: PropTypes.func,
@@ -40,6 +41,10 @@ export default class ShadowScrollbar extends PureComponent {
 
       if (this.props.position) {
         scrollRef.view.scrollTop = this.props.position
+      }
+
+      if (this.props.isScrollBottom) {
+        scrollRef.scrollToBottom()
       }
     }, 1)
   }
