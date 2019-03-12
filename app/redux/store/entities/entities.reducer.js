@@ -284,6 +284,23 @@ export default typeToReducer(
       FULFILLED: (state, action) => saveNotifications(action.payload, state),
     },
 
+    [NOTIFICATIONS.READ]: (state, action) =>
+      state.setIn(
+        ['notifications', action.payload.notification.id, 'readAt'],
+        dateUtil.getDateToISOString()
+      ),
+
+    [NOTIFICATIONS.READ_ALL]: state => {
+      let notifications = state.get('notifications')
+      notifications = notifications
+        .filter(notification => notification.readAt === null)
+        .map(notification =>
+          notification.set('readAt', dateUtil.getDateToISOString())
+        )
+
+      return state.mergeIn(['notifications'], notifications)
+    },
+
     // ------ Comments ----------------------------------------------------------
 
     [COMMENTS.FETCH]: {

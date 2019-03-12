@@ -5,6 +5,7 @@ import { compose, branch, renderComponent, withHandlers } from 'recompose'
 // redux
 import { connect } from 'react-redux'
 import { setScrollbarPosition } from 'redux/store/app-state/app-state.actions'
+import { readNotification } from 'redux/store/notifications/notifications.actions'
 import { getScrollbarPosition } from 'redux/store/app-state/app-state.selectors'
 import { getNotifications } from 'redux/store/notifications/notifications.selectros'
 
@@ -19,6 +20,7 @@ import { EmptyList } from 'components/styled-components-mixins'
 const NotificationListContainer = ({
   notifications,
   scrollbarPosition,
+  onHandleReadNotification,
   onHandleSetScrollbarPosition,
 }) => {
   if (notifications.items.length === 0) {
@@ -44,6 +46,7 @@ const NotificationListContainer = ({
           <NotificationListItem
             key={notification.id}
             notification={notification}
+            onClick={onHandleReadNotification}
           />
         ))}
       </ul>
@@ -54,6 +57,7 @@ const NotificationListContainer = ({
 NotificationListContainer.propTypes = {
   notifications: PropTypes.object,
   scrollbarPosition: PropTypes.number,
+  onHandleReadNotification: PropTypes.func,
   onHandleSetScrollbarPosition: PropTypes.func,
 }
 
@@ -62,7 +66,7 @@ const mapStateToProps = state => ({
   scrollbarPosition: getScrollbarPosition(state, 'notification'),
 })
 
-const mapDispatchToProps = { setScrollbarPosition }
+const mapDispatchToProps = { setScrollbarPosition, readNotification }
 
 export default compose(
   connect(
@@ -73,5 +77,7 @@ export default compose(
   withHandlers({
     onHandleSetScrollbarPosition: props => position =>
       props.setScrollbarPosition('notification', position),
+    onHandleReadNotification: props => (notificationId, isRedirect) =>
+      props.readNotification(notificationId, isRedirect),
   })
 )(NotificationListContainer)

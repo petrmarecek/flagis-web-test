@@ -80,8 +80,10 @@ export default function* root() {
     takeLatest(ACTIVITIES.FETCH, activities.fetchActivities),
     fork(activities.initActivitiesData),
 
-    // activities
+    // notifications
     takeLatest(NOTIFICATIONS.FETCH, notifications.fetchNotifications),
+    takeLatest(NOTIFICATIONS.READ, notifications.readNotification),
+    takeLatest(NOTIFICATIONS.READ_ALL, notifications.readAllNotifications),
 
     // comments
     takeLatest(COMMENTS.FETCH, comment.fetchComment),

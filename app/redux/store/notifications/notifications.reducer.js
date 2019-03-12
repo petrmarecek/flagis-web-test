@@ -5,9 +5,13 @@ import { NotificationStore } from '../../data/records'
 export default typeToReducer(
   {
     [NOTIFICATIONS.FETCH]: {
-      PENDING: state => state.setIn(['isFetching'], true),
-      FULFILLED: state => state.setIn(['isFetching'], false),
+      PENDING: state => state.set('isFetching', true),
+      FULFILLED: state => state.set('isFetching', false),
     },
+
+    [NOTIFICATIONS.READ_VISIBLE]: state => state.set('isReadVisible', true),
+
+    [NOTIFICATIONS.READ_HIDE]: state => state.set('isReadVisible', false),
   },
   new NotificationStore()
 )

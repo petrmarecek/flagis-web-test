@@ -53,6 +53,11 @@ const Date = styled.div`
   font-size: 12px;
 `
 
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+
 const Title = styled.div`
   font-weight: ${props => (props.isRead ? 'normal' : 'bold')};
   overflow: hidden;
@@ -66,4 +71,4 @@ const Icons = styled.div`
   }
 `
 
-export { ItemWrapper, Indicator, User, Date, Title, Icons }
+export { ItemWrapper, Indicator, User, Date, Content, Title, Icons }

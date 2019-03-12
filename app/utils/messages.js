@@ -100,12 +100,10 @@ export const infoMessages = {
     completedRules: 'Allowed to only complete and archive of task!',
   },
 
-  notifications: (type, data) => {
+  notifications: type => {
     switch (type) {
       case 'TASKS/DELIVERED':
-        return `Task with name ${data.taskSubject} was delivered by ${
-          data.profileName
-        }`
+        return `was delivered`
 
       default:
         return 'Task was updated'

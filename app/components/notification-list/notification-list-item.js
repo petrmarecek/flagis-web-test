@@ -15,35 +15,56 @@ import Icon from 'components/icons/icon'
 import { ICONS } from 'components/icons/icon-constants'
 
 // styles
-import { ItemWrapper, Indicator, User, Date, Title, Icons } from './styles'
+import {
+  ItemWrapper,
+  Indicator,
+  User,
+  Date,
+  Content,
+  Title,
+  Icons,
+} from './styles'
 
-const NotificationListItem = ({ notification, task, profile }) => {
+const NotificationListItem = ({
+  notification,
+  task,
+  profile,
+  onHandleClickRead,
+  onHandleClickNotification,
+}) => {
   const { type, readAt, createdAt } = notification
   const { subject } = task
   const { nickname, email } = profile
+
   const date = dateUtils.formatDateTimeSecondary(createdAt)
   const isRead = readAt !== null
   const profileName =
     email !== null ? (nickname !== null ? nickname : email) : ''
-  const taskSubject = subject !== null ? `${subject.substring(0, 10)}...` : ''
+  const taskSubject = subject !== null ? subject : ''
 
   return (
-    <ItemWrapper>
-      {!isRead && <Indicator />}
+    <ItemWrapper onClick={onHandleClickNotification}>
+      {!isRead && <Indicator onClick={onHandleClickRead} />}
       <User>From: {profileName}</User>
       <Date>{date}</Date>
-      <Title isRead={isRead}>
-        {infoMessages.notifications(type, { taskSubject, profileName })}
-      </Title>
+      <Content>
+        <Title isRead={isRead}>{taskSubject}</Title>
+        <Title isRead={isRead}>{infoMessages.notifications(type)}</Title>
+      </Content>
       <Icons>
-        <Avatar name="petr" size="30" textSizeRatio={2} round />
+        <Avatar
+          src={profile.photo}
+          name={profileName}
+          size="20"
+          textSizeRatio={2}
+          round
+        />
         <Icon
-          icon={ICONS.TRASH}
-          width={23}
-          height={26}
-          scale={1}
+          icon={ICONS.INBOX}
+          width={22}
+          height={15}
+          scale={0.68}
           color={['#b1b5b8']}
-          hoverColor={['#FF6A6A']}
         />
       </Icons>
     </ItemWrapper>
@@ -54,6 +75,9 @@ NotificationListItem.propTypes = {
   notification: PropTypes.object,
   task: PropTypes.object,
   profile: PropTypes.object,
+  onClick: PropTypes.func,
+  onHandleClickRead: PropTypes.func,
+  onHandleClickNotification: PropTypes.func,
 }
 
 const mapStateToProps = (state, props) => {
@@ -71,5 +95,12 @@ const mapStateToProps = (state, props) => {
 
 export default compose(
   connect(mapStateToProps),
-  withHandlers({})
+  withHandlers({
+    onHandleClickRead: props => event => {
+      event.stopPropagation()
+      props.onClick(props.notification, false)
+    },
+    onHandleClickNotification: props => () =>
+      props.onClick(props.notification, true),
+  })
 )(NotificationListItem)

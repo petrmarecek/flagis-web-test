@@ -1,11 +1,12 @@
-import { all, put, select, cancelled, fork, take } from 'redux-saga/effects'
-import * as notificationsActions from 'redux/store/notifications/notifications.actions'
-import * as authSelectors from 'redux/store/auth/auth.selectors'
 import api from 'redux/utils/api'
 import schema from 'redux/data/schema'
+import firebase from 'redux/utils/firebase'
 import { normalize } from 'normalizr'
 import { fetch, createLoadActions, callApi } from 'redux/store/common.sagas'
-import firebase from 'redux/utils/firebase'
+import { all, put, select, cancelled, fork, take } from 'redux-saga/effects'
+
+import * as notificationsActions from 'redux/store/notifications/notifications.actions'
+import * as authSelectors from 'redux/store/auth/auth.selectors'
 
 const NOTIFICATIONS = notificationsActions.NOTIFICATIONS
 
@@ -50,8 +51,22 @@ export function* initNotificationsData(initTime) {
 
 export function* fetchNotifications(action) {
   yield* fetch(NOTIFICATIONS.FETCH, {
-    method: api.notifications.get,
+    method: api.notifications.list,
     args: [action.payload],
     schema: schema.notifications,
   })
+}
+
+export function* readNotification(action) {
+  const { notification, isRedirect } = action.payload
+
+  if (isRedirect) {
+    // TODO: redirect to task detail
+  }
+
+  yield callApi(api.notifications.read, notification.id)
+}
+
+export function* readAllNotifications() {
+  yield callApi(api.notifications.readAll)
 }

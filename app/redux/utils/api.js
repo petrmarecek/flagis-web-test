@@ -93,7 +93,12 @@ export default {
   },
 
   notifications: {
-    get: () => api.get(`notifications`).then(res => res.data),
+    list: () => api.get('notifications').then(res => res.data),
+    readAll: () => api.put('notifications').then(res => res.data),
+    read: notificationId =>
+      api.put(`notifications/${notificationId}`).then(res => res.data),
+    taskReadAll: taskId =>
+      api.put(`tasks/${taskId}/notifications`).then(res => res.data),
   },
 
   comments: {

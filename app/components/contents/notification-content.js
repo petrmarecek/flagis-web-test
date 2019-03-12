@@ -2,6 +2,7 @@ import React from 'react'
 
 // components
 import NavigationNotifications from 'components/navigation/navigation-notifications'
+import NotificationMenu from 'components/common/notification-menu'
 import NotificationListContainer from '../notification-list'
 
 // styles
@@ -18,7 +19,9 @@ const NotificationContent = () => (
       <CenterPanelTopPrimary bottomBorder flexEnd>
         <NavigationNotifications />
       </CenterPanelTopPrimary>
-      <CenterPanelTopSecondary flexEnd>Delete All</CenterPanelTopSecondary>
+      <CenterPanelTopSecondary>
+        <NotificationMenu />
+      </CenterPanelTopSecondary>
     </CenterPanelTop>
     <CenterPanelScroll offsetTop={104} offsetBottom={10}>
       <NotificationListContainer />

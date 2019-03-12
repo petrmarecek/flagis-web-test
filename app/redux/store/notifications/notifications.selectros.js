@@ -12,12 +12,19 @@ import { createSelector } from 'reselect'
  */
 
 function loadNotifications(data) {
-  const { entitiesNotifications } = data
+  const { entitiesNotifications, isReadVisible } = data
 
   let notifications = List()
   entitiesNotifications.forEach(notification => {
     notifications = notifications.push(notification)
   })
+
+  // All or active filters
+  if (!isReadVisible) {
+    notifications = notifications.filter(
+      notification => notification.readAt === null
+    )
+  }
 
   // Sort by createdAt
   notifications = notifications.sort((a, b) => {
@@ -36,13 +43,18 @@ function loadNotifications(data) {
 const getNotificationsIsFetching = state =>
   state.getIn(['notifications', 'isFetching'])
 
+// Export selectors
+export const getReadNotificationsVisibility = state =>
+  state.getIn(['notifications', 'isReadVisible'])
+
 // ------ Reselect selectors ----------------------------------------------------
 
 export const getNotifications = createSelector(
   getNotificationsIsFetching,
+  getReadNotificationsVisibility,
   getEntitiesNotifications,
-  (notificationsIsFetching, entitiesNotifications) => {
-    const data = { entitiesNotifications }
+  (notificationsIsFetching, isReadVisible, entitiesNotifications) => {
+    const data = { entitiesNotifications, isReadVisible }
 
     return {
       isFetching: notificationsIsFetching,

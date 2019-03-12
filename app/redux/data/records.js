@@ -182,6 +182,7 @@ export const ActivitiesStore = Record({
 
 export const NotificationStore = Record({
   isFetching: false,
+  isReadVisible: true,
 })
 
 export const CommentStore = Record({
