@@ -237,7 +237,7 @@ const TagTreeSection = props => {
                     color={[colors.tagTreeAddFilterIcon]}
                   />
                 </AddFilterIcon>
-                <AddFilterText>Add New Filter</AddFilterText>
+                <AddFilterText>Add Tag</AddFilterText>
               </SectionFooter>
             )}
           </SectionContent>

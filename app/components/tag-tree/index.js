@@ -145,7 +145,7 @@ const TagTreeContainer = props => {
         </Wrapper>
       </ShadowScrollbar>
       <AddSection onClick={onHandleAddButtonClicked} colorTheme={colorTheme}>
-        <AddSectionText>Add New Group</AddSectionText>
+        <AddSectionText>Add Section</AddSectionText>
       </AddSection>
     </div>
   )
