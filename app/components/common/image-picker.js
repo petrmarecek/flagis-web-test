@@ -12,8 +12,7 @@ import colors from 'components/styled-components-mixins/colors'
 import { fontMain, transition } from 'components/styled-components-mixins'
 
 const Wrapper = styled.div`
-  width: 130px;
-  margin: 45px 0 0 34px;
+  margin: 45px 34px 0 34px;
 `
 
 const UserImage = styled.div`
@@ -36,6 +35,7 @@ const Email = styled.div`
 const Button = styled.div`
   ${textCss}
   cursor: pointer;
+  width: 130px;
   color: ${props => colors[props.colorTheme].imagePickerButton};
 
   :hover {
