@@ -19,6 +19,10 @@ const UserImage = styled.div`
   margin: 0 0 15px 0;
   width: 90px;
   height: 90px;
+
+  img {
+    object-fit: cover;
+  }
 `
 
 const textCss = css`

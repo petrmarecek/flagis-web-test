@@ -32,6 +32,10 @@ const UserPhoto = styled.span`
   display: block;
   top: 0;
   left: 0;
+
+  img {
+    object-fit: cover;
+  }
 `
 
 const Author = styled.div`

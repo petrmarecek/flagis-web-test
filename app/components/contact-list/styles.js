@@ -23,6 +23,10 @@ const ContactItemIcon = styled.div`
   align-items: center;
   height: 100%;
   overflow: hidden;
+
+  img {
+    object-fit: cover;
+  }
 `
 
 const ContactItemTitleWrapper = styled.div`

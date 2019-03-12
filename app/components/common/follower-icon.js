@@ -35,6 +35,10 @@ const IconStatus = styled.div`
 
 const IconAccount = styled.div`
   margin-right: ${props => (props.isAssignee ? '5px' : '0')};
+
+  img {
+    object-fit: cover;
+  }
 `
 
 const FollowerIcon = ({

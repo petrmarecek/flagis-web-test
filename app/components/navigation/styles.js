@@ -172,6 +172,10 @@ const NavigationDefaultWrapper = styled.div`
 const AccountWrapper = styled.div`
   cursor: pointer;
 
+  img {
+    object-fit: cover;
+  }
+
   svg:nth-of-type(1) {
     ${transition('transform 300ms ease-out')}
     ${transform(props =>

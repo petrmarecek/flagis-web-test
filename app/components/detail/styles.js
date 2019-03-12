@@ -569,6 +569,10 @@ const DetailContentDescriptionTag = styled.div`
 const DetailSubjectIconContact = styled.div`
   pointer-events: none;
   margin: ${props => (props.isUser ? '0 5px' : '-2px 5px')};
+
+  img {
+    object-fit: cover;
+  }
 `
 
 const DetailSubjectContactContentEditable = styled(ContentEditable)`

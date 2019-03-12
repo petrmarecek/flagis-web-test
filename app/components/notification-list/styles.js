@@ -66,6 +66,10 @@ const Title = styled.div`
 `
 
 const Icons = styled.div`
+  img {
+    object-fit: cover;
+  }
+
   svg {
     margin: 0 0 0 5px;
   }
