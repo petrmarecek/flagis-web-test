@@ -604,6 +604,7 @@ const TaskDetail = props => {
                 text={description === null ? '' : description}
                 placeholder="Add description"
                 onUpdate={onHandleDescriptionUpdate}
+                helpVisible={!isCompleted && !isCollaborated}
                 scrollStyle={{
                   height: 'calc(100vh - 172px)',
                   overflow: 'hidden',

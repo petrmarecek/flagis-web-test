@@ -45,6 +45,7 @@ const MarkdownEditable = props => {
     scrollStyle,
     editable,
     helpVisible,
+    helpInfoVisible,
     onHandleClick,
     onHandleUpdateText,
     onHandleMouseEnterHelp,
@@ -73,13 +74,15 @@ const MarkdownEditable = props => {
           onBlur={onHandleUpdateText}
         />
       )}
-      <Help
-        onMouseEnter={onHandleMouseEnterHelp}
-        onMouseLeave={onHandleMouseLeaveHelp}
-      >
-        ?
-      </Help>
       {helpVisible && (
+        <Help
+          onMouseEnter={onHandleMouseEnterHelp}
+          onMouseLeave={onHandleMouseLeaveHelp}
+        >
+          ?
+        </Help>
+      )}
+      {helpInfoVisible && (
         <HelpInfo>
           <div>
             <h3>Markdown syntax:</h3>
@@ -150,6 +153,10 @@ const MarkdownEditable = props => {
   )
 }
 
+MarkdownEditable.defaultProps = {
+  helpVisible: true,
+}
+
 MarkdownEditable.propTypes = {
   text: PropTypes.string,
   placeholder: PropTypes.string,
@@ -157,6 +164,7 @@ MarkdownEditable.propTypes = {
   scrollStyle: PropTypes.object,
   editable: PropTypes.bool,
   helpVisible: PropTypes.bool,
+  helpInfoVisible: PropTypes.bool,
   onHandleClick: PropTypes.func,
   onUpdate: PropTypes.func,
   onHandleUpdateText: PropTypes.func,
@@ -165,7 +173,7 @@ MarkdownEditable.propTypes = {
 }
 
 export default withStateHandlers(
-  () => ({ editable: false, helpVisible: false }),
+  () => ({ editable: false, helpInfoVisible: false }),
   {
     onHandleClick: () => event => {
       if (event.target.nodeName === 'A') {
@@ -178,7 +186,7 @@ export default withStateHandlers(
       props.onUpdate(event)
       return { editable: false }
     },
-    onHandleMouseEnterHelp: () => () => ({ helpVisible: true }),
-    onHandleMouseLeaveHelp: () => () => ({ helpVisible: false }),
+    onHandleMouseEnterHelp: () => () => ({ helpInfoVisible: true }),
+    onHandleMouseLeaveHelp: () => () => ({ helpInfoVisible: false }),
   }
 )(MarkdownEditable)
