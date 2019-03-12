@@ -10,7 +10,7 @@ import { ListWrapper } from './styles'
 
 const AttachmentList = ({ attachments, attachmentDelete, disabled }) => {
   const scrollStyle = {
-    height: `calc(100vh - 172px)`,
+    height: `calc(100vh - 360px)`,
     shadowHeight: 20,
     boxShadowTop: 'inset 0 10px 10px -5px #fff',
     boxShadowBottom: 'inset 0 -10px 10px -5px #fff',
