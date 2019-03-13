@@ -34,9 +34,13 @@ function loadContact(data) {
 
 // Local selectors
 const getContactsIsFetching = state => state.getIn(['contacts', 'isFetching'])
-const getCurrentContactId = state => state.getIn(['contacts', 'current'])
 
 // Export selectors
+export const getCurrentContactId = state => state.getIn(['contacts', 'current'])
+export const getContactsItems = state =>
+  getEntitiesContacts(state)
+    .keySeq()
+    .toList()
 export const getContactsSearch = state => state.getIn(['contacts', 'search'])
 export const getContactById = (state, contactId) => {
   const entitiesContacts = getEntitiesContacts(state)

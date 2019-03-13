@@ -339,12 +339,15 @@ function getRedirectPathname() {
     pathname.substring(0, user.inbox.length) === user.inbox
   const isArchivePathname =
     pathname.substring(0, user.archive.length) === user.archive
+  const isContactsPathname =
+    pathname.substring(0, user.contacts.length) === user.contacts
 
   if (
     isTasksPathname ||
     isInboxPathname ||
     isTagsPathname ||
-    isArchivePathname
+    isArchivePathname ||
+    isContactsPathname
   ) {
     return pathname
   }
