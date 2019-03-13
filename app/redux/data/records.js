@@ -79,8 +79,13 @@ export const Detail = Record({
   animation: false,
 })
 
+export const PrimaryHiddenNavigation = Record({
+  isVisible: false,
+  isAnimation: false,
+})
+
 export const PrimaryNavigation = Record({
-  hiddenNavigation: new Visibility(),
+  hiddenNavigation: new PrimaryHiddenNavigation(),
 })
 
 export const Navigation = Record({

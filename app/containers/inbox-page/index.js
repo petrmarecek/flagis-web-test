@@ -8,7 +8,10 @@ import { connect } from 'react-redux'
 import { selectTask } from 'redux/store/tasks/tasks.actions'
 import { changeLocation } from 'redux/store/routing/routing.actions'
 import { getRoutingPathname } from 'redux/store/routing/routing.selectors'
-import { visibleInboxTasks } from 'redux/store/app-state/app-state.actions'
+import {
+  visibleInboxTasks,
+  hideArchivedTasks,
+} from 'redux/store/app-state/app-state.actions'
 import {
   getInboxTasksItems,
   getSelectionTasks,
@@ -45,6 +48,7 @@ const mapDispatchToProps = {
   changeLocation,
   selectTask,
   visibleInboxTasks,
+  hideArchivedTasks,
 }
 
 export default compose(
@@ -56,6 +60,9 @@ export default compose(
     componentDidUpdate() {
       const { inboxItems, pathname, selectTasksItems } = this.props
       const { user } = routes
+
+      // Hide archived tasks
+      this.props.hideArchivedTasks()
 
       // redirect to tasks
       if (pathname === user.tasks) {

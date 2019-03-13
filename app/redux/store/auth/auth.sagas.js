@@ -51,6 +51,10 @@ export function* initDataFlow() {
     const initTime = dateUtil.getDateToISOString()
     const loginActions = createLoadActions(AUTH.LOGIN)
     const tokenActions = createLoadActions(AUTH.REFRESH_TOKEN)
+    const { pathname } = window.location
+    const { user } = routes
+    const isArchivePathname =
+      pathname.substring(0, user.archive.length) === user.archive
 
     yield race({
       login: take(loginActions.FULFILLED),
@@ -64,6 +68,10 @@ export function* initDataFlow() {
     yield put(notificationActions.fetchNotifications())
     yield put(taskActions.fetchInboxTasks())
     yield put(treeActions.fetchTree())
+
+    if (isArchivePathname) {
+      yield put(taskActions.fetchArchivedTasks())
+    }
 
     // Init data from firestore
     const {
@@ -326,11 +334,18 @@ function getRedirectPathname() {
   const { user } = routes
   const isTasksPathname =
     pathname.substring(0, user.tasks.length) === user.tasks
+  const isTagsPathname = pathname.substring(0, user.tags.length) === user.tags
   const isInboxPathname =
     pathname.substring(0, user.inbox.length) === user.inbox
-  const isTagsPathname = pathname.substring(0, user.tags.length) === user.tags
+  const isArchivePathname =
+    pathname.substring(0, user.archive.length) === user.archive
 
-  if (isTasksPathname || isInboxPathname || isTagsPathname) {
+  if (
+    isTasksPathname ||
+    isInboxPathname ||
+    isTagsPathname ||
+    isArchivePathname
+  ) {
     return pathname
   }
 

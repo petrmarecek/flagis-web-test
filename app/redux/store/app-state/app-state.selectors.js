@@ -49,6 +49,14 @@ export const getPrimaryHiddenNavigationVisibility = state =>
     'hiddenNavigation',
     'isVisible',
   ])
+export const getPrimaryHiddenNavigationAnimation = state =>
+  state.getIn([
+    'appState',
+    'navigation',
+    'primary',
+    'hiddenNavigation',
+    'isAnimation',
+  ])
 export const getAccountNavigationVisibility = state =>
   state.getIn(['appState', 'navigation', 'account', 'isVisible'])
 export const getLoader = state => state.getIn(['appState', 'loader'])

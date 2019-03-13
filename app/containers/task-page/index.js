@@ -5,7 +5,10 @@ import { compose, lifecycle } from 'recompose'
 
 // redux
 import { connect } from 'react-redux'
-import { hideInboxTasks } from 'redux/store/app-state/app-state.actions'
+import {
+  hideInboxTasks,
+  hideArchivedTasks,
+} from 'redux/store/app-state/app-state.actions'
 import { selectTask } from 'redux/store/tasks/tasks.actions'
 import { changeLocation } from 'redux/store/routing/routing.actions'
 import { getRoutingPathname } from 'redux/store/routing/routing.selectors'
@@ -45,6 +48,7 @@ const mapDispatchToProps = {
   changeLocation,
   selectTask,
   hideInboxTasks,
+  hideArchivedTasks,
 }
 
 export default compose(
@@ -57,8 +61,9 @@ export default compose(
       const { tasksItems, pathname, selectTasksItems } = this.props
       const { user } = routes
 
-      // Hide inbox tasks
+      // Hide inbox and archived tasks
       this.props.hideInboxTasks()
+      this.props.hideArchivedTasks()
 
       // redirect to tags detail
       const isTagsPage = pathname.substring(0, user.tags.length) === user.tags

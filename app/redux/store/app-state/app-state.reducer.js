@@ -74,6 +74,18 @@ export default typeToReducer(
         false
       ),
 
+    [APP_STATE.SET_PRIMARY_HIDDEN_NAVIGATION_ANIMATION]: state =>
+      state.setIn(
+        ['navigation', 'primary', 'hiddenNavigation', 'isAnimation'],
+        true
+      ),
+
+    [APP_STATE.DESELECT_PRIMARY_HIDDEN_NAVIGATION_ANIMATION]: state =>
+      state.setIn(
+        ['navigation', 'primary', 'hiddenNavigation', 'isAnimation'],
+        false
+      ),
+
     [APP_STATE.ACCOUNT_NAVIGATION_VISIBLE]: state =>
       state.setIn(['navigation', 'account', 'isVisible'], true),
 

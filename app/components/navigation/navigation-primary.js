@@ -1,18 +1,23 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { routes } from 'utils/routes'
-import { compose, withState, withHandlers } from 'recompose'
+import { compose, withHandlers } from 'recompose'
 
 // redux
 import { connect } from 'react-redux'
 import { changeNavigation } from 'redux/store/routing/routing.actions'
 import { getRoutingPathname } from 'redux/store/routing/routing.selectors'
-import { getPrimaryHiddenNavigationVisibility } from 'redux/store/app-state/app-state.selectors'
+import {
+  getPrimaryHiddenNavigationVisibility,
+  getPrimaryHiddenNavigationAnimation,
+} from 'redux/store/app-state/app-state.selectors'
 import { getColorTheme } from 'redux/store/auth/auth.selectors'
 import { getInboxTasksItems } from 'redux/store/tasks/tasks.selectors'
 import {
   primaryHiddenNavigationVisible,
   primaryHiddenNavigationHide,
+  setPrimaryHiddenNavigationAnimation,
+  deselectPrimaryHiddenNavigationAnimation,
 } from 'redux/store/app-state/app-state.actions'
 
 // components
@@ -38,7 +43,7 @@ const NavigationPrimary = props => {
     pathname,
     colorTheme,
     isVisibleMore,
-    isDisplayMore,
+    isAnimationMore,
     onHandleClickMore,
     onHandleClickTasks,
     onHandleClickTags,
@@ -113,7 +118,7 @@ const NavigationPrimary = props => {
         <PrimaryButtonText>Inbox</PrimaryButtonText>
         {inboxCount > 0 && <InboxCounter count={inboxCount} />}
       </PrimaryButton>
-      {isDisplayMore && (
+      {isAnimationMore && (
         <NavigationPrimaryHidden>
           <PrimaryButton
             active={isArchiveActive}
@@ -178,8 +183,7 @@ NavigationPrimary.propTypes = {
   pathname: PropTypes.string,
   colorTheme: PropTypes.string,
   isVisibleMore: PropTypes.bool,
-  isDisplayMore: PropTypes.bool,
-  setDisplayMore: PropTypes.func,
+  isAnimationMore: PropTypes.bool,
   onHandleClickMore: PropTypes.func,
   onHandleClickTasks: PropTypes.func,
   onHandleClickTimeLine: PropTypes.func,
@@ -194,12 +198,15 @@ const mapStateToProps = state => ({
   pathname: getRoutingPathname(state),
   colorTheme: getColorTheme(state),
   isVisibleMore: getPrimaryHiddenNavigationVisibility(state),
+  isAnimationMore: getPrimaryHiddenNavigationAnimation(state),
 })
 
 const mapDispatchToProps = {
   changeNavigation,
   primaryHiddenNavigationVisible,
   primaryHiddenNavigationHide,
+  setPrimaryHiddenNavigationAnimation,
+  deselectPrimaryHiddenNavigationAnimation,
 }
 
 export default compose(
@@ -207,17 +214,16 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  withState('isDisplayMore', 'setDisplayMore', false),
   withHandlers({
     onHandleClickMore: props => () => {
       if (props.isVisibleMore) {
         props.primaryHiddenNavigationHide()
-        props.setDisplayMore(false)
+        props.deselectPrimaryHiddenNavigationAnimation()
         return
       }
 
       props.primaryHiddenNavigationVisible()
-      window.setTimeout(() => props.setDisplayMore(true), 350)
+      window.setTimeout(() => props.setPrimaryHiddenNavigationAnimation(), 350)
     },
     onHandleClickTasks: props => () =>
       props.changeNavigation(routes.user.tasks),

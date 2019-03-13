@@ -244,15 +244,7 @@ export function* initInboxTasksData(initTime) {
 }
 
 export function* fetchTasks() {
-  const isArchivedTasks = yield select(state =>
-    appStateSelectors.getArchivedTasksVisibility(state)
-  )
   const userId = yield select(state => authSelectors.getUserId(state))
-
-  if (isArchivedTasks) {
-    yield put(appStateActions.hideArchivedTasks())
-  }
-
   const result = yield* fetch(TASKS.FETCH, {
     method: api.tasks.search,
     args: [
