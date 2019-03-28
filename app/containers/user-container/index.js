@@ -15,7 +15,6 @@ import {
 } from 'redux/store/app-state/app-state.selectors'
 
 import Loader from 'components/common/loader'
-import LeftPanelPrimaryContent from 'components/contents/left-panel-primary-content'
 import TaskPage from 'containers/task-page'
 import TagPage from 'containers/tag-page'
 import InboxPage from 'containers/inbox-page'
@@ -24,6 +23,7 @@ import ContactPage from '../contact-page/'
 import NotificationPage from '../notification-page/'
 import DashboardPage from 'containers/dashboard-page'
 import AccountContainer from 'containers/account-container'
+import NotFoundPage from 'containers/not-found-page/loadable'
 import Dialogs from 'components/dialogs/dialogs'
 import UndoBox from 'components/common/undo-box'
 
@@ -84,7 +84,6 @@ class UserContainer extends PureComponent {
     return (
       <div id="user-container">
         <div className="page-overflow-fix">
-          <LeftPanelPrimaryContent />
           <Switch>
             <Route
               path={`${this.props.match.path}/tasks`}
@@ -115,6 +114,7 @@ class UserContainer extends PureComponent {
               path={`${this.props.match.path}/account`}
               component={AccountContainer}
             />
+            <Route component={NotFoundPage} />
           </Switch>
         </div>
         <div className="dialog-container">

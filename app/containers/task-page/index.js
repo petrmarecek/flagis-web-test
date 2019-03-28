@@ -18,6 +18,7 @@ import {
 } from 'redux/store/tasks/tasks.selectors'
 
 // components
+import LeftPanelPrimaryContent from 'components/contents/left-panel-primary-content'
 import CenterPanel from 'components/panels/center-panel'
 import DetailContent from 'components/contents/detail-content'
 import TasksContent from 'components/contents/tasks-content'
@@ -29,7 +30,12 @@ const TaskPage = ({ tasksItems, pathname }) => {
   const isTaskId = tasksItems.includes(taskId)
 
   return (
-    <CenterPanel>{isTaskId ? <DetailContent /> : <TasksContent />}</CenterPanel>
+    <div>
+      <LeftPanelPrimaryContent />
+      <CenterPanel>
+        {isTaskId ? <DetailContent /> : <TasksContent />}
+      </CenterPanel>
+    </div>
   )
 }
 

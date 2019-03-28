@@ -12,6 +12,7 @@ import { getRoutingPathname } from 'redux/store/routing/routing.selectors'
 import { setDetail } from 'redux/store/app-state/app-state.actions'
 
 // components
+import LeftPanelPrimaryContent from 'components/contents/left-panel-primary-content'
 import CenterPanel from 'components/panels/center-panel'
 import DetailContent from 'components/contents/detail-content'
 import TagsContent from 'components/contents/tags-content'
@@ -23,7 +24,10 @@ const TagPage = ({ tagsItems, pathname }) => {
   const isTagId = tagsItems.includes(tagId)
 
   return (
-    <CenterPanel>{isTagId ? <DetailContent /> : <TagsContent />}</CenterPanel>
+    <div>
+      <LeftPanelPrimaryContent />
+      <CenterPanel>{isTagId ? <DetailContent /> : <TagsContent />}</CenterPanel>
+    </div>
   )
 }
 

@@ -18,6 +18,7 @@ import {
 } from 'redux/store/tasks/tasks.selectors'
 
 // components
+import LeftPanelPrimaryContent from 'components/contents/left-panel-primary-content'
 import CenterPanel from 'components/panels/center-panel'
 import DetailContent from 'components/contents/detail-content'
 import InboxContent from 'components/contents/inbox-content'
@@ -29,7 +30,12 @@ const InboxPage = ({ inboxItems, pathname }) => {
   const isTaskId = inboxItems.includes(taskId)
 
   return (
-    <CenterPanel>{isTaskId ? <DetailContent /> : <InboxContent />}</CenterPanel>
+    <div>
+      <LeftPanelPrimaryContent />
+      <CenterPanel>
+        {isTaskId ? <DetailContent /> : <InboxContent />}
+      </CenterPanel>
+    </div>
   )
 }
 

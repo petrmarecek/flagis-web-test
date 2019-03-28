@@ -20,6 +20,7 @@ import {
 } from 'redux/store/contacts/contacts.selectors'
 
 // components
+import LeftPanelPrimaryContent from 'components/contents/left-panel-primary-content'
 import CenterPanel from 'components/panels/center-panel'
 import DetailContent from 'components/contents/detail-content'
 import ContactContent from 'components/contents/contact-content'
@@ -31,9 +32,12 @@ const ContactPage = ({ contactsItems, pathname }) => {
   const isContactId = contactsItems.includes(contactId)
 
   return (
-    <CenterPanel>
-      {isContactId ? <DetailContent /> : <ContactContent />}
-    </CenterPanel>
+    <div>
+      <LeftPanelPrimaryContent />
+      <CenterPanel>
+        {isContactId ? <DetailContent /> : <ContactContent />}
+      </CenterPanel>
+    </div>
   )
 }
 

@@ -329,32 +329,6 @@ export function* resetPassword(action) {
 
 // ------ HELPER FUNCTIONS ----------------------------------------------------
 
-function getRedirectPathname() {
-  const { pathname } = window.location
-  const { user } = routes
-  const isTasksPathname =
-    pathname.substring(0, user.tasks.length) === user.tasks
-  const isTagsPathname = pathname.substring(0, user.tags.length) === user.tags
-  const isInboxPathname =
-    pathname.substring(0, user.inbox.length) === user.inbox
-  const isArchivePathname =
-    pathname.substring(0, user.archive.length) === user.archive
-  const isContactsPathname =
-    pathname.substring(0, user.contacts.length) === user.contacts
-
-  if (
-    isTasksPathname ||
-    isInboxPathname ||
-    isTagsPathname ||
-    isArchivePathname ||
-    isContactsPathname
-  ) {
-    return pathname
-  }
-
-  return user.tasks
-}
-
 function* setTokens({ accessToken, firebaseToken }) {
   api.setApiToken(accessToken)
   yield call(firebase.signIn, firebaseToken)
@@ -473,8 +447,8 @@ function* tokenLoop(auth) {
       })
 
       // redirect
-      const redirectPathname = getRedirectPathname()
-      const redirectAction = push(redirectPathname)
+      const { pathname } = window.location
+      const redirectAction = push(pathname)
       yield put(redirectAction)
 
       yield race({

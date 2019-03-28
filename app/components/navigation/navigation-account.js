@@ -91,7 +91,6 @@ export default compose(
     onHandleClickOutSide: props => () => props.onClickOutSide(),
     onHandleClickLogOut: props => () => props.logout(),
     onHandleClickSettings: props => () => {
-      props.onClickOutSide()
       props.changeNavigation(routes.user.account.settings.editProfile)
     },
   })

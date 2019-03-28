@@ -24,6 +24,7 @@ import {
 } from 'redux/store/tasks/tasks.selectors'
 
 // components
+import LeftPanelPrimaryContent from 'components/contents/left-panel-primary-content'
 import CenterPanel from 'components/panels/center-panel'
 import DetailContent from 'components/contents/detail-content'
 import ArchiveContent from 'components/contents/archive-content'
@@ -35,9 +36,12 @@ const ArchivePage = ({ archivedItems, pathname }) => {
   const isTaskId = archivedItems.includes(taskId)
 
   return (
-    <CenterPanel>
-      {isTaskId ? <DetailContent /> : <ArchiveContent />}
-    </CenterPanel>
+    <div>
+      <LeftPanelPrimaryContent />
+      <CenterPanel>
+        {isTaskId ? <DetailContent /> : <ArchiveContent />}
+      </CenterPanel>
+    </div>
   )
 }
 
