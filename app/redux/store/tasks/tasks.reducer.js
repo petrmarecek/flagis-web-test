@@ -50,6 +50,7 @@ export default typeToReducer(
 
         return state
           .setIn(['archived', 'isFetching'], false)
+          .setIn(['archived', 'isAlreadyFetching'], true)
           .setIn(['archived', 'items'], List(taskIds))
       },
     },

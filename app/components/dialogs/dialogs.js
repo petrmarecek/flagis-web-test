@@ -27,6 +27,7 @@ import {
   deleteContact,
 } from 'redux/store/contacts/contacts.actions'
 import {
+  getArchivedTasksIsAlreadyFetching,
   getSelectTasks,
   getSelectTasksTags,
   getTasksItems,
@@ -75,6 +76,7 @@ class Dialogs extends PureComponent {
     entitiesAllTasks: PropTypes.array,
     entitiesTasks: PropTypes.object,
     completedTasks: PropTypes.object,
+    isArchivedTasksAlreadyFetching: PropTypes.bool,
     archivedTasks: PropTypes.object,
     tagsReferences: PropTypes.object,
     tagsRelations: PropTypes.object,
@@ -198,6 +200,7 @@ class Dialogs extends PureComponent {
   handleTagDelete = tag => {
     const tagId = tag.id
     const {
+      isArchivedTasksAlreadyFetching,
       tagsRelations,
       tagsReferences,
       archivedTasks,
@@ -232,7 +235,7 @@ class Dialogs extends PureComponent {
       }
     }
 
-    if (archivedTasks.size === 0) {
+    if (archivedTasks.size === 0 && !isArchivedTasksAlreadyFetching) {
       toast.error(errorMessages.relations.emptyListDeleteConflict('archive'), {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: constants.NOTIFICATION_ERROR_DURATION,
@@ -266,7 +269,11 @@ class Dialogs extends PureComponent {
 
   // confirm-contact-delete-dialog
   handleContactDelete = contact => {
-    const { entitiesAllTasks, archivedTasks } = this.props
+    const {
+      isArchivedTasksAlreadyFetching,
+      entitiesAllTasks,
+      archivedTasks,
+    } = this.props
     const relations = getContactTasksRelations(contact.id, entitiesAllTasks)
 
     if (relations.isTask) {
@@ -294,7 +301,7 @@ class Dialogs extends PureComponent {
       return
     }
 
-    if (archivedTasks.size === 0) {
+    if (archivedTasks.size === 0 && !isArchivedTasksAlreadyFetching) {
       toast.error(errorMessages.relations.emptyListDeleteConflict('archive'), {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: constants.NOTIFICATION_ERROR_DURATION,
@@ -477,6 +484,7 @@ const mapStateToProps = state => ({
   currentDialog: getCurrentDialog(state),
   tasks: getTasksItems(state),
   completedTasks: getCompletedTasksItems(state),
+  isArchivedTasksAlreadyFetching: getArchivedTasksIsAlreadyFetching(state),
   archivedTasks: getArchivedTasksItems(state),
   entitiesAllTasks: getAllTasks(state),
   entitiesTasks: getEntitiesTasks(state),

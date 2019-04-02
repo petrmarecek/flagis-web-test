@@ -1,23 +1,27 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
 import { compose, withHandlers } from 'recompose'
-
-import { createContact } from 'redux/store/contacts/contacts.actions'
-import { getContactsEmail } from 'redux/store/contacts/contacts.selectors'
-import { afterSubmitContacts } from 'redux/utils/form-submit'
-
-import { ICONS } from 'components/icons/icon-constants'
-import Icon from 'components/icons/icon'
-
-import AddField from 'components/common/add-field'
-import styled from 'styled-components'
-import { boxSizing, boxShadow } from '../styled-components-mixins/'
-import { Field, reduxForm } from 'redux-form/immutable'
-import { validateAddContact } from '../../redux/utils/validate'
 import { toast } from 'react-toastify'
 import { errorMessages } from 'utils/messages'
 import constants from 'utils/constants'
+
+// redux
+import { connect } from 'react-redux'
+import { Field, reduxForm } from 'redux-form/immutable'
+import { afterSubmitContacts } from 'redux/utils/form-submit'
+import { validateAddContact } from 'redux/utils/validate'
+import { createContact } from 'redux/store/contacts/contacts.actions'
+import { getContactsEmail } from 'redux/store/contacts/contacts.selectors'
+import { getUserEmail } from 'redux/store/auth/auth.selectors'
+
+// components
+import { ICONS } from 'components/icons/icon-constants'
+import Icon from 'components/icons/icon'
+import AddField from 'components/common/add-field'
+
+// styles
+import styled from 'styled-components'
+import { boxSizing, boxShadow } from '../styled-components-mixins/'
 
 const AddForm = styled.form`
   display: flex;
@@ -91,6 +95,7 @@ AddContactForm.propTypes = {
 
 const mapStateToProps = state => ({
   validEmails: getContactsEmail(state),
+  userEmail: getUserEmail(state),
 })
 
 const mapDispatchToProps = { createContact }
@@ -102,9 +107,20 @@ export default compose(
   ),
   withHandlers({
     onSubmit: props => value => {
-      const { validEmails } = props
+      const { validEmails, userEmail } = props
       const email = value.get('email')
 
+      // validation for email of user
+      if (userEmail === email) {
+        toast.error(errorMessages.contact.userEmailConflict, {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: constants.NOTIFICATION_ERROR_DURATION,
+        })
+
+        return
+      }
+
+      // validation for existing emails
       if (validEmails.includes(email.toLowerCase())) {
         toast.error(errorMessages.createEntity.createConflict('contact'), {
           position: toast.POSITION.BOTTOM_RIGHT,

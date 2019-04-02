@@ -7,6 +7,12 @@ export const ListRecord = Record({
   items: List(),
 })
 
+export const ListAlreadyRecord = Record({
+  isFetching: false,
+  isAlreadyFetching: false,
+  items: List(),
+})
+
 export const TreeRecord = Record({
   id: null,
   childVisible: true,
@@ -174,7 +180,7 @@ export const TaskStore = Record({
   isFetching: false,
   items: List(),
   completed: List(),
-  archived: new ListRecord(),
+  archived: new ListAlreadyRecord(),
   inbox: new ListRecord(),
   timeLine: false,
   selection: OrderedSet(),

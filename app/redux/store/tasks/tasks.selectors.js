@@ -400,6 +400,8 @@ const getInboxTasksIsFetching = state =>
 export const getTimeLine = state => state.getIn(['tasks', 'timeLine'])
 export const getTasksItems = state => state.getIn(['tasks', 'items'])
 export const getTasksSearch = state => state.getIn(['tasks', 'search'])
+export const getArchivedTasksIsAlreadyFetching = state =>
+  state.getIn(['tasks', 'archived', 'isAlreadyFetching'])
 export const getArchivedTasksItems = state =>
   state.getIn(['tasks', 'archived', 'items'])
 export const getInboxTasksItems = state =>

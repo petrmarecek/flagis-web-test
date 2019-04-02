@@ -9,6 +9,10 @@ export const errorMessages = {
     conflict: 'This E-mail has already been used.',
   },
 
+  contact: {
+    userEmailConflict: 'This is your email!',
+  },
+
   changePassword: {
     badRequest: 'Incorrect old password.',
   },
