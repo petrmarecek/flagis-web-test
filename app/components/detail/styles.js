@@ -489,14 +489,6 @@ const DetailSubjectTaskArchived = styled.div`
   padding-left: ${props => (props.archived ? '13px' : '6px')};
   z-index: 1;
   cursor: pointer;
-
-  :hover {
-    svg {
-      path {
-        fill: ${props => (props.archived ? '#8C9DA9' : '#293034')};
-      }
-    }
-  }
 `
 
 const DetailSubjectTaskFollowerResponse = styled.div`

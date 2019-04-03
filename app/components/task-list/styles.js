@@ -141,14 +141,6 @@ const Archived = styled.div`
   width: 45px;
   padding-left: ${props => (props.archived ? '13px' : '6px')};
   z-index: 1;
-
-  :hover {
-    svg {
-      path {
-        fill: ${props => (props.archived ? '#8C9DA9' : '#293034')};
-      }
-    }
-  }
 `
 
 const FollowerResponse = styled.div`

@@ -288,7 +288,7 @@ const TaskListItem = props => {
     }
 
     if (isArchivedList) {
-      return '#c1cad0'
+      return '#DBDBDB'
     }
 
     if (isOwnerAccepted) {
@@ -378,7 +378,8 @@ const TaskListItem = props => {
               >
                 <Icon
                   icon={isArchivedList ? ICONS.NON_ARCHIVE : ICONS.ARCHIVE}
-                  color={isArchivedList ? ['#293034'] : ['#B1B5B8']}
+                  color={['#B1B5B8']}
+                  hoverColor={['#293034']}
                   width={24}
                   height={27}
                   scale={0.926}

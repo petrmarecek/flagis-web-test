@@ -179,7 +179,7 @@ const TaskDetail = props => {
   // Background color of top content
   const backgroundColor = () => {
     if (isArchived) {
-      return '#c1cad0'
+      return '#DBDBDB'
     }
 
     if (isOwnerAccepted) {
@@ -284,7 +284,8 @@ const TaskDetail = props => {
                 >
                   <Icon
                     icon={ICONS.ARCHIVE}
-                    color={['#8C9DA9']}
+                    color={['#B1B5B8']}
+                    hoverColor={['#293034']}
                     width={24}
                     height={25}
                     scale={0.926}
@@ -302,7 +303,8 @@ const TaskDetail = props => {
                 >
                   <Icon
                     icon={ICONS.ARCHIVE}
-                    color={['#8C9DA9']}
+                    color={['#B1B5B8']}
+                    hoverColor={['#293034']}
                     width={24}
                     height={25}
                     scale={0.926}
@@ -317,7 +319,8 @@ const TaskDetail = props => {
                   <Icon
                     archived
                     icon={ICONS.NON_ARCHIVE}
-                    color={['#293034']}
+                    color={['#B1B5B8']}
+                    hoverColor={['#293034']}
                     width={24}
                     height={27}
                     scale={0.926}
