@@ -37,6 +37,10 @@ const HelpInfo = styled.span`
   ${markdownStyles}
 `
 
+const TextArea = styled.textarea`
+  line-height: 20px;
+`
+
 const MarkdownEditable = props => {
   const {
     text,
@@ -66,7 +70,7 @@ const MarkdownEditable = props => {
       )}
 
       {editable && (
-        <textarea
+        <TextArea
           autoFocus
           className="markdown__edit"
           placeholder={placeholder}

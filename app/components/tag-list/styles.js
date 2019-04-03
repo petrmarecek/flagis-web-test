@@ -27,11 +27,14 @@ const ItemIcon = styled.div`
 `
 
 const ItemTitle = styled.div`
+  display: flex;
+  align-items: center;
   flex: 1 1 auto;
   margin: 0 10px 0 10px;
   ${textOverflow('ellipsis')}
   white-space: nowrap;
   overflow: hidden;
+  height: 19px;
 `
 
 const ItemTagRelations = styled(Counter)`
