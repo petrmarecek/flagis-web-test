@@ -7,7 +7,7 @@ import { compose, withHandlers } from 'recompose'
 import { connect } from 'react-redux'
 import { changeNavigation } from 'redux/store/routing/routing.actions'
 import { getRoutingPathname } from 'redux/store/routing/routing.selectors'
-import { getEntitiesNotifications } from 'redux/store/entities/entities.selectors'
+import { getCountActiveNotification } from 'redux/store/entities/entities.selectors'
 
 // components
 import { ICONS } from 'components/icons/icon-constants'
@@ -48,7 +48,7 @@ NavigationNotifications.propTypes = {
 }
 
 const mapStateToProps = state => ({
-  notificationsCount: getEntitiesNotifications(state).size,
+  notificationsCount: getCountActiveNotification(state),
   pathname: getRoutingPathname(state),
 })
 

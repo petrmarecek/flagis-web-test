@@ -11,9 +11,9 @@ export const fetchNotifications = () => ({
   type: NOTIFICATIONS.FETCH,
 })
 
-export const readNotification = (notification, isRedirect) => ({
+export const readNotification = (notification, task = null) => ({
   type: NOTIFICATIONS.READ,
-  payload: { notification, isRedirect },
+  payload: { notification, task },
 })
 
 export const readAllNotifications = () => ({

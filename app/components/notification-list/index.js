@@ -20,8 +20,8 @@ import { EmptyList } from 'components/styled-components-mixins'
 const NotificationListContainer = ({
   notifications,
   scrollbarPosition,
-  onHandleReadNotification,
   onHandleSetScrollbarPosition,
+  onHandleReadNotification,
 }) => {
   if (notifications.items.length === 0) {
     return <EmptyList>No notifications found</EmptyList>
@@ -57,8 +57,8 @@ const NotificationListContainer = ({
 NotificationListContainer.propTypes = {
   notifications: PropTypes.object,
   scrollbarPosition: PropTypes.number,
-  onHandleReadNotification: PropTypes.func,
   onHandleSetScrollbarPosition: PropTypes.func,
+  onHandleReadNotification: PropTypes.func,
 }
 
 const mapStateToProps = state => ({
@@ -77,7 +77,7 @@ export default compose(
   withHandlers({
     onHandleSetScrollbarPosition: props => position =>
       props.setScrollbarPosition('notification', position),
-    onHandleReadNotification: props => (notificationId, isRedirect) =>
-      props.readNotification(notificationId, isRedirect),
+    onHandleReadNotification: props => (notificationId, task = null) =>
+      props.readNotification(notificationId, task),
   })
 )(NotificationListContainer)

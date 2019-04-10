@@ -18,10 +18,11 @@ import { ICONS } from 'components/icons/icon-constants'
 import {
   ItemWrapper,
   Indicator,
+  UserNotificationEntityWrapper,
   User,
+  TitleNotification,
+  TitleEntity,
   Date,
-  Content,
-  Title,
   Icons,
 } from './styles'
 
@@ -30,6 +31,7 @@ const NotificationListItem = ({
   task,
   profile,
   onHandleClickRead,
+  onHandleClickTitle,
   onHandleClickNotification,
 }) => {
   const { type, readAt, createdAt } = notification
@@ -43,14 +45,18 @@ const NotificationListItem = ({
   const taskSubject = subject !== null ? subject : ''
 
   return (
-    <ItemWrapper onClick={onHandleClickNotification}>
-      {!isRead && <Indicator onClick={onHandleClickRead} />}
-      <User>From: {profileName}</User>
+    <ItemWrapper onClick={onHandleClickNotification} isRead={isRead}>
       <Date>{date}</Date>
-      <Content>
-        <Title isRead={isRead}>{taskSubject}</Title>
-        <Title isRead={isRead}>{infoMessages.notifications(type)}</Title>
-      </Content>
+      {!isRead && <Indicator onClick={onHandleClickRead} />}
+      <UserNotificationEntityWrapper>
+        <User>From: {profileName}</User>
+        <TitleNotification onClick={onHandleClickTitle} isRead={isRead}>
+          {infoMessages.notifications(type)}
+        </TitleNotification>
+        <TitleEntity onClick={onHandleClickTitle} isRead={isRead}>
+          <span>Task:</span> {taskSubject}
+        </TitleEntity>
+      </UserNotificationEntityWrapper>
       <Icons>
         <Avatar
           src={profile.photo}
@@ -78,6 +84,7 @@ NotificationListItem.propTypes = {
   onClick: PropTypes.func,
   onHandleClickRead: PropTypes.func,
   onHandleClickNotification: PropTypes.func,
+  onHandleClickTitle: PropTypes.func,
 }
 
 const mapStateToProps = (state, props) => {
@@ -98,9 +105,10 @@ export default compose(
   withHandlers({
     onHandleClickRead: props => event => {
       event.stopPropagation()
-      props.onClick(props.notification, false)
+      props.onClick(props.notification)
     },
-    onHandleClickNotification: props => () =>
-      props.onClick(props.notification, true),
+    onHandleClickNotification: props => () => props.onClick(props.notification),
+    onHandleClickTitle: props => () =>
+      props.onClick(props.notification, props.task),
   })
 )(NotificationListItem)

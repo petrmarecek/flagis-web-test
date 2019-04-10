@@ -61,9 +61,9 @@ const NotificationMenu = ({
     </Right>
     <Left>
       <Button onClick={onHandleClickSettings} isMargin>
-        Full notifications settings
+        Notifications Settings
       </Button>
-      <Button onClick={onHandleClickReadAll}>Read all</Button>
+      <Button onClick={onHandleClickReadAll}>Read All</Button>
     </Left>
   </Wrapper>
 )

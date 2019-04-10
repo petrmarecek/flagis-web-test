@@ -106,8 +106,32 @@ export const infoMessages = {
 
   notifications: type => {
     switch (type) {
+      case 'TASKS/START-DATE':
+        return `Start date`
+
+      case 'TASKS/REMINDER-DATE':
+        return `Reminder`
+
+      case 'TASKS/DUE-DATE':
+        return `Due date`
+
       case 'TASKS/DELIVERED':
-        return `was delivered`
+        return `New Task in your Inbox`
+
+      case 'TASKS/ACCEPTED':
+        return `Accepted`
+
+      case 'TASKS/REJECTED':
+        return `Rejected`
+
+      case 'TASKS/COMPLETED':
+        return `Completed`
+
+      case 'TASKS/COMMENTS':
+        return `New comment`
+
+      case 'TASKS/ATTACHMENTS':
+        return `New attachment`
 
       default:
         return 'Task was updated'

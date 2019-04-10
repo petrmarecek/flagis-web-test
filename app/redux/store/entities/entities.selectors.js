@@ -13,6 +13,14 @@ export const getEntitiesActivities = state =>
   state.getIn(['entities', 'activities'])
 export const getEntitiesNotifications = state =>
   state.getIn(['entities', 'notifications'])
+export const getCountActiveNotification = state => {
+  const notifications = state.getIn(['entities', 'notifications'])
+  const activeNotifications = notifications.filter(
+    notification => notification.readAt === null
+  )
+
+  return activeNotifications.size
+}
 export const getEntitiesComments = state =>
   state.getIn(['entities', 'comments'])
 export const getEntitiesContacts = state =>
