@@ -192,6 +192,30 @@ const AccountWrapper = styled.div`
   }
 `
 
+const AccountNotificationsWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+`
+
+const NotificationsWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  position: relative;
+  height: 60px;
+  margin-left: 20px;
+`
+
+const NotificationsCounter = styled(Counter)`
+  position: absolute;
+  right: -8px;
+  top: 12px;
+  font-size: 11px;
+  background-color: #44ffb1;
+  ${borderRadius('10px')}
+`
+
 /*------------------------------ Navigation Account ----------------------------------*/
 const MenuBoxWrapper = styled(MenuBox)`
   ${borderRadius('5px')}
@@ -218,14 +242,14 @@ const MenuBoxWrapper = styled(MenuBox)`
 
   :before {
     top: -18px;
-    right: 20px;
+    right: 58px;
     border-color: transparent transparent #c1cad0 transparent;
     border-width: 9px;
   }
 
   :after {
     top: -16px;
-    right: 21px;
+    right: 59px;
     border-color: transparent transparent #fff transparent;
     border-width: 8px;
   }
@@ -316,26 +340,6 @@ const SettingsButton = styled.div`
   }
 `
 
-/*------------------------------ Navigation Notifications -----------------------------*/
-
-const NavigationNotificationsWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  position: relative;
-  flex: 0 0 45px;
-  height: 60px;
-`
-
-const NotificationsCounter = styled(Counter)`
-  position: absolute;
-  right: -8px;
-  top: 12px;
-  font-size: 11px;
-  background-color: #44ffb1;
-  ${borderRadius('10px')}
-`
-
 export {
   // Common
   TriangleIcon,
@@ -353,6 +357,9 @@ export {
   // Navigation Default
   NavigationDefaultWrapper,
   AccountWrapper,
+  AccountNotificationsWrapper,
+  NotificationsWrapper,
+  NotificationsCounter,
   // Navigation Account
   MenuBoxWrapper,
   MenuBoxGroup,
@@ -361,7 +368,4 @@ export {
   // Navigation account settings
   NavigationAccountSettingsWrapper,
   SettingsButton,
-  // Navigation Notifications
-  NavigationNotificationsWrapper,
-  NotificationsCounter,
 }
