@@ -294,6 +294,7 @@ export const Notification = Record({
   updatedAt: null,
   taskId: null,
   userId: null,
+  fromUserId: null,
 })
 
 export const Attachment = Record({

@@ -34,45 +34,62 @@ const NotificationListItem = ({
   onHandleClickTitle,
   onHandleClickNotification,
 }) => {
+  // init data
   const { type, readAt, createdAt } = notification
   const { subject } = task
   const { nickname, email } = profile
 
+  // conditions
+  const isRemovedTask = type === 'TASKS/TAKE-BACK'
+  const isAssigneeOfTask =
+    type === 'TASKS/TAKE-BACK' ||
+    type === 'TASKS/DELIVERED'
+  const isSystemNotification =
+    type === 'TASKS/START-DATE' ||
+    type === 'TASKS/REMINDER-DATE' ||
+    type === 'TASKS/DUE-DATE'
+
+  // prepare data
   const date = dateUtils.formatDateTimeSecondary(createdAt)
   const isRead = readAt !== null
   const profileName =
     email !== null ? (nickname !== null ? nickname : email) : ''
   const taskSubject = subject !== null ? subject : ''
 
+
   return (
     <ItemWrapper onClick={onHandleClickNotification} isRead={isRead}>
       <Date>{date}</Date>
       {!isRead && <Indicator onClick={onHandleClickRead} />}
       <UserNotificationEntityWrapper>
-        <User>From: {profileName}</User>
-        <TitleNotification onClick={onHandleClickTitle} isRead={isRead}>
+        <User>From: {isSystemNotification ? 'Flagis' : profileName}</User>
+        <TitleNotification onClick={isRemovedTask ? null : onHandleClickTitle} isRead={isRead}>
           {infoMessages.notifications(type)}
         </TitleNotification>
-        <TitleEntity onClick={onHandleClickTitle} isRead={isRead}>
+        <TitleEntity onClick={isRemovedTask ? null : onHandleClickTitle} isRead={isRead}>
           <span>Task:</span> {taskSubject}
         </TitleEntity>
       </UserNotificationEntityWrapper>
-      <Icons>
-        <Avatar
-          src={profile.photo}
-          name={profileName}
-          size="20"
-          textSizeRatio={2}
-          round
-        />
-        <Icon
-          icon={ICONS.INBOX}
-          width={22}
-          height={15}
-          scale={0.68}
-          color={['#b1b5b8']}
-        />
-      </Icons>
+      {!isSystemNotification &&
+        <Icons>
+          <Avatar
+            src={profile.photo}
+            name={profileName}
+            size="20"
+            textSizeRatio={2}
+            round
+          />
+          {isAssigneeOfTask &&
+            <Icon
+              icon={ICONS.INBOX}
+              width={22}
+              height={15}
+              scale={0.68}
+              color={['#b1b5b8']}
+            />
+          }
+        </Icons>
+      }
     </ItemWrapper>
   )
 }
@@ -88,10 +105,10 @@ NotificationListItem.propTypes = {
 }
 
 const mapStateToProps = (state, props) => {
-  const { taskId } = props.notification
+  const { taskId, fromUserId } = props.notification
   let task = getTaskById(state, taskId)
   task = task ? task : { subject: null, createdById: null }
-  let profile = !task ? null : getContactById(state, task.createdById)
+  let profile = !task ? null : getContactById(state, fromUserId)
   profile = profile ? profile : { nickname: null, email: null }
 
   return {

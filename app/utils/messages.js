@@ -124,6 +124,9 @@ export const infoMessages = {
       case 'TASKS/REJECTED':
         return `Rejected`
 
+      case 'TASKS/TAKE-BACK':
+        return `You removed`
+
       case 'TASKS/COMPLETED':
         return `Completed`
 
