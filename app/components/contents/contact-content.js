@@ -17,12 +17,14 @@ import {
   CenterPanelTop,
   CenterPanelTopPrimary,
   CenterPanelScroll,
+  CenterPageTitle,
 } from '../panels/styles'
 
 const ContactContent = ({ search, onHandleSearchChange }) => (
   <div>
     <CenterPanelTop>
-      <CenterPanelTopPrimary flexEnd smallOffsetPadding>
+      <CenterPanelTopPrimary smallOffsetPadding>
+        <CenterPageTitle>Contacts</CenterPageTitle>
         <SearchBox onChange={onHandleSearchChange} value={search} />
       </CenterPanelTopPrimary>
       <AddContactForm />

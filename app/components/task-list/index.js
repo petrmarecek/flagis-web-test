@@ -99,7 +99,7 @@ const TaskListContainer = props => {
   let offset = props.isVisibleArchivedTasks ? 118 : 202
 
   if (isVisibleInbox) {
-    offset = 20
+    offset = 70
   }
 
   const scrollStyle = {

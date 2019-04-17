@@ -4,12 +4,19 @@ import React from 'react'
 import TaskListContainer from '../task-list'
 
 // styles
-import { CenterPanelScroll } from '../panels/styles'
+import { CenterPanelTop, CenterPanelTopPrimary, CenterPageTitle, CenterPanelScroll } from '../panels/styles'
 
 const InboxContent = () => (
-  <CenterPanelScroll offsetTop={10} offsetBottom={10}>
-    <TaskListContainer />
-  </CenterPanelScroll>
+  <div>
+    <CenterPanelTop>
+      <CenterPanelTopPrimary>
+        <CenterPageTitle>Inbox</CenterPageTitle>
+      </CenterPanelTopPrimary>
+    </CenterPanelTop>
+    <CenterPanelScroll offsetTop={60} offsetBottom={10}>
+      <TaskListContainer />
+    </CenterPanelScroll>
+  </div>
 )
 
 export default InboxContent

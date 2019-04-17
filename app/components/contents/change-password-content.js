@@ -6,26 +6,19 @@ import CenterPanel from 'components/panels/center-panel'
 import NavigationAccountSettings from 'components/navigation/navigation-account-settings'
 
 // styles
-import styled from 'styled-components'
 import {
   CenterPanelTop,
   CenterPanelTopPrimary,
+  CenterPageTitle,
   CenterPanelTopSecondary,
   CenterPanelScroll,
 } from 'components/panels/styles'
-
-const SettingsTitle = styled.div`
-  margin-left: 17px;
-  font-size: 24px;
-  font-weight: bold;
-  color: #1c2124;
-`
 
 const ChangePasswordContent = () => (
   <CenterPanel style={{ backgroundColor: '#fff', margin: '0 0 0 1px' }}>
     <CenterPanelTop>
       <CenterPanelTopPrimary>
-        <SettingsTitle>Settings</SettingsTitle>
+        <CenterPageTitle leftMargin>Settings</CenterPageTitle>
       </CenterPanelTopPrimary>
       <CenterPanelTopSecondary bottomBorder>
         <NavigationAccountSettings />

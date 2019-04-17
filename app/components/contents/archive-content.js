@@ -17,6 +17,8 @@ import TasksMenuContainer from '../tasks-menu/tasks-menu-container'
 import {
   CenterPanelTop,
   CenterPanelTopPrimary,
+  CenterPanelTopPrimaryLeft,
+  CenterPageTitle,
   CenterPanelTopSecondary,
   CenterPanelScroll,
 } from '../panels/styles'
@@ -25,7 +27,10 @@ const ArchiveContent = ({ search, onHandleSearchChange }) => (
   <div>
     <CenterPanelTop>
       <CenterPanelTopPrimary bottomBorder>
-        <MainSearch />
+        <CenterPanelTopPrimaryLeft flexStart>
+          <CenterPageTitle>Archive</CenterPageTitle>
+          <MainSearch />
+        </CenterPanelTopPrimaryLeft>
         <SearchBox value={search} onChange={onHandleSearchChange} />
       </CenterPanelTopPrimary>
       <CenterPanelTopSecondary flexEnd>

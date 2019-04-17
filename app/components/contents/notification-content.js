@@ -7,6 +7,8 @@ import NotificationListContainer from '../notification-list'
 // styles
 import {
   CenterPanelTop,
+  CenterPanelTopPrimary,
+  CenterPageTitle,
   CenterPanelTopSecondary,
   CenterPanelScroll,
 } from '../panels/styles'
@@ -14,11 +16,14 @@ import {
 const NotificationContent = () => (
   <div>
     <CenterPanelTop>
+      <CenterPanelTopPrimary bottomBorder>
+        <CenterPageTitle>Notifications</CenterPageTitle>
+      </CenterPanelTopPrimary>
       <CenterPanelTopSecondary>
         <NotificationMenu />
       </CenterPanelTopSecondary>
     </CenterPanelTop>
-    <CenterPanelScroll offsetTop={48} offsetBottom={10}>
+    <CenterPanelScroll offsetTop={108} offsetBottom={10}>
       <NotificationListContainer />
     </CenterPanelScroll>
   </div>

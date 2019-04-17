@@ -24,6 +24,8 @@ import TasksProgressBar from 'components/common/tasks-progress-bar'
 import {
   CenterPanelTop,
   CenterPanelTopPrimary,
+  CenterPanelTopPrimaryLeft,
+  CenterPageTitle,
   CenterPanelTopSecondary,
   CenterPanelScroll,
 } from '../panels/styles'
@@ -34,24 +36,27 @@ const TasksContent = ({
   isVisibleArchive,
   onHandleSearchChange,
 }) => (
-  <div>
-    <CenterPanelTop>
-      <CenterPanelTopPrimary bottomBorder>
-        <MainSearch />
-        <SearchBox value={search} onChange={onHandleSearchChange} />
-      </CenterPanelTopPrimary>
-      <CenterPanelTopSecondary smallOffsetPadding>
-        {!isMultiSelect && !isVisibleArchive && <NavigationSecondary />}
-        <TasksMenuContainer />
-      </CenterPanelTopSecondary>
-      <AddTaskForm />
-    </CenterPanelTop>
-    <CenterPanelScroll offsetTop={172} offsetBottom={30}>
-      <TaskListContainer />
-    </CenterPanelScroll>
-    <TasksProgressBar />
-  </div>
-)
+    <div>
+      <CenterPanelTop>
+        <CenterPanelTopPrimary bottomBorder>
+          <CenterPanelTopPrimaryLeft flexStart>
+            <CenterPageTitle>My Tasks</CenterPageTitle>
+            <MainSearch />
+          </CenterPanelTopPrimaryLeft>
+          <SearchBox value={search} onChange={onHandleSearchChange} />
+        </CenterPanelTopPrimary>
+        <CenterPanelTopSecondary smallOffsetPadding>
+          {!isMultiSelect && !isVisibleArchive && <NavigationSecondary />}
+          <TasksMenuContainer />
+        </CenterPanelTopSecondary>
+        <AddTaskForm />
+      </CenterPanelTop>
+      <CenterPanelScroll offsetTop={172} offsetBottom={30}>
+        <TaskListContainer />
+      </CenterPanelScroll>
+      <TasksProgressBar />
+    </div>
+  )
 
 TasksContent.propTypes = {
   search: PropTypes.string,

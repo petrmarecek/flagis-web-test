@@ -20,10 +20,11 @@ const Search = styled.div`
   justify-content: flex-start;
   color: #cecece;
   height: 60px;
+  margin-left: 20px;
 `
 
 const SearchIcon = styled(Icon)`
-  margin-right: 5px;
+  margin: 3px 5px 0 0;
 `
 
 const MainSearch = ({ tags, handleClearFilter, handleItemDelete }) => (

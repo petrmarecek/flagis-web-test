@@ -23,7 +23,13 @@ const CenterPanelTop = styled.div`
 
 const centerPanelTopCss = css`
   display: flex;
-  justify-content: ${props => (props.flexEnd ? 'flex-end' : 'space-between')};
+  justify-content: ${props => {
+    if (props.flexEnd) {
+      return 'flex-end'
+    }
+
+    return props.flexStart ? 'flex-start' : 'space-between'
+  }};
   align-items: center;
   width: 100%;
   ${boxSizing('border-box')}
@@ -63,6 +69,14 @@ const CenterPanelScroll = styled.div`
   left: 0;
   right: 0;
 `
+
+const CenterPageTitle = styled.div`
+  margin-left: ${props => props.leftMargin ? '12px' : '0'};
+  font-size: 24px;
+  font-weight: bold;
+  color: #1c2124;
+`
+
 /*------------------------------------------ Left Panel --------------------------------------*/
 
 const LeftPanelWrapper = styled.div`
@@ -93,5 +107,6 @@ export {
   CenterPanelTopPrimaryRight,
   CenterPanelTopSecondary,
   CenterPanelScroll,
+  CenterPageTitle,
   LeftPanelWrapper,
 }

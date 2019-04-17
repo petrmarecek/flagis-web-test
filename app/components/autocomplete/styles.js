@@ -38,8 +38,8 @@ const Clear = styled.li`
   align-items: center;
   float: left;
   border: 1px solid #b1b5b8;
-  height: 20px;
-  width: 20px;
+  height: 21px;
+  width: 21px;
   cursor: pointer;
   margin: 0 0 0 4px;
 `
@@ -118,7 +118,7 @@ const ContactContainer = styled.li`
 
 const Title = styled.span`
   font-size: 14px;
-  line-height: 15px;
+  line-height: 16px;
   color: ${props => props.color};
   margin-right: 8px;
   overflow: hidden;

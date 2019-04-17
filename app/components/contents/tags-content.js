@@ -16,13 +16,15 @@ import AddTagForm from 'components/common/add-tag-form'
 import {
   CenterPanelTop,
   CenterPanelTopPrimary,
+  CenterPageTitle,
   CenterPanelScroll,
 } from '../panels/styles'
 
 const TagsContent = ({ search, onHandleSearchChange }) => (
   <div>
     <CenterPanelTop>
-      <CenterPanelTopPrimary flexEnd smallOffsetPadding>
+      <CenterPanelTopPrimary smallOffsetPadding>
+        <CenterPageTitle>Tags</CenterPageTitle>
         <SearchBox onChange={onHandleSearchChange} value={search} />
       </CenterPanelTopPrimary>
       <AddTagForm />

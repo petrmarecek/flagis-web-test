@@ -11,7 +11,7 @@ import {
 
 const Switch = styled.div`
   position: relative;
-  width: 26px;
+  width: 30px;
   height: 16px;
 `
 
@@ -29,16 +29,16 @@ const Slider = styled.span`
   :before {
     position: absolute;
     content: '';
-    height: 11px;
-    width: 11px;
-    left: 3px;
-    bottom: 3px;
+    height: 12px;
+    width: 12px;
+    left: 2px;
+    bottom: 2px;
     background-color: white;
     ${borderRadius('50%')}
     ${transition('200ms')}
     ${transform(props =>
-      props.isChecked ? 'translateX(9px)' : 'translateX(0)'
-    )}
+  props.isChecked ? 'translateX(14px)' : 'translateX(0)'
+)}
   }
 `
 

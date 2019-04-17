@@ -28,7 +28,7 @@ const NotificationListContainer = ({
   }
 
   const scrollStyle = {
-    height: `calc(100vh - 58px)`,
+    height: `calc(100vh - 118px)`,
     shadowHeight: 20,
     boxShadowTop: 'inset 0 10px 10px -5px rgba(239, 239, 239, 1)',
     boxShadowBottom: 'inset 0 -10px 10px -5px  rgba(239, 239, 239, 1)',

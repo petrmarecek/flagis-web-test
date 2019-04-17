@@ -55,6 +55,7 @@ const TitleNotification = styled.div`
   font-weight: bold;
   overflow: hidden;
   white-space: nowrap;
+  line-height: 16px;
   ${textOverflow('ellipsis')}
 `
 
