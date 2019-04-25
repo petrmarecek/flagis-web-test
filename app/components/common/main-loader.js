@@ -15,7 +15,7 @@ const MainLoaderContainer = styled.div`
 
 const MainLoader = () => (
   <MainLoaderContainer>
-    <Icon icon={ICONS.LOGO} color={['#293034']} width={67} height={24} />
+    <Icon icon={ICONS.LOGO} color={['#293034']} width={67} height={25} />
     <Loader />
   </MainLoaderContainer>
 )

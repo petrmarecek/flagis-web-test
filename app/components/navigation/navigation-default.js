@@ -60,7 +60,7 @@ const NavigationDefault = ({
         <Icon
           icon={ICONS.LOGO}
           width={67}
-          height={24}
+          height={25}
           color={[colors[colorTheme].logoIcon]}
           onClick={onHandleClickLogo}
         />
@@ -90,7 +90,7 @@ const NavigationDefault = ({
                 username !== null
                   ? `${username.firstName} ${username.lastName}`
                   : ''
-              }`}
+                }`}
             />
           </AccountWrapper>
           {isVisibleAccountNavigation && (

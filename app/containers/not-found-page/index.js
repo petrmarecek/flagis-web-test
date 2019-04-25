@@ -89,7 +89,7 @@ const NotFoundPage = ({ handleClick }) => (
         <Icon
           icon={ICONS.LOGO}
           width={105}
-          height={38}
+          height={40}
           scale={1.57}
           color={['#293034', '#00FFC7']}
           onClick={handleClick}
