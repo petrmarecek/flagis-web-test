@@ -20,6 +20,9 @@ const TasksMenuItem = styled.div`
   width: 40px;
   margin: 0 0 0 10px;
   flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   animation: 600ms ${fade};
 `
 
@@ -45,6 +48,38 @@ const IconWrapper = styled.div`
       }
     }
   }
+`
+
+// ---------------------------------- TasksMenuContainer ----------------------------------
+const TaskMenuWrapper = styled.div`
+  height: 48px;
+  position: relative;
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+`
+
+const TaskCountIndicator = styled.span`
+  height: 100%;
+  display: flex;
+  align-items: center;
+  float: right;
+  margin: 0 0 0 5px;
+`
+
+const TaskCountIndicatorInner = styled.span`
+  ${borderRadius('14px')}
+  color: #293034;
+  background-color: ${props => (props.multiSelect ? '#ecfff7' : '#fff')};
+  margin: 0 0 0 5px;
+  padding: 0 5px;
+  font-size: 14px;
+  height: 28px;
+  min-width: 28px;
+  font-weight: bold;
+  line-height: 28px;
+  text-align: center;
 `
 
 // ---------------------------------- TasksMenuFiltersActive ----------------------------------
@@ -198,6 +233,9 @@ const MenuBoxItemTitle = styled(MenuBoxItem)`
 `
 
 export {
+  TaskMenuWrapper,
+  TaskCountIndicator,
+  TaskCountIndicatorInner,
   TasksMenuItem,
   IconWrapper,
   TasksMenuFiltersActive,

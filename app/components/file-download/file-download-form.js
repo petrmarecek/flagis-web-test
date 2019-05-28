@@ -35,7 +35,7 @@ export default class FileDownloadForm extends PureComponent {
   render() {
     const { downloadUrl, method } = this.props
     return (
-      <form action={downloadUrl} className="hidden" method={method}>
+      <form action={downloadUrl} method={method}>
         <input name="accessToken" type="hidden" value={this.props.accessToken} />
         {this.getFormInputs()}
       </form>

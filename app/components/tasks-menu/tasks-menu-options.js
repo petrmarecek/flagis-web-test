@@ -39,7 +39,6 @@ const TasksMenuOptions = props => {
   return (
     <TasksMenuItem
       innerRef={getOptionsRef}
-      className="tasks-menu__item"
       onClick={onHandleClick}
     >
       <IconWrapper iconColor={iconColor} hoverIconColor="#293034">

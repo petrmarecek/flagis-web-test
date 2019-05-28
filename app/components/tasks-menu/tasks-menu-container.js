@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import cx from 'classnames'
 import { OrderedSet } from 'immutable'
 import { connect } from 'react-redux'
 import { toast } from 'react-toastify'
@@ -57,7 +56,12 @@ import TasksMenuSort from 'components/tasks-menu//tasks-menu-sort'
 import TasksMenuOptions from 'components/tasks-menu//tasks-menu-options'
 import TasksMenuMultiSelect from 'components/tasks-menu/tasks-menu-multi-select'
 
-import { TasksMenuFiltersActive } from './styles'
+import {
+  TaskMenuWrapper,
+  TaskCountIndicator,
+  TaskCountIndicatorInner,
+  TasksMenuFiltersActive,
+} from './styles'
 
 class TasksMenuContainer extends PureComponent {
   static propTypes = {
@@ -189,13 +193,8 @@ class TasksMenuContainer extends PureComponent {
       ? this.props.selectTaskCount
       : this.props.showTasksId.size
 
-    const taskCountCss = cx({
-      'task-count-indicator__inner': true,
-      'task-count-indicator__inner--multi-select': isMultiSelect,
-    })
-
     return (
-      <div className="tasks-menu">
+      <TaskMenuWrapper>
         {isMultiSelect && (
           <TasksMenuMultiSelect
             onAddRemoveTags={this.handleAddRemoveTags}
@@ -263,11 +262,13 @@ class TasksMenuContainer extends PureComponent {
         )}
 
         {isVisibleArchivedTasks && (
-          <span className="task-count-indicator">
-            <span className={taskCountCss}>{taskCount}</span>
-          </span>
+          <TaskCountIndicator>
+            <TaskCountIndicatorInner multiSelect={isMultiSelect}>
+              {taskCount}
+            </TaskCountIndicatorInner>
+          </TaskCountIndicator>
         )}
-      </div>
+      </TaskMenuWrapper>
     )
   }
 }
