@@ -11,6 +11,7 @@ import { errorMessages } from 'utils/messages'
 import constants from 'utils/constants'
 import domUtils from 'redux/utils/dom'
 
+import TextEditor from 'components/editor'
 import TagDetailColors from 'components/detail/tag-detail-colors'
 import DetailMenu from 'components/detail/detail-menu'
 import Icon from 'components/icons/icon'
@@ -30,7 +31,6 @@ import {
   DetailTagColorSelector,
   DetailTagColorSelectorLabel,
   DetailContentDescriptionTag,
-  MarkdownEditableContainer,
 } from './styles'
 
 const TagDetail = props => {
@@ -56,7 +56,12 @@ const TagDetail = props => {
   const color = getTagColor(colorIndex)
   const description = tag.description === null ? '' : tag.description
   const tagColorElem = domUtils.getDimensions(tagColorsRef)
-  const offset = tagColorElem ? 175 + tagColorElem.height : 234
+  const offset = tagColorElem ? 143 + tagColorElem.height : 202
+  const editorHeight = `calc(100vh - ${offset}px)`
+  const scrollStyle = {
+    height: `calc(100vh - ${offset + 62}px)`,
+    overflow: 'hidden',
+  }
 
   return (
     <div>
@@ -113,15 +118,12 @@ const TagDetail = props => {
           </DetailContentTagColor>
           <DetailContentDescriptionTag>
             <span onClick={onHandleRemoveEventListener}>
-              <MarkdownEditableContainer
-                text={description}
-                placeholder="Add description"
-                onUpdate={onHandleDescriptionUpdate}
-                editHeight={`calc(100vh - ${offset + 2}px)`}
-                scrollStyle={{
-                  height: `calc(100vh - ${offset}px)`,
-                  overflow: 'hidden',
-                }}
+              <TextEditor
+                componentId={tag.id}
+                content={description}
+                setDescription={onHandleDescriptionUpdate}
+                editorHeight={editorHeight}
+                scrollStyle={scrollStyle}
               />
             </span>
           </DetailContentDescriptionTag>
@@ -181,8 +183,8 @@ export default withStateHandlers(() => ({ tagColorsRef: null }), {
     return {}
   },
   onHandleDelete: (state, props) => () => props.onHandleTagDelete(props.tag),
-  onHandleDescriptionUpdate: (state, props) => event => {
-    const description = event.target.value
+  onHandleDescriptionUpdate: (state, props) => value => {
+    const description = value
     if (description === props.tag.description) {
       return {}
     }

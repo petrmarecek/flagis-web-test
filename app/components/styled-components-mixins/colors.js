@@ -1,4 +1,4 @@
-const colors = {
+export const colors = {
   //gray shades
   darkJungleGreen: '#1c2124',
   aztec: '#293034',

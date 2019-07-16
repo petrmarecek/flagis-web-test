@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { withHandlers } from 'recompose'
 
 // components
+import TextEditor from 'components/editor'
 import Avatar from 'react-avatar'
 import DetailMenu from './detail-menu'
 import Icon from '../icons/icon'
@@ -21,7 +22,6 @@ import {
   ContentEditableWrapper,
   DetailSubjectContactContentEditable,
   DetailContentDescriptionContact,
-  MarkdownEditableContainer,
   DetailContentContactData,
   DetailContentContactDataLabel,
   DetailContentContactDataContent,
@@ -46,8 +46,9 @@ const ContactDetail = props => {
 
   const nickname = contact.nickname === null ? '' : contact.nickname
   const description = contact.description === null ? '' : contact.description
+  const editorHeight = 'calc(100vh - 132px)'
   const scrollStyle = {
-    height: 'calc(100vh - 172px)',
+    height: 'calc(100vh - 192px)',
     overflow: 'hidden',
   }
 
@@ -138,11 +139,12 @@ const ContactDetail = props => {
 
           <DetailContentDescriptionContact>
             <span onClick={onHandleRemoveEventListener}>
-              <MarkdownEditableContainer
-                text={description}
+              <TextEditor
+                componentId={contact.id}
+                content={description}
+                setDescription={onHandleDescriptionUpdate}
+                editorHeight={editorHeight}
                 scrollStyle={scrollStyle}
-                placeholder="Add description"
-                onUpdate={onHandleDescriptionUpdate}
               />
             </span>
           </DetailContentDescriptionContact>
@@ -179,8 +181,8 @@ export default withHandlers({
     props.onHandleContactNicknameUpdate(data)
   },
   onHandleDelete: props => () => props.onHandleContactDelete(props.contact),
-  onHandleDescriptionUpdate: props => event => {
-    const description = event.target.value
+  onHandleDescriptionUpdate: props => value => {
+    const description = value
     if (description === props.contact.description) {
       return
     }

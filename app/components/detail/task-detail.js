@@ -9,6 +9,7 @@ import dateUtil from 'redux/utils/date'
 import { getAssigneeOfTask } from 'redux/utils/component-helper'
 
 // components
+import TextEditor from 'components/editor'
 import DetailMenu from 'components/detail/detail-menu'
 import FollowerStatus from 'components/common/follower-status'
 import FollowerResponseButtons from '../common/follower-response-buttons'
@@ -57,7 +58,6 @@ import {
   DetailContentImportantContent,
   DetailContentAttachments,
   DetailContentDescriptionTask,
-  MarkdownEditableContainer,
   DetailContentComments,
   DetailContentCommentsAdd,
   DetailContentCommentsAddIcon,
@@ -152,6 +152,13 @@ const TaskDetail = props => {
 
   if (isInboxVisible) {
     ruleMessage = infoMessages.taskDetail.inboxRules
+  }
+
+  // editor styles
+  const editorHeight = 'calc(100vh - 132px)'
+  const scrollStyle = {
+    height: 'calc(100vh - 192px)',
+    overflow: 'hidden',
   }
 
   // Conditionals
@@ -603,15 +610,12 @@ const TaskDetail = props => {
             allowed={!isCompleted && !isCollaborated}
           >
             <span onClick={onHandleRemoveEventListener}>
-              <MarkdownEditableContainer
-                text={description === null ? '' : description}
-                placeholder="Add description"
-                onUpdate={onHandleDescriptionUpdate}
-                helpVisible={!isCompleted && !isCollaborated}
-                scrollStyle={{
-                  height: 'calc(100vh - 172px)',
-                  overflow: 'hidden',
-                }}
+              <TextEditor
+                componentId={task.id}
+                content={description}
+                setDescription={onHandleDescriptionUpdate}
+                editorHeight={editorHeight}
+                scrollStyle={scrollStyle}
               />
             </span>
           </DetailContentDescriptionTask>
@@ -819,8 +823,8 @@ export default compose(
 
       props.onHandleTaskFileUploaded(data)
     },
-    onHandleDescriptionUpdate: props => event => {
-      const description = event.target.value
+    onHandleDescriptionUpdate: props => value => {
+      const description = value
       if (description === props.task.description) {
         return
       }

@@ -183,7 +183,7 @@ const detailContentOptionsItemLabel = css`
 const DetailContentAddContact = styled.div`
   position: relative;
   margin: 0 0 10px 0;
-  padding-top: 24px;
+  padding-top: 10px;
   border-bottom: 1px solid #e1e4e5;
 `
 
