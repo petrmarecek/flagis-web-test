@@ -15,13 +15,7 @@ const ItemWrapper = styled.li`
   list-style-type: none;
   font-size: 14px;
   position: relative;
-  margin: 2px 0 0 0;
-  border-bottom: 1px solid #e1e4e5;
-
-  :last-of-type {
-    margin-bottom: 15px;
-    border-bottom: 1px solid #fff;
-  }
+  margin: 10px 0 0 0;
 
   :hover {
     svg:first-of-type {
