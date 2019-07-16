@@ -509,7 +509,7 @@ const TaskDetail = props => {
                   </DetailContentAddNewContact>
                 )}
               </DetailContentAddContact>
-              <DetailContentDate allowed={!isCompleted && !isCollaborated}>
+              {/* <DetailContentDate allowed={!isCompleted && !isCollaborated}>
                 <DetailContentDateIcon
                   icon={ICONS.START_DATE}
                   height={12}
@@ -529,7 +529,7 @@ const TaskDetail = props => {
                     onChange={onHandleStartDateChanged}
                   />
                 </DetailContentDatePicker>
-              </DetailContentDate>
+              </DetailContentDate> */}
               <DetailContentDate allowed={!isCompleted && !isCollaborated}>
                 <DetailContentDateIcon
                   icon={ICONS.DUE_DATE}
