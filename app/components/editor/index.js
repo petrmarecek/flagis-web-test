@@ -92,7 +92,6 @@ export default class TextEditor extends Component {
     if (!allowedKeyCommand.includes(command)) {
       return false
     }
-    console.log(command)
 
     const newEditorState = RichUtils.handleKeyCommand(editorState, command)
     if (newEditorState) {
@@ -131,7 +130,6 @@ export default class TextEditor extends Component {
   render() {
     const { editorState } = this.state
     const { editorHeight, scrollStyle } = this.props
-    console.log(editorHeight)
 
     return (
       <EditorWrapper>

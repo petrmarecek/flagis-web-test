@@ -344,7 +344,7 @@ const TaskListItem = props => {
             key={task.id}
             tabIndex="-1"
             data-item-id={task.id}
-            onClick={onHandleClicked}
+            onMouseDown={onHandleClicked}
             active={task.active}
             selected={isSelected}
             backgroundColor={backgroundColor}
@@ -355,9 +355,9 @@ const TaskListItem = props => {
           >
             {!isArchivedList && !isInboxList && (
               <Completed
-                onClick={e => {
+                onMouseDown={e => {
                   e.stopPropagation()
-                  onHandleCompleteClicked()
+                  onHandleCompleteClicked(e)
                 }}
               >
                 <Icon
@@ -371,9 +371,9 @@ const TaskListItem = props => {
             {task.isCompleted && !isInboxList && (
               <Archived
                 archived={isArchivedList}
-                onClick={e => {
+                onMouseDown={e => {
                   e.stopPropagation()
-                  onHandleArchiveClicked()
+                  onHandleArchiveClicked(e)
                 }}
               >
                 <Icon
@@ -504,6 +504,7 @@ TaskListItem.propTypes = {
 
   // Handlers
   onClick: PropTypes.func,
+  onToggleImportant: PropTypes.func,
   onCompleteClick: PropTypes.func,
   moveTask: PropTypes.func,
   dropTask: PropTypes.func,
@@ -558,8 +559,23 @@ export default DragSource(ItemTypes.TASK, taskSource, collectDragSource)(
     DropTarget(ItemTypes.TASK, taskTarget, collectDropTarget),
     withStateHandlers(() => ({ isMoved: null, isMounted: true }), {
       onHandleClicked: (state, props) => event => {
+        // middle mouse button
+        if (event.button === 1) {
+          return {}
+        }
+
+        const { isCompleted } = props.task
         const isInboxList = props.listType === 'inbox'
         const isMultiselect = event.ctrlKey || event.metaKey
+
+        // Set task as important by right mouse
+        if (event.button === 2) {
+          if (!isCompleted && !isInboxList) {
+            props.onToggleImportant(props.task)
+            return {}
+          }
+          return {}
+        }
 
         // Not allowed multiselect in inbox list
         if (isMultiselect && isInboxList) {
@@ -575,7 +591,14 @@ export default DragSource(ItemTypes.TASK, taskSource, collectDragSource)(
         return {}
       },
       onHandleTagClicked: (state, props) => tag => props.onTagClick(tag),
-      onHandleCompleteClicked: (state, props) => () => {
+      onHandleCompleteClicked: (state, props) => event => {
+        event.stopPropagation()
+
+        // allowed left mouse button
+        if (event.button !== 0) {
+          return {}
+        }
+
         // Data of assignee
         const assignee = getAssigneeOfTask(props.task.followers)
         const isFollowers = assignee !== null
@@ -592,7 +615,12 @@ export default DragSource(ItemTypes.TASK, taskSource, collectDragSource)(
         props.onCompleteClick(props.task)
         return {}
       },
-      onHandleArchiveClicked: (state, props) => () => {
+      onHandleArchiveClicked: (state, props) => event => {
+        // allowed left mouse button
+        if (event.button !== 0) {
+          return {}
+        }
+
         if (props.listType === 'archived') {
           window.setTimeout(() => props.cancelArchiveTasks(props.task.id), 400)
           return { isMounted: false, isMoved: null }

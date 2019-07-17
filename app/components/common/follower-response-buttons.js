@@ -55,8 +55,10 @@ const FollowerResponseButtons = props => {
 
     return (
       <Container>
-        {!isAccepted && <Button onClick={onHandleAcceptClicked}>ACCEPT</Button>}
-        <Button onClick={onHandleRejectClicked} rejected>
+        {!isAccepted && (
+          <Button onMouseDown={onHandleAcceptClicked}>ACCEPT</Button>
+        )}
+        <Button onMouseDown={onHandleRejectClicked} rejected>
           REJECT
         </Button>
       </Container>
@@ -84,10 +86,22 @@ export default withHandlers({
   },
   onHandleAcceptClicked: props => event => {
     event.stopPropagation()
+
+    // allowed left mouse button
+    if (event.button !== 0) {
+      return
+    }
+
     props.acceptClicked()
   },
   onHandleRejectClicked: props => event => {
     event.stopPropagation()
+
+    // allowed left mouse button
+    if (event.button !== 0) {
+      return
+    }
+
     props.rejectClicked()
   },
 })(FollowerResponseButtons)

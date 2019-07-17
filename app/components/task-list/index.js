@@ -26,6 +26,7 @@ import {
 } from 'redux/store/app-state/app-state.selectors'
 import {
   selectTask,
+  requestToggleImportant,
   setComplete,
   setIncomplete,
   setOrder,
@@ -81,6 +82,7 @@ const TaskListContainer = props => {
     onInvokeMove,
     onDropTask,
     onHandleTaskSelect,
+    onHandleToggleImportant,
     onHandleCompleteClick,
     onHandleTagClick,
     onHandleSetArchiveTasks,
@@ -117,27 +119,30 @@ const TaskListContainer = props => {
       setPosition={onHandleSetScrollbarPosition}
       isToggleTaskList={timeLine}
     >
-      <TaskList
-        userId={userId}
-        listType={tasks.type}
-        tasks={tasks.items}
-        selectedTags={selectedTags}
-        selectedTasks={selectedTasks}
-        timeLine={timeLine}
-        sort={sort}
-        isVisibleArchivedTasks={isVisibleArchivedTasks}
-        leftPanelWidth={leftPanelWidth}
-        windowWidth={windowWidth}
-        moveTask={onMoveTask}
-        dropTask={onDropTask}
-        onTaskSelect={onHandleTaskSelect}
-        onCompleteClick={onHandleCompleteClick}
-        onTagClick={onHandleTagClick}
-        setArchiveTasks={onHandleSetArchiveTasks}
-        cancelArchiveTasks={onHandleCancelArchiveTasks}
-        acceptTask={onHandleAcceptTask}
-        rejectTask={onHandleRejectTask}
-      />
+      <span onContextMenu={e => e.preventDefault()}>
+        <TaskList
+          userId={userId}
+          listType={tasks.type}
+          tasks={tasks.items}
+          selectedTags={selectedTags}
+          selectedTasks={selectedTasks}
+          timeLine={timeLine}
+          sort={sort}
+          isVisibleArchivedTasks={isVisibleArchivedTasks}
+          leftPanelWidth={leftPanelWidth}
+          windowWidth={windowWidth}
+          moveTask={onMoveTask}
+          dropTask={onDropTask}
+          onTaskSelect={onHandleTaskSelect}
+          onToggleImportant={onHandleToggleImportant}
+          onCompleteClick={onHandleCompleteClick}
+          onTagClick={onHandleTagClick}
+          setArchiveTasks={onHandleSetArchiveTasks}
+          cancelArchiveTasks={onHandleCancelArchiveTasks}
+          acceptTask={onHandleAcceptTask}
+          rejectTask={onHandleRejectTask}
+        />
+      </span>
     </ShadowScrollbar>
   )
 }
@@ -170,6 +175,7 @@ TaskListContainer.propTypes = {
   onInvokeMove: PropTypes.func,
   onDropTask: PropTypes.func,
   onHandleTaskSelect: PropTypes.func,
+  onHandleToggleImportant: PropTypes.func,
   onHandleCompleteClick: PropTypes.func,
   onHandleTagClick: PropTypes.func,
   onHandleSetArchiveTasks: PropTypes.func,
@@ -181,6 +187,7 @@ TaskListContainer.propTypes = {
   // actions
   selectTask: PropTypes.func,
   setComplete: PropTypes.func,
+  requestToggleImportant: PropTypes.func,
   setIncomplete: PropTypes.func,
   setOrder: PropTypes.func,
   setOrderTimeLine: PropTypes.func,
@@ -222,6 +229,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
   selectTask,
+  requestToggleImportant,
   setComplete,
   setIncomplete,
   setOrder,
@@ -350,6 +358,8 @@ export default compose(
         )
         return {}
       },
+      onHandleToggleImportant: (state, props) => data =>
+        props.requestToggleImportant(data),
       onHandleCompleteClick: (state, props) => task => {
         const { id, followers } = task
         const assignee = getAssigneeOfTask(followers)

@@ -32,6 +32,7 @@ const TaskList = props => {
     // handlers
     onCompleteClick,
     onTaskSelect,
+    onToggleImportant,
     moveTask,
     dropTask,
     onTagClick,
@@ -102,6 +103,7 @@ const TaskList = props => {
         selectedTags={selectedTags}
         onCompleteClick={onCompleteClick}
         onClick={onTaskSelect}
+        onToggleImportant={onToggleImportant}
         moveTask={moveTask}
         dropTask={dropTask}
         onTagClick={onTagClick}
@@ -293,6 +295,7 @@ TaskList.propTypes = {
   // Handlers
   onCompleteClick: PropTypes.func,
   onTaskSelect: PropTypes.func,
+  onToggleImportant: PropTypes.func,
   moveTask: PropTypes.func,
   dropTask: PropTypes.func,
   onTagClick: PropTypes.func,
