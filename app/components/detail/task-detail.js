@@ -7,6 +7,7 @@ import { List } from 'immutable'
 import { infoMessages } from 'utils/messages'
 import dateUtil from 'redux/utils/date'
 import { getAssigneeOfTask } from 'redux/utils/component-helper'
+import domUtils from 'redux/utils/dom'
 
 // components
 import TextEditor from 'components/editor'
@@ -73,7 +74,9 @@ const TaskDetail = props => {
     isInboxVisible,
     isMounted,
     isRejected,
+    contentTopRef,
     animation,
+    getContentTopRef,
     onHandleComplete,
     onHandleArchive,
     onHandleSend,
@@ -155,9 +158,14 @@ const TaskDetail = props => {
   }
 
   // editor styles
-  const editorHeight = 'calc(100vh - 132px)'
+  const contentTopElem = contentTopRef
+    ? domUtils.getDimensions(contentTopRef)
+    : { height: 0 }
+  const editorOffset = 84 + contentTopElem.height
+  const scrollOffset = 144 + contentTopElem.height
+  const editorHeight = `calc(100vh - ${editorOffset}px)`
   const scrollStyle = {
-    height: 'calc(100vh - 192px)',
+    height: `calc(100vh - ${scrollOffset}px)`,
     overflow: 'hidden',
   }
 
@@ -247,6 +255,7 @@ const TaskDetail = props => {
       />
       <DetailInner isMounted={isMounted} isRejected={isRejected}>
         <DetailContentTop
+          innerRef={getContentTopRef}
           animation={animation}
           completed={isCompletedMainList}
           backgroundColor={backgroundColor}
@@ -657,10 +666,12 @@ TaskDetail.propTypes = {
   task: PropTypes.object,
   isMounted: PropTypes.bool,
   isRejected: PropTypes.bool,
+  contentTopRef: PropTypes.object,
   animation: PropTypes.bool,
   attachments: PropTypes.object,
   comments: PropTypes.object,
   isInboxVisible: PropTypes.bool,
+  getContentTopRef: PropTypes.func,
   onHandleComplete: PropTypes.func,
   onHandleTaskSetComplete: PropTypes.func,
   onHandleTaskSetIncomplete: PropTypes.func,
@@ -704,33 +715,41 @@ TaskDetail.propTypes = {
 }
 
 export default compose(
-  withStateHandlers(() => ({ isMounted: true, isRejected: false }), {
-    onHandleArchive: (state, props) => () => {
-      window.setTimeout(() => props.onHandleTaskArchive(props.task), 400)
-      return { isMounted: false }
-    },
-    onHandleAccept: (state, props) => () => {
-      const { id, followers } = props.task
-      const assignee = getAssigneeOfTask(followers)
-      const data = {
-        taskId: id,
-        followerId: assignee.id,
-      }
+  withStateHandlers(
+    () => ({
+      isMounted: true,
+      isRejected: false,
+      contentTopRef: null,
+    }),
+    {
+      getContentTopRef: () => ref => ({ contentTopRef: ref }),
+      onHandleArchive: (state, props) => () => {
+        window.setTimeout(() => props.onHandleTaskArchive(props.task), 400)
+        return { isMounted: false }
+      },
+      onHandleAccept: (state, props) => () => {
+        const { id, followers } = props.task
+        const assignee = getAssigneeOfTask(followers)
+        const data = {
+          taskId: id,
+          followerId: assignee.id,
+        }
 
-      window.setTimeout(() => props.onHandleTaskAccept(data), 400)
-      return { isMounted: false }
-    },
-    onHandleReject: (state, props) => () => {
-      const { task, detail } = props
-      const data = {
-        task,
-        type: detail.inbox ? 'inbox' : 'task',
-      }
+        window.setTimeout(() => props.onHandleTaskAccept(data), 400)
+        return { isMounted: false }
+      },
+      onHandleReject: (state, props) => () => {
+        const { task, detail } = props
+        const data = {
+          task,
+          type: detail.inbox ? 'inbox' : 'task',
+        }
 
-      window.setTimeout(() => props.onHandleTaskReject(data), 400)
-      return { isMounted: false, isRejected: true }
-    },
-  }),
+        window.setTimeout(() => props.onHandleTaskReject(data), 400)
+        return { isMounted: false, isRejected: true }
+      },
+    }
+  ),
   withHandlers({
     onHandleComplete: props => () => {
       const { id } = props.task
