@@ -28,7 +28,7 @@ const Label = styled.label`
   display: block;
   position: absolute;
   left: 5px;
-  top: 5px;
+  top: ${props => (props.smallSize ? '5px' : '-5px')};
   cursor: auto;
   font-size: ${props => (props.smallSize ? '18px' : '24px')};
   color: #8c9da9;
