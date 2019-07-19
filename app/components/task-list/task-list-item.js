@@ -220,6 +220,7 @@ const TaskListItem = props => {
     selectedTags,
     leftPanelWidth,
     windowWidth,
+    onHandleMouseDown,
     onHandleClicked,
     onHandleTagClicked,
     onHandleCompleteClicked,
@@ -344,7 +345,8 @@ const TaskListItem = props => {
             key={task.id}
             tabIndex="-1"
             data-item-id={task.id}
-            onMouseDown={onHandleClicked}
+            onMouseDown={onHandleMouseDown}
+            onClick={onHandleClicked}
             active={task.active}
             selected={isSelected}
             backgroundColor={backgroundColor}
@@ -355,7 +357,7 @@ const TaskListItem = props => {
           >
             {!isArchivedList && !isInboxList && (
               <Completed
-                onMouseDown={e => {
+                onClick={e => {
                   e.stopPropagation()
                   onHandleCompleteClicked(e)
                 }}
@@ -371,7 +373,7 @@ const TaskListItem = props => {
             {task.isCompleted && !isInboxList && (
               <Archived
                 archived={isArchivedList}
-                onMouseDown={e => {
+                onClick={e => {
                   e.stopPropagation()
                   onHandleArchiveClicked(e)
                 }}
@@ -513,6 +515,7 @@ TaskListItem.propTypes = {
   cancelArchiveTasks: PropTypes.func,
   acceptTask: PropTypes.func,
   rejectTask: PropTypes.func,
+  onHandleMouseDown: PropTypes.func,
   onHandleClicked: PropTypes.func,
   onHandleTagClicked: PropTypes.func,
   onHandleCompleteClicked: PropTypes.func,
@@ -558,25 +561,26 @@ export default DragSource(ItemTypes.TASK, taskSource, collectDragSource)(
   compose(
     DropTarget(ItemTypes.TASK, taskTarget, collectDropTarget),
     withStateHandlers(() => ({ isMoved: null, isMounted: true }), {
-      onHandleClicked: (state, props) => event => {
-        // middle mouse button
-        if (event.button === 1) {
-          return {}
-        }
-
+      onHandleMouseDown: (state, props) => event => {
         const { isCompleted } = props.task
         const isInboxList = props.listType === 'inbox'
-        const isMultiselect = event.ctrlKey || event.metaKey
 
-        // Set task as important by right mouse
-        if (event.button === 2) {
-          if (!isCompleted && !isInboxList) {
-            props.onToggleImportant(props.task)
-            return {}
-          }
+        // allowed only right mouse button
+        if (event.button !== 2) {
           return {}
         }
 
+        // set task as important by right mouse
+        if (!isCompleted && !isInboxList) {
+          props.onToggleImportant(props.task)
+          return {}
+        }
+ 
+        return {}
+      },
+      onHandleClicked: (state, props) => event => {
+        const isInboxList = props.listType === 'inbox'
+        const isMultiselect = event.ctrlKey || event.metaKey
         // Not allowed multiselect in inbox list
         if (isMultiselect && isInboxList) {
           return {}
@@ -591,14 +595,7 @@ export default DragSource(ItemTypes.TASK, taskSource, collectDragSource)(
         return {}
       },
       onHandleTagClicked: (state, props) => tag => props.onTagClick(tag),
-      onHandleCompleteClicked: (state, props) => event => {
-        event.stopPropagation()
-
-        // allowed left mouse button
-        if (event.button !== 0) {
-          return {}
-        }
-
+      onHandleCompleteClicked: (state, props) => () => {
         // Data of assignee
         const assignee = getAssigneeOfTask(props.task.followers)
         const isFollowers = assignee !== null
@@ -615,12 +612,8 @@ export default DragSource(ItemTypes.TASK, taskSource, collectDragSource)(
         props.onCompleteClick(props.task)
         return {}
       },
-      onHandleArchiveClicked: (state, props) => event => {
+      onHandleArchiveClicked: (state, props) => () => {
         // allowed left mouse button
-        if (event.button !== 0) {
-          return {}
-        }
-
         if (props.listType === 'archived') {
           window.setTimeout(() => props.cancelArchiveTasks(props.task.id), 400)
           return { isMounted: false, isMoved: null }

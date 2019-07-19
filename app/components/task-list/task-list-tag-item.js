@@ -24,7 +24,7 @@ const TaskListTagItem = props => {
   return (
     <Item
       key={id}
-      onMouseDown={onHandleClicked}
+      onClick={onHandleClicked}
       onMouseEnter={onHandleMouseEnter}
       onMouseLeave={onHandleMouseLeave}
       bgColor={tagColor}
@@ -57,12 +57,6 @@ export default compose(
   withHandlers({
     onHandleClicked: props => event => {
       event.stopPropagation()
-
-      // allowed left mouse button
-      if (event.button !== 0) {
-        return
-      }
-
       props.onHandleTagClicked(props.tag)
     },
   })
