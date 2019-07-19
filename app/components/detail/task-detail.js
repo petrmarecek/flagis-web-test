@@ -582,6 +582,7 @@ const TaskDetail = props => {
                 </DetailContentDatePicker>
               </DetailContentDate>
               <DetailContentImportant
+                title="Use the right mouse button for this action in the task list."
                 onClick={onHandleToggleImportant}
                 allowed={!isCompleted && !isInboxVisible}
                 last
