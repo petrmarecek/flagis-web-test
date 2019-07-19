@@ -344,6 +344,7 @@ const TaskDetail = props => {
               <ContentEditableWrapper onClick={onHandleRemoveEventListener}>
                 <DetailSubjectTaskContentEditable
                   html={subject}
+                  maxCharacters={255}
                   enforcePlainText
                   onChange={onHandleSubjectUpdate}
                   completed={isCompleted}

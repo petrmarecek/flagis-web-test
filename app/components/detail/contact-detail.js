@@ -84,6 +84,7 @@ const ContactDetail = props => {
               <ContentEditableWrapper onClick={onHandleRemoveEventListener}>
                 <DetailSubjectContactContentEditable
                   html={nickname}
+                  maxCharacters={40}
                   placeholder="Add username"
                   enforcePlainText
                   onChange={onHandleNicknameUpdate}
