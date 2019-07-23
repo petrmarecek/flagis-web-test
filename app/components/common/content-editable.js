@@ -69,8 +69,11 @@ export default compose(
         value = value.substr(0, props.maxCharacters)
       }
 
+      // optimistic update text in client
+      event.target.innerText = value
+
       // update text
-      event.target = { value }
+      event.target.value = value
       props.onChange(event)
     },
   }),

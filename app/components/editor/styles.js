@@ -50,6 +50,7 @@ const EditArea = styled.div`
   padding: 45px 15px 15px 15px;
   height: ${props => props.editorHeight};
   font-size: 12px;
+  cursor: text;
 
   h3 {
     margin: 6px 0;

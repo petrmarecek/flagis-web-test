@@ -394,7 +394,7 @@ const ContentEditableWrapper = styled.span`
 
 const ContentEditableStyles = css`
   ${boxSizing('border-box')}
-  line-height: 22px;
+  line-height: 24px;
   font-size: 18px;
   outline: none !important;
   max-height: 134px;

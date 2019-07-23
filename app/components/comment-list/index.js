@@ -19,6 +19,7 @@ const CommentList = ({ comments, userId }) => {
     boxShadowTop: 'inset 0 10px 10px -5px #fff',
     boxShadowBottom: 'inset 0 -10px 10px -5px #fff',
     overflow: 'hidden',
+    pointerEvents: 'initial',
   }
 
   return (
