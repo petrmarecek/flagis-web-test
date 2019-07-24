@@ -109,6 +109,10 @@ export default function* root() {
       taskMenu.toggleUnimportantFilter
     ),
     takeEvery(TASKS_MENU.TOGGLE_NO_TAGS_FILTER, taskMenu.toggleNoTagsFilter),
+    takeEvery(
+      TASKS_MENU.DESELECT_NO_TAGS_FILTER,
+      taskMenu.deselectNoTagsFilter
+    ),
     takeEvery(TASKS_MENU.DELETE_FILTER, taskMenu.deleteFilter),
 
     // tree

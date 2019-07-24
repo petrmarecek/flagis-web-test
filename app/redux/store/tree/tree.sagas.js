@@ -25,6 +25,7 @@ import {
 } from 'redux/store/common.sagas'
 import * as appStateActions from 'redux/store/app-state/app-state.actions'
 import * as taskActions from 'redux/store/tasks/tasks.actions'
+import * as taskMenuActions from 'redux/store/tasks-menu/tasks-menu.actions'
 import * as tagActions from 'redux/store/tags/tags.actions'
 import * as contactActions from 'redux/store/contacts/contacts.actions'
 import * as treeActions from 'redux/store/tree/tree.actions'
@@ -145,10 +146,11 @@ export function* createTreeItem(action) {
 export function* selectPath(action) {
   const relatedTagIds = action.payload.map(treeItem => treeItem.tagId)
 
-  // deselect tasks, tags, contacts
+  // deselect tasks, tags, contacts and delete notTags filter
   yield put(taskActions.deselectTasks())
   yield put(tagActions.deselectTags())
   yield put(contactActions.deselectContacts())
+  yield put(taskMenuActions.deselectNoTagsFilter())
 
   // hide inbox
   const isInboxTasks = yield select(state =>

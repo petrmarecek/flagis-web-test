@@ -16,6 +16,7 @@ import constants from 'utils/constants'
 
 import * as authSelectors from 'redux/store/auth/auth.selectors'
 import * as appStateActions from 'redux/store/app-state/app-state.actions'
+import * as taskMenuActions from 'redux/store/tasks-menu/tasks-menu.actions'
 import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'
 import * as tagActions from 'redux/store/tags/tags.actions'
 import * as tagSelectors from 'redux/store/tags/tags.selectors'
@@ -112,6 +113,7 @@ export function* initTagsData(initTime) {
 
 export function* selectActiveTags(action) {
   yield put(deselectPath())
+  yield put(taskMenuActions.deselectNoTagsFilter())
   yield put(tagActions.setActiveTags(action.payload.tagIds))
 }
 

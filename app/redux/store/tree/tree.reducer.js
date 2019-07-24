@@ -66,8 +66,6 @@ export default typeToReducer(
       return state.setIn(['selection'], List(treeItemIds))
     },
 
-    [TREE.RESET_SELECT_PATH]: state => state.setIn(['selection'], List()),
-
     [TREE.DESELECT_PATH]: state => state.setIn(['selection'], List()),
 
     [TREE.DELETE]: {

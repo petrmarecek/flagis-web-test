@@ -47,6 +47,9 @@ export default typeToReducer(
     [TASKS_MENU.TOGGLE_NO_TAGS_FILTER]: state =>
       state.setIn(['filters', 'noTags'], !state.filters.noTags),
 
+    [TASKS_MENU.DESELECT_NO_TAGS_FILTER]: state =>
+      state.setIn(['filters', 'noTags'], false),
+
     [TASKS_MENU.SET_ACTIVE_ASSIGNEE]: (state, action) =>
       state.setIn(['filters', 'activeAssignee'], action.payload.assignee),
 
@@ -59,9 +62,13 @@ export default typeToReducer(
       ),
 
     [TASKS_MENU.DELETE_ACTIVE_FILTER]: (state, action) =>
-      state.updateIn(['filters', 'active'], list =>
-        list.delete(list.indexOf(action.payload.filter))
-      ),
+      state.updateIn(['filters', 'active'], list => {
+        if (!list.includes(action.payload.filter)) {
+          return list
+        }
+
+        return list.delete(list.indexOf(action.payload.filter))
+      }),
 
     [TASKS_MENU.DELETE_FILTER]: (state, action) => {
       const filter = action.payload.filter
