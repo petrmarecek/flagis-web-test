@@ -1,15 +1,25 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+
+// redux
+import { connect } from 'react-redux'
+import { getInboxTasksItems } from 'redux/store/tasks/tasks.selectors'
 
 // components
 import TaskListContainer from '../task-list'
 
 // styles
-import { CenterPanelTop, CenterPanelTopPrimary, CenterPageTitle, CenterPanelScroll } from '../panels/styles'
+import {
+  CenterPanelTop,
+  CenterPanelTopPrimary,
+  CenterPageTitle,
+  CenterPanelScroll,
+} from '../panels/styles'
 
-const InboxContent = () => (
+const InboxContent = ({ inboxItemsSize }) => (
   <div>
     <CenterPanelTop>
-      <CenterPanelTopPrimary>
+      <CenterPanelTopPrimary bottomBorder={inboxItemsSize === 0}>
         <CenterPageTitle>Inbox</CenterPageTitle>
       </CenterPanelTopPrimary>
     </CenterPanelTop>
@@ -19,4 +29,12 @@ const InboxContent = () => (
   </div>
 )
 
-export default InboxContent
+InboxContent.propTypes = {
+  inboxItemsSize: PropTypes.number,
+}
+
+const mapStateToProps = state => ({
+  inboxItemsSize: getInboxTasksItems(state).size,
+})
+
+export default connect(mapStateToProps)(InboxContent)
