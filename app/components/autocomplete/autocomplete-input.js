@@ -244,6 +244,14 @@ const withAutocompleteInput = WrappedComponent => {
         contacts: item.email,
       })
 
+      // check max characters for tags
+      if (
+        dataType === 'tags' &&
+        value.length > constants.TAGS_TITLE_MAX_CHARACTERS
+      ) {
+        return
+      }
+
       // Deselect input for input mode
       if (isInputMode) {
         this.props.onDeselectInput()

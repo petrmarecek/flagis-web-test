@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { withHandlers } from 'recompose'
+import constants from 'utils/constants'
 
 // components
 import TextEditor from 'components/editor'
@@ -84,7 +85,7 @@ const ContactDetail = props => {
               <ContentEditableWrapper onClick={onHandleRemoveEventListener}>
                 <DetailSubjectContactContentEditable
                   html={nickname}
-                  maxCharacters={40}
+                  maxCharacters={constants.CONTACTS_TITLE_MAX_CHARACTERS}
                   placeholder="Add username"
                   enforcePlainText
                   onChange={onHandleNicknameUpdate}

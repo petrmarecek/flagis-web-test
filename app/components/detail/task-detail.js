@@ -8,6 +8,7 @@ import { infoMessages } from 'utils/messages'
 import dateUtil from 'redux/utils/date'
 import { getAssigneeOfTask } from 'redux/utils/component-helper'
 import domUtils from 'redux/utils/dom'
+import constants from 'utils/constants'
 
 // components
 import TextEditor from 'components/editor'
@@ -344,7 +345,7 @@ const TaskDetail = props => {
               <ContentEditableWrapper onClick={onHandleRemoveEventListener}>
                 <DetailSubjectTaskContentEditable
                   html={subject}
-                  maxCharacters={255}
+                  maxCharacters={constants.TASKS_TITLE_MAX_CHARACTERS}
                   enforcePlainText
                   onChange={onHandleSubjectUpdate}
                   completed={isCompleted}

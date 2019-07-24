@@ -31,4 +31,13 @@ export default {
 
   // Tasks-menu
   TASKS_MENU_ICON_OFFSET: 50,
+
+  // Tasks
+  TASKS_TITLE_MAX_CHARACTERS: 255,
+
+  // Tags
+  TAGS_TITLE_MAX_CHARACTERS: 25,
+
+  // Contacts
+  CONTACTS_TITLE_MAX_CHARACTERS: 60,
 }

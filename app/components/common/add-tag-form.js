@@ -1,17 +1,21 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import constants from 'utils/constants'
 import { compose, withStateHandlers } from 'recompose'
-import { connect } from 'react-redux'
 
+// redux
+import { connect } from 'react-redux'
 import { createTag } from 'redux/store/tags/tags.actions'
 import {
   isStringEmpty,
   getColorIndex,
 } from '../../redux/utils/component-helper'
 
+// components
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
 
+// styles
 import styled from 'styled-components'
 import {
   boxShadow,
@@ -106,7 +110,15 @@ export default compose(
     mapDispatchToProps
   ),
   withStateHandlers(() => ({ title: '' }), {
-    handleChange: () => event => ({ title: event.target.value }),
+    handleChange: () => event => {
+      const title = event.target.value
+
+      if (title.length > constants.TAGS_TITLE_MAX_CHARACTERS) {
+        return {}
+      }
+
+      return { title }
+    },
     handleSubmit: ({ title }, props) => event => {
       event.preventDefault()
 

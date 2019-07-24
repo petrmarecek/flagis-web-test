@@ -84,7 +84,7 @@ const TagDetail = props => {
               <ContentEditableWrapper onClick={onHandleRemoveEventListener}>
                 <DetailSubjectTagContentEditable
                   html={tag.title}
-                  maxCharacters={20}
+                  maxCharacters={constants.TAGS_TITLE_MAX_CHARACTERS}
                   enforcePlainText
                   onChange={onHandleTitleUpdate}
                   marginLeft="10px"

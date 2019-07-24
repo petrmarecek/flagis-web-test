@@ -1,12 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { compose, withStateHandlers } from 'recompose'
 import moment from 'moment'
+import constants from 'utils/constants'
+import { compose, withStateHandlers } from 'recompose'
+
+// redux
 import { connect } from 'react-redux'
-
-import { ICONS } from 'components/icons/icon-constants'
-import Icon from 'components/icons/icon'
-
 import commonUtils from 'redux/utils/common'
 import { createTask } from 'redux/store/tasks/tasks.actions'
 import { getTimeLine } from 'redux/store/tasks/tasks.selectors'
@@ -14,6 +13,11 @@ import { getTasksMenu } from 'redux/store/tasks-menu/tasks-menu.selectors'
 import { getActiveTagsId } from 'redux/store/tags/tags.selectors'
 import { isStringEmpty } from '../../redux/utils/component-helper'
 
+// components
+import { ICONS } from 'components/icons/icon-constants'
+import Icon from 'components/icons/icon'
+
+// styles
 import styled from 'styled-components'
 import {
   boxShadow,
@@ -108,7 +112,15 @@ export default compose(
     actionCreators
   ),
   withStateHandlers(() => ({ subject: '' }), {
-    handleChange: () => event => ({ subject: event.target.value }),
+    handleChange: () => event => {
+      const subject = event.target.value
+
+      if (subject.length > constants.TASKS_TITLE_MAX_CHARACTERS) {
+        return {}
+      }
+
+      return { subject }
+    },
     handleSubmit: ({ subject }, props) => event => {
       const { tasksMenu, timeLine, tags } = props
       const { filters } = tasksMenu
