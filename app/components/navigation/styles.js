@@ -205,7 +205,6 @@ const NotificationsWrapper = styled.div`
   position: relative;
   height: 60px;
   margin-left: 20px;
-  display: none;
 `
 
 const NotificationsCounter = styled(Counter)`
@@ -243,14 +242,14 @@ const MenuBoxWrapper = styled(MenuBox)`
 
   :before {
     top: -18px;
-    right: 20px;
+    right: 58px;
     border-color: transparent transparent #c1cad0 transparent;
     border-width: 9px;
   }
 
   :after {
     top: -16px;
-    right: 21px;
+    right: 59px;
     border-color: transparent transparent #fff transparent;
     border-width: 8px;
   }
