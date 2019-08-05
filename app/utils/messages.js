@@ -178,6 +178,9 @@ export const infoMessages = {
           case 'reminderDate':
             return 'Reminder date was updated'
 
+          case 'order':
+            return 'Task was moved'
+
           default:
             return null
         }

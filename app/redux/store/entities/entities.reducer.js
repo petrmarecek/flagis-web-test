@@ -477,13 +477,11 @@ function saveActivities(payload, state) {
         type === 'TASKS/UPDATE' && data !== null ? Object.keys(data.new)[0] : ''
 
       return (
-        newData !== 'archivedAt' &&
-        newData !== 'madeImportantAt' &&
-        newData !== 'subject' &&
-        newData !== 'description' &&
-        type !== 'TASKS/UPDATE-TAGS' &&
-        type !== 'TASKS/ADD-FOLLOWER' &&
-        type !== 'TASKS/DELETE-FOLLOWER'
+        newData === 'completedAt' ||
+        type === 'TASKS/CREATE' ||
+        type === 'TASKS/SEND-TO-FOLLOWER' ||
+        type === 'TASKS/ACCEPT-BY-FOLLOWER' ||
+        type === 'TASKS/REJECT-BY-FOLLOWER'
       )
     })
     .reduce((result, activitie) => {
