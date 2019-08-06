@@ -203,6 +203,7 @@ const TagTreeItem = props => {
               onClick={onHandleClicked}
               selected={selection.includes(treeItem.id)}
               colorTheme={colorTheme}
+              isChildItems={isChildItems}
               {...draggingData}
             >
               <ItemTagIcon>

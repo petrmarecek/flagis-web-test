@@ -225,7 +225,7 @@ const Item = styled.div`
   line-height: ${constants.TAG_TREE_ITEM_HEIGHT}px;
   cursor: pointer;
   font-size: 14px;
-  padding: 0 65px 0 34px;
+  padding: ${props => (props.isChildItems ? `0 80px 0 34px` : `0 65px 0 34px`)};
   margin-bottom: 5px;
   color: ${props =>
     props.selected
