@@ -1,5 +1,5 @@
 import { List } from 'immutable'
-import moment from 'moment'
+import * as _ from 'lodash'
 import { getEntitiesNotifications } from '../entities/entities.selectors'
 import { createSelector } from 'reselect'
 
@@ -27,12 +27,9 @@ function loadNotifications(data) {
   }
 
   // Sort by createdAt
-  notifications = notifications.sort((a, b) => {
-    if (moment(a.createdAt) < moment(b.createdAt)) return -1
-    if (moment(a.createdAt) > moment(b.createdAt)) return 1
-
-    return 0
-  })
+  notifications = notifications
+    .sortBy(notification => notification.createdAt)
+    .reverse()
 
   return notifications.toArray()
 }
