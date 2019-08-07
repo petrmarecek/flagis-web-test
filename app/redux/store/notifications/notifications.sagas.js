@@ -62,14 +62,13 @@ export function* fetchNotifications(action) {
 
 export function* readNotification(action) {
   const { notification, task } = action.payload
-  const userId = yield select(state => authSelectors.getUserId(state))
 
   if (task !== null) {
     if (task.isArchived) {
-      yield put(appStateActions.visibleInboxTasks())
+      yield put(appStateActions.visibleArchivedTasks())
     }
 
-    if (userId !== task.createdById) {
+    if (task.isInbox) {
       yield put(appStateActions.visibleInboxTasks())
     }
 

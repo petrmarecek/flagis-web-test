@@ -307,6 +307,7 @@ export function* fetchInboxTasks() {
     method: api.tasks.inbox,
     args: [],
     schema: schema.tasks,
+    isInbox: true,
   })
 }
 

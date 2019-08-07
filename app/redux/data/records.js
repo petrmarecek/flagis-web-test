@@ -259,6 +259,7 @@ export const Task = Record({
   trashedAt: null,
   createdById: null,
   createdBy: null,
+  isInbox: false,
   followers: List(),
   tags: List(),
 })

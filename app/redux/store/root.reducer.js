@@ -32,7 +32,13 @@ import contacts from 'redux/store/contacts/contacts.reducer'
 
 // Initial routing state
 const routeInitialState = fromJS({
-  location: null,
+  location: {
+    pathname: null,
+    search: null,
+    key: null,
+    hash: null,
+    prevPathname: null,
+  },
 })
 
 /**
@@ -41,10 +47,15 @@ const routeInitialState = fromJS({
 function routeReducer(state = routeInitialState, action) {
   switch (action.type) {
     /* istanbul ignore next */
-    case LOCATION_CHANGE:
+    case LOCATION_CHANGE: {
+      const location = state.get('location')
+      const { payload } = action
+      payload.prevPathname = location.get('pathname')
+
       return state.merge({
-        location: action.payload,
+        location: payload,
       })
+    }
     default:
       return state
   }

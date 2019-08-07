@@ -90,6 +90,7 @@ import {
   setArchive,
   cancelArchive,
 } from 'redux/utils/component-helper'
+import { getRoutingPrevPathname } from 'redux/store/routing/routing.selectors'
 
 import TaskDetail from './task-detail'
 import TagDetail from './tag-detail'
@@ -220,6 +221,7 @@ Detail.propTypes = {
   detail: PropTypes.object,
   isInboxVisible: PropTypes.bool,
   windowWidth: PropTypes.number,
+  prevPathname: PropTypes.string,
 
   userId: PropTypes.string,
   task: PropTypes.object,
@@ -271,6 +273,7 @@ const mapStateToProps = state => ({
   detail: getDetail(state),
   isInboxVisible: getInboxTasksVisibility(state),
   windowWidth: getWindow(state).width,
+  prevPathname: getRoutingPrevPathname(state),
 
   userId: getUserId(state),
   task: getCurrentTask(state),
@@ -342,19 +345,31 @@ export default compose(
   ),
   withHandlers({
     onHandleToggleList: props => () => {
-      const { detail } = props
+      const {
+        tasks,
+        tags,
+        inbox,
+        archive,
+        contacts,
+        notifications,
+      } = routes.user
+      const { detail, prevPathname } = props
+      const isPrevNotifications = prevPathname === notifications
 
       if (detail.task || detail.archive || detail.inbox) {
         if (detail.task) {
-          props.changeLocation(routes.user.tasks)
+          const route = isPrevNotifications ? notifications : tasks
+          props.changeLocation(route)
         }
 
         if (detail.inbox) {
-          props.changeLocation(routes.user.inbox)
+          const route = isPrevNotifications ? notifications : inbox
+          props.changeLocation(route)
         }
 
         if (detail.archive) {
-          props.changeLocation(routes.user.archive)
+          const route = isPrevNotifications ? notifications : archive
+          props.changeLocation(route)
         }
 
         props.deselectAnimation()
@@ -363,12 +378,14 @@ export default compose(
       }
 
       if (detail.tag) {
-        props.changeLocation(routes.user.tags)
+        const route = isPrevNotifications ? notifications : tags
+        props.changeLocation(route)
         props.deselectTags()
         return
       }
 
-      props.changeLocation(routes.user.contacts)
+      const route = isPrevNotifications ? notifications : contacts
+      props.changeLocation(route)
       props.deselectContacts()
     },
     onHandleNext: props => () => {

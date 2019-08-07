@@ -3,7 +3,7 @@
  */
 
 import { createStore, applyMiddleware, compose } from 'redux'
-import { fromJS } from 'immutable';
+import { fromJS } from 'immutable'
 import { routerMiddleware } from 'react-router-redux'
 import { autoRehydrate } from 'redux-persist-immutable'
 import normalizrMiddleware from 'redux/utils/normalizr-middleware'
@@ -12,7 +12,7 @@ import createSagaMiddleware from 'redux-saga'
 import createReducer from 'redux/store/root.reducer'
 import sagas from 'redux/store/root.sagas'
 
-const sagaMiddleware = createSagaMiddleware();
+const sagaMiddleware = createSagaMiddleware()
 
 export default function configureStore(initialState = {}, history) {
   // Create the store with two middlewares
@@ -22,12 +22,9 @@ export default function configureStore(initialState = {}, history) {
     sagaMiddleware,
     routerMiddleware(history),
     normalizrMiddleware(),
-  ];
+  ]
 
-  const enhancers = [
-    autoRehydrate(),
-    applyMiddleware(...middlewares),
-  ];
+  const enhancers = [autoRehydrate(), applyMiddleware(...middlewares)]
 
   // If Redux DevTools Extension is installed use it, otherwise use Redux compose
   /* eslint-disable no-underscore-dangle */
@@ -36,32 +33,32 @@ export default function configureStore(initialState = {}, history) {
     typeof window === 'object' &&
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
       ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-        // TODO Try to remove when `react-router-redux` is out of beta, LOCATION_CHANGE should not be fired more than once after hot reloading
-        // Prevent recomputing reducers for `replaceReducer`
-        shouldHotReload: false,
-      })
-      : compose;
+          // TODO Try to remove when `react-router-redux` is out of beta, LOCATION_CHANGE should not be fired more than once after hot reloading
+          // Prevent recomputing reducers for `replaceReducer`
+          shouldHotReload: false,
+        })
+      : compose
   /* eslint-enable */
 
   const store = createStore(
     createReducer(),
     fromJS(initialState),
-    composeEnhancers(...enhancers),
-  );
+    composeEnhancers(...enhancers)
+  )
 
   sagaMiddleware.run(sagas)
 
   // Extensions
-  store.runSaga = sagaMiddleware.run;
-  store.injectedReducers = {}; // Reducer registry
-  store.injectedSagas = {}; // Saga registry
+  store.runSaga = sagaMiddleware.run
+  store.injectedReducers = {} // Reducer registry
+  store.injectedSagas = {} // Saga registry
 
   // Make reducers hot reloadable, see http://mxs.is/googmo
   /* istanbul ignore next */
   if (module.hot) {
     module.hot.accept('./store/root.reducer', () => {
-      store.replaceReducer(createReducer(store.injectedReducers));
-    });
+      store.replaceReducer(createReducer(store.injectedReducers))
+    })
   }
 
   return store

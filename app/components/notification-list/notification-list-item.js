@@ -40,10 +40,9 @@ const NotificationListItem = ({
   const { nickname, email } = profile
 
   // conditions
-  const isRemovedTask = type === 'TASKS/TAKE-BACK'
+  const isRemovedTask = type === 'TASKS/TAKE-BACK' || subject === null
   const isAssigneeOfTask =
-    type === 'TASKS/TAKE-BACK' ||
-    type === 'TASKS/DELIVERED'
+    type === 'TASKS/TAKE-BACK' || type === 'TASKS/DELIVERED'
   const isSystemNotification =
     type === 'TASKS/START-DATE' ||
     type === 'TASKS/REMINDER-DATE' ||
@@ -56,21 +55,26 @@ const NotificationListItem = ({
     email !== null ? (nickname !== null ? nickname : email) : ''
   const taskSubject = subject !== null ? subject : ''
 
-
   return (
     <ItemWrapper onClick={onHandleClickNotification} isRead={isRead}>
       <Date>{date}</Date>
       {!isRead && <Indicator onClick={onHandleClickRead} />}
       <UserNotificationEntityWrapper>
         <User>From: {isSystemNotification ? 'Flagis' : profileName}</User>
-        <TitleNotification onClick={isRemovedTask ? null : onHandleClickTitle} isRead={isRead}>
+        <TitleNotification
+          onClick={isRemovedTask ? null : onHandleClickTitle}
+          isRead={isRead}
+        >
           {infoMessages.notifications(type)}
         </TitleNotification>
-        <TitleEntity onClick={isRemovedTask ? null : onHandleClickTitle} isRead={isRead}>
+        <TitleEntity
+          onClick={isRemovedTask ? null : onHandleClickTitle}
+          isRead={isRead}
+        >
           <span>Task:</span> {taskSubject}
         </TitleEntity>
       </UserNotificationEntityWrapper>
-      {!isSystemNotification &&
+      {!isSystemNotification && (
         <Icons>
           <Avatar
             src={profile.photo}
@@ -79,7 +83,7 @@ const NotificationListItem = ({
             textSizeRatio={2}
             round
           />
-          {isAssigneeOfTask &&
+          {isAssigneeOfTask && (
             <Icon
               icon={ICONS.INBOX}
               width={22}
@@ -87,9 +91,9 @@ const NotificationListItem = ({
               scale={0.68}
               color={['#b1b5b8']}
             />
-          }
+          )}
         </Icons>
-      }
+      )}
     </ItemWrapper>
   )
 }

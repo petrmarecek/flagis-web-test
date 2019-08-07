@@ -90,6 +90,13 @@ export function* fetch(actionType, fetchDef) {
       })
     }
 
+    if (fetchDef.isInbox) {
+      const isInbox = fetchDef.isInbox
+      _.forEach(result, (task, key) => {
+        result[key] = _.assign({ isInbox }, task)
+      })
+    }
+
     // dispatch fetch fulfilled action
     const fulfilledAction = {
       type: FULFILLED,
