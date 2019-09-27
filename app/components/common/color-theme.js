@@ -8,9 +8,9 @@ import { toggleColorTheme } from 'redux/store/auth/auth.actions'
 import { getColorTheme } from 'redux/store/auth/auth.selectors'
 
 // images
-import ColorThemeStandard from 'assets/img/color-theme-standard.png'
-import ColorThemeLight from 'assets/img/color-theme-light.png'
-import ColorThemeDark from 'assets/img/color-theme-dark.png'
+import ColorThemeStandard from 'assets/img/color-theme/color-theme-standard.png'
+import ColorThemeLight from 'assets/img/color-theme/color-theme-light.png'
+import ColorThemeDark from 'assets/img/color-theme/color-theme-dark.png'
 
 // styles
 import styled from 'styled-components'

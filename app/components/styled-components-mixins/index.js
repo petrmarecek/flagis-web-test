@@ -18,6 +18,9 @@ import {
 // markdown
 import { markdownStyles } from './markdown-styles'
 
+// media queries
+import { mediaQueries } from './media-queries'
+
 /* ----------------------------- Common -----------------------------------*/
 const EmptyList = styled.div`
   color: #b1b5b8;
@@ -248,4 +251,6 @@ export {
   FormLink,
   // Markdown
   markdownStyles,
+  // media queries
+  mediaQueries,
 }

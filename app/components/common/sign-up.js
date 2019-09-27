@@ -20,7 +20,7 @@ import {
 import { getUserEmail } from 'redux/store/auth/auth.selectors'
 import { validateSignUp } from 'redux/utils/validate'
 
-import NavigationLanding from 'components/navigation/navigation-landing'
+import NavigationLandingPrimary from 'components/navigation/navigation-landing-primary'
 import InputField from 'components/common/input-field'
 import Loader from 'components/common/loader'
 import { ICONS } from 'components/icons/icon-constants'
@@ -50,7 +50,7 @@ const SignUp = ({ errorSignUp, loader, location, handleSubmit, onSubmit }) => {
 
   return (
     <div className="landing-container">
-      <NavigationLanding location={location} />
+      <NavigationLandingPrimary location={location} />
       <Form>
         <FormBody onSubmit={handleSubmit(values => onSubmit(values))}>
           <FormBodyFields>

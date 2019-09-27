@@ -12,7 +12,7 @@ import {
 } from 'redux/store/auth/auth.actions'
 import { validateResetPassword } from 'redux/utils/validate'
 
-import NavigationLanding from 'components/navigation/navigation-landing'
+import NavigationLandingPrimary from 'components/navigation/navigation-landing-primary'
 import InputField from 'components/common/input-field'
 import Loader from 'components/common/loader'
 
@@ -27,7 +27,7 @@ import {
 
 const ResetPassword = ({ loader, location, handleSubmit, onSubmit }) => (
   <div className="landing-container">
-    <NavigationLanding location={location} isLogoNav />
+    <NavigationLandingPrimary location={location} isLogoNav />
     <Form>
       <FormBody>
         <FormBodyFields>

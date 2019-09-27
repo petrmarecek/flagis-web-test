@@ -6,8 +6,11 @@ import {
   transform,
   transition,
   userSelect,
+  mediaQueries,
 } from '../styled-components-mixins'
-import colors from 'components/styled-components-mixins/colors'
+import colors, {
+  colors as defaultColors,
+} from 'components/styled-components-mixins/colors'
 
 // components
 import Icon from 'components/icons/icon'
@@ -22,7 +25,190 @@ const TriangleIcon = styled(Icon)`
   margin: 0 5px 0 0;
 `
 
+/*------------------------------ Navigation Landing Primary -----------------------------*/
+
+const NavigationLandingPrimaryWrapper = styled.nav`
+  display: flex;
+  align-items: center;
+  height: 140px;
+  padding: 0 70px;
+
+  ${mediaQueries.md} {
+    padding: 0 50px;
+  }
+
+  ${mediaQueries.smx} {
+    height: 100px;
+    padding: 0 30px;
+  }
+
+  ${mediaQueries.sm} {
+    padding: 0 20px;
+  }
+`
+
+const LandingLogo = styled.div`
+  flex: 2;
+
+  img {
+    height: auto;
+    width: 120px;
+
+    ${mediaQueries.md} {
+      width: 110px;
+    }
+
+    ${mediaQueries.smx} {
+      width: 90px;
+    }
+
+    ${mediaQueries.sm} {
+      width: 70px;
+    }
+  }
+`
+
+const LandingButtons = styled.div`
+  flex: 8;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-size: 24px;
+
+  ${mediaQueries.md} {
+    font-size: 22px;
+  }
+
+  ${mediaQueries.smx} {
+    font-size: 18px;
+  }
+
+  ${mediaQueries.sm} {
+    font-size: 14px;
+  }
+`
+
+const LandingButtonSignIn = styled.div`
+  ${fontMain}
+  ${userSelect('none')};
+  display: inline-block;
+  cursor: pointer;
+  padding: 0;
+  margin-right: 50px;
+  color: ${defaultColors.darkJungleGreen};
+  pointer-events: ${props => (props.active ? 'none' : 'auto')};
+
+  :after {
+    ${transform('scaleX(0)')}
+    ${transition('transform 250ms ease-in-out')}
+    display: block;
+    content: '';
+    margin-top: 2px;
+    border-bottom: 2px solid #293034;
+  }
+
+  :hover {
+    color: #293034;
+
+    :after {
+      ${transform('scaleX(1)')}
+    }
+  }
+
+  ${mediaQueries.md} {
+    margin-right: 35px;
+  }
+
+  ${mediaQueries.smx} {
+    margin-right: 20px;
+  }
+`
+
+const LandingButtonSignUp = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 56px;
+  width: 230px;
+  transition: 500ms;
+  color: ${defaultColors.darkJungleGreen};
+  border: 1px solid ${defaultColors.hanumanGreen};
+  pointer-events: ${props => (props.active ? 'none' : 'auto')};
+  ${borderRadius('100px')}
+
+  :hover {
+    background-color: ${defaultColors.hanumanGreen};
+  }
+
+  ${mediaQueries.md} {
+    height: 50px;
+    width: 200px;
+  }
+
+  ${mediaQueries.smx} {
+    height: 40px;
+    width: 180px;
+  }
+
+  ${mediaQueries.sm} {
+    height: 30px;
+    width: 130px;
+  }
+`
+
+/*------------------------------ Navigation Landing Secondary -----------------------------*/
+
+const NavigationLandingSecondaryWrapper = styled.div`
+  flex: 1;
+  display: flex;
+`
+
+const LandingSecondaryButton = styled.div`
+  ${fontMain}
+  ${userSelect('none')};
+  display: inline-block;
+  cursor: pointer;
+  font-size: 20px;
+  margin: 0 50px 0 0;
+  padding: 0;
+  color: ${props => (props.active ? '#293034' : '#B1B5B8')};
+  pointer-events: ${props => (props.active ? 'none' : 'auto')};
+
+  :after {
+    ${transform('scaleX(0)')}
+    ${transition('transform 250ms ease-in-out')}
+    display: block;
+    content: '';
+    margin-top: 2px;
+    border-bottom: 2px solid #293034;
+  }
+
+  :hover {
+    color: #293034;
+
+    :after {
+      ${transform('scaleX(1)')}
+    }
+  }
+
+  ${mediaQueries.md} {
+    margin: 0 25px 0 0;
+  }
+
+  ${mediaQueries.smx} {
+    font-size: 16px;
+    margin: 0 15px 0 0;
+  }
+
+  ${mediaQueries.sm} {
+    :last-child {
+      margin: 0;
+    }
+  }
+`
+
 /*---------------------------------- Navigation Primary ----------------------------------*/
+
 const flexColumn = css`
   display: flex;
   flex-direction: column;
@@ -343,6 +529,15 @@ const SettingsButton = styled.div`
 export {
   // Common
   TriangleIcon,
+  // Navigation Landing Primary
+  NavigationLandingPrimaryWrapper,
+  LandingLogo,
+  LandingButtons,
+  LandingButtonSignIn,
+  LandingButtonSignUp,
+  //Navigation Landing Secondary
+  NavigationLandingSecondaryWrapper,
+  LandingSecondaryButton,
   // Navigation Primary
   NavigationPrimaryWrapper,
   NavigationPrimaryHidden,

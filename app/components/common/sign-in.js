@@ -16,7 +16,7 @@ import {
 import { controlRedirectTasks, login } from 'redux/store/auth/auth.actions'
 import { validateSignIn } from 'redux/utils/validate'
 
-import NavigationLanding from 'components/navigation/navigation-landing'
+import NavigationLandingPrimary from 'components/navigation/navigation-landing-primary'
 import InputField from 'components/common/input-field'
 import Loader from 'components/common/loader'
 import { ICONS } from 'components/icons/icon-constants'
@@ -38,7 +38,7 @@ import {
 
 const SignIn = ({ errorSignIn, loader, location, handleSubmit, onSubmit }) => (
   <div className="landing-container">
-    <NavigationLanding location={location} />
+    <NavigationLandingPrimary location={location} />
     <Form>
       <FormBody>
         <FormBodyFields>
