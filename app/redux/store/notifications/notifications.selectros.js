@@ -1,5 +1,4 @@
 import { List } from 'immutable'
-import * as _ from 'lodash'
 import { getEntitiesNotifications } from '../entities/entities.selectors'
 import { createSelector } from 'reselect'
 
