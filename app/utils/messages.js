@@ -106,34 +106,34 @@ export const infoMessages = {
 
   notifications: type => {
     switch (type) {
-      case 'TASKS/START-DATE':
+      case 'TASKS/DATES/START':
         return `Start date`
 
-      case 'TASKS/REMINDER-DATE':
+      case 'TASKS/DATES/REMINDER':
         return `Reminder`
 
-      case 'TASKS/DUE-DATE':
+      case 'TASKS/DATES/DUE-DATE':
         return `Due date`
 
-      case 'TASKS/DELIVERED':
+      case 'TASKS/FOLLOWERS/SEND':
         return `New Task in your Inbox`
 
-      case 'TASKS/ACCEPTED':
+      case 'TASKS/FOLLOWERS/ACCEPTED':
         return `Accepted`
 
-      case 'TASKS/REJECTED':
+      case 'TASKS/FOLLOWERS/REJECTED':
         return `Rejected`
 
-      case 'TASKS/TAKE-BACK':
+      case 'TASKS/FOLLOWERS/TAKE-BACK':
         return `You removed`
 
       case 'TASKS/COMPLETED':
         return `Completed`
 
-      case 'TASKS/COMMENTS':
+      case 'TASKS/COMMENTS/ADD':
         return `New comment`
 
-      case 'TASKS/ATTACHMENTS':
+      case 'TASKS/ATTACHMENTS/ADD':
         return `New attachment`
 
       default:
