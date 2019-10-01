@@ -35,25 +35,36 @@ const NotificationListItem = ({
   onHandleClickNotification,
 }) => {
   // init data
-  const { type, readAt, createdAt } = notification
+  const { type, readAt, createdAt, fromUserEmail, data } = notification
   const { subject } = task
   const { nickname, email } = profile
 
   // conditions
-  const isRemovedTask = type === 'TASKS/TAKE-BACK' || subject === null
-  const isAssigneeOfTask =
-    type === 'TASKS/TAKE-BACK' || type === 'TASKS/DELIVERED'
+  const isSend = type === 'TASKS/FOLLOWERS/SEND'
+  const isTakeBack = type === 'TASKS/FOLLOWERS/TAKE-BACK'
+  const isRemovedTask = isTakeBack || subject === null
+  const isAssigneeOfTask = isTakeBack || isSend
   const isSystemNotification =
-    type === 'TASKS/START-DATE' ||
-    type === 'TASKS/REMINDER-DATE' ||
-    type === 'TASKS/DUE-DATE'
+    type === 'TASKS/DATES/START' ||
+    type === 'TASKS/DATES/REMINDER' ||
+    type === 'TASKS/DATES/DUE-DATE'
 
   // prepare data
   const date = dateUtils.formatDateTimeSecondary(createdAt)
   const isRead = readAt !== null
   const profileName =
-    email !== null ? (nickname !== null ? nickname : email) : ''
-  const taskSubject = subject !== null ? subject : ''
+    email !== null
+      ? nickname !== null
+        ? nickname
+        : fromUserEmail !== null
+        ? fromUserEmail
+        : email
+      : ''
+  const taskSubject = isAssigneeOfTask
+    ? data.subject
+    : subject !== null
+    ? subject
+    : ''
 
   return (
     <ItemWrapper onClick={onHandleClickNotification} isRead={isRead}>
