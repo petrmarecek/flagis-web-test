@@ -35,7 +35,7 @@ const NotificationListItem = ({
   onHandleClickNotification,
 }) => {
   // init data
-  const { type, readAt, createdAt, fromUserEmail, data } = notification
+  const { type, readAt, sentAt, fromUserEmail, data } = notification
   const { subject } = task
   const { nickname, email } = profile
 
@@ -50,7 +50,7 @@ const NotificationListItem = ({
     type === 'TASKS/DATES/DUE-DATE'
 
   // prepare data
-  const date = dateUtils.formatDateTimeSecondary(createdAt)
+  const date = dateUtils.formatDateTimeSecondary(sentAt)
   const isRead = readAt !== null
   const profileName =
     email !== null

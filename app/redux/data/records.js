@@ -290,6 +290,7 @@ export const Notification = Record({
   id: null,
   type: null,
   data: null,
+  sentAt: null,
   readAt: null,
   createdAt: null,
   updatedAt: null,

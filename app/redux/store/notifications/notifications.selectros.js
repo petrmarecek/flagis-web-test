@@ -26,9 +26,7 @@ function loadNotifications(data) {
   }
 
   // Sort by createdAt
-  notifications = notifications
-    .sortBy(notification => notification.createdAt)
-    .reverse()
+  notifications = notifications.sortBy(notification => notification.sentAt)
 
   return notifications.toArray()
 }
