@@ -118,10 +118,10 @@ export const infoMessages = {
       case 'TASKS/FOLLOWERS/SEND':
         return `New Task in your Inbox`
 
-      case 'TASKS/FOLLOWERS/ACCEPTED':
+      case 'TASKS/FOLLOWERS/ACCEPT':
         return `Accepted`
 
-      case 'TASKS/FOLLOWERS/REJECTED':
+      case 'TASKS/FOLLOWERS/REJECT':
         return `Rejected`
 
       case 'TASKS/FOLLOWERS/TAKE-BACK':

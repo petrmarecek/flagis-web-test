@@ -78,6 +78,14 @@ export default compose(
         return
       }
 
+      // redirect to notifications list
+      const isNotificationPage =
+        pathname.substring(0, user.notifications.length) === user.notifications
+      if (isNotificationPage) {
+        this.props.changeLocation(pathname)
+        return
+      }
+
       let template = '/user/tasks/'
       const numberTemplate = template.length
       const taskId = pathname.substring(numberTemplate)
