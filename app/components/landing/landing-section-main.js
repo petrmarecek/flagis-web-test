@@ -33,7 +33,7 @@ const LandingSectionMain = () => {
       </SectionMainLeft>
       <SectionMainRight>
         <img
-          src={LandingImg3}
+          src={LandingImg}
           srcSet={`${LandingImg} 462w, ${LandingImg2} 924w, ${LandingImg3} 1386w`}
         />
       </SectionMainRight>
