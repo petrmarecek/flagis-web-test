@@ -47,7 +47,6 @@ const NotificationMenu = ({
   isReadVisible,
   onHandleClickAll,
   onHandleClickActive,
-  onHandleClickSettings,
   onHandleClickReadAll,
 }) => (
   <Wrapper>
@@ -60,9 +59,9 @@ const NotificationMenu = ({
       </Button>
     </Right>
     <Left>
-      <Button onClick={onHandleClickSettings} isMargin>
+      {/* <Button onClick={onHandleClickSettings} isMargin>
         Notifications Settings
-      </Button>
+      </Button> */}
       <Button onClick={onHandleClickReadAll}>Read All</Button>
     </Left>
   </Wrapper>
