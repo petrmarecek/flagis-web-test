@@ -553,7 +553,7 @@ const TaskDetail = props => {
                     locale="en-gb"
                     showTimeSelect
                     timeFormat="HH:mm"
-                    timeIntervals={15}
+                    timeIntervals={5}
                     dateFormat={dateUtil.DEFAULT_DATE_TIME_FORMAT}
                     selected={dueDate}
                     onChange={onHandleDueDateChanged}
@@ -576,7 +576,7 @@ const TaskDetail = props => {
                     locale="en-gb"
                     showTimeSelect
                     timeFormat="HH:mm"
-                    timeIntervals={15}
+                    timeIntervals={5}
                     dateFormat={dateUtil.DEFAULT_DATE_TIME_FORMAT}
                     selected={reminderDate}
                     onChange={onHandleReminderDateChanged}
@@ -819,6 +819,17 @@ export default compose(
       props.onHandleTaskDateChanged(data)
     },
     onHandleReminderDateChanged: props => date => {
+      if (date) {
+        date.set({
+          second: 0,
+          millisecond: 0,
+        })
+
+        if (date.hour() === 0 && date.minute() === 0) {
+          date.add(59, 's').add(999, 'ms')
+        }
+      }
+
       const data = { task: props.task, date, typeDate: 'reminderDate' }
       props.onHandleTaskDateChanged(data)
     },
