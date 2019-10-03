@@ -94,10 +94,10 @@ class UserContainer extends PureComponent {
               path={`${this.props.match.path}/inbox`}
               component={InboxPage}
             />
-            <Route
+            {/* <Route
               path={`${this.props.match.path}/dashboard`}
               component={DashboardPage}
-            />
+            /> */}
             <Route
               path={`${this.props.match.path}/archive`}
               component={ArchivePage}

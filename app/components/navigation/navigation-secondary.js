@@ -18,13 +18,12 @@ const NavigationSecondary = props => {
     timeLine,
     onHandleClickTasks,
     onHandleClickTimeLine,
-    onHandleClickDashboard,
   } = props
   const { user } = routes
 
   const isTaskActive = pathname === user.tasks && !timeLine
   const isTimeLineActive = pathname === user.tasks && timeLine
-  const isDashboardActive = pathname === user.dashboard
+  // const isDashboardActive = pathname === user.dashboard
 
   return (
     <NavigationSecondaryWrapper>
@@ -37,12 +36,12 @@ const NavigationSecondary = props => {
       >
         Timeline
       </SecondaryButton>
-      <SecondaryButton
+      {/* <SecondaryButton
         active={isDashboardActive}
         onClick={onHandleClickDashboard}
       >
         Graph
-      </SecondaryButton>
+      </SecondaryButton> */}
     </NavigationSecondaryWrapper>
   )
 }
