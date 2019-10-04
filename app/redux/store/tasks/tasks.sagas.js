@@ -14,10 +14,12 @@ import * as taskActions from 'redux/store/tasks/tasks.actions'
 import * as tagsActions from 'redux/store/tags/tags.actions'
 import * as taskMenuActions from 'redux/store/tasks-menu/tasks-menu.actions'
 import * as followerActions from 'redux/store/followers/followers.actions'
+import * as notificationActions from 'redux/store/notifications/notifications.actions'
 import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'
 import * as authSelectors from 'redux/store/auth/auth.selectors'
 import * as entitiesSelectors from 'redux/store/entities/entities.selectors'
 import * as taskSelectors from 'redux/store/tasks/tasks.selectors'
+import * as notificationSelectors from 'redux/store/notifications/notifications.selectros'
 import api from 'redux/utils/api'
 import schema from 'redux/data/schema'
 import search from 'redux/services/search'
@@ -529,6 +531,14 @@ export function* selectTask(action) {
 
     yield put(appStateActions.hideMultiSelect())
 
+    // read all notification for taskId
+    const notifications = yield select(state =>
+      notificationSelectors.getNotificationsForTaskId(state, taskId)
+    )
+    for (const notification of notifications) {
+      yield put(notificationActions.readNotification(notification))
+    }
+
     if (archivedTasksVisible) {
       yield put(push(`/user/archive/${taskId}`))
       yield put(appStateActions.setDetail('archive'))
@@ -723,6 +733,14 @@ export function* acceptTask(action) {
   const { taskId } = action.payload
   const { accept } = api.followers
 
+  // read all notification for taskId
+  const notifications = yield select(state =>
+    notificationSelectors.getNotificationsForTaskId(state, taskId)
+  )
+  for (const notification of notifications) {
+    yield put(notificationActions.readNotification(notification))
+  }
+
   yield callApi(accept, taskId)
 }
 
@@ -756,6 +774,14 @@ export function* rejectTask(action) {
     position: toast.POSITION.BOTTOM_RIGHT,
     autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
   })
+
+  // read all notification for task
+  const notifications = yield select(state =>
+    notificationSelectors.getNotificationsForTaskId(state, task.id)
+  )
+  for (const notification of notifications) {
+    yield put(notificationActions.readNotification(notification))
+  }
 
   // call API
   yield callApi(reject, task.id)

@@ -43,6 +43,16 @@ const getNotificationsIsFetching = state =>
 export const getReadNotificationsVisibility = state =>
   state.getIn(['notifications', 'isReadVisible'])
 
+export const getNotificationsForTaskId = (state, taskId) => {
+  const entitiesNotifications = getEntitiesNotifications(state)
+
+  const notificationsForTaskId = entitiesNotifications.filter(
+    notification => notification.taskId === taskId
+  )
+
+  return notificationsForTaskId.toArray()
+}
+
 // ------ Reselect selectors ----------------------------------------------------
 
 export const getNotifications = createSelector(
