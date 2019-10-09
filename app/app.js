@@ -13,6 +13,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import createHistory from 'history/createBrowserHistory'
 import 'sanitize.css/sanitize.css'
+import 'animate.css/animate.min.css'
 
 // Import root app-render
 import AppRender from 'app-render'

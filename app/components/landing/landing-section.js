@@ -13,13 +13,19 @@ import TagTreeImg3 from 'assets/img/landing-page/tag-tree/tag-tree-3.png'
 import TagTreeImg2 from 'assets/img/landing-page/tag-tree/tag-tree-2.png'
 import TagTreeImg from 'assets/img/landing-page/tag-tree/tag-tree.png'
 
+// components
+import ScrollAnimation from 'react-animate-on-scroll'
+
 // styles
 import {
   SectionWrapper,
   SectionTop,
   SectionLeft,
+  SectionLeftTop,
   SectionTitle,
+  SectionLeftMiddle,
   SectionDescription,
+  SectionLeftBottom,
   SectionButton,
   SectionRight,
   SectionBottom,
@@ -67,21 +73,36 @@ const LandingSection = props => {
     description,
     isCollapse,
     toggleCollapse,
+    onHandleScroll,
   } = props
   const { innerHeight } = window
 
   return (
-    <SectionWrapper height={innerHeight}>
+    <SectionWrapper height={innerHeight} onScroll={onHandleScroll}>
       <SectionTop>
         <SectionLeft>
-          <SectionTitle>{title}</SectionTitle>
-          <SectionDescription>{description}</SectionDescription>
-          <SectionButton>
-            <span onClick={toggleCollapse}>learn more</span>
-          </SectionButton>
+          <SectionLeftTop>
+            <ScrollAnimation animateIn="fadeInUp" animateOnce>
+              <SectionTitle>{title}</SectionTitle>
+            </ScrollAnimation>
+          </SectionLeftTop>
+          <SectionLeftMiddle>
+            <ScrollAnimation animateIn="fadeInUp" animateOnce>
+              <SectionDescription>{description}</SectionDescription>
+            </ScrollAnimation>
+          </SectionLeftMiddle>
+          <SectionLeftBottom>
+            <SectionButton>
+              <ScrollAnimation animateIn="fadeInUp" animateOnce>
+                <span onClick={toggleCollapse}>learn more</span>
+              </ScrollAnimation>
+            </SectionButton>
+          </SectionLeftBottom>
         </SectionLeft>
         <SectionRight>
-          <SectionImg type={type} />
+          <ScrollAnimation animateIn="fadeInUp" animateOnce>
+            <SectionImg type={type} />
+          </ScrollAnimation>
         </SectionRight>
       </SectionTop>
       <SectionBottom>{!isCollapse && children}</SectionBottom>
@@ -97,8 +118,10 @@ LandingSection.propTypes = {
   description: PropTypes.string,
   isCollapse: PropTypes.bool,
   toggleCollapse: PropTypes.func,
+  onHandleScroll: PropTypes.func,
 }
 
 export default withStateHandlers(() => ({ isCollapse: true }), {
   toggleCollapse: ({ isCollapse }) => () => ({ isCollapse: !isCollapse }),
+  onHandleScroll: () => () => console.log('scroll'),
 })(LandingSection)

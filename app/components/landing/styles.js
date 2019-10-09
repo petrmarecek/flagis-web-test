@@ -129,7 +129,7 @@ const SectionMainLeft = styled.div`
   }
 `
 
-const SectionMainTitle = styled.div`
+const SectionMainLeftTop = styled.div`
   margin-top: 125px;
 
   ${mediaQueries.xl} {
@@ -141,12 +141,14 @@ const SectionMainTitle = styled.div`
   }
 
   ${mediaQueries.smx} {
+    margin-top: 0;
+  }
+`
+
+const SectionMainTitle = styled.div`
+  ${mediaQueries.smx} {
     font-size: 38px;
     line-height: 46px;
-  }
-
-  ${mediaQueries.smx} {
-    margin-top: 0;
   }
 
   p {
@@ -185,9 +187,24 @@ const SectionMainTitle = styled.div`
   }
 `
 
+const SectionMainLeftBottom = styled.div`
+  margin-top: 80px;
+
+  ${mediaQueries.md} {
+    margin-top: 50px;
+  }
+
+  ${mediaQueries.smx} {
+    margin-top: 0;
+  }
+
+  ${mediaQueries.sm} {
+    margin-top: 15px;
+  }
+`
+
 const SectionMainButtons = styled(StoreButtons)`
   display: flex;
-  margin-top: 80px;
   margin-left: -5px;
 
   img {
@@ -210,20 +227,17 @@ const SectionMainButtons = styled(StoreButtons)`
   }
 
   ${mediaQueries.md} {
-    margin-top: 50px;
     margin-left: -10px;
   }
 
   ${mediaQueries.smx} {
     flex-direction: column;
-    margin-top: 0;
     margin-left: 20px;
   }
 
   ${mediaQueries.sm} {
     flex-direction: row;
     margin-top: 15px;
-    margin-left: 0;
   }
 `
 
@@ -308,8 +322,11 @@ const SectionLeft = styled.div`
   }
 `
 
-const SectionTitle = styled.h1`
+const SectionLeftTop = styled.div`
   flex: 2;
+`
+
+const SectionTitle = styled.h1`
   font-size: 38px;
   font-weight: bold;
 
@@ -322,8 +339,11 @@ const SectionTitle = styled.h1`
   }
 `
 
-const SectionDescription = styled.p`
+const SectionLeftMiddle = styled.div`
   flex: 5;
+`
+
+const SectionDescription = styled.p`
   font-size: 24px;
 
   ${mediaQueries.mdx} {
@@ -335,11 +355,13 @@ const SectionDescription = styled.p`
   }
 `
 
-const SectionButton = styled.div`
+const SectionLeftBottom = styled.div`
   flex: 1;
   display: flex;
   align-items: flex-end;
+`
 
+const SectionButton = styled.div`
   span {
     ${fontMain}
     ${userSelect('none')};
@@ -594,15 +616,20 @@ export {
   SectionMainWrapper,
   SectionMainBackground,
   SectionMainLeft,
+  SectionMainLeftTop,
   SectionMainTitle,
+  SectionMainLeftBottom,
   SectionMainButtons,
   SectionMainRight,
   // Section
   SectionWrapper,
   SectionTop,
   SectionLeft,
+  SectionLeftTop,
   SectionTitle,
+  SectionLeftMiddle,
   SectionDescription,
+  SectionLeftBottom,
   SectionButton,
   SectionRight,
   SectionBottom,
