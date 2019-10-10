@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import { colors } from '../styled-components-mixins/colors'
 import {
   mediaQueries,
@@ -8,6 +8,11 @@ import {
   transition,
 } from '../styled-components-mixins'
 import StoreButtons from 'components/common/store-buttons'
+import { fadeIn } from 'react-animations'
+
+// ------------------------------------ Animations --------------------------------------
+
+const show = keyframes`${fadeIn}`
 
 // ------------------------------------ Landing -----------------------------------------
 
@@ -129,7 +134,7 @@ const SectionMainLeft = styled.div`
   }
 `
 
-const SectionMainTitle = styled.div`
+const SectionMainLeftTop = styled.div`
   margin-top: 125px;
 
   ${mediaQueries.xl} {
@@ -141,12 +146,14 @@ const SectionMainTitle = styled.div`
   }
 
   ${mediaQueries.smx} {
+    margin-top: 0;
+  }
+`
+
+const SectionMainTitle = styled.div`
+  ${mediaQueries.smx} {
     font-size: 38px;
     line-height: 46px;
-  }
-
-  ${mediaQueries.smx} {
-    margin-top: 0;
   }
 
   p {
@@ -185,9 +192,24 @@ const SectionMainTitle = styled.div`
   }
 `
 
+const SectionMainLeftBottom = styled.div`
+  margin-top: 80px;
+
+  ${mediaQueries.md} {
+    margin-top: 50px;
+  }
+
+  ${mediaQueries.smx} {
+    margin-top: 0;
+  }
+
+  ${mediaQueries.sm} {
+    margin-top: 15px;
+  }
+`
+
 const SectionMainButtons = styled(StoreButtons)`
   display: flex;
-  margin-top: 80px;
   margin-left: -5px;
 
   img {
@@ -210,20 +232,17 @@ const SectionMainButtons = styled(StoreButtons)`
   }
 
   ${mediaQueries.md} {
-    margin-top: 50px;
     margin-left: -10px;
   }
 
   ${mediaQueries.smx} {
     flex-direction: column;
-    margin-top: 0;
     margin-left: 20px;
   }
 
   ${mediaQueries.sm} {
     flex-direction: row;
     margin-top: 15px;
-    margin-left: 0;
   }
 `
 
@@ -308,8 +327,11 @@ const SectionLeft = styled.div`
   }
 `
 
-const SectionTitle = styled.h1`
+const SectionLeftTop = styled.div`
   flex: 2;
+`
+
+const SectionTitle = styled.h1`
   font-size: 38px;
   font-weight: bold;
 
@@ -322,24 +344,43 @@ const SectionTitle = styled.h1`
   }
 `
 
-const SectionDescription = styled.p`
+const SectionLeftMiddle = styled.div`
   flex: 5;
+`
+
+const SectionDescription = styled.p`
   font-size: 24px;
+  line-height: 34px;
+
+  span {
+    font-weight: bold;
+    :first-child {
+      color: ${colors.hanumanGreen};
+    }
+
+    :last-child {
+      color: ${colors.pompelmo};
+    }
+  }
 
   ${mediaQueries.mdx} {
     font-size: 20px;
+    line-height: 28px;
   }
 
   ${mediaQueries.md} {
     font-size: 18px;
+    line-height: 24px;
   }
 `
 
-const SectionButton = styled.div`
+const SectionLeftBottom = styled.div`
   flex: 1;
   display: flex;
   align-items: flex-end;
+`
 
+const SectionButton = styled.div`
   span {
     ${fontMain}
     ${userSelect('none')};
@@ -403,6 +444,7 @@ const SectionCollapseWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 50px;
+  animation: 800ms linear ${show};
 
   :first-child {
     margin-right: 40px;
@@ -429,9 +471,11 @@ const SectionCollapseTitle = styled.h2`
 
 const SectionCollapseDescription = styled.div`
   font-size: 16px;
+  line-height: 22px;
 
   ${mediaQueries.mdx} {
     font-size: 14px;
+    line-height: 20px;
   }
 
   p {
@@ -594,15 +638,20 @@ export {
   SectionMainWrapper,
   SectionMainBackground,
   SectionMainLeft,
+  SectionMainLeftTop,
   SectionMainTitle,
+  SectionMainLeftBottom,
   SectionMainButtons,
   SectionMainRight,
   // Section
   SectionWrapper,
   SectionTop,
   SectionLeft,
+  SectionLeftTop,
   SectionTitle,
+  SectionLeftMiddle,
   SectionDescription,
+  SectionLeftBottom,
   SectionButton,
   SectionRight,
   SectionBottom,

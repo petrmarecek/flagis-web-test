@@ -127,7 +127,7 @@ export const taskInOne = {
 export const colaboration = {
   title: 'Transparent cooperation',
   description:
-    'Every single task sent via Flagis must be ACCEPTED or REJECTED as a clear statement from the recipient to the sender.',
+    'Every single task sent via Flagis must be <span>ACCEPTED</span> or <span>REJECTED</span> as a clear statement from the recipient to the sender.',
 }
 
 export const tagTree = {
