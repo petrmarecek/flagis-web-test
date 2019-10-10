@@ -88,7 +88,9 @@ const LandingSection = props => {
           </SectionLeftTop>
           <SectionLeftMiddle>
             <ScrollAnimation animateIn="fadeInUp" animateOnce>
-              <SectionDescription>{description}</SectionDescription>
+              <SectionDescription
+                dangerouslySetInnerHTML={{ __html: description }}
+               />
             </ScrollAnimation>
           </SectionLeftMiddle>
           <SectionLeftBottom>

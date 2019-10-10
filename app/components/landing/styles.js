@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import { colors } from '../styled-components-mixins/colors'
 import {
   mediaQueries,
@@ -8,6 +8,11 @@ import {
   transition,
 } from '../styled-components-mixins'
 import StoreButtons from 'components/common/store-buttons'
+import { fadeIn } from 'react-animations'
+
+// ------------------------------------ Animations --------------------------------------
+
+const show = keyframes`${fadeIn}`
 
 // ------------------------------------ Landing -----------------------------------------
 
@@ -345,13 +350,27 @@ const SectionLeftMiddle = styled.div`
 
 const SectionDescription = styled.p`
   font-size: 24px;
+  line-height: 34px;
+
+  span {
+    font-weight: bold;
+    :first-child {
+      color: ${colors.hanumanGreen};
+    }
+
+    :last-child {
+      color: ${colors.pompelmo};
+    }
+  }
 
   ${mediaQueries.mdx} {
     font-size: 20px;
+    line-height: 28px;
   }
 
   ${mediaQueries.md} {
     font-size: 18px;
+    line-height: 24px;
   }
 `
 
@@ -425,6 +444,7 @@ const SectionCollapseWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 50px;
+  animation: 800ms linear ${show};
 
   :first-child {
     margin-right: 40px;
@@ -451,9 +471,11 @@ const SectionCollapseTitle = styled.h2`
 
 const SectionCollapseDescription = styled.div`
   font-size: 16px;
+  line-height: 22px;
 
   ${mediaQueries.mdx} {
     font-size: 14px;
+    line-height: 20px;
   }
 
   p {
