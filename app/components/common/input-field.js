@@ -4,6 +4,7 @@ import { withStateHandlers } from 'recompose'
 
 import styled, { css } from 'styled-components'
 import { commonInput, commonInputSmall } from '../styled-components-mixins'
+import { colors } from '../styled-components-mixins/colors'
 
 const activeLabel = css`
   left: 0;
@@ -19,8 +20,8 @@ const Field = styled.div`
 const Input = styled.input`
   ${props => (props.smallSize ? commonInputSmall : commonInput)}
   width: 100%;
-  color: ${props => (props.error ? 'red' : '#293034')};
-  border-color: ${props => (props.error ? 'red' : '#44ffb1')};
+  color: ${props => props.color};
+  border-color: ${props => props.borderColor};
   height: 32px;
 `
 
@@ -31,7 +32,7 @@ const Label = styled.label`
   top: ${props => (props.smallSize ? '5px' : '-5px')};
   cursor: auto;
   font-size: ${props => (props.smallSize ? '18px' : '24px')};
-  color: #8c9da9;
+  color: ${colors.lostAtSea};
   transition: all 0.125s ease-out;
   ${props => (props.isFocused ? activeLabel : null)}
 `
@@ -50,6 +51,14 @@ const InputField = props => {
     onHandleBlur,
   } = props
 
+  const isError = touched && error
+  const color = isError ? colors.pompelmo : colors.darkJungleGreen
+  const borderColor = isError
+    ? colors.pompelmo
+    : isFocused
+    ? colors.hanumanGreen
+    : colors.snowShadow
+
   return (
     <Field>
       <Input
@@ -60,7 +69,8 @@ const InputField = props => {
         onChange={onChange}
         onFocus={onHandleFocus}
         onBlur={onHandleBlur}
-        error={Boolean(touched && error)}
+        color={color}
+        borderColor={borderColor}
         smallSize={smallSize}
       />
       <Label
