@@ -16,6 +16,7 @@ import constants from 'utils/constants'
 import { routes } from 'utils/routes'
 import search from 'redux/services/search'
 import api from 'redux/utils/api'
+import { List } from 'immutable'
 
 export function* defaultDisplay() {
   yield put(appStateActions.hideArchivedTasks())
@@ -27,7 +28,7 @@ export function* defaultDisplay() {
   yield put(contactActions.deselectContacts())
   yield put(appStateActions.resetScrollbarPosition())
   yield put(tasksMenuActions.resetTasksMenu())
-  yield put(tagActions.setActiveTags([]))
+  yield put(tagActions.selectActiveTags(List()))
   yield put(push(routes.user.tasks))
 }
 
