@@ -30,9 +30,8 @@ const NotificationListItem = ({
   notification,
   task,
   profile,
-  onHandleClickRead,
-  onHandleClickTitle,
-  onHandleClickNotification,
+  onHandleReadNotification,
+  onHandleReadTaskNotification,
 }) => {
   // init data
   const { type, readAt, sentAt, fromUserEmail, data } = notification
@@ -67,21 +66,18 @@ const NotificationListItem = ({
     : ''
 
   return (
-    <ItemWrapper onClick={onHandleClickNotification} isRead={isRead}>
+    <ItemWrapper
+      onClick={isRemovedTask ? null : onHandleReadTaskNotification}
+      isRead={isRead}
+    >
       <Date>{date}</Date>
-      {!isRead && <Indicator onClick={onHandleClickRead} />}
+      {!isRead && <Indicator onClick={onHandleReadNotification} />}
       <UserNotificationEntityWrapper>
         <User>From: {isSystemNotification ? 'Flagis' : profileName}</User>
-        <TitleNotification
-          onClick={isRemovedTask ? null : onHandleClickTitle}
-          isRead={isRead}
-        >
+        <TitleNotification isRead={isRead}>
           {infoMessages.notifications(type)}
         </TitleNotification>
-        <TitleEntity
-          onClick={isRemovedTask ? null : onHandleClickTitle}
-          isRead={isRead}
-        >
+        <TitleEntity isRead={isRead}>
           <span>Task:</span> {taskSubject}
         </TitleEntity>
       </UserNotificationEntityWrapper>
@@ -114,9 +110,8 @@ NotificationListItem.propTypes = {
   task: PropTypes.object,
   profile: PropTypes.object,
   onClick: PropTypes.func,
-  onHandleClickRead: PropTypes.func,
-  onHandleClickNotification: PropTypes.func,
-  onHandleClickTitle: PropTypes.func,
+  onHandleReadNotification: PropTypes.func,
+  onHandleReadTaskNotification: PropTypes.func,
 }
 
 const mapStateToProps = (state, props) => {
@@ -135,12 +130,11 @@ const mapStateToProps = (state, props) => {
 export default compose(
   connect(mapStateToProps),
   withHandlers({
-    onHandleClickRead: props => event => {
+    onHandleReadNotification: props => event => {
       event.stopPropagation()
       props.onClick(props.notification)
     },
-    onHandleClickNotification: props => () => props.onClick(props.notification),
-    onHandleClickTitle: props => () =>
+    onHandleReadTaskNotification: props => () =>
       props.onClick(props.notification, props.task),
   })
 )(NotificationListItem)

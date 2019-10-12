@@ -21,19 +21,28 @@ const ItemWrapper = styled.li`
   background-color: ${props => (props.isRead ? '#F9F9F9' : '#fff')};
   height: 70px;
   animation: 400ms ${fadeUp};
-  padding: 6px 15px 6px 25px;
+  padding: 6px 15px 6px 30px;
   font-size: 14px;
   ${fontMain}
 `
 
 const Indicator = styled.div`
   position: absolute;
-  left: 8px;
-  top: 31px;
-  height: 8px;
-  width: 8px;
-  background-color: #44ffb1;
-  ${borderRadius('50%')}
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  ::before {
+    content: '';
+    height: 8px;
+    width: 8px;
+    background-color: #44ffb1;
+    ${borderRadius('50%')}
+  }
 `
 
 const UserNotificationEntityWrapper = styled.div`
