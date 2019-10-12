@@ -121,7 +121,7 @@ export const TagTreeOneDescriptionSolution = () => (
 export const taskInOne = {
   title: 'Emails and Tasks in One',
   description:
-    'Flagis provides one solution for managing your own tasks, and the tasks you sentto and received from others, in the same way as emails.',
+    'Flagis provides one solution for managing your own tasks, and the tasks you sent to and received from others, in the same way as emails.',
 }
 
 export const colaboration = {
