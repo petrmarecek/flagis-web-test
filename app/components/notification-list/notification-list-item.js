@@ -51,6 +51,13 @@ const NotificationListItem = ({
   // prepare data
   const date = dateUtils.formatDateTimeSecondary(sentAt)
   const isRead = readAt !== null
+  const commentContent = data && data.content ? data.content : null
+  const attachmentName = data && data.fileName ? data.fileName : null
+  const taskSubject = isAssigneeOfTask
+    ? data.subject
+    : subject !== null
+    ? subject
+    : ''
   const profileName =
     email !== null
       ? nickname !== null
@@ -59,11 +66,6 @@ const NotificationListItem = ({
         ? fromUserEmail
         : email
       : ''
-  const taskSubject = isAssigneeOfTask
-    ? data.subject
-    : subject !== null
-    ? subject
-    : ''
 
   return (
     <ItemWrapper
@@ -73,13 +75,13 @@ const NotificationListItem = ({
       <Date>{date}</Date>
       {!isRead && <Indicator onClick={onHandleReadNotification} />}
       <UserNotificationEntityWrapper>
-        <User>From: {isSystemNotification ? 'Flagis' : profileName}</User>
+        <User>{isSystemNotification ? 'Flagis' : profileName}</User>
         <TitleNotification isRead={isRead}>
           {infoMessages.notifications(type)}
+          {commentContent && <span>: {commentContent}</span>}
+          {attachmentName && <span>: {attachmentName}</span>}
         </TitleNotification>
-        <TitleEntity isRead={isRead}>
-          <span>Task:</span> {taskSubject}
-        </TitleEntity>
+        <TitleEntity isRead={isRead}>{taskSubject}</TitleEntity>
       </UserNotificationEntityWrapper>
       {!isSystemNotification && (
         <Icons>

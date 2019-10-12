@@ -66,6 +66,10 @@ const TitleNotification = styled.div`
   white-space: nowrap;
   line-height: 16px;
   ${textOverflow('ellipsis')}
+
+  span {
+    font-weight: normal;
+  }
 `
 
 const TitleEntity = styled.div`
@@ -74,10 +78,6 @@ const TitleEntity = styled.div`
   overflow: hidden;
   white-space: nowrap;
   ${textOverflow('ellipsis')}
-
-  span {
-    font-weight: bold;
-  }
 `
 
 const Date = styled.div`

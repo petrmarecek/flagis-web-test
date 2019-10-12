@@ -116,7 +116,7 @@ export const infoMessages = {
         return `Due date`
 
       case 'TASKS/FOLLOWERS/SEND':
-        return `New Task in your Inbox`
+        return `New Task`
 
       case 'TASKS/FOLLOWERS/ACCEPT':
         return `Accepted`
@@ -125,10 +125,13 @@ export const infoMessages = {
         return `Rejected`
 
       case 'TASKS/FOLLOWERS/TAKE-BACK':
-        return `You removed`
+        return `Task removed`
 
       case 'TASKS/COMPLETED':
         return `Completed`
+
+      case 'TASKS/UNCOMPLETED':
+        return `Uncompleted`
 
       case 'TASKS/COMMENTS/ADD':
         return `New comment`
