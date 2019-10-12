@@ -4,7 +4,7 @@ import Icon from '../icons/icon'
 
 const Form = styled.div`
   max-width: 400px;
-  margin: ${props => (props.unmargin ? '0' : '120px auto 0')};
+  margin: ${props => (props.unmargin ? '0' : '50px auto 0')};
   padding: ${props => (props.leftPadding ? '5px 0 0 24px' : '120px auto 0')};
 `
 
