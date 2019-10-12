@@ -4,6 +4,7 @@ export const colors = {
   aztec: '#293034',
   midnightHour: '#3e484f',
   batman: '#676d71',
+  doveGrey: '#6C6C6C',
   lostAtSea: '#8c9da9',
   greyOfDarkness: '#a2a2a2',
   astrocopusGrey: '#b1b5b8',

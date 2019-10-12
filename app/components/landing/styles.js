@@ -5,6 +5,7 @@ import {
   fontMain,
   userSelect,
   transform,
+  transformOrigin,
   transition,
 } from '../styled-components-mixins'
 import StoreButtons from 'components/common/store-buttons'
@@ -159,6 +160,7 @@ const SectionMainTitle = styled.div`
   p {
     font-size: 66px;
     line-height: 74px;
+    font-weight: 300;
 
     ${mediaQueries.lgx} {
       font-size: 56px;
@@ -292,11 +294,8 @@ const SectionWrapper = styled.section`
 
 const SectionTop = styled.div`
   display: flex;
-  height: 300px;
-
-  ${mediaQueries.mdx} {
-    height: 280px;
-  }
+  height: 220px;
+  position: relative;
 
   ${mediaQueries.md} {
     height: 250px;
@@ -329,6 +328,23 @@ const SectionLeft = styled.div`
 
 const SectionLeftTop = styled.div`
   flex: 2;
+  position: relative;
+`
+
+const SectionIcon = styled.div`
+  position: absolute;
+  top: -15px;
+  left: -86px;
+
+  ${mediaQueries.mdx} {
+    top: -10px;
+    left: -70px;
+  }
+
+  ${mediaQueries.md} {
+    top: -10px;
+    left: -60px;
+  }
 `
 
 const SectionTitle = styled.h1`
@@ -349,8 +365,9 @@ const SectionLeftMiddle = styled.div`
 `
 
 const SectionDescription = styled.p`
-  font-size: 24px;
-  line-height: 34px;
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 300;
 
   span {
     font-weight: bold;
@@ -362,16 +379,6 @@ const SectionDescription = styled.p`
       color: ${colors.pompelmo};
     }
   }
-
-  ${mediaQueries.mdx} {
-    font-size: 20px;
-    line-height: 28px;
-  }
-
-  ${mediaQueries.md} {
-    font-size: 18px;
-    line-height: 24px;
-  }
 `
 
 const SectionLeftBottom = styled.div`
@@ -380,35 +387,52 @@ const SectionLeftBottom = styled.div`
   align-items: flex-end;
 `
 
+const SectionButtonParent = styled.div`
+  position: relative;
+`
+
 const SectionButton = styled.div`
   span {
     ${fontMain}
     ${userSelect('none')};
     display: inline-block;
-    font-size: 20px;
-    font-weight: 600;
+    font-size: 18px;
+    font-weight: 500;
     color: ${colors.darkJungleGreen};
     cursor: pointer;
 
     :after {
-      ${transform('scaleX(0)')}
-      ${transition('transform 250ms ease-in-out')}
+      ${transform('scaleX(1)')}
+      ${transformOrigin('100% 0%')}
+      ${transition('250ms ease-in-out')}
       display: block;
       content: '';
       margin-top: 2px;
-      border-bottom: 2px solid #293034;
+      border-bottom: 2px solid ${colors.darkJungleGreen};
+    }
+
+    :before {
+      ${transform('scaleX(0)')}
+      ${transformOrigin('0% 100%')}
+      ${transition('250ms ease-in-out 150ms')}
+      display: block;
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      margin-bottom: 2px;
+      border-bottom: 2px solid ${colors.darkJungleGreen};
     }
 
     :hover {
-      color: #293034;
-
       :after {
+        ${transform('scaleX(0)')}
+      }
+
+      :before {
         ${transform('scaleX(1)')}
       }
-    }
-
-    ${mediaQueries.mdx} {
-      font-size: 18px;
     }
 
     ${mediaQueries.md} {
@@ -472,6 +496,7 @@ const SectionCollapseTitle = styled.h2`
 const SectionCollapseDescription = styled.div`
   font-size: 16px;
   line-height: 22px;
+  color: ${colors.doveGrey};
 
   ${mediaQueries.mdx} {
     font-size: 14px;
@@ -480,10 +505,12 @@ const SectionCollapseDescription = styled.div`
 
   p {
     margin-top: 15px;
+    font-weight: 300;
   }
 
   span {
     font-weight: bold;
+    font-weight: 500;
   }
 `
 
@@ -648,10 +675,12 @@ export {
   SectionTop,
   SectionLeft,
   SectionLeftTop,
+  SectionIcon,
   SectionTitle,
   SectionLeftMiddle,
   SectionDescription,
   SectionLeftBottom,
+  SectionButtonParent,
   SectionButton,
   SectionRight,
   SectionBottom,

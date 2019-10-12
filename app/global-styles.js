@@ -2,6 +2,9 @@ import { injectGlobal } from 'styled-components'
 
 /* eslint no-unused-expressions: 0 */
 injectGlobal`
+  @import url(https://fonts.googleapis.com/css?family=Roboto:400,300,500,700,300,200,100,300italic,400italic,500italic,700italic&subset=latin,latin-ext);
+  @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,300,200,100,300italic,400italic,600italic,700italic&subset=latin,latin-ext);
+
   html,
   body {
     height: 100%;

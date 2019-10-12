@@ -13,6 +13,11 @@ import TagTreeImg3 from 'assets/img/landing-page/tag-tree/tag-tree-3.png'
 import TagTreeImg2 from 'assets/img/landing-page/tag-tree/tag-tree-2.png'
 import TagTreeImg from 'assets/img/landing-page/tag-tree/tag-tree.png'
 
+// assets
+import CheckImg from 'assets/img/landing-page/check-img.png'
+import CheckImg2 from 'assets/img/landing-page/check-img-2.png'
+import CheckImg3 from 'assets/img/landing-page/check-img-3.png'
+
 // components
 import ScrollAnimation from 'react-animate-on-scroll'
 
@@ -22,10 +27,12 @@ import {
   SectionTop,
   SectionLeft,
   SectionLeftTop,
+  SectionIcon,
   SectionTitle,
   SectionLeftMiddle,
   SectionDescription,
   SectionLeftBottom,
+  SectionButtonParent,
   SectionButton,
   SectionRight,
   SectionBottom,
@@ -75,7 +82,7 @@ const LandingSection = props => {
     toggleCollapse,
     onHandleScroll,
   } = props
-  const { innerHeight } = window
+  const { innerHeight, innerWidth } = window
 
   return (
     <SectionWrapper height={innerHeight} onScroll={onHandleScroll}>
@@ -83,6 +90,14 @@ const LandingSection = props => {
         <SectionLeft>
           <SectionLeftTop>
             <ScrollAnimation animateIn="fadeInUp" animateOnce>
+              {innerWidth > 768 && (
+                <SectionIcon>
+                  <img
+                    src={CheckImg}
+                    srcSet={`${CheckImg} 768w, ${CheckImg2} 1024w, ${CheckImg3} 1280w`}
+                  />
+                </SectionIcon>
+              )}
               <SectionTitle>{title}</SectionTitle>
             </ScrollAnimation>
           </SectionLeftTop>
@@ -90,15 +105,17 @@ const LandingSection = props => {
             <ScrollAnimation animateIn="fadeInUp" animateOnce>
               <SectionDescription
                 dangerouslySetInnerHTML={{ __html: description }}
-               />
+              />
             </ScrollAnimation>
           </SectionLeftMiddle>
           <SectionLeftBottom>
-            <SectionButton>
-              <ScrollAnimation animateIn="fadeInUp" animateOnce>
-                <span onClick={toggleCollapse}>learn more</span>
-              </ScrollAnimation>
-            </SectionButton>
+            <SectionButtonParent>
+              <SectionButton>
+                <ScrollAnimation animateIn="fadeInUp" animateOnce>
+                  <span onClick={toggleCollapse}>learn more</span>
+                </ScrollAnimation>
+              </SectionButton>
+            </SectionButtonParent>
           </SectionLeftBottom>
         </SectionLeft>
         <SectionRight>
