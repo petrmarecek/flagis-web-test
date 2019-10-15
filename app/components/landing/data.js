@@ -3,41 +3,41 @@ import React from 'react'
 export const TaskInOneDescriptionChalenge = () => (
   <div>
     <p>
-      It is common practise to use emails for sending tasks to others.
-      <span>
-        But it is hard to manage emails as tasks since they were never designed
-        to present tasks.
-      </span>
+      It is common practise to use emails for sending tasks to others. But it is
+      hard to manage emails as tasks since they were never designed to present
+      tasks.
     </p>
     <p>
       When we use emails as a source of tasks and we use to-do lists as another
       source of tasks, we have a problem. We have at least two sources of tasks
       providing different ways of processing.
     </p>
-    <p>
-      Why complicate it? Why not have all in one?   Putting all these worlds
-      together makes your life much easier!
-    </p>
+    <p>Why complicate it? Why not have all in one?</p>
+    <p>Putting all these worlds together makes your life much easier!</p>
   </div>
 )
 
 export const TaskInOneDescriptionSolution = () => (
   <div>
     <p>
-      Flagis provides one solution for managing your own tasks, and the tasks
-      you sent to and received from others, in the same way as emails and with
-      simplicity of to-do lists.
+      <span>
+        Flagis provides one solution for managing your own tasks, and the tasks
+        you sent to and received from others, in the same way as emails and with
+        simplicity of to-do lists.
+      </span>
     </p>
     <p>
-      <span>You can manage tasks and track their responsibility</span> in a very
-      simple and efficient way. As the result, you have one transparent list of
-      everything important.
+      You can manage tasks and track their responsibility in a very simple and
+      efficient way. As the result, you have one transparent list of everything
+      important.
     </p>
     <p>
-      Just send tasks to others via Flagis - not via email (they will receive an
-      email anyway) and ask others to send you tasks via Flagis - not via email
-      if they want something from you (so that you can manage the tasks the way
-      you like).
+      <span>
+        Just send tasks to others via Flagis - not via email {'('}they will
+        receive an email anyway{')'} and ask others to send you tasks via Flagis
+        - not via email if they want something from you {'('}so that you can
+        manage the tasks the way you like{')'}.
+      </span>
     </p>
   </div>
 )
@@ -60,18 +60,25 @@ export const ColaborationDescriptionSolution = () => (
   <div>
     <p>
       Flagis provides a simple undisputable solution for managing tasks you sent
-      to and received from others in a similar way to emails.
+      to and received from others.
     </p>
     <p>
-      Every single task sent via Flagis must be ACCEPTED or REJECTED as a clear
-      statement from the recipient to the sender.
+      <span>
+        Every single task sent via Flagis must be ACCEPTED or REJECTED as a
+        clear statement from the recipient to the sender.
+      </span>
     </p>
     <p>
       The sender and also the recipient can see the task in their list of tasks
       for the whole lifecycle. Both can see the acceptance of the task, write
       comments, add attachments into that task and also see the completion of
-      the task.    Thus, there is clear ownership and responsibility over each
-      stage of the lifecycle of the task.   The responsibility is clear.
+      the task.   
+    </p>
+    <p>
+      <span>
+        Thus, there is clear ownership and responsibility over each stage of the
+        lifecycle of the task. The responsibility is clear.
+      </span>
     </p>
   </div>
 )
@@ -99,12 +106,14 @@ export const TagTreeDescriptionChalenge = () => (
 export const TagTreeOneDescriptionSolution = () => (
   <div>
     <p>
-      Flagis provides a TAG tree navigation filtering tool which combines the
-      advantages of both systems.
+      Flagis provides a <span>TAG tree</span> navigation filtering tool which
+      combines the advantages of both systems.
     </p>
     <p>
-      You can put more tags on each task and at the same time you can create a
-      tree structure out of those tags.
+      <span>
+        You can put more tags on each task and at the same time you can create a
+        tree structure out of those tags.
+      </span>
     </p>
     <p>
       This allows an alternative views on your tasks so you will always find
@@ -112,8 +121,10 @@ export const TagTreeOneDescriptionSolution = () => (
       more than one location.
     </p>
     <p>
-      As a result, you have one transparent list of everything important
-      supported by features for easy management.
+      <span>
+        As a result, you have one transparent list of everything important
+        supported by features for easy management.
+      </span>
     </p>
   </div>
 )
