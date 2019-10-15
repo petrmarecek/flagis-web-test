@@ -22,7 +22,7 @@ import MenuBoxItem from 'components/menux-box/menu-box-item'
 /*--------------------------------- Common ---------------------------------*/
 
 const TriangleIcon = styled(Icon)`
-  margin: 0 5px 0 0;
+  margin: 0 0 0 5px;
 `
 
 /*------------------------------ Navigation Landing Primary -----------------------------*/
@@ -357,6 +357,7 @@ const NavigationDefaultWrapper = styled.div`
 
 const AccountWrapper = styled.div`
   cursor: pointer;
+  margin-left: 20px;
 
   img {
     object-fit: cover;
@@ -428,14 +429,14 @@ const MenuBoxWrapper = styled(MenuBox)`
 
   :before {
     top: -18px;
-    right: 58px;
+    right: 36px;
     border-color: transparent transparent #c1cad0 transparent;
     border-width: 9px;
   }
 
   :after {
     top: -16px;
-    right: 59px;
+    right: 37px;
     border-color: transparent transparent #fff transparent;
     border-width: 8px;
   }
