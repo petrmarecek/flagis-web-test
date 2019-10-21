@@ -66,40 +66,6 @@ const NavigationDefault = ({
         />
       </div>
       <AccountNotificationsWrapper>
-        <div>
-          <AccountWrapper
-            innerRef={getAccountRef}
-            title="Account"
-            isVisibleAccountNavigation={isVisibleAccountNavigation}
-            onClick={onHandleClickAccount}
-            colorTheme={colorTheme}
-          >
-            <TriangleIcon
-              icon={ICONS.TRIANGLE}
-              width={11}
-              height={5}
-              color={[colors[colorTheme].navigationDefaultTriangle]}
-            />
-            <Avatar
-              src={imageUrl}
-              size="30"
-              textSizeRatio={2}
-              color={colors.defaultAvatar}
-              round
-              name={`${
-                username !== null
-                  ? `${username.firstName} ${username.lastName}`
-                  : ''
-                }`}
-            />
-          </AccountWrapper>
-          {isVisibleAccountNavigation && (
-            <NavigationAccount
-              accountRef={accountRef}
-              onClickOutSide={onHandleClickAccount}
-            />
-          )}
-        </div>
         <NotificationsWrapper onClick={onHandleClickNotifications}>
           <Icon
             icon={ICONS.NOTIFICATIONS}
@@ -112,6 +78,40 @@ const NavigationDefault = ({
             <NotificationsCounter count={notificationsCount} />
           )}
         </NotificationsWrapper>
+        <div>
+          <AccountWrapper
+            innerRef={getAccountRef}
+            title="Account"
+            isVisibleAccountNavigation={isVisibleAccountNavigation}
+            onClick={onHandleClickAccount}
+            colorTheme={colorTheme}
+          >
+            <Avatar
+              src={imageUrl}
+              size="30"
+              textSizeRatio={2}
+              color={colors.defaultAvatar}
+              round
+              name={`${
+                username !== null
+                  ? `${username.firstName} ${username.lastName}`
+                  : ''
+              }`}
+            />
+            <TriangleIcon
+              icon={ICONS.TRIANGLE}
+              width={11}
+              height={5}
+              color={[colors[colorTheme].navigationDefaultTriangle]}
+            />
+          </AccountWrapper>
+          {isVisibleAccountNavigation && (
+            <NavigationAccount
+              accountRef={accountRef}
+              onClickOutSide={onHandleClickAccount}
+            />
+          )}
+        </div>
       </AccountNotificationsWrapper>
     </NavigationDefaultWrapper>
   )

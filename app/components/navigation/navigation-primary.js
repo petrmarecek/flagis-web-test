@@ -69,10 +69,10 @@ const NavigationPrimary = props => {
         colorTheme={colorTheme}
       >
         <Icon
-          icon={ICONS.TASKS}
+          icon={ICONS.TASK_CHECKED}
           width={18}
-          height={16}
-          scale={0.72}
+          height={18}
+          scale={0.81}
           color={
             isTasksActive
               ? [colors[colorTheme].navigationPrimaryHover]
