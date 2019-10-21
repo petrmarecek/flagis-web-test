@@ -616,9 +616,7 @@ const TaskDetail = props => {
               )}
             </DetailContentAttachments>
           </DetailContentProperties>
-          <DetailContentDescriptionTask
-            allowed={!isCompleted && !isCollaborated}
-          >
+          <DetailContentDescriptionTask>
             <span onClick={onHandleRemoveEventListener}>
               <TextEditor
                 componentId={task.id}
@@ -626,6 +624,7 @@ const TaskDetail = props => {
                 setDescription={onHandleDescriptionUpdate}
                 editorHeight={editorHeight}
                 scrollStyle={scrollStyle}
+                disabled={isCollaboratedOrCompleted}
               />
             </span>
           </DetailContentDescriptionTask>

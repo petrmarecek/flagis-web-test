@@ -19,6 +19,7 @@ const HeaderOne = props => {
     <ControlButton
       onMouseDown={event => props.onHandleToggle(style, event)}
       isActive={isActive}
+      disabled={props.disabled}
     >
       H1
     </ControlButton>
@@ -29,6 +30,7 @@ HeaderOne.propTypes = {
   onHandleToggle: PropTypes.func,
   onToggle: PropTypes.func.isRequired,
   editorState: PropTypes.object.isRequired,
+  disabled: PropTypes.bool,
 }
 
 export default withHandlers({

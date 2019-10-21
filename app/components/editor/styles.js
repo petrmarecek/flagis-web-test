@@ -33,13 +33,15 @@ const ControlButton = styled.div`
   font-size: ${props => (props.isSmall ? '12px' : '14px')};
   height: ${controlButtonSize}px;
   width: ${controlButtonSize}px;
-  cursor: pointer;
+  cursor: ${props => (props.disabled ? 'default' : 'pointer')};
+  pointer-events: ${props => (props.disabled ? 'none' : 'auto')};
   font-weight: bold;
   color: ${props =>
     props.isActive ? colors.darkJungleGreen : colors.astrocopusGrey};
 
   :hover {
-    color: ${colors.darkJungleGreen};
+    color: ${props =>
+      props.disabled ? colors.astrocopusGrey : colors.darkJungleGreen};
   }
 `
 

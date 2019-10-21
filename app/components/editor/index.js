@@ -38,6 +38,7 @@ export default class TextEditor extends Component {
     scrollStyle: PropTypes.object,
     content: PropTypes.string,
     setDescription: PropTypes.func,
+    disabled: PropTypes.bool,
   }
 
   constructor(props) {
@@ -153,33 +154,46 @@ export default class TextEditor extends Component {
 
   render() {
     const { editorState, placeholder } = this.state
-    const { editorHeight, scrollStyle } = this.props
+    const { editorHeight, scrollStyle, disabled } = this.props
 
     return (
       <EditorWrapper>
         <ControlsPanel>
-          <Bold editorState={editorState} onToggle={this.toggleInlineStyle} />
-          <Italic editorState={editorState} onToggle={this.toggleInlineStyle} />
+          <Bold
+            editorState={editorState}
+            onToggle={this.toggleInlineStyle}
+            disabled={disabled}
+          />
+          <Italic
+            editorState={editorState}
+            onToggle={this.toggleInlineStyle}
+            disabled={disabled}
+          />
           <Underline
             editorState={editorState}
             onToggle={this.toggleInlineStyle}
+            disabled={disabled}
           />
           <Highlight
             editorState={editorState}
             onToggle={this.toggleInlineStyle}
+            disabled={disabled}
           />
           <Separator />
           <HeaderOne
             editorState={editorState}
             onToggle={this.toggleBlockType}
+            disabled={disabled}
           />
           <HeaderSecond
             editorState={editorState}
             onToggle={this.toggleBlockType}
+            disabled={disabled}
           />
           <UnorderedList
             editorState={editorState}
             onToggle={this.toggleBlockType}
+            disabled={disabled}
           />
           <Separator />
         </ControlsPanel>
@@ -196,6 +210,7 @@ export default class TextEditor extends Component {
               handleKeyCommand={this.handleKeyCommand}
               onChange={this.onChange}
               placeholder={placeholder}
+              readOnly={disabled}
             />
           </Scrollbars>
         </EditArea>

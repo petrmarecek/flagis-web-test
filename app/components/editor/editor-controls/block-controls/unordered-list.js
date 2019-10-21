@@ -25,6 +25,7 @@ const UnorderedList = props => {
     <ControlButton
       onMouseDown={event => props.onHandleToggle(style, event)}
       isActive={isActive}
+      disabled={props.disabled}
     >
       <Icon
         icon={ICONS.LIST}
@@ -41,6 +42,7 @@ UnorderedList.propTypes = {
   onHandleToggle: PropTypes.func,
   onToggle: PropTypes.func.isRequired,
   editorState: PropTypes.object.isRequired,
+  disabled: PropTypes.bool,
 }
 
 export default withHandlers({

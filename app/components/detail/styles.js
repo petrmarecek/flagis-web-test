@@ -505,7 +505,6 @@ const DetailSubjectTaskContentEditable = styled(ContentEditable)`
 const DetailContentDescriptionTask = styled.div`
   flex: 6;
   margin-right: 22px;
-  pointer-events: ${props => (props.allowed ? 'auto' : 'none')};
   z-index: 1;
 `
 

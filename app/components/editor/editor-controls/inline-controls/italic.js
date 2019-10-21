@@ -15,6 +15,7 @@ const Italic = props => {
       onMouseDown={event => props.onHandleToggle(style, event)}
       isActive={isActive}
       style={{ fontStyle: 'italic' }}
+      disabled={props.disabled}
     >
       I
     </ControlButton>
@@ -25,6 +26,7 @@ Italic.propTypes = {
   onHandleToggle: PropTypes.func,
   onToggle: PropTypes.func.isRequired,
   editorState: PropTypes.object.isRequired,
+  disabled: PropTypes.bool,
 }
 
 export default withHandlers({
