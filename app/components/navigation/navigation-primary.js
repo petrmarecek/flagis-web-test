@@ -164,15 +164,15 @@ const NavigationPrimary = props => {
         isVisibleMore={isVisibleMore}
         colorTheme={colorTheme}
       >
+        <ShowMoreTitle>
+          {isVisibleMore ? 'Show less' : 'Show more'}
+        </ShowMoreTitle>
         <TriangleIcon
           icon={ICONS.TRIANGLE}
           width={11}
           height={5}
           color={[colors[colorTheme].navigationPrimaryShowMore]}
         />
-        <ShowMoreTitle>
-          {isVisibleMore ? 'Show less' : 'Show more'}
-        </ShowMoreTitle>
       </ShowMoreButton>
     </NavigationPrimaryWrapper>
   )

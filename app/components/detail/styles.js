@@ -60,12 +60,11 @@ const DetailInner = styled.div`
 const DetailContentTop = styled.div`
   ${boxSizing('border-box')}
   display: flex;
-  min-height: 48px;
   justify-content: flex-start;
   position: relative;
   background-color: ${props => props.backgroundColor};
   z-index: 1;
-  padding: 0 12px;
+  padding: 9px 12px;
 
   :before {
     content: "";
@@ -111,8 +110,7 @@ const DetailSubject = styled.div`
 const DetailContentTagAutocomplete = styled.div`
   ${boxSizing('border-box')}
   flex: 0 1 auto;
-  padding-right: 10px;
-  padding-top: 12px;
+  padding: 5px 10px 0 0;
   max-width: 70%;
   pointer-events: ${props => (props.allowed ? 'auto' : 'none')};
   opacity: ${props => (props.isCompleted ? '0.4' : '1')};

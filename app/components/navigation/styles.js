@@ -279,9 +279,11 @@ const ShowMoreButton = styled.span`
   position: absolute;
   bottom: 0;
   color: ${props => colors[props.colorTheme].navigationPrimaryShowMore};
-  padding-right: 28px;
+  padding-right: 33px;
   width: 100%;
   cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
 
   svg {
     ${transition('transform 300ms ease-out')}
