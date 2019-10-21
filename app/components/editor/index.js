@@ -48,7 +48,7 @@ export default class TextEditor extends Component {
 
     // load contet to editor and create editorState
     const newEditorState = this.loadDescription(this.props.content)
-    this.state = { editorState: newEditorState }
+    this.state = { editorState: newEditorState, placeholder: 'Add description' }
 
     // debounce call for change of editor
     this.debouncedSaveEditor = debounce(this.saveDescription, 1000)
@@ -80,7 +80,29 @@ export default class TextEditor extends Component {
     }
   }
 
-  onFocus = () => this.refs.editor.focus()
+  onFocus = () => {
+    this.refs.editor.focus()
+    this.setState({ placeholder: null })
+  }
+
+  setPlaceholder = (editorState = this.state.editorState) => {
+    const startKey = editorState.getSelection().getStartKey()
+    const selectedBlockType = editorState
+      .getCurrentContent()
+      .getBlockForKey(startKey)
+      .getType()
+
+    if (selectedBlockType === 'unordered-list-item') {
+      this.setState({ placeholder: null })
+      return
+    }
+
+    this.setState({ placeholder: 'Add description' })
+  }
+
+  onBlur = () => {
+    this.setPlaceholder()
+  }
 
   onChange = editorState => {
     this.setState({ editorState })
@@ -105,6 +127,7 @@ export default class TextEditor extends Component {
   toggleBlockType = blockType => {
     const { editorState } = this.state
     const newEditorState = RichUtils.toggleBlockType(editorState, blockType)
+    this.setPlaceholder(newEditorState)
 
     this.onChange(newEditorState)
   }
@@ -112,6 +135,7 @@ export default class TextEditor extends Component {
   toggleInlineStyle = inlineStyle => {
     const { editorState } = this.state
     const newEditorState = RichUtils.toggleInlineStyle(editorState, inlineStyle)
+    this.setPlaceholder(newEditorState)
 
     this.onChange(newEditorState)
   }
@@ -128,7 +152,7 @@ export default class TextEditor extends Component {
   }
 
   render() {
-    const { editorState } = this.state
+    const { editorState, placeholder } = this.state
     const { editorHeight, scrollStyle } = this.props
 
     return (
@@ -159,7 +183,11 @@ export default class TextEditor extends Component {
           />
           <Separator />
         </ControlsPanel>
-        <EditArea onClick={this.onFocus} editorHeight={editorHeight}>
+        <EditArea
+          onClick={this.onFocus}
+          onBlur={this.onBlur}
+          editorHeight={editorHeight}
+        >
           <Scrollbars style={{ ...scrollStyle }}>
             <Editor
               ref="editor"
@@ -167,7 +195,7 @@ export default class TextEditor extends Component {
               editorState={editorState}
               handleKeyCommand={this.handleKeyCommand}
               onChange={this.onChange}
-              placeholder="Add description"
+              placeholder={placeholder}
             />
           </Scrollbars>
         </EditArea>
