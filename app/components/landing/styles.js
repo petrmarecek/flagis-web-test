@@ -456,6 +456,8 @@ const SectionRight = styled.div`
   }
 `
 
+const SectionImg = styled.img``
+
 const SectionBottom = styled.div`
   display: flex;
   justify-content: space-between;
@@ -683,6 +685,7 @@ export {
   SectionButtonParent,
   SectionButton,
   SectionRight,
+  SectionImg,
   SectionBottom,
   // Section Collapse
   SectionCollapseWrapper,

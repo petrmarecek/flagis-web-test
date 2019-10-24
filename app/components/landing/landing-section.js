@@ -3,15 +3,9 @@ import PropTypes from 'prop-types'
 import { withStateHandlers } from 'recompose'
 
 // assets
-import TaksInOneImg3 from 'assets/img/landing-page/task-in-one/task-in-one-3.png'
-import TaksInOneImg2 from 'assets/img/landing-page/task-in-one/task-in-one-2.png'
-import TaksInOneImg from 'assets/img/landing-page/task-in-one/task-in-one.png'
-import ColaborationImg3 from 'assets/img/landing-page/colaboration/colaboration-3.png'
-import ColaborationImg2 from 'assets/img/landing-page/colaboration/colaboration-2.png'
-import ColaborationImg from 'assets/img/landing-page/colaboration/colaboration.png'
-import TagTreeImg3 from 'assets/img/landing-page/tag-tree/tag-tree-3.png'
-import TagTreeImg2 from 'assets/img/landing-page/tag-tree/tag-tree-2.png'
-import TagTreeImg from 'assets/img/landing-page/tag-tree/tag-tree.png'
+import TaksInOneGif from 'assets/img/landing-page/animations/task-in-one-gif.gif'
+import ColaborationGif from 'assets/img/landing-page/animations/colaboration-gif.gif'
+import TagTreeGif from 'assets/img/landing-page/animations/tag-tree-gif.gif'
 
 // assets
 import CheckImg from 'assets/img/landing-page/check-img.png'
@@ -35,40 +29,26 @@ import {
   SectionButtonParent,
   SectionButton,
   SectionRight,
+  SectionImg,
   SectionBottom,
 } from './styles'
 
-const SectionImg = ({ type }) => {
+const SectionImgWrapper = ({ type }) => {
   switch (type) {
     case 'taskInOne':
-      return (
-        <img
-          src={TaksInOneImg}
-          srcSet={`${TaksInOneImg} 226w, ${TaksInOneImg2} 452w, ${TaksInOneImg3} 678w`}
-        />
-      )
+      return <SectionImg src={TaksInOneGif} />
 
     case 'colaboration':
-      return (
-        <img
-          src={ColaborationImg}
-          srcSet={`${ColaborationImg} 226w, ${ColaborationImg2} 452w, ${ColaborationImg3} 678w`}
-        />
-      )
+      return <SectionImg src={ColaborationGif} />
 
     case 'tagTree':
-      return (
-        <img
-          src={TagTreeImg}
-          srcSet={`${TagTreeImg} 197w, ${TagTreeImg2} 394w, ${TagTreeImg3} 591w`}
-        />
-      )
+      return <SectionImg src={TagTreeGif} />
     default:
       return null
   }
 }
 
-SectionImg.propTypes = {
+SectionImgWrapper.propTypes = {
   type: PropTypes.string,
 }
 
@@ -120,7 +100,7 @@ const LandingSection = props => {
         </SectionLeft>
         <SectionRight>
           <ScrollAnimation animateIn="fadeInUp" animateOnce>
-            <SectionImg type={type} />
+            <SectionImgWrapper type={type} />
           </ScrollAnimation>
         </SectionRight>
       </SectionTop>
