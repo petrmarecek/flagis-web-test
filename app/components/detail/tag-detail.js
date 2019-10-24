@@ -38,6 +38,7 @@ const TagDetail = props => {
     tag,
     tagColorsRef,
     getTagColorsRef,
+    leftPanelWidth,
     onHandleTitleUpdate,
     onHandleSetColor,
     onHandleDelete,
@@ -59,6 +60,7 @@ const TagDetail = props => {
   const offset = tagColorElem ? 143 + tagColorElem.height : 202
   const editorHeight = `calc(100vh - ${offset}px)`
   const scrollStyle = {
+    width: `calc(100vw - ${leftPanelWidth + 84}px)`,
     height: `calc(100vh - ${offset + 62}px)`,
     overflow: 'hidden',
   }
@@ -138,6 +140,7 @@ TagDetail.propTypes = {
   tag: PropTypes.object,
   titles: PropTypes.object,
   windowWidth: PropTypes.number,
+  leftPanelWidth: PropTypes.number,
   tagColorsRef: PropTypes.object,
   getTagColorsRef: PropTypes.func,
   onHandleTitleUpdate: PropTypes.func,

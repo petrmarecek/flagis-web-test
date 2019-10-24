@@ -60,6 +60,7 @@ import {
   getDetail,
   getInboxTasksVisibility,
   getWindow,
+  getLeftPanel,
 } from 'redux/store/app-state/app-state.selectors'
 import {
   getTasksItems,
@@ -101,6 +102,7 @@ const Detail = props => {
     detail,
     isInboxVisible,
     windowWidth,
+    leftPanelWidth,
 
     userId,
     task,
@@ -189,6 +191,7 @@ const Detail = props => {
           tag={tag}
           titles={titles}
           windowWidth={windowWidth}
+          leftPanelWidth={leftPanelWidth}
           onHandleRemoveEventListener={onHandleRemoveEventListener}
           onHandleToggleList={onHandleToggleList}
           onHandleNext={onHandleNext}
@@ -221,6 +224,7 @@ Detail.propTypes = {
   detail: PropTypes.object,
   isInboxVisible: PropTypes.bool,
   windowWidth: PropTypes.number,
+  leftPanelWidth: PropTypes.number,
   prevPathname: PropTypes.string,
 
   userId: PropTypes.string,
@@ -273,6 +277,7 @@ const mapStateToProps = state => ({
   detail: getDetail(state),
   isInboxVisible: getInboxTasksVisibility(state),
   windowWidth: getWindow(state).width,
+  leftPanelWidth: getLeftPanel(state).width,
   prevPathname: getRoutingPrevPathname(state),
 
   userId: getUserId(state),
