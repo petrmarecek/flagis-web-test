@@ -245,7 +245,6 @@ export function* prepareDeleteTag(action) {
 
   // Delete tag
   yield put(tagActions.deselectTags())
-  yield put(appStateActions.setLoader('global'))
   yield put(tagActions.deleteTag(tag))
 
   // Delete tag from activeTags if the tag in activeTags
@@ -263,7 +262,6 @@ export function* deleteTag(action) {
     schema: null,
   })
 
-  yield put(appStateActions.deselectLoader('global'))
   yield put(
     tagActions.deleteTagsRelations(action.payload.originalData.id, null)
   )

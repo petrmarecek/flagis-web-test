@@ -631,7 +631,11 @@ export function* prepareDeleteTask(action) {
     newTaskEntitiesList = newTaskEntitiesList.setIn([taskId, 'isTrashed'], true)
   }
 
-  yield put(appStateActions.setLoader('global'))
+  // show loader for multi delete of tasks
+  if (deleteTasksIds.size > 1) {
+    yield put(appStateActions.setLoader('global'))
+  }
+
   yield put(taskActions.deselectTasks())
   yield put(
     taskActions.deleteTask(

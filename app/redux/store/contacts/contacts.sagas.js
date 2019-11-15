@@ -211,7 +211,6 @@ export function* prepareDeleteContact(action) {
   }
 
   yield put(contactsActions.deselectContacts())
-  yield put(appStateActions.setLoader('global'))
   yield put(contactsActions.deleteContact(contact))
 }
 
@@ -225,7 +224,6 @@ export function* deleteContact(action) {
       schema: null,
     })
 
-    yield put(appStateActions.deselectLoader('global'))
     yield* mainUndo(action, 'contactDelete')
 
     // delete contact from the search index
