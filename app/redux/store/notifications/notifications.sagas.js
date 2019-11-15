@@ -63,7 +63,7 @@ export function* fetchNotifications(action) {
 export function* readNotification(action) {
   const { notification, task } = action.payload
 
-  if (task !== null) {
+  if (task !== null && !task.isTrashed) {
     if (task.isArchived) {
       yield put(appStateActions.visibleArchivedTasks())
     }

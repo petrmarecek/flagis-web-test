@@ -39,6 +39,7 @@ const NotificationListItem = ({
   const { nickname, email } = profile
 
   // conditions
+  const isRead = readAt !== null
   const isSend = type === 'TASKS/FOLLOWERS/SEND'
   const isTakeBack = type === 'TASKS/FOLLOWERS/TAKE-BACK'
   const isRemovedTask = isTakeBack || subject === null
@@ -50,14 +51,9 @@ const NotificationListItem = ({
 
   // prepare data
   const date = dateUtils.formatDateTimeSecondary(sentAt)
-  const isRead = readAt !== null
   const commentContent = data && data.content ? data.content : null
   const attachmentName = data && data.fileName ? data.fileName : null
-  const taskSubject = isAssigneeOfTask
-    ? data.subject
-    : subject !== null
-    ? subject
-    : ''
+  const taskSubject = subject !== null ? subject : data.subject
   const profileName =
     email !== null
       ? nickname !== null
