@@ -131,6 +131,7 @@ export default function* root() {
     takeEvery(TAGS.CREATE, tag.createTag),
     takeLatest(TAGS.SELECT_ACTIVE_TAGS, tag.selectActiveTags),
     takeLatest(TAGS.UPDATE, tag.update),
+    takeEvery(TAGS.PREPARE_DELETE, tag.prepareDeleteTag),
     takeEvery(TAGS.DELETE, tag.deleteTag),
     takeEvery(TAGS.UNDO_DELETE, tag.undoDeleteTag),
     takeEvery(TAGS.SELECT, tag.selectTags),

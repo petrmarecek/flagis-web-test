@@ -48,6 +48,7 @@ import {
   deselectTags,
   selectTag,
   updateTag,
+  prepareDeleteTag,
 } from 'redux/store/tags/tags.actions'
 import {
   selectContact,
@@ -332,6 +333,7 @@ const mapDispatchToProps = {
   selectTag,
   deselectTags,
   updateTag,
+  prepareDeleteTag,
 
   selectContact,
   deselectContacts,
@@ -602,8 +604,7 @@ export default compose(
       props.updateTag(data.tag, data.title, 'title'),
     onHandleTagSetColor: props => data =>
       props.updateTag(data.tag, data.index, 'colorIndex'),
-    onHandleTagDelete: props => tag =>
-      props.showDialog('tag-delete-confirm', { tag }),
+    onHandleTagDelete: props => tag => props.prepareDeleteTag(tag),
     onHandleTagDescriptionUpdate: props => data =>
       props.updateTag(data.tag, data.description, 'description'),
 
