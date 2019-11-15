@@ -16,7 +16,7 @@ import {
 // redux
 import { connect } from 'react-redux'
 import { changeNavigation } from 'redux/store/routing/routing.actions'
-import { showDialog, setDetail } from 'redux/store/app-state/app-state.actions'
+import { setDetail } from 'redux/store/app-state/app-state.actions'
 import {
   getLeftPanel,
   getPrimaryHiddenNavigationVisibility,
@@ -38,6 +38,7 @@ import {
   dropTreeItem,
   moveSection,
   dropSection,
+  deleteTreeItem,
 } from 'redux/store/tree/tree.actions'
 import {
   getTree,
@@ -96,12 +97,8 @@ const TagTreeContainer = props => {
   const scrollStyle = {
     height: `calc(100vh - ${offset}px)`,
     shadowHeight: 30,
-    boxShadowTop: `inset 0 30px 30px -15px ${
-      colors[colorTheme].tagTreeShadowScrollbar
-    }`,
-    boxShadowBottom: `inset 0 -30px 30px -15px ${
-      colors[colorTheme].tagTreeShadowScrollbar
-    }`,
+    boxShadowTop: `inset 0 30px 30px -15px ${colors[colorTheme].tagTreeShadowScrollbar}`,
+    boxShadowBottom: `inset 0 -30px 30px -15px ${colors[colorTheme].tagTreeShadowScrollbar}`,
     overflow: 'hidden',
     top: '10px',
   }
@@ -191,7 +188,6 @@ TagTreeContainer.propTypes = {
   createTreeItem: PropTypes.func,
   hideTreeItemAddControl: PropTypes.func,
   selectPath: PropTypes.func,
-  showDialog: PropTypes.func,
   showTreeItemAddControl: PropTypes.func,
   moveSection: PropTypes.func,
   dropSection: PropTypes.func,
@@ -220,7 +216,6 @@ const mapDispatchToProps = {
   hideTreeItemAddControl,
   createTreeItem,
   selectPath,
-  showDialog,
   collapse,
   dropTreeItem,
   moveSection,
@@ -229,13 +224,11 @@ const mapDispatchToProps = {
   setDetail,
   changeNavigation,
   deselectTasks,
+  deleteTreeItem,
 }
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   branch(
     props => props.isNewRefreshToken || props.isFetching,
     renderComponent(Loader)
@@ -304,11 +297,11 @@ export default compose(
         return {}
       }
 
-      props.showDialog('tree-section-delete-confirm', { treeItem })
+      props.deleteTreeItem(treeItem)
       return {}
     },
     onHandleDeleteTreeItem: (state, props) => treeItem => {
-      props.showDialog('tree-item-tag-delete-confirm', { treeItem })
+      props.deleteTreeItem(treeItem)
       return {}
     },
     onHandleCollapse: (state, props) => treeItem => {
