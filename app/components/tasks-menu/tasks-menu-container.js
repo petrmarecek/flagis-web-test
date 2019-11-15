@@ -18,6 +18,7 @@ import {
   setArchiveTasks,
   deselectTasks,
   selectAllTask,
+  prepareDeleteTask,
 } from 'redux/store/tasks/tasks.actions'
 import {
   getTasksItems,
@@ -99,6 +100,7 @@ class TasksMenuContainer extends PureComponent {
     selectAllTask: PropTypes.func,
     deselectActiveAssignee: PropTypes.func,
     timeLine: PropTypes.bool,
+    prepareDeleteTask: PropTypes.func,
   }
 
   // Filters
@@ -180,9 +182,7 @@ class TasksMenuContainer extends PureComponent {
       return
     }
 
-    this.props.showDialog('task-delete-confirm', {
-      tasks: this.props.selectTasks,
-    })
+    this.props.prepareDeleteTask(this.props.selectTasks)
   }
 
   render() {
@@ -310,8 +310,6 @@ const mapDispatchToProps = {
   hideMenuOption,
   selectAllTask,
   deselectActiveAssignee,
+  prepareDeleteTask,
 }
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TasksMenuContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(TasksMenuContainer)

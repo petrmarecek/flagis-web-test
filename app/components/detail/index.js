@@ -32,6 +32,7 @@ import {
   sendTask,
   acceptTask,
   rejectTask,
+  prepareDeleteTask,
 } from 'redux/store/tasks/tasks.actions'
 import {
   fetchAttachment,
@@ -326,6 +327,7 @@ const mapDispatchToProps = {
   acceptTask,
   rejectTask,
   createContact,
+  prepareDeleteTask,
 
   selectTag,
   deselectTags,
@@ -344,10 +346,7 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   withHandlers({
     onHandleToggleList: props => () => {
       const {
@@ -596,7 +595,7 @@ export default compose(
       let newTaskDelete = List()
       newTaskDelete = newTaskDelete.push(data)
 
-      props.showDialog('task-delete-confirm', { tasks: newTaskDelete })
+      props.prepareDeleteTask(newTaskDelete)
     },
 
     onHandleTagTitleUpdate: props => data =>

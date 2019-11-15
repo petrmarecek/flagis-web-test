@@ -586,6 +586,65 @@ export function* deselectTasks() {
   }
 }
 
+export function* prepareDeleteTask(action) {
+  let { deleteTasksIds } = action.payload
+  if (!deleteTasksIds) {
+    return
+  }
+
+  const userId = yield select(state => authSelectors.getUserId(state))
+  let newTasksList = yield select(state => taskSelectors.getTasksItems(state))
+  let newTaskCompleteList = yield select(state =>
+    taskSelectors.getCompletedTasksItems(state)
+  )
+  let newArchivedTasks = yield select(state =>
+    taskSelectors.getArchivedTasksItems(state)
+  )
+  let newTaskEntitiesList = yield select(state =>
+    entitiesSelectors.getEntitiesTasks(state)
+  )
+  deleteTasksIds = deleteTasksIds.filter(
+    taskId => newTaskEntitiesList.get(taskId).createdById === userId
+  )
+
+  const originalData = {
+    taskDeleteList: deleteTasksIds,
+    taskList: newTasksList,
+    taskCompleteList: newTaskCompleteList,
+    taskArchiveList: newArchivedTasks,
+    taskEntitiesList: newTaskEntitiesList,
+  }
+
+  for (const taskId of deleteTasksIds) {
+    newTasksList = newTasksList.includes(taskId)
+      ? newTasksList.delete(newTasksList.indexOf(taskId))
+      : newTasksList
+
+    newTaskCompleteList = newTaskCompleteList.includes(taskId)
+      ? newTaskCompleteList.delete(newTaskCompleteList.indexOf(taskId))
+      : newTaskCompleteList
+
+    newArchivedTasks = newArchivedTasks.includes(taskId)
+      ? newArchivedTasks.delete(newArchivedTasks.indexOf(taskId))
+      : newArchivedTasks
+
+    newTaskEntitiesList = newTaskEntitiesList.setIn([taskId, 'isTrashed'], true)
+  }
+
+  yield put(appStateActions.setLoader('global'))
+  yield put(taskActions.deselectTasks())
+  yield put(
+    taskActions.deleteTask(
+      deleteTasksIds,
+      newTasksList,
+      newTaskCompleteList,
+      newArchivedTasks,
+      newTaskEntitiesList,
+      originalData
+    )
+  )
+}
+
 export function* deleteTask(action) {
   const update = { isTrashed: true }
   for (const taskId of action.payload.taskDeleteList) {
