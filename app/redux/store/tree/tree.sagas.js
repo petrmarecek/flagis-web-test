@@ -15,7 +15,7 @@ import { toast } from 'react-toastify'
 import { errorMessages } from 'utils/messages'
 import constants from 'utils/constants'
 import { routes } from 'utils/routes'
-import { Map, List } from 'immutable'
+import { Map } from 'immutable'
 
 import {
   createLoadActions,
