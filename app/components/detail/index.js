@@ -12,7 +12,6 @@ import { List } from 'immutable'
 import { changeLocation } from 'redux/store/routing/routing.actions'
 import {
   deselectDetail,
-  showDialog,
   setAnimation,
   deselectAnimation,
 } from 'redux/store/app-state/app-state.actions'
@@ -343,7 +342,6 @@ const mapDispatchToProps = {
   prepareDeleteContact,
 
   deselectDetail,
-  showDialog,
   setAnimation,
   deselectAnimation,
   changeLocation,
