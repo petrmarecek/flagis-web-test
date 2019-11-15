@@ -56,6 +56,7 @@ import {
   updateContact,
   sendInvitationContact,
   createContact,
+  prepareDeleteContact,
 } from 'redux/store/contacts/contacts.actions'
 import { getUserId } from 'redux/store/auth/auth.selectors'
 import {
@@ -339,6 +340,7 @@ const mapDispatchToProps = {
   deselectContacts,
   updateContact,
   sendInvitationContact,
+  prepareDeleteContact,
 
   deselectDetail,
   showDialog,
@@ -611,7 +613,7 @@ export default compose(
     onHandleContactNicknameUpdate: props => data =>
       props.updateContact(data.contact, data.nickname, 'nickname'),
     onHandleContactDelete: props => contact =>
-      props.showDialog('contact-delete-confirm', { contact }),
+      props.prepareDeleteContact(contact),
     onHandleContactDescriptionUpdate: props => data =>
       props.updateContact(data.contact, data.description, 'description'),
     onHandleContactSendInvitation: props => data => {

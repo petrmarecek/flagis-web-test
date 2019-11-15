@@ -11,12 +11,13 @@ export const CONTACTS = {
   UPDATE: 'CONTACTS/UPDATE',
   UPDATE_SEARCH: 'CONTACTS/UPDATE_SEARCH',
   SEND_INVITATION: 'CONTACTS/SEND_INVITATION',
+  PREPARE_DELETE: 'CONTACTS/PREPARE_DELETE',
   DELETE: 'CONTACTS/DELETE',
   UNDO_DELETE: 'UNDO_CONTACTS/DELETE',
 }
 
 export const fetchContacts = () => ({
-  type: CONTACTS.FETCH
+  type: CONTACTS.FETCH,
 })
 
 export const createContact = email => ({
@@ -27,7 +28,7 @@ export const createContact = email => ({
 export const addContact = contact => ({
   type: CONTACTS.ADD,
   payload: contact,
-  meta: { schema: schema.contact }
+  meta: { schema: schema.contact },
 })
 
 export const replaceContact = (originalContactId, contact, relatedTaskId) => ({
@@ -36,12 +37,12 @@ export const replaceContact = (originalContactId, contact, relatedTaskId) => ({
     originalContactId,
     contact,
     relatedTaskId,
-  }
+  },
 })
 
 export const selectContact = contactId => ({
   type: CONTACTS.SELECT,
-  payload: { contactId }
+  payload: { contactId },
 })
 
 export const deselectContacts = () => ({
@@ -50,20 +51,25 @@ export const deselectContacts = () => ({
 
 export const updateContact = (contact, data, type) => ({
   type: CONTACTS.UPDATE,
-  payload: { contact, data, type }
+  payload: { contact, data, type },
 })
 
 export const updateContactSearch = search => ({
   type: CONTACTS.UPDATE_SEARCH,
-  payload: { search }
+  payload: { search },
 })
 
 export const sendInvitationContact = contactId => ({
   type: CONTACTS.SEND_INVITATION,
-  payload: { contactId }
+  payload: { contactId },
+})
+
+export const prepareDeleteContact = contact => ({
+  type: CONTACTS.PREPARE_DELETE,
+  payload: { contact },
 })
 
 export const deleteContact = originalData => ({
   type: CONTACTS.DELETE,
-  payload: { originalData }
+  payload: { originalData },
 })

@@ -145,6 +145,7 @@ export default function* root() {
     takeLatest(CONTACTS.DESELECT, contact.deselectContacts),
     takeLatest(CONTACTS.UPDATE, contact.updateContacts),
     takeLatest(CONTACTS.SEND_INVITATION, contact.sendInvitationContact),
+    takeEvery(CONTACTS.PREPARE_DELETE, contact.prepareDeleteContact),
     takeEvery(CONTACTS.DELETE, contact.deleteContact),
     takeEvery(CONTACTS.UNDO_DELETE, contact.undoDeleteContact),
 

@@ -1,3 +1,12 @@
+import { normalize } from 'normalizr'
+
+// toast notifications
+import { toast } from 'react-toastify'
+import { errorMessages } from 'utils/messages'
+import constants from 'utils/constants'
+
+// redux
+import { push } from 'react-router-redux'
 import {
   all,
   put,
@@ -7,13 +16,6 @@ import {
   fork,
   take,
 } from 'redux-saga/effects'
-import { normalize } from 'normalizr'
-import { push } from 'react-router-redux'
-
-import { toast } from 'react-toastify'
-import { errorMessages } from 'utils/messages'
-import constants from 'utils/constants'
-
 import * as authSelectors from 'redux/store/auth/auth.selectors'
 import * as appStateActions from 'redux/store/app-state/app-state.actions'
 import * as taskMenuActions from 'redux/store/tasks-menu/tasks-menu.actions'

@@ -1,11 +1,18 @@
 import { normalize } from 'normalizr'
-import { call, put, select, fork, take, all } from 'redux-saga/effects'
-import { push } from 'react-router-redux'
 
+// toast notifications
+import { toast } from 'react-toastify'
+import { errorMessages } from 'utils/messages'
+import constants from 'utils/constants'
+
+// redux
+import { push } from 'react-router-redux'
+import { call, put, select, fork, take, all } from 'redux-saga/effects'
 import * as authSelectors from 'redux/store/auth/auth.selectors'
 import * as contactsActions from 'redux/store/contacts/contacts.actions'
 import * as appStateActions from 'redux/store/app-state/app-state.actions'
 import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'
+import * as taskSelectors from 'redux/store/tasks/tasks.selectors'
 import * as entitiesSelectors from 'redux/store/entities/entities.selectors'
 import {
   fetch,
@@ -17,6 +24,7 @@ import api from 'redux/utils/api'
 import search from 'redux/services/search'
 import schema from 'redux/data/schema'
 import firebase from 'redux/utils/firebase'
+import { getContactTasksRelations } from 'redux/utils/redux-helper'
 
 const CONTACTS = contactsActions.CONTACTS
 
@@ -145,6 +153,68 @@ export function* sendInvitationContact(action) {
   }
 }
 
+export function* prepareDeleteContact(action) {
+  const { contact } = action.payload
+  const isArchivedTasksAlreadyFetching = yield select(state =>
+    taskSelectors.getArchivedTasksIsAlreadyFetching(state)
+  )
+  const archivedTasks = yield select(state =>
+    taskSelectors.getArchivedTasksItems(state)
+  )
+  const entitiesAllTasks = yield select(state =>
+    taskSelectors.getAllTasks(state)
+  )
+  const relations = getContactTasksRelations(contact.id, entitiesAllTasks)
+
+  if (relations.isTask) {
+    toast.error(
+      errorMessages.relations.relationDeleteConflict('contact', 'tasks'),
+      {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: constants.NOTIFICATION_ERROR_DURATION,
+      }
+    )
+    return
+  }
+
+  if (relations.isInbox) {
+    toast.error(
+      errorMessages.relations.relationDeleteConflict('contact', 'inbox tasks'),
+      {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: constants.NOTIFICATION_ERROR_DURATION,
+      }
+    )
+    return
+  }
+
+  if (archivedTasks.size === 0 && !isArchivedTasksAlreadyFetching) {
+    toast.error(errorMessages.relations.emptyListDeleteConflict('archive'), {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: constants.NOTIFICATION_ERROR_DURATION,
+    })
+    return
+  }
+
+  if (relations.isArchived) {
+    toast.error(
+      errorMessages.relations.relationDeleteConflict(
+        'contact',
+        'archive tasks'
+      ),
+      {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: constants.NOTIFICATION_ERROR_DURATION,
+      }
+    )
+    return
+  }
+
+  yield put(contactsActions.deselectContacts())
+  yield put(appStateActions.setLoader('global'))
+  yield put(contactsActions.deleteContact(contact))
+}
+
 export function* deleteContact(action) {
   const originalContact = action.payload.originalData
 
@@ -155,6 +225,7 @@ export function* deleteContact(action) {
       schema: null,
     })
 
+    yield put(appStateActions.deselectLoader('global'))
     yield* mainUndo(action, 'contactDelete')
 
     // delete contact from the search index
