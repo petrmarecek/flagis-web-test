@@ -65,7 +65,9 @@ const NotificationListItem = ({
 
   return (
     <ItemWrapper
-      onClick={isRemovedTask ? null : onHandleReadTaskNotification}
+      onClick={
+        isRemovedTask ? onHandleReadNotification : onHandleReadTaskNotification
+      }
       isRead={isRead}
     >
       <Date>{date}</Date>
