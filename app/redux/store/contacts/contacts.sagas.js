@@ -171,7 +171,6 @@ export function* prepareDeleteContact(action) {
   const relations = getContactTasksRelations(contact.id, entitiesAllTasks)
 
   if (relations.isTask || relations.isInbox || relations.isArchived) {
-    console.log(relations)
     yield put(contactsActions.updateContact(contact, false, 'isContact', true))
     yield put(contactsActions.deselectContacts())
     yield put(contactsActions.deleteContact(contact))
