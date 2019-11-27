@@ -20,11 +20,9 @@ import * as authSelectors from 'redux/store/auth/auth.selectors'
 import * as appStateActions from 'redux/store/app-state/app-state.actions'
 import * as taskMenuActions from 'redux/store/tasks-menu/tasks-menu.actions'
 import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'
-import * as taskSelectors from 'redux/store/tasks/tasks.selectors'
 import * as treeSelectors from 'redux/store/tree/tree.selectors'
 import * as tagActions from 'redux/store/tags/tags.actions'
 import * as tagSelectors from 'redux/store/tags/tags.selectors'
-import * as entitiesSelectors from 'redux/store/entities/entities.selectors'
 import { deselectPath } from 'redux/store/tree/tree.actions'
 import {
   fetch,
@@ -36,7 +34,6 @@ import api from 'redux/utils/api'
 import schema from 'redux/data/schema'
 import search from 'redux/services/search'
 import firebase from 'redux/utils/firebase'
-import { getIsArchivedTagsRelations } from 'redux/utils/redux-helper'
 
 const TAGS = tagActions.TAGS
 
@@ -180,28 +177,14 @@ export function* update(action) {
 export function* prepareDeleteTag(action) {
   const { tag } = action.payload
   const tagId = tag.id
-  const isArchivedTasksAlreadyFetching = yield select(state =>
-    taskSelectors.getArchivedTasksIsAlreadyFetching(state)
-  )
   const tagsRelations = yield select(state =>
     tagSelectors.getTagsRelations(state)
   )
   const tagsReferences = yield select(state =>
     treeSelectors.getTagsReferences(state)
   )
-  const archivedTasks = yield select(state =>
-    taskSelectors.getArchivedTasksItems(state)
-  )
-  const entitiesTasks = yield select(state =>
-    entitiesSelectors.getEntitiesTasks(state)
-  )
   const isReferenced = tagsReferences.has(tagId)
   const isTagsRelations = tagsRelations.has(tagId)
-  const isArchivedTagsRelations = getIsArchivedTagsRelations(
-    tagId,
-    archivedTasks,
-    entitiesTasks
-  )
 
   if (isReferenced) {
     toast.error(errorMessages.tags.referenceDeleteConflict, {
@@ -222,25 +205,6 @@ export function* prepareDeleteTag(action) {
       )
       return
     }
-  }
-
-  if (archivedTasks.size === 0 && !isArchivedTasksAlreadyFetching) {
-    toast.error(errorMessages.relations.emptyListDeleteConflict('archive'), {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: constants.NOTIFICATION_ERROR_DURATION,
-    })
-    return
-  }
-
-  if (isArchivedTagsRelations) {
-    toast.error(
-      errorMessages.relations.relationDeleteConflict('tag', 'archive tasks'),
-      {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: constants.NOTIFICATION_ERROR_DURATION,
-      }
-    )
-    return
   }
 
   // Delete tag

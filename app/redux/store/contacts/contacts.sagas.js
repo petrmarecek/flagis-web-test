@@ -1,15 +1,11 @@
 import { normalize } from 'normalizr'
 
-// toast notifications
-import { toast } from 'react-toastify'
-import { errorMessages } from 'utils/messages'
-import constants from 'utils/constants'
-
 // redux
 import { push } from 'react-router-redux'
 import { call, put, select, fork, take, all } from 'redux-saga/effects'
 import * as authSelectors from 'redux/store/auth/auth.selectors'
 import * as contactsActions from 'redux/store/contacts/contacts.actions'
+import * as contactsSelectors from 'redux/store/contacts/contacts.selectors'
 import * as appStateActions from 'redux/store/app-state/app-state.actions'
 import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'
 import * as taskSelectors from 'redux/store/tasks/tasks.selectors'
@@ -95,6 +91,18 @@ export function* fetchContacts() {
 export function* createContact(action) {
   try {
     const email = action.payload.email
+
+    // check if contact exists on client then delete it
+    // it is possible that contact was deleted but relations with tasks were existed
+    // then contact was marked as isContact: false and contact remained in redux store
+    const isExistingContactOnClient = yield select(state =>
+      contactsSelectors.getContactByEmail(state, email)
+    )
+
+    if (isExistingContactOnClient) {
+      yield put(contactsActions.deleteContactInStore(isExistingContactOnClient))
+    }
+
     const data = { email }
     const contact = yield callApi(api.contacts.create, data)
 
@@ -124,10 +132,12 @@ export function* deselectContacts() {
 }
 
 export function* updateContacts(action) {
-  const contact = action.payload.contact
-  const type = action.payload.type
-  const data = action.payload.data
+  const { contact, type, data, onlyInStore } = action.payload
   const originalData = contact[type]
+
+  if (onlyInStore) {
+    return
+  }
 
   try {
     // call server
@@ -155,62 +165,21 @@ export function* sendInvitationContact(action) {
 
 export function* prepareDeleteContact(action) {
   const { contact } = action.payload
-  const isArchivedTasksAlreadyFetching = yield select(state =>
-    taskSelectors.getArchivedTasksIsAlreadyFetching(state)
-  )
-  const archivedTasks = yield select(state =>
-    taskSelectors.getArchivedTasksItems(state)
-  )
   const entitiesAllTasks = yield select(state =>
     taskSelectors.getAllTasks(state)
   )
   const relations = getContactTasksRelations(contact.id, entitiesAllTasks)
 
-  if (relations.isTask) {
-    toast.error(
-      errorMessages.relations.relationDeleteConflict('contact', 'tasks'),
-      {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: constants.NOTIFICATION_ERROR_DURATION,
-      }
-    )
-    return
-  }
-
-  if (relations.isInbox) {
-    toast.error(
-      errorMessages.relations.relationDeleteConflict('contact', 'inbox tasks'),
-      {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: constants.NOTIFICATION_ERROR_DURATION,
-      }
-    )
-    return
-  }
-
-  if (archivedTasks.size === 0 && !isArchivedTasksAlreadyFetching) {
-    toast.error(errorMessages.relations.emptyListDeleteConflict('archive'), {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: constants.NOTIFICATION_ERROR_DURATION,
-    })
-    return
-  }
-
-  if (relations.isArchived) {
-    toast.error(
-      errorMessages.relations.relationDeleteConflict(
-        'contact',
-        'archive tasks'
-      ),
-      {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: constants.NOTIFICATION_ERROR_DURATION,
-      }
-    )
+  if (relations.isTask || relations.isInbox || relations.isArchived) {
+    console.log(relations)
+    yield put(contactsActions.updateContact(contact, false, 'isContact', true))
+    yield put(contactsActions.deselectContacts())
+    yield put(contactsActions.deleteContact(contact))
     return
   }
 
   yield put(contactsActions.deselectContacts())
+  yield put(contactsActions.deleteContactInStore(contact))
   yield put(contactsActions.deleteContact(contact))
 }
 

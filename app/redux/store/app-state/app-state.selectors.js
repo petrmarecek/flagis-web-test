@@ -1,4 +1,4 @@
-import { getEntitiesTags } from '../entities/entities.selectors'
+import { getActiveEntitiesTags } from '../entities/entities.selectors'
 import { createSelector } from 'reselect'
 
 // ------ Selectors -------------------------------------------------------------
@@ -70,7 +70,7 @@ export const getScrollbarPosition = (state, list) => {
 export const getTagHints = createSelector(
   getTagHintsRaw,
   getTagHintsVisibleTags,
-  getEntitiesTags,
+  getActiveEntitiesTags,
   (tagHintsRaw, tagHintsVisibleTags, entitiesTags) => {
     const visibleTags = tagHintsVisibleTags.map(tagId =>
       entitiesTags.getIn([tagId])

@@ -39,12 +39,19 @@ const getContactsIsFetching = state => state.getIn(['contacts', 'isFetching'])
 export const getCurrentContactId = state => state.getIn(['contacts', 'current'])
 export const getContactsItems = state =>
   getEntitiesContacts(state)
+    .filter(contact => contact.isContact)
     .keySeq()
     .toList()
 export const getContactsSearch = state => state.getIn(['contacts', 'search'])
 export const getContactById = (state, contactId) => {
   const entitiesContacts = getEntitiesContacts(state)
   return entitiesContacts.get(contactId)
+}
+export const getContactByEmail = (state, email) => {
+  const entitiesContacts = getEntitiesContacts(state)
+  return entitiesContacts
+    .toArray()
+    .filter(entitieContact => entitieContact.email === email)
 }
 
 // ------ Reselect selectors ----------------------------------------------------

@@ -1,9 +1,9 @@
-import { List } from "immutable"
+import { List } from 'immutable'
 import search from 'redux/services/search'
 import intersection from 'lodash/intersection'
 import { createSelector } from 'reselect'
 import { getTagDetail } from '../app-state/app-state.selectors'
-import { getEntitiesTags } from '../entities/entities.selectors'
+import { getActiveEntitiesTags } from '../entities/entities.selectors'
 import { compareTagByTitle } from '../../utils/component-helper'
 
 // ------ Helper functions ----------------------------------------------------
@@ -24,9 +24,7 @@ function loadTags(ids, data) {
     ids = intersection(ids, foundIds)
   }
 
-  return ids
-    .map(tagId => entitiesTags.getIn([tagId]))
-    .sort(compareTagByTitle)
+  return ids.map(tagId => entitiesTags.getIn([tagId])).sort(compareTagByTitle)
 }
 
 // ------ Selectors -------------------------------------------------------------
@@ -40,22 +38,22 @@ export const getTagsItems = state => state.getIn(['tags', 'all', 'items'])
 export const getActiveTagsIds = state => state.getIn(['tags', 'activeTags'])
 export const getTagsSearch = state => state.getIn(['tags', 'search'])
 export const getTagsRelations = state => state.getIn(['tags', 'relations'])
-export const getTag = (state, tagId) => getEntitiesTags(state).get(tagId)
+export const getTag = (state, tagId) => getActiveEntitiesTags(state).get(tagId)
 
 // ------ Reselect selectors ----------------------------------------------------
 
 export const getTags = createSelector(
   getTagsIsFetching,
   getTagsItems,
-  getEntitiesTags,
+  getActiveEntitiesTags,
   (tagsIsFetching, tagsItems, entitiesTags) => {
-    return ({
+    return {
       isFetching: tagsIsFetching,
       items: tagsItems
         .map(tagId => entitiesTags.getIn([tagId]))
         .sort(compareTagByTitle)
-        .toArray()
-    })
+        .toArray(),
+    }
   }
 )
 
@@ -63,48 +61,46 @@ export const getVisibleTags = createSelector(
   getTagsIsFetching,
   getTagsItems,
   getTagsSearch,
-  getEntitiesTags,
+  getActiveEntitiesTags,
   (tagsIsFetching, tagsItems, tagsSearch, entitiesTags) => {
     const data = { tagsSearch, entitiesTags }
 
-    return ({
+    return {
       isFetching: tagsIsFetching,
-      items: loadTags(tagsItems.toArray(), data)
-    })
+      items: loadTags(tagsItems.toArray(), data),
+    }
   }
 )
 
 export const getActiveTagsId = createSelector(
   getActiveTagsIds,
-  (activeTagsIds) => {
-
+  activeTagsIds => {
     return activeTagsIds.map(tagId => ({ id: tagId }))
   }
 )
 
 export const getTagsTitle = createSelector(
   getTagsItems,
-  getEntitiesTags,
+  getActiveEntitiesTags,
   (tagsItems, entitiesTags) => {
-
-    return tagsItems.map(tagId => entitiesTags.getIn([tagId]).title.toLowerCase())
+    return tagsItems.map(tagId =>
+      entitiesTags.getIn([tagId]).title.toLowerCase()
+    )
   }
 )
 
 export const getActiveTags = createSelector(
   getActiveTagsIds,
-  getEntitiesTags,
+  getActiveEntitiesTags,
   (activeTagsIds, entitiesTags) => {
-
     return activeTagsIds.map(tagId => entitiesTags.getIn([tagId])).reverse()
   }
 )
 
 export const getCurrentTag = createSelector(
   getCurrentTagId,
-  getEntitiesTags,
+  getActiveEntitiesTags,
   (currentTagId, entitiesTags) => {
-
     if (!currentTagId) {
       return null
     }
@@ -118,9 +114,8 @@ export const getNextTag = createSelector(
   getCurrentTagId,
   getTagsItems,
   getTagsSearch,
-  getEntitiesTags,
+  getActiveEntitiesTags,
   (isTagDetail, tagId, tagsItems, tagsSearch, entitiesTags) => {
-
     if (!isTagDetail) {
       return null
     }
@@ -152,9 +147,8 @@ export const getPreviousTag = createSelector(
   getCurrentTagId,
   getTagsItems,
   getTagsSearch,
-  getEntitiesTags,
+  getActiveEntitiesTags,
   (isTagDetail, tagId, tagsItems, tagsSearch, entitiesTags) => {
-
     if (!isTagDetail) {
       return null
     }

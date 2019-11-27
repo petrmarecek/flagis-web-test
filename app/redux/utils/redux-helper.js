@@ -250,16 +250,11 @@ export function computeTimeLine(tasks, move) {
   }
 }
 
-export function getIsArchivedTagsRelations(
-  tagId,
-  archivedItems,
-  entitiesTasks
-) {
-  const archivedTasks = archivedItems.map(taskId => entitiesTasks.get(taskId))
+export function getTasksTagsRelations(tagId, entitiesTasks) {
   let result = false
 
-  for (const task of archivedTasks) {
-    const tags = task.tags
+  for (const task of entitiesTasks) {
+    const { tags } = task
 
     if (tags.includes(tagId)) {
       result = true
@@ -277,16 +272,16 @@ export function getContactTasksRelations(contactId, entitiesTasks) {
   const isArchivedLens = R.lensProp('isArchived')
 
   for (const task of entitiesTasks) {
-    const { isArchived, followers } = task
+    const { isArchived, followers, createdById } = task
     const assignee = getAssigneeOfTask(followers)
 
-    if (!assignee) {
+    if (assignee === null) {
       continue
     }
 
     const profileId = assignee.profile.id
     const isInbox = assignee.status === 'pending'
-    if (profileId !== contactId) {
+    if (profileId !== contactId && createdById !== contactId) {
       continue
     }
 

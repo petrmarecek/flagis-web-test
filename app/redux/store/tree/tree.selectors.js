@@ -1,5 +1,8 @@
 import { List } from 'immutable'
-import { getEntitiesTags, getEntitiesTreeItems } from '../entities/entities.selectors'
+import {
+  getActiveEntitiesTags,
+  getEntitiesTreeItems,
+} from '../entities/entities.selectors'
 import { createSelector } from 'reselect'
 
 // ------ Helper functions ----------------------------------------------------
@@ -49,12 +52,16 @@ function getTagIdsOfChilds(state, treeItemId) {
 const getTreeItemsById = state => state.getIn(['tree', 'itemsById'])
 
 // Export selectors
-export const getTreeItemsIsFetching = state => state.getIn(['tree', 'isFetching'])
+export const getTreeItemsIsFetching = state =>
+  state.getIn(['tree', 'isFetching'])
 export const getTreeStore = state => state.getIn(['tree'])
-export const getTreeItemsByParent = state => state.getIn(['tree', 'itemsByParent'])
+export const getTreeItemsByParent = state =>
+  state.getIn(['tree', 'itemsByParent'])
 export const getSelectionTree = state => state.getIn(['tree', 'selection'])
-export const getAddControlParentId = state => state.getIn(['tree', 'addControlParentId'])
-export const getTreeItem = (state, treeItemId) => state.getIn(['entities', 'treeItems']).get(treeItemId)
+export const getAddControlParentId = state =>
+  state.getIn(['tree', 'addControlParentId'])
+export const getTreeItem = (state, treeItemId) =>
+  state.getIn(['entities', 'treeItems']).get(treeItemId)
 
 export const getTree = (state, parentId = null) => {
   const itemIds = state.getIn(['tree', 'itemsByParent']).get(parentId)
@@ -68,10 +75,10 @@ export const getTree = (state, parentId = null) => {
 
   // sort treeItems by order
   items = items.sort((a, b) => {
-    if (a.order < b.order) return -1;
-    if (a.order > b.order) return 1;
+    if (a.order < b.order) return -1
+    if (a.order > b.order) return 1
 
-    return 0;
+    return 0
   })
 
   return items.map(item => {
@@ -98,7 +105,10 @@ export const getDisabledTagIds = (state, parentId, updatedTreeItem = {}) => {
   // tag ids of tree item parents
   const tagIdsOfParents = getTagIdsOfAllParents(state, parentId)
   // tag ids of tree item childs
-  const tagIdsOfChilds = getTagIdsOfChilds(state, updatedTreeItem ? updatedTreeItem.treeItemId : parentId)
+  const tagIdsOfChilds = getTagIdsOfChilds(
+    state,
+    updatedTreeItem ? updatedTreeItem.treeItemId : parentId
+  )
 
   let result = tagIdsOfSameParent
     .push(...tagIdsOfParents)
@@ -119,7 +129,6 @@ export const getSections = createSelector(
   getTreeItemsByParent,
   getEntitiesTreeItems,
   (treeItemsByParent, entitiesTreeItems) => {
-
     const sectionIds = treeItemsByParent.get(null)
     if (!sectionIds) {
       return null
@@ -131,10 +140,10 @@ export const getSections = createSelector(
 
     // sort sections by order
     sections = sections.sort((a, b) => {
-      if (a.order < b.order) return -1;
-      if (a.order > b.order) return 1;
+      if (a.order < b.order) return -1
+      if (a.order > b.order) return 1
 
-      return 0;
+      return 0
     })
 
     return sections
@@ -145,33 +154,36 @@ export const getTagsReferences = createSelector(
   getTreeItemsById,
   getEntitiesTreeItems,
   (treeItemsById, entitiesTreeItems) => {
-
-    const treeItemsEntities = treeItemsById.map(treeItem => entitiesTreeItems.getIn([treeItem.id]))
+    const treeItemsEntities = treeItemsById.map(treeItem =>
+      entitiesTreeItems.getIn([treeItem.id])
+    )
     return treeItemsEntities.map(treeItem => treeItem.tagId).toSet()
   }
 )
 
-export const getTagsOfTree = (state, parentId) => createSelector(
-  getTreeItemsByParent,
-  getEntitiesTreeItems,
-  getEntitiesTags,
-  (treeItemsByParent, entitiesTreeItems, entitiesTags) => {
+export const getTagsOfTree = (state, parentId) =>
+  createSelector(
+    getTreeItemsByParent,
+    getEntitiesTreeItems,
+    getActiveEntitiesTags,
+    (treeItemsByParent, entitiesTreeItems, entitiesTags) => {
+      // Tags of all parents
+      const treeItemsIdByParent = treeItemsByParent.get(parentId)
+      const parentsTagIds = getTagIdsOfAllParents(state, parentId)
+      let tags = parentsTagIds.map(tagId => entitiesTags.get(tagId)).toSet()
 
-    // Tags of all parents
-    const treeItemsIdByParent = treeItemsByParent.get(parentId)
-    const parentsTagIds = getTagIdsOfAllParents(state, parentId)
-    let tags = parentsTagIds.map(tagId => entitiesTags.get(tagId)).toSet()
+      // Tags of all children
+      if (treeItemsIdByParent) {
+        const treeItems = treeItemsIdByParent.map(treeItemId =>
+          entitiesTreeItems.get(treeItemId)
+        )
+        const childrenTags = treeItems
+          .map(treeItem => entitiesTags.get(treeItem.tagId))
+          .toSet()
+        tags = tags.union(childrenTags)
+      }
 
-    // Tags of all children
-    if (treeItemsIdByParent) {
-      const treeItems = treeItemsIdByParent.map(treeItemId => entitiesTreeItems.get(treeItemId))
-      const childrenTags = treeItems.map(treeItem => entitiesTags.get(treeItem.tagId)).toSet()
-      tags = tags.union(childrenTags)
+      // Return tags of all parents and children
+      return { tags: tags.isEmpty() ? null : tags.toList() }
     }
-
-    // Return tags of all parents and children
-    return { tags: tags.isEmpty() ? null : tags.toList() }
-  }
-)
-
-
+  )

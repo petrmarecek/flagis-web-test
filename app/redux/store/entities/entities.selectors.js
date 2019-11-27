@@ -39,11 +39,16 @@ export const getActiveEntitiesTasks = createSelector(
   }
 )
 
-export const getTask = createSelector(
+export const getArchivedEntitiesTasks = createSelector(
   getEntitiesTasks,
   entitiesTasks => {
-    return entitiesTasks
-      .filter(task => task && task.isTrashed === false)
-      .filter(task => task && task.isArchived === false)
+    return entitiesTasks.filter(task => task && task.isArchived === true)
+  }
+)
+
+export const getActiveEntitiesTags = createSelector(
+  getEntitiesTags,
+  entitiesTags => {
+    return entitiesTags.filter(tag => tag && !tag.isDeleted)
   }
 )
