@@ -9,7 +9,10 @@ import {
   deselectLoader,
 } from 'redux/store/app-state/app-state.actions'
 import { getCurrentDialog } from 'redux/store/app-state/app-state.selectors'
-import { addRemoveTaskTags } from 'redux/store/tasks/tasks.actions'
+import {
+  addRemoveTaskTags,
+  deselectTasks,
+} from 'redux/store/tasks/tasks.actions'
 import {
   getSelectTasks,
   getSelectTasksTags,
@@ -39,6 +42,7 @@ class Dialogs extends PureComponent {
     hideDialog: PropTypes.func.isRequired,
     setLoader: PropTypes.func.isRequired,
     deselectLoader: PropTypes.func.isRequired,
+    deselectTasks: PropTypes.func.isRequired,
     tags: PropTypes.object,
     tagsLists: PropTypes.object,
     addToList: PropTypes.func,
@@ -117,6 +121,7 @@ class Dialogs extends PureComponent {
     }
 
     this.props.clearLists()
+    this.props.deselectTasks()
     this.props.hideDialog()
     this.props.deselectLoader('global')
   }
@@ -194,6 +199,7 @@ const mapDispatchToProps = {
   deleteFromList,
   clearLists,
   addRemoveTaskTags,
+  deselectTasks,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dialogs)
