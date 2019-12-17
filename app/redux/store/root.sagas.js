@@ -13,6 +13,7 @@ import { ATTACHMENTS } from './attachments/attachments.actions'
 import { CONTACTS } from './contacts/contacts.actions'
 import { FOLLOWERS } from './followers/followers.actions'
 import { ROUTING } from './routing/routing.actions'
+import { ERRORS } from './errors/errors.actions'
 
 import * as auth from './auth/auth.sagas'
 import * as task from './tasks/tasks.sagas'
@@ -27,6 +28,7 @@ import * as attachment from './attachments/attachments.sagas'
 import * as contact from './contacts/contacts.sagas'
 import * as followers from './followers/followers.sagas'
 import * as routing from './routing/routing.sagas'
+import * as errors from './errors/errors.sagas'
 
 export default function* root() {
   yield all([
@@ -160,5 +162,8 @@ export default function* root() {
       ROUTING.CHANGE_NAVIGATION_SECONDARY,
       routing.changeNavigationSecondary
     ),
+
+    // errors
+    takeEvery(ERRORS.ERROR_SENTRY, errors.errorSentry),
   ])
 }

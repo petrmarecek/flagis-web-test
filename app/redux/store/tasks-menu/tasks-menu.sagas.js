@@ -1,3 +1,4 @@
+// redux
 import { put, select } from 'redux-saga/effects'
 import * as taskMenuActions from 'redux/store/tasks-menu/tasks-menu.actions'
 import * as tagActions from 'redux/store/tags/tags.actions'

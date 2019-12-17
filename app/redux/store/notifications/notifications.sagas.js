@@ -1,15 +1,21 @@
+import { OrderedSet } from 'immutable'
+import { normalize } from 'normalizr'
+
+// redux
+import { all, put, select, cancelled, fork, take } from 'redux-saga/effects'
 import api from 'redux/utils/api'
 import schema from 'redux/data/schema'
 import firebase from 'redux/utils/firebase'
-import { OrderedSet } from 'immutable'
-import { normalize } from 'normalizr'
-import { fetch, createLoadActions, callApi } from 'redux/store/common.sagas'
-import { all, put, select, cancelled, fork, take } from 'redux-saga/effects'
-
 import * as appStateActions from 'redux/store/app-state/app-state.actions'
 import * as taskActions from 'redux/store/tasks/tasks.actions'
 import * as notificationsActions from 'redux/store/notifications/notifications.actions'
 import * as authSelectors from 'redux/store/auth/auth.selectors'
+import * as errorActions from 'redux/store/errors/errors.actions'
+import {
+  sentryBreadcrumbCategory,
+  sentryTagType,
+} from 'redux/store/errors/errors.common'
+import { fetch, createLoadActions, callApi } from 'redux/store/common.sagas'
 
 const NOTIFICATIONS = notificationsActions.NOTIFICATIONS
 
@@ -39,6 +45,16 @@ function* syncNotificationsChannel(channel) {
     }
   } catch (err) {
     yield put({ type: REJECTED, err })
+
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.FIRESTORE,
+        tagValue: 'SYNC_NOTIFICATIONS',
+        breadcrumbCategory: sentryBreadcrumbCategory.FIRESTORE,
+        breadcrumbMessage: 'SYNC_NOTIFICATIONS',
+      })
+    )
   } finally {
     if (yield cancelled()) {
       channel.close()
@@ -61,23 +77,47 @@ export function* fetchNotifications(action) {
 }
 
 export function* readNotification(action) {
-  const { notification, task } = action.payload
+  try {
+    const { notification, task } = action.payload
 
-  if (task !== null && !task.isTrashed) {
-    if (task.isArchived) {
-      yield put(appStateActions.visibleArchivedTasks())
+    if (task !== null && !task.isTrashed) {
+      if (task.isArchived) {
+        yield put(appStateActions.visibleArchivedTasks())
+      }
+
+      if (task.isInbox) {
+        yield put(appStateActions.visibleInboxTasks())
+      }
+
+      yield put(taskActions.selectTask(OrderedSet().add(task.id), false))
     }
 
-    if (task.isInbox) {
-      yield put(appStateActions.visibleInboxTasks())
-    }
-
-    yield put(taskActions.selectTask(OrderedSet().add(task.id), false))
+    yield callApi(api.notifications.read, notification.id)
+  } catch (err) {
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
   }
-
-  yield callApi(api.notifications.read, notification.id)
 }
 
-export function* readAllNotifications() {
-  yield callApi(api.notifications.readAll)
+export function* readAllNotifications(action) {
+  try {
+    yield callApi(api.notifications.readAll)
+  } catch (err) {
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
+  }
 }

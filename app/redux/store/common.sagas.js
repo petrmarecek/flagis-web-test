@@ -1,17 +1,25 @@
+import _ from 'lodash'
+import moment from 'moment'
+
+// toast notifications
+import { toast } from 'react-toastify'
+import constants from 'utils/constants'
+import { errorMessages } from 'utils/messages'
+
+// redux
 import { call, put, take, spawn, race, select } from 'redux-saga/effects'
 import { delay } from 'redux-saga'
-import { toast } from 'react-toastify'
-import moment from 'moment'
-import { errorMessages } from 'utils/messages'
-import constants from 'utils/constants'
-import _ from 'lodash'
-
 import { AUTH } from './auth/auth.actions'
 import * as appStateActions from 'redux/store/app-state/app-state.actions'
 import { logout } from 'redux/store/auth/auth.actions'
 import { deselectTasks } from 'redux/store/tasks/tasks.actions'
 import { deselectTags } from 'redux/store/tags/tags.actions'
 import { getAuth } from './auth/auth.selectors'
+import * as errorActions from 'redux/store/errors/errors.actions'
+import {
+  sentryBreadcrumbCategory,
+  sentryTagType,
+} from 'redux/store/errors/errors.common'
 
 /**
  * Call api if access token is valid
@@ -119,13 +127,21 @@ export function* fetch(actionType, fetchDef) {
       })
       yield put(logout())
     } else {
-      console.error('Cannot fetch data.', err)
-
       // dispatch error
       yield put({
         type: REJECTED,
         error: err,
       })
+
+      // send error to sentry
+      yield put(
+        errorActions.errorSentry(err, {
+          tagType: sentryTagType.ACTION,
+          tagValue: actionType,
+          breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+          breadcrumbMessage: actionType,
+        })
+      )
     }
   }
 

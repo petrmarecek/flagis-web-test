@@ -2,7 +2,15 @@ import { normalize } from 'normalizr'
 
 // redux
 import { push } from 'react-router-redux'
-import { call, put, select, fork, take, all } from 'redux-saga/effects'
+import {
+  call,
+  put,
+  select,
+  cancelled,
+  fork,
+  take,
+  all,
+} from 'redux-saga/effects'
 import * as authSelectors from 'redux/store/auth/auth.selectors'
 import * as contactsActions from 'redux/store/contacts/contacts.actions'
 import * as contactsSelectors from 'redux/store/contacts/contacts.selectors'
@@ -10,6 +18,11 @@ import * as appStateActions from 'redux/store/app-state/app-state.actions'
 import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'
 import * as taskSelectors from 'redux/store/tasks/tasks.selectors'
 import * as entitiesSelectors from 'redux/store/entities/entities.selectors'
+import * as errorActions from 'redux/store/errors/errors.actions'
+import {
+  sentryBreadcrumbCategory,
+  sentryTagType,
+} from 'redux/store/errors/errors.common'
 import {
   fetch,
   mainUndo,
@@ -53,14 +66,34 @@ function* saveChangeFromFirestore(change, isGlobalProfile) {
 }
 
 function* syncContactsChannel(channel, isGlobalProfile) {
-  while (true) {
-    // eslint-disable-line
-    const snapshot = yield take(channel)
-    yield all(
-      snapshot
-        .docChanges()
-        .map(change => call(saveChangeFromFirestore, change, isGlobalProfile))
+  const { REJECTED } = createLoadActions(CONTACTS.FIREBASE)
+
+  try {
+    while (true) {
+      // eslint-disable-line
+      const snapshot = yield take(channel)
+      yield all(
+        snapshot
+          .docChanges()
+          .map(change => call(saveChangeFromFirestore, change, isGlobalProfile))
+      )
+    }
+  } catch (err) {
+    yield put({ type: REJECTED, err })
+
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.FIRESTORE,
+        tagValue: 'SYNC_CONTACTS',
+        breadcrumbCategory: sentryBreadcrumbCategory.FIRESTORE,
+        breadcrumbMessage: 'SYNC_CONTACTS',
+      })
     )
+  } finally {
+    if (yield cancelled()) {
+      channel.close()
+    }
   }
 }
 
@@ -111,7 +144,15 @@ export function* createContact(action) {
 
     yield put(contactsActions.addContact(contact))
   } catch (err) {
-    console.error(err)
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
   }
 }
 
@@ -144,11 +185,18 @@ export function* updateContacts(action) {
     const updateData = { [type]: data }
     yield callApi(api.contacts.update, contact.id, updateData)
   } catch (err) {
-    // log error
-    console.error('Error occured during contact update', err)
-
     // revert to original values
     yield put(contactsActions.updateContact(contact, originalData, type))
+
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
   }
 }
 
@@ -158,8 +206,15 @@ export function* sendInvitationContact(action) {
     const contactId = action.payload.contactId
     yield callApi(api.contacts.invitation, contactId)
   } catch (err) {
-    // log error
-    console.error('Error occured during send invitation to contact', err)
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
   }
 }
 
@@ -197,13 +252,20 @@ export function* deleteContact(action) {
     // delete contact from the search index
     search.contacts.removeItem({ id: action.payload })
   } catch (err) {
-    // log error
-    console.error('Error occured during contact delete', err)
-
     // add the contact to the search index
     search.contacts.addItem(originalContact)
 
     yield put(contactsActions.addContact(originalContact))
+
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
   }
 }
 

@@ -1,14 +1,35 @@
+import _ from 'lodash'
 import { normalize } from 'normalizr'
+
+// toast notifications
+import { toast } from 'react-toastify'
+import { successMessages, infoMessages } from 'utils/messages'
+import constants from 'utils/constants'
+
+// redux
 import { delay } from 'redux-saga'
 import { push } from 'react-router-redux'
-import { all, take, call, put, select, fork, race } from 'redux-saga/effects'
-import _ from 'lodash'
+import {
+  all,
+  take,
+  call,
+  put,
+  select,
+  cancelled,
+  fork,
+  race,
+} from 'redux-saga/effects'
 import {
   createLoadActions,
   fetch,
   mainUndo,
   callApi,
 } from 'redux/store/common.sagas'
+import * as errorActions from 'redux/store/errors/errors.actions'
+import {
+  sentryBreadcrumbCategory,
+  sentryTagType,
+} from 'redux/store/errors/errors.common'
 import * as appStateActions from 'redux/store/app-state/app-state.actions'
 import * as taskActions from 'redux/store/tasks/tasks.actions'
 import * as tagsActions from 'redux/store/tags/tags.actions'
@@ -26,10 +47,6 @@ import search from 'redux/services/search'
 import firebase from 'redux/utils/firebase'
 import dateUtil from 'redux/utils/date'
 import { getAssigneeOfTask } from 'redux/utils/component-helper'
-
-import { toast } from 'react-toastify'
-import { successMessages, infoMessages } from 'utils/messages'
-import constants from 'utils/constants'
 
 const TASKS = taskActions.TASKS
 
@@ -220,16 +237,36 @@ function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
 }
 
 function* syncTasksChannel(channel, userId, isCollaboratedTask) {
-  while (true) {
-    // eslint-disable-line
-    const snapshot = yield take(channel)
-    yield all(
-      snapshot
-        .docChanges()
-        .map(change =>
-          call(saveChangeFromFirestore, change, userId, isCollaboratedTask)
-        )
+  const { REJECTED } = createLoadActions(TASKS.FIREBASE)
+
+  try {
+    while (true) {
+      // eslint-disable-line
+      const snapshot = yield take(channel)
+      yield all(
+        snapshot
+          .docChanges()
+          .map(change =>
+            call(saveChangeFromFirestore, change, userId, isCollaboratedTask)
+          )
+      )
+    }
+  } catch (err) {
+    yield put({ type: REJECTED, err })
+
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.FIRESTORE,
+        tagValue: 'SYNC_TASKS',
+        breadcrumbCategory: sentryBreadcrumbCategory.FIRESTORE,
+        breadcrumbMessage: 'SYNC_TASKS',
+      })
     )
+  } finally {
+    if (yield cancelled()) {
+      channel.close()
+    }
   }
 }
 
@@ -338,8 +375,15 @@ export function* createTask(action) {
       }
     }
   } catch (err) {
-    console.error('Cannot create task.', err)
-    // TODO: handle error
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
   }
 }
 
@@ -357,11 +401,18 @@ export function* toggleImportant(action) {
     const update = { isImportant }
     yield updateTask(task.id, update)
   } catch (err) {
-    // log error
-    console.error('Error occured during task update', err)
-
     // revert to original state
     yield put(taskActions.setImportant(task, originalIsImportant))
+
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
   }
 }
 
@@ -389,6 +440,16 @@ export function* setArchiveTasks(action) {
     yield put(appStateActions.deselectLoader('global'))
   } catch (err) {
     // TODO: revert to original state
+
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
   }
 }
 
@@ -417,14 +478,24 @@ export function* cancelArchiveTasks(action) {
     }
   } catch (err) {
     // TODO: revert to original state
+
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
   }
 }
 
 export function* setComplete(action) {
-  const taskId = action.payload.taskId
-  const detail = yield select(state => appStateSelectors.getDetail(state))
-
   try {
+    const taskId = action.payload.taskId
+    const detail = yield select(state => appStateSelectors.getDetail(state))
+
     if (!detail.task) {
       yield put(taskActions.deselectTasks())
     }
@@ -434,14 +505,24 @@ export function* setComplete(action) {
     yield* updateTask(taskId, update)
   } catch (err) {
     // TODO: revert to original state
+
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
   }
 }
 
 export function* setIncomplete(action) {
-  const taskId = action.payload.taskId
-  const detail = yield select(state => appStateSelectors.getDetail(state))
-
   try {
+    const taskId = action.payload.taskId
+    const detail = yield select(state => appStateSelectors.getDetail(state))
+
     if (!detail.task) {
       yield put(taskActions.deselectTasks())
     }
@@ -450,8 +531,17 @@ export function* setIncomplete(action) {
     const update = { isCompleted: false }
     yield* updateTask(taskId, update)
   } catch (err) {
-    console.error(err)
     // TODO: revert to original state
+
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
   }
 }
 
@@ -470,6 +560,16 @@ export function* setOrder(action) {
   } catch (err) {
     // TODO: revert
     // We need to both revert Task.order field and position within loaded list
+
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
   }
 }
 
@@ -488,6 +588,16 @@ export function* setOrderTimeLine(action) {
   } catch (err) {
     // TODO: revert
     // We need to both revert Task.order field and position within loaded list
+
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
   }
 }
 
@@ -651,8 +761,8 @@ export function* prepareDeleteTask(action) {
 
 export function* deleteTask(action) {
   const update = { isTrashed: true }
-  for (const taskId of action.payload.taskDeleteList) {
-    try {
+  try {
+    for (const taskId of action.payload.taskDeleteList) {
       // update task (change isTrashed: true)
       yield* updateTask(taskId, update)
 
@@ -667,9 +777,17 @@ export function* deleteTask(action) {
 
       // delete task from the search index
       search.tasks.removeItem({ id: taskId })
-    } catch (err) {
-      console.error(err)
     }
+  } catch (err) {
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
   }
 
   yield put(taskActions.deselectTasks())
@@ -680,8 +798,8 @@ export function* deleteTask(action) {
 export function* undoDeleteTask(action) {
   const update = { isTrashed: false }
 
-  for (const taskId of action.payload.taskDeleteList) {
-    try {
+  try {
+    for (const taskId of action.payload.taskDeleteList) {
       // update task (change isTrashed: false)
       yield* updateTask(taskId, update)
 
@@ -693,9 +811,17 @@ export function* undoDeleteTask(action) {
           yield put(tagsActions.addTagsRelations(tag, taskId))
         }
       }
-    } catch (err) {
-      console.error(err)
     }
+  } catch (err) {
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
   }
 }
 
@@ -721,8 +847,17 @@ export function* removeTaskTag(action) {
     // Update list on the server
     yield callApi(api.tasks.setTags, taskId, tags)
   } catch (err) {
-    console.error(err)
     // TODO: revert to original state
+
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
   }
 }
 
@@ -736,8 +871,17 @@ export function* addTaskTag(action) {
     // Save relation on server (don't block rest of saga)
     yield fork(saveTaskTagRelation, taskId, tag)
   } catch (err) {
-    console.error(err)
     // TODO: revert to original state
+
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
   }
 }
 
@@ -771,8 +915,17 @@ export function* addRemoveTaskTags(action) {
     // Update list on the server
     yield callApi(api.tasks.setTags, taskId, tags)
   } catch (err) {
-    console.error(err)
     // TODO: revert to original state
+
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
   }
 }
 
@@ -781,73 +934,116 @@ export function* removeTaskFollower(action) {
     const { taskId, userId, followerId } = action.payload
     yield put(followerActions.deleteFollower(taskId, userId, followerId))
   } catch (err) {
-    console.error(err)
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
   }
 }
 
 export function* sendTask(action) {
-  const { taskId } = action.payload
-  const { send } = api.followers
-
-  yield callApi(send, taskId)
+  try {
+    const { taskId } = action.payload
+    const { send } = api.followers
+    yield callApi(send, taskId)
+  } catch (err) {
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
+  }
 }
 
 export function* acceptTask(action) {
-  const { taskId } = action.payload
-  const { accept } = api.followers
+  try {
+    const { taskId } = action.payload
+    const { accept } = api.followers
 
-  // read all notification for taskId
-  const notifications = yield select(state =>
-    notificationSelectors.getNotificationsForTaskId(state, taskId)
-  )
-  for (const notification of notifications) {
-    yield put(notificationActions.readNotification(notification))
+    // read all notification for taskId
+    const notifications = yield select(state =>
+      notificationSelectors.getNotificationsForTaskId(state, taskId)
+    )
+    for (const notification of notifications) {
+      yield put(notificationActions.readNotification(notification))
+    }
+
+    yield callApi(accept, taskId)
+  } catch (err) {
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
   }
-
-  yield callApi(accept, taskId)
 }
 
 export function* rejectTask(action) {
-  const { task } = action.payload.originalData
-  const { reject } = api.followers
-  const { inbox } = yield select(state => appStateSelectors.getDetail(state))
+  try {
+    const { task } = action.payload.originalData
+    const { reject } = api.followers
+    const { inbox } = yield select(state => appStateSelectors.getDetail(state))
 
-  if (inbox) {
-    yield put(appStateActions.deselectDetail('inbox'))
+    if (inbox) {
+      yield put(appStateActions.deselectDetail('inbox'))
+    }
+
+    // Debounce by 50ms
+    yield call(delay, 50)
+    // Dispatch undo action
+    yield* mainUndo(action, 'taskRejected')
+
+    // Wait for undo
+    const { undo } = yield race({
+      undo: take('UNDO_TASK/REJECT'),
+      timeout: call(delay, 8000),
+    })
+
+    // Dispatch undo -> don't call API
+    if (undo) {
+      return
+    }
+
+    // Show notification
+    toast.success(successMessages.tasks.rejected, {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+    })
+
+    // read all notification for task
+    const notifications = yield select(state =>
+      notificationSelectors.getNotificationsForTaskId(state, task.id)
+    )
+    for (const notification of notifications) {
+      yield put(notificationActions.readNotification(notification))
+    }
+
+    // call API
+    yield callApi(reject, task.id)
+  } catch (err) {
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
   }
-
-  // Debounce by 50ms
-  yield call(delay, 50)
-  // Dispatch undo action
-  yield* mainUndo(action, 'taskRejected')
-
-  // Wait for undo
-  const { undo } = yield race({
-    undo: take('UNDO_TASK/REJECT'),
-    timeout: call(delay, 8000),
-  })
-
-  // Dispatch undo -> don't call API
-  if (undo) {
-    return
-  }
-
-  // Show notification
-  toast.success(successMessages.tasks.rejected, {
-    position: toast.POSITION.BOTTOM_RIGHT,
-    autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
-  })
-
-  // read all notification for task
-  const notifications = yield select(state =>
-    notificationSelectors.getNotificationsForTaskId(state, task.id)
-  )
-  for (const notification of notifications) {
-    yield put(notificationActions.readNotification(notification))
-  }
-
-  // call API
-  yield callApi(reject, task.id)
 }
 
 export function* undoRejectTask(action) {
@@ -896,8 +1092,17 @@ function* saveTaskTagRelation(taskId, tag) {
       yield put(tagsActions.replaceTag(tag.id, serverTag, taskId))
     }
   } catch (err) {
-    console.log(err)
     // TODO: detatch tag from task or add retry action
+
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: 'SAVE_TASK-TAG-RELATIONS',
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: 'SAVE_TASK-TAG-RELATIONS',
+      })
+    )
   }
 }
 
@@ -912,11 +1117,18 @@ function* setTaskField(task, fieldName, newFieldValue) {
     const update = { [fieldName]: newFieldValue }
     yield* updateTask(task.id, update)
   } catch (err) {
-    // log error
-    console.error('Error occured during task update', err)
-
     // revert original values
     yield put(taskActions.setField(task, fieldName, originalFieldValue))
+
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: 'SAVE_TASK-FIELD',
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: 'SAVE_TASK-FIELD',
+      })
+    )
   }
 }
 

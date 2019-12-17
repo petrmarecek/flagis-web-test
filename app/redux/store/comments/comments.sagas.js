@@ -1,3 +1,6 @@
+import { normalize } from 'normalizr'
+
+// redux
 import {
   all,
   select,
@@ -8,11 +11,14 @@ import {
   put,
   take,
 } from 'redux-saga/effects'
-import { normalize } from 'normalizr'
-
 import * as appStateActions from 'redux/store/app-state/app-state.actions'
 import * as commentActions from 'redux/store/comments/comments.actions'
 import * as taskSelectors from 'redux/store/tasks/tasks.selectors'
+import * as errorActions from 'redux/store/errors/errors.actions'
+import {
+  sentryBreadcrumbCategory,
+  sentryTagType,
+} from 'redux/store/errors/errors.common'
 import { fetch, createLoadActions, callApi } from 'redux/store/common.sagas'
 import api from 'redux/utils/api'
 import schema from 'redux/data/schema'
@@ -48,6 +54,16 @@ function* syncCommentsChannel(channel) {
     }
   } catch (err) {
     yield put({ type: REJECTED, err })
+
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.FIRESTORE,
+        tagValue: 'SYNC_COMMENTS',
+        breadcrumbCategory: sentryBreadcrumbCategory.FIRESTORE,
+        breadcrumbMessage: 'SYNC_COMMENTS',
+      })
+    )
   } finally {
     if (yield cancelled()) {
       channel.close()
@@ -96,8 +112,15 @@ export function* createComment(action) {
 
     yield put(commentActions.addComment(comment))
   } catch (err) {
-    console.error('Cannot create comment.', err)
-    // TODO: handle error
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
   }
 }
 
@@ -107,7 +130,14 @@ export function* deleteComment(action) {
     const commentId = action.payload.commentId
     yield callApi(api.comments.delete, taskId, commentId)
   } catch (err) {
-    console.error('Cannot delete comment.', err)
-    // TODO: handle error
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
   }
 }

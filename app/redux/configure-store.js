@@ -8,11 +8,27 @@ import { routerMiddleware } from 'react-router-redux'
 import { autoRehydrate } from 'redux-persist-immutable'
 import normalizrMiddleware from 'redux/utils/normalizr-middleware'
 import createSagaMiddleware from 'redux-saga'
+import * as Sentry from '@sentry/browser'
 
 import createReducer from 'redux/store/root.reducer'
 import sagas from 'redux/store/root.sagas'
 
-const sagaMiddleware = createSagaMiddleware()
+Sentry.init({
+  dsn: 'https://31ed8cf4fff34c59935f64859cd5a72d@sentry.io/1796487',
+  beforeBreadcrumb(breadcrumb) {
+    return breadcrumb
+  },
+})
+
+const sagaMiddleware = createSagaMiddleware({
+  onError(err) {
+    if (process.env.NODE_ENV === 'development') {
+      console.error(err)
+    } else {
+      Sentry.captureException(err)
+    }
+  },
+})
 
 export default function configureStore(initialState = {}, history) {
   // Create the store with two middlewares

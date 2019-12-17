@@ -1,4 +1,15 @@
 import { normalize } from 'normalizr'
+import { Map } from 'immutable'
+import intersection from 'lodash/intersection'
+import includes from 'lodash/includes'
+import { routes } from 'utils/routes'
+
+// toast notifications
+import { toast } from 'react-toastify'
+import constants from 'utils/constants'
+import { errorMessages } from 'utils/messages'
+
+// redux
 import {
   all,
   take,
@@ -9,20 +20,17 @@ import {
   select,
 } from 'redux-saga/effects'
 import { push } from 'react-router-redux'
-import intersection from 'lodash/intersection'
-import includes from 'lodash/includes'
-import { toast } from 'react-toastify'
-import { errorMessages } from 'utils/messages'
-import constants from 'utils/constants'
-import { routes } from 'utils/routes'
-import { Map } from 'immutable'
-
 import {
   createLoadActions,
   fetch,
   mainUndo,
   callApi,
 } from 'redux/store/common.sagas'
+import * as errorActions from 'redux/store/errors/errors.actions'
+import {
+  sentryBreadcrumbCategory,
+  sentryTagType,
+} from 'redux/store/errors/errors.common'
 import * as appStateActions from 'redux/store/app-state/app-state.actions'
 import * as taskActions from 'redux/store/tasks/tasks.actions'
 import * as taskMenuActions from 'redux/store/tasks-menu/tasks-menu.actions'
@@ -99,6 +107,16 @@ function* syncTagTreeItemsChannel(channel) {
     }
   } catch (err) {
     yield put({ type: REJECTED, err })
+
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.FIRESTORE,
+        tagValue: 'SYNC_TAG-TREE',
+        breadcrumbCategory: sentryBreadcrumbCategory.FIRESTORE,
+        breadcrumbMessage: 'SYNC_TAG-TREE',
+      })
+    )
   } finally {
     if (yield cancelled()) {
       channel.close()
@@ -138,8 +156,16 @@ export function* createTreeItem(action) {
 
     // add tree item to the store
     yield put(treeActions.addTreeItem(item))
-  } catch (error) {
-    // TODO: Error
+  } catch (err) {
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
   }
 }
 
@@ -229,33 +255,53 @@ export function* updateTreeItem(action) {
 
       yield put(tagActions.setActiveTags(activeTags))
     }
-  } catch (e) {
+  } catch (err) {
     yield put({
       type: REJECTED,
       payload: originalTreeItem,
     })
 
-    console.log(e)
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
   }
 }
 
 export function* deleteTreeItem(action) {
-  // Call server
-  yield* fetch(TREE.DELETE, {
-    method: api.tree.delete,
-    args: [action.payload.originalData.id],
-    schema: null,
-    payload: action.payload,
-  })
+  try {
+    // Call server
+    yield* fetch(TREE.DELETE, {
+      method: api.tree.delete,
+      args: [action.payload.originalData.id],
+      schema: null,
+      payload: action.payload,
+    })
 
-  // Set action for undo
-  const title = action.payload.originalData.isSection
-    ? 'treeGroupDelete'
-    : 'treeItemDelete'
-  yield* mainUndo(action, title)
+    // Set action for undo
+    const title = action.payload.originalData.isSection
+      ? 'treeGroupDelete'
+      : 'treeItemDelete'
+    yield* mainUndo(action, title)
 
-  // delete all child items on client
-  yield* deleteChildItems(action.payload.originalData)
+    // delete all child items on client
+    yield* deleteChildItems(action.payload.originalData)
+  } catch (err) {
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
+  }
 }
 
 export function* undoDeleteTreeItem(action) {
@@ -298,7 +344,15 @@ export function* undoDeleteTreeItem(action) {
       }
     }
   } catch (err) {
-    console.error(err)
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
   }
 }
 
@@ -404,7 +458,15 @@ export function* dropTreeItem(action) {
     // cancel tag tree selection
     yield put(treeActions.deselectPath())
   } catch (err) {
-    console.error(err, 'Unable to update parent.')
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
   }
 }
 
@@ -422,7 +484,15 @@ export function* dropSection(action) {
       sourceUpdate
     )
   } catch (err) {
-    console.error(err, 'Unable to update position for section.')
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
   }
 }
 

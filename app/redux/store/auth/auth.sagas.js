@@ -1,3 +1,13 @@
+import { Map } from 'immutable'
+import { routes } from 'utils/routes'
+import date from '../../utils/date'
+
+// toast notifications
+import { toast } from 'react-toastify'
+import constants from 'utils/constants'
+import { errorMessages, successMessages } from 'utils/messages'
+
+// redux
 import { push } from 'react-router-redux'
 import { delay } from 'redux-saga'
 import {
@@ -10,13 +20,7 @@ import {
   take,
   select,
 } from 'redux-saga/effects'
-import { toast } from 'react-toastify'
 import { REHYDRATE } from 'redux-persist'
-import { Map } from 'immutable'
-import { errorMessages, successMessages } from 'utils/messages'
-import constants from 'utils/constants'
-import { routes } from 'utils/routes'
-import date from '../../utils/date'
 
 import * as authActions from 'redux/store/auth/auth.actions'
 import * as appStateActions from 'redux/store/app-state/app-state.actions'
@@ -38,6 +42,11 @@ import {
   initContactsData,
   initGlobalContactsData,
 } from 'redux/store/contacts/contacts.sagas'
+import * as errorActions from 'redux/store/errors/errors.actions'
+import {
+  sentryBreadcrumbCategory,
+  sentryTagType,
+} from 'redux/store/errors/errors.common'
 import { createLoadActions, callApi } from 'redux/store/common.sagas'
 import api from 'redux/utils/api'
 import firebase from 'redux/utils/firebase'
@@ -46,119 +55,143 @@ import dateUtil from 'redux/utils/date'
 const AUTH = authActions.AUTH
 
 export function* initDataFlow() {
-  while (true) {
-    // eslint-disable-line
-    const initTime = dateUtil.getDateToISOString()
-    const loginActions = createLoadActions(AUTH.LOGIN)
-    const tokenActions = createLoadActions(AUTH.REFRESH_TOKEN)
-    const { pathname } = window.location
-    const { user } = routes
-    const isArchivePathname =
-      pathname.substring(0, user.archive.length) === user.archive
+  try {
+    while (true) {
+      // eslint-disable-line
+      const initTime = dateUtil.getDateToISOString()
+      const loginActions = createLoadActions(AUTH.LOGIN)
+      const tokenActions = createLoadActions(AUTH.REFRESH_TOKEN)
+      const { pathname } = window.location
+      const { user } = routes
+      const isArchivePathname =
+        pathname.substring(0, user.archive.length) === user.archive
 
-    yield race({
-      login: take(loginActions.FULFILLED),
-      token: take(tokenActions.FULFILLED),
-    })
+      yield race({
+        login: take(loginActions.FULFILLED),
+        token: take(tokenActions.FULFILLED),
+      })
 
-    yield put(tagActions.fetchTags())
-    yield put(contactsActions.fetchContacts())
-    yield put(tagActions.fetchTagsRelations())
-    yield put(taskActions.fetchTasks())
-    yield put(notificationActions.fetchNotifications())
-    yield put(taskActions.fetchInboxTasks())
-    yield put(treeActions.fetchTree())
+      yield put(tagActions.fetchTags())
+      yield put(contactsActions.fetchContacts())
+      yield put(tagActions.fetchTagsRelations())
+      yield put(taskActions.fetchTasks())
+      yield put(notificationActions.fetchNotifications())
+      yield put(taskActions.fetchInboxTasks())
+      yield put(treeActions.fetchTree())
 
-    if (isArchivePathname) {
-      yield put(taskActions.fetchArchivedTasks())
+      if (isArchivePathname) {
+        yield put(taskActions.fetchArchivedTasks())
+      }
+
+      // Init data from firestore
+      const {
+        tasksSyncing,
+        inboxTasksSyncing,
+        tagsSyncing,
+        tagTreeItemsSyncing,
+        contactsSyncing,
+        globalContactsSyncing,
+        notificationsSyncing,
+      } = yield all({
+        tasksSyncing: fork(initTasksData, initTime),
+        inboxTasksSyncing: fork(initInboxTasksData, initTime),
+        tagsSyncing: fork(initTagsData, initTime),
+        tagTreeItemsSyncing: fork(initTagTreeItemsData, initTime),
+        contactsSyncing: fork(initContactsData, initTime),
+        globalContactsSyncing: fork(initGlobalContactsData, initTime),
+        notificationsSyncing: fork(initNotificationsData, initTime),
+      })
+
+      yield take(AUTH.LOGOUT)
+      yield cancel(tasksSyncing)
+      yield cancel(inboxTasksSyncing)
+      yield cancel(tagsSyncing)
+      yield cancel(tagTreeItemsSyncing)
+      yield cancel(contactsSyncing)
+      yield cancel(globalContactsSyncing)
+      yield cancel(notificationsSyncing)
+
+      // Cancel snapshot for comments and attachments from firestore
+      const { task, inbox } = yield select(state =>
+        appStateSelectors.getDetail(state)
+      )
+      if (task) {
+        yield put(appStateActions.deselectDetail('task'))
+      }
+
+      if (inbox) {
+        yield put(appStateActions.deselectDetail('inbox'))
+      }
     }
-
-    // Init data from firestore
-    const {
-      tasksSyncing,
-      inboxTasksSyncing,
-      tagsSyncing,
-      tagTreeItemsSyncing,
-      contactsSyncing,
-      globalContactsSyncing,
-      notificationsSyncing,
-    } = yield all({
-      tasksSyncing: fork(initTasksData, initTime),
-      inboxTasksSyncing: fork(initInboxTasksData, initTime),
-      tagsSyncing: fork(initTagsData, initTime),
-      tagTreeItemsSyncing: fork(initTagTreeItemsData, initTime),
-      contactsSyncing: fork(initContactsData, initTime),
-      globalContactsSyncing: fork(initGlobalContactsData, initTime),
-      notificationsSyncing: fork(initNotificationsData, initTime),
-    })
-
-    yield take(AUTH.LOGOUT)
-    yield cancel(tasksSyncing)
-    yield cancel(inboxTasksSyncing)
-    yield cancel(tagsSyncing)
-    yield cancel(tagTreeItemsSyncing)
-    yield cancel(contactsSyncing)
-    yield cancel(globalContactsSyncing)
-    yield cancel(notificationsSyncing)
-
-    // Cancel snapshot for comments and attachments from firestore
-    const { task, inbox } = yield select(state =>
-      appStateSelectors.getDetail(state)
+  } catch (err) {
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: 'AUTH_INIT_DATA',
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: 'AUTH_INIT_DATA',
+      })
     )
-    if (task) {
-      yield put(appStateActions.deselectDetail('task'))
-    }
-
-    if (inbox) {
-      yield put(appStateActions.deselectDetail('inbox'))
-    }
   }
 }
 
 export function* authFlow() {
-  // Wait to load from persist store
-  yield take(REHYDRATE)
+  try {
+    // Wait to load from persist store
+    yield take(REHYDRATE)
 
-  // Get auth information
-  let auth = yield select(state => authSelectors.getAuth(state))
-  if (!auth.isLogged) {
-    auth = null
-    cleanStore()
-  }
+    // Get auth information
+    let auth = yield select(state => authSelectors.getAuth(state))
+    if (!auth.isLogged) {
+      auth = null
+      cleanStore()
+    }
 
-  while (true) {
-    // eslint-disable-line
+    while (true) {
+      // eslint-disable-line
 
-    // login or register
-    if (!auth) {
-      const { login, register } = yield race({
-        login: take(AUTH.LOGIN),
-        register: take(AUTH.SIGN_UP),
+      // login or register
+      if (!auth) {
+        const { login, register } = yield race({
+          login: take(AUTH.LOGIN),
+          register: take(AUTH.SIGN_UP),
+        })
+
+        if (login) {
+          auth = yield call(authorizeUser, api.auth.login, login)
+        }
+
+        if (register) {
+          auth = yield call(authorizeUser, api.users.create, register)
+        }
+
+        // if api return error on login or register
+        if (!auth) {
+          continue
+        }
+      }
+
+      const { logOutAction } = yield race({
+        logOutAction: take(AUTH.LOGOUT),
+        refreshTokenLoop: call(tokenLoop, auth),
       })
 
-      if (login) {
-        auth = yield call(authorizeUser, api.auth.login, login)
-      }
-
-      if (register) {
-        auth = yield call(authorizeUser, api.users.create, register)
-      }
-
-      // if api return error on login or register
-      if (!auth) {
-        continue
+      if (logOutAction !== null) {
+        yield call(logout)
+        auth = null
       }
     }
-
-    const { logOutAction } = yield race({
-      logOutAction: take(AUTH.LOGOUT),
-      refreshTokenLoop: call(tokenLoop, auth),
-    })
-
-    if (logOutAction !== null) {
-      yield call(logout)
-      auth = null
-    }
+  } catch (err) {
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: 'AUTH_SIGN',
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: 'AUTH_SIGN',
+      })
+    )
   }
 }
 
@@ -179,6 +212,16 @@ export function* initEmail(action) {
   } catch (err) {
     const redirectAction = push(routes.signIn)
     yield put(redirectAction)
+
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
   }
 }
 
@@ -223,29 +266,63 @@ export function* changeName(action) {
       appStateActions.setError('changeName', errorMessages.somethingWrong)
     )
     yield put(appStateActions.deselectLoader('form'))
+
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
   }
 }
 
 export function* changeUserPhoto(action) {
-  const photo = action.payload
+  try {
+    const photo = action.payload
 
-  // call server
-  const profile = yield callApi(api.users.update, { photo })
+    // call server
+    const profile = yield callApi(api.users.update, { photo })
 
-  // save profile to redux-store
-  yield put(authActions.updateProfile(profile))
+    // save profile to redux-store
+    yield put(authActions.updateProfile(profile))
+  } catch (err) {
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
+  }
 }
 
 export function* toggleColorTheme(action) {
-  const settings = { colorTheme: action.payload.theme }
+  try {
+    const settings = { colorTheme: action.payload.theme }
 
-  // call server
-  const profile = yield callApi(api.users.update, {
-    settings: JSON.stringify(settings),
-  })
+    // call server
+    const profile = yield callApi(api.users.update, {
+      settings: JSON.stringify(settings),
+    })
 
-  // save profile to redux-store
-  yield put(authActions.updateProfile(profile))
+    // save profile to redux-store
+    yield put(authActions.updateProfile(profile))
+  } catch (err) {
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
+  }
 }
 
 export function* changePassword(action) {
@@ -266,6 +343,16 @@ export function* changePassword(action) {
       )
     )
     yield put(appStateActions.deselectLoader('form'))
+
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
   }
 }
 
@@ -295,6 +382,16 @@ export function* emailResetPassword(action) {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
     })
+
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
   }
 }
 
@@ -324,6 +421,16 @@ export function* resetPassword(action) {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: constants.NOTIFICATION_ERROR_DURATION,
     })
+
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
   }
 }
 
@@ -364,11 +471,11 @@ function* authorizeUser(authApiCall, action) {
     yield put(redirectAction)
 
     return auth
-  } catch (error) {
-    yield put({ type: REJECTED, error })
+  } catch (err) {
+    yield put({ type: REJECTED, err })
 
     if (action.type === 'AUTH/LOGIN') {
-      if (error.response.data.type === 'PasswordResetRequired') {
+      if (err.response.data.type === 'PasswordResetRequired') {
         yield put(
           appStateActions.setError(
             'signIn',
@@ -393,6 +500,15 @@ function* authorizeUser(authApiCall, action) {
 
     yield put(appStateActions.deselectLoader('form'))
 
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
     return null
   }
 }
@@ -455,9 +571,20 @@ function* tokenLoop(auth) {
         action: take(AUTH.REFRESH_TOKEN),
         delay: call(delay, response.expiresIn - constants.MIN_TOKEN_LIFESPAN),
       })
-    } catch (error) {
+    } catch (err) {
       yield put({ type: REJECTED })
+
       yield call(logout)
+
+      // send error to sentry
+      yield put(
+        errorActions.errorSentry(err, {
+          tagType: sentryTagType.ACTION,
+          tagValue: 'AUTH_TOKEN_LOOP',
+          breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+          breadcrumbMessage: 'AUTH_TOKEN_LOOP',
+        })
+      )
 
       return
     }

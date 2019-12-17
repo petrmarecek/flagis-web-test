@@ -24,6 +24,11 @@ import * as treeSelectors from 'redux/store/tree/tree.selectors'
 import * as tagActions from 'redux/store/tags/tags.actions'
 import * as tagSelectors from 'redux/store/tags/tags.selectors'
 import { deselectPath } from 'redux/store/tree/tree.actions'
+import * as errorActions from 'redux/store/errors/errors.actions'
+import {
+  sentryBreadcrumbCategory,
+  sentryTagType,
+} from 'redux/store/errors/errors.common'
 import {
   fetch,
   mainUndo,
@@ -89,6 +94,16 @@ function* syncTagsChannel(channel) {
     }
   } catch (err) {
     yield put({ type: REJECTED, err })
+
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.FIRESTORE,
+        tagValue: 'SYNC_TAGS',
+        breadcrumbCategory: sentryBreadcrumbCategory.FIRESTORE,
+        breadcrumbMessage: 'SYNC_TAGS',
+      })
+    )
   } finally {
     if (yield cancelled()) {
       channel.close()
@@ -136,6 +151,16 @@ export function* createTag(action) {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: constants.NOTIFICATION_ERROR_DURATION,
     })
+
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
   }
 }
 
@@ -166,11 +191,18 @@ export function* update(action) {
     const updateData = { [type]: data }
     yield callApi(api.tags.update, tag.id, updateData)
   } catch (err) {
-    // log error
-    console.error('Error occured during tag update', err)
-
     // revert to original values
     yield put(tagActions.updateTag(tag, originalData, type))
+
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
   }
 }
 
@@ -220,19 +252,31 @@ export function* prepareDeleteTag(action) {
 }
 
 export function* deleteTag(action) {
-  yield* fetch(tagActions.TAGS.DELETE, {
-    method: api.tags.delete,
-    args: [action.payload.originalData.id],
-    schema: null,
-  })
+  try {
+    yield* fetch(tagActions.TAGS.DELETE, {
+      method: api.tags.delete,
+      args: [action.payload.originalData.id],
+      schema: null,
+    })
 
-  yield put(
-    tagActions.deleteTagsRelations(action.payload.originalData.id, null)
-  )
-  yield* mainUndo(action, 'tagDelete')
+    yield put(
+      tagActions.deleteTagsRelations(action.payload.originalData.id, null)
+    )
+    yield* mainUndo(action, 'tagDelete')
 
-  // delete tag from the search index
-  search.tags.removeItem({ id: action.payload })
+    // delete tag from the search index
+    search.tags.removeItem({ id: action.payload })
+  } catch (err) {
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
+  }
 }
 
 export function* undoDeleteTag(action) {
