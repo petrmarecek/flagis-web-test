@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom'
 
 import LandingPage from 'containers/landing-page/loadable'
 import LegalPage from 'containers/legal-page/loadable'
-import AboutUsPage from 'containers/about-us-page/loadable'
+import AboutPage from 'containers/about-page/loadable'
 import ContactPage from 'containers/contact-us-page/loadable'
 import SignInPage from 'containers/sign-in-page'
 import SignUpPage from 'containers/sign-up-page'
@@ -17,8 +17,8 @@ export default function App() {
     <div>
       <Switch>
         <Route exact path="/" component={LandingPage} />
-        <Route exact path="/legal" component={LegalPage} />
-        <Route exact path="/about-us" component={AboutUsPage} />
+        <Route exact path="/legal*" component={LegalPage} />
+        <Route exact path="/about" component={AboutPage} />
         <Route exact path="/contact-us" component={ContactPage} />
         <Route path="/sign-in" component={SignInPage} />
         <Route path="/sign-up" component={SignUpPage} />

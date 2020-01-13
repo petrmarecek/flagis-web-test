@@ -1,5 +1,15 @@
 export const routes = {
   landing: '/',
+  legal: {
+    default: '/legal',
+    termsConditions: '/legal/terms-conditions',
+    privacyPolicy: '/legal/privacy-policy',
+    cookiesPolicy: '/legal/cookies-policy',
+    eula: '/legal/eula',
+    disclaimer: '/legal/disclaimer',
+  },
+  about: '/about',
+  contactUs: '/contact-us',
   signIn: '/sign-in',
   signUp: '/sign-up',
   emailResetPassword: '/email-reset-password',

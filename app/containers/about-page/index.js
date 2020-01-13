@@ -2,17 +2,17 @@ import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 
 // components
-import LegalContent from 'components/contents/legal-content'
+import AboutContent from 'components/contents/about-content'
 
-const LegalPage = ({ location }) => {
+const AboutPage = ({ location }) => {
   useEffect(() => window.scrollTo(0, 0), [])
-  return <LegalContent location={location} />
+  return <AboutContent location={location} />
 }
 
-LegalPage.propTypes = {
+AboutPage.propTypes = {
   location: PropTypes.shape({
     pathname: PropTypes.string.isRequired,
   }).isRequired,
 }
 
-export default LegalPage
+export default AboutPage

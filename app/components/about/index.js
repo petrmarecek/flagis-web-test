@@ -1,55 +1,21 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-
-// components
-import NavigationLandingPrimary from 'components/navigation/navigation-landing-primary'
 
 // styles
-import styled from 'styled-components'
-import { colors } from 'components/styled-components-mixins/colors'
+import {
+  AboutWrapper,
+  AboutInner,
+  AboutLine,
+  AboutTitle,
+  AboutContent,
+} from './styles'
 
-const InnerWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 100px 0;
-`
-
-const Title = styled.div`
-  font-size: 60px;
-  font-weight: bold;
-  margin-bottom: 80px;
-`
-
-const Line = styled.div`
-  height: 2px;
-  width: 50px;
-  margin-bottom: 30px;
-  border: 2px solid ${colors.darkJungleGreen};
-`
-
-const Content = styled.div`
-  p {
-    font-weight: 300;
-    font-size: 20px;
-    max-width: 768px;
-    margin-bottom: 30px;
-    text-align: justify;
-
-    :first-child {
-      font-weight: 500;
-    }
-  }
-`
-
-const ContactUsPage = ({ location }) => (
-  <div>
-    <NavigationLandingPrimary location={location} />
-    <InnerWrapper>
-      <Title>About Us</Title>
-      <Content>
-        <p>It's your personal assistant for the things that matter to you!</p>
-        <Line />
+const AboutContainer = () => (
+  <AboutWrapper>
+    <AboutInner>
+      <AboutTitle>About</AboutTitle>
+      <AboutContent>
+        <h4>It's your personal assistant for the things that matter to you!</h4>
+        <AboutLine />
         <p>
           Flagis is a simple universal solution for managing all the things that
           matter to you with the help of "getting things done" principles.
@@ -83,15 +49,9 @@ const ContactUsPage = ({ location }) => (
           As a result, you have one transparent list of everything important
           supported by features for easy management.
         </p>
-      </Content>
-    </InnerWrapper>
-  </div>
+      </AboutContent>
+    </AboutInner>
+  </AboutWrapper>
 )
 
-ContactUsPage.propTypes = {
-  location: PropTypes.shape({
-    pathname: PropTypes.string.isRequired,
-  }).isRequired,
-}
-
-export default ContactUsPage
+export default AboutContainer

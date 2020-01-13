@@ -10,10 +10,10 @@ import {
 const NavigationLandingSecondary = () => (
   <NavigationLandingSecondaryWrapper>
     <LandingSecondaryButton>
-      <Link to="/legal">Legal</Link>
+      <Link to="/legal/terms-conditions">Legal</Link>
     </LandingSecondaryButton>
     <LandingSecondaryButton>
-      <Link to="/about-us">About Us</Link>
+      <Link to="/about">About</Link>
     </LandingSecondaryButton>
     <LandingSecondaryButton>
       <Link to="/contact-us">Contact Us</Link>

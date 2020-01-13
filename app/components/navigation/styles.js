@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components'
 import {
   fontMain,
+  fontBold,
   boxSizing,
   borderRadius,
   transform,
@@ -134,9 +135,7 @@ const LandingButtonSignUp = styled.div`
   color: ${defaultColors.darkJungleGreen};
   border: 1px solid ${defaultColors.hanumanGreen};
   pointer-events: ${props => (props.active ? 'none' : 'auto')};
-  ${borderRadius('100px')}
-
-  :hover {
+  ${borderRadius('100px')} :hover {
     background-color: ${defaultColors.hanumanGreen};
   }
 
@@ -204,6 +203,63 @@ const LandingSecondaryButton = styled.div`
     :last-child {
       margin: 0;
     }
+  }
+`
+
+/*------------------------------ Navigation Legal -----------------------------*/
+
+const NavigationLegalWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  padding: 25px;
+
+  ${mediaQueries.smx} {
+    flex-direction: column;
+  }
+`
+
+const LegalButton = styled.div`
+  ${props => (props.active ? fontBold : fontMain)}
+  ${userSelect('none')};
+  display: inline-block;
+  cursor: pointer;
+  font-size: 20px;
+  margin: 0 50px 0 0;
+  padding: 0;
+  color: ${defaultColors.darkJungleGreen};
+  pointer-events: ${props => (props.active ? 'none' : 'auto')};
+  width: max-content;
+
+  :after {
+    ${transform('scaleX(0)')}
+    ${transition('transform 250ms ease-in-out')}
+    display: block;
+    content: '';
+    margin-top: 2px;
+    border-bottom: 2px solid #293034;
+  }
+
+  :hover {
+    :after {
+      ${transform('scaleX(1)')}
+    }
+  }
+
+  :last-of-type {
+    margin: 0;
+
+    ${mediaQueries.smx} {
+      margin: 5px 0;
+    }
+  }
+
+  ${mediaQueries.md} {
+    margin: 0 25px 0 0;
+  }
+
+  ${mediaQueries.smx} {
+    font-size: 16px;
+    margin: 5px 0;
   }
 `
 
@@ -541,6 +597,9 @@ export {
   //Navigation Landing Secondary
   NavigationLandingSecondaryWrapper,
   LandingSecondaryButton,
+  // Navigation Legal
+  NavigationLegalWrapper,
+  LegalButton,
   // Navigation Primary
   NavigationPrimaryWrapper,
   NavigationPrimaryHidden,
