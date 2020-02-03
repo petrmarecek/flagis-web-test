@@ -21,6 +21,10 @@ export const errorMessages = {
     linkExpired: 'Link has expired. Please ask for a new one.',
   },
 
+  contactUs: {
+    serverError: 'Something is wrong.',
+  },
+
   tasks: {
     waitingResponse: 'Waiting for response!',
   },
@@ -85,6 +89,8 @@ export const successMessages = {
   changePassword: 'Password has successfully been changed.',
 
   changeName: 'Name has successfully been changed.',
+
+  contactUs: 'Form has successfully been sent.',
 }
 
 export const infoMessages = {

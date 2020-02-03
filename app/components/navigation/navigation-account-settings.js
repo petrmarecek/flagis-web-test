@@ -17,6 +17,7 @@ const NavigationAccountSettings = props => {
     onHandleClickEditProfile,
     onHandleClickChangePassword,
     onHandleClickColorTheme,
+    onHandleClickContactUs,
   } = props
   const { settings } = routes.user.account
 
@@ -35,6 +36,12 @@ const NavigationAccountSettings = props => {
         Change password
       </SettingsButton>
       <SettingsButton
+        active={pathname === settings.contactUs}
+        onClick={onHandleClickContactUs}
+      >
+        Contact Us
+      </SettingsButton>
+      <SettingsButton
         active={pathname === settings.colorTheme}
         onClick={onHandleClickColorTheme}
       >
@@ -49,6 +56,7 @@ NavigationAccountSettings.propTypes = {
   onHandleClickEditProfile: PropTypes.func,
   onHandleClickChangePassword: PropTypes.func,
   onHandleClickColorTheme: PropTypes.func,
+  onHandleClickContactUs: PropTypes.func,
 }
 
 const mapStateToProps = state => ({
@@ -60,16 +68,17 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   withHandlers({
     onHandleClickEditProfile: props => () =>
       props.changeNavigation(routes.user.account.settings.editProfile),
     onHandleClickChangePassword: props => () =>
       props.changeNavigation(routes.user.account.settings.changePassword),
-    onHandleClickColorTheme: props => () =>
-      props.changeNavigation(routes.user.account.settings.colorTheme),
+    onHandleClickColorTheme: props => () => {
+      props.changeNavigation(routes.user.account.settings.colorTheme)
+    },
+    onHandleClickContactUs: props => () => {
+      props.changeNavigation(routes.user.account.settings.contactUs)
+    },
   })
 )(NavigationAccountSettings)

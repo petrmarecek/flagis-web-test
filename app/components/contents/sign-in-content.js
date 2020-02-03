@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import SignIn from '../common/sign-in'
+import SignIn from '../forms/sign-in'
 
 const SignInContent = ({ location }) => <SignIn location={location} />
 

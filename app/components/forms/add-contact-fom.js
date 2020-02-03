@@ -17,11 +17,11 @@ import { getUserEmail } from 'redux/store/auth/auth.selectors'
 // components
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
-import AddField from 'components/common/add-field'
+import AddField from 'components/forms/fields/add-field'
 
 // styles
 import styled from 'styled-components'
-import { boxSizing, boxShadow } from '../styled-components-mixins/'
+import { boxSizing, boxShadow } from '../styled-components-mixins'
 
 const AddForm = styled.form`
   display: flex;
@@ -101,10 +101,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = { createContact }
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   withHandlers({
     onSubmit: props => value => {
       const { validEmails, userEmail } = props

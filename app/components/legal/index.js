@@ -13,7 +13,6 @@ import Disclaimer from './disclaimer'
 import { LegalWrapper } from './styles'
 
 const getLegalContent = location => {
-  console.log(location.pathname)
   switch (location.pathname) {
     case routes.legal.termsConditions:
       return <TermsConditions />

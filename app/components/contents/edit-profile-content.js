@@ -1,7 +1,7 @@
 import React from 'react'
 
 // components
-import EditProfile from 'components/common/edit-profile'
+import EditProfile from 'components/forms/edit-profile'
 import CenterPanel from 'components/panels/center-panel'
 import NavigationAccountSettings from 'components/navigation/navigation-account-settings'
 

@@ -1,7 +1,7 @@
 import React from 'react'
 
 // components
-import ChangePassword from 'components/forms/change-password'
+import ContactUsContainer from 'components/forms/contact-us'
 import CenterPanel from 'components/panels/center-panel'
 import NavigationAccountSettings from 'components/navigation/navigation-account-settings'
 
@@ -14,7 +14,7 @@ import {
   CenterPanelScroll,
 } from 'components/panels/styles'
 
-const ChangePasswordContent = () => (
+const ColorThemeContent = () => (
   <CenterPanel style={{ backgroundColor: '#fff', margin: '0 0 0 1px' }}>
     <CenterPanelTop>
       <CenterPanelTopPrimary>
@@ -25,9 +25,9 @@ const ChangePasswordContent = () => (
       </CenterPanelTopSecondary>
     </CenterPanelTop>
     <CenterPanelScroll offsetTop={108} offsetBottom={0}>
-      <ChangePassword />
+      <ContactUsContainer />
     </CenterPanelScroll>
   </CenterPanel>
 )
 
-export default ChangePasswordContent
+export default ColorThemeContent

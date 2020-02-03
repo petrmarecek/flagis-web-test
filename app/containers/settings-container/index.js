@@ -6,6 +6,7 @@ import { Switch, Route } from 'react-router-dom'
 import EditProfilePage from '../edit-profile-page/'
 import ChangePasswordPage from '../change-password-page/'
 import ColorThemePage from '../color-theme-page/'
+import UserContactUsPage from '../user-contact-us-page/'
 
 //components
 import NotFoundPage from 'containers/not-found-page/loadable'
@@ -18,6 +19,7 @@ const SettingsContainer = ({ match }) => (
       component={ChangePasswordPage}
     />
     <Route path={`${match.path}/color-theme`} component={ColorThemePage} />
+    <Route path={`${match.path}/contact-us`} component={UserContactUsPage} />
     <Route component={NotFoundPage} />
   </Switch>
 )

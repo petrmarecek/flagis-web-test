@@ -13,6 +13,7 @@ export const AUTH = {
   RESET_PASSWORD: 'AUTH/RESET_PASSWORD',
   REFRESH_TOKEN: 'AUTH/REFRESH-TOKEN',
   TOGGLE_COLOR_THEME: 'APP-STATE/TOGGLE_COLOR_THEME',
+  CONTACT_US: 'AUTH/CONTACT_US',
 }
 
 export const controlRedirectSignIn = () => ({
@@ -75,4 +76,9 @@ export const logout = () => ({
 export const toggleColorTheme = theme => ({
   type: AUTH.TOGGLE_COLOR_THEME,
   payload: { theme },
+})
+
+export const sendContactUs = userData => ({
+  type: AUTH.CONTACT_US,
+  payload: userData,
 })

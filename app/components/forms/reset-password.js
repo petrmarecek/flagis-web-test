@@ -13,11 +13,11 @@ import {
 import { validateResetPassword } from 'redux/utils/validate'
 
 import NavigationLandingPrimary from 'components/navigation/navigation-landing-primary'
-import InputField from 'components/common/input-field'
+import InputField from 'components/forms/fields/input-field'
 import Loader from 'components/common/loader'
 
 import {
-  ButttonDefault,
+  ButtonDefault,
   Form,
   FormBody,
   FormBodyFields,
@@ -28,8 +28,8 @@ import {
 const ResetPassword = ({ loader, location, handleSubmit, onSubmit }) => (
   <div className="landing-container">
     <NavigationLandingPrimary location={location} isLogoNav />
-    <Form>
-      <FormBody>
+    <Form maxWidth={400}>
+      <FormBody onSubmit={handleSubmit(values => onSubmit(values))}>
         <FormBodyFields>
           <FormRow>
             <Field
@@ -50,11 +50,7 @@ const ResetPassword = ({ loader, location, handleSubmit, onSubmit }) => (
             />
           </FormRow>
           <FormRow>
-            <ButttonDefault
-              type="submit"
-              value="Submit"
-              onClick={handleSubmit(values => onSubmit(values))}
-            />
+            <ButtonDefault type="submit" value="Submit" />
           </FormRow>
         </FormBodyFields>
         {loader && (
@@ -85,10 +81,7 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   reduxForm({
     form: 'resetPassword',
     validate: validateResetPassword,

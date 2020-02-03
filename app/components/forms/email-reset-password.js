@@ -13,11 +13,11 @@ import {
 import { validateEmailResetPassword } from 'redux/utils/validate'
 
 import NavigationLandingPrimary from 'components/navigation/navigation-landing-primary'
-import InputField from 'components/common/input-field'
+import InputField from 'components/forms/fields/input-field'
 import Loader from 'components/common/loader'
 
 import {
-  ButttonDefault,
+  ButtonDefault,
   Form,
   FormBody,
   FormBodyFields,
@@ -28,8 +28,8 @@ import {
 const EmailResetPassword = ({ loader, location, handleSubmit, onSubmit }) => (
   <div className="landing-container">
     <NavigationLandingPrimary location={location} />
-    <Form>
-      <FormBody>
+    <Form maxWidth={500}>
+      <FormBody onSubmit={handleSubmit(values => onSubmit(values))}>
         <FormBodyFields>
           <FormRow>
             <Field
@@ -41,11 +41,7 @@ const EmailResetPassword = ({ loader, location, handleSubmit, onSubmit }) => (
             />
           </FormRow>
           <FormRow>
-            <ButttonDefault
-              type="submit"
-              value="Submit"
-              onClick={handleSubmit(values => onSubmit(values))}
-            />
+            <ButtonDefault type="submit" value="Submit" />
           </FormRow>
         </FormBodyFields>
         {loader && (
@@ -76,10 +72,7 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   reduxForm({
     form: 'emailResetPassword',
     validate: validateEmailResetPassword,

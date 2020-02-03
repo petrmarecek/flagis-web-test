@@ -16,12 +16,12 @@ import { changePassword } from 'redux/store/auth/auth.actions'
 import { validateChangePassword } from 'redux/utils/validate'
 import { afterSubmitChangePassword } from 'redux/utils/form-submit'
 
-import InputField from 'components/common/input-field'
+import InputField from 'components/forms/fields/input-field'
 import Loader from 'components/common/loader'
 import { ICONS } from 'components/icons/icon-constants'
 
 import {
-  ButttonDefaultSmall,
+  ButtonDefaultSmall,
   Form,
   FormBody,
   FormBodyFields,
@@ -32,7 +32,7 @@ import {
   ErrorListItemIcon,
   ErrorListItemText,
   FormRow,
-} from '../styled-components-mixins/'
+} from '../styled-components-mixins'
 
 const ChangePassword = ({
   errorChangePassword,
@@ -40,7 +40,7 @@ const ChangePassword = ({
   handleSubmit,
   onSubmit,
 }) => (
-  <Form unmargin leftPadding>
+  <Form maxWidth={500} nonMargin leftPadding>
     <FormBody onSubmit={handleSubmit(values => onSubmit(values))}>
       <FormBodyFields>
         <FormErrors>
@@ -91,7 +91,7 @@ const ChangePassword = ({
           />
         </FormRow>
         <FormRow>
-          <ButttonDefaultSmall type="submit" value="Change password" />
+          <ButtonDefaultSmall type="submit" value="Change password" />
         </FormRow>
       </FormBodyFields>
       {loader && (
@@ -122,10 +122,7 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   reduxForm({
     form: 'changePassword',
     validate: validateChangePassword,

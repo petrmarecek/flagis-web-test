@@ -24,13 +24,13 @@ import { validateChangeName } from 'redux/utils/validate'
 
 // components
 import ImagePicker from 'components/common/image-picker'
-import InputField from 'components/common/input-field'
+import InputField from 'components/forms/fields/input-field'
 import Loader from 'components/common/loader'
 import { ICONS } from 'components/icons/icon-constants'
 
 // styles
 import {
-  ButttonDefaultSmall,
+  ButtonDefaultSmall,
   Form,
   FormBody,
   FormBodyFields,
@@ -41,7 +41,7 @@ import {
   ErrorListItemIcon,
   ErrorListItemText,
   FormRow,
-} from '../styled-components-mixins/'
+} from '../styled-components-mixins'
 
 const EditProfile = ({
   errorChangeName,
@@ -62,7 +62,7 @@ const EditProfile = ({
       colorTheme={colorTheme}
       onChangePhoto={handleChangeUserPhoto}
     />
-    <Form unmargin leftPadding>
+    <Form nonMargin leftPadding maxWidth={500}>
       <FormBody onSubmit={handleSubmit(values => onSubmit(values))}>
         <FormBodyFields>
           <FormErrors>
@@ -103,7 +103,7 @@ const EditProfile = ({
             />
           </FormRow>
           <FormRow>
-            <ButttonDefaultSmall type="submit" value="Update Profile" />
+            <ButtonDefaultSmall type="submit" value="Update Profile" />
           </FormRow>
         </FormBodyFields>
         {loader && (
@@ -145,10 +145,7 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   reduxForm({
     form: 'changeName',
     validate: validateChangeName,

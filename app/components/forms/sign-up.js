@@ -1,9 +1,10 @@
 import React from 'react'
-import { compose, lifecycle, withHandlers } from 'recompose'
 import PropTypes from 'prop-types'
+import { compose, lifecycle, withHandlers } from 'recompose'
+
+// redux
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form/immutable'
-
 import {
   deselectError,
   setLoader,
@@ -18,15 +19,20 @@ import {
   initEmail,
 } from 'redux/store/auth/auth.actions'
 import { getUserEmail } from 'redux/store/auth/auth.selectors'
+import { getFromValues } from 'redux/store/forms/forms.selectors'
 import { validateSignUp } from 'redux/utils/validate'
 
+// components
 import NavigationLandingPrimary from 'components/navigation/navigation-landing-primary'
-import InputField from 'components/common/input-field'
+import InputField from 'components/forms/fields/input-field'
+import CheckboxField from 'components/forms/fields/checkbox-field'
 import Loader from 'components/common/loader'
+import AgreeLabel from './labels/agree-label'
 import { ICONS } from 'components/icons/icon-constants'
 
+// styled
 import {
-  ButttonDefault,
+  ButtonDefault,
   Form,
   FormBody,
   FormBodyFields,
@@ -45,14 +51,24 @@ const getToken = pathname => {
   return pathname.substring(numberCharacter)
 }
 
-const SignUp = ({ errorSignUp, loader, location, handleSubmit, onSubmit }) => {
+const SignUp = ({
+  errorSignUp,
+  loader,
+  location,
+  contactUsValues,
+  handleSubmit,
+  onSubmit,
+}) => {
   const tokenLength = getToken(location.pathname).length
+  const isAgree = contactUsValues && contactUsValues.get('agree')
 
   return (
     <div className="landing-container">
       <NavigationLandingPrimary location={location} />
-      <Form>
-        <FormBody onSubmit={handleSubmit(values => onSubmit(values))}>
+      <Form maxWidth={500}>
+        <FormBody
+          onSubmit={isAgree ? handleSubmit(values => onSubmit(values)) : null}
+        >
           <FormBodyFields>
             <FormErrors>
               <ErrorList>
@@ -116,7 +132,16 @@ const SignUp = ({ errorSignUp, loader, location, handleSubmit, onSubmit }) => {
               />
             </FormRow>
             <FormRow>
-              <ButttonDefault type="submit" value="Sign Up" />
+              <Field id="agree" name="agree" component={CheckboxField}>
+                <AgreeLabel />
+              </Field>
+            </FormRow>
+            <FormRow>
+              <ButtonDefault
+                type="submit"
+                value="Sign Up"
+                disabled={!isAgree}
+              />
             </FormRow>
 
             <FormRow pointer>
@@ -139,9 +164,10 @@ const SignUp = ({ errorSignUp, loader, location, handleSubmit, onSubmit }) => {
 SignUp.propTypes = {
   errorSignUp: PropTypes.object,
   loader: PropTypes.bool,
+  location: PropTypes.object,
+  contactUsValues: PropTypes.object,
   handleSubmit: PropTypes.func.isRequired,
   onSubmit: PropTypes.func,
-  location: PropTypes.object,
 }
 
 const mapStateToProps = (state, props) => {
@@ -154,6 +180,7 @@ const mapStateToProps = (state, props) => {
 
   return {
     errorSignUp: getAppStateItem(state, 'signUp'),
+    contactUsValues: getFromValues(state, 'signUp'),
     loader: getLoader(state).form,
     initialValues: { email },
   }
@@ -168,10 +195,7 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   reduxForm({
     form: 'signUp',
     validate: validateSignUp,

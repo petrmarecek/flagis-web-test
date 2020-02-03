@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import SignUp from '../common/sign-up'
+import SignUp from '../forms/sign-up'
 
 const SignUpContent = ({ location }) => <SignUp location={location} />
 

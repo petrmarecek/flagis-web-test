@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 import { withStateHandlers } from 'recompose'
 
 import styled, { css } from 'styled-components'
-import { commonInput, commonInputSmall } from '../styled-components-mixins'
-import { colors } from '../styled-components-mixins/colors'
+import { commonInput, commonInputSmall } from '../../styled-components-mixins'
+import { colors } from '../../styled-components-mixins/colors'
 
 const activeLabel = css`
   left: 0;

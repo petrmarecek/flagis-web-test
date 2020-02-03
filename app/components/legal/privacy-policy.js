@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { routes } from 'utils/routes'
 
 // components
 import MoveUpButton from 'components/common/move-up-button'
@@ -15,8 +16,8 @@ const PrivacyPolicy = () => (
 
     <p>
       Flagis s.r.o. ("us", "we", or "our") operates the{' '}
-      <Link to="/">https://www.flagis.com</Link> website and the Flagis mobile
-      application (hereinafter referred to as the "Service").
+      <Link to={routes.landing}>https://www.flagis.com</Link> website and the
+      Flagis mobile application (hereinafter referred to as the "Service").
     </p>
 
     <p>
@@ -39,8 +40,9 @@ const PrivacyPolicy = () => (
           <strong>Service</strong>
         </p>
         <p>
-          Service means the <Link to="/">https://www.flagis.com</Link> website
-          and the Flagis mobile application operated by Flagis s.r.o.
+          Service means the{' '}
+          <Link to={routes.landing}>https://www.flagis.com</Link> website and
+          the Flagis mobile application operated by Flagis s.r.o.
         </p>
       </li>
       <li>
@@ -795,7 +797,7 @@ const PrivacyPolicy = () => (
       <li>By email: info@flagis.com</li>
       <li>
         By visiting this page on our website:{' '}
-        <Link to="/contact-us">https://www.flagis.com/contact-us</Link>
+        <Link to={routes.contactUs}>https://www.flagis.com/contact-us</Link>
       </li>
     </ul>
     <MoveUpButton />

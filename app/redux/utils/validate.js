@@ -1,18 +1,29 @@
 const messages = {
-  requiredFirstName: 'The First name field is required',
-  requiredLastName: 'The Last name field is required',
-  requiredEmail: 'The E-mail field is required',
-  requiredPassword: 'The Password field is required',
+  requiredFirstName: 'First name field is required',
+  requiredLastName: 'Subject field is required',
+  requiredEmail: 'E-mail field is required',
+  requiredPassword: 'Password field is required',
+  requiredSubject: 'Last name field is required',
+  requiredMessage: 'Message field is required',
   badEmail: 'Email is incorrect',
   badFirstName: 'First name is incorrect',
   badLastName: 'Last name is incorrect',
+  badSubject: 'Subject is incorrect',
+  badMessage: 'Message is long',
   shortPassword: 'Password is short',
-  passwordNotMatch: 'Passwords do not match'
+  passwordNotMatch: 'Passwords do not match',
 }
 
+// Regex variables
+export const nameRegex = /^[A-ZÁ-Ža-za-ž]{1,32}$/i
+export const textNumberRegex = /^[A-ZÁ-Ža-za-ž0-9 ]{1,256}$/i
+export const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i
+
 // Validations
-const isEmail = text => (typeof text === 'string') && /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(text)
-const isName = text => (typeof text === 'string') && /^[A-ZÁ-Ža-za-ž]{1,32}$/i.test(text)
+const isEmail = text => typeof text === 'string' && emailRegex.test(text)
+const isName = text => typeof text === 'string' && nameRegex.test(text)
+const isTextAndNumber = text =>
+  typeof text === 'string' && textNumberRegex.test(text)
 
 const validateEmail = values => {
   const errors = {}
@@ -96,10 +107,34 @@ const validateLastName = values => {
   return errors
 }
 
+const validateSubject = values => {
+  const errors = {}
+
+  if (!values.get('subject')) {
+    errors.subject = messages.requiredSubject
+  } else if (!isTextAndNumber(values.get('subject'))) {
+    errors.subject = messages.badSubject
+  }
+
+  return errors
+}
+
+const validateMessage = values => {
+  const errors = {}
+
+  if (!values.get('message')) {
+    errors.message = messages.requiredMessage
+  } else if (values.get('message').length > 2048) {
+    errors.message = messages.badMessage
+  }
+
+  return errors
+}
+
 // Forms
 export const validateSignIn = values => ({
   ...validateEmail(values),
-  ...validatePassword(values)
+  ...validatePassword(values),
 })
 
 export const validateSignUp = values => ({
@@ -107,29 +142,37 @@ export const validateSignUp = values => ({
   ...validateLastName(values),
   ...validateEmail(values),
   ...validateNewPassword(values),
-  ...validateConfirmPassword(values)
+  ...validateConfirmPassword(values),
 })
 
 export const validateEmailResetPassword = values => ({
-  ...validateEmail(values)
+  ...validateEmail(values),
 })
 
 export const validateResetPassword = values => ({
   ...validateNewPassword(values),
-  ...validateConfirmPassword(values)
+  ...validateConfirmPassword(values),
 })
 
 export const validateChangePassword = values => ({
   ...validateOldPassword(values),
   ...validateNewPassword(values),
-  ...validateConfirmPassword(values)
+  ...validateConfirmPassword(values),
 })
 
 export const validateAddContact = values => ({
-  ...validateEmail(values)
+  ...validateEmail(values),
 })
 
 export const validateChangeName = values => ({
   ...validateFirstName(values),
-  ...validateLastName(values)
+  ...validateLastName(values),
+})
+
+export const validateContactUs = values => ({
+  ...validateFirstName(values),
+  ...validateLastName(values),
+  ...validateEmail(values),
+  ...validateSubject(values),
+  ...validateMessage(values),
 })

@@ -17,12 +17,12 @@ import { controlRedirectTasks, login } from 'redux/store/auth/auth.actions'
 import { validateSignIn } from 'redux/utils/validate'
 
 import NavigationLandingPrimary from 'components/navigation/navigation-landing-primary'
-import InputField from 'components/common/input-field'
+import InputField from 'components/forms/fields/input-field'
 import Loader from 'components/common/loader'
 import { ICONS } from 'components/icons/icon-constants'
 
 import {
-  ButttonDefault,
+  ButtonDefault,
   Form,
   FormBody,
   FormBodyFields,
@@ -39,8 +39,8 @@ import {
 const SignIn = ({ errorSignIn, loader, location, handleSubmit, onSubmit }) => (
   <div className="landing-container">
     <NavigationLandingPrimary location={location} />
-    <Form>
-      <FormBody>
+    <Form maxWidth={500}>
+      <FormBody onSubmit={handleSubmit(values => onSubmit(values))}>
         <FormBodyFields>
           <FormErrors>
             <ErrorList>
@@ -76,11 +76,7 @@ const SignIn = ({ errorSignIn, loader, location, handleSubmit, onSubmit }) => (
             />
           </FormRow>
           <FormRow>
-            <ButttonDefault
-              type="submit"
-              value="Sign In"
-              onClick={handleSubmit(values => onSubmit(values))}
-            />
+            <ButtonDefault type="submit" value="Sign In" />
           </FormRow>
 
           <FormRow pointer>
@@ -126,10 +122,7 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   reduxForm({
     form: 'signIn',
     validate: validateSignIn,

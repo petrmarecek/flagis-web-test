@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components'
-
+import { colors } from 'components/styled-components-mixins/colors'
 // forms
 import {
   Form,
@@ -185,7 +185,7 @@ const button = css`
   outline: none;
   display: block;
   float: right;
-  cursor: pointer;
+  cursor: ${props => (props.disabled ? 'auto' : 'pointer')};
   font-size: 18px;
   padding: 8px 24px;
   text-decoration: none;
@@ -193,20 +193,22 @@ const button = css`
 
   ${borderRadius('23px')}
 
-  color: #fff;
-  background-color: #293034;
+  color: ${colors.white};
+  background-color: ${props =>
+    props.disabled ? colors.lostAtSea : colors.aztec};
 
   :hover {
-    background-color: #3e484f;
+    background-color: ${props =>
+      props.disabled ? colors.lostAtSea : colors.hanumanGreen};;
   }
 `
 
-const ButttonDefault = styled.input`
+const ButtonDefault = styled.input`
   ${button}
   font-size: 18px;
 `
 
-const ButttonDefaultSmall = styled.input`
+const ButtonDefaultSmall = styled.input`
   ${button}
   font-size: 14px;
 `
@@ -235,8 +237,8 @@ export {
   commonCommentInputSmall,
   link,
   // Buttons
-  ButttonDefault,
-  ButttonDefaultSmall,
+  ButtonDefault,
+  ButtonDefaultSmall,
   // Forms
   Form,
   FormBody,

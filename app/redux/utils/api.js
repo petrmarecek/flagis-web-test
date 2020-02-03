@@ -154,4 +154,8 @@ export default {
     delete: (taskId, userId) =>
       api.delete(`tasks/${taskId}/followers/${userId}`).then(res => res.data),
   },
+
+  contactUs: {
+    create: data => api.post(`contact-us`, data).then(res => res.data),
+  },
 }

@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { routes } from 'utils/routes'
 
 // styles
 import { DisclaimerWrapper } from './styles'
@@ -11,9 +12,9 @@ const Disclaimer = () => (
     <p>Valid from: January 01, 2020</p>
 
     <p>
-      The information contained on <Link to="/">https://www.flagis.com</Link>{' '}
-      website and Flagis mobile app (the "Service") is for general information
-      purposes only.
+      The information contained on{' '}
+      <Link to={routes.landing}>https://www.flagis.com</Link> website and Flagis
+      mobile app (the "Service") is for general information purposes only.
     </p>
 
     <p>
@@ -39,9 +40,9 @@ const Disclaimer = () => (
     <h2>External links disclaimer</h2>
 
     <p>
-      <Link to="/">https://www.flagis.com</Link> website and Flagis mobile app
-      may contain links to external websites that are not provided or maintained
-      by or in any way affiliated with Flagis s.r.o.
+      <Link to={routes.landing}>https://www.flagis.com</Link> website and Flagis
+      mobile app may contain links to external websites that are not provided or
+      maintained by or in any way affiliated with Flagis s.r.o.
     </p>
 
     <p>

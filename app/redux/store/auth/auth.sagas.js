@@ -395,6 +395,34 @@ export function* emailResetPassword(action) {
   }
 }
 
+export function* sendContactUs(action) {
+  try {
+    yield call(api.contactUs.create, action.payload)
+    yield put(appStateActions.deselectLoader('form'))
+
+    // show notification after redirect to sign-in
+    toast.success(successMessages.contactUs, {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+    })
+  } catch (err) {
+    yield put(
+      appStateActions.setError('contactUs', errorMessages.contactUs.serverError)
+    )
+    yield put(appStateActions.deselectLoader('form'))
+
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
+  }
+}
+
 export function* resetPassword(action) {
   try {
     yield call(api.users.resetPassword, action.payload)

@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import styled from 'styled-components'
-import { placeholderColor, boxSizing } from '../styled-components-mixins'
+import { placeholderColor, boxSizing } from '../../styled-components-mixins'
 
 const AddFieldStyle = styled.input`
   ${placeholderColor('#CECECE')}

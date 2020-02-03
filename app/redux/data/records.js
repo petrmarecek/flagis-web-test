@@ -146,6 +146,7 @@ export const AppStateStore = Record({
   currentDialog: null,
   changeName: new Error(),
   changePassword: new Error(),
+  contactUs: new Error(),
   signIn: new Error(),
   signUp: new Error(),
 })

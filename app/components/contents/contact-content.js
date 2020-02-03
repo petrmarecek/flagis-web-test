@@ -9,7 +9,7 @@ import { getContactsSearch } from 'redux/store/contacts/contacts.selectors'
 
 // components
 import SearchBox from 'components/common/search-box'
-import AddContactForm from '../common/add-contact-fom'
+import AddContactForm from '../forms/add-contact-fom'
 import ContactListContainer from '../contact-list'
 
 // styles
@@ -47,10 +47,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = { updateContactSearch }
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   withHandlers({
     onHandleSearchChange: props => search => props.updateContactSearch(search),
   })

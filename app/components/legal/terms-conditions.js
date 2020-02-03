@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { routes } from 'utils/routes'
 
 // components
 import MoveUpButton from 'components/common/move-up-button'
@@ -15,9 +16,9 @@ const TermsConditions = () => (
 
     <p>
       These Terms and Conditions ("Terms", "Terms and Conditions") govern your
-      relationship with <Link to="/">https://www.flagis.com</Link> website and
-      Flagis mobile application (the "Service") operated by Flagis s.r.o. ("us",
-      "we", or "our").
+      relationship with <Link to={routes.landing}>https://www.flagis.com</Link>{' '}
+      website and Flagis mobile application (the "Service") operated by Flagis
+      s.r.o. ("us", "we", or "our").
     </p>
 
     <p>
@@ -296,7 +297,7 @@ const TermsConditions = () => (
 
     <p>
       If you have any questions about these Terms, please{' '}
-      <Link to="/contact-us">contact us</Link>.
+      <Link to={routes.contactUs}>contact us</Link>.
     </p>
     <MoveUpButton />
   </TermsConditionsWrapper>

@@ -48,6 +48,7 @@ export default function* root() {
     takeLatest(AUTH.CHANGE_PASSWORD, auth.changePassword),
     takeLatest(AUTH.EMAIL_RESET_PASSWORD, auth.emailResetPassword),
     takeLatest(AUTH.RESET_PASSWORD, auth.resetPassword),
+    takeLatest(AUTH.CONTACT_US, auth.sendContactUs),
 
     // task
     takeLatest(TASKS.FETCH, task.fetchTasks),

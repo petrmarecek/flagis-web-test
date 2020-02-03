@@ -23,6 +23,7 @@ export const getChangeNameForm = state =>
   state.getIn(['appState', 'changeName'])
 export const getChangePasswordForm = state =>
   state.getIn(['appState', 'changePassword'])
+export const getContactUsForm = state => state.getIn(['appState', 'contactUs'])
 export const getMultiSelectVisibility = state =>
   state.getIn(['appState', 'multiSelect', 'isVisible'])
 export const getCurrentDialog = state =>

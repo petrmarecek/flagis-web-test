@@ -1,42 +1,18 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 
 // components
-import NavigationLandingPrimary from 'components/navigation/navigation-landing-primary'
-import styled from 'styled-components'
+import ContactUsContent from 'components/contents/contact-us-content'
 
-const AboutUsWrapper = styled.div``
-const InnerWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 100px 0;
-`
+const ContactUsPage = ({ location }) => {
+  useEffect(() => window.scrollTo(0, 0), [])
+  return <ContactUsContent location={location} />
+}
 
-const Title = styled.div`
-  font-size: 60px;
-  font-weight: bold;
-  margin-bottom: 100px;
-`
-
-const Content = styled.div`
-  font-size: 32px;
-`
-
-const AboutUsPage = ({ location }) => (
-  <AboutUsWrapper>
-    <NavigationLandingPrimary location={location} />
-    <InnerWrapper>
-      <Title>Contact Us</Title>
-      <Content>comming soon...</Content>
-    </InnerWrapper>
-  </AboutUsWrapper>
-)
-
-AboutUsPage.propTypes = {
+ContactUsPage.propTypes = {
   location: PropTypes.shape({
     pathname: PropTypes.string.isRequired,
   }).isRequired,
 }
 
-export default AboutUsPage
+export default ContactUsPage

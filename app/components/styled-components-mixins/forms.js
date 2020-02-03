@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom'
 import Icon from '../icons/icon'
 
 const Form = styled.div`
-  max-width: 400px;
-  margin: ${props => (props.unmargin ? '0' : '50px auto 0')};
+  max-width: ${props => (props.maxWidth ? props.maxWidth : 400)}px;
+  width: ${props => (props.maxWidth ? '100%' : 'auto')};
+  margin: ${props => (props.nonMargin ? '0' : '50px auto 0')};
   padding: ${props => (props.leftPadding ? '5px 0 0 24px' : '120px auto 0')};
 `
 

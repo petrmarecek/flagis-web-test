@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { routes } from 'utils/routes'
 
 // components
 import MoveUpButton from 'components/common/move-up-button'
@@ -163,7 +164,7 @@ const Eula = () => (
     <p>
       Flagis s.r.o. collects, stores, maintains, and shares information about
       you in accordance with its Privacy Policy, which is available at{' '}
-      <Link to="/legal/privacy-policy">
+      <Link to={routes.legal.privacyPolicy}>
         https://www.flagis.com/legal/privacy-policy
       </Link>
       . By accepting this Agreement, you acknowledge that you hereby agree and

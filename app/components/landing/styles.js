@@ -18,7 +18,6 @@ const show = keyframes`${fadeIn}`
 // ------------------------------------ Landing -----------------------------------------
 
 const LandingWrapper = styled.div`
-  max-width: 1920px;
   margin: auto;
   padding: 0;
 `

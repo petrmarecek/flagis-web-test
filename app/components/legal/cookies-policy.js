@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { routes } from 'utils/routes'
 
 // components
 import MoveUpButton from 'components/common/move-up-button'
@@ -15,9 +16,9 @@ const CookiesPolicy = () => (
 
     <p>
       Flagis s.r.o. ("us", "we", or "our") uses cookies on the{' '}
-      <Link to="/">https://www.flagis.com</Link> website and the Flagis mobile
-      application (the "Service"). By using the Service, you consent to the use
-      of cookies.
+      <Link to={routes.landing}>https://www.flagis.com</Link> website and the
+      Flagis mobile application (the "Service"). By using the Service, you
+      consent to the use of cookies.
     </p>
 
     <p>
