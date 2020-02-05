@@ -1,13 +1,12 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
-import { withHandlers } from 'recompose'
-import filepicker from 'filepicker-js'
+import { useDropzone } from 'react-dropzone'
 
+// components
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
 
-filepicker.setKey('A7hMFRb7XS6KIA4fg4DChz')
-
+// styles
 import styled from 'styled-components'
 
 const AddAttachment = styled.div`
@@ -30,29 +29,24 @@ const Button = styled.button`
   }
 `
 
-const FilePicker = ({ handleClick }) => (
-  <AddAttachment onClick={handleClick}>
-    <Icon
-      icon={ICONS.PIN}
-      width={23}
-      height={26}
-      color={['#1C2124']}
-      onClick={handleClick}
-    />
-    <Button>Add attachment</Button>
-  </AddAttachment>
-)
+const FilePicker = ({ onFileUploaded }) => {
+  const onDrop = useCallback(acceptedFiles => {
+    onFileUploaded(acceptedFiles)
+  }, [])
+  const { getRootProps, getInputProps } = useDropzone({ onDrop })
+
+  return (
+    <AddAttachment {...getRootProps()}>
+      <input {...getInputProps()} />
+      <Icon icon={ICONS.PIN} width={23} height={26} color={['#1C2124']} />
+      <Button>Add attachment</Button>
+    </AddAttachment>
+  )
+}
 
 FilePicker.propTypes = {
   test: PropTypes.string,
   onFileUploaded: PropTypes.func,
   handleClick: PropTypes.func,
 }
-
-export default withHandlers({
-  handleClick: props => () => {
-    filepicker.pick({ language: 'en' }, blob => {
-      props.onFileUploaded(blob)
-    })
-  },
-})(FilePicker)
+export default FilePicker

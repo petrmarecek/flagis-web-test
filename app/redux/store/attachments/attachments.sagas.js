@@ -105,20 +105,39 @@ export function* initAttachmentsData() {
 
 export function* createAttachment(action) {
   try {
-    // TODO: implement optimistic insert
-    const taskId = action.payload.taskId
+    const { taskId, files } = action.payload
 
-    const data = {
-      fileName: action.payload.fileName,
-      client: action.payload.client,
-      mimeType: action.payload.mimeType,
-      size: action.payload.size,
-      url: action.payload.url,
-      isWritable: false,
+    for (const file of files) {
+      const { name, type, size } = file
+
+      // prepare data for getting upload data
+      const fileMetaData = {
+        fileName: name,
+        mimeType: type,
+      }
+
+      // get upload data
+      const { fileKey, uploadUrl } = yield callApi(
+        api.files.getUploadData,
+        fileMetaData
+      )
+
+      // upload file to S3
+      yield callApi(api.files.uploadFile, uploadUrl, file)
+
+      // prepare data for creating attachment
+      const fileData = {
+        ...fileMetaData,
+        fileKey,
+        size: size,
+      }
+
+      // creating attachment
+      const attachment = yield callApi(api.attachments.create, taskId, fileData)
+
+      // save attachment to redux store
+      yield put(attachmentActions.addAttachment(attachment))
     }
-    const attachment = yield callApi(api.attachments.create, taskId, data)
-
-    yield put(attachmentActions.addAttachment(attachment))
   } catch (err) {
     // send error to sentry
     yield put(

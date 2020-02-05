@@ -158,4 +158,10 @@ export default {
   contactUs: {
     create: data => api.post(`contact-us`, data).then(res => res.data),
   },
+
+  files: {
+    getUploadData: data => api.post(`uploads`, data).then(res => res.data),
+    uploadFile: (uploadUrl, data) =>
+      api.put(uploadUrl, data).then(res => res.data),
+  },
 }

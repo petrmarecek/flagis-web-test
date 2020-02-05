@@ -843,12 +843,7 @@ export default compose(
     onHandleFileUploaded: props => attachment => {
       const data = {
         taskId: props.task.id,
-        fileName: attachment.filename,
-        client: attachment.client,
-        isWritable: attachment.isWritable,
-        mimeType: attachment.mimetype,
-        size: attachment.size,
-        url: attachment.url,
+        files: attachment,
       }
 
       props.onHandleTaskFileUploaded(data)
