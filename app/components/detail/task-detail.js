@@ -183,6 +183,7 @@ const TaskDetail = props => {
   const isArchivedOrCollaborated = isArchived || !isOwner
   const isUnknownContact =
     isAssigneeAccepted && !isCompleted && !createdBy.isContact
+  const isArchivedOrCompletedOrInbox = isArchivedOrInbox || isCompleted
 
   // Data about owner of task
   const createdByFollower = {
@@ -281,7 +282,7 @@ const TaskDetail = props => {
                 )}
               {!isArchived && isAcceptedStatus && (
                 <DetailSubjectTaskCompleted
-                  compelted={isCompleted}
+                  completed={isCompleted}
                   onClick={onHandleComplete}
                 >
                   <Icon
@@ -456,7 +457,7 @@ const TaskDetail = props => {
             </DetailContentIcon>
           )}
         </DetailContentTop>
-        <DetailContentCenter allowed={!isCompleted} animation={animation}>
+        <DetailContentCenter animation={animation}>
           <DetailContentProperties>
             <DetailContentOptions allowed={!isCompleted && isOwner}>
               <DetailContentAddContact onClick={onHandleRemoveEventListener}>
@@ -602,7 +603,7 @@ const TaskDetail = props => {
                 <DetailContentImportantContent isChecked={isImportant} />
               </DetailContentImportant>
             </DetailContentOptions>
-            <DetailContentAttachments>
+            <DetailContentAttachments allowed={!isArchivedOrCompletedOrInbox}>
               {attachments.isFetching && <Loader />}
               {!attachments.isFetching && (
                 <AttachmentList
@@ -611,9 +612,7 @@ const TaskDetail = props => {
                   attachmentDelete={onHandleAttachmentDelete}
                 />
               )}
-              {!isArchivedOrInbox && (
-                <FilePicker onFileUploaded={onHandleFileUploaded} />
-              )}
+              <FilePicker onFileUploaded={onHandleFileUploaded} />
             </DetailContentAttachments>
           </DetailContentProperties>
           <DetailContentDescriptionTask>
@@ -628,7 +627,7 @@ const TaskDetail = props => {
               />
             </span>
           </DetailContentDescriptionTask>
-          <DetailContentComments>
+          <DetailContentComments allowed={!isCompleted}>
             {comments.isFetching && <Loader />}
             {!comments.isFetching && <CommentList comments={comments} />}
             {!isArchived && (

@@ -14,7 +14,6 @@ const AddAttachment = styled.div`
   display: flex;
   align-items: center;
   margin-top: 10px;
-  cursor: pointer;
 `
 
 const Button = styled.button`
@@ -24,6 +23,7 @@ const Button = styled.button`
   background-color: transparent;
   margin-left: 10px;
   padding: 0;
+  cursor: pointer;
 
   :active {
     outline: none;

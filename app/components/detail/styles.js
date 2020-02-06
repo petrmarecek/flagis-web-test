@@ -156,7 +156,6 @@ const DetailContentCenter = styled.div`
   height: 100%;
   flex-direction: ${props => (props.column ? 'column' : 'row')};
   padding: 21px 0 22px 0;
-  pointer-events: ${props => (props.allowed ? 'auto' : 'none')};
 `
 
 const DetailContentProperties = styled.div`
@@ -330,6 +329,7 @@ const DetailContentAttachments = styled.div`
   justify-content: space-between;
   height: 100%;
   z-index: 1;
+  pointer-events: ${props => (props.allowed ? 'auto' : 'none')};
 `
 
 const DetailContentComments = styled.div`
@@ -338,6 +338,7 @@ const DetailContentComments = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  pointer-events: ${props => (props.allowed ? 'auto' : 'none')};
 `
 
 const DetailContentCommentsAdd = styled.div`
