@@ -71,8 +71,12 @@ const NavigationDefault = ({
             icon={ICONS.NOTIFICATIONS}
             width={17}
             height={19}
-            color={isNotificationsActive ? ['#fff'] : ['#676D71']}
-            hoverColor={['#fff']}
+            color={
+              isNotificationsActive
+                ? [colors[colorTheme].navigationNotificationsHover]
+                : [colors[colorTheme].navigationNotifications]
+            }
+            hoverColor={[colors[colorTheme].navigationNotificationsHover]}
           />
           {notificationsCount > 0 && (
             <NotificationsCounter count={notificationsCount} />
@@ -148,10 +152,7 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   withStateHandlers(() => ({ accountRef: null }), {
     getAccountRef: () => ref => ({ accountRef: ref }),
     onHandleClickLogo: (state, props) => () => {
