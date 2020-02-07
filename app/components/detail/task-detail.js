@@ -162,7 +162,11 @@ const TaskDetail = props => {
     : { height: 0 }
   const editorOffset = 84 + contentTopElem.height
   const scrollOffset = 144 + contentTopElem.height
+  const contentOffset = 84 + contentTopElem.height
+  const attachmentScrollOffset = 360 + contentTopElem.height
   const editorHeight = `calc(100vh - ${editorOffset}px)`
+  const contentHeight = `calc(100vh - ${contentOffset}px)`
+  const attachmentScrollHeight = `calc(100vh - ${attachmentScrollOffset}px)`
   const scrollStyle = {
     height: `calc(100vh - ${scrollOffset}px)`,
     overflow: 'hidden',
@@ -458,7 +462,7 @@ const TaskDetail = props => {
           )}
         </DetailContentTop>
         <DetailContentCenter animation={animation}>
-          <DetailContentProperties>
+          <DetailContentProperties contentHeight={contentHeight}>
             <DetailContentOptions allowed={!isCompleted && isOwner}>
               <DetailContentAddContact onClick={onHandleRemoveEventListener}>
                 <DetailContentAddContactIcon>
@@ -610,6 +614,7 @@ const TaskDetail = props => {
                   disabled={isArchivedOrInbox}
                   attachments={attachments}
                   attachmentDelete={onHandleAttachmentDelete}
+                  attachmentScrollHeight={attachmentScrollHeight}
                 />
               )}
               <FilePicker onFileUploaded={onHandleFileUploaded} />
@@ -627,7 +632,10 @@ const TaskDetail = props => {
               />
             </span>
           </DetailContentDescriptionTask>
-          <DetailContentComments allowed={!isCompleted}>
+          <DetailContentComments
+            allowed={!isCompleted}
+            contentHeight={contentHeight}
+          >
             {comments.isFetching && <Loader />}
             {!comments.isFetching && <CommentList comments={comments} />}
             {!isArchived && (

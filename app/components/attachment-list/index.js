@@ -8,9 +8,14 @@ import ShadowScrollbar from 'components/common/shadow-scrollbar'
 // styles
 import { ListWrapper } from './styles'
 
-const AttachmentList = ({ attachments, attachmentDelete, disabled }) => {
+const AttachmentList = ({
+  attachments,
+  attachmentDelete,
+  disabled,
+  attachmentScrollHeight,
+}) => {
   const scrollStyle = {
-    height: `calc(100vh - 360px)`,
+    height: `calc(100vh - ${attachmentScrollHeight}px)`,
     shadowHeight: 20,
     boxShadowTop: 'inset 0 10px 10px -5px #fff',
     boxShadowBottom: 'inset 0 -10px 10px -5px #fff',
@@ -40,6 +45,7 @@ AttachmentList.propTypes = {
   attachments: PropTypes.object,
   attachmentDelete: PropTypes.func,
   disabled: PropTypes.bool,
+  attachmentScrollHeight: PropTypes.number,
 }
 
 export default AttachmentList

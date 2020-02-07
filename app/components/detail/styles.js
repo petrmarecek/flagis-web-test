@@ -164,6 +164,7 @@ const DetailContentProperties = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-start;
+  max-height: ${props => props.contentHeight};
 `
 
 const DetailContentOptions = styled.div`
@@ -339,6 +340,7 @@ const DetailContentComments = styled.div`
   flex-direction: column;
   justify-content: space-between;
   pointer-events: ${props => (props.allowed ? 'auto' : 'none')};
+  max-height: ${props => props.contentHeight};
 `
 
 const DetailContentCommentsAdd = styled.div`
