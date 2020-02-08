@@ -640,16 +640,16 @@ const FooterBottom = styled.div`
   }
 `
 
-const FooterCopyright = styled.p`
+const FooterText = styled.p`
   font-size: 20px;
-  font-weight: 600;
+  margin: 0 0 0 40px;
 
   ${mediaQueries.smx} {
     font-size: 16px;
   }
 
-  ${mediaQueries.smx} {
-    margin-top: 5px;
+  ${mediaQueries.sm} {
+    margin: 5px 0 0 0;
   }
 `
 
@@ -696,5 +696,5 @@ export {
   FooterTitle,
   FooterButtons,
   FooterBottom,
-  FooterCopyright,
+  FooterText,
 }

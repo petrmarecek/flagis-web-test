@@ -11,7 +11,7 @@ import {
   FooterTitle,
   FooterButtons,
   FooterBottom,
-  FooterCopyright,
+  FooterText,
 } from './styles'
 
 const LandingFooter = () => {
@@ -28,7 +28,8 @@ const LandingFooter = () => {
       </FooterTop>
       <FooterBottom>
         <NavigationLandingSecondary />
-        <FooterCopyright>© 2019 Flagis</FooterCopyright>
+        <FooterText>info@flagis.com</FooterText>
+        <FooterText>© 2019 Flagis</FooterText>
       </FooterBottom>
     </FooterWrapper>
   )
