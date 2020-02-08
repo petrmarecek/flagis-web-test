@@ -36,7 +36,7 @@ const IconWrapper = styled(Icon)`
 `
 
 const MoveUpButton = () => {
-  const onHandleMoveUp = () => window.scrollTo(0, 0)
+  const onHandleMoveUp = () => window.scrollTo({ top: 0, behavior: 'smooth' })
   return (
     <MoveUpButtonWrapper onClick={onHandleMoveUp}>
       <MoveUpButtonInner>

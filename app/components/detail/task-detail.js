@@ -162,7 +162,11 @@ const TaskDetail = props => {
     : { height: 0 }
   const editorOffset = 84 + contentTopElem.height
   const scrollOffset = 144 + contentTopElem.height
+  const contentOffset = 84 + contentTopElem.height
+  const attachmentScrollOffset = 360 + contentTopElem.height
   const editorHeight = `calc(100vh - ${editorOffset}px)`
+  const contentHeight = `calc(100vh - ${contentOffset}px)`
+  const attachmentScrollHeight = `calc(100vh - ${attachmentScrollOffset}px)`
   const scrollStyle = {
     height: `calc(100vh - ${scrollOffset}px)`,
     overflow: 'hidden',
@@ -183,6 +187,7 @@ const TaskDetail = props => {
   const isArchivedOrCollaborated = isArchived || !isOwner
   const isUnknownContact =
     isAssigneeAccepted && !isCompleted && !createdBy.isContact
+  const isArchivedOrCompletedOrInbox = isArchivedOrInbox || isCompleted
 
   // Data about owner of task
   const createdByFollower = {
@@ -281,7 +286,7 @@ const TaskDetail = props => {
                 )}
               {!isArchived && isAcceptedStatus && (
                 <DetailSubjectTaskCompleted
-                  compelted={isCompleted}
+                  completed={isCompleted}
                   onClick={onHandleComplete}
                 >
                   <Icon
@@ -456,8 +461,8 @@ const TaskDetail = props => {
             </DetailContentIcon>
           )}
         </DetailContentTop>
-        <DetailContentCenter allowed={!isCompleted} animation={animation}>
-          <DetailContentProperties>
+        <DetailContentCenter animation={animation}>
+          <DetailContentProperties contentHeight={contentHeight}>
             <DetailContentOptions allowed={!isCompleted && isOwner}>
               <DetailContentAddContact onClick={onHandleRemoveEventListener}>
                 <DetailContentAddContactIcon>
@@ -602,18 +607,17 @@ const TaskDetail = props => {
                 <DetailContentImportantContent isChecked={isImportant} />
               </DetailContentImportant>
             </DetailContentOptions>
-            <DetailContentAttachments>
+            <DetailContentAttachments allowed={!isArchivedOrCompletedOrInbox}>
               {attachments.isFetching && <Loader />}
               {!attachments.isFetching && (
                 <AttachmentList
                   disabled={isArchivedOrInbox}
                   attachments={attachments}
                   attachmentDelete={onHandleAttachmentDelete}
+                  attachmentScrollHeight={attachmentScrollHeight}
                 />
               )}
-              {!isArchivedOrInbox && (
-                <FilePicker onFileUploaded={onHandleFileUploaded} />
-              )}
+              <FilePicker onFileUploaded={onHandleFileUploaded} />
             </DetailContentAttachments>
           </DetailContentProperties>
           <DetailContentDescriptionTask>
@@ -628,7 +632,10 @@ const TaskDetail = props => {
               />
             </span>
           </DetailContentDescriptionTask>
-          <DetailContentComments>
+          <DetailContentComments
+            allowed={!isCompleted}
+            contentHeight={contentHeight}
+          >
             {comments.isFetching && <Loader />}
             {!comments.isFetching && <CommentList comments={comments} />}
             {!isArchived && (

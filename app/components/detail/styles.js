@@ -64,6 +64,7 @@ const DetailContentTop = styled.div`
   position: relative;
   background-color: ${props => props.backgroundColor};
   z-index: 1;
+  min-height: 48px;
   padding: 9px 12px;
 
   :before {
@@ -156,7 +157,6 @@ const DetailContentCenter = styled.div`
   height: 100%;
   flex-direction: ${props => (props.column ? 'column' : 'row')};
   padding: 21px 0 22px 0;
-  pointer-events: ${props => (props.allowed ? 'auto' : 'none')};
 `
 
 const DetailContentProperties = styled.div`
@@ -165,6 +165,7 @@ const DetailContentProperties = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-start;
+  max-height: ${props => props.contentHeight};
 `
 
 const DetailContentOptions = styled.div`
@@ -330,6 +331,7 @@ const DetailContentAttachments = styled.div`
   justify-content: space-between;
   height: 100%;
   z-index: 1;
+  pointer-events: ${props => (props.allowed ? 'auto' : 'none')};
 `
 
 const DetailContentComments = styled.div`
@@ -338,6 +340,8 @@ const DetailContentComments = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  pointer-events: ${props => (props.allowed ? 'auto' : 'none')};
+  max-height: ${props => props.contentHeight};
 `
 
 const DetailContentCommentsAdd = styled.div`

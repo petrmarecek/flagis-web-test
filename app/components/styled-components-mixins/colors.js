@@ -64,6 +64,8 @@ export default {
     // navigation-default
     logoIcon: colors.white,
     navigationDefaultTriangle: colors.midnightHour,
+    navigationNotifications: colors.batman,
+    navigationNotificationsHover: colors.white,
 
     // navigation-primary
     navigationPrimary: colors.batman,
@@ -101,6 +103,8 @@ export default {
     // navigation-default
     logoIcon: colors.darkJungleGreen,
     navigationDefaultTriangle: colors.astrocopusGrey,
+    navigationNotifications: colors.astrocopusGrey,
+    navigationNotificationsHover: colors.darkJungleGreen,
 
     // navigation-primary
     navigationPrimary: colors.greyOfDarkness,

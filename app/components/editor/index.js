@@ -207,8 +207,8 @@ export default class TextEditor extends Component {
               ref="editor"
               customStyleMap={styleMap}
               editorState={editorState}
-              handleKeyCommand={this.handleKeyCommand}
-              onChange={this.onChange}
+              handleKeyCommand={disabled ? null : this.handleKeyCommand}
+              onChange={disabled ? null : this.onChange}
               placeholder={placeholder}
               readOnly={disabled}
             />
