@@ -4,6 +4,8 @@ import 'firebase/firestore'
 import config from '../../config'
 import { eventChannel } from 'redux-saga'
 
+import axios from 'axios'
+
 // Initialize Firebase
 firebase.initializeApp(config.firebase)
 
@@ -105,6 +107,18 @@ export default {
   },
 
   signIn: token => firebase.auth().signInWithCustomToken(token),
-
+  createNewToken: refreshToken =>
+    axios
+      .request('https://securetoken.googleapis.com/v1/token', {
+        method: 'POST',
+        params: {
+          key: config.firebase.apiKey,
+        },
+        data: {
+          grant_type: 'refresh_token',
+          refresh_token: refreshToken,
+        },
+      })
+      .then(res => res.data),
   signOut: () => firebase.auth().signOut(),
 }

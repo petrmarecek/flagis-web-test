@@ -28,6 +28,11 @@ export default typeToReducer(
           .set('profile', new Profile(action.payload.profile)),
     },
 
+    [AUTH.SET_FIREBASE_TOKENS]: (state, action) =>
+      state
+        .set('firebaseToken', action.payload.firebaseToken)
+        .set('firebaseRefreshToken', action.payload.firebaseRefreshToken),
+
     [AUTH.LOGOUT]: () => new AuthStore(),
 
     [AUTH.UPDATE_PROFILE]: (state, action) =>

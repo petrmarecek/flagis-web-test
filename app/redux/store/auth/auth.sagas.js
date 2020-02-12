@@ -466,7 +466,34 @@ export function* resetPassword(action) {
 
 function* setTokens({ accessToken, firebaseToken }) {
   api.setApiToken(accessToken)
-  yield call(firebase.signIn, firebaseToken)
+
+  // firebase auth
+  try {
+    // sign in to firebase
+    const { user } = yield call(firebase.signIn, firebaseToken)
+
+    // save token and refreshToken from firebase to redux store
+    yield put(authActions.setFirebaseTokens(firebaseToken, user.refreshToken))
+  } catch (err) {
+    // get firebaseRefreshToken
+    const firebaseRefreshToken = yield select(
+      authSelectors.getFirebaseRefreshToken
+    )
+
+    // get new token and refreshToken from firebase
+    const newTokens = yield call(firebase.createNewToken(firebaseRefreshToken))
+
+    // sign in to firebase
+    yield call(firebase.signIn, firebaseToken)
+
+    // save token and refreshToken from firebase to redux store
+    yield put(
+      authActions.setFirebaseTokens(
+        newTokens['access_token'],
+        newTokens['refresh_token']
+      )
+    )
+  }
 }
 
 function* authorizeUser(authApiCall, action) {

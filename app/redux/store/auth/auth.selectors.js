@@ -25,6 +25,9 @@ export const getUserProfile = state => {
 export const getNewRefreshToken = state =>
   state.getIn(['auth', 'newRefreshToken'])
 
+export const getFirebaseRefreshToken = state =>
+  state.getIn(['auth', 'firebaseRefreshToken'])
+
 export const getColorTheme = state => {
   const profile = state.getIn(['auth', 'profile'])
   if (!profile) {
