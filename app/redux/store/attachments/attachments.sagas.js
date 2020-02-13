@@ -24,6 +24,7 @@ import api from 'redux/utils/api'
 import schema from 'redux/data/schema'
 import firebase from 'redux/utils/firebase'
 import dateUtil from 'redux/utils/date'
+import fileHelper from 'utils/file-helper'
 
 const APP_STATE = appStateActions.APP_STATE
 const ATTACHMENTS = attachmentActions.ATTACHMENTS
@@ -122,8 +123,10 @@ export function* createAttachment(action) {
         fileMetaData
       )
 
+      const fileBuffer = yield call(fileHelper.readFileAsArrayBuffer, file)
+
       // upload file to S3
-      yield callApi(api.files.uploadFile, uploadUrl, file, type)
+      yield callApi(api.files.uploadFile, uploadUrl, fileBuffer, type)
 
       // prepare data for creating attachment
       const fileData = {
