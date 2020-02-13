@@ -123,7 +123,7 @@ export function* createAttachment(action) {
       )
 
       // upload file to S3
-      yield callApi(api.files.uploadFile, uploadUrl, file)
+      yield callApi(api.files.uploadFile, uploadUrl, file, type)
 
       // prepare data for creating attachment
       const fileData = {

@@ -161,7 +161,13 @@ export default {
 
   files: {
     getUploadData: data => api.post(`uploads`, data).then(res => res.data),
-    uploadFile: (uploadUrl, data) =>
-      api.put(uploadUrl, data).then(res => res.data),
+    uploadFile: (uploadUrl, data, contentType) =>
+      api
+        .put(uploadUrl, data, {
+          headers: {
+            'Content-Type': contentType,
+          },
+        })
+        .then(res => res.data),
   },
 }
