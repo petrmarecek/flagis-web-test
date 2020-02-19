@@ -50,6 +50,7 @@ import {
   getTasksMenuFiltersActiveAssignee,
 } from 'redux/store/tasks-menu/tasks-menu.selectors'
 import { archiveCompletedTasks } from 'redux/utils/component-helper'
+import { loaderTypes } from 'redux/store/app-state/app-state.common'
 
 import TasksMenuFilters from 'components/tasks-menu/tasks-menu-filters'
 import TasksMenuFiltersActiveItem from 'components/tasks-menu/tasks-menu-filters-active-item'
@@ -152,7 +153,7 @@ class TasksMenuContainer extends PureComponent {
       selectedTasks
     )
 
-    this.props.setLoader('global')
+    this.props.setLoader(loaderTypes.GLOBAL)
     this.props.setArchiveTasks(
       archive.newArchiveTasksList,
       archive.tasks,

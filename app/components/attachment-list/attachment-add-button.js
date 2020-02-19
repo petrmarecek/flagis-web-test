@@ -9,13 +9,13 @@ import Icon from 'components/icons/icon'
 // styles
 import styled from 'styled-components'
 
-const AddAttachment = styled.div`
+const AttachmentAddButtonWrapper = styled.div`
   display: flex;
   align-items: center;
   margin-top: 10px;
 `
 
-const Button = styled.button`
+const AddButton = styled.button`
   font-size: 14px;
   color: #1c2124;
   border: none;
@@ -29,24 +29,25 @@ const Button = styled.button`
   }
 `
 
-const FilePicker = ({ onFileUploaded }) => {
+const AttachmentAddButton = ({ onFileUploaded }) => {
   const onDrop = useCallback(acceptedFiles => {
     onFileUploaded(acceptedFiles)
   }, [])
   const { getRootProps, getInputProps } = useDropzone({ onDrop })
 
   return (
-    <AddAttachment {...getRootProps()}>
+    <AttachmentAddButtonWrapper {...getRootProps()}>
       <input {...getInputProps()} />
       <Icon icon={ICONS.PIN} width={23} height={26} color={['#1C2124']} />
-      <Button>Add attachment</Button>
-    </AddAttachment>
+      <AddButton>Add attachment</AddButton>
+    </AttachmentAddButtonWrapper>
   )
 }
 
-FilePicker.propTypes = {
+AttachmentAddButton.propTypes = {
   test: PropTypes.string,
   onFileUploaded: PropTypes.func,
   handleClick: PropTypes.func,
 }
-export default FilePicker
+
+export default AttachmentAddButton

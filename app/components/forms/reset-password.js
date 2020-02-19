@@ -11,6 +11,7 @@ import {
   resetPassword,
 } from 'redux/store/auth/auth.actions'
 import { validateResetPassword } from 'redux/utils/validate'
+import { loaderTypes } from 'redux/store/app-state/app-state.common'
 
 import NavigationLandingPrimary from 'components/navigation/navigation-landing-primary'
 import InputField from 'components/forms/fields/input-field'
@@ -90,7 +91,7 @@ export default compose(
     onSubmit: props => values => {
       const numberCharacter = '/reset-password/'.length
       const resetToken = props.location.pathname.substring(numberCharacter)
-      props.setLoader('form')
+      props.setLoader(loaderTypes.FORM)
       props.resetPassword({
         resetToken: resetToken,
         password: values.get('newPassword'),

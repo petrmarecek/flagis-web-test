@@ -11,6 +11,7 @@ import {
   emailResetPassword,
 } from 'redux/store/auth/auth.actions'
 import { validateEmailResetPassword } from 'redux/utils/validate'
+import { loaderTypes } from 'redux/store/app-state/app-state.common'
 
 import NavigationLandingPrimary from 'components/navigation/navigation-landing-primary'
 import InputField from 'components/forms/fields/input-field'
@@ -80,7 +81,7 @@ export default compose(
   }),
   withHandlers({
     onSubmit: props => values => {
-      props.setLoader('form')
+      props.setLoader(loaderTypes.FORM)
       props.emailResetPassword({ email: values.get('email') })
     },
   }),

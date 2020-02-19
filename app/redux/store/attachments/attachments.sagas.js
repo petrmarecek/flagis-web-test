@@ -24,6 +24,7 @@ import api from 'redux/utils/api'
 import schema from 'redux/data/schema'
 import firebase from 'redux/utils/firebase'
 import dateUtil from 'redux/utils/date'
+import { loaderTypes } from 'redux/store/app-state/app-state.common'
 import fileHelper from 'utils/file-helper'
 
 const APP_STATE = appStateActions.APP_STATE
@@ -108,6 +109,7 @@ export function* createAttachment(action) {
   try {
     const { taskId, files } = action.payload
 
+    yield put(appStateActions.setLoader(loaderTypes.ATTACHMENTS))
     for (const file of files) {
       const { name, type, size } = file
 
@@ -132,7 +134,7 @@ export function* createAttachment(action) {
       const fileData = {
         ...fileMetaData,
         fileKey,
-        size: size,
+        size,
       }
 
       // creating attachment
@@ -140,8 +142,10 @@ export function* createAttachment(action) {
 
       // save attachment to redux store
       yield put(attachmentActions.addAttachment(attachment))
+      yield put(appStateActions.deselectLoader(loaderTypes.ATTACHMENTS))
     }
   } catch (err) {
+    yield put(appStateActions.deselectLoader(loaderTypes.ATTACHMENTS))
     // send error to sentry
     yield put(
       errorActions.errorSentry(err, {

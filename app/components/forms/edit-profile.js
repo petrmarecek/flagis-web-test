@@ -21,6 +21,7 @@ import {
   getColorTheme,
 } from 'redux/store/auth/auth.selectors'
 import { validateChangeName } from 'redux/utils/validate'
+import { loaderTypes } from 'redux/store/app-state/app-state.common'
 
 // components
 import ImagePicker from 'components/common/image-picker'
@@ -166,7 +167,7 @@ export default compose(
         }
       }
 
-      props.setLoader('form')
+      props.setLoader(loaderTypes.FORM)
       props.changeName({
         firstName: firstName,
         lastName: lastName,

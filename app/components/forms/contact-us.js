@@ -19,6 +19,7 @@ import { validateContactUs } from 'redux/utils/validate'
 import { getRoutingPathname } from 'redux/store/routing/routing.selectors'
 import { getFromValues } from 'redux/store/forms/forms.selectors'
 import { afterSubmitContactUs } from 'redux/utils/form-submit'
+import { loaderTypes } from 'redux/store/app-state/app-state.common'
 
 // components
 import InputField from 'components/forms/fields/input-field'
@@ -207,7 +208,7 @@ export default compose(
   }),
   withHandlers({
     onSubmit: props => values => {
-      props.setLoader('form')
+      props.setLoader(loaderTypes.FORM)
       props.sendContactUs({
         firstName: values.get('firstName'),
         lastName: values.get('lastName'),
