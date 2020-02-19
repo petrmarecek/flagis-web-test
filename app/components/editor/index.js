@@ -58,14 +58,18 @@ export default class TextEditor extends Component {
   saveDescription() {
     const draftDescription = this.state.editorState.getCurrentContent()
     const rawContentState = convertToRaw(draftDescription)
-    const markDownDescription = draftToMarkdown(rawContentState)
+    const markDownDescription = draftToMarkdown(rawContentState, {
+      preserveNewlines: true,
+    })
 
     this.props.setDescription(markDownDescription)
   }
 
   loadDescription(content) {
     if (content !== '') {
-      const draftDescription = markdownToDraft(content)
+      const draftDescription = markdownToDraft(content, {
+        preserveNewlines: true,
+      })
       const newContentState = convertFromRaw(draftDescription)
       const initialEditorState = EditorState.createWithContent(newContentState)
       return initialEditorState
