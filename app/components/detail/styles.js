@@ -64,7 +64,6 @@ const DetailContentTop = styled.div`
   position: relative;
   background-color: ${props => props.backgroundColor};
   z-index: 1;
-  min-height: 48px;
   padding: 9px 12px;
 
   :before {

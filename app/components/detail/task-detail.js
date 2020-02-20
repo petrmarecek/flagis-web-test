@@ -163,7 +163,7 @@ const TaskDetail = props => {
   const editorOffset = 84 + contentTopElem.height
   const scrollOffset = 144 + contentTopElem.height
   const contentOffset = 84 + contentTopElem.height
-  const attachmentScrollOffset = 360 + contentTopElem.height
+  const attachmentScrollOffset = 300 + contentTopElem.height
   const editorHeight = `calc(100vh - ${editorOffset}px)`
   const contentHeight = `calc(100vh - ${contentOffset}px)`
   const attachmentScrollHeight = `calc(100vh - ${attachmentScrollOffset}px)`
