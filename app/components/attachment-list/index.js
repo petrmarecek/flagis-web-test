@@ -15,7 +15,7 @@ const AttachmentList = ({
   attachmentScrollHeight,
 }) => {
   const scrollStyle = {
-    height: `calc(100vh - ${attachmentScrollHeight}px)`,
+    height: attachmentScrollHeight,
     shadowHeight: 20,
     boxShadowTop: 'inset 0 10px 10px -5px #fff',
     boxShadowBottom: 'inset 0 -10px 10px -5px #fff',

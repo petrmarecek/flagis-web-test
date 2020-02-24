@@ -100,7 +100,7 @@ const TagContainer = styled.li`
   ${fontMain}
   ${borderRadius('12px')}
   background-color: ${props => props.tagColor};
-  margin: ${props => (props.mainSearch ? '0 6px 0 0' : '0 6px 6px 0')};
+  margin: ${props => (props.mainSearch ? '0 6px 0 0' : '0 6px 2px 0')};
   border: none;
   padding: 0 10px 0 10px;
   display: flex;
