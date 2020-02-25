@@ -110,6 +110,7 @@ export function* createAttachment(action) {
     const { taskId, files } = action.payload
 
     yield put(appStateActions.setLoader(loaderTypes.ATTACHMENTS))
+
     for (const file of files) {
       const { name, type, size } = file
 
@@ -142,8 +143,9 @@ export function* createAttachment(action) {
 
       // save attachment to redux store
       yield put(attachmentActions.addAttachment(attachment))
-      yield put(appStateActions.deselectLoader(loaderTypes.ATTACHMENTS))
     }
+
+    yield put(appStateActions.deselectLoader(loaderTypes.ATTACHMENTS))
   } catch (err) {
     yield put(appStateActions.deselectLoader(loaderTypes.ATTACHMENTS))
     // send error to sentry
