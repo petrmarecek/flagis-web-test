@@ -324,12 +324,15 @@ const DetailContentDatePicker = styled.div`
   }
 `
 
-const DetailContentAttachments = styled.div`
+const DetailContentAttachmentsLoader = styled.div`
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  align-items: center;
   height: 100%;
   z-index: 1;
+`
+
+const DetailContentAttachments = styled.div`
+  height: 100%;
   pointer-events: ${props => (props.allowed ? 'auto' : 'none')};
 `
 
@@ -646,6 +649,7 @@ export {
   DetailContentImportantIcon,
   DetailContentImportantLabel,
   DetailContentImportantContent,
+  DetailContentAttachmentsLoader,
   DetailContentAttachments,
   DetailContentComments,
   DetailContentCommentsAdd,

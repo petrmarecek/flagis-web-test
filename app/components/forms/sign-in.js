@@ -15,6 +15,7 @@ import {
 } from 'redux/store/app-state/app-state.selectors'
 import { controlRedirectTasks, login } from 'redux/store/auth/auth.actions'
 import { validateSignIn } from 'redux/utils/validate'
+import { loaderTypes } from 'redux/store/app-state/app-state.common'
 
 import NavigationLandingPrimary from 'components/navigation/navigation-landing-primary'
 import InputField from 'components/forms/fields/input-field'
@@ -129,7 +130,7 @@ export default compose(
   }),
   withHandlers({
     onSubmit: props => values => {
-      props.setLoader('form')
+      props.setLoader(loaderTypes.FORM)
       props.login({
         email: values.get('email'),
         password: values.get('password'),

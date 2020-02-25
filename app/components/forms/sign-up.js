@@ -21,6 +21,7 @@ import {
 import { getUserEmail } from 'redux/store/auth/auth.selectors'
 import { getFromValues } from 'redux/store/forms/forms.selectors'
 import { validateSignUp } from 'redux/utils/validate'
+import { loaderTypes } from 'redux/store/app-state/app-state.common'
 
 // components
 import NavigationLandingPrimary from 'components/navigation/navigation-landing-primary'
@@ -215,7 +216,7 @@ export default compose(
         data.token = token
       }
 
-      props.setLoader('form')
+      props.setLoader(loaderTypes.FORM)
       props.signUp(data)
     },
   }),

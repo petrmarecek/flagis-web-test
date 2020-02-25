@@ -5,6 +5,13 @@ const api = axios.create({
   baseURL: `${config.apiURL}/v1`,
 })
 
+/**
+ * We need to prevent sending Flagis access token to any external API (e.g. AWS). That's why
+ * we need this second axios instance that will not pass current access token to the Authorization
+ * header. Axios >=0.19.1 is needed because of this bug: https://github.com/axios/axios/pull/1395
+ */
+const externalAPI = axios.create()
+
 export default {
   setApiToken(accessToken) {
     // send token with every request
@@ -157,5 +164,17 @@ export default {
 
   contactUs: {
     create: data => api.post(`contact-us`, data).then(res => res.data),
+  },
+
+  files: {
+    getUploadData: data => api.post(`uploads`, data).then(res => res.data),
+    uploadFile: (uploadUrl, data, contentType) =>
+      externalAPI
+        .put(uploadUrl, data, {
+          headers: {
+            'Content-Type': contentType,
+          },
+        })
+        .then(res => res.data),
   },
 }

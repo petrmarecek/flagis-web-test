@@ -17,7 +17,6 @@ import FollowerStatus from 'components/common/follower-status'
 import FollowerResponseButtons from '../common/follower-response-buttons'
 import Autocomplete from 'components/autocomplete'
 import FollowerIcon from '../common/follower-icon'
-import FilePicker from 'components/common/file-picker'
 import AttachmentList from 'components/attachment-list'
 import CommentList from 'components/comment-list'
 import Loader from 'components/common/loader'
@@ -58,6 +57,7 @@ import {
   DetailContentImportantIcon,
   DetailContentImportantLabel,
   DetailContentImportantContent,
+  DetailContentAttachmentsLoader,
   DetailContentAttachments,
   DetailContentDescriptionTask,
   DetailContentComments,
@@ -608,16 +608,20 @@ const TaskDetail = props => {
               </DetailContentImportant>
             </DetailContentOptions>
             <DetailContentAttachments allowed={!isArchivedOrCompletedOrInbox}>
-              {attachments.isFetching && <Loader />}
+              {attachments.isFetching && (
+                <DetailContentAttachmentsLoader>
+                  <Loader />
+                </DetailContentAttachmentsLoader>
+              )}
               {!attachments.isFetching && (
                 <AttachmentList
                   disabled={isArchivedOrInbox}
                   attachments={attachments}
-                  attachmentDelete={onHandleAttachmentDelete}
                   attachmentScrollHeight={attachmentScrollHeight}
+                  attachmentDelete={onHandleAttachmentDelete}
+                  onFileUploaded={onHandleFileUploaded}
                 />
               )}
-              <FilePicker onFileUploaded={onHandleFileUploaded} />
             </DetailContentAttachments>
           </DetailContentProperties>
           <DetailContentDescriptionTask>
@@ -850,12 +854,7 @@ export default compose(
     onHandleFileUploaded: props => attachment => {
       const data = {
         taskId: props.task.id,
-        fileName: attachment.filename,
-        client: attachment.client,
-        isWritable: attachment.isWritable,
-        mimeType: attachment.mimetype,
-        size: attachment.size,
-        url: attachment.url,
+        files: attachment,
       }
 
       props.onHandleTaskFileUploaded(data)

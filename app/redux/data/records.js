@@ -63,6 +63,7 @@ export const Visibility = Record({
 })
 
 export const Loader = Record({
+  attachments: false,
   form: false,
   global: false,
 })

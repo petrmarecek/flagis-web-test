@@ -47,6 +47,7 @@ import search from 'redux/services/search'
 import firebase from 'redux/utils/firebase'
 import dateUtil from 'redux/utils/date'
 import { getAssigneeOfTask } from 'redux/utils/component-helper'
+import { loaderTypes } from 'redux/store/app-state/app-state.common'
 
 const TASKS = taskActions.TASKS
 
@@ -743,7 +744,7 @@ export function* prepareDeleteTask(action) {
 
   // show loader for multi delete of tasks
   if (deleteTasksIds.size > 1) {
-    yield put(appStateActions.setLoader('global'))
+    yield put(appStateActions.setLoader(loaderTypes.GLOBAL))
   }
 
   yield put(taskActions.deselectTasks())

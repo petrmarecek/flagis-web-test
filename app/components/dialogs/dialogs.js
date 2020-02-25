@@ -32,6 +32,7 @@ import {
   getMultiSelectInactiveTags,
   getMultiSelectOtherTags,
 } from 'redux/store/multi-select/multi-select.selectors'
+import { loaderTypes } from 'redux/store/app-state/app-state.common'
 
 // dialogs
 import AddRemoveTagsDialog from './add-remove-tags-dialog'
@@ -99,7 +100,7 @@ class Dialogs extends PureComponent {
 
   handleAddRemoveTagsSubmit = () => {
     const tasks = this.props.selectTasks
-    this.props.setLoader('global')
+    this.props.setLoader(loaderTypes.GLOBAL)
 
     for (const task of tasks) {
       let addTags = this.props.multiSelectAddEntitiesTags

@@ -15,6 +15,7 @@ import {
 import { changePassword } from 'redux/store/auth/auth.actions'
 import { validateChangePassword } from 'redux/utils/validate'
 import { afterSubmitChangePassword } from 'redux/utils/form-submit'
+import { loaderTypes } from 'redux/store/app-state/app-state.common'
 
 import InputField from 'components/forms/fields/input-field'
 import Loader from 'components/common/loader'
@@ -130,7 +131,7 @@ export default compose(
   }),
   withHandlers({
     onSubmit: props => values => {
-      props.setLoader('form')
+      props.setLoader(loaderTypes.FORM)
       props.changePassword({
         oldPassword: values.get('oldPassword'),
         newPassword: values.get('newPassword'),
