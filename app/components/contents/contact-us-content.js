@@ -7,16 +7,16 @@ import { connect } from 'react-redux'
 import { deselectError } from 'redux/store/app-state/app-state.actions'
 
 // components
+import ToastNotificationsContainer from 'components/toast-notifications'
 import NavigationLandingPrimary from 'components/navigation/navigation-landing-primary'
 import ContactUsContainer from '../forms/contact-us'
-import { ToastContainer, style } from 'react-toastify'
 
 const ContactUsContent = ({ location }) => (
   <div>
     <NavigationLandingPrimary location={location} />
     <ContactUsContainer />
     <div className="floating-components">
-      <ToastContainer />
+      <ToastNotificationsContainer />
     </div>
   </div>
 )
@@ -36,12 +36,6 @@ export default compose(
   lifecycle({
     componentDidMount() {
       this.props.deselectError('contactUs')
-      style({
-        BOTTOM_RIGHT: {
-          bottom: '30px',
-          right: '25px',
-        },
-      })
     },
   })
 )(ContactUsContent)

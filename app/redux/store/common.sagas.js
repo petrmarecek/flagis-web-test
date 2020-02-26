@@ -3,8 +3,7 @@ import moment from 'moment'
 
 // toast notifications
 import { toast } from 'react-toastify'
-import constants from 'utils/constants'
-import { errorMessages } from 'utils/messages'
+import * as toastCommon from 'components/toast-notifications/toast-notifications-common'
 
 // redux
 import { call, put, take, spawn, race, select } from 'redux-saga/effects'
@@ -121,9 +120,9 @@ export function* fetch(actionType, fetchDef) {
     // TODO: After fix in backend delete logout
     // logout if access token is invalid
     if (err.response.status === 500) {
-      toast.error(errorMessages.sessionExpired, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: constants.NOTIFICATION_ERROR_DURATION,
+      toast.error(toastCommon.errorMessages.sessionExpired, {
+        position: toastCommon.position.DEFAULT,
+        autoClose: toastCommon.duration.ERROR_DURATION,
       })
       yield put(logout())
     } else {

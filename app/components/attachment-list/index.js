@@ -45,7 +45,7 @@ AttachmentList.propTypes = {
   attachments: PropTypes.object,
   attachmentDelete: PropTypes.func,
   disabled: PropTypes.bool,
-  attachmentScrollHeight: PropTypes.number,
+  attachmentScrollHeight: PropTypes.string,
 }
 
 export default AttachmentList

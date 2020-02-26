@@ -1,3 +1,15 @@
+import { toast } from 'react-toastify'
+
+export const position = {
+  DEFAULT: toast.POSITION.TOP_RIGHT,
+}
+
+export const duration = {
+  ERROR_DURATION: 12000,
+  SUCCESS_DURATION: 10000,
+  INFO_DURATION: 10000,
+}
+
 export const errorMessages = {
   signIn: {
     unauthorized: 'Incorrect E-mail or Password.',
@@ -108,119 +120,5 @@ export const infoMessages = {
       'Not allowed to edit subject, dates and description of task!',
     inboxRules: 'Allowed to add comments and accept/reject of task!',
     completedRules: 'Allowed to only complete and archive of task!',
-  },
-
-  notifications: type => {
-    switch (type) {
-      case 'TASKS/DATES/START':
-        return `Start date`
-
-      case 'TASKS/DATES/REMINDER':
-        return `Reminder`
-
-      case 'TASKS/DATES/DUE-DATE':
-        return `Due date`
-
-      case 'TASKS/FOLLOWERS/SEND':
-        return `New Task`
-
-      case 'TASKS/FOLLOWERS/ACCEPT':
-        return `Accepted`
-
-      case 'TASKS/FOLLOWERS/REJECT':
-        return `Rejected`
-
-      case 'TASKS/FOLLOWERS/TAKE-BACK':
-        return `Task removed`
-
-      case 'TASKS/COMPLETED':
-        return `Completed`
-
-      case 'TASKS/UNCOMPLETED':
-        return `Uncompleted`
-
-      case 'TASKS/COMMENTS/ADD':
-        return `New comment`
-
-      case 'TASKS/ATTACHMENTS/ADD':
-        return `New attachment`
-
-      default:
-        return 'Task was updated'
-    }
-  },
-
-  activities: (type, data) => {
-    switch (type) {
-      case 'TASKS/CREATE':
-        return 'Task was created'
-
-      case 'TASKS/UPDATE': {
-        switch (Object.keys(data.new)[0]) {
-          case 'completedAt':
-            return data.old.completedAt === null
-              ? 'Task was completed'
-              : 'Task was uncompleted'
-
-          case 'archivedAt':
-            return data.old.archivedAt === null
-              ? 'Task was archived'
-              : 'Task was dearchived'
-
-          case 'madeImportantAt':
-            return data.old.madeImportantAt === null
-              ? 'Task was marked as important'
-              : 'Task was marked as unimportant'
-
-          case 'subject':
-            return 'Subject was updated'
-
-          case 'description':
-            return 'Description was updated'
-
-          case 'startDate':
-            return 'Start date was updated'
-
-          case 'dueDate':
-            return 'Due date was updated'
-
-          case 'reminderDate':
-            return 'Reminder date was updated'
-
-          case 'order':
-            return 'Task was moved'
-
-          default:
-            return null
-        }
-      }
-
-      case 'TASKS/UPDATE-TAGS':
-        return 'Tags were updated'
-
-      case 'TASKS/ADD-FOLLOWER':
-        return `${data.profile.nickname} was added to task`
-
-      case 'TASKS/DELETE-FOLLOWER':
-        return `${data.profile.nickname} was removed from task`
-
-      case 'TASKS/SEND-TO-FOLLOWER':
-        return `Tasks was sent`
-
-      case 'TASKS/ACCEPT-BY-FOLLOWER':
-        return `Task was accepted`
-
-      case 'TASKS/REJECT-BY-FOLLOWER':
-        return `Task was rejected`
-
-      case 'TASKS/ADD-ATTACHMENT':
-        return `Attachments were updated`
-
-      case 'TASKS/DELETE-ATTACHMENT':
-        return `Attachments were updated`
-
-      default:
-        return 'Task was updated'
-    }
   },
 }

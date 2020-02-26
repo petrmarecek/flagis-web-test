@@ -1,4 +1,10 @@
 import { List } from 'immutable'
+import { routes } from 'utils/routes'
+
+// toast notifications
+import { toast } from 'react-toastify'
+import * as toastCommon from 'components/toast-notifications/toast-notifications-common'
+
 
 // redux
 import { put, select } from 'redux-saga/effects'
@@ -17,11 +23,7 @@ import {
   sentryBreadcrumbCategory,
   sentryTagType,
 } from 'redux/store/errors/errors.common'
-import { toast } from 'react-toastify'
-import { errorMessages } from 'utils/messages'
 import { callApi } from 'redux/store/common.sagas'
-import constants from 'utils/constants'
-import { routes } from 'utils/routes'
 import search from 'redux/services/search'
 import api from 'redux/utils/api'
 
@@ -48,10 +50,10 @@ export function* hintSelected(action) {
     if (location === 'mainSearch') {
       if (isNewHint) {
         toast.error(
-          errorMessages.createEntity.notAllowedCreate('tag', 'Tag filter'),
+          toastCommon.errorMessages.createEntity.notAllowedCreate('tag', 'Tag filter'),
           {
-            position: toast.POSITION.BOTTOM_RIGHT,
-            autoClose: constants.NOTIFICATION_ERROR_DURATION,
+            position: toastCommon.position.DEFAULT,
+            autoClose: toastCommon.duration.ERROR_DURATION,
           }
         )
 
@@ -124,10 +126,10 @@ export function* hintSelected(action) {
       // Not allowed create a new contact
       if (isNewHint) {
         toast.error(
-          errorMessages.createEntity.notAllowedCreate('contact', 'Filter'),
+          toastCommon.errorMessages.createEntity.notAllowedCreate('contact', 'Filter'),
           {
-            position: toast.POSITION.BOTTOM_RIGHT,
-            autoClose: constants.NOTIFICATION_ERROR_DURATION,
+            position: toastCommon.position.DEFAULT,
+            autoClose: toastCommon.duration.ERROR_DURATION,
           }
         )
 

@@ -3,7 +3,6 @@ import { compose, lifecycle, withHandlers } from 'recompose'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form/immutable'
-import { ToastContainer, style } from 'react-toastify'
 
 import {
   deselectError,
@@ -16,6 +15,7 @@ import {
 import { controlRedirectTasks, login } from 'redux/store/auth/auth.actions'
 import { validateSignIn } from 'redux/utils/validate'
 
+import ToastNotificationsContainer from 'components/toast-notifications'
 import NavigationLandingPrimary from 'components/navigation/navigation-landing-primary'
 import InputField from 'components/forms/fields/input-field'
 import Loader from 'components/common/loader'
@@ -96,7 +96,7 @@ const SignIn = ({ errorSignIn, loader, location, handleSubmit, onSubmit }) => (
       </FormBody>
     </Form>
     <div className="floating-components">
-      <ToastContainer />
+      <ToastNotificationsContainer />
     </div>
   </div>
 )
@@ -139,15 +139,6 @@ export default compose(
   lifecycle({
     componentWillMount() {
       this.props.controlRedirectTasks()
-    },
-    componentDidMount() {
-      this.props.deselectError('signIn')
-      style({
-        BOTTOM_RIGHT: {
-          bottom: '30px',
-          right: '25px',
-        },
-      })
     },
   })
 )(SignIn)

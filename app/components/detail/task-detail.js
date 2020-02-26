@@ -4,10 +4,12 @@ import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { compose, withHandlers, withStateHandlers, lifecycle } from 'recompose'
 import { List } from 'immutable'
-import { infoMessages } from 'utils/messages'
 import dateUtil from 'redux/utils/date'
 import { getAssigneeOfTask } from 'redux/utils/component-helper'
 import domUtils from 'redux/utils/dom'
+
+// toast notifications
+import * as toastCommon from 'components/toast-notifications/toast-notifications-common'
 import constants from 'utils/constants'
 
 // components
@@ -149,11 +151,11 @@ const TaskDetail = props => {
 
   // Variables
   let ruleMessage = isCompleted
-    ? infoMessages.taskDetail.completedRules
-    : infoMessages.taskDetail.acceptedRules
+    ? toastCommon.infoMessages.taskDetail.completedRules
+    : toastCommon.infoMessages.taskDetail.acceptedRules
 
   if (isInboxVisible) {
-    ruleMessage = infoMessages.taskDetail.inboxRules
+    ruleMessage = toastCommon.infoMessages.taskDetail.inboxRules
   }
 
   // editor styles
@@ -374,16 +376,16 @@ const TaskDetail = props => {
                 <TagItems tags={tags} />
               </DetailContentTagAutocompleteTags>
             ) : (
-              <Autocomplete
-                dataType="tags"
-                location="taskDetailTags"
-                placeholder="Add tags"
-                selectedItems={{ tags: isTags === 0 ? null : tags }}
-                parentId={id}
-                onItemDelete={onHandleTagDelete}
-                isAllowUpdate
-              />
-            )}
+                <Autocomplete
+                  dataType="tags"
+                  location="taskDetailTags"
+                  placeholder="Add tags"
+                  selectedItems={{ tags: isTags === 0 ? null : tags }}
+                  parentId={id}
+                  onItemDelete={onHandleTagDelete}
+                  isAllowUpdate
+                />
+              )}
           </DetailContentTagAutocomplete>
           {!isArchived && !isInboxVisible && isCollaborated && (
             <DetailContentButton
@@ -410,8 +412,8 @@ const TaskDetail = props => {
                     ? createdByFollower.profile.email
                     : createdByFollower.profile.nickname
                   : assignee.profile.nickname === null
-                  ? assignee.profile.email
-                  : assignee.profile.nickname
+                    ? assignee.profile.email
+                    : assignee.profile.nickname
               }
             >
               <FollowerIcon
@@ -429,8 +431,8 @@ const TaskDetail = props => {
                       ? createdByFollower.profile.email
                       : createdByFollower.profile.nickname
                     : assignee.profile.nickname === null
-                    ? assignee.profile.email
-                    : assignee.profile.nickname
+                      ? assignee.profile.email
+                      : assignee.profile.nickname
                 }
                 animation={animation}
               />

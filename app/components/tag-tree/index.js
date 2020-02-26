@@ -2,9 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { routes } from 'utils/routes'
 import debounce from 'lodash/debounce'
-import { toast } from 'react-toastify'
-import { infoMessages } from 'utils/messages'
-import constants from 'utils/constants'
 import {
   compose,
   branch,
@@ -12,6 +9,10 @@ import {
   withStateHandlers,
   pure,
 } from 'recompose'
+
+// toast notifications
+import { toast } from 'react-toastify'
+import * as toastCommon from 'components/toast-notifications/toast-notifications-common'
 
 // redux
 import { connect } from 'react-redux'
@@ -290,9 +291,9 @@ export default compose(
         // Show tag detail
         props.selectTag(treeItem.tag.id)
         props.setDetail('tag')
-        toast.info(infoMessages.treeItems.edit, {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          autoClose: constants.NOTIFICATION_INFO_DURATION,
+        toast.info(toastCommon.infoMessages.treeItems.edit, {
+          position: toastCommon.position.DEFAULT,
+          autoClose: toastCommon.duration.INFO_DURATION,
         })
         return {}
       }
