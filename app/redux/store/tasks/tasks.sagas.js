@@ -3,8 +3,7 @@ import { normalize } from 'normalizr'
 
 // toast notifications
 import { toast } from 'react-toastify'
-import { successMessages, infoMessages } from 'utils/messages'
-import constants from 'utils/constants'
+import * as toastCommon from 'components/toast-notifications/toast-notifications-common'
 
 // redux
 import { delay } from 'redux-saga'
@@ -106,9 +105,9 @@ function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
         return
       }
 
-      toast.info(infoMessages.collaboration.removeFollower, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: constants.NOTIFICATION_INFO_DURATION,
+      toast.info(toastCommon.infoMessages.collaboration.removeFollower, {
+        position: toastCommon.position.DEFAULT,
+        autoClose: toastCommon.duration.INFO_DURATION,
       })
 
       // Call action for edit redux-store
@@ -131,9 +130,9 @@ function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
       storeInboxItems.includes(id)
     ) {
       // Show notification
-      toast.success(successMessages.tasks.accepted, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+      toast.success(toastCommon.successMessages.tasks.accepted, {
+        position: toastCommon.position.DEFAULT,
+        autoClose: toastCommon.duration.SUCCESS_DURATION,
       })
 
       // Close inbox detail
@@ -147,9 +146,9 @@ function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
 
     // Owner deleted task -> show notification
     if (isTrashed) {
-      toast.info(infoMessages.collaboration.deletedTask, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: constants.NOTIFICATION_INFO_DURATION,
+      toast.info(toastCommon.infoMessages.collaboration.deletedTask, {
+        position: toastCommon.position.DEFAULT,
+        autoClose: toastCommon.duration.INFO_DURATION,
       })
     }
   }
@@ -163,9 +162,9 @@ function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
     storeArchivedItems.includes(id)
   ) {
     // Show notification
-    toast.success(successMessages.tasks.cancelArchive, {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+    toast.success(toastCommon.successMessages.tasks.cancelArchive, {
+      position: toastCommon.position.DEFAULT,
+      autoClose: toastCommon.duration.SUCCESS_DURATION,
     })
 
     // Close archive detail
@@ -185,9 +184,9 @@ function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
     storeItems.includes(id)
   ) {
     // Show notification
-    toast.success(successMessages.tasks.archive, {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+    toast.success(toastCommon.successMessages.tasks.archive, {
+      position: toastCommon.position.DEFAULT,
+      autoClose: toastCommon.duration.SUCCESS_DURATION,
     })
 
     // Close task detail
@@ -1019,9 +1018,9 @@ export function* rejectTask(action) {
     }
 
     // Show notification
-    toast.success(successMessages.tasks.rejected, {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+    toast.success(toastCommon.successMessages.tasks.rejected, {
+      position: toastCommon.position.DEFAULT,
+      autoClose: toastCommon.duration.SUCCESS_DURATION,
     })
 
     // read all notification for task

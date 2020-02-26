@@ -1,9 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { compose, withHandlers } from 'recompose'
+
+// toast notifications
 import { toast } from 'react-toastify'
-import { errorMessages } from 'utils/messages'
-import constants from 'utils/constants'
+import * as toastCommon from 'components/toast-notifications/toast-notifications-common'
 
 // redux
 import { connect } from 'react-redux'
@@ -109,9 +110,9 @@ export default compose(
 
       // validation for email of user
       if (userEmail === email) {
-        toast.error(errorMessages.contact.userEmailConflict, {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          autoClose: constants.NOTIFICATION_ERROR_DURATION,
+        toast.error(toastCommon.errorMessages.contact.userEmailConflict, {
+          position: toastCommon.position.DEFAULT,
+          autoClose: toastCommon.duration.ERROR_DURATION,
         })
 
         return
@@ -119,9 +120,9 @@ export default compose(
 
       // validation for existing emails
       if (validEmails.includes(email.toLowerCase())) {
-        toast.error(errorMessages.createEntity.createConflict('contact'), {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          autoClose: constants.NOTIFICATION_ERROR_DURATION,
+        toast.error(toastCommon.errorMessages.createEntity.createConflict('contact'), {
+          position: toastCommon.position.DEFAULT,
+          autoClose: toastCommon.duration.ERROR_DURATION,
         })
 
         return

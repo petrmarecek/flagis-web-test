@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import dateUtil from 'redux/utils/date'
 import Linkify from 'react-linkify'
-import { infoMessages } from 'utils/messages'
+import { activityText } from 'components/comment-list/comment-list-common'
 
 // redux
 import { connect } from 'react-redux'
@@ -31,11 +31,11 @@ const CommentListItem = ({ comment, userId, photo }) => {
       <Content isAssigneeComment={isAssigneeComment}>
         {type ? (
           <div style={{ fontWeight: 'bold' }}>
-            {infoMessages.activities(type, data)}
+            {activityText(type, data)}
           </div>
         ) : (
-          <Linkify properties={{ target: '_blank' }}>{content}</Linkify>
-        )}
+            <Linkify properties={{ target: '_blank' }}>{content}</Linkify>
+          )}
       </Content>
     </ItemWrapper>
   )

@@ -64,9 +64,9 @@ AttachmentList.propTypes = {
   loader: PropTypes.bool,
   attachments: PropTypes.object,
   disabled: PropTypes.bool,
-  attachmentScrollHeight: PropTypes.number,
   onFileUploaded: PropTypes.number,
   attachmentDelete: PropTypes.func,
+  attachmentScrollHeight: PropTypes.string,
 }
 
 const mapStateToProps = state => ({

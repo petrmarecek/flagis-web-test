@@ -9,9 +9,11 @@ import {
   isObjectEmpty,
   getHintDirectionRender,
 } from 'redux/utils/component-helper'
-import { toast } from 'react-toastify'
-import { errorMessages } from 'utils/messages'
 import constants from 'utils/constants'
+
+// toast notifications
+import { toast } from 'react-toastify'
+import * as toastCommon from 'components/toast-notifications/toast-notifications-common'
 
 import Hints from '../hints'
 
@@ -136,9 +138,9 @@ const withAutocompleteInput = WrappedComponent => {
       const hintsData = {
         [dataType]: !isInputMode
           ? hints[dataType].filter(item => {
-              const values = itemValue(item)[dataType]
-              return values.toLowerCase().startsWith(inputValue.toLowerCase())
-            })
+            const values = itemValue(item)[dataType]
+            return values.toLowerCase().startsWith(inputValue.toLowerCase())
+          })
           : hints[dataType],
       }
 
@@ -347,8 +349,8 @@ const withAutocompleteInput = WrappedComponent => {
 
         if (!isObjectEmpty(validation)) {
           toast.error(validation.email, {
-            position: toast.POSITION.BOTTOM_RIGHT,
-            autoClose: constants.NOTIFICATION_ERROR_DURATION,
+            position: toastCommon.position.DEFAULT,
+            autoClose: toastCommon.duration.ERROR_DURATION,
           })
 
           return
@@ -357,9 +359,9 @@ const withAutocompleteInput = WrappedComponent => {
 
       // Validation existing item(tag, contact) of new item
       if (isNewHint && validationItems.includes(hintValue.toLowerCase())) {
-        toast.error(errorMessages.createEntity.createConflict(hintType), {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          autoClose: constants.NOTIFICATION_ERROR_DURATION,
+        toast.error(toastCommon.errorMessages.createEntity.createConflict(hintType), {
+          position: toastCommon.position.DEFAULT,
+          autoClose: toastCommon.duration.ERROR_DURATION,
         })
 
         return

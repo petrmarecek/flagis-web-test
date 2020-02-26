@@ -1,16 +1,20 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { withStateHandlers } from 'recompose'
+import domUtils from 'redux/utils/dom'
+import constants from 'utils/constants'
+
+// toast notifications
+import { toast } from 'react-toastify'
+import * as toastCommon from 'components/toast-notifications/toast-notifications-common'
+
 import {
   tagColor,
   getColorIndex,
   getTagColor,
 } from 'redux/utils/component-helper'
-import { toast } from 'react-toastify'
-import { errorMessages } from 'utils/messages'
-import constants from 'utils/constants'
-import domUtils from 'redux/utils/dom'
 
+// components
 import TextEditor from 'components/editor'
 import TagDetailColors from 'components/detail/tag-detail-colors'
 import DetailMenu from 'components/detail/detail-menu'
@@ -170,9 +174,9 @@ export default withStateHandlers(() => ({ tagColorsRef: null }), {
 
     // Validation of title conflict
     if (titles.includes(title.toLowerCase())) {
-      toast.error(errorMessages.tags.titleConflict, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: constants.NOTIFICATION_ERROR_DURATION,
+      toast.error(toastCommon.errorMessages.tags.titleConflict, {
+        position: toastCommon.position.DEFAULT,
+        autoClose: toastCommon.duration.ERROR_DURATION,
       })
       return {}
     }

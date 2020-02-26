@@ -1,11 +1,13 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { OrderedSet } from 'immutable'
-import { connect } from 'react-redux'
-import { toast } from 'react-toastify'
-import { successMessages } from 'utils/messages'
-import constants from 'utils/constants'
 
+// toast notifications
+import { toast } from 'react-toastify'
+import * as toastCommon from 'components/toast-notifications/toast-notifications-common'
+
+// redux
+import { connect } from 'react-redux'
 import { getAuth } from 'redux/store/auth/auth.selectors'
 import { showDialog, setLoader } from 'redux/store/app-state/app-state.actions'
 import {
@@ -162,9 +164,9 @@ class TasksMenuContainer extends PureComponent {
       archive.entitiesTasks,
       archive.selectedTasks
     )
-    toast.success(successMessages.multiSelect.archive, {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+    toast.success(toastCommon.successMessages.multiSelect.archive, {
+      position: toastCommon.position.DEFAULT,
+      autoClose: toastCommon.duration.SUCCESS_DURATION,
     })
   }
 

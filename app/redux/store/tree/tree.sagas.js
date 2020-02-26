@@ -6,8 +6,7 @@ import { routes } from 'utils/routes'
 
 // toast notifications
 import { toast } from 'react-toastify'
-import constants from 'utils/constants'
-import { errorMessages } from 'utils/messages'
+import * as toastCommon from 'components/toast-notifications/toast-notifications-common'
 
 // redux
 import {
@@ -389,16 +388,16 @@ export function* dropTreeItem(action) {
   const isParentColision =
     action.payload.dropPosition !== 'MIDDLE'
       ? intersection(targetParentsTags, [sourceTag, ...sourceChildTags])
-          .length !== 0
+        .length !== 0
       : intersection(
-          [targetTag, ...targetParentsTags],
-          [sourceTag, ...sourceChildTags]
-        ).length !== 0
+        [targetTag, ...targetParentsTags],
+        [sourceTag, ...sourceChildTags]
+      ).length !== 0
 
   if (isParentColision) {
-    toast.error(errorMessages.treeItems.duplicatePathConflict, {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: constants.NOTIFICATION_ERROR_DURATION,
+    toast.error(toastCommon.errorMessages.treeItems.duplicatePathConflict, {
+      position: toastCommon.position.DEFAULT,
+      autoClose: toastCommon.duration.ERROR_DURATION,
     })
     return
   }
@@ -411,9 +410,9 @@ export function* dropTreeItem(action) {
     )
     const sourceTagId = treeItemToTag(storeData.treeEntities, sourceItemId)
     if (includes(siblingsTagsIds, sourceTagId)) {
-      toast.error(errorMessages.treeItems.duplicateLevelConflict, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: constants.NOTIFICATION_ERROR_DURATION,
+      toast.error(toastCommon.errorMessages.treeItems.duplicateLevelConflict, {
+        position: toastCommon.position.DEFAULT,
+        autoClose: toastCommon.duration.ERROR_DURATION,
       })
       return
     }

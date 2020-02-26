@@ -92,6 +92,10 @@ export default {
     // image-picker
     imagePickerButton: colors.astrocopusGrey,
     imagePickerButtonHover: colors.darkJungleGreen,
+
+    // toast notifications
+    toastNotificationBackground: colors.darkJungleGreen,
+    toastNotificationText: colors.white,
   },
   light: {
     // default
@@ -131,5 +135,9 @@ export default {
     // image-picker
     imagePickerButton: colors.astrocopusGrey,
     imagePickerButtonHover: colors.darkJungleGreen,
+
+    // toast notifications
+    toastNotificationBackground: colors.white,
+    toastNotificationText: colors.darkJungleGreen,
   },
 }

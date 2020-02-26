@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react'
 import { Switch, Route } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { ToastContainer, style } from 'react-toastify'
 import HTML5Backend from 'react-dnd-html5-backend'
 import { DragDropContext } from 'react-dnd'
 import debounce from 'lodash/debounce'
@@ -14,6 +13,7 @@ import {
   getLoader,
 } from 'redux/store/app-state/app-state.selectors'
 
+import ToastNotificationsContainer from 'components/toast-notifications'
 import Loader from 'components/common/loader'
 import TaskPage from 'containers/task-page'
 import TagPage from 'containers/tag-page'
@@ -44,36 +44,11 @@ class UserContainer extends PureComponent {
   componentDidMount() {
     this.props.updateWindow(window)
     window.addEventListener('resize', this.debouncedUpdateWindow)
-
-    style({
-      BOTTOM_RIGHT: {
-        bottom: '30px',
-        right: '25px',
-      },
-    })
   }
 
   componentWillMount() {
     window.removeEventListener('resize', this.debouncedUpdateWindow)
     this.props.controlRedirectSignIn()
-  }
-
-  componentWillReceiveProps(newProps) {
-    if (newProps.undoBox !== null) {
-      style({
-        BOTTOM_RIGHT: {
-          bottom: '90px',
-          right: '25px',
-        },
-      })
-    } else {
-      style({
-        BOTTOM_RIGHT: {
-          bottom: '30px',
-          right: '25px',
-        },
-      })
-    }
   }
 
   updateWindow = () => {
@@ -122,7 +97,7 @@ class UserContainer extends PureComponent {
         </div>
         <div className="floating-components">
           <div id="floating-components-hints" />
-          <ToastContainer />
+          <ToastNotificationsContainer />
           <UndoBox />
           {this.props.loader && <Loader global />}
         </div>
@@ -142,8 +117,5 @@ const mapDispatchToProps = {
 }
 
 export default DragDropContext(HTML5Backend)(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(UserContainer)
+  connect(mapStateToProps, mapDispatchToProps)(UserContainer)
 )

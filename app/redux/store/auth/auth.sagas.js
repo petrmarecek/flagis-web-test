@@ -1,11 +1,11 @@
 import { Map } from 'immutable'
 import { routes } from 'utils/routes'
 import date from '../../utils/date'
+import constants from 'utils/constants'
 
 // toast notifications
 import { toast } from 'react-toastify'
-import constants from 'utils/constants'
-import { errorMessages, successMessages } from 'utils/messages'
+import * as toastCommon from 'components/toast-notifications/toast-notifications-common'
 
 // redux
 import { push } from 'react-router-redux'
@@ -256,14 +256,17 @@ export function* changeName(action) {
     yield put(appStateActions.deselectLoader('form'))
 
     // show notification of successful profile update
-    toast.success(successMessages.changeName, {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+    toast.success(toastCommon.successMessages.changeName, {
+      position: toastCommon.position.DEFAULT,
+      autoClose: toastCommon.duration.SUCCESS_DURATION,
     })
   } catch (err) {
     // show notification of unsuccessful profile update
     yield put(
-      appStateActions.setError('changeName', errorMessages.somethingWrong)
+      appStateActions.setError(
+        'changeName',
+        toastCommon.errorMessages.somethingWrong
+      )
     )
     yield put(appStateActions.deselectLoader('form'))
 
@@ -331,15 +334,15 @@ export function* changePassword(action) {
     yield put(appStateActions.deselectError('changePassword'))
     yield put(appStateActions.deselectLoader('form'))
 
-    toast.success(successMessages.changePassword, {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+    toast.success(toastCommon.successMessages.changePassword, {
+      position: toastCommon.position.DEFAULT,
+      autoClose: toastCommon.duration.SUCCESS_DURATION,
     })
   } catch (err) {
     yield put(
       appStateActions.setError(
         'changePassword',
-        errorMessages.changePassword.badRequest
+        toastCommon.errorMessages.changePassword.badRequest
       )
     )
     yield put(appStateActions.deselectLoader('form'))
@@ -366,10 +369,13 @@ export function* emailResetPassword(action) {
     yield delay(100)
 
     // show notification after redirect to sign-in
-    toast.success(successMessages.emailResetPassword(action.payload.email), {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
-    })
+    toast.success(
+      toastCommon.successMessages.emailResetPassword(action.payload.email),
+      {
+        position: toastCommon.position.DEFAULT,
+        autoClose: toastCommon.duration.SUCCESS_DURATION,
+      }
+    )
   } catch (err) {
     yield put(appStateActions.deselectLoader('form'))
     yield put(push(routes.signIn))
@@ -378,10 +384,13 @@ export function* emailResetPassword(action) {
     yield delay(100)
 
     // show notification after redirect to sign-in
-    toast.success(successMessages.emailResetPassword(action.payload.email), {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
-    })
+    toast.success(
+      toastCommon.successMessages.emailResetPassword(action.payload.email),
+      {
+        position: toastCommon.position.DEFAULT,
+        autoClose: toastCommon.duration.SUCCESS_DURATION,
+      }
+    )
 
     // send error to sentry
     yield put(
@@ -401,13 +410,16 @@ export function* sendContactUs(action) {
     yield put(appStateActions.deselectLoader('form'))
 
     // show notification after redirect to sign-in
-    toast.success(successMessages.contactUs, {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+    toast.success(toastCommon.successMessages.contactUs, {
+      position: toastCommon.position.DEFAULT,
+      autoClose: toastCommon.duration.SUCCESS_DURATION,
     })
   } catch (err) {
     yield put(
-      appStateActions.setError('contactUs', errorMessages.contactUs.serverError)
+      appStateActions.setError(
+        'contactUs',
+        toastCommon.errorMessages.contactUs.serverError
+      )
     )
     yield put(appStateActions.deselectLoader('form'))
 
@@ -433,9 +445,9 @@ export function* resetPassword(action) {
     yield delay(100)
 
     // show notification after redirect to sign-in
-    toast.success(successMessages.changePassword, {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+    toast.success(toastCommon.successMessages.changePassword, {
+      position: toastCommon.position.DEFAULT,
+      autoClose: toastCommon.duration.SUCCESS_DURATION,
     })
   } catch (err) {
     yield put(appStateActions.deselectLoader('form'))
@@ -445,9 +457,9 @@ export function* resetPassword(action) {
     yield delay(100)
 
     // show notification after redirect to sign-in
-    toast.error(errorMessages.resetPassword.linkExpired, {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: constants.NOTIFICATION_ERROR_DURATION,
+    toast.error(toastCommon.errorMessages.resetPassword.linkExpired, {
+      position: toastCommon.position.DEFAULT,
+      autoClose: toastCommon.duration.ERROR_DURATION,
     })
 
     // send error to sentry
@@ -507,12 +519,15 @@ function* authorizeUser(authApiCall, action) {
         yield put(
           appStateActions.setError(
             'signIn',
-            errorMessages.signIn.passwordResetRequired
+            toastCommon.errorMessages.signIn.passwordResetRequired
           )
         )
       } else {
         yield put(
-          appStateActions.setError('signIn', errorMessages.signIn.unauthorized)
+          appStateActions.setError(
+            'signIn',
+            toastCommon.errorMessages.signIn.unauthorized
+          )
         )
       }
     }
@@ -522,7 +537,10 @@ function* authorizeUser(authApiCall, action) {
       action.type === 'AUTH/SIGN_UP_INVITATION'
     ) {
       yield put(
-        appStateActions.setError('signUp', errorMessages.signUp.conflict)
+        appStateActions.setError(
+          'signUp',
+          toastCommon.errorMessages.signUp.conflict
+        )
       )
     }
 

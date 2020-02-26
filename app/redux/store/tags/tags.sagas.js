@@ -2,8 +2,7 @@ import { normalize } from 'normalizr'
 
 // toast notifications
 import { toast } from 'react-toastify'
-import { errorMessages } from 'utils/messages'
-import constants from 'utils/constants'
+import * as toastCommon from 'components/toast-notifications/toast-notifications-common'
 
 // redux
 import { push } from 'react-router-redux'
@@ -147,9 +146,9 @@ export function* createTag(action) {
     // add the tag to store
     yield put(tagActions.addTag(tag))
   } catch (err) {
-    toast.error(errorMessages.tags.createConflict, {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: constants.NOTIFICATION_ERROR_DURATION,
+    toast.error(toastCommon.errorMessages.tags.createConflict, {
+      position: toastCommon.position.DEFAULT,
+      autoClose: toastCommon.duration.ERROR_DURATION,
     })
 
     // send error to sentry
@@ -219,9 +218,9 @@ export function* prepareDeleteTag(action) {
   const isTagsRelations = tagsRelations.has(tagId)
 
   if (isReferenced) {
-    toast.error(errorMessages.tags.referenceDeleteConflict, {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: constants.NOTIFICATION_ERROR_DURATION,
+    toast.error(toastCommon.errorMessages.tags.referenceDeleteConflict, {
+      position: toastCommon.position.DEFAULT,
+      autoClose: toastCommon.duration.ERROR_DURATION,
     })
     return
   }
@@ -229,10 +228,10 @@ export function* prepareDeleteTag(action) {
   if (isTagsRelations) {
     if (tagsRelations.getIn([tagId]).size > 0) {
       toast.error(
-        errorMessages.relations.relationDeleteConflict('tag', 'tasks'),
+        toastCommon.errorMessages.relations.relationDeleteConflict('tag', 'tasks'),
         {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          autoClose: constants.NOTIFICATION_ERROR_DURATION,
+          position: toastCommon.position.DEFAULT,
+          autoClose: toastCommon.duration.ERROR_DURATION,
         }
       )
       return
