@@ -418,7 +418,7 @@ export function* sendContactUs(action) {
     yield put(
       appStateActions.setError(
         'contactUs',
-        toastCommon.errorMessages.contactUs.serverError
+        toastCommon.errorMessages.somethingWrong
       )
     )
     yield put(appStateActions.deselectLoader('form'))

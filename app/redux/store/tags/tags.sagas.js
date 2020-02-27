@@ -228,7 +228,7 @@ export function* prepareDeleteTag(action) {
   if (isTagsRelations) {
     if (tagsRelations.getIn([tagId]).size > 0) {
       toast.error(
-        toastCommon.errorMessages.relations.relationDeleteConflict('tag', 'tasks'),
+        toastCommon.errorMessages.relations.relationDeleteConflict('tag', 'My Tasks'),
         {
           position: toastCommon.position.DEFAULT,
           autoClose: toastCommon.duration.ERROR_DURATION,

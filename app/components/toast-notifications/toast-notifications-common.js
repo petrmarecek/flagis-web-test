@@ -12,17 +12,17 @@ export const duration = {
 
 export const errorMessages = {
   signIn: {
-    unauthorized: 'Incorrect E-mail or Password.',
+    unauthorized: 'Incorrect email or Password.',
     passwordResetRequired:
       'Please, reset your password. Click on forgot your password?',
   },
 
   signUp: {
-    conflict: 'This E-mail has already been used.',
+    conflict: 'This email has already been used.',
   },
 
   contact: {
-    userEmailConflict: 'This is your email!',
+    userEmailConflict: 'This is your email.',
   },
 
   changePassword: {
@@ -33,36 +33,30 @@ export const errorMessages = {
     linkExpired: 'Link has expired. Please ask for a new one.',
   },
 
-  contactUs: {
-    serverError: 'Something is wrong.',
-  },
-
   tasks: {
-    waitingResponse: 'Waiting for response!',
+    waitingResponse: 'Wait for the response from the recipient or take the task back.',
   },
 
   tags: {
     createConflict: 'This tag has already been created.',
     titleConflict: 'This title has already been used.',
     referenceDeleteConflict:
-      'The target tag cannot be deleted because it is referenced ' +
-      'in the filter tree. Please delete the referencing tree item first.',
+      'This tag cannot be deleted because it is used ' +
+      'in the tag tree. Please delete this tag from the tag tree first.',
   },
 
   relations: {
     relationDeleteConflict: (target, list) =>
-      `The target ${target} cannot be deleted because it has relations ` +
-      `in ${list} list. Please delete the relations first.`,
-    emptyListDeleteConflict: list =>
-      `Please, check your ${list} list if there are relations between tasks and tags.`,
+      `This ${target} cannot be deleted because it has relations ` +
+      `in ${list}. Please delete the relations first.`,
   },
 
   treeItems: {
     duplicatePathConflict:
-      'Cannot perform this move. Tree validation failed. ' +
+      'Cannot perform this move. ' +
       'Tag duplication found in the result tree path.',
     duplicateLevelConflict:
-      'Cannot perform this move. Tree validation failed. ' +
+      'Cannot perform this move. ' +
       'The same tag found on the same tree level.',
   },
 
@@ -85,8 +79,8 @@ export const successMessages = {
   tasks: {
     archive: 'Task has been archived.',
     cancelArchive: 'Task has been returned to My Tasks as completed task.',
-    accepted: 'Task has been moved to the My Tasks.',
-    rejected: 'Task has been returned to the owner.',
+    accepted: 'Task has been moved to My Tasks.',
+    rejected: 'Task has been returned to the sender.',
   },
 
   multiSelect: {
@@ -95,30 +89,30 @@ export const successMessages = {
 
   contacts: {
     create: 'Contact was created.',
-    sendInvitation: 'Invitation has been sent to the Contact.',
+    sendInvitation: 'Invitation has been sent to the contact.',
   },
 
   changePassword: 'Password has successfully been changed.',
 
   changeName: 'Name has successfully been changed.',
 
-  contactUs: 'Form has successfully been sent.',
+  contactUs: 'Thank you for filling out your information.',
 }
 
 export const infoMessages = {
   treeItems: {
-    edit: 'You are editing tag properties (not the filter).',
+    edit: 'You are editing the tag.',
   },
 
   collaboration: {
-    removeFollower: 'Owner has just removed you from task.',
-    deletedTask: 'Owner has just deleted task.',
+    removeFollower: 'Sender has just removed you from a task. Check your notifications.',
+    deletedTask: 'Sender has just deleted a task. Check your notifications.',
   },
 
   taskDetail: {
     acceptedRules:
-      'Not allowed to edit subject, dates and description of task!',
-    inboxRules: 'Allowed to add comments and accept/reject of task!',
-    completedRules: 'Allowed to only complete and archive of task!',
+      'Not allowed to edit subject, due date and description.',
+    inboxRules: 'Allowed to add comments and accept/reject only.',
+    completedRules: 'Allowed to uncomplete and archive only.',
   },
 }
