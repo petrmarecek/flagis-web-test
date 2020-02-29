@@ -22,10 +22,9 @@ import colors from 'components/styled-components-mixins/colors'
 import { fontMain, transition } from 'components/styled-components-mixins'
 
 const Wrapper = styled.div`
-  display: flex;
-  justify-content: start;
   min-height: 162px;
   margin: 45px 34px 0 34px;
+  position: relative;
 `
 
 const UserImage = styled.div`

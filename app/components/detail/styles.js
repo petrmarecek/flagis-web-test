@@ -329,6 +329,7 @@ const DetailContentAttachmentsLoader = styled.div`
   align-items: center;
   height: 100%;
   z-index: 1;
+  position: relative;
 `
 
 const DetailContentAttachments = styled.div`
@@ -344,6 +345,7 @@ const DetailContentComments = styled.div`
   justify-content: space-between;
   pointer-events: ${props => (props.allowed ? 'auto' : 'none')};
   max-height: ${props => props.contentHeight};
+  position: relative;
 `
 
 const DetailContentCommentsAdd = styled.div`

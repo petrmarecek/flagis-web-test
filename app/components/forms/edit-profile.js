@@ -39,13 +39,13 @@ import {
   Form,
   FormBody,
   FormBodyFields,
-  FormLoader,
   FormErrors,
   ErrorList,
   ErrorListItem,
   ErrorListItemIcon,
   ErrorListItemText,
   FormRow,
+  FormRowButton,
 } from '../styled-components-mixins'
 
 const EditProfile = ({
@@ -109,15 +109,11 @@ const EditProfile = ({
               component={InputField}
             />
           </FormRow>
-          <FormRow>
+          <FormRowButton>
             <ButtonDefaultSmall type="submit" value="Update Profile" />
-          </FormRow>
+          </FormRowButton>
         </FormBodyFields>
-        {loader && (
-          <FormLoader>
-            <Loader />
-          </FormLoader>
-        )}
+        {loader && <Loader global />}
       </FormBody>
     </Form>
   </div>

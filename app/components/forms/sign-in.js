@@ -27,13 +27,13 @@ import {
   Form,
   FormBody,
   FormBodyFields,
-  FormLoader,
   FormErrors,
   ErrorList,
   ErrorListItem,
   ErrorListItemIcon,
   ErrorListItemText,
   FormRow,
+  FormRowButton,
   FormLink,
 } from '../styled-components-mixins'
 
@@ -76,9 +76,9 @@ const SignIn = ({ errorSignIn, loader, location, handleSubmit, onSubmit }) => (
               component={InputField}
             />
           </FormRow>
-          <FormRow>
+          <FormRowButton>
             <ButtonDefault type="submit" value="Sign In" />
-          </FormRow>
+          </FormRowButton>
 
           <FormRow pointer>
             <FormLink to="/email-reset-password">
@@ -89,11 +89,7 @@ const SignIn = ({ errorSignIn, loader, location, handleSubmit, onSubmit }) => (
             <FormLink to="/sign-up">Register as a new user</FormLink>
           </FormRow>
         </FormBodyFields>
-        {loader && (
-          <FormLoader>
-            <Loader />
-          </FormLoader>
-        )}
+        {loader && <Loader global />}
       </FormBody>
     </Form>
     <div className="floating-components">

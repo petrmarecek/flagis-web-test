@@ -232,7 +232,7 @@ export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   branch(
     props => props.isNewRefreshToken || props.isFetching,
-    renderComponent(Loader)
+    renderComponent(() => <Loader light />)
   ),
   withStateHandlers(() => ({ showAddControl: false, order: null }), {
     onInvokeMove: (state, props) => move => {

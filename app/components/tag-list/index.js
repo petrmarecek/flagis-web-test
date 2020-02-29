@@ -92,10 +92,7 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   branch(props => props.tags.isFetching, renderComponent(Loader)),
   withHandlers({
     onHandleTagClick: props => tagId => {

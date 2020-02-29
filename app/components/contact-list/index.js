@@ -87,10 +87,7 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   branch(props => props.contacts.isFetching, renderComponent(Loader)),
   withHandlers({
     onHandleClickContact: props => id => {

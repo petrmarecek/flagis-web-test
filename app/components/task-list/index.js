@@ -248,10 +248,7 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   branch(
     props => props.isNewRefreshToken || props.tasks.isFetching,
     renderComponent(Loader)

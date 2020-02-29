@@ -36,13 +36,13 @@ import {
   Form,
   FormBody,
   FormBodyFields,
-  FormLoader,
   FormErrors,
   ErrorList,
   ErrorListItem,
   ErrorListItemIcon,
   ErrorListItemText,
   FormRow,
+  FormRowButton,
   ButtonDefaultSmall,
 } from '../styled-components-mixins'
 
@@ -153,7 +153,7 @@ const ContactUsContainer = ({
                 </Field>
               </FormRow>
             )}
-            <FormRow>
+            <FormRowButton>
               {isUserContactUs && (
                 <ButtonDefaultSmall type="submit" value="Contact Us" />
               )}
@@ -164,13 +164,9 @@ const ContactUsContainer = ({
                   disabled={!isAgree}
                 />
               )}
-            </FormRow>
+            </FormRowButton>
           </FormBodyFields>
-          {loader && (
-            <FormLoader>
-              <Loader />
-            </FormLoader>
-          )}
+          {loader && <Loader global />}
         </FormBody>
       </Form>
     </ContactUsWrapper>

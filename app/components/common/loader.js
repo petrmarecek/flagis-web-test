@@ -1,20 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import styled, { css, keyframes } from 'styled-components'
-
-const globalSpinner = css`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  opacity: 0.5;
-  background-color: #3e484f;
-  z-index: 1000;
-`
+import styled, { keyframes } from 'styled-components'
+import { colors } from 'components/styled-components-mixins/colors'
 
 const skDelayAnimation = keyframes`
     0%,
@@ -30,16 +17,24 @@ const skDelayAnimation = keyframes`
 `
 
 const Spinner = styled.div`
-  width: 100%;
-  text-align: center;
-  margin: ${props => (props.global ? '0' : 'auto 10px')};
-  ${props => (props.global ? globalSpinner : null)}
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: ${props => (props.global ? colors.white : 'transparent')};
+  opacity: ${props => (props.global ? '0.8' : '1')};
 `
 
 const Item = styled.div`
-  width: 10px;
-  height: 10px;
-  background-color: #d7e3ec;
+  width: 12px;
+  height: 12px;
+  background-color: ${props =>
+    props.light ? colors.white : colors.darkJungleGreen};
   border-radius: 100%;
   display: inline-block;
   animation: ${skDelayAnimation} 1.7s infinite ease-in-out both;
@@ -47,17 +42,18 @@ const Item = styled.div`
   opacity: 0;
 `
 
-const Loader = ({ global }) => (
+const Loader = ({ global, light }) => (
   <Spinner global={global}>
-    <Item delay={-0.6} />
-    <Item delay={-0.4} />
-    <Item delay={-0.2} />
-    <Item delay={0} />
+    <Item delay={-0.6} light={light} />
+    <Item delay={-0.4} light={light} />
+    <Item delay={-0.2} light={light} />
+    <Item delay={0} light={light} />
   </Spinner>
 )
 
 Loader.propTypes = {
   global: PropTypes.bool,
+  light: PropTypes.bool,
 }
 
 export default Loader

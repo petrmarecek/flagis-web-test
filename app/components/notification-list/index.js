@@ -69,10 +69,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = { setScrollbarPosition, readNotification }
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   branch(props => props.notifications.isFetching, renderComponent(Loader)),
   withHandlers({
     onHandleSetScrollbarPosition: props => position =>

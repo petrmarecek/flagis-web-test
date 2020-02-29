@@ -376,16 +376,16 @@ const TaskDetail = props => {
                 <TagItems tags={tags} />
               </DetailContentTagAutocompleteTags>
             ) : (
-                <Autocomplete
-                  dataType="tags"
-                  location="taskDetailTags"
-                  placeholder="Add tags"
-                  selectedItems={{ tags: isTags === 0 ? null : tags }}
-                  parentId={id}
-                  onItemDelete={onHandleTagDelete}
-                  isAllowUpdate
-                />
-              )}
+              <Autocomplete
+                dataType="tags"
+                location="taskDetailTags"
+                placeholder="Add tags"
+                selectedItems={{ tags: isTags === 0 ? null : tags }}
+                parentId={id}
+                onItemDelete={onHandleTagDelete}
+                isAllowUpdate
+              />
+            )}
           </DetailContentTagAutocomplete>
           {!isArchived && !isInboxVisible && isCollaborated && (
             <DetailContentButton
@@ -412,8 +412,8 @@ const TaskDetail = props => {
                     ? createdByFollower.profile.email
                     : createdByFollower.profile.nickname
                   : assignee.profile.nickname === null
-                    ? assignee.profile.email
-                    : assignee.profile.nickname
+                  ? assignee.profile.email
+                  : assignee.profile.nickname
               }
             >
               <FollowerIcon
@@ -431,8 +431,8 @@ const TaskDetail = props => {
                       ? createdByFollower.profile.email
                       : createdByFollower.profile.nickname
                     : assignee.profile.nickname === null
-                      ? assignee.profile.email
-                      : assignee.profile.nickname
+                    ? assignee.profile.email
+                    : assignee.profile.nickname
                 }
                 animation={animation}
               />

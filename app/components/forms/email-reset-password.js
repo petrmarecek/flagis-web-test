@@ -22,8 +22,8 @@ import {
   Form,
   FormBody,
   FormBodyFields,
-  FormLoader,
   FormRow,
+  FormRowButton,
 } from '../styled-components-mixins'
 
 const EmailResetPassword = ({ loader, location, handleSubmit, onSubmit }) => (
@@ -41,15 +41,11 @@ const EmailResetPassword = ({ loader, location, handleSubmit, onSubmit }) => (
               component={InputField}
             />
           </FormRow>
-          <FormRow>
+          <FormRowButton>
             <ButtonDefault type="submit" value="Submit" />
-          </FormRow>
+          </FormRowButton>
         </FormBodyFields>
-        {loader && (
-          <FormLoader>
-            <Loader />
-          </FormLoader>
-        )}
+        {loader && <Loader global />}
       </FormBody>
     </Form>
   </div>
