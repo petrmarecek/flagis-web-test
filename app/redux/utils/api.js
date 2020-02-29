@@ -33,6 +33,11 @@ export default {
 
     update: userData => api.patch('users', userData).then(res => res.data),
 
+    updatePhoto: photoData =>
+      api.patch('users/photo', photoData).then(res => res.data),
+
+    resetPhoto: () => api.patch('users/photo/reset').then(res => res.data),
+
     password: userData =>
       api.put('users/password', userData).then(res => res.data),
 

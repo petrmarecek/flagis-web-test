@@ -64,7 +64,7 @@ AttachmentList.propTypes = {
   loader: PropTypes.bool,
   attachments: PropTypes.object,
   disabled: PropTypes.bool,
-  onFileUploaded: PropTypes.number,
+  onFileUploaded: PropTypes.func,
   attachmentDelete: PropTypes.func,
   attachmentScrollHeight: PropTypes.string,
 }

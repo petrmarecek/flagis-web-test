@@ -1,6 +1,12 @@
 import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { useDropzone } from 'react-dropzone'
+import { isEmpty } from 'lodash'
+import common from './common'
+
+// toast notifications
+import { toast } from 'react-toastify'
+import * as toastCommon from 'components/toast-notifications/toast-notifications-common'
 
 // components
 import { ICONS } from 'components/icons/icon-constants'
@@ -30,10 +36,20 @@ const AddButton = styled.button`
 `
 
 const AttachmentAddButton = ({ onFileUploaded }) => {
-  const onDrop = useCallback(acceptedFiles => {
+  const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
+    if (!isEmpty(rejectedFiles)) {
+      toast.error(toastCommon.errorMessages.files.sizeValidation, {
+        position: toastCommon.position.DEFAULT,
+        autoClose: toastCommon.duration.ERROR_DURATION,
+      })
+      return
+    }
     onFileUploaded(acceptedFiles)
   }, [])
-  const { getRootProps, getInputProps } = useDropzone({ onDrop })
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    maxSize: common.MAX_SIZE,
+  })
 
   return (
     <AttachmentAddButtonWrapper {...getRootProps()}>
@@ -46,8 +62,8 @@ const AttachmentAddButton = ({ onFileUploaded }) => {
 
 AttachmentAddButton.propTypes = {
   test: PropTypes.string,
-  onFileUploaded: PropTypes.func,
   handleClick: PropTypes.func,
+  onFileUploaded: PropTypes.func,
 }
 
 export default AttachmentAddButton

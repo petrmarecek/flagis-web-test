@@ -13,7 +13,11 @@ import {
   getChangeNameForm,
   getLoader,
 } from 'redux/store/app-state/app-state.selectors'
-import { changeName, changeUserPhoto } from 'redux/store/auth/auth.actions'
+import {
+  changeName,
+  changeUserPhoto,
+  resetUserPhoto,
+} from 'redux/store/auth/auth.actions'
 import {
   getUsername,
   getUserPhoto,
@@ -24,7 +28,7 @@ import { validateChangeName } from 'redux/utils/validate'
 import { loaderTypes } from 'redux/store/app-state/app-state.common'
 
 // components
-import ImagePicker from 'components/common/image-picker'
+import ProfilePicture from 'components/profile-picture'
 import InputField from 'components/forms/fields/input-field'
 import Loader from 'components/common/loader'
 import { ICONS } from 'components/icons/icon-constants'
@@ -54,14 +58,16 @@ const EditProfile = ({
   handleSubmit,
   onSubmit,
   handleChangeUserPhoto,
+  handleResetUserPhoto,
 }) => (
   <div>
-    <ImagePicker
+    <ProfilePicture
       imageUrl={imageUrl}
       email={email}
       username={initialValues}
       colorTheme={colorTheme}
       onChangePhoto={handleChangeUserPhoto}
+      onResetPhoto={handleResetUserPhoto}
     />
     <Form nonMargin leftPadding maxWidth={500}>
       <FormBody onSubmit={handleSubmit(values => onSubmit(values))}>
@@ -126,6 +132,7 @@ EditProfile.propTypes = {
   loader: PropTypes.bool,
   handleSubmit: PropTypes.func,
   handleChangeUserPhoto: PropTypes.func,
+  handleResetUserPhoto: PropTypes.func,
   onSubmit: PropTypes.func,
 }
 
@@ -143,6 +150,7 @@ const mapDispatchToProps = {
   setLoader,
   deselectError,
   changeUserPhoto,
+  resetUserPhoto,
 }
 
 export default compose(
@@ -173,8 +181,8 @@ export default compose(
         lastName: lastName,
       })
     },
-    handleChangeUserPhoto: props => image =>
-      props.changeUserPhoto(image !== null ? image.url : image),
+    handleChangeUserPhoto: props => image => props.changeUserPhoto(image),
+    handleResetUserPhoto: props => () => props.resetUserPhoto(),
   }),
   lifecycle({
     componentDidMount() {

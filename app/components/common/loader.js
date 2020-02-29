@@ -32,7 +32,7 @@ const skDelayAnimation = keyframes`
 const Spinner = styled.div`
   width: 100%;
   text-align: center;
-  margin: ${props => (props.global ? '0' : '10px')};
+  margin: ${props => (props.global ? '0' : 'auto 10px')};
   ${props => (props.global ? globalSpinner : null)}
 `
 

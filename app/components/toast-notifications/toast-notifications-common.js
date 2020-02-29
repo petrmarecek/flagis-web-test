@@ -34,7 +34,8 @@ export const errorMessages = {
   },
 
   tasks: {
-    waitingResponse: 'Wait for the response from the recipient or take the task back.',
+    waitingResponse:
+      'Wait for the response from the recipient or take the task back.',
   },
 
   tags: {
@@ -69,6 +70,10 @@ export const errorMessages = {
   sessionExpired: 'Your session has expired.',
 
   somethingWrong: 'Sorry, something went wrong. Please try again.',
+
+  files: {
+    sizeValidation: 'File is too big.',
+  },
 }
 
 export const successMessages = {
@@ -105,13 +110,13 @@ export const infoMessages = {
   },
 
   collaboration: {
-    removeFollower: 'Sender has just removed you from a task. Check your notifications.',
+    removeFollower:
+      'Sender has just removed you from a task. Check your notifications.',
     deletedTask: 'Sender has just deleted a task. Check your notifications.',
   },
 
   taskDetail: {
-    acceptedRules:
-      'Not allowed to edit subject, due date and description.',
+    acceptedRules: 'Not allowed to edit subject, due date and description.',
     inboxRules: 'Allowed to add comments and accept/reject only.',
     completedRules: 'Allowed to uncomplete and archive only.',
   },

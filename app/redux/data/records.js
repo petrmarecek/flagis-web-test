@@ -66,6 +66,7 @@ export const Loader = Record({
   attachments: false,
   form: false,
   global: false,
+  profilePicture: false,
 })
 
 export const Lists = Record({

@@ -2,6 +2,7 @@ import { Map } from 'immutable'
 import { routes } from 'utils/routes'
 import date from '../../utils/date'
 import constants from 'utils/constants'
+import fileHelper from 'utils/file-helper'
 
 // toast notifications
 import { toast } from 'react-toastify'
@@ -21,7 +22,6 @@ import {
   select,
 } from 'redux-saga/effects'
 import { REHYDRATE } from 'redux-persist'
-
 import * as authActions from 'redux/store/auth/auth.actions'
 import * as appStateActions from 'redux/store/app-state/app-state.actions'
 import * as taskActions from 'redux/store/tasks/tasks.actions'
@@ -51,6 +51,7 @@ import { createLoadActions, callApi } from 'redux/store/common.sagas'
 import api from 'redux/utils/api'
 import firebase from 'redux/utils/firebase'
 import dateUtil from 'redux/utils/date'
+import { loaderTypes } from 'redux/store/app-state/app-state.common'
 
 const AUTH = authActions.AUTH
 
@@ -284,10 +285,61 @@ export function* changeName(action) {
 
 export function* changeUserPhoto(action) {
   try {
-    const photo = action.payload
+    const file = action.payload
+
+    const { name, type, size } = file
+
+    yield put(appStateActions.setLoader(loaderTypes.PROFILE_PICTURE))
+
+    // prepare data for getting upload data
+    const fileMetaData = {
+      fileName: name,
+      mimeType: type,
+    }
+
+    // get upload data
+    const { fileKey, uploadUrl } = yield callApi(
+      api.files.getUploadData,
+      fileMetaData
+    )
+
+    const fileBuffer = yield call(fileHelper.readFileAsArrayBuffer, file)
+
+    // upload file to S3
+    yield callApi(api.files.uploadFile, uploadUrl, fileBuffer, type)
+
+    // prepare data for creating attachment
+    const fileData = {
+      ...fileMetaData,
+      fileKey,
+      size,
+    }
 
     // call server
-    const profile = yield callApi(api.users.update, { photo })
+    const profile = yield callApi(api.users.updatePhoto, fileData)
+
+    // save profile to redux-store
+    yield put(authActions.updateProfile(profile))
+
+    yield put(appStateActions.deselectLoader(loaderTypes.PROFILE_PICTURE))
+  } catch (err) {
+    yield put(appStateActions.deselectLoader(loaderTypes.PROFILE_PICTURE))
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
+  }
+}
+
+export function* resetUserPhoto(action) {
+  try {
+    // call server
+    const profile = yield callApi(api.users.resetPhoto)
 
     // save profile to redux-store
     yield put(authActions.updateProfile(profile))
