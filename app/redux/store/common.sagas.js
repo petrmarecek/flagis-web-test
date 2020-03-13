@@ -170,7 +170,7 @@ function* onUndo(action, name) {
         act.type === 'TREE/DELETE' ||
         act.type === 'CONTACTS/DELETE'
     ),
-    timeout: call(delay, 8000),
+    timeout: call(delay, 12000),
   })
 
   // hide UI element

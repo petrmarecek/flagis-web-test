@@ -20,10 +20,10 @@ const UndoContainer = styled.div`
   bottom: 50px;
   right: 30px;
   display: flex;
-  height: 45px;
+  height: 55px;
   color: #fff;
   cursor: pointer;
-`;
+`
 
 const Info = styled.div`
   ${borderRadius('5px 0 0 5px')}
@@ -32,13 +32,13 @@ const Info = styled.div`
   justify-content: flex-start;
   background-color: #1c2124;
   height: 100%;
-  padding: 0 15px;
-`;
+  padding: 0 20px;
+`
 
 const Title = styled.div`
-  margin-left: 10px;
-  font-size: 14px;
-`;
+  margin-left: 15px;
+  font-size: 16px;
+`
 
 const Button = styled.div`
   ${borderRadius('0 5px 5px 0')}
@@ -46,12 +46,12 @@ const Button = styled.div`
   align-items: center;
   justify-content: flex-start;
   height: 100%;
-  padding: 0 20px;
+  padding: 0 25px;
   background-color: #293034;
   font-size: 16px;
   font-weight: 600;
   border-left: 1px solid #8c9da9;
-`;
+`
 
 const UndoBox = ({ undoBox, onHandleUndo }) => {
   if (!undoBox) {
@@ -68,22 +68,12 @@ const UndoBox = ({ undoBox, onHandleUndo }) => {
   }
 
   return (
-    <UndoContainer
-      id='undoBox'
-      onClick={onHandleUndo} >
+    <UndoContainer id="undoBox" onClick={onHandleUndo}>
       <Info>
-        <Icon
-          icon={ICONS.ARROW_UNDO}
-          width={22}
-          height={20}
-          color={["#fff"]} />
-        <Title >
-          {title[undoBox.name]}
-        </Title>
+        <Icon icon={ICONS.ARROW_UNDO} width={22} height={20} color={['#fff']} />
+        <Title>{title[undoBox.name]}</Title>
       </Info>
-      <Button>
-        Undo
-      </Button>
+      <Button>Undo</Button>
     </UndoContainer>
   )
 }
@@ -127,14 +117,17 @@ export default compose(
         default:
           props.activeUndo('UNDO_TASK/DELETE')
       }
-    }
+    },
   }),
   lifecycle({
     componentDidUpdate() {
       if (this.props.undoBox) {
         const elem = document.getElementById('undoBox')
-        velocity(elem, 'transition.slideRightIn', { duration: 400, display: 'flex' })
+        velocity(elem, 'transition.slideRightIn', {
+          duration: 400,
+          display: 'flex',
+        })
       }
-    }
+    },
   })
 )(UndoBox)

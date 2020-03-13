@@ -1009,7 +1009,7 @@ export function* rejectTask(action) {
     // Wait for undo
     const { undo } = yield race({
       undo: take('UNDO_TASK/REJECT'),
-      timeout: call(delay, 8000),
+      timeout: call(delay, 12000),
     })
 
     // Dispatch undo -> don't call API
