@@ -287,7 +287,9 @@ export function* changeUserPhoto(action) {
   try {
     const file = action.payload
 
-    const { name, type, size } = file
+    // Set file extension to lower case
+    const prepareFile = fileHelper.setFileExtensionToLowerCase(file)
+    const { name, type, size } = prepareFile
 
     yield put(appStateActions.setLoader(loaderTypes.PROFILE_PICTURE))
 
@@ -303,7 +305,7 @@ export function* changeUserPhoto(action) {
       fileMetaData
     )
 
-    const fileBuffer = yield call(fileHelper.readFileAsArrayBuffer, file)
+    const fileBuffer = yield call(fileHelper.readFileAsArrayBuffer, prepareFile)
 
     // upload file to S3
     yield callApi(api.files.uploadFile, uploadUrl, fileBuffer, type)

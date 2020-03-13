@@ -112,7 +112,9 @@ export function* createAttachment(action) {
     yield put(appStateActions.setLoader(loaderTypes.ATTACHMENTS))
 
     for (const file of files) {
-      const { name, type, size } = file
+      // Set file extension to lower case
+      const prepareFile = fileHelper.setFileExtensionToLowerCase(file)
+      const { name, type, size } = prepareFile
 
       // prepare data for getting upload data
       const fileMetaData = {
@@ -126,7 +128,10 @@ export function* createAttachment(action) {
         fileMetaData
       )
 
-      const fileBuffer = yield call(fileHelper.readFileAsArrayBuffer, file)
+      const fileBuffer = yield call(
+        fileHelper.readFileAsArrayBuffer,
+        prepareFile
+      )
 
       // upload file to S3
       yield callApi(api.files.uploadFile, uploadUrl, fileBuffer, type)
