@@ -567,7 +567,7 @@ const TaskDetail = props => {
                   />
                 </DetailContentDatePicker>
               </DetailContentDate>
-              <DetailContentDate allowed={!isCompleted && !isInboxVisible}>
+              <DetailContentDate allowed={!isCompleted && !isCollaborated}>
                 <DetailContentDateIcon
                   icon={ICONS.REMINDER_DATE}
                   height={13}
