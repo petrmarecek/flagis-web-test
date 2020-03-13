@@ -609,7 +609,7 @@ const TaskDetail = props => {
                 <DetailContentImportantContent isChecked={isImportant} />
               </DetailContentImportant>
             </DetailContentOptions>
-            <DetailContentAttachments allowed={!isArchivedOrCompletedOrInbox}>
+            <DetailContentAttachments>
               {attachments.isFetching && (
                 <DetailContentAttachmentsLoader>
                   <Loader />
@@ -617,7 +617,7 @@ const TaskDetail = props => {
               )}
               {!attachments.isFetching && (
                 <AttachmentList
-                  disabled={isArchivedOrInbox}
+                  disabled={isCollaboratedOrCompleted}
                   attachments={attachments}
                   attachmentScrollHeight={attachmentScrollHeight}
                   attachmentDelete={onHandleAttachmentDelete}

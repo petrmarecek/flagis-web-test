@@ -9,14 +9,15 @@ export default {
   },
 
   setFileExtensionToLowerCase(file) {
-    const fileExtension = file.name.split('.').pop()
+    const { name, type } = file
+    const fileExtension = name.split('.').pop()
     const validExtension = fileExtension.toLowerCase()
-    const fileNameWithValidExtension = file.name.replace(
+    const fileNameWithValidExtension = name.replace(
       fileExtension,
       validExtension
     )
 
     // eslint-disable-next-line no-undef
-    return new File([file], fileNameWithValidExtension)
+    return new File([file], fileNameWithValidExtension, { type })
   },
 }

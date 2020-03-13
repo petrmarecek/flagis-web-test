@@ -333,8 +333,8 @@ const DetailContentAttachmentsLoader = styled.div`
 `
 
 const DetailContentAttachments = styled.div`
+  position: relative;
   height: 100%;
-  pointer-events: ${props => (props.allowed ? 'auto' : 'none')};
 `
 
 const DetailContentComments = styled.div`
