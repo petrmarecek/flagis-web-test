@@ -1,8 +1,6 @@
 import { List } from 'immutable'
 import { createSelector } from 'reselect'
-import search from 'redux/services/search'
 import moment from 'moment'
-import intersection from 'lodash/intersection'
 
 import { getUserId } from '../auth/auth.selectors'
 import {
@@ -109,12 +107,6 @@ function loadTasks(ids, data) {
     userId,
   } = data
 
-  // apply search filter
-  if (tasksSearch) {
-    const foundIds = search.tasks.get(tasksSearch).map(item => item.ref)
-    ids = intersection(ids, foundIds)
-  }
-
   let tasks = ids.map(taskId => {
     const task = entitiesTasks.get(taskId)
     const tags = task.tags.map(tagId => entitiesTags.get(tagId))
@@ -131,6 +123,23 @@ function loadTasks(ids, data) {
       .set('createdBy', createdBy)
       .set('followers', followers)
   })
+
+  // full text search
+  if (tasksSearch) {
+    const termLowerCase = tasksSearch.toLowerCase()
+
+    tasks = tasks.filter(task => {
+      const subjectLowerCase = task.subject.toLowerCase()
+      const descriptionLowerCase = task.description
+        ? task.description.toLowerCase()
+        : ''
+
+      return (
+        subjectLowerCase.includes(termLowerCase) ||
+        descriptionLowerCase.includes(termLowerCase)
+      )
+    })
+  }
 
   // sort task by order
   tasks.sort((a, b) => {
@@ -258,12 +267,6 @@ function loadArchiveTasks(ids, data) {
     tasksSearch,
   } = data
 
-  // apply search filter
-  if (tasksSearch) {
-    const foundIds = search.tasks.get(tasksSearch).map(item => item.ref)
-    ids = intersection(ids, foundIds)
-  }
-
   let tasks = ids.map(taskId => {
     const task = entitiesTasks.get(taskId)
     const tags = task.tags.map(tagId => entitiesTags.get(tagId))
@@ -280,6 +283,23 @@ function loadArchiveTasks(ids, data) {
       .set('createdBy', createdBy)
       .set('followers', followers)
   })
+
+  // full text search
+  if (tasksSearch) {
+    const termLowerCase = tasksSearch.toLowerCase()
+
+    tasks = tasks.filter(task => {
+      const subjectLowerCase = task.subject.toLowerCase()
+      const descriptionLowerCase = task.description
+        ? task.description.toLowerCase()
+        : ''
+
+      return (
+        subjectLowerCase.includes(termLowerCase) ||
+        descriptionLowerCase.includes(termLowerCase)
+      )
+    })
+  }
 
   // apply sort by archive date
   tasks.sort((a, b) => {

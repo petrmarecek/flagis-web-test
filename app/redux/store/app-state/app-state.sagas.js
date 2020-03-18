@@ -5,7 +5,6 @@ import { routes } from 'utils/routes'
 import { toast } from 'react-toastify'
 import * as toastCommon from 'components/toast-notifications/toast-notifications-common'
 
-
 // redux
 import { put, select } from 'redux-saga/effects'
 import { push } from 'react-router-redux'
@@ -24,7 +23,6 @@ import {
   sentryTagType,
 } from 'redux/store/errors/errors.common'
 import { callApi } from 'redux/store/common.sagas'
-import search from 'redux/services/search'
 import api from 'redux/utils/api'
 
 export function* defaultDisplay() {
@@ -50,7 +48,10 @@ export function* hintSelected(action) {
     if (location === 'mainSearch') {
       if (isNewHint) {
         toast.error(
-          toastCommon.errorMessages.createEntity.notAllowedCreate('tag', 'Tag filter'),
+          toastCommon.errorMessages.createEntity.notAllowedCreate(
+            'tag',
+            'Tag filter'
+          ),
           {
             position: toastCommon.position.DEFAULT,
             autoClose: toastCommon.duration.ERROR_DURATION,
@@ -99,9 +100,6 @@ export function* hintSelected(action) {
         const email = profile.email
         const data = { email }
         profile = yield callApi(api.contacts.create, data)
-
-        // Add contact to search index
-        search.contacts.addItem(profile)
       }
 
       yield put(followerActions.createFollower(parentId, profile.id))
@@ -126,7 +124,10 @@ export function* hintSelected(action) {
       // Not allowed create a new contact
       if (isNewHint) {
         toast.error(
-          toastCommon.errorMessages.createEntity.notAllowedCreate('contact', 'Filter'),
+          toastCommon.errorMessages.createEntity.notAllowedCreate(
+            'contact',
+            'Filter'
+          ),
           {
             position: toastCommon.position.DEFAULT,
             autoClose: toastCommon.duration.ERROR_DURATION,

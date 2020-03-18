@@ -42,7 +42,6 @@ import * as taskSelectors from 'redux/store/tasks/tasks.selectors'
 import * as notificationSelectors from 'redux/store/notifications/notifications.selectros'
 import api from 'redux/utils/api'
 import schema from 'redux/data/schema'
-import search from 'redux/services/search'
 import firebase from 'redux/utils/firebase'
 import dateUtil from 'redux/utils/date'
 import { getAssigneeOfTask } from 'redux/utils/component-helper'
@@ -139,9 +138,6 @@ function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
       if (isDetailVisible.inbox && storeSelectionItem === id) {
         yield put(appStateActions.deselectDetail('inbox'))
       }
-
-      // Update task in search
-      search.tasks.updateItem(task)
     }
 
     // Owner deleted task -> show notification
@@ -171,9 +167,6 @@ function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
     if (isDetailVisible.archive && storeSelectionItem === id) {
       yield put(appStateActions.deselectDetail('archive'))
     }
-
-    // Update task in search
-    search.tasks.updateItem(task)
   }
 
   // Move task to archive
@@ -193,15 +186,6 @@ function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
     if (isDetailVisible.task && storeSelectionItem === id) {
       yield put(appStateActions.deselectDetail('task'))
     }
-
-    // Update task in search
-    search.tasks.updateItem(task)
-  }
-
-  // New task
-  if (!storeItems.includes(id) && !storeArchivedItems.includes(id)) {
-    // Add new task to search
-    search.tasks.addItem(task)
   }
 
   // Delete task
@@ -220,9 +204,6 @@ function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
     if (isDetailVisible.inbox && storeSelectionItem === id) {
       yield put(appStateActions.deselectDetail('inbox'))
     }
-
-    // Delete task from search
-    search.tasks.removeItem({ id })
   }
 
   // Save changes to store
@@ -284,7 +265,7 @@ export function* initInboxTasksData(initTime) {
 
 export function* fetchTasks() {
   const userId = yield select(state => authSelectors.getUserId(state))
-  const result = yield* fetch(TASKS.FETCH, {
+  yield* fetch(TASKS.FETCH, {
     method: api.tasks.search,
     args: [
       {
@@ -296,10 +277,6 @@ export function* fetchTasks() {
     schema: schema.tasks,
     userId,
   })
-
-  // Initialize search service
-  search.tasks.resetIndex()
-  search.tasks.addItems(result)
 
   // Reset full text search
   const text = yield select(state => taskSelectors.getTasksSearch(state))
@@ -317,7 +294,7 @@ export function* fetchArchivedTasks() {
     yield put(appStateActions.visibleArchivedTasks())
   }
 
-  const result = yield* fetch(TASKS.FETCH_ARCHIVED, {
+  yield* fetch(TASKS.FETCH_ARCHIVED, {
     method: api.tasks.search,
     args: [
       {
@@ -330,10 +307,6 @@ export function* fetchArchivedTasks() {
     schema: schema.tasks,
     userId,
   })
-
-  // Initialize search service
-  search.tasks.removeItems(result)
-  search.tasks.addItems(result)
 
   // Reset full text search
   const text = yield select(state => taskSelectors.getTasksSearch(state))
@@ -363,9 +336,6 @@ export function* createTask(action) {
     if (action.payload.isImportant) {
       yield put(taskActions.requestToggleImportant(task))
     }
-
-    // add task to the search index
-    search.tasks.addItem(task)
 
     yield put(taskActions.addTask(task))
 
@@ -553,10 +523,7 @@ export function* setOrder(action) {
     const update = { order }
 
     // call server
-    const updatedTask = yield callApi(api.tasks.update, taskId, update)
-
-    // update task in the search index
-    search.tasks.updateItem(updatedTask)
+    yield callApi(api.tasks.update, taskId, update)
   } catch (err) {
     // TODO: revert
     // We need to both revert Task.order field and position within loaded list
@@ -581,10 +548,7 @@ export function* setOrderTimeLine(action) {
     const update = { dueDate, orderTimeLine }
 
     // call server
-    const updatedTask = yield callApi(api.tasks.update, taskId, update)
-
-    // update task in the search index
-    search.tasks.updateItem(updatedTask)
+    yield callApi(api.tasks.update, taskId, update)
   } catch (err) {
     // TODO: revert
     // We need to both revert Task.order field and position within loaded list
@@ -774,9 +738,6 @@ export function* deleteTask(action) {
           yield put(tagsActions.deleteTagsRelations(tag, taskId))
         }
       }
-
-      // delete task from the search index
-      search.tasks.removeItem({ id: taskId })
     }
   } catch (err) {
     // send error to sentry
@@ -1135,9 +1096,6 @@ function* setTaskField(task, fieldName, newFieldValue) {
 function* updateTask(taskId, update) {
   // call server
   let updatedTask = yield callApi(api.tasks.update, taskId, update)
-
-  // update task in the search index
-  search.tasks.updateItem(updatedTask)
 
   // add userId for repare data of follower in normalizr schema
   const userId = yield select(state => authSelectors.getUserId(state))

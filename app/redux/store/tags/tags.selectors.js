@@ -1,6 +1,4 @@
 import { List } from 'immutable'
-import search from 'redux/services/search'
-import intersection from 'lodash/intersection'
 import { createSelector } from 'reselect'
 import { getTagDetail } from '../app-state/app-state.selectors'
 import { getActiveEntitiesTags } from '../entities/entities.selectors'
@@ -17,14 +15,22 @@ import { compareTagByTitle } from '../../utils/component-helper'
 
 function loadTags(ids, data) {
   const { tagsSearch, entitiesTags } = data
+  let tags = ids.map(tagId => entitiesTags.getIn([tagId]))
 
-  // apply search filter
+  // full text search
   if (tagsSearch) {
-    const foundIds = search.tags.get(tagsSearch).map(item => item.ref)
-    ids = intersection(ids, foundIds)
+    const termLowerCase = tagsSearch.toLowerCase()
+
+    tags = tags.filter(tag => {
+      const titleLowerCase = tag.title.toLowerCase()
+      return titleLowerCase.includes(termLowerCase)
+    })
   }
 
-  return ids.map(tagId => entitiesTags.getIn([tagId])).sort(compareTagByTitle)
+  // sort by title
+  tags.sort(compareTagByTitle)
+
+  return tags
 }
 
 // ------ Selectors -------------------------------------------------------------

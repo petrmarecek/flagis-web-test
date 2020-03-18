@@ -30,7 +30,6 @@ import {
   callApi,
 } from 'redux/store/common.sagas'
 import api from 'redux/utils/api'
-import search from 'redux/services/search'
 import schema from 'redux/data/schema'
 import firebase from 'redux/utils/firebase'
 import { getContactTasksRelations } from 'redux/utils/redux-helper'
@@ -110,15 +109,11 @@ export function* initGlobalContactsData(initTime) {
 }
 
 export function* fetchContacts() {
-  const result = yield* fetch(CONTACTS.FETCH, {
+  yield* fetch(CONTACTS.FETCH, {
     method: api.contacts.get,
     args: [],
     schema: schema.contacts,
   })
-
-  // Initialize search service
-  search.contacts.resetIndex()
-  search.contacts.addItems(result)
 }
 
 export function* createContact(action) {
@@ -138,9 +133,6 @@ export function* createContact(action) {
 
     const data = { email }
     const contact = yield callApi(api.contacts.create, data)
-
-    // add the contact to the search index
-    search.contacts.addItem(contact)
 
     yield put(contactsActions.addContact(contact))
   } catch (err) {
@@ -248,13 +240,7 @@ export function* deleteContact(action) {
     })
 
     yield* mainUndo(action, 'contactDelete')
-
-    // delete contact from the search index
-    search.contacts.removeItem({ id: action.payload })
   } catch (err) {
-    // add the contact to the search index
-    search.contacts.addItem(originalContact)
-
     yield put(contactsActions.addContact(originalContact))
 
     // send error to sentry

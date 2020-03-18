@@ -36,7 +36,6 @@ import {
 } from 'redux/store/common.sagas'
 import api from 'redux/utils/api'
 import schema from 'redux/data/schema'
-import search from 'redux/services/search'
 import firebase from 'redux/utils/firebase'
 
 const TAGS = tagActions.TAGS
@@ -47,31 +46,16 @@ function* saveChangeFromFirestore(change) {
 
   // Prepare data
   const normalizeData = normalize(tag, schema.tag)
-  const storeItems = yield select(state => tagSelectors.getTagsItems(state))
   const isDetailVisible = yield select(state =>
     appStateSelectors.getDetail(state)
   )
 
-  const { id, isDeleted } = tag
-
-  // Update search
-  if (!storeItems.includes(id)) {
-    // Add new tag to search
-    search.tags.addItem(tag)
-  } else {
-    // Update tag in search
-    search.tags.updateItem(tag)
-  }
+  const { isDeleted } = tag
 
   // Delete tag
-  if (isDeleted) {
+  if (isDeleted && isDetailVisible.tag) {
     // Close tag detail
-    if (isDetailVisible.tag) {
-      yield put(appStateActions.deselectDetail('tag'))
-    }
-
-    // Delete tag from search
-    search.tags.removeItem({ id })
+    yield put(appStateActions.deselectDetail('tag'))
   }
 
   // Save changes to store entities
@@ -111,15 +95,11 @@ function* syncTagsChannel(channel) {
 }
 
 export function* fetchTags() {
-  const result = yield* fetch(tagActions.TAGS.FETCH, {
+  yield* fetch(tagActions.TAGS.FETCH, {
     method: api.tags.list,
     args: [],
     schema: schema.tags,
   })
-
-  // Initialize search service
-  search.tags.resetIndex()
-  search.tags.addItems(result)
 }
 
 export function* initTagsData(initTime) {
@@ -139,9 +119,6 @@ export function* createTag(action) {
     // call server and create a new tag
     const data = action.payload.tag
     const tag = yield callApi(api.tags.create, data)
-
-    // add the tag to the search index
-    search.tags.addItem(tag)
 
     // add the tag to store
     yield put(tagActions.addTag(tag))
@@ -228,7 +205,10 @@ export function* prepareDeleteTag(action) {
   if (isTagsRelations) {
     if (tagsRelations.getIn([tagId]).size > 0) {
       toast.error(
-        toastCommon.errorMessages.relations.relationDeleteConflict('tag', 'My Tasks'),
+        toastCommon.errorMessages.relations.relationDeleteConflict(
+          'tag',
+          'My Tasks'
+        ),
         {
           position: toastCommon.position.DEFAULT,
           autoClose: toastCommon.duration.ERROR_DURATION,
@@ -262,9 +242,6 @@ export function* deleteTag(action) {
       tagActions.deleteTagsRelations(action.payload.originalData.id, null)
     )
     yield* mainUndo(action, 'tagDelete')
-
-    // delete tag from the search index
-    search.tags.removeItem({ id: action.payload })
   } catch (err) {
     // send error to sentry
     yield put(

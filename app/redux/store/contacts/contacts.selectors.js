@@ -2,7 +2,6 @@ import { List } from 'immutable'
 import { getContactDetail } from '../app-state/app-state.selectors'
 import { getEntitiesContacts } from '../entities/entities.selectors'
 import { createSelector } from 'reselect'
-import search from 'redux/services/search'
 import { compareContactByEmail } from '../../utils/component-helper'
 
 // ------ Helper functions ----------------------------------------------------
@@ -17,17 +16,30 @@ function loadContact(data) {
   const { contactsSearch, entitiesContacts } = data
   let contacts = entitiesContacts.toArray()
 
-  // apply search filter
+  // full text search
   if (contactsSearch) {
-    contacts = search.contacts
-      .get(contactsSearch)
-      .map(item => item.ref)
-      .map(contactId => entitiesContacts.getIn([contactId]))
+    const termLowerCase = contactsSearch.toLowerCase()
+
+    contacts = contacts.filter(contact => {
+      const emailLowerCase = contact.email.toLowerCase()
+      const nicknameLowerCase = contact.nickname
+        ? contact.nickname.toLowerCase()
+        : ''
+
+      return (
+        emailLowerCase.includes(termLowerCase) ||
+        nicknameLowerCase.includes(termLowerCase)
+      )
+    })
   }
 
+  // filter isContact
+  contacts = contacts.filter(contact => contact.isContact)
+
+  // sort by email
+  contacts.sort(compareContactByEmail)
+
   return contacts
-    .filter(contact => contact.isContact)
-    .sort(compareContactByEmail)
 }
 
 // ------ Selectors -------------------------------------------------------------
