@@ -40,6 +40,8 @@ import * as authSelectors from 'redux/store/auth/auth.selectors'
 import * as entitiesSelectors from 'redux/store/entities/entities.selectors'
 import * as taskSelectors from 'redux/store/tasks/tasks.selectors'
 import * as notificationSelectors from 'redux/store/notifications/notifications.selectros'
+import * as contactsActions from 'redux/store/contacts/contacts.actions'
+import * as contactsSelectors from 'redux/store/contacts/contacts.selectors'
 import api from 'redux/utils/api'
 import schema from 'redux/data/schema'
 import firebase from 'redux/utils/firebase'
@@ -277,6 +279,12 @@ export function* fetchTasks() {
     schema: schema.tasks,
     userId,
   })
+
+  // set me contact
+  const me = yield select(state =>
+    contactsSelectors.getContactById(state, userId)
+  )
+  yield put(contactsActions.updateContact(me, true, 'me', true))
 
   // Reset full text search
   const text = yield select(state => taskSelectors.getTasksSearch(state))

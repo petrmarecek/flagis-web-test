@@ -29,6 +29,7 @@ import * as notificationActions from 'redux/store/notifications/notifications.ac
 import * as tagActions from 'redux/store/tags/tags.actions'
 import * as treeActions from 'redux/store/tree/tree.actions'
 import * as contactsActions from 'redux/store/contacts/contacts.actions'
+import * as contactsSelectors from 'redux/store/contacts/contacts.selectors'
 import * as authSelectors from 'redux/store/auth/auth.selectors'
 import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'
 import {
@@ -252,6 +253,13 @@ export function* changeName(action) {
     // save profile to redux-store
     yield put(authActions.updateProfile(profile))
 
+    // update nickname for me contact
+    const nickname = `${profile.firstName} ${profile.lastName}`
+    const me = yield select(state =>
+      contactsSelectors.getContactById(state, profile.id)
+    )
+    yield put(contactsActions.updateContact(me, nickname, 'nickname', true))
+
     // deselect form for change name
     yield put(appStateActions.deselectError('changeName'))
     yield put(appStateActions.deselectLoader('form'))
@@ -322,6 +330,12 @@ export function* changeUserPhoto(action) {
 
     // save profile to redux-store
     yield put(authActions.updateProfile(profile))
+
+    // update photo for me contact
+    const me = yield select(state =>
+      contactsSelectors.getContactById(state, profile.id)
+    )
+    yield put(contactsActions.updateContact(me, profile.photo, 'photo', true))
 
     yield put(appStateActions.deselectLoader(loaderTypes.PROFILE_PICTURE))
   } catch (err) {

@@ -444,7 +444,20 @@ function saveTasks(payload, state) {
     ? Object.keys(profiles)
         .filter(key => {
           const contact = entitiesContacts.get(key)
-          return contact ? !contact.isContact : true
+
+          if (!contact) {
+            return true
+          }
+
+          if (contact.isContact) {
+            return false
+          }
+
+          if (contact.me) {
+            return false
+          }
+
+          return true
         })
         .reduce((result, key) => {
           result[key] = profiles[key]
