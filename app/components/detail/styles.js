@@ -342,7 +342,7 @@ const DetailContentComments = styled.div`
   margin-right: 14px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-end;
   pointer-events: ${props => (props.allowed ? 'auto' : 'none')};
   max-height: ${props => props.contentHeight};
   position: relative;
