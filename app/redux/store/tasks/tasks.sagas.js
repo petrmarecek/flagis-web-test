@@ -614,12 +614,7 @@ export function* selectTask(action) {
     yield put(appStateActions.hideMultiSelect())
 
     // read all notification for taskId
-    const notifications = yield select(state =>
-      notificationSelectors.getNotificationsForTaskId(state, taskId)
-    )
-    for (const notification of notifications) {
-      yield put(notificationActions.readNotification(notification))
-    }
+    yield put(notificationActions.readTaskNotifications(taskId))
 
     if (archivedTasksVisible) {
       yield put(push(`/user/archive/${taskId}`))
@@ -939,12 +934,7 @@ export function* acceptTask(action) {
     const { accept } = api.followers
 
     // read all notification for taskId
-    const notifications = yield select(state =>
-      notificationSelectors.getNotificationsForTaskId(state, taskId)
-    )
-    for (const notification of notifications) {
-      yield put(notificationActions.readNotification(notification))
-    }
+    yield put(notificationActions.readTaskNotifications(taskId))
 
     yield callApi(accept, taskId)
   } catch (err) {
@@ -993,12 +983,7 @@ export function* rejectTask(action) {
     })
 
     // read all notification for task
-    const notifications = yield select(state =>
-      notificationSelectors.getNotificationsForTaskId(state, task.id)
-    )
-    for (const notification of notifications) {
-      yield put(notificationActions.readNotification(notification))
-    }
+    yield put(notificationActions.readTaskNotifications(task.id))
 
     // call API
     yield callApi(reject, task.id)

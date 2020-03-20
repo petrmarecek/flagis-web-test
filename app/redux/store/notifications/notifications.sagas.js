@@ -106,6 +106,24 @@ export function* readNotification(action) {
   }
 }
 
+export function* readTaskNotifications(action) {
+  try {
+    const { taskId } = action.payload
+
+    yield callApi(api.notifications.taskReadAll, taskId)
+  } catch (err) {
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
+  }
+}
+
 export function* readAllNotifications(action) {
   try {
     yield callApi(api.notifications.readAll)

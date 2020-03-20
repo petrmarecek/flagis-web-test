@@ -88,6 +88,7 @@ export default function* root() {
     // notifications
     takeLatest(NOTIFICATIONS.FETCH, notifications.fetchNotifications),
     takeLatest(NOTIFICATIONS.READ, notifications.readNotification),
+    takeLatest(NOTIFICATIONS.READ_TASK, notifications.readTaskNotifications),
     takeLatest(NOTIFICATIONS.READ_ALL, notifications.readAllNotifications),
 
     // comments
