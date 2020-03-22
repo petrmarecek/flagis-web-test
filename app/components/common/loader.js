@@ -1,8 +1,26 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import styled, { css, keyframes } from 'styled-components'
+import styled, { keyframes } from 'styled-components'
+import { colors } from 'components/styled-components-mixins/colors'
+import { borderRadius } from 'components/styled-components-mixins'
 
-const globalSpinner = css`
+const loaderHeight = '9px'
+const loaderWidth = '23px'
+const loadDuration = '1.8s'
+const load = keyframes`
+    0% {
+      transform: translateX(10px);
+    }
+
+    50% {
+      transform: translateX(-5px);
+    }
+    100% {
+      transform: translateX(10px);
+    }
+`
+
+const LoaderWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -11,53 +29,51 @@ const globalSpinner = css`
   bottom: 0;
   left: 0;
   right: 0;
-  opacity: 0.5;
-  background-color: #3e484f;
   z-index: 1000;
+  background: ${props => (props.global ? colors.white : 'transparent')};
+  opacity: ${props => (props.global ? '0.8' : '1')};
 `
 
-const skDelayAnimation = keyframes`
-    0%,
-    80%,
-    100% {
-      transform: scale(0);
-      opacity: 0;
-    }
-    40% {
-      transform: scale(1);
-      opacity: 1;
-    }
+const LoaderItem = styled.div`
+  ${borderRadius('5px')};
+  transform: translate(-50%, -50%);
+  width: ${loaderWidth};
+  height: ${loaderHeight};
+  background: ${props => (props.light ? colors.white : colors.darkJungleGreen)};
+  animation: ${load} ${loadDuration} ease-in-out infinite;
+
+  &:before,
+  &:after {
+    ${borderRadius('5px')};
+    position: absolute;
+    display: block;
+    content: '';
+    animation: ${load} ${loadDuration} ease-in-out infinite;
+    height: ${loaderHeight};
+    background: ${props =>
+      props.light ? colors.white : colors.darkJungleGreen};
+  }
+
+  &:before {
+    top: -14px;
+    width: ${loaderWidth};
+  }
+
+  &:after {
+    bottom: -14px;
+    width: 9px;
+  }
 `
 
-const Spinner = styled.div`
-  width: 100%;
-  text-align: center;
-  margin: ${props => (props.global ? '0' : '10px')};
-  ${props => (props.global ? globalSpinner : null)}
-`
-
-const Item = styled.div`
-  width: 10px;
-  height: 10px;
-  background-color: #d7e3ec;
-  border-radius: 100%;
-  display: inline-block;
-  animation: ${skDelayAnimation} 1.7s infinite ease-in-out both;
-  margin-right: 5px;
-  opacity: 0;
-`
-
-const Loader = ({ global }) => (
-  <Spinner global={global}>
-    <Item delay={-0.6} />
-    <Item delay={-0.4} />
-    <Item delay={-0.2} />
-    <Item delay={0} />
-  </Spinner>
+const Loader = ({ global, light }) => (
+  <LoaderWrapper global={global}>
+    <LoaderItem light={light} />
+  </LoaderWrapper>
 )
 
 Loader.propTypes = {
   global: PropTypes.bool,
+  light: PropTypes.bool,
 }
 
 export default Loader

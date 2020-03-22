@@ -11,7 +11,7 @@ import { Provider } from 'react-redux'
 import LanguageProvider from 'containers/language-provider'
 import { ConnectedRouter } from 'react-router-redux'
 import App from 'containers/app'
-import MainLoader from 'components/common/main-loader'
+import Loader from 'components/common/loader'
 
 // auth store to persist storage
 const persistConfig = {
@@ -61,7 +61,7 @@ export default class AppRender extends PureComponent {
 
   render() {
     if (!this.state.rehydrated) {
-      return <MainLoader />
+      return <Loader global />
     }
 
     return (

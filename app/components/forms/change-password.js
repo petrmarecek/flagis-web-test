@@ -15,6 +15,7 @@ import {
 import { changePassword } from 'redux/store/auth/auth.actions'
 import { validateChangePassword } from 'redux/utils/validate'
 import { afterSubmitChangePassword } from 'redux/utils/form-submit'
+import { loaderTypes } from 'redux/store/app-state/app-state.common'
 
 import InputField from 'components/forms/fields/input-field'
 import Loader from 'components/common/loader'
@@ -25,13 +26,13 @@ import {
   Form,
   FormBody,
   FormBodyFields,
-  FormLoader,
   FormErrors,
   ErrorList,
   ErrorListItem,
   ErrorListItemIcon,
   ErrorListItemText,
   FormRow,
+  FormRowButton,
 } from '../styled-components-mixins'
 
 const ChangePassword = ({
@@ -90,15 +91,11 @@ const ChangePassword = ({
             component={InputField}
           />
         </FormRow>
-        <FormRow>
+        <FormRowButton>
           <ButtonDefaultSmall type="submit" value="Change password" />
-        </FormRow>
+        </FormRowButton>
       </FormBodyFields>
-      {loader && (
-        <FormLoader>
-          <Loader />
-        </FormLoader>
-      )}
+      {loader && <Loader global />}
     </FormBody>
   </Form>
 )
@@ -130,7 +127,7 @@ export default compose(
   }),
   withHandlers({
     onSubmit: props => values => {
-      props.setLoader('form')
+      props.setLoader(loaderTypes.FORM)
       props.changePassword({
         oldPassword: values.get('oldPassword'),
         newPassword: values.get('newPassword'),

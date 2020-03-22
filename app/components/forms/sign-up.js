@@ -21,6 +21,7 @@ import {
 import { getUserEmail } from 'redux/store/auth/auth.selectors'
 import { getFromValues } from 'redux/store/forms/forms.selectors'
 import { validateSignUp } from 'redux/utils/validate'
+import { loaderTypes } from 'redux/store/app-state/app-state.common'
 
 // components
 import NavigationLandingPrimary from 'components/navigation/navigation-landing-primary'
@@ -36,13 +37,13 @@ import {
   Form,
   FormBody,
   FormBodyFields,
-  FormLoader,
   FormErrors,
   ErrorList,
   ErrorListItem,
   ErrorListItemIcon,
   ErrorListItemText,
   FormRow,
+  FormRowButton,
   FormLink,
 } from '../styled-components-mixins'
 
@@ -136,13 +137,13 @@ const SignUp = ({
                 <AgreeLabel />
               </Field>
             </FormRow>
-            <FormRow>
+            <FormRowButton>
               <ButtonDefault
                 type="submit"
                 value="Sign Up"
                 disabled={!isAgree}
               />
-            </FormRow>
+            </FormRowButton>
 
             <FormRow pointer>
               <FormLink to="/sign-in">
@@ -150,11 +151,7 @@ const SignUp = ({
               </FormLink>
             </FormRow>
           </FormBodyFields>
-          {loader && (
-            <FormLoader>
-              <Loader />
-            </FormLoader>
-          )}
+          {loader && <Loader global />}
         </FormBody>
       </Form>
     </div>
@@ -215,7 +212,7 @@ export default compose(
         data.token = token
       }
 
-      props.setLoader('form')
+      props.setLoader(loaderTypes.FORM)
       props.signUp(data)
     },
   }),

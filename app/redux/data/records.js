@@ -63,8 +63,10 @@ export const Visibility = Record({
 })
 
 export const Loader = Record({
+  attachments: false,
   form: false,
   global: false,
+  profilePicture: false,
 })
 
 export const Lists = Record({
@@ -384,4 +386,5 @@ export const Contact = Record({
   isEmailNotificationEnabled: true,
   isInvited: false,
   photo: null,
+  me: false,
 })

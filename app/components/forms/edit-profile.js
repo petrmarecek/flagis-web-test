@@ -13,7 +13,11 @@ import {
   getChangeNameForm,
   getLoader,
 } from 'redux/store/app-state/app-state.selectors'
-import { changeName, changeUserPhoto } from 'redux/store/auth/auth.actions'
+import {
+  changeName,
+  changeUserPhoto,
+  resetUserPhoto,
+} from 'redux/store/auth/auth.actions'
 import {
   getUsername,
   getUserPhoto,
@@ -21,9 +25,10 @@ import {
   getColorTheme,
 } from 'redux/store/auth/auth.selectors'
 import { validateChangeName } from 'redux/utils/validate'
+import { loaderTypes } from 'redux/store/app-state/app-state.common'
 
 // components
-import ImagePicker from 'components/common/image-picker'
+import ProfilePicture from 'components/profile-picture'
 import InputField from 'components/forms/fields/input-field'
 import Loader from 'components/common/loader'
 import { ICONS } from 'components/icons/icon-constants'
@@ -34,13 +39,13 @@ import {
   Form,
   FormBody,
   FormBodyFields,
-  FormLoader,
   FormErrors,
   ErrorList,
   ErrorListItem,
   ErrorListItemIcon,
   ErrorListItemText,
   FormRow,
+  FormRowButton,
 } from '../styled-components-mixins'
 
 const EditProfile = ({
@@ -53,14 +58,16 @@ const EditProfile = ({
   handleSubmit,
   onSubmit,
   handleChangeUserPhoto,
+  handleResetUserPhoto,
 }) => (
   <div>
-    <ImagePicker
+    <ProfilePicture
       imageUrl={imageUrl}
       email={email}
       username={initialValues}
       colorTheme={colorTheme}
       onChangePhoto={handleChangeUserPhoto}
+      onResetPhoto={handleResetUserPhoto}
     />
     <Form nonMargin leftPadding maxWidth={500}>
       <FormBody onSubmit={handleSubmit(values => onSubmit(values))}>
@@ -102,15 +109,11 @@ const EditProfile = ({
               component={InputField}
             />
           </FormRow>
-          <FormRow>
+          <FormRowButton>
             <ButtonDefaultSmall type="submit" value="Update Profile" />
-          </FormRow>
+          </FormRowButton>
         </FormBodyFields>
-        {loader && (
-          <FormLoader>
-            <Loader />
-          </FormLoader>
-        )}
+        {loader && <Loader global />}
       </FormBody>
     </Form>
   </div>
@@ -125,6 +128,7 @@ EditProfile.propTypes = {
   loader: PropTypes.bool,
   handleSubmit: PropTypes.func,
   handleChangeUserPhoto: PropTypes.func,
+  handleResetUserPhoto: PropTypes.func,
   onSubmit: PropTypes.func,
 }
 
@@ -142,6 +146,7 @@ const mapDispatchToProps = {
   setLoader,
   deselectError,
   changeUserPhoto,
+  resetUserPhoto,
 }
 
 export default compose(
@@ -166,14 +171,14 @@ export default compose(
         }
       }
 
-      props.setLoader('form')
+      props.setLoader(loaderTypes.FORM)
       props.changeName({
         firstName: firstName,
         lastName: lastName,
       })
     },
-    handleChangeUserPhoto: props => image =>
-      props.changeUserPhoto(image !== null ? image.url : image),
+    handleChangeUserPhoto: props => image => props.changeUserPhoto(image),
+    handleResetUserPhoto: props => () => props.resetUserPhoto(),
   }),
   lifecycle({
     componentDidMount() {

@@ -290,8 +290,24 @@ export default typeToReducer(
         dateUtil.getDateToISOString()
       ),
 
+    [NOTIFICATIONS.READ_TASK]: (state, action) => {
+      const { taskId } = action.payload
+      let notifications = state.get('notifications')
+
+      notifications = notifications
+        .filter(notification => {
+          return notification.readAt === null && notification.taskId === taskId
+        })
+        .map(notification =>
+          notification.set('readAt', dateUtil.getDateToISOString())
+        )
+
+      return state.mergeIn(['notifications'], notifications)
+    },
+
     [NOTIFICATIONS.READ_ALL]: state => {
       let notifications = state.get('notifications')
+
       notifications = notifications
         .filter(notification => notification.readAt === null)
         .map(notification =>
@@ -444,7 +460,20 @@ function saveTasks(payload, state) {
     ? Object.keys(profiles)
         .filter(key => {
           const contact = entitiesContacts.get(key)
-          return contact ? !contact.isContact : true
+
+          if (!contact) {
+            return true
+          }
+
+          if (contact.isContact) {
+            return false
+          }
+
+          if (contact.me) {
+            return false
+          }
+
+          return true
         })
         .reduce((result, key) => {
           result[key] = profiles[key]

@@ -1,19 +1,35 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+// redux
+import { connect } from 'react-redux'
+import { getLoader } from 'redux/store/app-state/app-state.selectors'
+
 // components
+import AttachmentAddButton from 'components/attachment-list/attachment-add-button'
 import AttachmentListItem from 'components/attachment-list/attachment-list-item'
 import ShadowScrollbar from 'components/common/shadow-scrollbar'
+import Loader from 'components/common/loader'
 
 // styles
-import { ListWrapper } from './styles'
+import { LoaderWrapper, AttachmentsWrapper, ListWrapper } from './styles'
 
 const AttachmentList = ({
+  loader,
   attachments,
-  attachmentDelete,
   disabled,
   attachmentScrollHeight,
+  attachmentDelete,
+  onFileUploaded,
 }) => {
+  if (loader) {
+    return (
+      <LoaderWrapper>
+        <Loader />
+      </LoaderWrapper>
+    )
+  }
+
   const scrollStyle = {
     height: attachmentScrollHeight,
     shadowHeight: 20,
@@ -23,29 +39,38 @@ const AttachmentList = ({
   }
 
   return (
-    <ShadowScrollbar style={scrollStyle} isScrollBottom>
-      <ListWrapper>
-        <ul>
-          {!attachments.isFetching &&
-            attachments.items.map(attachment => (
-              <AttachmentListItem
-                key={attachment.id}
-                attachment={attachment}
-                attachmentDelete={attachmentDelete}
-                disabled={disabled}
-              />
-            ))}
-        </ul>
-      </ListWrapper>
-    </ShadowScrollbar>
+    <AttachmentsWrapper>
+      <ShadowScrollbar style={scrollStyle} isScrollBottom>
+        <ListWrapper>
+          <ul>
+            {!attachments.isFetching &&
+              attachments.items.map(attachment => (
+                <AttachmentListItem
+                  key={attachment.id}
+                  attachment={attachment}
+                  attachmentDelete={attachmentDelete}
+                  disabled={disabled}
+                />
+              ))}
+          </ul>
+        </ListWrapper>
+      </ShadowScrollbar>
+      <AttachmentAddButton onFileUploaded={onFileUploaded} />
+    </AttachmentsWrapper>
   )
 }
 
 AttachmentList.propTypes = {
+  loader: PropTypes.bool,
   attachments: PropTypes.object,
-  attachmentDelete: PropTypes.func,
   disabled: PropTypes.bool,
-  attachmentScrollHeight: PropTypes.number,
+  onFileUploaded: PropTypes.func,
+  attachmentDelete: PropTypes.func,
+  attachmentScrollHeight: PropTypes.string,
 }
 
-export default AttachmentList
+const mapStateToProps = state => ({
+  loader: getLoader(state).attachments,
+})
+
+export default connect(mapStateToProps)(AttachmentList)

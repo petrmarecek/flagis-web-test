@@ -5,13 +5,13 @@ import {
   Form,
   FormBody,
   FormBodyFields,
-  FormLoader,
   FormErrors,
   ErrorList,
   ErrorListItem,
   ErrorListItemIcon,
   ErrorListItemText,
   FormRow,
+  FormRowButton,
   FormLink,
 } from './forms'
 
@@ -183,8 +183,6 @@ const link = css`
 const button = css`
   ${fontMain}
   outline: none;
-  display: block;
-  float: right;
   cursor: ${props => (props.disabled ? 'auto' : 'pointer')};
   font-size: 18px;
   padding: 8px 24px;
@@ -243,13 +241,13 @@ export {
   Form,
   FormBody,
   FormBodyFields,
-  FormLoader,
   FormErrors,
   ErrorList,
   ErrorListItem,
   ErrorListItemIcon,
   ErrorListItemText,
   FormRow,
+  FormRowButton,
   FormLink,
   // Markdown
   markdownStyles,

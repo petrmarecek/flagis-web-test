@@ -44,6 +44,7 @@ export default function* root() {
     takeLatest(AUTH.CONTROL_REDIRECT_TASKS, auth.controlRedirectTasks),
     takeLatest(AUTH.CHANGE_NAME, auth.changeName),
     takeLatest(AUTH.CHANGE_USER_PHOTO, auth.changeUserPhoto),
+    takeLatest(AUTH.RESET_USER_PHOTO, auth.resetUserPhoto),
     takeLatest(AUTH.TOGGLE_COLOR_THEME, auth.toggleColorTheme),
     takeLatest(AUTH.CHANGE_PASSWORD, auth.changePassword),
     takeLatest(AUTH.EMAIL_RESET_PASSWORD, auth.emailResetPassword),
@@ -87,6 +88,7 @@ export default function* root() {
     // notifications
     takeLatest(NOTIFICATIONS.FETCH, notifications.fetchNotifications),
     takeLatest(NOTIFICATIONS.READ, notifications.readNotification),
+    takeLatest(NOTIFICATIONS.READ_TASK, notifications.readTaskNotifications),
     takeLatest(NOTIFICATIONS.READ_ALL, notifications.readAllNotifications),
 
     // comments

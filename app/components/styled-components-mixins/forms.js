@@ -18,19 +18,6 @@ const FormBodyFields = styled.div`
   padding: 10px;
 `
 
-const FormLoader = styled.div`
-  position: absolute;
-  background: #fff;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  flex: 1;
-  display: flex;
-  align-items: center;
-  opacity: 0.8;
-`
-
 const FormErrors = styled.div`
   margin-bottom: 40px;
 `
@@ -62,6 +49,13 @@ const FormRow = styled.div`
   cursor: ${props => (props.pointer ? 'pointer' : 'auto')};
 `
 
+const FormRowButton = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  cursor: ${props => (props.pointer ? 'pointer' : 'auto')};
+`
+
 const FormLink = styled(Link)`
   color: #8c9da9;
   font-size: 14px;
@@ -72,12 +66,12 @@ export {
   Form,
   FormBody,
   FormBodyFields,
-  FormLoader,
   FormErrors,
   ErrorList,
   ErrorListItem,
   ErrorListItemIcon,
   ErrorListItemText,
   FormRow,
+  FormRowButton,
   FormLink,
 }

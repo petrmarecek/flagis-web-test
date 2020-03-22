@@ -3,10 +3,11 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 import debounce from 'lodash/debounce'
 import R from 'ramda'
-import constants from 'utils/constants'
-import { toast } from 'react-toastify'
-import { successMessages } from 'utils/messages'
 import { compose, branch, renderComponent, withStateHandlers } from 'recompose'
+
+// toast notifications
+import { toast } from 'react-toastify'
+import * as toastCommon from 'components/toast-notifications/toast-notifications-common'
 
 // redux
 import { connect } from 'react-redux'
@@ -247,10 +248,7 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   branch(
     props => props.isNewRefreshToken || props.tasks.isFetching,
     renderComponent(Loader)
@@ -409,9 +407,9 @@ export default compose(
           archive.entitiesTasks,
           archive.selectedTasks
         )
-        toast.success(successMessages.tasks.archive, {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+        toast.success(toastCommon.successMessages.tasks.archive, {
+          position: toastCommon.position.DEFAULT,
+          autoClose: toastCommon.duration.SUCCESS_DURATION,
         })
         return {}
       },
@@ -441,16 +439,16 @@ export default compose(
           nonArchive.entitiesTasks,
           nonArchive.selectedTasks
         )
-        toast.success(successMessages.tasks.cancelArchive, {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+        toast.success(toastCommon.successMessages.tasks.cancelArchive, {
+          position: toastCommon.position.DEFAULT,
+          autoClose: toastCommon.duration.SUCCESS_DURATION,
         })
         return {}
       },
       onHandleAcceptTask: (state, props) => data => {
-        toast.success(successMessages.tasks.accepted, {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+        toast.success(toastCommon.successMessages.tasks.accepted, {
+          position: toastCommon.position.DEFAULT,
+          autoClose: toastCommon.duration.SUCCESS_DURATION,
         })
         props.acceptTask(data.taskId, data.followerId)
         return {}

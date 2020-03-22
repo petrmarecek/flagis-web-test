@@ -324,13 +324,17 @@ const DetailContentDatePicker = styled.div`
   }
 `
 
-const DetailContentAttachments = styled.div`
+const DetailContentAttachmentsLoader = styled.div`
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  align-items: center;
   height: 100%;
   z-index: 1;
-  pointer-events: ${props => (props.allowed ? 'auto' : 'none')};
+  position: relative;
+`
+
+const DetailContentAttachments = styled.div`
+  position: relative;
+  height: 100%;
 `
 
 const DetailContentComments = styled.div`
@@ -338,9 +342,10 @@ const DetailContentComments = styled.div`
   margin-right: 14px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-end;
   pointer-events: ${props => (props.allowed ? 'auto' : 'none')};
   max-height: ${props => props.contentHeight};
+  position: relative;
 `
 
 const DetailContentCommentsAdd = styled.div`
@@ -646,6 +651,7 @@ export {
   DetailContentImportantIcon,
   DetailContentImportantLabel,
   DetailContentImportantContent,
+  DetailContentAttachmentsLoader,
   DetailContentAttachments,
   DetailContentComments,
   DetailContentCommentsAdd,

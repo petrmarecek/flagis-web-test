@@ -11,6 +11,7 @@ import {
   emailResetPassword,
 } from 'redux/store/auth/auth.actions'
 import { validateEmailResetPassword } from 'redux/utils/validate'
+import { loaderTypes } from 'redux/store/app-state/app-state.common'
 
 import NavigationLandingPrimary from 'components/navigation/navigation-landing-primary'
 import InputField from 'components/forms/fields/input-field'
@@ -21,8 +22,8 @@ import {
   Form,
   FormBody,
   FormBodyFields,
-  FormLoader,
   FormRow,
+  FormRowButton,
 } from '../styled-components-mixins'
 
 const EmailResetPassword = ({ loader, location, handleSubmit, onSubmit }) => (
@@ -40,15 +41,11 @@ const EmailResetPassword = ({ loader, location, handleSubmit, onSubmit }) => (
               component={InputField}
             />
           </FormRow>
-          <FormRow>
+          <FormRowButton>
             <ButtonDefault type="submit" value="Submit" />
-          </FormRow>
+          </FormRowButton>
         </FormBodyFields>
-        {loader && (
-          <FormLoader>
-            <Loader />
-          </FormLoader>
-        )}
+        {loader && <Loader global />}
       </FormBody>
     </Form>
   </div>
@@ -80,7 +77,7 @@ export default compose(
   }),
   withHandlers({
     onSubmit: props => values => {
-      props.setLoader('form')
+      props.setLoader(loaderTypes.FORM)
       props.emailResetPassword({ email: values.get('email') })
     },
   }),

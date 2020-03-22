@@ -4,10 +4,12 @@ import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { compose, withHandlers, withStateHandlers, lifecycle } from 'recompose'
 import { List } from 'immutable'
-import { infoMessages } from 'utils/messages'
 import dateUtil from 'redux/utils/date'
 import { getAssigneeOfTask } from 'redux/utils/component-helper'
 import domUtils from 'redux/utils/dom'
+
+// toast notifications
+import * as toastCommon from 'components/toast-notifications/toast-notifications-common'
 import constants from 'utils/constants'
 
 // components
@@ -17,7 +19,6 @@ import FollowerStatus from 'components/common/follower-status'
 import FollowerResponseButtons from '../common/follower-response-buttons'
 import Autocomplete from 'components/autocomplete'
 import FollowerIcon from '../common/follower-icon'
-import FilePicker from 'components/common/file-picker'
 import AttachmentList from 'components/attachment-list'
 import CommentList from 'components/comment-list'
 import Loader from 'components/common/loader'
@@ -58,6 +59,7 @@ import {
   DetailContentImportantIcon,
   DetailContentImportantLabel,
   DetailContentImportantContent,
+  DetailContentAttachmentsLoader,
   DetailContentAttachments,
   DetailContentDescriptionTask,
   DetailContentComments,
@@ -149,11 +151,11 @@ const TaskDetail = props => {
 
   // Variables
   let ruleMessage = isCompleted
-    ? infoMessages.taskDetail.completedRules
-    : infoMessages.taskDetail.acceptedRules
+    ? toastCommon.infoMessages.taskDetail.completedRules
+    : toastCommon.infoMessages.taskDetail.acceptedRules
 
   if (isInboxVisible) {
-    ruleMessage = infoMessages.taskDetail.inboxRules
+    ruleMessage = toastCommon.infoMessages.taskDetail.inboxRules
   }
 
   // editor styles
@@ -607,17 +609,21 @@ const TaskDetail = props => {
                 <DetailContentImportantContent isChecked={isImportant} />
               </DetailContentImportant>
             </DetailContentOptions>
-            <DetailContentAttachments allowed={!isArchivedOrCompletedOrInbox}>
-              {attachments.isFetching && <Loader />}
+            <DetailContentAttachments>
+              {attachments.isFetching && (
+                <DetailContentAttachmentsLoader>
+                  <Loader />
+                </DetailContentAttachmentsLoader>
+              )}
               {!attachments.isFetching && (
                 <AttachmentList
-                  disabled={isArchivedOrInbox}
+                  disabled={isCollaboratedOrCompleted}
                   attachments={attachments}
-                  attachmentDelete={onHandleAttachmentDelete}
                   attachmentScrollHeight={attachmentScrollHeight}
+                  attachmentDelete={onHandleAttachmentDelete}
+                  onFileUploaded={onHandleFileUploaded}
                 />
               )}
-              <FilePicker onFileUploaded={onHandleFileUploaded} />
             </DetailContentAttachments>
           </DetailContentProperties>
           <DetailContentDescriptionTask>
@@ -850,12 +856,7 @@ export default compose(
     onHandleFileUploaded: props => attachment => {
       const data = {
         taskId: props.task.id,
-        fileName: attachment.filename,
-        client: attachment.client,
-        isWritable: attachment.isWritable,
-        mimeType: attachment.mimetype,
-        size: attachment.size,
-        url: attachment.url,
+        files: attachment,
       }
 
       props.onHandleTaskFileUploaded(data)

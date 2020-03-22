@@ -1,11 +1,12 @@
 import { Map } from 'immutable'
 import { routes } from 'utils/routes'
 import date from '../../utils/date'
+import constants from 'utils/constants'
+import fileHelper from 'utils/file-helper'
 
 // toast notifications
 import { toast } from 'react-toastify'
-import constants from 'utils/constants'
-import { errorMessages, successMessages } from 'utils/messages'
+import * as toastCommon from 'components/toast-notifications/toast-notifications-common'
 
 // redux
 import { push } from 'react-router-redux'
@@ -21,7 +22,6 @@ import {
   select,
 } from 'redux-saga/effects'
 import { REHYDRATE } from 'redux-persist'
-
 import * as authActions from 'redux/store/auth/auth.actions'
 import * as appStateActions from 'redux/store/app-state/app-state.actions'
 import * as taskActions from 'redux/store/tasks/tasks.actions'
@@ -29,6 +29,7 @@ import * as notificationActions from 'redux/store/notifications/notifications.ac
 import * as tagActions from 'redux/store/tags/tags.actions'
 import * as treeActions from 'redux/store/tree/tree.actions'
 import * as contactsActions from 'redux/store/contacts/contacts.actions'
+import * as contactsSelectors from 'redux/store/contacts/contacts.selectors'
 import * as authSelectors from 'redux/store/auth/auth.selectors'
 import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'
 import {
@@ -51,6 +52,7 @@ import { createLoadActions, callApi } from 'redux/store/common.sagas'
 import api from 'redux/utils/api'
 import firebase from 'redux/utils/firebase'
 import dateUtil from 'redux/utils/date'
+import { loaderTypes } from 'redux/store/app-state/app-state.common'
 
 const AUTH = authActions.AUTH
 
@@ -251,19 +253,29 @@ export function* changeName(action) {
     // save profile to redux-store
     yield put(authActions.updateProfile(profile))
 
+    // update nickname for me contact
+    const nickname = `${profile.firstName} ${profile.lastName}`
+    const me = yield select(state =>
+      contactsSelectors.getContactById(state, profile.id)
+    )
+    yield put(contactsActions.updateContact(me, nickname, 'nickname', true))
+
     // deselect form for change name
     yield put(appStateActions.deselectError('changeName'))
     yield put(appStateActions.deselectLoader('form'))
 
     // show notification of successful profile update
-    toast.success(successMessages.changeName, {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+    toast.success(toastCommon.successMessages.changeName, {
+      position: toastCommon.position.DEFAULT,
+      autoClose: toastCommon.duration.SUCCESS_DURATION,
     })
   } catch (err) {
     // show notification of unsuccessful profile update
     yield put(
-      appStateActions.setError('changeName', errorMessages.somethingWrong)
+      appStateActions.setError(
+        'changeName',
+        toastCommon.errorMessages.somethingWrong
+      )
     )
     yield put(appStateActions.deselectLoader('form'))
 
@@ -281,10 +293,69 @@ export function* changeName(action) {
 
 export function* changeUserPhoto(action) {
   try {
-    const photo = action.payload
+    const file = action.payload
+
+    // Set file extension to lower case
+    const prepareFile = fileHelper.setFileExtensionToLowerCase(file)
+    const { name, type, size } = prepareFile
+
+    yield put(appStateActions.setLoader(loaderTypes.PROFILE_PICTURE))
+
+    // prepare data for getting upload data
+    const fileMetaData = {
+      fileName: name,
+      mimeType: type,
+    }
+
+    // get upload data
+    const { fileKey, uploadUrl } = yield callApi(
+      api.files.getUploadData,
+      fileMetaData
+    )
+
+    const fileBuffer = yield call(fileHelper.readFileAsArrayBuffer, prepareFile)
+
+    // upload file to S3
+    yield callApi(api.files.uploadFile, uploadUrl, fileBuffer, type)
+
+    // prepare data for creating attachment
+    const fileData = {
+      ...fileMetaData,
+      fileKey,
+      size,
+    }
 
     // call server
-    const profile = yield callApi(api.users.update, { photo })
+    const profile = yield callApi(api.users.updatePhoto, fileData)
+
+    // save profile to redux-store
+    yield put(authActions.updateProfile(profile))
+
+    // update photo for me contact
+    const me = yield select(state =>
+      contactsSelectors.getContactById(state, profile.id)
+    )
+    yield put(contactsActions.updateContact(me, profile.photo, 'photo', true))
+
+    yield put(appStateActions.deselectLoader(loaderTypes.PROFILE_PICTURE))
+  } catch (err) {
+    yield put(appStateActions.deselectLoader(loaderTypes.PROFILE_PICTURE))
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
+  }
+}
+
+export function* resetUserPhoto(action) {
+  try {
+    // call server
+    const profile = yield callApi(api.users.resetPhoto)
 
     // save profile to redux-store
     yield put(authActions.updateProfile(profile))
@@ -331,15 +402,15 @@ export function* changePassword(action) {
     yield put(appStateActions.deselectError('changePassword'))
     yield put(appStateActions.deselectLoader('form'))
 
-    toast.success(successMessages.changePassword, {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+    toast.success(toastCommon.successMessages.changePassword, {
+      position: toastCommon.position.DEFAULT,
+      autoClose: toastCommon.duration.SUCCESS_DURATION,
     })
   } catch (err) {
     yield put(
       appStateActions.setError(
         'changePassword',
-        errorMessages.changePassword.badRequest
+        toastCommon.errorMessages.changePassword.badRequest
       )
     )
     yield put(appStateActions.deselectLoader('form'))
@@ -366,10 +437,13 @@ export function* emailResetPassword(action) {
     yield delay(100)
 
     // show notification after redirect to sign-in
-    toast.success(successMessages.emailResetPassword(action.payload.email), {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
-    })
+    toast.success(
+      toastCommon.successMessages.emailResetPassword(action.payload.email),
+      {
+        position: toastCommon.position.DEFAULT,
+        autoClose: toastCommon.duration.SUCCESS_DURATION,
+      }
+    )
   } catch (err) {
     yield put(appStateActions.deselectLoader('form'))
     yield put(push(routes.signIn))
@@ -378,10 +452,13 @@ export function* emailResetPassword(action) {
     yield delay(100)
 
     // show notification after redirect to sign-in
-    toast.success(successMessages.emailResetPassword(action.payload.email), {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
-    })
+    toast.success(
+      toastCommon.successMessages.emailResetPassword(action.payload.email),
+      {
+        position: toastCommon.position.DEFAULT,
+        autoClose: toastCommon.duration.SUCCESS_DURATION,
+      }
+    )
 
     // send error to sentry
     yield put(
@@ -401,13 +478,16 @@ export function* sendContactUs(action) {
     yield put(appStateActions.deselectLoader('form'))
 
     // show notification after redirect to sign-in
-    toast.success(successMessages.contactUs, {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+    toast.success(toastCommon.successMessages.contactUs, {
+      position: toastCommon.position.DEFAULT,
+      autoClose: toastCommon.duration.SUCCESS_DURATION,
     })
   } catch (err) {
     yield put(
-      appStateActions.setError('contactUs', errorMessages.contactUs.serverError)
+      appStateActions.setError(
+        'contactUs',
+        toastCommon.errorMessages.somethingWrong
+      )
     )
     yield put(appStateActions.deselectLoader('form'))
 
@@ -433,9 +513,9 @@ export function* resetPassword(action) {
     yield delay(100)
 
     // show notification after redirect to sign-in
-    toast.success(successMessages.changePassword, {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+    toast.success(toastCommon.successMessages.changePassword, {
+      position: toastCommon.position.DEFAULT,
+      autoClose: toastCommon.duration.SUCCESS_DURATION,
     })
   } catch (err) {
     yield put(appStateActions.deselectLoader('form'))
@@ -445,9 +525,9 @@ export function* resetPassword(action) {
     yield delay(100)
 
     // show notification after redirect to sign-in
-    toast.error(errorMessages.resetPassword.linkExpired, {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: constants.NOTIFICATION_ERROR_DURATION,
+    toast.error(toastCommon.errorMessages.resetPassword.linkExpired, {
+      position: toastCommon.position.DEFAULT,
+      autoClose: toastCommon.duration.ERROR_DURATION,
     })
 
     // send error to sentry
@@ -534,12 +614,15 @@ function* authorizeUser(authApiCall, action) {
         yield put(
           appStateActions.setError(
             'signIn',
-            errorMessages.signIn.passwordResetRequired
+            toastCommon.errorMessages.signIn.passwordResetRequired
           )
         )
       } else {
         yield put(
-          appStateActions.setError('signIn', errorMessages.signIn.unauthorized)
+          appStateActions.setError(
+            'signIn',
+            toastCommon.errorMessages.signIn.unauthorized
+          )
         )
       }
     }
@@ -549,7 +632,10 @@ function* authorizeUser(authApiCall, action) {
       action.type === 'AUTH/SIGN_UP_INVITATION'
     ) {
       yield put(
-        appStateActions.setError('signUp', errorMessages.signUp.conflict)
+        appStateActions.setError(
+          'signUp',
+          toastCommon.errorMessages.signUp.conflict
+        )
       )
     }
 

@@ -24,6 +24,8 @@ import api from 'redux/utils/api'
 import schema from 'redux/data/schema'
 import firebase from 'redux/utils/firebase'
 import dateUtil from 'redux/utils/date'
+import { loaderTypes } from 'redux/store/app-state/app-state.common'
+import fileHelper from 'utils/file-helper'
 
 const APP_STATE = appStateActions.APP_STATE
 const ATTACHMENTS = attachmentActions.ATTACHMENTS
@@ -105,21 +107,52 @@ export function* initAttachmentsData() {
 
 export function* createAttachment(action) {
   try {
-    // TODO: implement optimistic insert
-    const taskId = action.payload.taskId
+    const { taskId, files } = action.payload
 
-    const data = {
-      fileName: action.payload.fileName,
-      client: action.payload.client,
-      mimeType: action.payload.mimeType,
-      size: action.payload.size,
-      url: action.payload.url,
-      isWritable: false,
+    yield put(appStateActions.setLoader(loaderTypes.ATTACHMENTS))
+
+    for (const file of files) {
+      // Set file extension to lower case
+      const prepareFile = fileHelper.setFileExtensionToLowerCase(file)
+      const { name, type, size } = prepareFile
+
+      // prepare data for getting upload data
+      const fileMetaData = {
+        fileName: name,
+        mimeType: type,
+      }
+
+      // get upload data
+      const { fileKey, uploadUrl } = yield callApi(
+        api.files.getUploadData,
+        fileMetaData
+      )
+
+      const fileBuffer = yield call(
+        fileHelper.readFileAsArrayBuffer,
+        prepareFile
+      )
+
+      // upload file to S3
+      yield callApi(api.files.uploadFile, uploadUrl, fileBuffer, type)
+
+      // prepare data for creating attachment
+      const fileData = {
+        ...fileMetaData,
+        fileKey,
+        size,
+      }
+
+      // creating attachment
+      const attachment = yield callApi(api.attachments.create, taskId, fileData)
+
+      // save attachment to redux store
+      yield put(attachmentActions.addAttachment(attachment))
     }
-    const attachment = yield callApi(api.attachments.create, taskId, data)
 
-    yield put(attachmentActions.addAttachment(attachment))
+    yield put(appStateActions.deselectLoader(loaderTypes.ATTACHMENTS))
   } catch (err) {
+    yield put(appStateActions.deselectLoader(loaderTypes.ATTACHMENTS))
     // send error to sentry
     yield put(
       errorActions.errorSentry(err, {

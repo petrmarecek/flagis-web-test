@@ -1,14 +1,16 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import { compose, lifecycle, withHandlers } from 'recompose'
 import { DetailStyle } from './styles'
-import { toast } from 'react-toastify'
-import { successMessages, errorMessages } from 'utils/messages'
-import constants from 'utils/constants'
 import { routes } from 'utils/routes'
 import { List } from 'immutable'
+import { compose, lifecycle, withHandlers } from 'recompose'
 
+// toast notifications
+import { toast } from 'react-toastify'
+import * as toastCommon from 'components/toast-notifications/toast-notifications-common'
+
+// redux
+import { connect } from 'react-redux'
 import { changeLocation } from 'redux/store/routing/routing.actions'
 import {
   deselectDetail,
@@ -492,9 +494,9 @@ export default compose(
     },
     onHandleTaskAccept: props => data => {
       props.deselectTasks()
-      toast.success(successMessages.tasks.accepted, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+      toast.success(toastCommon.successMessages.tasks.accepted, {
+        position: toastCommon.position.DEFAULT,
+        autoClose: toastCommon.duration.SUCCESS_DURATION,
       })
       props.acceptTask(data.taskId, data.followerId)
     },
@@ -516,17 +518,17 @@ export default compose(
       const { validEmails } = props
 
       if (validEmails.includes(email.toLowerCase())) {
-        toast.error(errorMessages.createEntity.createConflict('contact'), {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          autoClose: constants.NOTIFICATION_ERROR_DURATION,
+        toast.error(toastCommon.errorMessages.createEntity.createConflict('contact'), {
+          position: toastCommon.position.DEFAULT,
+          autoClose: toastCommon.duration.ERROR_DURATION,
         })
 
         return
       }
 
-      toast.success(successMessages.contacts.create, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: constants.NOTIFICATION_ERROR_DURATION,
+      toast.success(toastCommon.successMessages.contacts.create, {
+        position: toastCommon.position.DEFAULT,
+        autoClose: toastCommon.duration.ERROR_DURATION,
       })
 
       props.createContact(email)
@@ -565,9 +567,9 @@ export default compose(
           nonArchive.entitiesTasks,
           selectedTasks
         )
-        toast.success(successMessages.tasks.cancelArchive, {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+        toast.success(toastCommon.successMessages.tasks.cancelArchive, {
+          position: toastCommon.position.DEFAULT,
+          autoClose: toastCommon.duration.SUCCESS_DURATION,
         })
         return
       }
@@ -588,9 +590,9 @@ export default compose(
         archive.entitiesTasks,
         selectedTasks
       )
-      toast.success(successMessages.tasks.archive, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+      toast.success(toastCommon.successMessages.tasks.archive, {
+        position: toastCommon.position.DEFAULT,
+        autoClose: toastCommon.duration.SUCCESS_DURATION,
       })
     },
     onHandleTaskDelete: props => data => {
@@ -616,9 +618,9 @@ export default compose(
       props.updateContact(data.contact, data.description, 'description'),
     onHandleContactSendInvitation: props => data => {
       props.sendInvitationContact(data.id)
-      toast.success(successMessages.contacts.sendInvitation, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+      toast.success(toastCommon.successMessages.contacts.sendInvitation, {
+        position: toastCommon.position.DEFAULT,
+        autoClose: toastCommon.duration.SUCCESS_DURATION,
       })
     },
   }),

@@ -11,6 +11,7 @@ import {
   resetPassword,
 } from 'redux/store/auth/auth.actions'
 import { validateResetPassword } from 'redux/utils/validate'
+import { loaderTypes } from 'redux/store/app-state/app-state.common'
 
 import NavigationLandingPrimary from 'components/navigation/navigation-landing-primary'
 import InputField from 'components/forms/fields/input-field'
@@ -21,8 +22,8 @@ import {
   Form,
   FormBody,
   FormBodyFields,
-  FormLoader,
   FormRow,
+  FormRowButton,
 } from '../styled-components-mixins'
 
 const ResetPassword = ({ loader, location, handleSubmit, onSubmit }) => (
@@ -49,15 +50,11 @@ const ResetPassword = ({ loader, location, handleSubmit, onSubmit }) => (
               component={InputField}
             />
           </FormRow>
-          <FormRow>
+          <FormRowButton>
             <ButtonDefault type="submit" value="Submit" />
-          </FormRow>
+          </FormRowButton>
         </FormBodyFields>
-        {loader && (
-          <FormLoader>
-            <Loader />
-          </FormLoader>
-        )}
+        {loader && <Loader global />}
       </FormBody>
     </Form>
   </div>
@@ -90,7 +87,7 @@ export default compose(
     onSubmit: props => values => {
       const numberCharacter = '/reset-password/'.length
       const resetToken = props.location.pathname.substring(numberCharacter)
-      props.setLoader('form')
+      props.setLoader(loaderTypes.FORM)
       props.resetPassword({
         resetToken: resetToken,
         password: values.get('newPassword'),

@@ -9,6 +9,7 @@ import {
 
 import styled, { keyframes } from 'styled-components'
 import { fontMain, borderRadius, transition } from '../styled-components-mixins'
+import { colors } from '../styled-components-mixins/colors'
 import { zoomIn } from 'react-animations'
 
 const zoom = keyframes`${zoomIn}`
@@ -25,7 +26,7 @@ const Count = styled.div`
   ${fontMain}
   position: absolute;
   white-space: nowrap;
-  color: #8C9DA9;
+  color: ${colors.lostAtSea};
   bottom: 0;
   right: 195px;
   font-size: 12px;
@@ -40,7 +41,7 @@ const Bar = styled.span`
   z-index: 15;
   width: 200px;
   height: 4px;
-  background-color: #fff;
+  background-color: ${colors.white};
 `
 
 const CompletedBar = styled.span`
@@ -52,18 +53,19 @@ const CompletedBar = styled.span`
   float: left;
   z-index: 20;
   height: 4px;
-  background-color: #44FFB1;
+  background-color: ${colors.hanumanGreen};
 `
 
 const TasksProgressBar = ({ tasksCount, completedTasksCount }) => {
   const count = `${completedTasksCount}/${tasksCount}`
   const width = Math.round((completedTasksCount * 200) / tasksCount)
+  const preparedWidth = isNaN(width) ? 0 : width
 
   return (
     <ProgressBar>
       <Count>{count}</Count>
       <Bar />
-      <CompletedBar style={{ width: `${width}px` }} />
+      <CompletedBar style={{ width: `${preparedWidth}px` }} />
     </ProgressBar>
   )
 }

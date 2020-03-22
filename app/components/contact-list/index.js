@@ -1,9 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import constants from 'utils/constants'
-import { toast } from 'react-toastify'
-import { successMessages } from 'utils/messages'
 import { compose, branch, renderComponent, withHandlers } from 'recompose'
+
+// toast notifications
+import { toast } from 'react-toastify'
+import * as toastCommon from 'components/toast-notifications/toast-notifications-common'
 
 // redux
 import { connect } from 'react-redux'
@@ -86,10 +87,7 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   branch(props => props.contacts.isFetching, renderComponent(Loader)),
   withHandlers({
     onHandleClickContact: props => id => {
@@ -98,9 +96,9 @@ export default compose(
     },
     onHandleClickInvitation: props => id => {
       props.sendInvitationContact(id)
-      toast.success(successMessages.contacts.sendInvitation, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+      toast.success(toastCommon.successMessages.contacts.sendInvitation, {
+        position: toastCommon.position.DEFAULT,
+        autoClose: toastCommon.duration.SUCCESS_DURATION,
       })
     },
     onHandleSetScrollbarPosition: props => position =>

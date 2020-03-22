@@ -36,6 +36,7 @@ module.exports = {
     navigator: true,
     document: true,
     console: true,
+    FileReader: true,
   },
 
   rules: {

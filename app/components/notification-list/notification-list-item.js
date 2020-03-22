@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import dateUtils from 'redux/utils/date'
 import { compose, withHandlers } from 'recompose'
-import { infoMessages } from 'utils/messages'
+import { notificationText } from 'components/notification-list/notifications-common'
 
 // redux
 import { connect } from 'react-redux'
@@ -59,8 +59,8 @@ const NotificationListItem = ({
       ? nickname !== null
         ? nickname
         : fromUserEmail !== null
-        ? fromUserEmail
-        : email
+          ? fromUserEmail
+          : email
       : ''
 
   return (
@@ -75,7 +75,7 @@ const NotificationListItem = ({
       <UserNotificationEntityWrapper>
         <User>{isSystemNotification ? 'Flagis' : profileName}</User>
         <TitleNotification isRead={isRead}>
-          {infoMessages.notifications(type)}
+          {notificationText(type)}
           {commentContent && <span>: {commentContent}</span>}
           {attachmentName && <span>: {attachmentName}</span>}
         </TitleNotification>

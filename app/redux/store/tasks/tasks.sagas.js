@@ -3,8 +3,7 @@ import { normalize } from 'normalizr'
 
 // toast notifications
 import { toast } from 'react-toastify'
-import { successMessages, infoMessages } from 'utils/messages'
-import constants from 'utils/constants'
+import * as toastCommon from 'components/toast-notifications/toast-notifications-common'
 
 // redux
 import { delay } from 'redux-saga'
@@ -41,12 +40,14 @@ import * as authSelectors from 'redux/store/auth/auth.selectors'
 import * as entitiesSelectors from 'redux/store/entities/entities.selectors'
 import * as taskSelectors from 'redux/store/tasks/tasks.selectors'
 import * as notificationSelectors from 'redux/store/notifications/notifications.selectros'
+import * as contactsActions from 'redux/store/contacts/contacts.actions'
+import * as contactsSelectors from 'redux/store/contacts/contacts.selectors'
 import api from 'redux/utils/api'
 import schema from 'redux/data/schema'
-import search from 'redux/services/search'
 import firebase from 'redux/utils/firebase'
 import dateUtil from 'redux/utils/date'
 import { getAssigneeOfTask } from 'redux/utils/component-helper'
+import { loaderTypes } from 'redux/store/app-state/app-state.common'
 
 const TASKS = taskActions.TASKS
 
@@ -105,9 +106,9 @@ function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
         return
       }
 
-      toast.info(infoMessages.collaboration.removeFollower, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: constants.NOTIFICATION_INFO_DURATION,
+      toast.info(toastCommon.infoMessages.collaboration.removeFollower, {
+        position: toastCommon.position.DEFAULT,
+        autoClose: toastCommon.duration.INFO_DURATION,
       })
 
       // Call action for edit redux-store
@@ -130,25 +131,22 @@ function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
       storeInboxItems.includes(id)
     ) {
       // Show notification
-      toast.success(successMessages.tasks.accepted, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+      toast.success(toastCommon.successMessages.tasks.accepted, {
+        position: toastCommon.position.DEFAULT,
+        autoClose: toastCommon.duration.SUCCESS_DURATION,
       })
 
       // Close inbox detail
       if (isDetailVisible.inbox && storeSelectionItem === id) {
         yield put(appStateActions.deselectDetail('inbox'))
       }
-
-      // Update task in search
-      search.tasks.updateItem(task)
     }
 
     // Owner deleted task -> show notification
     if (isTrashed) {
-      toast.info(infoMessages.collaboration.deletedTask, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: constants.NOTIFICATION_INFO_DURATION,
+      toast.info(toastCommon.infoMessages.collaboration.deletedTask, {
+        position: toastCommon.position.DEFAULT,
+        autoClose: toastCommon.duration.INFO_DURATION,
       })
     }
   }
@@ -162,18 +160,15 @@ function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
     storeArchivedItems.includes(id)
   ) {
     // Show notification
-    toast.success(successMessages.tasks.cancelArchive, {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+    toast.success(toastCommon.successMessages.tasks.cancelArchive, {
+      position: toastCommon.position.DEFAULT,
+      autoClose: toastCommon.duration.SUCCESS_DURATION,
     })
 
     // Close archive detail
     if (isDetailVisible.archive && storeSelectionItem === id) {
       yield put(appStateActions.deselectDetail('archive'))
     }
-
-    // Update task in search
-    search.tasks.updateItem(task)
   }
 
   // Move task to archive
@@ -184,24 +179,15 @@ function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
     storeItems.includes(id)
   ) {
     // Show notification
-    toast.success(successMessages.tasks.archive, {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+    toast.success(toastCommon.successMessages.tasks.archive, {
+      position: toastCommon.position.DEFAULT,
+      autoClose: toastCommon.duration.SUCCESS_DURATION,
     })
 
     // Close task detail
     if (isDetailVisible.task && storeSelectionItem === id) {
       yield put(appStateActions.deselectDetail('task'))
     }
-
-    // Update task in search
-    search.tasks.updateItem(task)
-  }
-
-  // New task
-  if (!storeItems.includes(id) && !storeArchivedItems.includes(id)) {
-    // Add new task to search
-    search.tasks.addItem(task)
   }
 
   // Delete task
@@ -220,9 +206,6 @@ function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
     if (isDetailVisible.inbox && storeSelectionItem === id) {
       yield put(appStateActions.deselectDetail('inbox'))
     }
-
-    // Delete task from search
-    search.tasks.removeItem({ id })
   }
 
   // Save changes to store
@@ -284,7 +267,7 @@ export function* initInboxTasksData(initTime) {
 
 export function* fetchTasks() {
   const userId = yield select(state => authSelectors.getUserId(state))
-  const result = yield* fetch(TASKS.FETCH, {
+  yield* fetch(TASKS.FETCH, {
     method: api.tasks.search,
     args: [
       {
@@ -297,9 +280,11 @@ export function* fetchTasks() {
     userId,
   })
 
-  // Initialize search service
-  search.tasks.resetIndex()
-  search.tasks.addItems(result)
+  // set me contact
+  const me = yield select(state =>
+    contactsSelectors.getContactById(state, userId)
+  )
+  yield put(contactsActions.updateContact(me, true, 'me', true))
 
   // Reset full text search
   const text = yield select(state => taskSelectors.getTasksSearch(state))
@@ -317,7 +302,7 @@ export function* fetchArchivedTasks() {
     yield put(appStateActions.visibleArchivedTasks())
   }
 
-  const result = yield* fetch(TASKS.FETCH_ARCHIVED, {
+  yield* fetch(TASKS.FETCH_ARCHIVED, {
     method: api.tasks.search,
     args: [
       {
@@ -330,10 +315,6 @@ export function* fetchArchivedTasks() {
     schema: schema.tasks,
     userId,
   })
-
-  // Initialize search service
-  search.tasks.removeItems(result)
-  search.tasks.addItems(result)
 
   // Reset full text search
   const text = yield select(state => taskSelectors.getTasksSearch(state))
@@ -363,9 +344,6 @@ export function* createTask(action) {
     if (action.payload.isImportant) {
       yield put(taskActions.requestToggleImportant(task))
     }
-
-    // add task to the search index
-    search.tasks.addItem(task)
 
     yield put(taskActions.addTask(task))
 
@@ -553,10 +531,7 @@ export function* setOrder(action) {
     const update = { order }
 
     // call server
-    const updatedTask = yield callApi(api.tasks.update, taskId, update)
-
-    // update task in the search index
-    search.tasks.updateItem(updatedTask)
+    yield callApi(api.tasks.update, taskId, update)
   } catch (err) {
     // TODO: revert
     // We need to both revert Task.order field and position within loaded list
@@ -581,10 +556,7 @@ export function* setOrderTimeLine(action) {
     const update = { dueDate, orderTimeLine }
 
     // call server
-    const updatedTask = yield callApi(api.tasks.update, taskId, update)
-
-    // update task in the search index
-    search.tasks.updateItem(updatedTask)
+    yield callApi(api.tasks.update, taskId, update)
   } catch (err) {
     // TODO: revert
     // We need to both revert Task.order field and position within loaded list
@@ -642,12 +614,7 @@ export function* selectTask(action) {
     yield put(appStateActions.hideMultiSelect())
 
     // read all notification for taskId
-    const notifications = yield select(state =>
-      notificationSelectors.getNotificationsForTaskId(state, taskId)
-    )
-    for (const notification of notifications) {
-      yield put(notificationActions.readNotification(notification))
-    }
+    yield put(notificationActions.readTaskNotifications(taskId))
 
     if (archivedTasksVisible) {
       yield put(push(`/user/archive/${taskId}`))
@@ -743,7 +710,7 @@ export function* prepareDeleteTask(action) {
 
   // show loader for multi delete of tasks
   if (deleteTasksIds.size > 1) {
-    yield put(appStateActions.setLoader('global'))
+    yield put(appStateActions.setLoader(loaderTypes.GLOBAL))
   }
 
   yield put(taskActions.deselectTasks())
@@ -774,9 +741,6 @@ export function* deleteTask(action) {
           yield put(tagsActions.deleteTagsRelations(tag, taskId))
         }
       }
-
-      // delete task from the search index
-      search.tasks.removeItem({ id: taskId })
     }
   } catch (err) {
     // send error to sentry
@@ -970,12 +934,7 @@ export function* acceptTask(action) {
     const { accept } = api.followers
 
     // read all notification for taskId
-    const notifications = yield select(state =>
-      notificationSelectors.getNotificationsForTaskId(state, taskId)
-    )
-    for (const notification of notifications) {
-      yield put(notificationActions.readNotification(notification))
-    }
+    yield put(notificationActions.readTaskNotifications(taskId))
 
     yield callApi(accept, taskId)
   } catch (err) {
@@ -1009,7 +968,7 @@ export function* rejectTask(action) {
     // Wait for undo
     const { undo } = yield race({
       undo: take('UNDO_TASK/REJECT'),
-      timeout: call(delay, 8000),
+      timeout: call(delay, 12000),
     })
 
     // Dispatch undo -> don't call API
@@ -1018,18 +977,13 @@ export function* rejectTask(action) {
     }
 
     // Show notification
-    toast.success(successMessages.tasks.rejected, {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: constants.NOTIFICATION_SUCCESS_DURATION,
+    toast.success(toastCommon.successMessages.tasks.rejected, {
+      position: toastCommon.position.DEFAULT,
+      autoClose: toastCommon.duration.SUCCESS_DURATION,
     })
 
     // read all notification for task
-    const notifications = yield select(state =>
-      notificationSelectors.getNotificationsForTaskId(state, task.id)
-    )
-    for (const notification of notifications) {
-      yield put(notificationActions.readNotification(notification))
-    }
+    yield put(notificationActions.readTaskNotifications(task.id))
 
     // call API
     yield callApi(reject, task.id)
@@ -1135,9 +1089,6 @@ function* setTaskField(task, fieldName, newFieldValue) {
 function* updateTask(taskId, update) {
   // call server
   let updatedTask = yield callApi(api.tasks.update, taskId, update)
-
-  // update task in the search index
-  search.tasks.updateItem(updatedTask)
 
   // add userId for repare data of follower in normalizr schema
   const userId = yield select(state => authSelectors.getUserId(state))

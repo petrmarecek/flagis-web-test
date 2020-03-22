@@ -13,6 +13,7 @@ import {
   transition,
   fontSub,
 } from '../styled-components-mixins'
+import { colors } from 'components/styled-components-mixins/colors'
 
 const Search = styled.div`
   height: 100%;
@@ -26,7 +27,7 @@ const SearchIcon = styled(Icon)`
 `
 
 const Input = styled.input`
-  ${placeholderColor('#B1B5B8')}
+  ${placeholderColor(colors.batman)}
   ${boxSizing('border-box')}
   ${transition('width 300ms ease-out')}
   ${fontSub}
@@ -35,10 +36,11 @@ const Input = styled.input`
   height: 26px;
   border: none;
   width: ${props => (props.isVisibleInput ? '250px' : '0')};
-  color: #676D71;
+  color: ${colors.darkJungleGreen};
   background-color: transparent;
-  border-bottom: 1px solid #676D71;
+  border-bottom: 1px solid ${colors.darkJungleGreen};
   padding: ${props => (props.isVisibleInput ? '0 5px' : '0')};
+  font-weight: 500;
 `
 
 const SearchBox = ({
@@ -53,7 +55,7 @@ const SearchBox = ({
     <Input
       innerRef={getInputRef}
       id="search"
-      type="text"
+      type="search"
       name="search"
       placeholder="Full text search"
       autoComplete="off"

@@ -2,6 +2,21 @@ import styled from 'styled-components'
 import { textOverflow } from 'components/styled-components-mixins'
 import Icon from '../icons/icon'
 
+const LoaderWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  height: 100%;
+  z-index: 1;
+`
+
+const AttachmentsWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  z-index: 1;
+`
+
 const ListWrapper = styled.div`
   position: absolute;
   right: 0;
@@ -56,4 +71,12 @@ const FileName = styled.div`
   }
 `
 
-export { ListWrapper, ItemWrapper, IconFile, IconRemove, FileName }
+export {
+  LoaderWrapper,
+  AttachmentsWrapper,
+  ListWrapper,
+  ItemWrapper,
+  IconFile,
+  IconRemove,
+  FileName,
+}

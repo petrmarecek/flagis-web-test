@@ -3,7 +3,6 @@ import { compose, lifecycle, withHandlers } from 'recompose'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form/immutable'
-import { ToastContainer, style } from 'react-toastify'
 
 import {
   deselectError,
@@ -15,7 +14,9 @@ import {
 } from 'redux/store/app-state/app-state.selectors'
 import { controlRedirectTasks, login } from 'redux/store/auth/auth.actions'
 import { validateSignIn } from 'redux/utils/validate'
+import { loaderTypes } from 'redux/store/app-state/app-state.common'
 
+import ToastNotificationsContainer from 'components/toast-notifications'
 import NavigationLandingPrimary from 'components/navigation/navigation-landing-primary'
 import InputField from 'components/forms/fields/input-field'
 import Loader from 'components/common/loader'
@@ -26,13 +27,13 @@ import {
   Form,
   FormBody,
   FormBodyFields,
-  FormLoader,
   FormErrors,
   ErrorList,
   ErrorListItem,
   ErrorListItemIcon,
   ErrorListItemText,
   FormRow,
+  FormRowButton,
   FormLink,
 } from '../styled-components-mixins'
 
@@ -75,9 +76,9 @@ const SignIn = ({ errorSignIn, loader, location, handleSubmit, onSubmit }) => (
               component={InputField}
             />
           </FormRow>
-          <FormRow>
+          <FormRowButton>
             <ButtonDefault type="submit" value="Sign In" />
-          </FormRow>
+          </FormRowButton>
 
           <FormRow pointer>
             <FormLink to="/email-reset-password">
@@ -88,15 +89,11 @@ const SignIn = ({ errorSignIn, loader, location, handleSubmit, onSubmit }) => (
             <FormLink to="/sign-up">Register as a new user</FormLink>
           </FormRow>
         </FormBodyFields>
-        {loader && (
-          <FormLoader>
-            <Loader />
-          </FormLoader>
-        )}
+        {loader && <Loader global />}
       </FormBody>
     </Form>
     <div className="floating-components">
-      <ToastContainer />
+      <ToastNotificationsContainer />
     </div>
   </div>
 )
@@ -129,7 +126,7 @@ export default compose(
   }),
   withHandlers({
     onSubmit: props => values => {
-      props.setLoader('form')
+      props.setLoader(loaderTypes.FORM)
       props.login({
         email: values.get('email'),
         password: values.get('password'),
@@ -139,15 +136,6 @@ export default compose(
   lifecycle({
     componentWillMount() {
       this.props.controlRedirectTasks()
-    },
-    componentDidMount() {
-      this.props.deselectError('signIn')
-      style({
-        BOTTOM_RIGHT: {
-          bottom: '30px',
-          right: '25px',
-        },
-      })
     },
   })
 )(SignIn)
