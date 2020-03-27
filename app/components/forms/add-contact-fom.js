@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { compose, withHandlers } from 'recompose'
 
 // toast notifications
-import { toast } from 'react-toastify'
+import toast from 'utils/toastify-helper'
 import * as toastCommon from 'components/toast-notifications/toast-notifications-common'
 
 // redux
@@ -120,10 +120,13 @@ export default compose(
 
       // validation for existing emails
       if (validEmails.includes(email.toLowerCase())) {
-        toast.error(toastCommon.errorMessages.createEntity.createConflict('contact'), {
-          position: toastCommon.position.DEFAULT,
-          autoClose: toastCommon.duration.ERROR_DURATION,
-        })
+        toast.error(
+          toastCommon.errorMessages.createEntity.createConflict('contact'),
+          {
+            position: toastCommon.position.DEFAULT,
+            autoClose: toastCommon.duration.ERROR_DURATION,
+          }
+        )
 
         return
       }

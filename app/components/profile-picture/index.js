@@ -5,7 +5,7 @@ import { isEmpty } from 'lodash'
 import common from './common'
 
 // toast notifications
-import { toast } from 'react-toastify'
+import toast from 'utils/toastify-helper'
 import * as toastCommon from 'components/toast-notifications/toast-notifications-common'
 
 // redux

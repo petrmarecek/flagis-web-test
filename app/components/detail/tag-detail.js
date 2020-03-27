@@ -5,7 +5,7 @@ import domUtils from 'redux/utils/dom'
 import constants from 'utils/constants'
 
 // toast notifications
-import { toast } from 'react-toastify'
+import toast from 'utils/toastify-helper'
 import * as toastCommon from 'components/toast-notifications/toast-notifications-common'
 
 import {
