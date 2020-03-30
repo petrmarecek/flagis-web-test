@@ -1,3 +1,7 @@
+import * as _ from 'lodash'
+const Blob = window.Blob
+const File = window.File
+
 export default {
   readFileAsArrayBuffer(file) {
     return new Promise((resolve, reject) => {
@@ -9,7 +13,7 @@ export default {
   },
 
   setFileExtensionToLowerCase(file) {
-    const { name, type } = file
+    const { name, type, lastModified, lastModifiedDate } = file
     const fileExtension = name.split('.').pop()
     const validExtension = fileExtension.toLowerCase()
     const fileNameWithValidExtension = name.replace(
@@ -17,7 +21,20 @@ export default {
       validExtension
     )
 
-    // eslint-disable-next-line no-undef
-    return new File([file], fileNameWithValidExtension, { type })
+    try {
+      return new File([file], fileNameWithValidExtension, { type })
+    } catch (error) {
+      // for browsers without File constructor
+      const blob = new Blob([file], { type })
+      blob['name'] = fileNameWithValidExtension
+      blob['lastModifiedDate'] = lastModifiedDate
+
+      file = _.assign(blob, {
+        lastModified,
+        type,
+      })
+
+      return file
+    }
   },
 }
