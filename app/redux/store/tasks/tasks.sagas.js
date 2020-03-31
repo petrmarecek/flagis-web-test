@@ -267,7 +267,7 @@ export function* initInboxTasksData(initTime) {
 
 export function* fetchTasks() {
   const userId = yield select(state => authSelectors.getUserId(state))
-  yield* fetch(TASKS.FETCH, {
+  const tasks = yield* fetch(TASKS.FETCH, {
     method: api.tasks.search,
     args: [
       {
@@ -280,11 +280,26 @@ export function* fetchTasks() {
     userId,
   })
 
-  // set me contact
-  const me = yield select(state =>
-    contactsSelectors.getContactById(state, userId)
-  )
-  yield put(contactsActions.updateContact(me, true, 'me', true))
+  /*
+  We have to set the own profile as me in the contacts.
+
+  The own profile is in the contacts, because this profile is the owner of tasks
+  and also a someone else can be the owner of tasks - an collaboration.
+  So we have to save an createdBy profile of a task to the contacts.
+
+  Also the reason is that tasks are fetched from the firestore with an old data of an createdBy profile,
+  because if a user update his name, this update would have to be set for the every task in firestore for this user.
+  So the update of own profile would not be shown.
+
+  TODO: change workflow for contacts ^^^
+  */
+  if (!_.isEmpty(tasks)) {
+    // set contact as me
+    const me = yield select(state =>
+      contactsSelectors.getContactById(state, userId)
+    )
+    yield put(contactsActions.updateContact(me, true, 'me', true))
+  }
 
   // Reset full text search
   const text = yield select(state => taskSelectors.getTasksSearch(state))
