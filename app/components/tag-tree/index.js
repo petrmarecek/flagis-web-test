@@ -23,7 +23,6 @@ import {
   getPrimaryHiddenNavigationVisibility,
 } from 'redux/store/app-state/app-state.selectors'
 import {
-  getNewRefreshToken,
   getColorTheme,
 } from 'redux/store/auth/auth.selectors'
 import { deselectTasks } from 'redux/store/tasks/tasks.actions'
@@ -153,7 +152,6 @@ TagTreeContainer.propTypes = {
   // data
   addControlParentId: PropTypes.string,
   isFetching: PropTypes.bool,
-  isNewRefreshToken: PropTypes.bool,
   selection: PropTypes.object,
   tagsRelations: PropTypes.object,
   tree: PropTypes.object,
@@ -200,7 +198,6 @@ TagTreeContainer.propTypes = {
 
 const mapStateToProps = state => ({
   isFetching: getTreeItemsIsFetching(state),
-  isNewRefreshToken: getNewRefreshToken(state),
   tree: getTree(state),
   colorTheme: getColorTheme(state),
   sections: getSections(state),
@@ -231,7 +228,7 @@ const mapDispatchToProps = {
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   branch(
-    props => props.isNewRefreshToken || props.isFetching,
+    props => props.isFetching,
     renderComponent(() => <Loader light />)
   ),
   withStateHandlers(() => ({ showAddControl: false, order: null }), {

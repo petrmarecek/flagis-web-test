@@ -22,7 +22,11 @@ import {
   sentryTagType,
 } from 'redux/store/errors/errors.common'
 
-function* refreshToken(auth) {
+export function* refreshTokenIfRequired(auth) {
+
+  if (!moment().isSameOrAfter(auth.expiresAt)) {
+    return
+  }
 
   // Initialize request
   const { PENDING, FULFILLED, REJECTED } = createLoadActions(AUTH.REFRESH_TOKEN)
@@ -79,10 +83,8 @@ export function* callApi(action, ...args) {
   // Get current auth data
   const auth = yield select(getAuth)
 
-  // Auth token is expired
-  if (moment().isSameOrAfter(auth.expiresAt)) {
-    yield call(refreshToken, auth)
-  }
+  // Refresh token if it is already expired
+  yield call(refreshTokenIfRequired, auth)
 
   // Call API
   return yield call(action, ...args)

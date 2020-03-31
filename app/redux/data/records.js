@@ -160,7 +160,6 @@ export const AuthStore = Record(
     expiresIn: null,
     expiresAt: null,
     refreshToken: null,
-    newRefreshToken: false,
     firebaseToken: null,
     firebaseRefreshToken: null,
     profile: new Profile(),

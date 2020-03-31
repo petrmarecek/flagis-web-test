@@ -22,9 +22,6 @@ export const getUserProfile = state => {
   return state.getIn(['auth', 'profile'])
 }
 
-export const getNewRefreshToken = state =>
-  state.getIn(['auth', 'newRefreshToken'])
-
 export const getFirebaseRefreshToken = state =>
   state.getIn(['auth', 'firebaseRefreshToken'])
 

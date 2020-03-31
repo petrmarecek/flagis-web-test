@@ -46,7 +46,7 @@ import {
   sentryBreadcrumbCategory,
   sentryTagType,
 } from 'redux/store/errors/errors.common'
-import { createLoadActions, callApi } from 'redux/store/common.sagas'
+import { createLoadActions, callApi, refreshTokenIfRequired } from 'redux/store/common.sagas'
 import api from 'redux/utils/api'
 import firebase from 'redux/utils/firebase'
 import dateUtil from 'redux/utils/date'
@@ -146,11 +146,7 @@ export function* authFlow() {
       auth = null
       cleanStore()
     } else {
-      // TODO: We probably need to refresh the whole session here as accessToken may be expired as
-      // well
-
-      // Restore Firebase session
-      yield call(firebase.signIn, auth.firebaseToken)
+      yield call(refreshTokenIfRequired, auth)
       yield put({ type: AUTH.RESTORED })
     }
 

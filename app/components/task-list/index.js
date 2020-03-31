@@ -11,7 +11,7 @@ import * as toastCommon from 'components/toast-notifications/toast-notifications
 
 // redux
 import { connect } from 'react-redux'
-import { getNewRefreshToken, getUserId } from 'redux/store/auth/auth.selectors'
+import { getUserId } from 'redux/store/auth/auth.selectors'
 import { getEntitiesTasks } from 'redux/store/entities/entities.selectors'
 import { selectActiveTags } from 'redux/store/tags/tags.actions'
 import { getActiveTagsIds } from 'redux/store/tags/tags.selectors'
@@ -152,7 +152,6 @@ TaskListContainer.propTypes = {
   // data
   userId: PropTypes.string,
   tasks: PropTypes.object,
-  isNewRefreshToken: PropTypes.bool,
   tasksId: PropTypes.object,
   completedTasks: PropTypes.object,
   archivedTasks: PropTypes.object,
@@ -211,7 +210,6 @@ const mapStateToProps = state => {
   return {
     userId: getUserId(state),
     tasks: getTasks(state),
-    isNewRefreshToken: getNewRefreshToken(state),
     tasksId: getTasksItems(state),
     completedTasks: getCompletedTasksItems(state),
     archivedTasks: getArchivedTasksItems(state),
@@ -250,7 +248,7 @@ const mapDispatchToProps = {
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   branch(
-    props => props.isNewRefreshToken || props.tasks.isFetching,
+    props => props.tasks.isFetching,
     renderComponent(Loader)
   ),
   withStateHandlers(

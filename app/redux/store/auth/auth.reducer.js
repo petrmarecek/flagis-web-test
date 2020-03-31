@@ -5,15 +5,12 @@ import typeToReducer from 'type-to-reducer'
 export default typeToReducer(
   {
     [AUTH.REFRESH_TOKEN]: {
-      PENDING: state => state.set('newRefreshToken', true),
-
       FULFILLED: (state, action) =>
         state
           .set('accessToken', action.payload.accessToken)
           .set('expiresAt', action.payload.expiresAt)
           .set('expiresIn', action.payload.expiresIn)
-          .set('firebaseToken', action.payload.firebaseToken)
-          .set('newRefreshToken', false),
+          .set('firebaseToken', action.payload.firebaseToken),
     },
 
     [AUTH.LOGIN]: {
