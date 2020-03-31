@@ -5,7 +5,7 @@ import includes from 'lodash/includes'
 import { routes } from 'utils/routes'
 
 // toast notifications
-import { toast } from 'react-toastify'
+import toast from 'utils/toastify-helper'
 import * as toastCommon from 'components/toast-notifications/toast-notifications-common'
 
 // redux
@@ -388,11 +388,11 @@ export function* dropTreeItem(action) {
   const isParentColision =
     action.payload.dropPosition !== 'MIDDLE'
       ? intersection(targetParentsTags, [sourceTag, ...sourceChildTags])
-        .length !== 0
+          .length !== 0
       : intersection(
-        [targetTag, ...targetParentsTags],
-        [sourceTag, ...sourceChildTags]
-      ).length !== 0
+          [targetTag, ...targetParentsTags],
+          [sourceTag, ...sourceChildTags]
+        ).length !== 0
 
   if (isParentColision) {
     toast.error(toastCommon.errorMessages.treeItems.duplicatePathConflict, {

@@ -101,7 +101,7 @@ export const successMessages = {
 
   changeName: 'Name has successfully been changed.',
 
-  contactUs: 'Thank you for filling out your information.',
+  contactUs: 'Thank you for your message.',
 }
 
 export const infoMessages = {
