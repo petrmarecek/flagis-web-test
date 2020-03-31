@@ -146,8 +146,12 @@ export function* authFlow() {
       auth = null
       cleanStore()
     } else {
-      yield call(refreshTokenIfRequired, auth)
-      yield put({ type: AUTH.RESTORED })
+      // Refresh token if needed
+      auth = yield call(refreshTokenIfRequired, auth)
+      if (auth) {
+        api.setApiToken(auth.accessToken)
+        yield put({ type: AUTH.RESTORED })
+      }
     }
 
     while (true) {

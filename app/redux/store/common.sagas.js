@@ -24,8 +24,9 @@ import {
 
 export function* refreshTokenIfRequired(auth) {
 
+  // Auth still valid, return current
   if (!moment().isSameOrAfter(auth.expiresAt)) {
-    return
+    return auth
   }
 
   // Initialize request
@@ -44,14 +45,16 @@ export function* refreshTokenIfRequired(auth) {
 
     // Store new tokens and expiration dates
     const response = yield call(api.auth.token, data)
+    const newAuth = {
+      expiresAt: date.getExpiresAt(response.expiresIn),
+      expiresIn: response.expiresIn,
+      accessToken: response.accessToken,
+      firebaseToken: response.firebaseToken,
+    }
+
     yield put({
       type: FULFILLED,
-      payload: {
-        expiresAt: date.getExpiresAt(response.expiresIn),
-        expiresIn: response.expiresIn,
-        accessToken: response.accessToken,
-        firebaseToken: response.firebaseToken,
-      }
+      payload: newAuth,
     })
 
     // Use the new token in API module
@@ -60,6 +63,7 @@ export function* refreshTokenIfRequired(auth) {
     // Refresh also Firebase ID token
     yield call(firebase.refreshToken)
 
+    return newAuth
   } catch (err) {
     yield put({ type: REJECTED, payload: err })
     errorActions.errorSentry(err, {
@@ -71,6 +75,8 @@ export function* refreshTokenIfRequired(auth) {
 
     // Something went wrong with refresh, logout user
     yield put(logout())
+
+    return null
   }
 }
 
