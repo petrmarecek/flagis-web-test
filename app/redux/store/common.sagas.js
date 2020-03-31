@@ -6,11 +6,13 @@ import toast from 'utils/toastify-helper'
 import * as toastCommon from 'components/toast-notifications/toast-notifications-common'
 
 // redux
+import date from '../utils/date'
+import api from 'redux/utils/api'
+import firebase from 'redux/utils/firebase'
 import { call, put, take, spawn, race, select } from 'redux-saga/effects'
 import { delay } from 'redux-saga'
-import { AUTH } from './auth/auth.actions'
 import * as appStateActions from 'redux/store/app-state/app-state.actions'
-import { logout } from 'redux/store/auth/auth.actions'
+import { AUTH, logout } from 'redux/store/auth/auth.actions'
 import { deselectTasks } from 'redux/store/tasks/tasks.actions'
 import { deselectTags } from 'redux/store/tags/tags.actions'
 import { getAuth } from './auth/auth.selectors'
@@ -20,25 +22,75 @@ import {
   sentryTagType,
 } from 'redux/store/errors/errors.common'
 
+export function* refreshTokenIfRequired(auth) {
+
+  // Auth still valid, return current
+  if (!moment().isSameOrAfter(auth.expiresAt)) {
+    return auth
+  }
+
+  // Initialize request
+  const { PENDING, FULFILLED, REJECTED } = createLoadActions(AUTH.REFRESH_TOKEN)
+  yield put({ type: PENDING })
+
+  try {
+    // Call API with current refresh token
+    const data = {
+      userId:
+        auth.profile instanceof Map
+          ? auth.profile.get('id')
+          : auth.profile.id,
+      refreshToken: auth.refreshToken,
+    }
+
+    // Store new tokens and expiration dates
+    const response = yield call(api.auth.token, data)
+    const newAuth = {
+      expiresAt: date.getExpiresAt(response.expiresIn),
+      expiresIn: response.expiresIn,
+      accessToken: response.accessToken,
+      firebaseToken: response.firebaseToken,
+    }
+
+    yield put({
+      type: FULFILLED,
+      payload: newAuth,
+    })
+
+    // Use the new token in API module
+    api.setApiToken(response.accessToken)
+
+    // Refresh also Firebase ID token
+    yield call(firebase.refreshToken)
+
+    return newAuth
+  } catch (err) {
+    yield put({ type: REJECTED, payload: err })
+    errorActions.errorSentry(err, {
+      tagType: sentryTagType.ACTION,
+      tagValue: AUTH.REFRESH_TOKEN,
+      breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+      breadcrumbMessage: AUTH.REFRESH_TOKEN,
+    })
+
+    // Something went wrong with refresh, logout user
+    yield put(logout())
+
+    return null
+  }
+}
+
 /**
  * Call api if access token is valid
  * @param {Object} action Definition of action
- * @param {Object} args Other agrguments of function
+ * @param {Object} args Other arguments of function
  */
 export function* callApi(action, ...args) {
-  const { FULFILLED } = createLoadActions(AUTH.REFRESH_TOKEN)
-  const { expiresAt } = yield select(getAuth)
+  // Get current auth data
+  const auth = yield select(getAuth)
 
-  // Auth token is expired
-  if (moment().isSameOrAfter(expiresAt)) {
-    // Create new
-    yield put({
-      type: AUTH.REFRESH_TOKEN,
-    })
-
-    // And wait for response
-    yield take(FULFILLED)
-  }
+  // Refresh token if it is already expired
+  yield call(refreshTokenIfRequired, auth)
 
   // Call API
   return yield call(action, ...args)

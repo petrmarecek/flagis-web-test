@@ -2,7 +2,7 @@ export default {
   RESTART_ON_REMOUNT: '@@saga-injector/restart-on-remount',
   DAEMON: '@@saga-injector/daemon',
   ONCE_TILL_UNMOUNT: '@@saga-injector/once-till-unmount',
-  MIN_TOKEN_LIFESPAN: 300 * 1000,
+  MIN_TOKEN_LIFESPAN: 30 * 1000,
 
   // Notification
   NOTIFICATION_ERROR_DURATION: 8000,

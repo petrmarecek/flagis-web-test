@@ -1,7 +1,5 @@
-import { Map } from 'immutable'
 import { routes } from 'utils/routes'
 import date from '../../utils/date'
-import constants from 'utils/constants'
 import fileHelper from 'utils/file-helper'
 
 // toast notifications
@@ -48,7 +46,7 @@ import {
   sentryBreadcrumbCategory,
   sentryTagType,
 } from 'redux/store/errors/errors.common'
-import { createLoadActions, callApi } from 'redux/store/common.sagas'
+import { createLoadActions, callApi, refreshTokenIfRequired } from 'redux/store/common.sagas'
 import api from 'redux/utils/api'
 import firebase from 'redux/utils/firebase'
 import dateUtil from 'redux/utils/date'
@@ -62,7 +60,6 @@ export function* initDataFlow() {
       // eslint-disable-line
       const initTime = dateUtil.getDateToISOString()
       const loginActions = createLoadActions(AUTH.LOGIN)
-      const tokenActions = createLoadActions(AUTH.REFRESH_TOKEN)
       const { pathname } = window.location
       const { user } = routes
       const isArchivePathname =
@@ -70,7 +67,7 @@ export function* initDataFlow() {
 
       yield race({
         login: take(loginActions.FULFILLED),
-        token: take(tokenActions.FULFILLED),
+        token: take(AUTH.RESTORED),
       })
 
       yield put(tagActions.fetchTags())
@@ -148,6 +145,13 @@ export function* authFlow() {
     if (!auth.isLogged) {
       auth = null
       cleanStore()
+    } else {
+      // Refresh token if needed
+      auth = yield call(refreshTokenIfRequired, auth)
+      if (auth) {
+        api.setApiToken(auth.accessToken)
+        yield put({ type: AUTH.RESTORED })
+      }
     }
 
     while (true) {
@@ -174,15 +178,10 @@ export function* authFlow() {
         }
       }
 
-      const { logOutAction } = yield race({
-        logOutAction: take(AUTH.LOGOUT),
-        refreshTokenLoop: call(tokenLoop, auth),
-      })
-
-      if (logOutAction !== null) {
-        yield call(logout)
-        auth = null
-      }
+      // Wait for logout
+      yield take(AUTH.LOGOUT)
+      yield call(logout)
+      auth = null
     }
   } catch (err) {
     // send error to sentry
@@ -544,11 +543,6 @@ export function* resetPassword(action) {
 
 // ------ HELPER FUNCTIONS ----------------------------------------------------
 
-function* setTokens({ accessToken, firebaseToken }) {
-  api.setApiToken(accessToken)
-  yield call(firebase.signIn, firebaseToken)
-}
-
 function* authorizeUser(authApiCall, action) {
   const { PENDING, FULFILLED, REJECTED } = createLoadActions(AUTH.LOGIN)
   const { payload } = action
@@ -560,7 +554,9 @@ function* authorizeUser(authApiCall, action) {
     const auth = yield call(authApiCall, payload)
 
     // set access token and firebase token
-    yield call(setTokens, auth)
+    // yield call(setTokens, auth)
+    api.setApiToken(auth.accessToken)
+    yield call(firebase.signIn, auth.firebaseToken)
 
     // dispatch action with auth data
     yield put({
@@ -583,7 +579,7 @@ function* authorizeUser(authApiCall, action) {
     yield put({ type: REJECTED, err })
 
     if (action.type === 'AUTH/LOGIN') {
-      if (err.response.data.type === 'PasswordResetRequired') {
+      if (err.response && err.response.data && err.response.data.type === 'PasswordResetRequired') {
         yield put(
           appStateActions.setError(
             'signIn',
@@ -642,65 +638,4 @@ function* logout() {
   // redirect
   const redirectAction = push(routes.signIn)
   yield put(redirectAction)
-}
-
-function* tokenLoop(auth) {
-  const { PENDING, FULFILLED, REJECTED } = createLoadActions(AUTH.REFRESH_TOKEN)
-
-  while (true) {
-    // eslint-disable-line
-    yield put({ type: PENDING })
-
-    try {
-      const data = {
-        userId:
-          auth.profile instanceof Map
-            ? auth.profile.get('id')
-            : auth.profile.id,
-        refreshToken: auth.refreshToken,
-      }
-
-      const response = yield call(api.auth.token, data)
-      if (!response) {
-        return
-      }
-
-      // set access token and firebase token
-      yield call(setTokens, response)
-
-      yield put({
-        type: FULFILLED,
-        payload: {
-          expiresAt: date.getExpiresAt(response.expiresIn),
-          ...response,
-        },
-      })
-
-      // redirect
-      const { pathname } = window.location
-      const redirectAction = push(pathname)
-      yield put(redirectAction)
-
-      yield race({
-        action: take(AUTH.REFRESH_TOKEN),
-        delay: call(delay, response.expiresIn - constants.MIN_TOKEN_LIFESPAN),
-      })
-    } catch (err) {
-      yield put({ type: REJECTED })
-
-      yield call(logout)
-
-      // send error to sentry
-      yield put(
-        errorActions.errorSentry(err, {
-          tagType: sentryTagType.ACTION,
-          tagValue: 'AUTH_TOKEN_LOOP',
-          breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
-          breadcrumbMessage: 'AUTH_TOKEN_LOOP',
-        })
-      )
-
-      return
-    }
-  }
 }

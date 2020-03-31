@@ -2,6 +2,7 @@ export const AUTH = {
   CONTROL_REDIRECT_SIGN_IN: 'AUTH/CONTROL_REDIRECT_SIGN_IN',
   CONTROL_REDIRECT_TASKS: 'AUTH/CONTROL_REDIRECT_TASKS',
   SIGN_UP: 'AUTH/SIGN_UP',
+  SET_FIREBASE_TOKENS: 'AUTH/SET_FIREBASE_TOKENS',
   INIT_EMAIL: 'AUTH/INIT_EMAIL',
   LOGIN: 'AUTH/LOGIN',
   LOGOUT: 'AUTH/LOGOUT',
@@ -13,6 +14,7 @@ export const AUTH = {
   EMAIL_RESET_PASSWORD: 'AUTH/EMAIL_RESET_PASSWORD',
   RESET_PASSWORD: 'AUTH/RESET_PASSWORD',
   REFRESH_TOKEN: 'AUTH/REFRESH-TOKEN',
+  RESTORED: 'AUTH/RESTORED',
   TOGGLE_COLOR_THEME: 'APP-STATE/TOGGLE_COLOR_THEME',
   CONTACT_US: 'AUTH/CONTACT_US',
 }
@@ -28,6 +30,11 @@ export const controlRedirectTasks = () => ({
 export const signUp = userData => ({
   type: AUTH.SIGN_UP,
   payload: userData,
+})
+
+export const setFirebaseTokens = (firebaseToken, firebaseRefreshToken) => ({
+  type: AUTH.SET_FIREBASE_TOKENS,
+  payload: { firebaseToken, firebaseRefreshToken },
 })
 
 export const initEmail = invitationId => ({

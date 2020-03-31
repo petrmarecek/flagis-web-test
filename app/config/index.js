@@ -1,5 +1,15 @@
 const compileEnv = process.env.COMPILE_ENV || 'development'
 
+const firebaseLocal = {
+  apiKey: "AIzaSyBWyOwLGhjOVZ9SHC3uuqiUR8wnf4ZGABk",
+  authDomain: "flagis-local-f62f4.firebaseapp.com",
+  databaseURL: "https://flagis-local-f62f4.firebaseio.com",
+  projectId: "flagis-local-f62f4",
+  storageBucket: "flagis-local-f62f4.appspot.com",
+  messagingSenderId: "5299835482",
+  appId: "1:5299835482:web:10f35f3ca45bf56a9cfe63"
+}
+
 const firebaseDevelopment = {
   apiKey: 'AIzaSyDFw-G0nAvPxD3Sw9wi2SnKIOxSTQGyVUY',
   authDomain: 'flagis-development.firebaseapp.com',
@@ -28,6 +38,11 @@ const firebaseProduction = {
 }
 
 const configs = {
+  local: {
+    isProduction: false,
+    apiURL: 'http://localhost:3001',
+    firebase: firebaseLocal,
+  },
   development: {
     isProduction: false,
     apiURL: 'https://flagis-api-development.herokuapp.com',

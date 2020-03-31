@@ -4,6 +4,8 @@ import 'firebase/firestore'
 import config from '../../config'
 import { eventChannel } from 'redux-saga'
 
+import axios from 'axios'
+
 // Initialize Firebase
 firebase.initializeApp(config.firebase)
 
@@ -105,6 +107,6 @@ export default {
   },
 
   signIn: token => firebase.auth().signInWithCustomToken(token),
-
+  refreshToken: () => firebase.auth().currentUser.getIdToken(true),
   signOut: () => firebase.auth().signOut(),
 }
