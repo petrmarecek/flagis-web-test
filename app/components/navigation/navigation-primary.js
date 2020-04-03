@@ -69,7 +69,7 @@ const NavigationPrimary = props => {
         colorTheme={colorTheme}
       >
         <Icon
-          icon={ICONS.TASK_CHECKED}
+          icon={ICONS.TASK_UNCOMPLETED}
           width={18}
           height={18}
           scale={0.81}
@@ -210,10 +210,7 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   withHandlers({
     onHandleClickMore: props => () => {
       if (props.isVisibleMore) {

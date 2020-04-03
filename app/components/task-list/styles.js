@@ -123,8 +123,12 @@ const Completed = styled.div`
 
   :hover {
     svg {
-      path {
+      path:first-of-type {
         fill: #44ffb1;
+      }
+
+      path:last-of-type {
+        fill: ${props => (props.completed ? '#fff' : '#44ffb1')};
       }
     }
   }

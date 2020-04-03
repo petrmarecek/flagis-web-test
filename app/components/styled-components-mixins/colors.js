@@ -11,8 +11,10 @@ export const colors = {
   bayOfHope: '#c1cad0',
   americanSilver: '#cecece',
   snowShadow: '#d7e3ec',
+  porpoise: '#DBDBDB',
   coldWind: '#e1e4e5',
   crystalBell: '#efefef',
+  lynxWhite: '#F6F7F8',
   whitePorcelain: '#fafafa',
   white: '#fff',
 

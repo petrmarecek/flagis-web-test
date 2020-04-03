@@ -476,8 +476,12 @@ const DetailSubjectTaskCompleted = styled.div`
 
   :hover {
     svg {
-      path {
-        fill: ${props => (props.completed ? '#D7E3EC' : '#44FFB1')};
+      path:first-of-type {
+        fill: #44ffb1;
+      }
+
+      path:last-of-type {
+        fill: ${props => (props.completed ? '#fff' : '#44ffb1')};
       }
     }
   }

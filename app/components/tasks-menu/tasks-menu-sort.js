@@ -17,6 +17,7 @@ import {
   MenuBoxItemIcon,
   MenuBoxItemTitle,
 } from './styles'
+import { colors } from 'components/styled-components-mixins/colors'
 
 const TasksMenuSort = props => {
   const {
@@ -50,11 +51,12 @@ const TasksMenuSort = props => {
   }
 
   const icon = getActiveIcon()
-  const iconColor = !defaultSort || menu.isVisible ? '#293034' : '#B1B5B8'
+  const iconColor =
+    !defaultSort || menu.isVisible ? colors.aztec : colors.astrocopusGrey
 
   return (
     <TasksMenuItem innerRef={getSortRef} onClick={onHandleClick}>
-      <IconWrapper iconColor={iconColor} hoverIconColor="#293034">
+      <IconWrapper iconColor={iconColor} hoverIconColor={colors.aztec}>
         <Icon icon={icon} width={20} height={20} scale={0.83} />
       </IconWrapper>
       {menu.isVisible && (
@@ -113,7 +115,7 @@ const TasksMenuSort = props => {
             <MenuBoxItemIcon
               active={incomplete}
               type="incomplete"
-              icon={ICONS.TASK_CHECKED}
+              icon={ICONS.TASK_UNCOMPLETED}
               iconScale={0.73}
               onChange={onHandleSortAlgorithmToggle}
             />

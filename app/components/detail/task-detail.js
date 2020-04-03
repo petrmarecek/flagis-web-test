@@ -67,6 +67,7 @@ import {
   DetailContentCommentsAddIcon,
   DetailContentCommentsAddInput,
 } from './styles'
+import { colors } from 'components/styled-components-mixins/colors'
 
 const TaskDetail = props => {
   const {
@@ -189,7 +190,6 @@ const TaskDetail = props => {
   const isArchivedOrCollaborated = isArchived || !isOwner
   const isUnknownContact =
     isAssigneeAccepted && !isCompleted && !createdBy.isContact
-  const isArchivedOrCompletedOrInbox = isArchivedOrInbox || isCompleted
 
   // Data about owner of task
   const createdByFollower = {
@@ -200,27 +200,27 @@ const TaskDetail = props => {
   // Background color of top content
   const backgroundColor = () => {
     if (isArchived) {
-      return '#DBDBDB'
+      return colors.porpoise
     }
 
     if (isOwnerAccepted) {
-      return '#F6F7F8'
+      return colors.lynxWhite
     }
 
-    return '#fff'
+    return colors.white
   }
 
-  // Background color of task item
+  // Color of completed icon
   const completedIconColor = () => {
     if (task.isCompleted) {
-      return ['#44FFB1']
+      return [colors.hanumanGreen, colors.hanumanGreen, colors.white]
     }
 
     if (isOwnerAccepted) {
-      return ['#EBEBEB']
+      return [colors.crystalBell, colors.white, colors.crystalBell]
     }
 
-    return ['#F4F4F4']
+    return [colors.crystalBell, colors.white, colors.crystalBell]
   }
 
   // Margin-left of subject
@@ -288,13 +288,13 @@ const TaskDetail = props => {
                 )}
               {!isArchived && isAcceptedStatus && (
                 <DetailSubjectTaskCompleted
-                  completed={isCompleted}
+                  completed={task.isCompleted}
                   onClick={onHandleComplete}
                 >
                   <Icon
-                    icon={ICONS.TASK_CHECKED}
+                    icon={ICONS.TASK_COMPLETED}
                     color={completedIconColor()}
-                    width={22}
+                    width={21}
                     height={21}
                   />
                 </DetailSubjectTaskCompleted>
@@ -306,8 +306,8 @@ const TaskDetail = props => {
                 >
                   <Icon
                     icon={ICONS.ARCHIVE}
-                    color={['#B1B5B8']}
-                    hoverColor={['#293034']}
+                    color={[colors.astrocopusGrey]}
+                    hoverColor={[colors.aztec]}
                     width={24}
                     height={25}
                     scale={0.926}
@@ -325,8 +325,8 @@ const TaskDetail = props => {
                 >
                   <Icon
                     icon={ICONS.ARCHIVE}
-                    color={['#B1B5B8']}
-                    hoverColor={['#293034']}
+                    color={[colors.astrocopusGrey]}
+                    hoverColor={[colors.aztec]}
                     width={24}
                     height={25}
                     scale={0.926}
@@ -341,8 +341,8 @@ const TaskDetail = props => {
                   <Icon
                     archived
                     icon={ICONS.NON_ARCHIVE}
-                    color={['#B1B5B8']}
-                    hoverColor={['#293034']}
+                    color={[colors.astrocopusGrey]}
+                    hoverColor={[colors.aztec]}
                     width={24}
                     height={27}
                     scale={0.926}
@@ -445,7 +445,7 @@ const TaskDetail = props => {
                 width={19}
                 height={25}
                 scale={1.25}
-                color={['#B1B5B8']}
+                color={[colors.astrocopusGrey]}
                 title={ruleMessage}
               />
             </DetailContentIcon>
@@ -457,7 +457,7 @@ const TaskDetail = props => {
                 width={23}
                 height={26}
                 scale={1}
-                color={['#FF6A6A']}
+                color={[colors.pompelmo]}
                 onClick={onHandleDelete}
               />
             </DetailContentIcon>
@@ -473,7 +473,7 @@ const TaskDetail = props => {
                     width={15}
                     height={11}
                     scale={0.5}
-                    color={['#B1B5B8']}
+                    color={[colors.astrocopusGrey]}
                   />
                 </DetailContentAddContactIcon>
                 <DetailContentAddContactLabel changeColor>
@@ -520,7 +520,7 @@ const TaskDetail = props => {
                       width={10}
                       height={10}
                       scale={0.34}
-                      color={['#fff']}
+                      color={[colors.white]}
                     />
                   </DetailContentAddNewContact>
                 )}
@@ -551,7 +551,7 @@ const TaskDetail = props => {
                   icon={ICONS.DUE_DATE}
                   height={12}
                   width={12}
-                  color={['#B1B5B8']}
+                  color={[colors.astrocopusGrey]}
                 />
                 <DetailContentDateLabel>Due date</DetailContentDateLabel>
                 <DetailContentDatePicker onClick={onHandleRemoveEventListener}>
@@ -572,7 +572,7 @@ const TaskDetail = props => {
                   icon={ICONS.REMINDER_DATE}
                   height={13}
                   width={15}
-                  color={['#B1B5B8']}
+                  color={[colors.astrocopusGrey]}
                 />
                 <DetailContentDateLabel reminder>
                   Reminder date
@@ -601,7 +601,7 @@ const TaskDetail = props => {
                   width={16}
                   height={16}
                   scale={0.24}
-                  color={['#B1B5B8']}
+                  color={[colors.astrocopusGrey]}
                 />
                 <DetailContentImportantLabel important={isImportant}>
                   Important
@@ -649,7 +649,7 @@ const TaskDetail = props => {
                 <DetailContentCommentsAddIcon>
                   <Icon
                     icon={ICONS.COMMENT}
-                    color={['#1c2124']}
+                    color={[colors.darkJungleGreen]}
                     width={26}
                     height={23}
                   />

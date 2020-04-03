@@ -20,11 +20,15 @@ import {
   isStringEmpty,
 } from 'redux/utils/component-helper'
 
+// components
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from '../icons/icon'
 import FollowerResponseButtons from '../common/follower-response-buttons'
 import TaskListTagItems from './task-list-tag-items'
 import FollowerIcon from '../common/follower-icon'
+
+// styles
+import { colors } from 'components/styled-components-mixins/colors'
 
 import { EmptyList } from 'components/styled-components-mixins'
 import {
@@ -283,35 +287,35 @@ const TaskListItem = props => {
   // Background color of task item
   const backgroundColor = () => {
     if (isSelected) {
-      return '#ecfff7'
+      return colors.meltingGlacier
     }
 
     if (isDragging) {
-      return '#f6f7f8'
+      return colors.lynxWhite
     }
 
     if (isArchivedList) {
-      return '#DBDBDB'
+      return colors.porpoise
     }
 
     if (isOwnerAccepted) {
-      return '#F6F7F8'
+      return colors.lynxWhite
     }
 
-    return '#fff'
+    return colors.white
   }
 
-  // Background color of task item
+  // Color of completed icon
   const completedIconColor = () => {
     if (task.isCompleted) {
-      return ['#44FFB1']
+      return [colors.hanumanGreen, colors.hanumanGreen, colors.white]
     }
 
     if (isOwnerAccepted) {
-      return ['#EBEBEB']
+      return [colors.crystalBell, colors.white, colors.crystalBell]
     }
 
-    return ['#F4F4F4']
+    return [colors.crystalBell, colors.white, colors.crystalBell]
   }
 
   // Margin-left of content task
@@ -359,15 +363,16 @@ const TaskListItem = props => {
           >
             {!isArchivedList && !isInboxList && (
               <Completed
+                completed={task.isCompleted}
                 onClick={e => {
                   e.stopPropagation()
                   onHandleCompleteClicked(e)
                 }}
               >
                 <Icon
-                  icon={ICONS.TASK_CHECKED}
+                  icon={ICONS.TASK_COMPLETED}
                   color={completedIconColor()}
-                  width={22}
+                  width={21}
                   height={21}
                 />
               </Completed>
@@ -382,8 +387,8 @@ const TaskListItem = props => {
               >
                 <Icon
                   icon={isArchivedList ? ICONS.NON_ARCHIVE : ICONS.ARCHIVE}
-                  color={['#B1B5B8']}
-                  hoverColor={['#293034']}
+                  color={[colors.astrocopusGrey]}
+                  hoverColor={[colors.aztec]}
                   width={24}
                   height={27}
                   scale={0.926}
