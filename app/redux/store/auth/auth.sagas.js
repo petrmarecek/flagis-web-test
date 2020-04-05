@@ -46,7 +46,7 @@ import {
   sentryBreadcrumbCategory,
   sentryTagType,
 } from 'redux/store/errors/errors.common'
-import { createLoadActions, callApi, refreshTokenIfRequired } from 'redux/store/common.sagas'
+import { createLoadActions, callApi, refreshToken } from 'redux/store/common.sagas'
 import api from 'redux/utils/api'
 import firebase from 'redux/utils/firebase'
 import dateUtil from 'redux/utils/date'
@@ -135,24 +135,44 @@ export function* initDataFlow() {
   }
 }
 
+function* restoreAuth() {
+  const auth = yield select(state => authSelectors.getAuth(state))
+
+  // Authorization not in persisted state
+  if (!auth || !auth.isLogged) {
+    api.clearApiToken()
+    return null
+  }
+
+  // Authorization rehydrated and still valid
+  if (!date.isAfterExpiration(auth.expiresAt)) {
+    api.setApiToken(auth.accessToken)
+    yield put({ type: AUTH.RESTORED })
+    return auth
+  }
+
+  // Authorization rehydrated but already expired -> try to refresh
+  const newAuth = yield call(refreshToken, auth)
+
+  // Token refresh failed
+  if (!newAuth) {
+    yield put(authActions.logout())
+    yield call(logout)
+    return null
+  }
+
+  // Token refresh successful
+  yield put({ type: AUTH.RESTORED })
+  return newAuth
+}
+
 export function* authFlow() {
   try {
     // Wait to load from persist store
     yield take(REHYDRATE)
 
     // Get auth information
-    let auth = yield select(state => authSelectors.getAuth(state))
-    if (!auth.isLogged) {
-      auth = null
-      cleanStore()
-    } else {
-      // Refresh token if needed
-      auth = yield call(refreshTokenIfRequired, auth)
-      if (auth) {
-        api.setApiToken(auth.accessToken)
-        yield put({ type: AUTH.RESTORED })
-      }
-    }
+    let auth = yield call(restoreAuth)
 
     while (true) {
       // eslint-disable-line
@@ -623,14 +643,9 @@ function* authorizeUser(authApiCall, action) {
   }
 }
 
-function cleanStore() {
-  // clean
-  api.clearApiToken()
-}
-
 function* logout() {
   // clean
-  cleanStore()
+  api.clearApiToken()
 
   // sign out from firebase
   yield call(firebase.signOut)

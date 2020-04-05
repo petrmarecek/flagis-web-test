@@ -1,5 +1,4 @@
 import _ from 'lodash'
-import moment from 'moment'
 import { Map } from 'immutable'
 
 // toast notifications
@@ -23,12 +22,7 @@ import {
   sentryTagType,
 } from 'redux/store/errors/errors.common'
 
-export function* refreshTokenIfRequired(auth) {
-
-  // Auth still valid, return current
-  if (!moment().isSameOrAfter(auth.expiresAt)) {
-    return auth
-  }
+export function* refreshToken(auth) {
 
   // Initialize request
   const { PENDING, FULFILLED, REJECTED } = createLoadActions(AUTH.REFRESH_TOKEN)
@@ -74,9 +68,6 @@ export function* refreshTokenIfRequired(auth) {
       breadcrumbMessage: AUTH.REFRESH_TOKEN,
     })
 
-    // Something went wrong with refresh, logout user
-    yield put(logout())
-
     return null
   }
 }
@@ -91,7 +82,13 @@ export function* callApi(action, ...args) {
   const auth = yield select(getAuth)
 
   // Refresh token if it is already expired
-  yield call(refreshTokenIfRequired, auth)
+  if (date.isAfterExpiration(auth.expiresAt)) {
+    const newAuth = yield call(refreshToken, auth)
+    if (!newAuth) {
+      // Something went wrong with refresh, logout user
+      return yield put(logout())
+    }
+  }
 
   // Call API
   return yield call(action, ...args)
