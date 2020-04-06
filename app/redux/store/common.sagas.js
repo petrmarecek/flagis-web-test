@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import moment from 'moment'
+import { Map } from 'immutable'
 
 // toast notifications
 import toast from 'utils/toastify-helper'
@@ -22,12 +22,7 @@ import {
   sentryTagType,
 } from 'redux/store/errors/errors.common'
 
-export function* refreshTokenIfRequired(auth) {
-
-  // Auth still valid, return current
-  if (!moment().isSameOrAfter(auth.expiresAt)) {
-    return auth
-  }
+export function* refreshToken(auth) {
 
   // Initialize request
   const { PENDING, FULFILLED, REJECTED } = createLoadActions(AUTH.REFRESH_TOKEN)
@@ -37,7 +32,7 @@ export function* refreshTokenIfRequired(auth) {
     // Call API with current refresh token
     const data = {
       userId:
-        auth.profile instanceof Map
+        Map.isMap(auth.profile)
           ? auth.profile.get('id')
           : auth.profile.id,
       refreshToken: auth.refreshToken,
@@ -52,16 +47,16 @@ export function* refreshTokenIfRequired(auth) {
       firebaseToken: response.firebaseToken,
     }
 
-    yield put({
-      type: FULFILLED,
-      payload: newAuth,
-    })
-
     // Use the new token in API module
     api.setApiToken(response.accessToken)
 
     // Refresh also Firebase ID token
-    yield call(firebase.refreshToken)
+    yield call(firebase.signIn, response.firebaseToken)
+
+    yield put({
+      type: FULFILLED,
+      payload: newAuth,
+    })
 
     return newAuth
   } catch (err) {
@@ -72,9 +67,6 @@ export function* refreshTokenIfRequired(auth) {
       breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
       breadcrumbMessage: AUTH.REFRESH_TOKEN,
     })
-
-    // Something went wrong with refresh, logout user
-    yield put(logout())
 
     return null
   }
@@ -90,7 +82,13 @@ export function* callApi(action, ...args) {
   const auth = yield select(getAuth)
 
   // Refresh token if it is already expired
-  yield call(refreshTokenIfRequired, auth)
+  if (date.isAfterExpiration(auth.expiresAt)) {
+    const newAuth = yield call(refreshToken, auth)
+    if (!newAuth) {
+      // Something went wrong with refresh, logout user
+      return yield put(logout())
+    }
+  }
 
   // Call API
   return yield call(action, ...args)

@@ -46,4 +46,8 @@ export default {
   getDateToISOString() {
     return new Date().toISOString()
   },
+
+  isAfterExpiration(expiresAt) {
+    return moment().isSameOrAfter(expiresAt)
+  }
 }
