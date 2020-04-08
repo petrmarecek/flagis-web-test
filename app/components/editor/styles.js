@@ -30,17 +30,17 @@ const ControlButton = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: ${props => (props.isSmall ? '12px' : '14px')};
+  font-size: ${(props) => (props.isSmall ? '12px' : '14px')};
   height: ${controlButtonSize}px;
   width: ${controlButtonSize}px;
-  cursor: ${props => (props.disabled ? 'default' : 'pointer')};
-  pointer-events: ${props => (props.disabled ? 'none' : 'auto')};
+  cursor: ${(props) => (props.disabled ? 'default' : 'pointer')};
+  pointer-events: ${(props) => (props.disabled ? 'none' : 'auto')};
   font-weight: bold;
-  color: ${props =>
+  color: ${(props) =>
     props.isActive ? colors.darkJungleGreen : colors.astrocopusGrey};
 
   :hover {
-    color: ${props =>
+    color: ${(props) =>
       props.disabled ? colors.astrocopusGrey : colors.darkJungleGreen};
   }
 `
@@ -50,8 +50,8 @@ const EditArea = styled.div`
   height: auto;
   border: 1px solid ${colors.coldWind};
   padding: 45px 15px 15px 15px;
-  height: ${props => props.editorHeight};
-  font-size: 12px;
+  height: ${(props) => props.editorHeight};
+  font-size: 14px;
   cursor: text;
 
   h3 {

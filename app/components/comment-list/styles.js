@@ -46,7 +46,7 @@ const Author = styled.div`
 
 const Date = styled.div`
   display: inline-block;
-  font-size: 12px;
+  font-size: 13px;
   margin: 2px 0 0 0;
   color: #b1b5b8;
   float: right;
@@ -54,9 +54,10 @@ const Date = styled.div`
 
 const Content = styled.div`
   display: block;
+  line-height: 18px;
   margin: 4px 0 0 37px;
   word-wrap: break-word;
-  color: ${props => (props.isAssigneeComment ? '#1c2124' : '#b1b5b8')};
+  color: ${(props) => (props.isAssigneeComment ? '#1c2124' : '#b1b5b8')};
   ${link}
 `
 
