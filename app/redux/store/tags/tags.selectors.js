@@ -15,13 +15,13 @@ import { compareTagByTitle } from '../../utils/component-helper'
 
 function loadTags(ids, data) {
   const { tagsSearch, entitiesTags } = data
-  let tags = ids.map(tagId => entitiesTags.getIn([tagId]))
+  let tags = ids.map((tagId) => entitiesTags.getIn([tagId]))
 
   // full text search
   if (tagsSearch) {
     const termLowerCase = tagsSearch.toLowerCase()
 
-    tags = tags.filter(tag => {
+    tags = tags.filter((tag) => {
       const titleLowerCase = tag.title.toLowerCase()
       return titleLowerCase.includes(termLowerCase)
     })
@@ -36,14 +36,14 @@ function loadTags(ids, data) {
 // ------ Selectors -------------------------------------------------------------
 
 // Local selectors
-const getTagsIsFetching = state => state.getIn(['tags', 'all', 'isFetching'])
+const getTagsIsFetching = (state) => state.getIn(['tags', 'all', 'isFetching'])
 
 // Export selectors
-export const getCurrentTagId = state => state.getIn(['tags', 'current'])
-export const getTagsItems = state => state.getIn(['tags', 'all', 'items'])
-export const getActiveTagsIds = state => state.getIn(['tags', 'activeTags'])
-export const getTagsSearch = state => state.getIn(['tags', 'search'])
-export const getTagsRelations = state => state.getIn(['tags', 'relations'])
+export const getCurrentTagId = (state) => state.getIn(['tags', 'current'])
+export const getTagsItems = (state) => state.getIn(['tags', 'all', 'items'])
+export const getActiveTagsIds = (state) => state.getIn(['tags', 'activeTags'])
+export const getTagsSearch = (state) => state.getIn(['tags', 'search'])
+export const getTagsRelations = (state) => state.getIn(['tags', 'relations'])
 export const getTag = (state, tagId) => getActiveEntitiesTags(state).get(tagId)
 
 // ------ Reselect selectors ----------------------------------------------------
@@ -56,7 +56,7 @@ export const getTags = createSelector(
     return {
       isFetching: tagsIsFetching,
       items: tagsItems
-        .map(tagId => entitiesTags.getIn([tagId]))
+        .map((tagId) => entitiesTags.getIn([tagId]))
         .sort(compareTagByTitle)
         .toArray(),
     }
@@ -80,8 +80,8 @@ export const getVisibleTags = createSelector(
 
 export const getActiveTagsId = createSelector(
   getActiveTagsIds,
-  activeTagsIds => {
-    return activeTagsIds.map(tagId => ({ id: tagId }))
+  (activeTagsIds) => {
+    return activeTagsIds.map((tagId) => ({ id: tagId }))
   }
 )
 
@@ -89,7 +89,7 @@ export const getTagsTitle = createSelector(
   getTagsItems,
   getActiveEntitiesTags,
   (tagsItems, entitiesTags) => {
-    return tagsItems.map(tagId =>
+    return tagsItems.map((tagId) =>
       entitiesTags.getIn([tagId]).title.toLowerCase()
     )
   }
@@ -99,7 +99,9 @@ export const getActiveTags = createSelector(
   getActiveTagsIds,
   getActiveEntitiesTags,
   (activeTagsIds, entitiesTags) => {
-    return activeTagsIds.map(tagId => entitiesTags.getIn([tagId])).reverse()
+    return activeTagsIds
+      .map((tagId) => entitiesTags.getIn([tagId]))
+      .sort(compareTagByTitle)
   }
 )
 
@@ -132,7 +134,7 @@ export const getNextTag = createSelector(
 
     const data = { tagsSearch, entitiesTags }
     let tags = loadTags(tagsItems.toArray(), data)
-    tags = List(tags.map(tag => tag.id))
+    tags = List(tags.map((tag) => tag.id))
     const sizeListOfTags = tags.size
     if (sizeListOfTags === 1) {
       return null
@@ -165,7 +167,7 @@ export const getPreviousTag = createSelector(
 
     const data = { tagsSearch, entitiesTags }
     let tags = loadTags(tagsItems.toArray(), data)
-    tags = List(tags.map(tag => tag.id))
+    tags = List(tags.map((tag) => tag.id))
     const sizeListOfTags = tags.size
     if (sizeListOfTags === 1) {
       return null
