@@ -88,6 +88,7 @@ const NavigationPrimary = props => {
     colorTheme,
     isVisibleMore,
     isAnimationMore,
+    onHandleClickDashboard,
     onHandleClickMore,
     onHandleClickTasks,
     onHandleClickTags,
@@ -97,7 +98,7 @@ const NavigationPrimary = props => {
   } = props
 
   const { user } = routes
-  // const isDashboardActive = pathname.substring(0, user.dashboard.length) === user.dashboard
+  const isDashboardActive = pathname.substring(0, user.dashboard.length) === user.dashboard
   const isTasksActive = pathname.substring(0, user.tasks.length) === user.tasks
   const isTagsActive = pathname.substring(0, user.tags.length) === user.tags
   const isInboxActive = pathname.substring(0, user.inbox.length) === user.inbox
@@ -108,6 +109,15 @@ const NavigationPrimary = props => {
 
   return (
     <NavigationPrimaryWrapper isVisibleMore={isVisibleMore}>
+      <NavigationButtonWithIcon
+        active={isDashboardActive}
+        onClick={onHandleClickDashboard}
+        colorTheme={colorTheme}
+        icon={ICONS.TASK_UNCOMPLETED}
+        iconWidth={18}
+        iconHeight={18}
+        iconScale={0.81}
+        label={"Dashboard"} />
       <NavigationButtonWithIcon
         active={isTasksActive}
         onClick={onHandleClickTasks}
@@ -193,6 +203,7 @@ NavigationPrimary.propTypes = {
   onHandleClickInbox: PropTypes.func,
   onHandleClickArchive: PropTypes.func,
   onHandleClickContacts: PropTypes.func,
+  onHandleClickDashboard: PropTypes.func,
 }
 
 const mapStateToProps = state => ({
@@ -224,6 +235,8 @@ export default compose(
       props.primaryHiddenNavigationVisible()
       window.setTimeout(() => props.setPrimaryHiddenNavigationAnimation(), 350)
     },
+    onHandleClickDashboard: props => () =>
+      props.changeNavigation(routes.user.dashboard),
     onHandleClickTasks: props => () =>
       props.changeNavigation(routes.user.tasks),
     onHandleClickTags: props => () => props.changeNavigation(routes.user.tags),

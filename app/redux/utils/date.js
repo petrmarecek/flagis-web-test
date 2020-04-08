@@ -49,5 +49,18 @@ export default {
 
   isAfterExpiration(expiresAt) {
     return moment().isSameOrAfter(expiresAt)
+  },
+
+  makeDateArray(startDate, stopDate, interval = 1, intervalUnit = "days") {
+    const dateArray = []
+    let momentCurrent = moment(startDate)
+    const momentStop = moment(stopDate)
+
+    while (momentCurrent <= momentStop) {
+      dateArray.push(moment(momentCurrent).format("YYYY-MM-DD"))
+      momentCurrent = moment(momentCurrent).add(interval, intervalUnit)
+    }
+
+    return dateArray
   }
 }

@@ -21,7 +21,7 @@ import InboxPage from 'containers/inbox-page'
 import ArchivePage from '../archive-page/'
 import ContactPage from '../contact-page/'
 import NotificationPage from '../notification-page/'
-// import DashboardPage from 'containers/dashboard-page'
+import DashboardPage from 'containers/dashboard-page'
 import AccountContainer from 'containers/account-container'
 import NotFoundPage from 'containers/not-found-page/loadable'
 import Dialogs from 'components/dialogs/dialogs'
@@ -69,10 +69,10 @@ class UserContainer extends PureComponent {
               path={`${this.props.match.path}/inbox`}
               component={InboxPage}
             />
-            {/* <Route
+            <Route
               path={`${this.props.match.path}/dashboard`}
               component={DashboardPage}
-            /> */}
+            />
             <Route
               path={`${this.props.match.path}/archive`}
               component={ArchivePage}

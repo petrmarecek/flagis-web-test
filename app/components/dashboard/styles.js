@@ -1,10 +1,12 @@
 import styled from 'styled-components'
 
 const DashboardWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
   padding: 10px;
-  background-color: #fff;
+`
+
+const ChartWrapper = styled.div`
+  background: #fff;
+  padding: 50px 20px 20px 0;
 `
 
 const DashboardGraph = styled.div`
@@ -18,4 +20,4 @@ const DashboardLabel = styled.div`
   text-align: center;
 `
 
-export { DashboardWrapper, DashboardGraph, DashboardLabel }
+export { DashboardWrapper, ChartWrapper, DashboardGraph, DashboardLabel }
