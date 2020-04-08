@@ -37,6 +37,50 @@ import {
 } from './styles'
 import colors from 'components/styled-components-mixins/colors'
 
+const NavigationButtonWithIcon = ({
+  active,
+  onClick,
+  colorTheme,
+  icon,
+  iconWidth,
+  iconHeight,
+  iconScale,
+  label,
+  children
+}) => (
+  <PrimaryButton
+    active={active}
+    onClick={onClick}
+    colorTheme={colorTheme}
+  >
+    <Icon
+      icon={icon}
+      width={iconWidth}
+      height={iconHeight}
+      scale={iconScale}
+      color={
+        active
+          ? [colors[colorTheme].navigationPrimaryHover]
+          : [colors[colorTheme].navigationPrimary]
+      }
+    />
+    <PrimaryButtonText>{label}</PrimaryButtonText>
+    {children}
+  </PrimaryButton>
+)
+
+NavigationButtonWithIcon.propTypes = {
+  active: PropTypes.bool.isRequired,
+  onClick: PropTypes.func.isRequired,
+  colorTheme: PropTypes.string,
+  icon: PropTypes.string.isRequired,
+  iconWidth: PropTypes.number,
+  iconHeight: PropTypes.number,
+  iconScale: PropTypes.number,
+  label: PropTypes.string.isRequired,
+  children: PropTypes.node,
+}
+
 const NavigationPrimary = props => {
   const {
     inboxCount,
@@ -53,6 +97,7 @@ const NavigationPrimary = props => {
   } = props
 
   const { user } = routes
+  // const isDashboardActive = pathname.substring(0, user.dashboard.length) === user.dashboard
   const isTasksActive = pathname.substring(0, user.tasks.length) === user.tasks
   const isTagsActive = pathname.substring(0, user.tags.length) === user.tags
   const isInboxActive = pathname.substring(0, user.inbox.length) === user.inbox
@@ -63,100 +108,57 @@ const NavigationPrimary = props => {
 
   return (
     <NavigationPrimaryWrapper isVisibleMore={isVisibleMore}>
-      <PrimaryButton
+      <NavigationButtonWithIcon
         active={isTasksActive}
         onClick={onHandleClickTasks}
         colorTheme={colorTheme}
-      >
-        <Icon
-          icon={ICONS.TASK_UNCOMPLETED}
-          width={18}
-          height={18}
-          scale={0.81}
-          color={
-            isTasksActive
-              ? [colors[colorTheme].navigationPrimaryHover]
-              : [colors[colorTheme].navigationPrimary]
-          }
-        />
-        <PrimaryButtonText>My Tasks</PrimaryButtonText>
-      </PrimaryButton>
-      <PrimaryButton
+        icon={ICONS.TASK_UNCOMPLETED}
+        iconWidth={18}
+        iconHeight={18}
+        iconScale={0.81}
+        label={"My Tasks"} />
+      <NavigationButtonWithIcon
         active={isTagsActive}
         onClick={onHandleClickTags}
         colorTheme={colorTheme}
-      >
-        <Icon
-          icon={ICONS.TAG_MULTI}
-          width={18}
-          height={11}
-          scale={0.9}
-          color={
-            isTagsActive
-              ? [colors[colorTheme].navigationPrimaryHover]
-              : [colors[colorTheme].navigationPrimary]
-          }
-        />
-        <PrimaryButtonText>Tags</PrimaryButtonText>
-      </PrimaryButton>
-      <PrimaryButton
+        icon={ICONS.TAG_MULTI}
+        iconWidth={18}
+        iconHeight={11}
+        iconScale={0.9}
+        label={"Tags"} />
+      <NavigationButtonWithIcon
         active={isInboxActive}
         onClick={onHandleClickInbox}
         colorTheme={colorTheme}
+        icon={ICONS.INBOX}
+        iconWidth={18}
+        iconHeight={13}
+        iconScale={0.58}
+        label={"Inbox"}
       >
-        <Icon
-          icon={ICONS.INBOX}
-          width={18}
-          height={13}
-          scale={0.58}
-          color={
-            isInboxActive
-              ? [colors[colorTheme].navigationPrimaryHover]
-              : [colors[colorTheme].navigationPrimary]
-          }
-        />
-        <PrimaryButtonText>Inbox</PrimaryButtonText>
         {inboxCount > 0 && <InboxCounter count={inboxCount} />}
-      </PrimaryButton>
+      </NavigationButtonWithIcon>
+
       {isAnimationMore && (
         <NavigationPrimaryHidden>
-          <PrimaryButton
+          <NavigationButtonWithIcon
             active={isArchiveActive}
             onClick={onHandleClickArchive}
             colorTheme={colorTheme}
-          >
-            <Icon
-              icon={ICONS.ARCHIVED}
-              active={isArchiveActive}
-              width={18}
-              height={16}
-              scale={1.05}
-              color={
-                isArchiveActive
-                  ? [colors[colorTheme].navigationPrimaryHover]
-                  : [colors[colorTheme].navigationPrimary]
-              }
-            />
-            <PrimaryButtonText>Archived Tasks</PrimaryButtonText>
-          </PrimaryButton>
-          <PrimaryButton
+            icon={ICONS.ARCHIVED}
+            iconWidth={18}
+            iconHeight={16}
+            iconScale={1.05}
+            label={"Archived Tasks"} />
+          <NavigationButtonWithIcon
             active={isContactsActive}
             onClick={onHandleClickContacts}
             colorTheme={colorTheme}
-          >
-            <Icon
-              icon={ICONS.CONTACTS}
-              width={18}
-              height={14}
-              scale={0.6}
-              color={
-                isContactsActive
-                  ? [colors[colorTheme].navigationPrimaryHover]
-                  : [colors[colorTheme].navigationPrimary]
-              }
-            />
-            <PrimaryButtonText>Contacts</PrimaryButtonText>
-          </PrimaryButton>
+            icon={ICONS.CONTACTS}
+            iconWidth={18}
+            iconHeight={14}
+            iconScale={0.6}
+            label={"Contacts"} />
         </NavigationPrimaryHidden>
       )}
       <ShowMoreButton
