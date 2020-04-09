@@ -7,6 +7,7 @@ import { compose, withHandlers } from 'recompose'
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form/immutable'
 import { sendContactUs } from 'redux/store/auth/auth.actions'
+import { getUsername, getUserEmail } from 'redux/store/auth/auth.selectors'
 import {
   deselectError,
   setLoader,
@@ -47,7 +48,7 @@ import {
 } from '../styled-components-mixins'
 
 const ContactUsWrapper = styled.div`
-  padding: ${props => (props.nonPadding ? '0' : '0 25px 50px')};
+  padding: ${(props) => (props.nonPadding ? '0' : '0 25px 50px')};
 `
 
 const ContactUsContainer = ({
@@ -71,9 +72,9 @@ const ContactUsContainer = ({
         <FormBody
           onSubmit={
             isUserContactUs
-              ? handleSubmit(values => onSubmit(values))
+              ? handleSubmit((values) => onSubmit(values))
               : isAgree
-              ? handleSubmit(values => onSubmit(values))
+              ? handleSubmit((values) => onSubmit(values))
               : null
           }
         >
@@ -182,12 +183,18 @@ ContactUsContainer.propTypes = {
   onSubmit: PropTypes.func,
 }
 
-const mapStateToProps = state => ({
-  errorContactUs: getAppStateItem(state, 'contactUs'),
-  contactUsValues: getFromValues(state, 'contactUs'),
-  loader: getLoader(state).form,
-  pathname: getRoutingPathname(state),
-})
+const mapStateToProps = (state) => {
+  const userNames = getUsername(state)
+  const email = { email: getUserEmail(state) }
+
+  return {
+    errorContactUs: getAppStateItem(state, 'contactUs'),
+    contactUsValues: getFromValues(state, 'contactUs'),
+    loader: getLoader(state).form,
+    pathname: getRoutingPathname(state),
+    initialValues: { ...userNames, ...email },
+  }
+}
 
 const mapDispatchToProps = {
   setLoader,
@@ -203,7 +210,7 @@ export default compose(
     onSubmitSuccess: afterSubmitContactUs,
   }),
   withHandlers({
-    onSubmit: props => values => {
+    onSubmit: (props) => (values) => {
       props.setLoader(loaderTypes.FORM)
       props.sendContactUs({
         firstName: values.get('firstName'),
