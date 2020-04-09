@@ -7,6 +7,7 @@ const DashboardWrapper = styled.div`
 const ChartWrapper = styled.div`
   background: #fff;
   padding: 50px 20px 20px 0;
+  margin-bottom: 10px;
 `
 
 const DashboardGraph = styled.div`

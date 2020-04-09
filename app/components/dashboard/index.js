@@ -3,27 +3,40 @@ import styled from 'styled-components'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import Loader from 'components/common/loader'
-// import commonUtils from '../../redux/utils/common'
+import commonUtils from 'redux/utils/common'
 import { connect } from 'react-redux'
 import ShadowScrollbar from 'components/common/shadow-scrollbar'
-import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import {
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  BarChart,
+  Bar,
+  Cell
+} from 'recharts';
 
 import { getAuth } from 'redux/store/auth/auth.selectors'
-// import { getTagColor } from '../../redux/utils/component-helper'
-
+import { getTagColor } from 'redux/utils/component-helper'
 import { DashboardWrapper, ChartWrapper } from './styles'
 import api from 'redux/utils/api'
 import date from 'redux/utils/date'
+import { getTags } from 'redux/store/tags/tags.selectors'
 
-// const tagColors = tags => {
-//   const colorIndex =
-//     tag.colorIndex === null
-//       ? commonUtils.computeIntHash(tag.title, 10)
-//       : tag.colorIndex
+const colorForTag = (tag, storeTags) => {
+  const storeTag = storeTags.find(item => item.id === tag.id)
+  const colorIndex =
+    storeTag && typeof (storeTag.colorIndex) === 'number'
+      ? storeTag.colorIndex
+      : commonUtils.computeIntHash(tag.title, 10)
 
-//   result[tag.title] = getTagColor(colorIndex)
-//   return result
-// }
+  const color = getTagColor(colorIndex)
+  return color
+}
 
 const prepareData = items => {
   let maxValue = 0
@@ -39,7 +52,6 @@ const prepareData = items => {
   }
 }
 
-
 const prepareStats = stats => {
   const datesToShow = date.makeDateArray(moment().subtract(1, "months").toDate(), new Date())
   const newTasksByDate = prepareData(stats.newTasksByDate)
@@ -47,7 +59,7 @@ const prepareStats = stats => {
 
   const items = datesToShow.map(dateLabel => {
     return {
-      xLabel: dateLabel,
+      label: dateLabel,
       ["New Tasks"]: newTasksByDate.index[dateLabel] || 0,
       ["Completed Tasks"]: completedTasksByDate.index[dateLabel] || 0,
     }
@@ -59,11 +71,35 @@ const prepareStats = stats => {
   }
 }
 
-const CustomizedAxisTick = ({ x, y, stroke, payload }) => (
+const prepareTagStats = (stats, storeTags) => {
+  let maxValue = 0
+  const items = stats.mostUsedTags.map(item => {
+    maxValue = Math.max(maxValue, item.count)
+    return {
+      id: item.id,
+      label: item.title,
+      count: item.count,
+      color: colorForTag(item, storeTags),
+    }
+  })
+
+  return {
+    maxValue: Math.max(stats.mostUsedTags.map),
+    items,
+  }
+}
+
+const CustomizedAxisTick = ({ x, y, payload }) => (
   <g transform={`translate(${x},${y})`}>
     <text x={0} y={0} dy={16} textAnchor="end" fill="#666" transform="rotate(-35)">{payload.value}</text>
   </g>
 )
+
+CustomizedAxisTick.propTypes = {
+  x: PropTypes.number,
+  y: PropTypes.number,
+  payload: PropTypes.object,
+}
 
 const labels = [
   { color: '#34A2EE', title: 'New Tasks' },
@@ -96,7 +132,7 @@ const LegendItem = styled.li`
   }
 `
 
-const renderLegend = ({ payload }) => (
+const CustomizedLegend = ({ payload }) => (
   <LegendContainer>
     {payload.map((entry, index) => (
        <LegendItem key={`item-${index}`} color={labels[index].color}>{entry.value}</LegendItem>
@@ -104,23 +140,30 @@ const renderLegend = ({ payload }) => (
   </LegendContainer>
 )
 
+CustomizedLegend.propTypes = {
+  payload: PropTypes.array,
+}
+
 const ChartTitle = styled.div`
   padding: 0 50px;
   font-size: 20px;
-  font-weight: bold;
+  /* font-weight: bold; */
 `
 
-const Dashboard = ({ auth }) => {
+const Dashboard = ({ auth, tags }) => {
 
   const [isLoading, setIsLoading] = useState(true)
-  const [data, setData] = useState(true)
+  const [taskStats, setTaskStats] = useState([])
+  const [tagStats, setTagStats] = useState(true)
 
   useEffect(() => {
     const fetchData = async () => {
       api.setApiToken(auth.accessToken)
       const stats = await api.stats.getStats()
-      const statsData = prepareStats(stats)
-      setData(statsData)
+      const taskStatsData = prepareStats(stats)
+      const tagStatsData = prepareTagStats(stats, tags.items)
+      setTaskStats(taskStatsData)
+      setTagStats(tagStatsData)
       setIsLoading(false)
     }
 
@@ -144,11 +187,11 @@ const Dashboard = ({ auth }) => {
           <ChartTitle>Number of tasks by date</ChartTitle>
           <ResponsiveContainer width="100%" minHeight={400}>
             <LineChart
-              data={data.items}
+              data={taskStats.items}
               margin={{top: 40, right: 50, left: 10, bottom: 10}}>
               <CartesianGrid vertical={false} strokeDasharray="3 3"/>
               <XAxis
-                dataKey="xLabel"
+                dataKey="label"
                 axisLine={false}
                 tickLine={false}
                 tick={<CustomizedAxisTick />}
@@ -157,11 +200,11 @@ const Dashboard = ({ auth }) => {
                 padding={{ right: 20 }}
                 axisLine={false}
                 tickLine={false}
-                domain={[0, data.maxValue]}
+                domain={[0, taskStats.maxValue]}
                 interval="preserveStartEnd"
                 ticks={[0,3,6,9,12,15,18]} />
               <Tooltip/>
-              <Legend content={renderLegend} height={80} />
+              <Legend content={CustomizedLegend} height={80} />
               <Line
                 type="monotone"
                 dataKey="New Tasks"
@@ -178,6 +221,38 @@ const Dashboard = ({ auth }) => {
             </LineChart>
           </ResponsiveContainer>
         </ChartWrapper>
+        <ChartWrapper>
+          <ChartTitle>Most often used tags</ChartTitle>
+          <ResponsiveContainer width="100%" minHeight={350}>
+            <BarChart
+              data={tagStats.items}
+              layout="vertical"
+              maxBarSize={15}
+              margin={{top: 40, right: 50, left: 50, bottom: 10}}>
+              <CartesianGrid horizontal={false} strokeDasharray="3 3"/>
+              <XAxis
+                type="number"
+                axisLine={false}
+                tickLine={false}
+                domain={[0, tagStats.maxValue]}
+                interval="preserveStartEnd"
+                ticks={[1,2,3,4,5]} />
+              <YAxis
+                type="category"
+                dataKey="label"
+                axisLine={false}
+                tickLine={false} />
+              <Tooltip cursor={{ fill: '#fafafa' }} />
+              <Bar dataKey="count" label={{ position: 'right' }}>
+                {
+                  tagStats.items.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))
+                }
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </ChartWrapper>
       </DashboardWrapper>
     </ShadowScrollbar>
   )
@@ -189,6 +264,7 @@ Dashboard.propTypes = {
 
 const mapStateToProps = state => ({
   auth: getAuth(state),
+  tags: getTags(state),
 })
 
 export default connect(mapStateToProps)(Dashboard)
