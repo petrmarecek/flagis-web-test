@@ -73,7 +73,7 @@ NavigationButtonWithIcon.propTypes = {
   active: PropTypes.bool.isRequired,
   onClick: PropTypes.func.isRequired,
   colorTheme: PropTypes.string,
-  icon: PropTypes.string.isRequired,
+  icon: PropTypes.object.isRequired,
   iconWidth: PropTypes.number,
   iconHeight: PropTypes.number,
   iconScale: PropTypes.number,

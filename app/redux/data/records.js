@@ -207,6 +207,11 @@ export const AttachmentStore = Record({
   isFetching: false,
 })
 
+export const StatsStore = Record({
+  isFetching: true,
+  data: null
+})
+
 export const TasksMenuStore = Record({
   filters: new TasksFilters(),
   sort: new TasksSort(),

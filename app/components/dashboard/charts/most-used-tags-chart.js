@@ -15,7 +15,7 @@ import {
 const MostUsedTagsChart = ({ stats }) => {
   return (
     <ChartWrapper>
-      <ChartTitle>Most used tags</ChartTitle>
+      <ChartTitle>Most frequently used tags</ChartTitle>
       <ResponsiveContainer width="100%" minHeight={350}>
         <BarChart
           data={stats.items}

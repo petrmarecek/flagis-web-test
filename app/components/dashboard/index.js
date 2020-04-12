@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react'
+import { connect } from 'react-redux'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import Loader from 'components/common/loader'
-import { connect } from 'react-redux'
 import ShadowScrollbar from 'components/common/shadow-scrollbar'
-import { getAuth } from 'redux/store/auth/auth.selectors'
 import { getTagColor, getColorIndex } from 'redux/utils/component-helper'
 import { DashboardWrapper } from './styles'
-import api from 'redux/utils/api'
 import date from 'redux/utils/date'
 import { getTags } from 'redux/store/tags/tags.selectors'
 import MostUsedTagsChart from './charts/most-used-tags-chart'
 import TasksByDateChart from './charts/tasks-by-date-chart'
+import { getStats } from 'redux/store/stats/stats.selectors'
+import * as statsActions from 'redux/store/stats/stats.actions'
 
 const colorForTag = (tag, storeTags) => {
   const storeTag = storeTags.find(item => item.id === tag.id)
@@ -75,33 +75,32 @@ const prepareTagStats = (stats, storeTags) => {
   }
 }
 
-const Dashboard = ({ auth, tags }) => {
+const Dashboard = ({ tags, stats, fetchStats }) => {
 
-  const [isLoading, setIsLoading] = useState(true)
-  const [taskStats, setTaskStats] = useState([])
-  const [tagStats, setTagStats] = useState([])
+  const [statsReady, setStatsReady] = useState(false)
+  const [taskStats, setTaskStats] = useState({})
+  const [tagStats, setTagStats] = useState({})
 
   useEffect(() => {
-    const fetchData = async () => {
-      api.setApiToken(auth.accessToken)
-      const stats = await api.stats.getStats()
-      const taskStatsData = prepareTaskStats(stats)
-      const tagStatsData = prepareTagStats(stats, tags.items)
+    fetchStats()
+  }, [])
+
+  useEffect(() => {
+    if (!stats.isFetching) {
+      const taskStatsData = prepareTaskStats(stats.data)
+      const tagStatsData = prepareTagStats(stats.data, tags.items)
       setTaskStats(taskStatsData)
       setTagStats(tagStatsData)
-      setIsLoading(false)
+      setStatsReady(true)
     }
-
-    setIsLoading(true)
-    fetchData()
-  }, [])
+  }, [stats])
 
   const scrollStyle = {
     height: 'calc(100vh - 10px)',
     overflow: 'hidden',
   }
 
-  if (!auth.accessToken || isLoading) {
+  if (stats.isFetching || !statsReady) {
     return <Loader />
   }
 
@@ -116,16 +115,24 @@ const Dashboard = ({ auth, tags }) => {
 }
 
 Dashboard.propTypes = {
-  auth: PropTypes.object,
   tags: PropTypes.shape({
     isFetching: PropTypes.bool,
     items: PropTypes.array,
-  })
+  }),
+  stats: PropTypes.shape({
+    isFetching: PropTypes.bool,
+    data: PropTypes.object,
+  }),
+  fetchStats: PropTypes.func,
+}
+
+const mapDispatchToProps = {
+  fetchStats: statsActions.fetchStats
 }
 
 const mapStateToProps = state => ({
-  auth: getAuth(state),
   tags: getTags(state),
+  stats: getStats(state),
 })
 
-export default connect(mapStateToProps)(Dashboard)
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)
