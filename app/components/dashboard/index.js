@@ -96,8 +96,7 @@ const Dashboard = ({ tags, stats, fetchStats }) => {
   }, [stats])
 
   const scrollStyle = {
-    height: 'calc(100vh - 10px)',
-    overflow: 'hidden',
+    height: '100%',
   }
 
   if (stats.isFetching || !statsReady) {

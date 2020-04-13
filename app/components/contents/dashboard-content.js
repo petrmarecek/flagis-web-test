@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { compose } from 'recompose'
 
 // redux
@@ -8,6 +7,8 @@ import { updateTaskSearch } from 'redux/store/tasks/tasks.actions'
 
 // components
 import Dashboard from 'components/dashboard'
+import MainSearch from 'components/common/main-search'
+import NavigationSecondary from 'components/navigation/navigation-secondary'
 
 // styles
 import {
@@ -15,16 +16,24 @@ import {
   CenterPanelTopPrimary,
   CenterPageTitle,
   CenterPanelScroll,
+  CenterPanelTopPrimaryLeft,
+  CenterPanelTopSecondary
 } from '../panels/styles'
 
 const DashboardContent = () => (
   <div>
     <CenterPanelTop>
-      <CenterPanelTopPrimary>
-        <CenterPageTitle>Dashboard</CenterPageTitle>
+      <CenterPanelTopPrimary bottomBorder>
+        <CenterPanelTopPrimaryLeft flexStart>
+          <CenterPageTitle>My Tasks</CenterPageTitle>
+          <MainSearch />
+        </CenterPanelTopPrimaryLeft>
       </CenterPanelTopPrimary>
+      <CenterPanelTopSecondary smallOffsetPadding>
+        <NavigationSecondary />
+      </CenterPanelTopSecondary>
     </CenterPanelTop>
-    <CenterPanelScroll offsetTop={60} offsetBottom={-30}>
+    <CenterPanelScroll offsetTop={100} offsetBottom={0}>
       <Dashboard />
     </CenterPanelScroll>
   </div>
