@@ -68,10 +68,10 @@ CustomizedLegend.propTypes = {
   payload: PropTypes.array,
 }
 
-const TaskByDateChart = ({ stats }) => {
+const TaskFrequencyByDateChart = ({ stats }) => {
   return (
     <ChartWrapper>
-      <ChartTitle>Number of tasks by date</ChartTitle>
+      <ChartTitle>Task frequency by date</ChartTitle>
       <ResponsiveContainer width="100%" minHeight={400}>
         <LineChart
           data={stats.items}
@@ -89,7 +89,8 @@ const TaskByDateChart = ({ stats }) => {
             tickLine={false}
             domain={[0, stats.maxValue]}
             interval="preserveStartEnd"
-            ticks={[0,3,6,9,12,15,18]} />
+            ticks={stats.ticks}
+            allowDecimals={false} />
           <Tooltip/>
           <Legend content={CustomizedLegend} height={80} />
           <Line
@@ -111,11 +112,11 @@ const TaskByDateChart = ({ stats }) => {
   )
 }
 
-TaskByDateChart.propTypes = {
+TaskFrequencyByDateChart.propTypes = {
   stats: PropTypes.shape({
     items: PropTypes.array,
     maxValue: PropTypes.number,
   })
 }
 
-export default TaskByDateChart
+export default TaskFrequencyByDateChart

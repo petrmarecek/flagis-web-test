@@ -12,10 +12,10 @@ import {
   Cell,
 } from 'recharts'
 
-const MostUsedTagsChart = ({ stats }) => {
+const TagUseFrequencyChart = ({ stats }) => {
   return (
     <ChartWrapper>
-      <ChartTitle>Most frequently used tags</ChartTitle>
+      <ChartTitle>Tag use frequency</ChartTitle>
       <ResponsiveContainer width="100%" minHeight={350}>
         <BarChart
           data={stats.items}
@@ -29,7 +29,8 @@ const MostUsedTagsChart = ({ stats }) => {
             tickLine={false}
             domain={[0, stats.maxValue]}
             interval="preserveStartEnd"
-            ticks={[1,2,3,4,5]} />
+            ticks={stats.ticks}
+            allowDecimals={false} />
           <YAxis
             type="category"
             dataKey="label"
@@ -49,11 +50,11 @@ const MostUsedTagsChart = ({ stats }) => {
   )
 }
 
-MostUsedTagsChart.propTypes = {
+TagUseFrequencyChart.propTypes = {
   stats: PropTypes.shape({
     items: PropTypes.array,
     maxValue: PropTypes.number,
   })
 }
 
-export default MostUsedTagsChart
+export default TagUseFrequencyChart

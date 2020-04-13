@@ -184,6 +184,6 @@ export default {
   },
 
   stats: {
-    getStats: () => api.get(`stats`).then(res => res.data),
+    loadStats: data => api.post(`stats`, data).then(res => res.data),
   }
 }

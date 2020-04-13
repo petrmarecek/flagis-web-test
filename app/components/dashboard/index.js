@@ -7,11 +7,12 @@ import ShadowScrollbar from 'components/common/shadow-scrollbar'
 import { getTagColor, getColorIndex } from 'redux/utils/component-helper'
 import { DashboardWrapper } from './styles'
 import date from 'redux/utils/date'
-import { getTags } from 'redux/store/tags/tags.selectors'
-import MostUsedTagsChart from './charts/most-used-tags-chart'
-import TasksByDateChart from './charts/tasks-by-date-chart'
+import { getTags, getActiveTagsIds } from 'redux/store/tags/tags.selectors'
+import TagUseFrequencyChart from './charts/tag-use-frequency-chart'
+import TaskFrequencyByDateChart from './charts/task-frequency-by-date-chart'
 import { getStats } from 'redux/store/stats/stats.selectors'
 import * as statsActions from 'redux/store/stats/stats.actions'
+import { generateTicks } from 'utils/charts'
 
 const colorForTag = (tag, storeTags) => {
   const storeTag = storeTags.find(item => item.id === tag.id)
@@ -51,8 +52,12 @@ const prepareTaskStats = stats => {
     }
   })
 
+  const maxValue = Math.max(newTasksByDate.maxValue, completedTasksByDate.maxValue)
+  const ticks = generateTicks(5, maxValue)
+
   return {
-    maxValue: Math.max(newTasksByDate.maxValue, completedTasksByDate.maxValue),
+    maxValue,
+    ticks,
     items,
   }
 }
@@ -69,13 +74,15 @@ const prepareTagStats = (stats, storeTags) => {
     }
   })
 
+  const ticks = generateTicks(5, maxValue)
   return {
-    maxValue: Math.max(stats.mostUsedTags.map),
+    maxValue,
+    ticks,
     items,
   }
 }
 
-const Dashboard = ({ tags, stats, fetchStats }) => {
+const Dashboard = ({ tags, stats, activeTags, fetchStats }) => {
 
   const [statsReady, setStatsReady] = useState(false)
   const [taskStats, setTaskStats] = useState({})
@@ -83,7 +90,7 @@ const Dashboard = ({ tags, stats, fetchStats }) => {
 
   useEffect(() => {
     fetchStats()
-  }, [])
+  }, [activeTags])
 
   useEffect(() => {
     if (!stats.isFetching) {
@@ -106,8 +113,8 @@ const Dashboard = ({ tags, stats, fetchStats }) => {
   return (
     <ShadowScrollbar style={scrollStyle}>
       <DashboardWrapper>
-        <TasksByDateChart stats={taskStats} />
-        <MostUsedTagsChart stats={tagStats} />
+        <TaskFrequencyByDateChart stats={taskStats} />
+        <TagUseFrequencyChart stats={tagStats} />
       </DashboardWrapper>
     </ShadowScrollbar>
   )
@@ -131,6 +138,7 @@ const mapDispatchToProps = {
 
 const mapStateToProps = state => ({
   tags: getTags(state),
+  activeTags: getActiveTagsIds(state),
   stats: getStats(state),
 })
 
