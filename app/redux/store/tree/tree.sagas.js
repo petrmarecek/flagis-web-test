@@ -196,12 +196,12 @@ export function* selectPath(action) {
     return
   }
 
-  // other pages -> redirect to tasks-page
   const pathname = yield select(state =>
     routingSelectors.getRoutingPathname(state)
   )
 
-  if (pathname !== routes.user.tasks) {
+  // other pages -> redirect to tasks-page
+  if (pathname !== routes.user.dashboard && pathname !== routes.user.tasks) {
     yield put(push(routes.user.tasks))
   }
 

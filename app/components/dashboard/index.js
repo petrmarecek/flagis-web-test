@@ -114,7 +114,9 @@ const Dashboard = ({ tags, stats, activeTags, fetchStats }) => {
     <ShadowScrollbar style={scrollStyle}>
       <DashboardWrapper>
         <TaskFrequencyByDateChart stats={taskStats} />
-        <TagUseFrequencyChart stats={tagStats} />
+        {activeTags && activeTags.size === 0 &&
+          <TagUseFrequencyChart stats={tagStats} />
+        }
       </DashboardWrapper>
     </ShadowScrollbar>
   )
@@ -125,6 +127,7 @@ Dashboard.propTypes = {
     isFetching: PropTypes.bool,
     items: PropTypes.array,
   }),
+  activeTags: PropTypes.object,
   stats: PropTypes.shape({
     isFetching: PropTypes.bool,
     data: PropTypes.object,
