@@ -13,6 +13,7 @@ import { ATTACHMENTS } from './attachments/attachments.actions'
 import { CONTACTS } from './contacts/contacts.actions'
 import { FOLLOWERS } from './followers/followers.actions'
 import { ROUTING } from './routing/routing.actions'
+import { STATS } from './stats/stats.actions'
 import { ERRORS } from './errors/errors.actions'
 
 import * as auth from './auth/auth.sagas'
@@ -28,6 +29,7 @@ import * as attachment from './attachments/attachments.sagas'
 import * as contact from './contacts/contacts.sagas'
 import * as followers from './followers/followers.sagas'
 import * as routing from './routing/routing.sagas'
+import * as stats from './stats/stats.sagas'
 import * as errors from './errors/errors.sagas'
 
 export default function* root() {
@@ -165,6 +167,9 @@ export default function* root() {
       ROUTING.CHANGE_NAVIGATION_SECONDARY,
       routing.changeNavigationSecondary
     ),
+
+    // stats
+    takeLatest(STATS.FETCH, stats.fetchStats),
 
     // errors
     takeEvery(ERRORS.ERROR_SENTRY, errors.errorSentry),

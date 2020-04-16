@@ -182,4 +182,8 @@ export default {
         })
         .then(res => res.data),
   },
+
+  stats: {
+    loadStats: data => api.post(`stats`, data).then(res => res.data),
+  }
 }
