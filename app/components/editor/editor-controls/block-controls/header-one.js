@@ -5,9 +5,9 @@ import { withHandlers } from 'recompose'
 // styles
 import { ControlButton } from '../../styles'
 
-const HeaderOne = props => {
+const HeaderOne = (props) => {
   const { editorState } = props
-  const style = 'header-three'
+  const style = 'header-one'
   const selection = editorState.getSelection()
   const blockType = editorState
     .getCurrentContent()
@@ -17,7 +17,7 @@ const HeaderOne = props => {
 
   return (
     <ControlButton
-      onMouseDown={event => props.onHandleToggle(style, event)}
+      onMouseDown={(event) => props.onHandleToggle(style, event)}
       isActive={isActive}
       disabled={props.disabled}
     >
@@ -34,7 +34,7 @@ HeaderOne.propTypes = {
 }
 
 export default withHandlers({
-  onHandleToggle: props => (style, event) => {
+  onHandleToggle: (props) => (style, event) => {
     event.preventDefault()
     props.onToggle(style)
   },

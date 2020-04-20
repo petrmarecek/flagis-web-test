@@ -13,6 +13,7 @@ export const colors = {
   snowShadow: '#d7e3ec',
   porpoise: '#DBDBDB',
   coldWind: '#e1e4e5',
+  mercury: '#ebebeb',
   crystalBell: '#efefef',
   lynxWhite: '#F6F7F8',
   whitePorcelain: '#fafafa',

@@ -46,24 +46,10 @@ const NavigationButtonWithIcon = ({
   iconHeight,
   iconScale,
   label,
-  children
+  children,
 }) => (
-  <PrimaryButton
-    active={active}
-    onClick={onClick}
-    colorTheme={colorTheme}
-  >
-    <Icon
-      icon={icon}
-      width={iconWidth}
-      height={iconHeight}
-      scale={iconScale}
-      color={
-        active
-          ? [colors[colorTheme].navigationPrimaryHover]
-          : [colors[colorTheme].navigationPrimary]
-      }
-    />
+  <PrimaryButton active={active} onClick={onClick} colorTheme={colorTheme}>
+    <Icon icon={icon} width={iconWidth} height={iconHeight} scale={iconScale} />
     <PrimaryButtonText>{label}</PrimaryButtonText>
     {children}
   </PrimaryButton>
@@ -81,7 +67,7 @@ NavigationButtonWithIcon.propTypes = {
   children: PropTypes.node,
 }
 
-const NavigationPrimary = props => {
+const NavigationPrimary = (props) => {
   const {
     inboxCount,
     pathname,
@@ -97,8 +83,9 @@ const NavigationPrimary = props => {
   } = props
 
   const { user } = routes
-  const isTasksActive = pathname.substring(0, user.tasks.length) === user.tasks
-    || pathname.substring(0, user.dashboard.length) === user.dashboard
+  const isTasksActive =
+    pathname.substring(0, user.tasks.length) === user.tasks ||
+    pathname.substring(0, user.dashboard.length) === user.dashboard
   const isTagsActive = pathname.substring(0, user.tags.length) === user.tags
   const isInboxActive = pathname.substring(0, user.inbox.length) === user.inbox
   const isArchiveActive =
@@ -112,11 +99,12 @@ const NavigationPrimary = props => {
         active={isTasksActive}
         onClick={onHandleClickTasks}
         colorTheme={colorTheme}
-        icon={ICONS.TASK_UNCOMPLETED}
+        icon={ICONS.TASK_COMPLETED}
         iconWidth={18}
         iconHeight={18}
-        iconScale={0.81}
-        label={"My Tasks"} />
+        iconScale={0.77}
+        label={'My Tasks'}
+      />
       <NavigationButtonWithIcon
         active={isTagsActive}
         onClick={onHandleClickTags}
@@ -125,7 +113,8 @@ const NavigationPrimary = props => {
         iconWidth={18}
         iconHeight={11}
         iconScale={0.9}
-        label={"Tags"} />
+        label={'Tags'}
+      />
       <NavigationButtonWithIcon
         active={isInboxActive}
         onClick={onHandleClickInbox}
@@ -134,7 +123,7 @@ const NavigationPrimary = props => {
         iconWidth={18}
         iconHeight={13}
         iconScale={0.58}
-        label={"Inbox"}
+        label={'Inbox'}
       >
         {inboxCount > 0 && <InboxCounter count={inboxCount} />}
       </NavigationButtonWithIcon>
@@ -149,7 +138,8 @@ const NavigationPrimary = props => {
             iconWidth={18}
             iconHeight={16}
             iconScale={1.05}
-            label={"Archived Tasks"} />
+            label={'Archived Tasks'}
+          />
           <NavigationButtonWithIcon
             active={isContactsActive}
             onClick={onHandleClickContacts}
@@ -158,7 +148,8 @@ const NavigationPrimary = props => {
             iconWidth={18}
             iconHeight={14}
             iconScale={0.6}
-            label={"Contacts"} />
+            label={'Contacts'}
+          />
         </NavigationPrimaryHidden>
       )}
       <ShowMoreButton
@@ -195,7 +186,7 @@ NavigationPrimary.propTypes = {
   onHandleClickContacts: PropTypes.func,
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   inboxCount: getInboxTasksItems(state).size,
   pathname: getRoutingPathname(state),
   colorTheme: getColorTheme(state),
@@ -214,7 +205,7 @@ const mapDispatchToProps = {
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withHandlers({
-    onHandleClickMore: props => () => {
+    onHandleClickMore: (props) => () => {
       if (props.isVisibleMore) {
         props.primaryHiddenNavigationHide()
         props.deselectPrimaryHiddenNavigationAnimation()
@@ -224,14 +215,15 @@ export default compose(
       props.primaryHiddenNavigationVisible()
       window.setTimeout(() => props.setPrimaryHiddenNavigationAnimation(), 350)
     },
-    onHandleClickTasks: props => () =>
+    onHandleClickTasks: (props) => () =>
       props.changeNavigation(routes.user.tasks),
-    onHandleClickTags: props => () => props.changeNavigation(routes.user.tags),
-    onHandleClickInbox: props => () =>
+    onHandleClickTags: (props) => () =>
+      props.changeNavigation(routes.user.tags),
+    onHandleClickInbox: (props) => () =>
       props.changeNavigation(routes.user.inbox, 'inbox'),
-    onHandleClickArchive: props => () =>
+    onHandleClickArchive: (props) => () =>
       props.changeNavigation(routes.user.archive, 'archived'),
-    onHandleClickContacts: props => () =>
+    onHandleClickContacts: (props) => () =>
       props.changeNavigation(routes.user.contacts),
   })
 )(NavigationPrimary)

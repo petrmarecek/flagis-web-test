@@ -97,7 +97,7 @@ const LandingButtonSignIn = styled.div`
   padding: 0;
   margin-right: 50px;
   color: ${defaultColors.darkJungleGreen};
-  pointer-events: ${props => (props.active ? 'none' : 'auto')};
+  pointer-events: ${(props) => (props.active ? 'none' : 'auto')};
 
   :after {
     ${transform('scaleX(0)')}
@@ -134,7 +134,7 @@ const LandingButtonSignUp = styled.div`
   transition: 500ms;
   color: ${defaultColors.darkJungleGreen};
   border: 1px solid ${defaultColors.hanumanGreen};
-  pointer-events: ${props => (props.active ? 'none' : 'auto')};
+  pointer-events: ${(props) => (props.active ? 'none' : 'auto')};
   ${borderRadius('100px')} :hover {
     background-color: ${defaultColors.hanumanGreen};
   }
@@ -170,8 +170,8 @@ const LandingSecondaryButton = styled.div`
   font-size: 20px;
   margin: 0 50px 0 0;
   padding: 0;
-  color: ${props => (props.active ? '#293034' : '#B1B5B8')};
-  pointer-events: ${props => (props.active ? 'none' : 'auto')};
+  color: ${(props) => (props.active ? '#293034' : '#B1B5B8')};
+  pointer-events: ${(props) => (props.active ? 'none' : 'auto')};
 
   :after {
     ${transform('scaleX(0)')}
@@ -219,7 +219,7 @@ const NavigationLegalWrapper = styled.div`
 `
 
 const LegalButton = styled.div`
-  ${props => (props.active ? fontBold : fontMain)}
+  ${(props) => (props.active ? fontBold : fontMain)}
   ${userSelect('none')};
   display: inline-block;
   cursor: pointer;
@@ -227,7 +227,7 @@ const LegalButton = styled.div`
   margin: 0 50px 0 0;
   padding: 0;
   color: ${defaultColors.darkJungleGreen};
-  pointer-events: ${props => (props.active ? 'none' : 'auto')};
+  pointer-events: ${(props) => (props.active ? 'none' : 'auto')};
   width: max-content;
 
   :after {
@@ -273,7 +273,7 @@ const flexColumn = css`
 const NavigationPrimaryWrapper = styled.div`
   ${flexColumn}
   ${transition('height 300ms ease-out')}
-  height: ${props => (props.isVisibleMore ? '209px' : '133px')};
+  height: ${(props) => (props.isVisibleMore ? '209px' : '133px')};
   position: relative;
 `
 
@@ -291,25 +291,34 @@ const PrimaryButton = styled.div`
   cursor: pointer;
   padding: 0 20px 0 27px;
   border-style: solid;
-  color: ${props =>
+  color: ${(props) =>
     props.active
       ? colors[props.colorTheme].navigationPrimaryHover
       : colors[props.colorTheme].navigationPrimary};
-  border-width: ${props => (props.active ? '1px 0 1px 3px' : '0 0 0 3px')};
-  border-color: ${props =>
+  border-width: ${(props) => (props.active ? '1px 0 1px 3px' : '0 0 0 3px')};
+  border-color: ${(props) =>
     props.active
       ? `rgba(151, 151, 151, 0.2)  ${colors.navigationPrimaryBorderHover}`
       : colors[props.colorTheme].navigationPrimaryBorder};
 
+  svg {
+    path {
+      fill: ${(props) =>
+        props.active
+          ? colors[props.colorTheme].navigationPrimaryHover
+          : colors[props.colorTheme].navigationPrimary};
+    }
+  }
+
   :hover {
-    color: ${props => colors[props.colorTheme].navigationPrimaryHover};
-    border-width: ${props => (props.active ? '1px 0 1px 3px' : '0 0 0 3px')};
+    color: ${(props) => colors[props.colorTheme].navigationPrimaryHover};
+    border-width: ${(props) => (props.active ? '1px 0 1px 3px' : '0 0 0 3px')};
     border-color: rgba(151, 151, 151, 0.2)
       ${colors.navigationPrimaryBorderHover};
 
     svg {
       path {
-        fill: ${props => colors[props.colorTheme].navigationPrimaryHover};
+        fill: ${(props) => colors[props.colorTheme].navigationPrimaryHover};
       }
     }
   }
@@ -334,7 +343,7 @@ const ShowMoreButton = styled.span`
   align-items: center;
   position: absolute;
   bottom: 0;
-  color: ${props => colors[props.colorTheme].navigationPrimaryShowMore};
+  color: ${(props) => colors[props.colorTheme].navigationPrimaryShowMore};
   padding-right: 33px;
   width: 100%;
   cursor: pointer;
@@ -343,7 +352,7 @@ const ShowMoreButton = styled.span`
 
   svg {
     ${transition('transform 300ms ease-out')}
-    ${transform(props =>
+    ${transform((props) =>
       props.isVisibleMore ? 'rotate(180deg)' : 'rotate(0deg)'
     )}
   }
@@ -380,8 +389,8 @@ const SecondaryButton = styled.div`
   cursor: pointer;
   margin: 0 14px 0 0;
   padding: 0;
-  color: ${props => (props.active ? '#293034' : '#B1B5B8')};
-  pointer-events: ${props => (props.active ? 'none' : 'auto')};
+  color: ${(props) => (props.active ? '#293034' : '#B1B5B8')};
+  pointer-events: ${(props) => (props.active ? 'none' : 'auto')};
 
   :after {
     ${transform('scaleX(0)')}
@@ -400,7 +409,7 @@ const SecondaryButton = styled.div`
     }
   }
 
-  border-bottom: ${props => (props.active ? '1px solid #293034' : '0')};
+  border-bottom: ${(props) => (props.active ? '1px solid #293034' : '0')};
 `
 
 /*------------------------------ Navigation Default -----------------------------*/
@@ -423,7 +432,7 @@ const AccountWrapper = styled.div`
 
   svg:nth-of-type(1) {
     ${transition('transform 300ms ease-out')}
-    ${transform(props =>
+    ${transform((props) =>
       props.isVisibleAccountNavigation ? 'rotate(180deg)' : 'rotate(0deg)'
     )}
   }
@@ -526,10 +535,10 @@ const MenuBoxGroup = styled(MenuBoxGroupItems)`
 const MenuBoxItemIcon = styled(MenuBoxItem)`
   display: inline-block;
   margin: 0 11px 0 22px;
-  pointer-events: ${props => (props.active ? 'none' : 'auto')};
+  pointer-events: ${(props) => (props.active ? 'none' : 'auto')};
 
   path {
-    fill: ${props => (props.active ? '#293034' : '#8C9DA9')};
+    fill: ${(props) => (props.active ? '#293034' : '#8C9DA9')};
   }
 `
 
@@ -539,8 +548,8 @@ const MenuBoxItemTitle = styled(MenuBoxItem)`
   cursor: pointer;
   margin: 0 8px;
   padding: 0;
-  color: ${props => (props.active ? '#293034' : '#8C9DA9')};
-  pointer-events: ${props => (props.active ? 'none' : 'auto')};
+  color: ${(props) => (props.active ? '#293034' : '#8C9DA9')};
+  pointer-events: ${(props) => (props.active ? 'none' : 'auto')};
 
   &:after {
     ${transform('scaleX(0)')}
@@ -557,7 +566,7 @@ const MenuBoxItemTitle = styled(MenuBoxItem)`
     }
   }
 
-  border-bottom: ${props => (props.active ? '1px solid #293034' : '0')};
+  border-bottom: ${(props) => (props.active ? '1px solid #293034' : '0')};
 `
 
 /*------------------------------ Navigation Account Settings ----------------------------------*/
@@ -575,8 +584,8 @@ const SettingsButton = styled.div`
   padding: 0 5px 5px 5px;
   margin-right: 34px;
   cursor: pointer;
-  color: ${props => (props.active ? '#1C2124' : '#B1B5B8')};
-  border-bottom: ${props =>
+  color: ${(props) => (props.active ? '#1C2124' : '#B1B5B8')};
+  border-bottom: ${(props) =>
     props.active ? '3px solid #44FFB1' : '3px solid #fff'};
 
   :hover {

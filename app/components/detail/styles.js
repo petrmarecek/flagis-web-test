@@ -49,7 +49,7 @@ const DetailInner = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  animation: ${props =>
+  animation: ${(props) =>
     props.isMounted === false
       ? props.isRejected
         ? `${rightHideDetailAnimation} 400ms`
@@ -62,7 +62,7 @@ const DetailContentTop = styled.div`
   display: flex;
   justify-content: flex-start;
   position: relative;
-  background-color: ${props => props.backgroundColor};
+  background-color: ${(props) => props.backgroundColor};
   z-index: 1;
   padding: 9px 12px;
 
@@ -75,9 +75,9 @@ const DetailContentTop = styled.div`
     right: 0;
     bottom: 0;
     background-color: #F6F7F8;
-    ${transform(props => (props.completed ? 'scaleX(1)' : 'scaleX(0)'))}
+    ${transform((props) => (props.completed ? 'scaleX(1)' : 'scaleX(0)'))}
     ${transformOrigin('0 50%')}
-    ${transition(props =>
+    ${transition((props) =>
       props.animation ? 'transform 500ms ease-out' : 'none'
     )}
   }
@@ -112,9 +112,11 @@ const DetailContentTagAutocomplete = styled.div`
   flex: 0 1 auto;
   padding: 5px 10px 0 0;
   max-width: 70%;
-  pointer-events: ${props => (props.allowed ? 'auto' : 'none')};
-  opacity: ${props => (props.isCompleted ? '0.4' : '1')};
-  ${transition(props => (props.animation ? 'opacity 400ms ease-out' : 'none'))}
+  pointer-events: ${(props) => (props.allowed ? 'auto' : 'none')};
+  opacity: ${(props) => (props.isCompleted ? '0.4' : '1')};
+  ${transition((props) =>
+    props.animation ? 'opacity 400ms ease-out' : 'none'
+  )}
 `
 
 const DetailContentTagAutocompleteTags = styled.ul`
@@ -128,9 +130,11 @@ const DetailContentButton = styled.div`
   display: flex;
   align-items: center;
   margin-right: 15px;
-  pointer-events: ${props => (props.allowed ? 'auto' : 'none')};
-  opacity: ${props => (props.isCompleted ? '0.4' : '1')};
-  ${transition(props => (props.animation ? 'opacity 400ms ease-out' : 'none'))}
+  pointer-events: ${(props) => (props.allowed ? 'auto' : 'none')};
+  opacity: ${(props) => (props.isCompleted ? '0.4' : '1')};
+  ${transition((props) =>
+    props.animation ? 'opacity 400ms ease-out' : 'none'
+  )}
 `
 
 const DetailContentIcon = styled.div`
@@ -142,10 +146,12 @@ const DetailContentIcon = styled.div`
   flex: 0 0 35px;
   text-align: right;
   padding-right: 6px;
-  animation: ${props =>
+  animation: ${(props) =>
     props.animation ? `500ms linear 1s ${tadaAnimation}` : 'none'};
-  opacity: ${props => (props.isCompleted ? '0.4' : '1')};
-  ${transition(props => (props.animation ? 'opacity 400ms ease-out' : 'none'))}
+  opacity: ${(props) => (props.isCompleted ? '0.4' : '1')};
+  ${transition((props) =>
+    props.animation ? 'opacity 400ms ease-out' : 'none'
+  )}
 `
 
 const DetailContentCenter = styled.div`
@@ -154,7 +160,7 @@ const DetailContentCenter = styled.div`
   flex-wrap: wrap;
   flex-shrink: 100;
   height: 100%;
-  flex-direction: ${props => (props.column ? 'column' : 'row')};
+  flex-direction: ${(props) => (props.column ? 'column' : 'row')};
   padding: 21px 0 22px 0;
 `
 
@@ -164,18 +170,18 @@ const DetailContentProperties = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-start;
-  max-height: ${props => props.contentHeight};
+  max-height: ${(props) => props.contentHeight};
 `
 
 const DetailContentOptions = styled.div`
   margin: 0 0 10px;
-  pointer-events: ${props => (props.allowed ? 'auto' : 'none')};
+  pointer-events: ${(props) => (props.allowed ? 'auto' : 'none')};
 `
 
 const detailContentOptionsItemLabel = css`
   font-size: 14px;
-  color: ${props => (props.changeColor ? '#293034' : '#b1b5b8')};
-  font-weight: ${props => (props.important ? 'bold' : 'normal')};
+  color: ${(props) => (props.changeColor ? '#293034' : '#b1b5b8')};
+  font-weight: ${(props) => (props.important ? 'bold' : 'normal')};
 `
 
 const DetailContentAddContact = styled.div`
@@ -201,7 +207,7 @@ const DetailContentAddContactLabel = styled.div`
 `
 
 const DetailContentAddContactContent = styled.div`
-  margin: 0 ${props => (props.isUnknownContact ? '22px' : '5px')} -3px ${props => (!props.isOwner ? '70px' : '55px')};
+  margin: 0 ${(props) => (props.isUnknownContact ? '22px' : '5px')} -3px ${(props) => (!props.isOwner ? '70px' : '55px')};
 `
 
 const DetailContentAddNewContact = styled.span`
@@ -234,7 +240,7 @@ const DetailContentImportant = styled.div`
   position: relative;
   margin: 0 0 10px 0;
   padding-top: 24px;
-  pointer-events: ${props => (props.allowed ? 'auto' : 'none')};
+  pointer-events: ${(props) => (props.allowed ? 'auto' : 'none')};
   border-bottom: 1px solid #e1e4e5;
   cursor: pointer;
 `
@@ -260,13 +266,13 @@ const DetailContentImportantContent = styled(ToggleSwitch)`
 
 const DetailContentDate = styled.div`
   position: relative;
-  pointer-events: ${props => (props.allowed ? 'auto' : 'none')};
+  pointer-events: ${(props) => (props.allowed ? 'auto' : 'none')};
 `
 
 const DetailContentDateIcon = styled(Icon)`
   position: absolute;
   top: 7px;
-  left: ${props => (props.reminder ? '5px' : '7px')};
+  left: ${(props) => (props.reminder ? '5px' : '7px')};
   z-index: 1;
   pointer-events: none;
 `
@@ -343,8 +349,8 @@ const DetailContentComments = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  pointer-events: ${props => (props.allowed ? 'auto' : 'none')};
-  max-height: ${props => props.contentHeight};
+  pointer-events: ${(props) => (props.allowed ? 'auto' : 'none')};
+  max-height: ${(props) => props.contentHeight};
   position: relative;
 `
 
@@ -406,16 +412,16 @@ const ContentEditableStyles = css`
   max-height: 134px;
   overflow-y: auto;
   overflow-x: hidden;
-  ${transition(props =>
+  ${transition((props) =>
     props.animation ? 'margin 500ms ease-out, color 500ms ease-out' : 'none'
   )};
-  color: ${props =>
+  color: ${(props) =>
     props.completed && !props.archived ? '#D7E3EC' : '#293034'};
-  margin-left: ${props => props.marginLeft};
-  text-decoration: ${props =>
+  margin-left: ${(props) => props.marginLeft};
+  text-decoration: ${(props) =>
     props.completed || props.archived ? 'line-through' : 'none'};
-  font-weight: ${props => (props.important ? 'bold' : 'normal')};
-  pointer-events: ${props => (props.allowed ? 'auto' : 'none')};
+  font-weight: ${(props) => (props.important ? 'bold' : 'normal')};
+  pointer-events: ${(props) => (props.allowed ? 'auto' : 'none')};
 
   :empty:before {
     color: #b1b5b8;
@@ -455,7 +461,7 @@ const MarkdownEditableContainer = styled(MarkdownEditable)`
     padding-right: 13px;
     resize: none;
     width: 100%;
-    height: ${props => (props.editHeight ? props.editHeight : '100%')};
+    height: ${(props) => (props.editHeight ? props.editHeight : '100%')};
   }
 `
 
@@ -476,12 +482,8 @@ const DetailSubjectTaskCompleted = styled.div`
 
   :hover {
     svg {
-      path:first-of-type {
+      path {
         fill: #44ffb1;
-      }
-
-      path:last-of-type {
-        fill: ${props => (props.completed ? '#fff' : '#44ffb1')};
       }
     }
   }
@@ -494,9 +496,9 @@ const DetailSubjectTaskArchived = styled.div`
   position: absolute;
   top: 0;
   bottom: 0;
-  left: ${props => (props.archived ? '0' : '45px')};
+  left: ${(props) => (props.archived ? '0' : '45px')};
   width: 40px;
-  padding-left: ${props => (props.archived ? '13px' : '6px')};
+  padding-left: ${(props) => (props.archived ? '13px' : '6px')};
   z-index: 1;
   cursor: pointer;
 `
@@ -553,8 +555,8 @@ const DetailTagColorSelectorOptions = styled.ul`
 const DetailTagColorSelectorItems = styled.li`
   flex: none;
   ${borderRadius('50%')}
-  background-color: ${props => props.color};
-  border: ${props => (props.selected ? '1px solid #293034' : 'none')};
+  background-color: ${(props) => props.color};
+  border: ${(props) => (props.selected ? '1px solid #293034' : 'none')};
   width: 24px;
   height: 24px;
   margin: 0 10px 10px 0;
@@ -569,7 +571,7 @@ const DetailContentDescriptionTag = styled.div`
 // --------------------------------------- Contact detail ---------------------------------------
 const DetailSubjectIconContact = styled.div`
   pointer-events: none;
-  margin: ${props => (props.isUser ? '0 5px' : '-2px 5px')};
+  margin: ${(props) => (props.isUser ? '0 5px' : '-2px 5px')};
 
   img {
     object-fit: cover;
@@ -606,7 +608,7 @@ const DetailContentContactDataContent = styled.div`
   float: right;
   font-size: 18px;
   color: #293034;
-  cursor: ${props => (props.button ? 'pointer' : 'default')};
+  cursor: ${(props) => (props.button ? 'pointer' : 'default')};
 
   span {
     margin: 0 0 0 10px;
@@ -617,12 +619,12 @@ const DetailContentContactDataContent = styled.div`
 
   :hover {
     span {
-      color: ${props => (props.button ? '#293034' : '#b1b5b8')};
+      color: ${(props) => (props.button ? '#293034' : '#b1b5b8')};
     }
 
     svg {
       path {
-        fill: ${props => (props.button ? '#293034' : '#b1b5b8')};
+        fill: ${(props) => (props.button ? '#293034' : '#b1b5b8')};
       }
     }
   }

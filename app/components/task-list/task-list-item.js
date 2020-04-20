@@ -213,7 +213,7 @@ function collectDropTarget(connect, monitor) {
 }
 
 // TaskListItem
-const TaskListItem = props => {
+const TaskListItem = (props) => {
   const {
     userId,
     task,
@@ -308,14 +308,14 @@ const TaskListItem = props => {
   // Color of completed icon
   const completedIconColor = () => {
     if (task.isCompleted) {
-      return [colors.hanumanGreen, colors.hanumanGreen, colors.white]
+      return [colors.hanumanGreen]
     }
 
     if (isOwnerAccepted) {
-      return [colors.crystalBell, colors.white, colors.crystalBell]
+      return [colors.mercury]
     }
 
-    return [colors.crystalBell, colors.white, colors.crystalBell]
+    return [colors.crystalBell]
   }
 
   // Margin-left of content task
@@ -364,23 +364,27 @@ const TaskListItem = props => {
             {!isArchivedList && !isInboxList && (
               <Completed
                 completed={task.isCompleted}
-                onClick={e => {
+                onClick={(e) => {
                   e.stopPropagation()
                   onHandleCompleteClicked(e)
                 }}
               >
                 <Icon
-                  icon={ICONS.TASK_COMPLETED}
+                  icon={
+                    task.isCompleted
+                      ? ICONS.TASK_COMPLETED
+                      : ICONS.TASK_UNCOMPLETED
+                  }
                   color={completedIconColor()}
-                  width={21}
-                  height={21}
+                  width={22}
+                  height={22}
                 />
               </Completed>
             )}
             {task.isCompleted && !isInboxList && (
               <Archived
                 archived={isArchivedList}
-                onClick={e => {
+                onClick={(e) => {
                   e.stopPropagation()
                   onHandleArchiveClicked(e)
                 }}
@@ -572,7 +576,7 @@ export default DragSource(
   compose(
     DropTarget(ItemTypes.TASK, taskTarget, collectDropTarget),
     withStateHandlers(() => ({ isMoved: null, isMounted: true }), {
-      onHandleMouseDown: (state, props) => event => {
+      onHandleMouseDown: (state, props) => (event) => {
         const { isCompleted } = props.task
         const isInboxList = props.listType === 'inbox'
 
@@ -589,7 +593,7 @@ export default DragSource(
 
         return {}
       },
-      onHandleClicked: (state, props) => event => {
+      onHandleClicked: (state, props) => (event) => {
         const isInboxList = props.listType === 'inbox'
         const isMultiselect = event.ctrlKey || event.metaKey
         // Not allowed multiselect in inbox list
@@ -605,7 +609,7 @@ export default DragSource(
         props.onClick(props.task, event)
         return {}
       },
-      onHandleTagClicked: (state, props) => tag => props.onTagClick(tag),
+      onHandleTagClicked: (state, props) => (tag) => props.onTagClick(tag),
       onHandleCompleteClicked: (state, props) => () => {
         // Data of assignee
         const assignee = getAssigneeOfTask(props.task.followers)

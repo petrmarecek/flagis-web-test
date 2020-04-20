@@ -19,7 +19,7 @@ import {
 } from './styles'
 import { colors } from 'components/styled-components-mixins/colors'
 
-const TasksMenuSort = props => {
+const TasksMenuSort = (props) => {
   const {
     tasksMenu,
     sortRef,
@@ -116,7 +116,7 @@ const TasksMenuSort = props => {
               active={incomplete}
               type="incomplete"
               icon={ICONS.TASK_UNCOMPLETED}
-              iconScale={0.73}
+              iconScale={0.72}
               onChange={onHandleSortAlgorithmToggle}
             />
             <MenuBoxItemTitle
@@ -146,7 +146,7 @@ TasksMenuSort.propTypes = {
 }
 
 export default withStateHandlers(() => ({ sortRef: null }), {
-  getSortRef: () => ref => ({ sortRef: ref }),
+  getSortRef: () => (ref) => ({ sortRef: ref }),
   onHandleClick: (state, props) => () => {
     if (props.tasksMenu.sort.menu.isVisible) {
       props.hideMenuSort()
@@ -164,7 +164,7 @@ export default withStateHandlers(() => ({ sortRef: null }), {
     props.visibleMenuSort()
     return {}
   },
-  onHandleSortAlgorithmToggle: (state, props) => algorithm => {
+  onHandleSortAlgorithmToggle: (state, props) => (algorithm) => {
     props.onToggleSortAlgorithm(algorithm)
     return {}
   },

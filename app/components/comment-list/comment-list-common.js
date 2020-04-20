@@ -53,7 +53,7 @@ export const activityText = (type, data) => {
       return `${data.profile.nickname} was removed from task`
 
     case 'TASKS/SEND-TO-FOLLOWER':
-      return `Tasks was sent`
+      return `Task was sent`
 
     case 'TASKS/ACCEPT-BY-FOLLOWER':
       return `Task was accepted`

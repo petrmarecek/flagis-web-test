@@ -54,14 +54,16 @@ const EditArea = styled.div`
   font-size: 14px;
   cursor: text;
 
-  h3 {
-    margin: 6px 0;
-    font-size: 16px;
+  h1 {
+    margin: 6px 0 18px 0;
+    font-size: 24px;
+    font-weight: bold;
   }
 
-  h4 {
-    margin: 3px 0;
-    font-size: 14px;
+  h2 {
+    margin: 6px 0 12px 0;
+    font-size: 18px;
+    font-weight: bold;
   }
 
   .public-DraftEditorPlaceholder-inner {
