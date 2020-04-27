@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import HTML5Backend from 'react-dnd-html5-backend'
-import { DragDropContext } from 'react-dnd'
+import { DndProvider } from 'react-dnd'
 import debounce from 'lodash/debounce'
 
 import { controlRedirectSignIn } from 'redux/store/auth/auth.actions'
@@ -57,51 +57,53 @@ class UserContainer extends PureComponent {
 
   render() {
     return (
-      <div id="user-container">
-        <div className="page-overflow-fix">
-          <Switch>
-            <Route
-              path={`${this.props.match.path}/tasks`}
-              component={TaskPage}
-            />
-            <Route path={`${this.props.match.path}/tags`} component={TagPage} />
-            <Route
-              path={`${this.props.match.path}/inbox`}
-              component={InboxPage}
-            />
-            <Route
-              path={`${this.props.match.path}/dashboard`}
-              component={DashboardPage}
-            />
-            <Route
-              path={`${this.props.match.path}/archive`}
-              component={ArchivePage}
-            />
-            <Route
-              path={`${this.props.match.path}/contacts`}
-              component={ContactPage}
-            />
-            <Route
-              path={`${this.props.match.path}/notifications`}
-              component={NotificationPage}
-            />
-            <Route
-              path={`${this.props.match.path}/account`}
-              component={AccountContainer}
-            />
-            <Route component={NotFoundPage} />
-          </Switch>
+      <DndProvider backend={HTML5Backend}>
+        <div id="user-container">
+          <div className="page-overflow-fix">
+            <Switch>
+              <Route
+                path={`${this.props.match.path}/tasks`}
+                component={TaskPage}
+              />
+              <Route path={`${this.props.match.path}/tags`} component={TagPage} />
+              <Route
+                path={`${this.props.match.path}/inbox`}
+                component={InboxPage}
+              />
+              <Route
+                path={`${this.props.match.path}/dashboard`}
+                component={DashboardPage}
+              />
+              <Route
+                path={`${this.props.match.path}/archive`}
+                component={ArchivePage}
+              />
+              <Route
+                path={`${this.props.match.path}/contacts`}
+                component={ContactPage}
+              />
+              <Route
+                path={`${this.props.match.path}/notifications`}
+                component={NotificationPage}
+              />
+              <Route
+                path={`${this.props.match.path}/account`}
+                component={AccountContainer}
+              />
+              <Route component={NotFoundPage} />
+            </Switch>
+          </div>
+          <div className="dialog-container">
+            <Dialogs />
+          </div>
+          <div className="floating-components">
+            <div id="floating-components-hints" />
+            <ToastNotificationsContainer />
+            <UndoBox />
+            {this.props.loader && <Loader global />}
+          </div>
         </div>
-        <div className="dialog-container">
-          <Dialogs />
-        </div>
-        <div className="floating-components">
-          <div id="floating-components-hints" />
-          <ToastNotificationsContainer />
-          <UndoBox />
-          {this.props.loader && <Loader global />}
-        </div>
-      </div>
+      </DndProvider>
     )
   }
 }
@@ -116,6 +118,4 @@ const mapDispatchToProps = {
   controlRedirectSignIn,
 }
 
-export default DragDropContext(HTML5Backend)(
-  connect(mapStateToProps, mapDispatchToProps)(UserContainer)
-)
+export default connect(mapStateToProps, mapDispatchToProps)(UserContainer)
