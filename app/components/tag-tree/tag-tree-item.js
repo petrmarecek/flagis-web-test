@@ -1,9 +1,5 @@
-import React, { useState, useRef } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
-import { useDrag, useDrop } from 'react-dnd'
-import { findDOMNode } from 'react-dom'
-import includes from 'lodash/includes'
-import constants from 'utils/constants'
 import {
   compose,
   withHandlers,
@@ -33,92 +29,7 @@ import {
   ItemChildren,
 } from './styles'
 import colors from 'components/styled-components-mixins/colors'
-
-const TagTreeItemDragDrop = {
-  type: 'tree-item',
-
-  collectDragSource(connect, monitor) {
-    return {
-      connectDragSource: connect.dragSource(),
-      isDragging: monitor.isDragging(),
-    }
-  },
-  collectDropTarget(connect, monitor) {
-    return {
-      connectDropTarget: connect.dropTarget(),
-      isOver: monitor.isOver(),
-    }
-  },
-
-  tagTreeSource: {
-    beginDrag: props => ({
-      treeItem: props.treeItem,
-    }),
-  },
-
-  tagTreeTarget: {
-    canDrop(props, monitor) {
-      // Not section
-      if (!props.treeItem.parentId) {
-        return false
-      }
-
-      // Not self
-      const dragSource = monitor.getItem()
-      if (props.treeItem.id === dragSource.treeItem.id) {
-        return false
-      }
-
-      // Not my child (check whether drop target is not on of children of drag source)
-      if (includes(props.parents, dragSource.treeItem.id)) {
-        return false
-      }
-
-      return Boolean(props.treeItem.parentId)
-    },
-
-    hover(props, monitor, component) {
-      const canDrop = monitor.canDrop()
-
-      if (!canDrop) {
-        component.setState({ dropPosition: null })
-        return
-      }
-
-      const hoverBoundingRect = findDOMNode(component).getBoundingClientRect()
-      const thirdHeight = props.treeItem.parentId
-        ? constants.TAG_TREE_ITEM_HEIGHT / 3
-        : constants.TAG_TREE_SECTION_HEIGHT / 3
-
-      // Current position of mouse
-      const clientOffset = monitor.getClientOffset()
-      const hoverClientY = clientOffset.y - hoverBoundingRect.top
-
-      let dropPosition = null
-      if (hoverClientY < thirdHeight) {
-        dropPosition = 'TOP'
-      } else if (hoverClientY < 2 * thirdHeight) {
-        dropPosition = 'MIDDLE'
-      } else {
-        dropPosition = 'BOTTOM'
-      }
-
-      component.setState({ dropPosition })
-    },
-
-    drop(props, monitor, component) {
-      const dragSource = monitor.getItem().treeItem.toJS()
-      const dragTarget = props.treeItem.toJS()
-      const dropPosition = component.state.dropPosition
-
-      props.onDrop({
-        dragSource,
-        dragTarget,
-        dropPosition,
-      })
-    },
-  },
-}
+import { useTreeItemDragDrop } from 'hooks/useTreeItemDragDrop'
 
 const TagTreeItem = props => {
   const {
@@ -147,76 +58,13 @@ const TagTreeItem = props => {
     onHandleDeleteIconClicked,
   } = props
 
-  const dropTarget = useRef()
-  const [dropPosition, setDropPosition] = useState()
-  const [dragProps, drag] = useDrag({
-    item: {
-      id: treeItem.id,
-      type: TagTreeItemDragDrop.type,
-    },
-    collect: monitor => ({
-      isDragging: monitor.isDragging(),
-    })
-  })
-
-  const [dropProps, drop] = useDrop({
-    accept: TagTreeItemDragDrop.type,
-    collect: (monitor) => ({
-      isOver: monitor.isOver()
-    }),
-    canDrop: (dragSource) => {
-      // Not section
-      if (!treeItem.parentId) {
-        return false
-      }
-
-      // Not self
-      if (treeItem.id === dragSource.id) {
-        return false
-      }
-
-      // Not my child (check whether drop target is not on of children of drag source)
-      if (includes(props.parents, dragSource.id)) {
-        return false
-      }
-
-      return Boolean(props.treeItem.parentId)
-    },
-    hover(item, monitor) {
-      const canDrop = monitor.canDrop()
-      if (!canDrop) {
-        setDropPosition(null)
-        return
-      }
-
-      const hoverBoundingRect = findDOMNode(dropTarget.current).getBoundingClientRect()
-      const thirdHeight = treeItem.parentId
-        ? constants.TAG_TREE_ITEM_HEIGHT / 3
-        : constants.TAG_TREE_SECTION_HEIGHT / 3
-
-      // Current position of mouse
-      const clientOffset = monitor.getClientOffset()
-      const hoverClientY = clientOffset.y - hoverBoundingRect.top
-
-      let currentDropPosition = null
-      if (hoverClientY < thirdHeight) {
-        currentDropPosition = 'TOP'
-      } else if (hoverClientY < 2 * thirdHeight) {
-        currentDropPosition = 'MIDDLE'
-      } else {
-        currentDropPosition = 'BOTTOM'
-      }
-
-      setDropPosition(currentDropPosition)
-    },
-    drop(item) {
-      props.onDrop({
-        dragSource: item,
-        dragTarget: treeItem,
-        dropPosition,
-      })
-    }
-  })
+  const {
+    dragHandle,
+    dragProps,
+    dropHandle,
+    dropProps,
+    dropPosition,
+  } = useTreeItemDragDrop({ treeItem, parents, onDrop })
 
   const isChildItems = treeItem.childItems.size > 0
   const itemParents = [...parents, treeItem.id]
@@ -258,11 +106,10 @@ const TagTreeItem = props => {
   }
 
   return (
-    <li ref={drag}>
+    <li ref={dragHandle}>
       <ItemWrapper dragging={dragProps.isDragging}>
-        <div ref={drop}>
+        <div ref={dropHandle}>
           <Item
-            ref={dropTarget}
             onClick={onHandleClicked}
             selected={selection.includes(treeItem.id)}
             colorTheme={colorTheme}
