@@ -6,6 +6,7 @@ import constants from 'utils/constants'
 
 const DropTypes = {
   TREE_ITEM: 'tree-item',
+  TASK: 'task'
 }
 
 const useTreeItemDragDrop = ({ treeItem, parents, onDrop }) => {

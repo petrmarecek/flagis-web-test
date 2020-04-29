@@ -352,7 +352,7 @@ export default DragSource(
             props.inputRef.blur()
             return
 
-          // sumit (enter key)
+          // submit (enter key)
           case 13:
             event.preventDefault()
             props.onHandleSubmitTitle()

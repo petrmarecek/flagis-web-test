@@ -45,172 +45,7 @@ import {
   DueDate,
   Followers,
 } from './styles'
-
-// Drag and Drop
-const ItemTypes = {
-  TASK: 'task',
-}
-
-const taskSource = {
-  beginDrag(props) {
-    return {
-      listType: props.listType,
-      task: props.task,
-      index: props.index,
-      section: props.section,
-    }
-  },
-
-  isDragging(props, monitor) {
-    return monitor.getItem().task.id === props.task.id
-  },
-
-  canDrag(props) {
-    const { task, timeLine, sort } = props
-    const { followers, isCompleted } = task
-    const { alphabet, important, incomplete } = sort
-    const assignee = getAssigneeOfTask(followers)
-    const isFollowers = assignee !== null
-    const followerStatus = isFollowers ? assignee.status : 'new'
-    const isCollaborated =
-      followerStatus === 'pending' || followerStatus === 'accepted'
-    const isSort = alphabet || important || incomplete
-    const isMainList =
-      props.listType !== 'archived' && props.listType !== 'inbox'
-    const isLock = isCollaborated || isCompleted
-    const isLockForTimeline = timeLine && isLock
-
-    return !isSort && isMainList && !isLockForTimeline
-  },
-}
-
-const taskTarget = {
-  canDrop(props, monitor) {
-    // No task for this week
-    if (props.section === 'weekTasks') {
-      const now = moment()
-      const dayOfWeek = now.isoWeekday()
-
-      if (dayOfWeek >= 6) {
-        return false
-      }
-    }
-
-    // No task for this month
-    if (props.section === 'monthTasks') {
-      const now = moment()
-      const date = now.date()
-      const dayOfMonth = now.daysInMonth()
-      const diff = dayOfMonth - date
-
-      if (diff <= 1) {
-        return false
-      }
-
-      const dayOfWeek = now.isoWeekday()
-      const dayToNewWeek = 8 - dayOfWeek
-      const add = date + dayToNewWeek
-      if (add > dayOfMonth) {
-        return false
-      }
-    }
-
-    const sourceList = monitor.getItem().listType
-    const targetList = props.listType
-    return sourceList === targetList
-  },
-
-  hover(props, monitor, component) {
-    const canDrop = monitor.canDrop()
-    if (!canDrop) {
-      return
-    }
-
-    const dragSource = monitor.getItem()
-    const dragIndex = dragSource.index
-    const hoverIndex = props.index
-
-    // Drag index didn't change, do nothing
-    if (dragSource.section === props.section && dragIndex === hoverIndex) {
-      return
-    }
-
-    // Get size of target component
-    const hoverBoundingRect = findDOMNode(component).getBoundingClientRect()
-    // Height of task / 2 = 25
-    const hoverMiddleY = hoverBoundingRect.height / 2
-    // Current position of mouse
-    const clientOffset = monitor.getClientOffset()
-    // Get position of mouse on task
-    const hoverClientY = clientOffset.y - hoverBoundingRect.top
-
-    // Dragging downwards (not yet too far)
-    if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-      return
-    }
-
-    // Dragging upwards (not yet too far)
-    if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-      return
-    }
-
-    // Now we can perform move as the boundary has been crossed
-    const dragDirection = dragIndex < hoverIndex ? 'DOWN' : 'UP'
-    component.setState({ isMoved: dragDirection })
-    const move = {
-      source: props.listType,
-      sourceTaskId: dragSource.task.id,
-      sourceSection: dragSource.section,
-      sourceDueDate: dragSource.task.dueDate,
-      targetTaskId: props.task.id,
-      targetSection: props.section,
-      targetDueDate: props.task.dueDate,
-      targetIndex: hoverIndex,
-      bottom: hoverClientY > hoverMiddleY,
-      direction: dragDirection,
-    }
-
-    props.moveTask(move)
-    // Set index and section
-    if (dragSource.section !== props.section && hoverClientY > hoverMiddleY) {
-      // Dragging upwards to other section
-      dragSource.index = hoverIndex + 1
-    } else {
-      // Dragging upwards in current section
-      dragSource.index = hoverIndex
-    }
-    dragSource.section = props.section
-  },
-
-  drop(props, monitor) {
-    const canDrop = monitor.canDrop()
-    if (!canDrop) {
-      return
-    }
-
-    const dragSource = monitor.getItem()
-    const drop = {
-      dropTask: dragSource.task,
-      targetSection: props.section,
-    }
-
-    props.dropTask(drop)
-  },
-}
-
-function collectDragSource(connect, monitor) {
-  return {
-    connectDragSource: connect.dragSource(),
-    isDragging: monitor.isDragging(),
-  }
-}
-
-function collectDropTarget(connect, monitor) {
-  return {
-    connectDropTarget: connect.dropTarget(),
-    isOver: monitor.isOver(),
-  }
-}
+import { useTaskListItemDragDrop } from 'hooks/useTaskListItemDragDrop'
 
 // TaskListItem
 const TaskListItem = props => {
@@ -218,7 +53,6 @@ const TaskListItem = props => {
     userId,
     task,
     isSelected,
-    isDragging,
     isMounted,
     isMoved,
     noTaskFound,
@@ -233,9 +67,12 @@ const TaskListItem = props => {
     onHandleArchiveClicked,
     onHandleAcceptClicked,
     onHandleRejectClicked,
-    connectDragSource,
-    connectDropTarget,
   } = props
+
+  const {
+    dragDropHandle,
+    dragProps,
+  } = useTaskListItemDragDrop(props)
 
   // Conditions
   const isArchivedList = listType === 'archived'
@@ -290,7 +127,7 @@ const TaskListItem = props => {
       return colors.meltingGlacier
     }
 
-    if (isDragging) {
+    if (dragProps.isDragging) {
       return colors.lynxWhite
     }
 
@@ -341,9 +178,8 @@ const TaskListItem = props => {
   }
 
   // Render component
-  return connectDragSource(
-    connectDropTarget(
-      <li>
+  return (
+      <li ref={dragDropHandle}>
         {noTaskFound ? (
           <EmptyList>No tasks found</EmptyList>
         ) : (
@@ -357,7 +193,7 @@ const TaskListItem = props => {
             selected={isSelected}
             backgroundColor={backgroundColor}
             completed={isCompletedMainList}
-            dragging={isDragging}
+            dragging={dragProps.isDragging}
             isMounted={isMounted}
             isMoved={isMoved}
           >
@@ -490,7 +326,6 @@ const TaskListItem = props => {
         )}
       </li>
     )
-  )
 }
 
 TaskListItem.propTypes = {
@@ -505,7 +340,6 @@ TaskListItem.propTypes = {
   isSelected: PropTypes.bool,
   timeLine: PropTypes.bool,
   section: PropTypes.string,
-  isDragging: PropTypes.bool,
   sort: PropTypes.object,
   leftPanelWidth: PropTypes.number,
   windowWidth: PropTypes.number,
@@ -529,10 +363,6 @@ TaskListItem.propTypes = {
   onHandleArchiveClicked: PropTypes.func,
   onHandleAcceptClicked: PropTypes.func,
   onHandleRejectClicked: PropTypes.func,
-
-  // Drag and Drop
-  connectDropTarget: PropTypes.func,
-  connectDragSource: PropTypes.func,
 }
 
 const checkPropsChange = (props, nextProps) => {
@@ -564,97 +394,90 @@ const checkPropsChange = (props, nextProps) => {
   )
 }
 
-export default DragSource(
-  ItemTypes.TASK,
-  taskSource,
-  collectDragSource
-)(
-  compose(
-    DropTarget(ItemTypes.TASK, taskTarget, collectDropTarget),
-    withStateHandlers(() => ({ isMoved: null, isMounted: true }), {
-      onHandleMouseDown: (state, props) => event => {
-        const { isCompleted } = props.task
-        const isInboxList = props.listType === 'inbox'
+export default compose(
+  withStateHandlers(() => ({ isMoved: null, isMounted: true }), {
+    onHandleMouseDown: (state, props) => event => {
+      const { isCompleted } = props.task
+      const isInboxList = props.listType === 'inbox'
 
-        // allowed only right mouse button
-        if (event.button !== 2) {
-          return {}
-        }
-
-        // set task as important by right mouse
-        if (!isCompleted && !isInboxList) {
-          props.onToggleImportant(props.task)
-          return {}
-        }
-
+      // allowed only right mouse button
+      if (event.button !== 2) {
         return {}
-      },
-      onHandleClicked: (state, props) => event => {
-        const isInboxList = props.listType === 'inbox'
-        const isMultiselect = event.ctrlKey || event.metaKey
-        // Not allowed multiselect in inbox list
-        if (isMultiselect && isInboxList) {
-          return {}
-        }
+      }
 
-        // Click on link
-        if (event.target.nodeName === 'A') {
-          return {}
-        }
-
-        props.onClick(props.task, event)
+      // set task as important by right mouse
+      if (!isCompleted && !isInboxList) {
+        props.onToggleImportant(props.task)
         return {}
-      },
-      onHandleTagClicked: (state, props) => tag => props.onTagClick(tag),
-      onHandleCompleteClicked: (state, props) => () => {
-        // Data of assignee
-        const assignee = getAssigneeOfTask(props.task.followers)
-        const isFollowers = assignee !== null
-        const followerStatus = isFollowers ? assignee.status : 'new'
+      }
 
-        if (followerStatus === 'pending') {
-          toast.error(toastCommon.errorMessages.tasks.waitingResponse, {
-            position: toastCommon.position.DEFAULT,
-            autoClose: toastCommon.duration.ERROR_DURATION,
-          })
-          return {}
-        }
-
-        props.onCompleteClick(props.task)
+      return {}
+    },
+    onHandleClicked: (state, props) => event => {
+      const isInboxList = props.listType === 'inbox'
+      const isMultiselect = event.ctrlKey || event.metaKey
+      // Not allowed multiselect in inbox list
+      if (isMultiselect && isInboxList) {
         return {}
-      },
-      onHandleArchiveClicked: (state, props) => () => {
-        // allowed left mouse button
-        if (props.listType === 'archived') {
-          window.setTimeout(() => props.cancelArchiveTasks(props.task.id), 400)
-          return { isMounted: false, isMoved: null }
-        }
+      }
 
-        window.setTimeout(() => props.setArchiveTasks(props.task.id), 400)
-        return { isMounted: false, isMoved: null }
-      },
-      onHandleAcceptClicked: (state, props) => () => {
-        const { id, followers } = props.task
-        const assignee = getAssigneeOfTask(followers)
-        const data = {
-          taskId: id,
-          followerId: assignee.id,
-        }
+      // Click on link
+      if (event.target.nodeName === 'A') {
+        return {}
+      }
 
-        window.setTimeout(() => props.acceptTask(data), 400)
-        return { isMounted: false, isMoved: null }
-      },
-      onHandleRejectClicked: (state, props) => () => {
-        const { task, listType } = props
-        const data = {
-          task,
-          type: listType,
-        }
+      props.onClick(props.task, event)
+      return {}
+    },
+    onHandleTagClicked: (state, props) => tag => props.onTagClick(tag),
+    onHandleCompleteClicked: (state, props) => () => {
+      // Data of assignee
+      const assignee = getAssigneeOfTask(props.task.followers)
+      const isFollowers = assignee !== null
+      const followerStatus = isFollowers ? assignee.status : 'new'
 
-        window.setTimeout(() => props.rejectTask(data), 400)
+      if (followerStatus === 'pending') {
+        toast.error(toastCommon.errorMessages.tasks.waitingResponse, {
+          position: toastCommon.position.DEFAULT,
+          autoClose: toastCommon.duration.ERROR_DURATION,
+        })
+        return {}
+      }
+
+      props.onCompleteClick(props.task)
+      return {}
+    },
+    onHandleArchiveClicked: (state, props) => () => {
+      // allowed left mouse button
+      if (props.listType === 'archived') {
+        window.setTimeout(() => props.cancelArchiveTasks(props.task.id), 400)
         return { isMounted: false, isMoved: null }
-      },
-    }),
-    shouldUpdate(checkPropsChange)
-  )(TaskListItem)
-)
+      }
+
+      window.setTimeout(() => props.setArchiveTasks(props.task.id), 400)
+      return { isMounted: false, isMoved: null }
+    },
+    onHandleAcceptClicked: (state, props) => () => {
+      const { id, followers } = props.task
+      const assignee = getAssigneeOfTask(followers)
+      const data = {
+        taskId: id,
+        followerId: assignee.id,
+      }
+
+      window.setTimeout(() => props.acceptTask(data), 400)
+      return { isMounted: false, isMoved: null }
+    },
+    onHandleRejectClicked: (state, props) => () => {
+      const { task, listType } = props
+      const data = {
+        task,
+        type: listType,
+      }
+
+      window.setTimeout(() => props.rejectTask(data), 400)
+      return { isMounted: false, isMoved: null }
+    },
+  }),
+  shouldUpdate(checkPropsChange)
+)(TaskListItem)
