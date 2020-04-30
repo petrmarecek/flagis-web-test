@@ -72,6 +72,7 @@ export default function* root() {
     takeEvery(TASKS.REMOVE_TASK_TAG, task.removeTaskTag),
     takeEvery(TASKS.REMOVE_TASK_FOLLOWER, task.removeTaskFollower),
     takeEvery(TASKS.ADD_REMOVE_TASK_TAGS, task.addRemoveTaskTags),
+    takeEvery(TASKS.SET_TASK_TAGS, task.setTaskTags),
     takeEvery(TASKS.SELECT, task.selectTask),
     takeEvery(TASKS.SELECT_ALL, task.selectAllTask),
     takeEvery(TASKS.DESELECT, task.deselectTasks),

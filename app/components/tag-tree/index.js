@@ -25,7 +25,7 @@ import {
 import {
   getColorTheme,
 } from 'redux/store/auth/auth.selectors'
-import { deselectTasks } from 'redux/store/tasks/tasks.actions'
+import { setTaskTags, deselectTasks } from 'redux/store/tasks/tasks.actions'
 import { selectTag } from 'redux/store/tags/tags.actions'
 import { getTagsRelations } from 'redux/store/tags/tags.selectors'
 import {
@@ -223,6 +223,7 @@ const mapDispatchToProps = {
   changeNavigation,
   deselectTasks,
   deleteTreeItem,
+  setTaskTags,
 }
 
 export default compose(
@@ -307,7 +308,12 @@ export default compose(
       return {}
     },
     onHandleDrop: (state, props) => dropResult => {
-      props.dropTreeItem(dropResult)
+      if (dropResult.dragSource.type === 'task') {
+        props.setTaskTags(dropResult.dragSource.task.id, dropResult.tags)
+      } else {
+        props.dropTreeItem(dropResult)
+      }
+
       return {}
     },
   }),

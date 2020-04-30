@@ -39,7 +39,7 @@ import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'
 import * as authSelectors from 'redux/store/auth/auth.selectors'
 import * as entitiesSelectors from 'redux/store/entities/entities.selectors'
 import * as taskSelectors from 'redux/store/tasks/tasks.selectors'
-import * as notificationSelectors from 'redux/store/notifications/notifications.selectros'
+import * as tagSelectors from 'redux/store/tags/tags.selectors'
 import * as contactsActions from 'redux/store/contacts/contacts.actions'
 import * as contactsSelectors from 'redux/store/contacts/contacts.selectors'
 import api from 'redux/utils/api'
@@ -862,6 +862,14 @@ export function* addTaskTag(action) {
       })
     )
   }
+}
+
+export function* setTaskTags(action) {
+  const { taskId, tagIds } = action.payload
+  const tags = yield select(state => tagSelectors.getTagsByIds(state, tagIds))
+  yield callApi(api.tasks.setTags, taskId, tags.map(tag => ({ id: tag.id })))
+
+  // TODO: Recompute relations
 }
 
 export function* addRemoveTaskTags(action) {

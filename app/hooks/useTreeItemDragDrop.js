@@ -9,7 +9,7 @@ const DropTypes = {
   TASK: 'task'
 }
 
-const useTreeItemDragDrop = ({ treeItem, parents, onDrop }) => {
+const useTreeItemDragDrop = ({ treeItem, parents, tags, onDrop }) => {
 
   // Keeps reference to drop DOM element
   const dropTarget = useRef()
@@ -68,13 +68,15 @@ const useTreeItemDragDrop = ({ treeItem, parents, onDrop }) => {
       const clientOffset = monitor.getClientOffset()
       const hoverClientY = clientOffset.y - hoverBoundingRect.top
 
-      let currentDropPosition = null
-      if (hoverClientY < thirdHeight) {
-        currentDropPosition = 'TOP'
-      } else if (hoverClientY < 2 * thirdHeight) {
-        currentDropPosition = 'MIDDLE'
-      } else {
-        currentDropPosition = 'BOTTOM'
+      let currentDropPosition = 'MIDDLE'
+      if (item.type === DropTypes.TREE_ITEM) {
+        if (hoverClientY < thirdHeight) {
+          currentDropPosition = 'TOP'
+        } else if (hoverClientY < 2 * thirdHeight) {
+          currentDropPosition = 'MIDDLE'
+        } else {
+          currentDropPosition = 'BOTTOM'
+        }
       }
 
       setDropPosition(currentDropPosition)
@@ -83,6 +85,7 @@ const useTreeItemDragDrop = ({ treeItem, parents, onDrop }) => {
       onDrop({
         dragSource: item,
         dragTarget: treeItem,
+        tags: tags,
         dropPosition,
       })
     }

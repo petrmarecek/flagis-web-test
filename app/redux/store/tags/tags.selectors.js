@@ -45,6 +45,11 @@ export const getActiveTagsIds = (state) => state.getIn(['tags', 'activeTags'])
 export const getTagsSearch = (state) => state.getIn(['tags', 'search'])
 export const getTagsRelations = (state) => state.getIn(['tags', 'relations'])
 export const getTag = (state, tagId) => getActiveEntitiesTags(state).get(tagId)
+export const getTagsByIds = (state, tagIds) => {
+  const entities = getActiveEntitiesTags(state)
+  const result = tagIds.map(tagId => entities.get(tagId))
+  return result
+}
 
 // ------ Reselect selectors ----------------------------------------------------
 

@@ -149,7 +149,7 @@ const TagTreeSection = props => {
     connectDropTarget,
   } = props
 
-  const parents = [section.id]
+  const parents = [section]
   const styleWidth = { width: maxWidth - 125 }
   const renderArrowIcon = children => {
     const titleIcon = section.collapsed ? 'Expand' : 'Collapse'

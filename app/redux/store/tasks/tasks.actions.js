@@ -42,6 +42,7 @@ export const TASKS = {
   SET_FIELD: 'TASK/SET_FIELD',
   REMOVE_FROM_LISTS: 'TASK/REMOVE_FROM_LISTS',
   SEND: 'TASK/SEND',
+  SET_TASK_TAGS: 'TASK/SET_TASK_TAGS',
   ACCEPT: 'TASK/ACCEPT',
   REJECT: 'TASK/REJECT',
   UNDO_REJECT: 'UNDO_TASK/REJECT',
@@ -250,6 +251,14 @@ export const removeTaskFollower = (taskId, userId, followerId) => ({
     userId,
     followerId,
   },
+})
+
+export const setTaskTags = (taskId, tagIds) => ({
+  type: TASKS.SET_TASK_TAGS,
+  payload: {
+    taskId,
+    tagIds,
+  }
 })
 
 export const addRemoveTaskTags = (taskId, addTags, removeTags) => ({

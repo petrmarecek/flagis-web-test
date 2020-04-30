@@ -64,10 +64,17 @@ const TagTreeItem = props => {
     dropHandle,
     dropProps,
     dropPosition,
-  } = useTreeItemDragDrop({ treeItem, parents, onDrop })
+  } = useTreeItemDragDrop({
+    treeItem,
+    parents: parents.map(item => item.id),
+    tags: [...parents, treeItem]
+      .map(item => item.tag ? item.tag.id : null)
+      .filter(item => item),
+    onDrop
+  })
 
   const isChildItems = treeItem.childItems.size > 0
-  const itemParents = [...parents, treeItem.id]
+  const itemParents = [...parents, treeItem]
   const tag = treeItem.tag
   const colorIndex = getColorIndex(tag.colorIndex, tag.title)
   const tagColor = getTagColor(colorIndex)
