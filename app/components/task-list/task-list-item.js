@@ -1,8 +1,5 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { DragSource, DropTarget } from 'react-dnd'
-import { compose, shouldUpdate, withStateHandlers } from 'recompose'
-import { findDOMNode } from 'react-dom'
 import Linkify from 'react-linkify'
 import moment from 'moment'
 import removeMd from 'remove-markdown'
@@ -53,26 +50,110 @@ const TaskListItem = props => {
     userId,
     task,
     isSelected,
-    isMounted,
-    isMoved,
     noTaskFound,
     listType,
     selectedTags,
     leftPanelWidth,
     windowWidth,
-    onHandleMouseDown,
-    onHandleClicked,
-    onHandleTagClicked,
-    onHandleCompleteClicked,
-    onHandleArchiveClicked,
-    onHandleAcceptClicked,
-    onHandleRejectClicked,
   } = props
+
+  const [isInitialMount, setIsInitialMount] = useState(true)
+  const [isMounted, setIsMounted] = useState(true)
 
   const {
     dragDropHandle,
     dragProps,
   } = useTaskListItemDragDrop(props)
+
+  useEffect(() => {
+    // Wait for initial animation
+    window.setTimeout(() => setIsInitialMount(false), 400)
+  }, [])
+
+  const onHandleMouseDown = event => {
+    const { isCompleted } = props.task
+    const isInboxList = props.listType === 'inbox'
+
+    // allowed only right mouse button
+    if (event.button !== 2) {
+      return
+    }
+
+    // set task as important by right mouse
+    if (!isCompleted && !isInboxList) {
+      props.onToggleImportant(props.task)
+      return
+    }
+  }
+
+  const onHandleClicked = event => {
+    const isInboxList = props.listType === 'inbox'
+    const isMultiselect = event.ctrlKey || event.metaKey
+    // Not allowed multiselect in inbox list
+    if (isMultiselect && isInboxList) {
+      return
+    }
+
+    // Click on link
+    if (event.target.nodeName === 'A') {
+      return
+    }
+
+    props.onClick(props.task, event)
+  }
+
+  const onHandleTagClicked = tag => props.onTagClick(tag)
+
+  const onHandleCompleteClicked = () => {
+    // Data of assignee
+    const assignee = getAssigneeOfTask(props.task.followers)
+    const isFollowers = assignee !== null
+    const followerStatus = isFollowers ? assignee.status : 'new'
+
+    if (followerStatus === 'pending') {
+      toast.error(toastCommon.errorMessages.tasks.waitingResponse, {
+        position: toastCommon.position.DEFAULT,
+        autoClose: toastCommon.duration.ERROR_DURATION,
+      })
+      return
+    }
+
+    props.onCompleteClick(props.task)
+  }
+
+  const onHandleArchiveClicked = () => {
+    // allowed left mouse button
+    if (props.listType === 'archived') {
+      window.setTimeout(() => props.cancelArchiveTasks(props.task.id), 400)
+      setIsMounted(false)
+      return
+    }
+
+    window.setTimeout(() => props.setArchiveTasks(props.task.id), 400)
+    setIsMounted(false)
+  }
+
+  const onHandleAcceptClicked = () => {
+    const { id, followers } = props.task
+    const assignee = getAssigneeOfTask(followers)
+    const data = {
+      taskId: id,
+      followerId: assignee.id,
+    }
+
+    window.setTimeout(() => props.acceptTask(data), 400)
+    setIsMounted(false)
+  }
+
+  const onHandleRejectClicked = () => {
+    const data = {
+      task,
+      type: listType,
+    }
+
+    window.setTimeout(() => props.rejectTask(data), 400)
+    setIsMounted(false)
+  }
 
   // Conditions
   const isArchivedList = listType === 'archived'
@@ -179,118 +260,137 @@ const TaskListItem = props => {
 
   // Render component
   return (
-      <li ref={dragDropHandle}>
-        {noTaskFound ? (
-          <EmptyList>No tasks found</EmptyList>
-        ) : (
-          <TaskItem
-            key={task.id}
-            tabIndex="-1"
-            data-item-id={task.id}
-            onMouseDown={onHandleMouseDown}
-            onClick={onHandleClicked}
-            active={task.active}
-            selected={isSelected}
-            backgroundColor={backgroundColor}
-            completed={isCompletedMainList}
-            dragging={dragProps.isDragging}
-            isMounted={isMounted}
-            isMoved={isMoved}
-          >
-            {!isArchivedList && !isInboxList && (
-              <Completed
-                completed={task.isCompleted}
-                onClick={e => {
-                  e.stopPropagation()
-                  onHandleCompleteClicked(e)
-                }}
-              >
-                <Icon
-                  icon={ICONS.TASK_COMPLETED}
-                  color={completedIconColor()}
-                  width={21}
-                  height={21}
-                />
-              </Completed>
-            )}
-            {task.isCompleted && !isInboxList && (
-              <Archived
-                archived={isArchivedList}
-                onClick={e => {
-                  e.stopPropagation()
-                  onHandleArchiveClicked(e)
-                }}
-              >
-                <Icon
-                  icon={isArchivedList ? ICONS.NON_ARCHIVE : ICONS.ARCHIVE}
-                  color={[colors.astrocopusGrey]}
-                  hoverColor={[colors.aztec]}
-                  width={24}
-                  height={27}
-                  scale={0.926}
-                  animation={
-                    !task.isCompleted
-                      ? null
-                      : {
-                          action: 'transition.expandIn',
-                          duration: 1000,
-                        }
-                  }
-                />
-              </Archived>
-            )}
-            {isInboxList && (
-              <FollowerResponse>
-                <FollowerResponseButtons
-                  acceptClicked={onHandleAcceptClicked}
-                  rejectClicked={onHandleRejectClicked}
-                />
-              </FollowerResponse>
-            )}
-            <Content
-              marginLeft={contentMarginLeft}
-              marginRight={contentMarginRight}
+    <li ref={dragDropHandle}>
+      {noTaskFound ? (
+        <EmptyList>No tasks found</EmptyList>
+      ) : (
+        <TaskItem
+          key={task.id}
+          tabIndex="-1"
+          data-item-id={task.id}
+          onMouseDown={onHandleMouseDown}
+          onClick={onHandleClicked}
+          active={task.active}
+          selected={isSelected}
+          backgroundColor={backgroundColor}
+          completed={isCompletedMainList}
+          dragging={dragProps.isDragging}
+          isMounted={isMounted}
+          animationEnabled={isInitialMount}
+        >
+          {!isArchivedList && !isInboxList && (
+            <Completed
+              completed={task.isCompleted}
+              onClick={e => {
+                e.stopPropagation()
+                onHandleCompleteClicked(e)
+              }}
             >
-              <SubjectTags>
-                <Subject
-                  archived={isArchivedList}
-                  completed={isCompletedMainList}
-                  important={task.isImportant}
-                  description={isDescription}
-                >
-                  <Linkify properties={{ target: '_blank' }}>
-                    {task.subject}
-                  </Linkify>
-                </Subject>
-                <Tags>
-                  <TaskListTagItems
-                    tags={sortedTags}
-                    parentWidth={taskItemWidth}
-                    isCompleted={isCompletedMainList}
-                    onTagClick={onHandleTagClicked}
-                  />
-                </Tags>
-              </SubjectTags>
-              <DescriptionDueDate>
-                {isDescription && (
-                  <Description completed={isCompletedMainList}>
-                    {description}
-                  </Description>
-                )}
-                <DueDate
-                  title={fromNow}
-                  overdue={moment(dueDate) < now && !isArchivedList}
-                  completed={isCompletedMainList}
-                  description={isDescription}
-                >
-                  {dueDateFormat}
-                </DueDate>
-              </DescriptionDueDate>
-            </Content>
-            {isFollowers && (
-              <Followers
+              <Icon
+                icon={ICONS.TASK_COMPLETED}
+                color={completedIconColor()}
+                width={21}
+                height={21}
+              />
+            </Completed>
+          )}
+          {task.isCompleted && !isInboxList && (
+            <Archived
+              archived={isArchivedList}
+              onClick={e => {
+                e.stopPropagation()
+                onHandleArchiveClicked(e)
+              }}
+            >
+              <Icon
+                icon={isArchivedList ? ICONS.NON_ARCHIVE : ICONS.ARCHIVE}
+                color={[colors.astrocopusGrey]}
+                hoverColor={[colors.aztec]}
+                width={24}
+                height={27}
+                scale={0.926}
+                animation={
+                  !task.isCompleted
+                    ? null
+                    : {
+                        action: 'transition.expandIn',
+                        duration: 1000,
+                      }
+                }
+              />
+            </Archived>
+          )}
+          {isInboxList && (
+            <FollowerResponse>
+              <FollowerResponseButtons
+                acceptClicked={onHandleAcceptClicked}
+                rejectClicked={onHandleRejectClicked}
+              />
+            </FollowerResponse>
+          )}
+          <Content
+            marginLeft={contentMarginLeft}
+            marginRight={contentMarginRight}
+          >
+            <SubjectTags>
+              <Subject
+                archived={isArchivedList}
+                completed={isCompletedMainList}
+                important={task.isImportant}
+                description={isDescription}
+              >
+                <Linkify properties={{ target: '_blank' }}>
+                  {task.subject}
+                </Linkify>
+              </Subject>
+              <Tags>
+                <TaskListTagItems
+                  tags={sortedTags}
+                  parentWidth={taskItemWidth}
+                  isCompleted={isCompletedMainList}
+                  onTagClick={onHandleTagClicked}
+                />
+              </Tags>
+            </SubjectTags>
+            <DescriptionDueDate>
+              {isDescription && (
+                <Description completed={isCompletedMainList}>
+                  {description}
+                </Description>
+              )}
+              <DueDate
+                title={fromNow}
+                overdue={moment(dueDate) < now && !isArchivedList}
+                completed={isCompletedMainList}
+                description={isDescription}
+              >
+                {dueDateFormat}
+              </DueDate>
+            </DescriptionDueDate>
+          </Content>
+          {isFollowers && (
+            <Followers
+              assigneeInbox={isInboxList || !isOwner}
+              title={
+                !isOwner
+                  ? createdByFollower.profile.nickname === null
+                    ? createdByFollower.profile.email
+                    : createdByFollower.profile.nickname
+                  : assignee.profile.nickname === null
+                  ? assignee.profile.email
+                  : assignee.profile.nickname
+              }
+            >
+              <FollowerIcon
+                status={followerStatus}
                 assigneeInbox={isInboxList || !isOwner}
-                title={
+                isCompleted={isCompletedMainList}
+                photo={
+                  !isOwner
+                    ? createdByFollower.profile.photo
+                    : assignee.profile.photo
+                }
+                nickname={
                   !isOwner
                     ? createdByFollower.profile.nickname === null
                       ? createdByFollower.profile.email
@@ -299,33 +399,14 @@ const TaskListItem = props => {
                     ? assignee.profile.email
                     : assignee.profile.nickname
                 }
-              >
-                <FollowerIcon
-                  status={followerStatus}
-                  assigneeInbox={isInboxList || !isOwner}
-                  isCompleted={isCompletedMainList}
-                  photo={
-                    !isOwner
-                      ? createdByFollower.profile.photo
-                      : assignee.profile.photo
-                  }
-                  nickname={
-                    !isOwner
-                      ? createdByFollower.profile.nickname === null
-                        ? createdByFollower.profile.email
-                        : createdByFollower.profile.nickname
-                      : assignee.profile.nickname === null
-                      ? assignee.profile.email
-                      : assignee.profile.nickname
-                  }
-                  animation
-                />
-              </Followers>
-            )}
-          </TaskItem>
-        )}
-      </li>
-    )
+                animation
+              />
+            </Followers>
+          )}
+        </TaskItem>
+      )}
+    </li>
+  )
 }
 
 TaskListItem.propTypes = {
@@ -333,8 +414,6 @@ TaskListItem.propTypes = {
   userId: PropTypes.string,
   task: PropTypes.object,
   noTaskFound: PropTypes.bool,
-  isMounted: PropTypes.bool,
-  isMoved: PropTypes.string,
   listType: PropTypes.string,
   selectedTags: PropTypes.object,
   isSelected: PropTypes.bool,
@@ -344,6 +423,7 @@ TaskListItem.propTypes = {
   leftPanelWidth: PropTypes.number,
   windowWidth: PropTypes.number,
   index: PropTypes.number,
+  isMoving: PropTypes.bool,
 
   // Handlers
   onClick: PropTypes.func,
@@ -356,128 +436,7 @@ TaskListItem.propTypes = {
   cancelArchiveTasks: PropTypes.func,
   acceptTask: PropTypes.func,
   rejectTask: PropTypes.func,
-  onHandleMouseDown: PropTypes.func,
-  onHandleClicked: PropTypes.func,
-  onHandleTagClicked: PropTypes.func,
-  onHandleCompleteClicked: PropTypes.func,
-  onHandleArchiveClicked: PropTypes.func,
-  onHandleAcceptClicked: PropTypes.func,
-  onHandleRejectClicked: PropTypes.func,
+  setIsMoving: PropTypes.func,
 }
 
-const checkPropsChange = (props, nextProps) => {
-  // props
-  const {
-    task,
-    isSelected,
-    isDragging,
-    isMounted,
-    isMoved,
-    windowWidth,
-  } = props
-
-  // nextProps
-  const nextTask = nextProps.task
-  const nextIsSelected = nextProps.isSelected
-  const nextIsDragging = nextProps.isDragging
-  const nextIsMounted = nextProps.isMounted
-  const nextIsMoved = nextProps.isMoved
-  const nextWindowWidth = nextProps.windowWidth
-
-  return (
-    (task.size >= 2 ? !task.equals(nextTask) : task === nextTask) ||
-    isSelected !== nextIsSelected ||
-    isDragging !== nextIsDragging ||
-    isMounted !== nextIsMounted ||
-    isMoved !== nextIsMoved ||
-    windowWidth !== nextWindowWidth
-  )
-}
-
-export default compose(
-  withStateHandlers(() => ({ isMoved: null, isMounted: true }), {
-    onHandleMouseDown: (state, props) => event => {
-      const { isCompleted } = props.task
-      const isInboxList = props.listType === 'inbox'
-
-      // allowed only right mouse button
-      if (event.button !== 2) {
-        return {}
-      }
-
-      // set task as important by right mouse
-      if (!isCompleted && !isInboxList) {
-        props.onToggleImportant(props.task)
-        return {}
-      }
-
-      return {}
-    },
-    onHandleClicked: (state, props) => event => {
-      const isInboxList = props.listType === 'inbox'
-      const isMultiselect = event.ctrlKey || event.metaKey
-      // Not allowed multiselect in inbox list
-      if (isMultiselect && isInboxList) {
-        return {}
-      }
-
-      // Click on link
-      if (event.target.nodeName === 'A') {
-        return {}
-      }
-
-      props.onClick(props.task, event)
-      return {}
-    },
-    onHandleTagClicked: (state, props) => tag => props.onTagClick(tag),
-    onHandleCompleteClicked: (state, props) => () => {
-      // Data of assignee
-      const assignee = getAssigneeOfTask(props.task.followers)
-      const isFollowers = assignee !== null
-      const followerStatus = isFollowers ? assignee.status : 'new'
-
-      if (followerStatus === 'pending') {
-        toast.error(toastCommon.errorMessages.tasks.waitingResponse, {
-          position: toastCommon.position.DEFAULT,
-          autoClose: toastCommon.duration.ERROR_DURATION,
-        })
-        return {}
-      }
-
-      props.onCompleteClick(props.task)
-      return {}
-    },
-    onHandleArchiveClicked: (state, props) => () => {
-      // allowed left mouse button
-      if (props.listType === 'archived') {
-        window.setTimeout(() => props.cancelArchiveTasks(props.task.id), 400)
-        return { isMounted: false, isMoved: null }
-      }
-
-      window.setTimeout(() => props.setArchiveTasks(props.task.id), 400)
-      return { isMounted: false, isMoved: null }
-    },
-    onHandleAcceptClicked: (state, props) => () => {
-      const { id, followers } = props.task
-      const assignee = getAssigneeOfTask(followers)
-      const data = {
-        taskId: id,
-        followerId: assignee.id,
-      }
-
-      window.setTimeout(() => props.acceptTask(data), 400)
-      return { isMounted: false, isMoved: null }
-    },
-    onHandleRejectClicked: (state, props) => () => {
-      const { task, listType } = props
-      const data = {
-        task,
-        type: listType,
-      }
-
-      window.setTimeout(() => props.rejectTask(data), 400)
-      return { isMounted: false, isMoved: null }
-    },
-  }),
-  shouldUpdate(checkPropsChange)
-)(TaskListItem)
+export default TaskListItem

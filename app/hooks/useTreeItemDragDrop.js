@@ -30,7 +30,7 @@ const useTreeItemDragDrop = ({ treeItem, parents, onDrop }) => {
 
   // Tree item drop
   const [dropProps, drop] = useDrop({
-    accept: DropTypes.TREE_ITEM,
+    accept: [DropTypes.TREE_ITEM, DropTypes.TASK],
     collect: (monitor) => ({
       isOver: monitor.isOver()
     }),
