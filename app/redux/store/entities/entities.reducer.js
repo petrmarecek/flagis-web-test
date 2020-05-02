@@ -117,6 +117,10 @@ export default typeToReducer(
         tagList.push(action.payload.tag.id)
       ),
 
+    [TASKS.SET_TASK_TAG_STORE]: (state, action) =>
+      state.setIn(['tasks', action.payload.taskId, 'tags'], List (action.payload.tagIds)),
+
+
     [TASKS.REMOVE_TASK_TAG_STORE]: (state, action) =>
       state.updateIn(['tasks', action.payload.taskId, 'tags'], tagList =>
         tagList.filter(tagId => tagId !== action.payload.tag.id)

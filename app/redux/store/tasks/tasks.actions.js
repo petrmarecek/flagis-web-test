@@ -35,6 +35,7 @@ export const TASKS = {
   REMOVE_TASK_FOLLOWER: 'TASK/REMOVE_TASK_CONTACT',
   ADD_REMOVE_TASK_TAGS: 'TASK/ADD_REMOVE_TASK_TAGS',
   ADD_TASK_TAG_STORE: 'TASK/ADD_TASK_TAG_STORE',
+  SET_TASK_TAG_STORE: 'TASK/SET_TASK_TAG_STORE',
   REMOVE_TASK_TAG_STORE: 'TASK/REMOVE_TASK_TAG_STORE',
   PREPARE_DELETE: 'TASK/PREPARE_DELETE',
   DELETE: 'TASK/DELETE',
@@ -275,6 +276,14 @@ export const addTaskTagStore = (taskId, tag) => ({
   payload: {
     taskId,
     tag,
+  },
+})
+
+export const setTaskTagStore = (taskId, tagIds) => ({
+  type: TASKS.SET_TASK_TAG_STORE,
+  payload: {
+    taskId,
+    tagIds,
   },
 })
 

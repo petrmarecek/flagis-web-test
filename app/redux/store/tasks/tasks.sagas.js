@@ -39,7 +39,6 @@ import * as appStateSelectors from 'redux/store/app-state/app-state.selectors'
 import * as authSelectors from 'redux/store/auth/auth.selectors'
 import * as entitiesSelectors from 'redux/store/entities/entities.selectors'
 import * as taskSelectors from 'redux/store/tasks/tasks.selectors'
-import * as tagSelectors from 'redux/store/tags/tags.selectors'
 import * as contactsActions from 'redux/store/contacts/contacts.actions'
 import * as contactsSelectors from 'redux/store/contacts/contacts.selectors'
 import api from 'redux/utils/api'
@@ -866,10 +865,34 @@ export function* addTaskTag(action) {
 
 export function* setTaskTags(action) {
   const { taskId, tagIds } = action.payload
-  const tags = yield select(state => tagSelectors.getTagsByIds(state, tagIds))
-  yield callApi(api.tasks.setTags, taskId, tags.map(tag => ({ id: tag.id })))
+  let originalTagList = yield select(state =>
+    taskSelectors.getTaskTags(state, taskId)
+  )
 
-  // TODO: Recompute relations
+  // Write new tag IDs
+  yield callApi(api.tasks.setTags, taskId, tagIds.map(tagId => ({ id: tagId })))
+
+  // Update local task cache
+  yield put(taskActions.setTaskTagStore(taskId, tagIds))
+
+  // Update task-tag references
+  for (const tagId of tagIds) {
+    const tagIndex = originalTagList.indexOf(tagId)
+
+    if (tagIndex >= 0) {
+      // This tag has been already present
+      originalTagList = originalTagList.delete(tagIndex)
+    } else {
+      // This tag is new, write a new relation
+      yield put(tagsActions.addTagsRelations(tagId, taskId))
+    }
+  }
+
+  // Remaining tags were deleted, remove them from relations
+  for (const tagId of originalTagList) {
+    // This tag has been removed, remove original relation
+    yield put(tagsActions.deleteTagsRelations(tagId, taskId))
+  }
 }
 
 export function* addRemoveTaskTags(action) {
