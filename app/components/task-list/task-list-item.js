@@ -86,8 +86,10 @@ const TaskListItem = (props) => {
   }
 
   const onHandleClicked = (event) => {
+    event.persist()
     const isInboxList = props.listType === 'inbox'
     const isMultiselect = event.ctrlKey || event.metaKey
+
     // Not allowed multiselect in inbox list
     if (isMultiselect && isInboxList) {
       return
