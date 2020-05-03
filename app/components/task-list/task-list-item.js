@@ -286,10 +286,14 @@ const TaskListItem = (props) => {
               }}
             >
               <Icon
-                icon={ICONS.TASK_COMPLETED}
+                icon={
+                  task.isCompleted
+                    ? ICONS.TASK_COMPLETED
+                    : ICONS.TASK_UNCOMPLETED
+                }
                 color={completedIconColor()}
-                width={21}
-                height={21}
+                width={22}
+                height={22}
               />
             </Completed>
           )}
