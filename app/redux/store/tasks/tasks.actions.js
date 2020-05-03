@@ -35,6 +35,7 @@ export const TASKS = {
   REMOVE_TASK_FOLLOWER: 'TASK/REMOVE_TASK_CONTACT',
   ADD_REMOVE_TASK_TAGS: 'TASK/ADD_REMOVE_TASK_TAGS',
   ADD_TASK_TAG_STORE: 'TASK/ADD_TASK_TAG_STORE',
+  SET_TASK_TAG_STORE: 'TASK/SET_TASK_TAG_STORE',
   REMOVE_TASK_TAG_STORE: 'TASK/REMOVE_TASK_TAG_STORE',
   PREPARE_DELETE: 'TASK/PREPARE_DELETE',
   DELETE: 'TASK/DELETE',
@@ -42,6 +43,7 @@ export const TASKS = {
   SET_FIELD: 'TASK/SET_FIELD',
   REMOVE_FROM_LISTS: 'TASK/REMOVE_FROM_LISTS',
   SEND: 'TASK/SEND',
+  SET_TASK_TAGS: 'TASK/SET_TASK_TAGS',
   ACCEPT: 'TASK/ACCEPT',
   REJECT: 'TASK/REJECT',
   UNDO_REJECT: 'UNDO_TASK/REJECT',
@@ -252,6 +254,14 @@ export const removeTaskFollower = (taskId, userId, followerId) => ({
   },
 })
 
+export const setTaskTags = (taskId, tagIds) => ({
+  type: TASKS.SET_TASK_TAGS,
+  payload: {
+    taskId,
+    tagIds,
+  }
+})
+
 export const addRemoveTaskTags = (taskId, addTags, removeTags) => ({
   type: TASKS.ADD_REMOVE_TASK_TAGS,
   payload: {
@@ -266,6 +276,14 @@ export const addTaskTagStore = (taskId, tag) => ({
   payload: {
     taskId,
     tag,
+  },
+})
+
+export const setTaskTagStore = (taskId, tagIds) => ({
+  type: TASKS.SET_TASK_TAG_STORE,
+  payload: {
+    taskId,
+    tagIds,
   },
 })
 

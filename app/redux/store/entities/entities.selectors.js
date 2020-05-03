@@ -52,3 +52,4 @@ export const getActiveEntitiesTags = createSelector(
     return entitiesTags.filter(tag => tag && !tag.isDeleted)
   }
 )
+

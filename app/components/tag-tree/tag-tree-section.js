@@ -149,7 +149,7 @@ const TagTreeSection = props => {
     connectDropTarget,
   } = props
 
-  const parents = [section.id]
+  const parents = [section]
   const styleWidth = { width: maxWidth - 125 }
   const renderArrowIcon = children => {
     const titleIcon = section.collapsed ? 'Expand' : 'Collapse'
@@ -352,7 +352,7 @@ export default DragSource(
             props.inputRef.blur()
             return
 
-          // sumit (enter key)
+          // submit (enter key)
           case 13:
             event.preventDefault()
             props.onHandleSubmitTitle()

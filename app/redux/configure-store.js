@@ -22,7 +22,7 @@ Sentry.init({
 
 const sagaMiddleware = createSagaMiddleware({
   onError(err) {
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV === 'local' || process.env.NODE_ENV === 'development') {
       console.error(err)
     } else {
       Sentry.captureException(err)

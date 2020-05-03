@@ -77,17 +77,20 @@ const showAnimation = keyframes`${fadeInUp}`
 const hideAnimation = keyframes`${flipOutX}`
 
 const TaskItem = styled.div`
-  height: 50px;
+  /* Fill space between tasks while dragging */
+  height: ${(props) => (props.dragging ? '58px' : '50px')};
+  margin: ${(props) => (props.dragging ? '-4px 0 0' : '0 0 4px')};
+  visibility: ${(props) => (props.dragging ? 'hidden' : 'visible')};
+
   overflow: hidden;
   list-style-type: none;
-  margin: 0 0 4px;
   cursor: pointer;
   position: relative;
   outline: none;
   background-color: ${(props) => props.backgroundColor};
   visibility: ${(props) => (props.dragging ? 'hidden' : 'visible')};
   animation: ${(props) => {
-    if (props.isMoved) {
+    if (!props.animationEnabled) {
       return 'none'
     }
 
