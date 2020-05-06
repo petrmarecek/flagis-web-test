@@ -9,6 +9,7 @@ import SignInPage from 'containers/sign-in-page'
 import SignUpPage from 'containers/sign-up-page'
 import EmailResetPasswordPage from 'containers/email-reset-password-page'
 import ResetPasswordPage from 'containers/reset-password-page'
+import VerificationEmailPage from 'containers/verification-email-page'
 import UserContainer from 'containers/user-container'
 import NotFoundPage from 'containers/not-found-page/loadable'
 
@@ -27,6 +28,7 @@ export default function App() {
           component={EmailResetPasswordPage}
         />
         <Route path="/reset-password/*" component={ResetPasswordPage} />
+        <Route path="/verification/email/*" component={VerificationEmailPage} />
         <Route path="/user" component={UserContainer} />
         <Route component={NotFoundPage} />
       </Switch>

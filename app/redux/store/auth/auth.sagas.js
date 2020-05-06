@@ -46,7 +46,11 @@ import {
   sentryBreadcrumbCategory,
   sentryTagType,
 } from 'redux/store/errors/errors.common'
-import { createLoadActions, callApi, refreshToken } from 'redux/store/common.sagas'
+import {
+  createLoadActions,
+  callApi,
+  refreshToken,
+} from 'redux/store/common.sagas'
 import api from 'redux/utils/api'
 import firebase from 'redux/utils/firebase'
 import dateUtil from 'redux/utils/date'
@@ -111,7 +115,7 @@ export function* initDataFlow() {
       yield cancel(notificationsSyncing)
 
       // Cancel snapshot for comments and attachments from firestore
-      const { task, inbox } = yield select(state =>
+      const { task, inbox } = yield select((state) =>
         appStateSelectors.getDetail(state)
       )
       if (task) {
@@ -136,7 +140,7 @@ export function* initDataFlow() {
 }
 
 function* restoreAuth() {
-  const auth = yield select(state => authSelectors.getAuth(state))
+  const auth = yield select((state) => authSelectors.getAuth(state))
 
   // Authorization not in persisted state
   if (!auth || !auth.isLogged) {
@@ -189,7 +193,7 @@ export function* authFlow() {
         }
 
         if (register) {
-          auth = yield call(authorizeUser, api.users.create, register)
+          auth = yield call(registerUser, api.users.create, register)
         }
 
         // if api return error on login or register
@@ -247,7 +251,7 @@ export function* initEmail(action) {
 }
 
 export function* controlRedirectSignIn() {
-  const auth = yield select(state => authSelectors.getAuth(state))
+  const auth = yield select((state) => authSelectors.getAuth(state))
 
   if (!auth.isLogged) {
     const redirectAction = push(routes.signIn)
@@ -256,7 +260,7 @@ export function* controlRedirectSignIn() {
 }
 
 export function* controlRedirectTasks() {
-  const auth = yield select(state => authSelectors.getAuth(state))
+  const auth = yield select((state) => authSelectors.getAuth(state))
 
   if (auth.isLogged) {
     const redirectAction = push(routes.user.tasks)
@@ -274,13 +278,13 @@ export function* changeName(action) {
 
     // update nickname for me contact
     const nickname = `${profile.firstName} ${profile.lastName}`
-    const me = yield select(state =>
+    const me = yield select((state) =>
       contactsSelectors.getContactById(state, profile.id)
     )
     yield put(contactsActions.updateContact(me, nickname, 'nickname', true))
 
     // deselect form for change name
-    yield put(appStateActions.deselectError('changeName'))
+    yield put(appStateActions.deselectForm('changeName'))
     yield put(appStateActions.deselectLoader('form'))
 
     // show notification of successful profile update
@@ -351,7 +355,7 @@ export function* changeUserPhoto(action) {
     yield put(authActions.updateProfile(profile))
 
     // update photo for me contact
-    const me = yield select(state =>
+    const me = yield select((state) =>
       contactsSelectors.getContactById(state, profile.id)
     )
     yield put(contactsActions.updateContact(me, profile.photo, 'photo', true))
@@ -418,7 +422,7 @@ export function* toggleColorTheme(action) {
 export function* changePassword(action) {
   try {
     yield callApi(api.users.password, action.payload)
-    yield put(appStateActions.deselectError('changePassword'))
+    yield put(appStateActions.deselectForm('changePassword'))
     yield put(appStateActions.deselectLoader('form'))
 
     toast.success(toastCommon.successMessages.changePassword, {
@@ -563,6 +567,53 @@ export function* resetPassword(action) {
 
 // ------ HELPER FUNCTIONS ----------------------------------------------------
 
+function* registerUser(authApiCall, action) {
+  const { PENDING, FULFILLED, REJECTED } = createLoadActions(AUTH.SIGN_UP)
+  const { payload } = action
+
+  try {
+    yield put({ type: PENDING, payload: action.payload })
+
+    // call server
+    yield call(authApiCall, payload)
+
+    // dispatch action with auth data
+    yield put({ type: FULFILLED })
+
+    // hide loader
+    yield put(appStateActions.deselectLoader('form'))
+
+    return null
+  } catch (err) {
+    yield put({ type: REJECTED, err })
+
+    if (
+      action.type === 'AUTH/SIGN_UP' ||
+      action.type === 'AUTH/SIGN_UP_INVITATION'
+    ) {
+      yield put(
+        appStateActions.setError(
+          'signUp',
+          toastCommon.errorMessages.signUp.conflict
+        )
+      )
+    }
+
+    yield put(appStateActions.deselectLoader('form'))
+
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type,
+      })
+    )
+    return null
+  }
+}
+
 function* authorizeUser(authApiCall, action) {
   const { PENDING, FULFILLED, REJECTED } = createLoadActions(AUTH.LOGIN)
   const { payload } = action
@@ -599,7 +650,11 @@ function* authorizeUser(authApiCall, action) {
     yield put({ type: REJECTED, err })
 
     if (action.type === 'AUTH/LOGIN') {
-      if (err.response && err.response.data && err.response.data.type === 'PasswordResetRequired') {
+      if (
+        err.response &&
+        err.response.data &&
+        err.response.data.type === 'PasswordResetRequired'
+      ) {
         yield put(
           appStateActions.setError(
             'signIn',
@@ -614,18 +669,6 @@ function* authorizeUser(authApiCall, action) {
           )
         )
       }
-    }
-
-    if (
-      action.type === 'AUTH/SIGN_UP' ||
-      action.type === 'AUTH/SIGN_UP_INVITATION'
-    ) {
-      yield put(
-        appStateActions.setError(
-          'signUp',
-          toastCommon.errorMessages.signUp.conflict
-        )
-      )
     }
 
     yield put(appStateActions.deselectLoader('form'))

@@ -44,6 +44,7 @@ export const Profile = Record({
   firstName: null,
   lastName: null,
   photo: null,
+  verifiedAt: null,
   settings: new Settings(),
 })
 
@@ -209,7 +210,7 @@ export const AttachmentStore = Record({
 
 export const StatsStore = Record({
   isFetching: true,
-  data: null
+  data: null,
 })
 
 export const TasksMenuStore = Record({

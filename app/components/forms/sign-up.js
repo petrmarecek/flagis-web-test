@@ -19,7 +19,7 @@ import {
   initEmail,
 } from 'redux/store/auth/auth.actions'
 import { getUserEmail } from 'redux/store/auth/auth.selectors'
-import { getFromValues } from 'redux/store/forms/forms.selectors'
+import { getFromValues, getForm } from 'redux/store/forms/forms.selectors'
 import { validateSignUp } from 'redux/utils/validate'
 import { loaderTypes } from 'redux/store/app-state/app-state.common'
 
@@ -29,6 +29,7 @@ import InputField from 'components/forms/fields/input-field'
 import CheckboxField from 'components/forms/fields/checkbox-field'
 import Loader from 'components/common/loader'
 import AgreeLabel from './labels/agree-label'
+import Icon from 'components/icons/icon'
 import { ICONS } from 'components/icons/icon-constants'
 
 // styled
@@ -45,9 +46,55 @@ import {
   FormRow,
   FormRowButton,
   FormLink,
+  fontMain,
+  mediaQueries,
 } from '../styled-components-mixins'
+import { colors } from '../styled-components-mixins/colors'
+import styled, { keyframes } from 'styled-components'
+import { pulse, fadeInDown } from 'react-animations'
 
-const getToken = pathname => {
+const show = keyframes`${pulse}`
+const fadeDownAnimation = keyframes`${fadeInDown}`
+const hide = keyframes`
+    0%    {opacity: 0;}
+    99%   {opacity: 0;}
+    100%  {opacity: 1;}
+`
+
+const SuccessSignUpWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 150px 100px 50px 100px;
+
+  ${mediaQueries.md} {
+    margin: 100px 50px 50px 50px;
+  }
+
+  ${mediaQueries.sm} {
+    margin: 100px 25px 50px 25px;
+  }
+`
+
+const Text = styled.div`
+  ${fontMain}
+  font-size: 24px;
+  text-align: center;
+  line-height: 40px;
+  animation: ${fadeDownAnimation} 500ms;
+
+  ${mediaQueries.sm} {
+    font-size: 20px;
+  }
+`
+
+const IconWrapper = styled(Icon)`
+  margin-top: 50px;
+  animation: 600ms ${hide}, 1000ms ${show} linear 600ms;
+`
+
+const getToken = (pathname) => {
   const numberCharacter = '/sign-up/'.length
   return pathname.substring(numberCharacter)
 }
@@ -56,104 +103,131 @@ const SignUp = ({
   errorSignUp,
   loader,
   location,
-  contactUsValues,
+  signUpForm,
+  signUpValues,
   handleSubmit,
   onSubmit,
 }) => {
   const tokenLength = getToken(location.pathname).length
-  const isAgree = contactUsValues && contactUsValues.get('agree')
+  const isAgree = signUpValues && signUpValues.get('agree')
+  const isSubmitted =
+    (!errorSignUp.message && signUpForm && signUpForm.get('submitSucceeded')) ||
+    false
 
   return (
     <div className="landing-container">
       <NavigationLandingPrimary location={location} />
-      <Form maxWidth={500}>
-        <FormBody
-          onSubmit={isAgree ? handleSubmit(values => onSubmit(values)) : null}
-        >
-          <FormBodyFields>
-            <FormErrors>
-              <ErrorList>
-                {errorSignUp.message && (
-                  <ErrorListItem>
-                    <ErrorListItemText>{errorSignUp.message}</ErrorListItemText>
-                    <ErrorListItemIcon
-                      icon={ICONS.ERROR}
-                      width={12}
-                      height={14}
-                      color={['red']}
-                    />
-                  </ErrorListItem>
-                )}
-              </ErrorList>
-            </FormErrors>
-            <FormRow>
-              <Field
-                id="firstName"
-                name="firstName"
-                type="text"
-                label="First name"
-                component={InputField}
-              />
-            </FormRow>
-            <FormRow>
-              <Field
-                id="lastName"
-                name="lastName"
-                type="text"
-                label="Last Name"
-                component={InputField}
-              />
-            </FormRow>
-            <FormRow>
-              <Field
-                id="email"
-                name="email"
-                type="text"
-                label="E-mail"
-                disabled={tokenLength !== 0}
-                component={InputField}
-              />
-            </FormRow>
-            <FormRow>
-              <Field
-                id="newPassword"
-                name="newPassword"
-                type="password"
-                label="Password"
-                component={InputField}
-              />
-            </FormRow>
-            <FormRow>
-              <Field
-                id="confirmPassword"
-                name="confirmPassword"
-                type="password"
-                label="Password confirmation"
-                component={InputField}
-              />
-            </FormRow>
-            <FormRow>
-              <Field id="agree" name="agree" component={CheckboxField}>
-                <AgreeLabel />
-              </Field>
-            </FormRow>
-            <FormRowButton>
-              <ButtonDefault
-                type="submit"
-                value="Sign Up"
-                disabled={!isAgree}
-              />
-            </FormRowButton>
+      {isSubmitted && (
+        <SuccessSignUpWrapper>
+          <Text>
+            Well done! You have just signed up. Please, confirm your email.
+          </Text>
+          <Text>
+            We have just sent you an email with a link for the confirmation.
+          </Text>
+          <IconWrapper
+            icon={ICONS.TASK_COMPLETED}
+            scale={3}
+            width={72}
+            height={72}
+            color={[colors.hanumanGreen]}
+          />
+        </SuccessSignUpWrapper>
+      )}
+      {!isSubmitted && (
+        <Form maxWidth={500}>
+          <FormBody
+            onSubmit={
+              isAgree ? handleSubmit((values) => onSubmit(values)) : null
+            }
+          >
+            <FormBodyFields>
+              <FormErrors>
+                <ErrorList>
+                  {errorSignUp.message && (
+                    <ErrorListItem>
+                      <ErrorListItemText>
+                        {errorSignUp.message}
+                      </ErrorListItemText>
+                      <ErrorListItemIcon
+                        icon={ICONS.ERROR}
+                        width={12}
+                        height={14}
+                        color={['red']}
+                      />
+                    </ErrorListItem>
+                  )}
+                </ErrorList>
+              </FormErrors>
+              <FormRow>
+                <Field
+                  id="firstName"
+                  name="firstName"
+                  type="text"
+                  label="First name"
+                  component={InputField}
+                />
+              </FormRow>
+              <FormRow>
+                <Field
+                  id="lastName"
+                  name="lastName"
+                  type="text"
+                  label="Last Name"
+                  component={InputField}
+                />
+              </FormRow>
+              <FormRow>
+                <Field
+                  id="email"
+                  name="email"
+                  type="text"
+                  label="E-mail"
+                  disabled={tokenLength !== 0}
+                  component={InputField}
+                />
+              </FormRow>
+              <FormRow>
+                <Field
+                  id="newPassword"
+                  name="newPassword"
+                  type="password"
+                  label="Password"
+                  component={InputField}
+                />
+              </FormRow>
+              <FormRow>
+                <Field
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type="password"
+                  label="Password confirmation"
+                  component={InputField}
+                />
+              </FormRow>
+              <FormRow>
+                <Field id="agree" name="agree" component={CheckboxField}>
+                  <AgreeLabel />
+                </Field>
+              </FormRow>
+              <FormRowButton>
+                <ButtonDefault
+                  type="submit"
+                  value="Sign Up"
+                  disabled={!isAgree}
+                />
+              </FormRowButton>
 
-            <FormRow pointer>
-              <FormLink to="/sign-in">
-                Already have an account? Sign In!
-              </FormLink>
-            </FormRow>
-          </FormBodyFields>
-          {loader && <Loader global />}
-        </FormBody>
-      </Form>
+              <FormRow pointer>
+                <FormLink to="/sign-in">
+                  Already have an account? Sign In!
+                </FormLink>
+              </FormRow>
+            </FormBodyFields>
+            {loader && <Loader global />}
+          </FormBody>
+        </Form>
+      )}
     </div>
   )
 }
@@ -162,7 +236,8 @@ SignUp.propTypes = {
   errorSignUp: PropTypes.object,
   loader: PropTypes.bool,
   location: PropTypes.object,
-  contactUsValues: PropTypes.object,
+  signUpValues: PropTypes.object,
+  signUpForm: PropTypes.object,
   handleSubmit: PropTypes.func.isRequired,
   onSubmit: PropTypes.func,
 }
@@ -177,7 +252,8 @@ const mapStateToProps = (state, props) => {
 
   return {
     errorSignUp: getAppStateItem(state, 'signUp'),
-    contactUsValues: getFromValues(state, 'signUp'),
+    signUpValues: getFromValues(state, 'signUp'),
+    signUpForm: getForm(state, 'signUp'),
     loader: getLoader(state).form,
     initialValues: { email },
   }
@@ -199,7 +275,7 @@ export default compose(
     enableReinitialize: true,
   }),
   withHandlers({
-    onSubmit: props => values => {
+    onSubmit: (props) => (values) => {
       const token = getToken(props.location.pathname)
       const data = {
         email: values.get('email'),
