@@ -60,7 +60,6 @@ export default function* root() {
     takeLatest(TASKS.TOGGLE_IMPORTANT_REQUESTED, task.toggleImportant),
     takeLatest(TASKS.SET_DATE, task.setDate),
     takeLatest(TASKS.SET_ORDER, task.setOrder),
-    takeLatest(TASKS.SET_ORDER_TIME_LINE, task.setOrderTimeLine),
     takeLatest(TASKS.SET_DESCRIPTION, task.setDescription),
     takeLatest(TASKS.SET_SUBJECT, task.setSubject),
     takeEvery(TASKS.CREATE, task.createTask),

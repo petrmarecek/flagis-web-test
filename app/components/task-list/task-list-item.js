@@ -424,8 +424,6 @@ TaskListItem.propTypes = {
   listType: PropTypes.string,
   selectedTags: PropTypes.object,
   isSelected: PropTypes.bool,
-  timeLine: PropTypes.bool,
-  section: PropTypes.string,
   sort: PropTypes.object,
   leftPanelWidth: PropTypes.number,
   windowWidth: PropTypes.number,

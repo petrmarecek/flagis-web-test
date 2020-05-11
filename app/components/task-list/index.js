@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import moment from 'moment'
 import debounce from 'lodash/debounce'
 import R from 'ramda'
 import { compose, branch, renderComponent, withStateHandlers } from 'recompose'
@@ -16,7 +15,7 @@ import { getEntitiesTasks } from 'redux/store/entities/entities.selectors'
 import { selectActiveTags } from 'redux/store/tags/tags.actions'
 import { getActiveTagsIds } from 'redux/store/tags/tags.selectors'
 import { getTasksMenuSort } from 'redux/store/tasks-menu/tasks-menu.selectors'
-import { computeOrder, computeTimeLine } from 'redux/utils/redux-helper'
+import { computeOrder } from 'redux/utils/redux-helper'
 import { setScrollbarPosition } from 'redux/store/app-state/app-state.actions'
 import {
   getArchivedTasksVisibility,
@@ -31,9 +30,7 @@ import {
   setComplete,
   setIncomplete,
   setOrder,
-  setOrderTimeLine,
   moveTask,
-  moveTimeLineTask,
   deselectTasks,
   setArchiveTasks,
   cancelArchiveTasks,
@@ -45,7 +42,6 @@ import {
   getTasksItems,
   getCompletedTasksItems,
   getArchivedTasksItems,
-  getTimeLine,
   getSelectionTasks,
   getTasks,
 } from 'redux/store/tasks/tasks.selectors'
@@ -73,7 +69,6 @@ const TaskListContainer = props => {
     selectedTasks,
     isVisibleArchivedTasks,
     isVisibleInbox,
-    timeLine,
     sort,
     leftPanelWidth,
     windowWidth,
@@ -93,7 +88,7 @@ const TaskListContainer = props => {
     onHandleSetScrollbarPosition,
   } = props
 
-  if (!tasks.isFetching && tasks.items.length === 0 && !timeLine) {
+  if (!tasks.isFetching && tasks.items.length === 0) {
     return <EmptyList>No tasks found</EmptyList>
   }
 
@@ -118,7 +113,6 @@ const TaskListContainer = props => {
       style={scrollStyle}
       position={scrollbarPosition}
       setPosition={onHandleSetScrollbarPosition}
-      isToggleTaskList={timeLine}
     >
       <span onContextMenu={e => e.preventDefault()}>
         <TaskList
@@ -127,7 +121,6 @@ const TaskListContainer = props => {
           tasks={tasks.items}
           selectedTags={selectedTags}
           selectedTasks={selectedTasks}
-          timeLine={timeLine}
           sort={sort}
           isVisibleArchivedTasks={isVisibleArchivedTasks}
           leftPanelWidth={leftPanelWidth}
@@ -160,7 +153,6 @@ TaskListContainer.propTypes = {
   selectedTasks: PropTypes.object,
   isVisibleArchivedTasks: PropTypes.bool,
   isVisibleInbox: PropTypes.bool,
-  timeLine: PropTypes.bool,
   sort: PropTypes.object,
   leftPanelWidth: PropTypes.number,
   windowWidth: PropTypes.number,
@@ -169,7 +161,6 @@ TaskListContainer.propTypes = {
   // state
   dueDate: PropTypes.object,
   order: PropTypes.number,
-  orderTimeLine: PropTypes.number,
 
   // handlers
   onInvokeMove: PropTypes.func,
@@ -190,9 +181,7 @@ TaskListContainer.propTypes = {
   requestToggleImportant: PropTypes.func,
   setIncomplete: PropTypes.func,
   setOrder: PropTypes.func,
-  setOrderTimeLine: PropTypes.func,
   moveTask: PropTypes.func,
-  moveTimeLineTask: PropTypes.func,
   selectActiveTags: PropTypes.func,
   deselectTasks: PropTypes.func,
   setArchiveTasks: PropTypes.func,
@@ -216,7 +205,6 @@ const mapStateToProps = state => {
     entitiesTasks: getEntitiesTasks(state),
     selectedTasks: getSelectionTasks(state),
     selectedTags: getActiveTagsIds(state),
-    timeLine: getTimeLine(state),
     sort: getTasksMenuSort(state),
     isVisibleArchivedTasks: getArchivedTasksVisibility(state),
     isVisibleInbox: getInboxTasksVisibility(state),
@@ -232,9 +220,7 @@ const mapDispatchToProps = {
   setComplete,
   setIncomplete,
   setOrder,
-  setOrderTimeLine,
   moveTask,
-  moveTimeLineTask,
   selectActiveTags,
   deselectTasks,
   setArchiveTasks,
@@ -254,69 +240,14 @@ export default compose(
   withStateHandlers(
     () => ({
       dueDate: null,
-      orderTimeLine: null,
       order: null,
     }),
     {
       onInvokeMove: (state, props) => move => {
-        const { sourceTaskId, targetSection } = move
+        const { sourceTaskId } = move
         const isActiveTags = props.selectedTags.size !== 0
         const tasks = props.tasks.items
         move = R.assoc('isActiveTags', isActiveTags, move)
-
-        // sort by Due Date
-        if (targetSection) {
-          // no task for this week
-          if (targetSection === 'weekTasks') {
-            const now = moment()
-            const dayOfWeek = now.isoWeekday()
-
-            if (dayOfWeek >= 6) {
-              return {}
-            }
-          }
-
-          // no task for this month
-          if (targetSection === 'monthTasks') {
-            const now = moment()
-            const date = now.date()
-            const dayOfMonth = now.daysInMonth()
-            const diff = dayOfMonth - date
-            if (diff <= 1) {
-              return {}
-            }
-
-            const dayOfWeek = now.isoWeekday()
-            const dayToNewWeek = 7 - dayOfWeek + 1
-            const add = date + dayToNewWeek
-            if (add > dayOfMonth) {
-              return {}
-            }
-          }
-
-          const timeLine = computeTimeLine(tasks, move)
-          if (!timeLine) {
-            return {}
-          }
-
-          // move to the otherTasks section and previous and next task has null due date
-          if (targetSection === 'noDueDateTasks') {
-            // set null due date
-            props.moveTimeLineTask(sourceTaskId, null, timeLine.orderTimeLine)
-            return {}
-          }
-
-          props.moveTimeLineTask(
-            sourceTaskId,
-            timeLine.dueDate,
-            timeLine.orderTimeLine
-          )
-
-          return {
-            dueDate: timeLine.dueDate,
-            orderTimeLine: timeLine.orderTimeLine,
-          }
-        }
 
         // default user sorting
         const order = computeOrder(tasks, move)
@@ -328,18 +259,8 @@ export default compose(
         return { order }
       },
       onDropTask: (state, props) => drop => {
-        const { dropTask, targetSection } = drop
-        const { dueDate, orderTimeLine, order } = state
-
-        // sort by Due Date
-        if (targetSection) {
-          if (orderTimeLine) {
-            props.setOrderTimeLine(dropTask, dueDate, orderTimeLine)
-          } else {
-            props.setOrderTimeLine(dropTask, dueDate, dropTask.orderTimeLine)
-          }
-          return {}
-        }
+        const { dropTask } = drop
+        const { order } = state
 
         // default user sorting
         props.setOrder(dropTask, order)

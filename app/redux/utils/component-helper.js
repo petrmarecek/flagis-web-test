@@ -1,5 +1,4 @@
 import { List, Set } from 'immutable'
-import moment from 'moment'
 import showdown from 'showdown'
 import commonUtils from 'redux/utils/common'
 import constants from '../../utils/constants'
@@ -118,73 +117,6 @@ export function archiveCompletedTasks(
     archivedTasks,
     entitiesTasks,
     selectedTasks,
-  }
-}
-
-export function getTimeLineByDueDate(tasks) {
-  const now = moment().set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
-  const today = now.dayOfYear()
-  const tomorrow = now
-    .clone()
-    .add(1, 'days')
-    .dayOfYear()
-  const week = now.isoWeek()
-  const month = now.month()
-  const year = now.year()
-
-  const previousDaysTasks = []
-  const todayTasks = []
-  const tomorrowTasks = []
-  const weekTasks = []
-  const monthTasks = []
-  const laterTasks = []
-  const noDueDatesTasks = []
-
-  for (const task of tasks) {
-    const dueDate = moment(task.dueDate)
-    const currentYear = dueDate.year() === year
-
-    if (dueDate.isBefore(now)) {
-      previousDaysTasks.push(task)
-      continue
-    }
-
-    if (dueDate.dayOfYear() === today && currentYear) {
-      todayTasks.push(task)
-      continue
-    }
-
-    if (dueDate.dayOfYear() === tomorrow && currentYear) {
-      tomorrowTasks.push(task)
-      continue
-    }
-
-    if (dueDate.isoWeek() === week && currentYear) {
-      weekTasks.push(task)
-      continue
-    }
-
-    if (dueDate.month() === month && currentYear) {
-      monthTasks.push(task)
-      continue
-    }
-
-    if (!task.dueDate) {
-      noDueDatesTasks.push(task)
-      continue
-    }
-
-    laterTasks.push(task)
-  }
-
-  return {
-    previousDaysTasks,
-    todayTasks,
-    tomorrowTasks,
-    weekTasks,
-    monthTasks,
-    laterTasks,
-    noDueDatesTasks,
   }
 }
 

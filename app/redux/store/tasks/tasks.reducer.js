@@ -106,10 +106,6 @@ export default typeToReducer(
           list.filter(taskId => taskId !== action.payload.taskId)
         ),
 
-    [TASKS.SET_TIME_LINE]: state => state.setIn(['timeLine'], true),
-
-    [TASKS.CANCEL_TIME_LINE]: state => state.setIn(['timeLine'], false),
-
     [TASKS.SELECT]: (state, action) =>
       state.setIn(['selection'], action.payload.taskList),
 

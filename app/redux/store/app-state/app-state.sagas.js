@@ -29,7 +29,6 @@ export function* defaultDisplay() {
   yield put(appStateActions.hideArchivedTasks())
   yield put(appStateActions.hideInboxTasks())
   yield put(taskActions.deselectTasks())
-  yield put(taskActions.cancelTimeLine())
   yield put(taskActions.updateTaskSearch(''))
   yield put(tagActions.deselectTags())
   yield put(contactActions.deselectContacts())

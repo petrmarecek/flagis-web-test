@@ -185,7 +185,6 @@ export const TaskStore = Record({
   completed: List(),
   archived: new ListAlreadyRecord(),
   inbox: new ListRecord(),
-  timeLine: false,
   selection: OrderedSet(),
   search: '',
 })
@@ -257,7 +256,6 @@ export const Task = Record({
   dueDate: null,
   reminderDate: null,
   order: null,
-  orderTimeLine: null,
   isImportant: false,
   isCompleted: null,
   completedAt: null,
@@ -373,7 +371,6 @@ export const Follower = Record({
   isArchived: false,
   isImportant: false,
   order: null,
-  orderTimeLine: null,
   userId: null,
   profile: null,
 })

@@ -22,7 +22,6 @@ export function* changeNavigation(action) {
   yield put(taskActions.deselectTasks())
   yield put(tagActions.deselectTags())
   yield put(contactActions.deselectContacts())
-  yield put(taskActions.cancelTimeLine())
   yield put(appStateActions.resetScrollbarPosition())
   yield put(tagActions.selectActiveTags([]))
 
@@ -46,15 +45,8 @@ export function* changeNavigation(action) {
 }
 
 export function* changeNavigationSecondary(action) {
-  const { pathname, type } = action.payload
+  const { pathname } = action.payload
 
   yield put(taskActions.deselectTasks())
-
-  if (type === 'timeline') {
-    yield put(taskActions.setTimeLine())
-  } else {
-    yield put(taskActions.cancelTimeLine())
-  }
-
   yield put(push(pathname))
 }

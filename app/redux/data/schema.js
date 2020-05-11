@@ -49,12 +49,11 @@ const task = new schema.Entity(
         const assignee = getAssigneeOfTask(entity.followers)
 
         if (createdById !== userId && assignee !== null) {
-          const { isArchived, isImportant, order, orderTimeLine } = assignee
+          const { isArchived, isImportant, order } = assignee
 
           _.set(entity, 'isArchived', isArchived)
           _.set(entity, 'isImportant', isImportant)
           _.set(entity, 'order', order)
-          _.set(entity, 'orderTimeLine', orderTimeLine)
         }
       }
 
