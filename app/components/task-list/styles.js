@@ -20,57 +20,6 @@ const TaskListItems = styled.ul`
   }
 `
 
-const TimeLine = styled.ul`
-  ${fontMain}
-  padding-left: 25px;
-  position: relative;
-
-  &:before {
-    content: '';
-    width: 2px;
-    height: 100%;
-    background: #fff;
-    left: 11px;
-    top: 0;
-    position: absolute;
-  }
-
-  &:after {
-    content: '';
-    width: 2px;
-    height: 8px;
-    background: #efefef;
-    left: 11px;
-    top: 0;
-    position: absolute;
-  }
-`
-
-const TimeLineList = styled.li`
-  position: relative;
-`
-
-const TimeLinePoint = styled.span`
-  &:before {
-    content: '';
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    position: absolute;
-    background: #fff;
-    left: -18px;
-    top: 8px;
-  }
-`
-
-const TimeLineText = styled.p`
-  padding: 5px 0 5px 0;
-  font-size: 14px;
-  font-weight: 600;
-  text-align: left;
-  color: #b1b5b8;
-`
-
 /*----------------------------------- Task List Item ----------------------------------------------*/
 
 const showAnimation = keyframes`${fadeInUp}`
@@ -274,10 +223,6 @@ const Text = styled.div`
 
 export {
   TaskListItems,
-  TimeLine,
-  TimeLineList,
-  TimeLinePoint,
-  TimeLineText,
   TaskItem,
   Completed,
   Archived,

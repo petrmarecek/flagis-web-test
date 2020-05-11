@@ -563,31 +563,6 @@ export function* setOrder(action) {
   }
 }
 
-export function* setOrderTimeLine(action) {
-  try {
-    // call server
-    const taskId = action.payload.task.id
-    const { dueDate, orderTimeLine } = action.payload
-    const update = { dueDate, orderTimeLine }
-
-    // call server
-    yield callApi(api.tasks.update, taskId, update)
-  } catch (err) {
-    // TODO: revert
-    // We need to both revert Task.order field and position within loaded list
-
-    // send error to sentry
-    yield put(
-      errorActions.errorSentry(err, {
-        tagType: sentryTagType.ACTION,
-        tagValue: action.type,
-        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
-        breadcrumbMessage: action.type,
-      })
-    )
-  }
-}
-
 export function* setDate(action) {
   const fieldName = action.payload.type
   const fieldValue = action.payload.date

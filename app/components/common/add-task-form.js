@@ -8,7 +8,6 @@ import { compose, withStateHandlers } from 'recompose'
 import { connect } from 'react-redux'
 import commonUtils from 'redux/utils/common'
 import { createTask } from 'redux/store/tasks/tasks.actions'
-import { getTimeLine } from 'redux/store/tasks/tasks.selectors'
 import { getTasksMenu } from 'redux/store/tasks-menu/tasks-menu.selectors'
 import { getActiveTagsId } from 'redux/store/tags/tags.selectors'
 import { isStringEmpty } from '../../redux/utils/component-helper'
@@ -101,7 +100,6 @@ AddTaskForm.propTypes = {
 const mapStateToProps = state => ({
   tags: getActiveTagsId(state),
   tasksMenu: getTasksMenu(state),
-  timeLine: getTimeLine(state),
 })
 
 const actionCreators = { createTask }
@@ -122,7 +120,7 @@ export default compose(
       return { subject }
     },
     handleSubmit: ({ subject }, props) => event => {
-      const { tasksMenu, timeLine, tags } = props
+      const { tasksMenu, tags } = props
       const { filters } = tasksMenu
       event.preventDefault()
 
@@ -132,7 +130,7 @@ export default compose(
 
       // due date sorting algorithm or some date filter is activated
       const dueDate =
-        timeLine || filters.range
+        filters.range
           ? moment()
               .startOf('day')
               .set({

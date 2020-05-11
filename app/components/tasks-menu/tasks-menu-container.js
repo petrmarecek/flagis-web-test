@@ -29,7 +29,6 @@ import {
   getSelectionTasks,
   getTasksId,
   getCompletedTasksId,
-  getTimeLine,
 } from 'redux/store/tasks/tasks.selectors'
 import {
   toggleAssigneeFilter,
@@ -102,7 +101,6 @@ class TasksMenuContainer extends PureComponent {
     hideMenuOption: PropTypes.func,
     selectAllTask: PropTypes.func,
     deselectActiveAssignee: PropTypes.func,
-    timeLine: PropTypes.bool,
     prepareDeleteTask: PropTypes.func,
   }
 
@@ -191,7 +189,6 @@ class TasksMenuContainer extends PureComponent {
   render() {
     const isMultiSelect = this.props.multiSelect
     const isVisibleArchivedTasks = this.props.isVisibleArchivedTasks
-    const isTimeLine = this.props.timeLine
     const taskCount = isMultiSelect
       ? this.props.selectTaskCount
       : this.props.showTasksId.size
@@ -240,7 +237,7 @@ class TasksMenuContainer extends PureComponent {
           />
         )}
 
-        {!isVisibleArchivedTasks && !isMultiSelect && !isTimeLine && (
+        {!isVisibleArchivedTasks && !isMultiSelect && (
           <TasksMenuSort
             onToggleSortAlgorithm={this.handleSortAlgorithmToggle}
             visibleMenuSort={this.props.visibleMenuSort}
@@ -291,7 +288,6 @@ const mapStateToProps = state => ({
   activeTags: getActiveTagsIds(state),
   auth: getAuth(state),
   isVisibleArchivedTasks: getArchivedTasksVisibility(state),
-  timeLine: getTimeLine(state),
 })
 const mapDispatchToProps = {
   toggleAssigneeFilter,

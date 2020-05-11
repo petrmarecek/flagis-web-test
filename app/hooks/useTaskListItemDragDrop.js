@@ -23,7 +23,7 @@ const useTaskListItemDragDrop = (props) => {
       isDragging: monitor.isDragging(),
     }),
     canDrag: () => {
-      const { task, timeLine, sort } = props
+      const { task, sort } = props
       const { followers, isCompleted } = task
       const { alphabet, important, incomplete } = sort
       const assignee = getAssigneeOfTask(followers)
@@ -35,9 +35,8 @@ const useTaskListItemDragDrop = (props) => {
       const isMainList =
         props.listType !== 'archived' && props.listType !== 'inbox'
       const isLock = isCollaborated || isCompleted
-      const isLockForTimeline = timeLine && isLock
 
-      return !isSort && isMainList && !isLockForTimeline
+      return !isSort && isMainList && !isLock
     },
     end: (item, monitor) => {
       const dropResult = monitor.getDropResult()

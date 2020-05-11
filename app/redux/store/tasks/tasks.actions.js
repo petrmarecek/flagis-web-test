@@ -8,7 +8,6 @@ export const TASKS = {
   FIREBASE: 'TASK/FIREBASE',
   FIREBASE_REMOVE_TASK_FOLLOWER: 'TASK/FIREBASE_REMOVE_TASK_FOLLOWER',
   FIREBASE_TAGS_RELATIONS: 'TASK/FIREBASE_TAGS_RELATIONS',
-  SET_TIME_LINE: 'TASK/SET_TIME_LINE',
   CANCEL_TIME_LINE: 'TASK/CANCEL_TIME_LINE',
   SELECT: 'TASK/SELECT',
   SELECT_ALL: 'TASK/SELECT_ALL',
@@ -24,7 +23,6 @@ export const TASKS = {
   ADD: 'TASK/ADD',
   SET_DATE: 'TASK/SET_DATE',
   SET_ORDER: 'TASK/SET_ORDER',
-  SET_ORDER_TIME_LINE: 'TASK/SET_TIME_LINE_ORDER',
   SET_DESCRIPTION: 'TASK/SET_DESCRIPTION',
   SET_SUBJECT: 'TASK/SET_SUBJECT',
   MOVE: 'TASK/MOVE',
@@ -64,14 +62,6 @@ export const fetchArchivedTasks = () => ({
 export const createTask = taskWithTags => ({
   type: TASKS.CREATE,
   payload: taskWithTags,
-})
-
-export const setTimeLine = () => ({
-  type: TASKS.SET_TIME_LINE,
-})
-
-export const cancelTimeLine = () => ({
-  type: TASKS.CANCEL_TIME_LINE,
 })
 
 export const selectTask = (taskList, isMultiSelect) => ({
@@ -168,15 +158,6 @@ export const setOrder = (task, order) => ({
   payload: { task, order },
 })
 
-export const setOrderTimeLine = (task, dueDate, orderTimeLine) => ({
-  type: TASKS.SET_ORDER_TIME_LINE,
-  payload: {
-    task,
-    dueDate,
-    orderTimeLine,
-  },
-})
-
 export const setDescription = (task, description) => ({
   type: TASKS.SET_DESCRIPTION,
   payload: { task, description },
@@ -197,15 +178,6 @@ export const moveTask = (taskId, order) => ({
   payload: {
     taskId,
     order,
-  },
-})
-
-export const moveTimeLineTask = (taskId, dueDate, orderTimeLine) => ({
-  type: TASKS.MOVE_TIME_LINE,
-  payload: {
-    taskId,
-    dueDate,
-    orderTimeLine,
   },
 })
 

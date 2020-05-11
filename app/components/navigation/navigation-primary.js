@@ -179,7 +179,6 @@ NavigationPrimary.propTypes = {
   isAnimationMore: PropTypes.bool,
   onHandleClickMore: PropTypes.func,
   onHandleClickTasks: PropTypes.func,
-  onHandleClickTimeLine: PropTypes.func,
   onHandleClickTags: PropTypes.func,
   onHandleClickInbox: PropTypes.func,
   onHandleClickArchive: PropTypes.func,

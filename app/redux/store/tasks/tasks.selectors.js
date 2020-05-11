@@ -106,7 +106,6 @@ function loadTasks(ids, data) {
     activeTagsIds,
     tasksSearch,
     tasksMenu,
-    timeLine,
     userId,
   } = data
 
@@ -207,33 +206,6 @@ function loadTasks(ids, data) {
   // apply sort alphabetically
   if (tasksMenu.getIn(['sort', 'alphabet'])) {
     tasks.sort(compareTaskBySubject)
-  }
-
-  // apply time line
-  if (timeLine) {
-    const tasksDueDate = tasks.filter((task) => task.dueDate)
-    const tasksOthers = tasks.filter((task) => !task.dueDate)
-
-    // Sort tasks with dueDate by dueDate and orderTimeLine
-    tasksDueDate.sort((a, b) => {
-      if (moment(a.dueDate) < moment(b.dueDate)) return -1
-      if (moment(a.dueDate) > moment(b.dueDate)) return 1
-
-      if (a.orderTimeLine > b.orderTimeLine) return -1
-      if (a.orderTimeLine < b.orderTimeLine) return 1
-
-      return 0
-    })
-
-    // Sort tasks without dueDate by orderTimeLine
-    tasksOthers.sort((a, b) => {
-      if (a.orderTimeLine > b.orderTimeLine) return -1
-      if (a.orderTimeLine < b.orderTimeLine) return 1
-
-      return 0
-    })
-
-    tasks = tasksDueDate.concat(tasksOthers)
   }
 
   // apply sort by importance
@@ -426,7 +398,6 @@ const getInboxTasksIsFetching = (state) =>
   state.getIn(['tasks', 'inbox', 'isFetching'])
 
 // Export selectors
-export const getTimeLine = (state) => state.getIn(['tasks', 'timeLine'])
 export const getTasksItems = (state) => state.getIn(['tasks', 'items'])
 export const getTasksSearch = (state) => state.getIn(['tasks', 'search'])
 export const getArchivedTasksIsAlreadyFetching = (state) =>
@@ -488,7 +459,6 @@ export const getTasks = createSelector(
   getInboxTasksItems,
   getTasksSearch,
   getTasksMenu,
-  getTimeLine,
   getEntitiesTasks,
   getActiveEntitiesTags,
   getEntitiesFollowers,
@@ -506,7 +476,6 @@ export const getTasks = createSelector(
     InboxTasksItems,
     tasksSearch,
     tasksMenu,
-    timeLine,
     entitiesTasks,
     entitiesTags,
     entitiesFollowers,
@@ -522,7 +491,6 @@ export const getTasks = createSelector(
       activeTagsIds,
       tasksSearch,
       tasksMenu,
-      timeLine,
       userId,
     }
 
@@ -557,7 +525,6 @@ export const getCompletedTasks = createSelector(
   getCompletedTasksItems,
   getTasksSearch,
   getTasksMenu,
-  getTimeLine,
   getEntitiesTasks,
   getActiveEntitiesTags,
   getEntitiesFollowers,
@@ -568,7 +535,6 @@ export const getCompletedTasks = createSelector(
     completedTasksItems,
     tasksSearch,
     tasksMenu,
-    timeLine,
     entitiesTasks,
     entitiesTags,
     entitiesFollowers,
@@ -584,7 +550,6 @@ export const getCompletedTasks = createSelector(
       activeTagsIds,
       tasksSearch,
       tasksMenu,
-      timeLine,
       userId,
     }
 
@@ -611,7 +576,6 @@ export const getSelectTasks = createSelector(
   getSelectionTasks,
   getTasksSearch,
   getTasksMenu,
-  getTimeLine,
   getEntitiesTasks,
   getActiveEntitiesTags,
   getEntitiesFollowers,
@@ -622,7 +586,6 @@ export const getSelectTasks = createSelector(
     selectionTasks,
     tasksSearch,
     tasksMenu,
-    timeLine,
     entitiesTasks,
     entitiesTags,
     entitiesFollowers,
@@ -638,7 +601,6 @@ export const getSelectTasks = createSelector(
       activeTagsIds,
       tasksSearch,
       tasksMenu,
-      timeLine,
       userId,
     }
 
@@ -652,7 +614,6 @@ export const getTasksId = createSelector(
   getTasksItems,
   getTasksSearch,
   getTasksMenu,
-  getTimeLine,
   getEntitiesTasks,
   getActiveEntitiesTags,
   getEntitiesFollowers,
@@ -665,7 +626,6 @@ export const getTasksId = createSelector(
     tasksItems,
     tasksSearch,
     tasksMenu,
-    timeLine,
     entitiesTasks,
     entitiesTags,
     entitiesFollowers,
@@ -682,7 +642,6 @@ export const getTasksId = createSelector(
       activeTagsIds,
       tasksSearch,
       tasksMenu,
-      timeLine,
       userId,
     }
 
@@ -700,7 +659,6 @@ export const getCompletedTasksId = createSelector(
   getCompletedTasksItems,
   getTasksSearch,
   getTasksMenu,
-  getTimeLine,
   getEntitiesTasks,
   getActiveEntitiesTags,
   getEntitiesFollowers,
@@ -711,7 +669,6 @@ export const getCompletedTasksId = createSelector(
     completedTasksItems,
     tasksSearch,
     tasksMenu,
-    timeLine,
     entitiesTasks,
     entitiesTags,
     entitiesFollowers,
@@ -727,7 +684,6 @@ export const getCompletedTasksId = createSelector(
       activeTagsIds,
       tasksSearch,
       tasksMenu,
-      timeLine,
       userId,
     }
     const tasks = loadTasks(completedTasksItems.toArray(), data)
@@ -781,7 +737,6 @@ export const getNextTask = createSelector(
   getTasksItems,
   getTasksSearch,
   getTasksMenu,
-  getTimeLine,
   getEntitiesTasks,
   getActiveEntitiesTags,
   getEntitiesFollowers,
@@ -797,7 +752,6 @@ export const getNextTask = createSelector(
     tasksItems,
     tasksSearch,
     tasksMenu,
-    timeLine,
     entitiesTasks,
     entitiesTags,
     entitiesFollowers,
@@ -819,7 +773,6 @@ export const getNextTask = createSelector(
       activeTagsIds,
       tasksSearch,
       tasksMenu,
-      timeLine,
       userId,
     }
 
@@ -864,7 +817,6 @@ export const getPreviousTask = createSelector(
   getTasksItems,
   getTasksSearch,
   getTasksMenu,
-  getTimeLine,
   getEntitiesTasks,
   getActiveEntitiesTags,
   getEntitiesFollowers,
@@ -880,7 +832,6 @@ export const getPreviousTask = createSelector(
     tasksItems,
     tasksSearch,
     tasksMenu,
-    timeLine,
     entitiesTasks,
     entitiesTags,
     entitiesFollowers,
@@ -902,7 +853,6 @@ export const getPreviousTask = createSelector(
       activeTagsIds,
       tasksSearch,
       tasksMenu,
-      timeLine,
       userId,
     }
 

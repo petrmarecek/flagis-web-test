@@ -82,25 +82,6 @@ export default typeToReducer(
         action.payload.order
       ),
 
-    [TASKS.MOVE_TIME_LINE]: (state, action) => {
-      if (action.payload.orderTimeLine) {
-        return state
-          .setIn(
-            ['tasks', action.payload.taskId, 'dueDate'],
-            action.payload.dueDate
-          )
-          .setIn(
-            ['tasks', action.payload.taskId, 'orderTimeLine'],
-            action.payload.orderTimeLine
-          )
-      }
-
-      return state.setIn(
-        ['tasks', action.payload.taskId, 'dueDate'],
-        action.payload.dueDate
-      )
-    },
-
     [TASKS.ADD_TASK_TAG]: (state, action) =>
       state.updateIn(['tasks', action.payload.taskId, 'tags'], tagList =>
         tagList.push(action.payload.tag.id)
