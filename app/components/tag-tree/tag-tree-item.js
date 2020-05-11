@@ -234,32 +234,20 @@ const checkPropsChange = (props, nextProps) => {
     selection,
     addControlParentId,
     tagsRelations,
-    parentTagRelations,
     colorTheme,
   } = props
-  const tagRelations = getTagRelations(
-    tagsRelations,
-    parentTagRelations,
-    treeItem.tagId
-  ).size
 
   // nextProps and nextState
   const nextTreeItem = nextProps.treeItem
   const nextSelection = nextProps.selection
   const nextAddControlParentId = nextProps.addControlParentId
   const nextTagsRelations = nextProps.tagsRelations
-  const nextParentTagRelations = nextProps.parentTagRelations
   const nextColorTheme = nextProps.colorTheme
-  const nextTagRelations = getTagRelations(
-    nextTagsRelations,
-    nextParentTagRelations,
-    nextTreeItem.tagId
-  ).size
 
   return (
     !treeItem.equals(nextTreeItem) ||
     colorTheme !== nextColorTheme ||
-    tagRelations !== nextTagRelations ||
+    tagsRelations !== nextTagsRelations ||
     (!selection.equals(nextSelection) &&
       (nextSelection.includes(treeItem.id) ||
         selection.includes(treeItem.id))) ||

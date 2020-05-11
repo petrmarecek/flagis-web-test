@@ -47,6 +47,7 @@ import firebase from 'redux/utils/firebase'
 import dateUtil from 'redux/utils/date'
 import { getAssigneeOfTask } from 'redux/utils/component-helper'
 import { loaderTypes } from 'redux/store/app-state/app-state.common'
+import { TagsUpdateStrategy } from 'utils/enums'
 
 const TASKS = taskActions.TASKS
 
@@ -864,19 +865,23 @@ export function* addTaskTag(action) {
 }
 
 export function* setTaskTags(action) {
-  const { taskId, tagIds } = action.payload
+  const { taskId, tagIds, strategy } = action.payload
   let originalTagList = yield select(state =>
     taskSelectors.getTaskTags(state, taskId)
   )
 
+  const resultTagIds = strategy === TagsUpdateStrategy.OVERRIDE
+    ? tagIds
+    : _.uniq([...tagIds, ...originalTagList.toJS()])
+
   // Write new tag IDs
-  yield callApi(api.tasks.setTags, taskId, tagIds.map(tagId => ({ id: tagId })))
+  yield callApi(api.tasks.setTags, taskId, resultTagIds.map(tagId => ({ id: tagId })))
 
   // Update local task cache
-  yield put(taskActions.setTaskTagStore(taskId, tagIds))
+  yield put(taskActions.setTaskTagStore(taskId, resultTagIds))
 
   // Update task-tag references
-  for (const tagId of tagIds) {
+  for (const tagId of resultTagIds) {
     const tagIndex = originalTagList.indexOf(tagId)
 
     if (tagIndex >= 0) {

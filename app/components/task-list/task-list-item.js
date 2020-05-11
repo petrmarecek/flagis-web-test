@@ -13,6 +13,8 @@ import toast from 'utils/toastify-helper'
 import * as toastCommon from 'components/toast-notifications/toast-notifications-common'
 
 // redux
+import { connect } from 'react-redux'
+import { setTaskTags } from 'redux/store/tasks/tasks.actions'
 import dateUtils from 'redux/utils/date'
 import {
   getAssigneeOfTask,
@@ -444,4 +446,9 @@ TaskListItem.propTypes = {
   setIsMoving: PropTypes.func,
 }
 
-export default TaskListItem
+const mapStateToProps = () => ({})
+const mapDispatchToProps = {
+  setTaskTags
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TaskListItem)

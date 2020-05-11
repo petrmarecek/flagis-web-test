@@ -3,10 +3,7 @@ import { useDrag, useDrop } from 'react-dnd'
 import { findDOMNode } from 'react-dom'
 import { getAssigneeOfTask } from 'redux/utils/component-helper'
 import moment from 'moment'
-
-const DropTypes = {
-  TASK: 'task',
-}
+import { DragType, TaskDropTarget, TagsUpdateStrategy } from 'utils/enums'
 
 const useTaskListItemDragDrop = (props) => {
 
@@ -16,7 +13,7 @@ const useTaskListItemDragDrop = (props) => {
   // Tree item drag
   const [dragProps, drag] = useDrag({
     item: {
-      type: DropTypes.TASK,
+      type: DragType.TASK,
       listType: props.listType,
       task: props.task,
       index: props.index,
@@ -42,11 +39,31 @@ const useTaskListItemDragDrop = (props) => {
 
       return !isSort && isMainList && !isLockForTimeline
     },
+    end: (item, monitor) => {
+      const dropResult = monitor.getDropResult()
+      if (!dropResult) {
+        return
+      }
+
+      if (dropResult.target === TaskDropTarget.TASK_LIST) {
+        props.dropTask({
+          dropTask: dropResult.item.task,
+          targetSection: dropResult.item.section,
+        })
+      }
+
+      if (dropResult.target === TaskDropTarget.TAG_TREE) {
+        const strategy = dropResult.dropEffect === 'copy'
+          ? TagsUpdateStrategy.OVERRIDE
+          : TagsUpdateStrategy.MERGE
+        props.setTaskTags(dropResult.item.task.id, dropResult.tags, strategy)
+      }
+    }
   })
 
   // Tree item drop
   const [dropProps, drop] = useDrop({
-    accept: DropTypes.TASK,
+    accept: DragType.TASK,
     collect: (monitor) => ({
       isOver: monitor.isOver()
     }),
@@ -92,8 +109,6 @@ const useTaskListItemDragDrop = (props) => {
       const dragSource = monitor.getItem()
       const dragIndex = dragSource.index
       const hoverIndex = props.index
-
-      // console.log('Hover', dragIndex, hoverIndex)
 
       // Drag index didn't change, do nothing
       if (dragSource.section === props.section && dragIndex === hoverIndex) {
@@ -146,10 +161,10 @@ const useTaskListItemDragDrop = (props) => {
       dragSource.section = props.section
     },
     drop(item) {
-      props.dropTask({
-        dropTask: item.task,
-        targetSection: props.section,
-      })
+      return {
+        target: TaskDropTarget.TASK_LIST,
+        item,
+      }
     }
   })
 
@@ -167,5 +182,5 @@ const useTaskListItemDragDrop = (props) => {
 }
 
 export {
-  useTaskListItemDragDrop
+  useTaskListItemDragDrop,
 }

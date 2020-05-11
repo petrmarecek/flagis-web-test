@@ -254,11 +254,12 @@ export const removeTaskFollower = (taskId, userId, followerId) => ({
   },
 })
 
-export const setTaskTags = (taskId, tagIds) => ({
+export const setTaskTags = (taskId, tagIds, strategy) => ({
   type: TASKS.SET_TASK_TAGS,
   payload: {
     taskId,
     tagIds,
+    strategy,
   }
 })
 

@@ -118,7 +118,6 @@ const ContactContainer = styled.li`
 
 const Title = styled.span`
   font-size: 14px;
-  line-height: 16px;
   color: ${props => props.color};
   margin-right: 8px;
   overflow: hidden;
