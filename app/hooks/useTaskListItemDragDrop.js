@@ -1,7 +1,6 @@
 import { useRef, useCallback } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
 import { findDOMNode } from 'react-dom'
-import { getAssigneeOfTask } from 'redux/utils/component-helper'
 import moment from 'moment'
 import { DragType, TaskDropTarget, TagsUpdateStrategy } from 'utils/enums'
 
@@ -23,20 +22,13 @@ const useTaskListItemDragDrop = (props) => {
       isDragging: monitor.isDragging(),
     }),
     canDrag: () => {
-      const { task, sort } = props
-      const { followers, isCompleted } = task
+      const { sort } = props
       const { alphabet, important, incomplete } = sort
-      const assignee = getAssigneeOfTask(followers)
-      const isFollowers = assignee !== null
-      const followerStatus = isFollowers ? assignee.status : 'new'
-      const isCollaborated =
-        followerStatus === 'pending' || followerStatus === 'accepted'
-      const isSort = alphabet || important || incomplete
-      const isMainList =
-        props.listType !== 'archived' && props.listType !== 'inbox'
-      const isLock = isCollaborated || isCompleted
 
-      return !isSort && isMainList && !isLock
+      const isSort = alphabet || important || incomplete
+      const isMainList = props.listType !== 'archived' && props.listType !== 'inbox'
+
+      return !isSort && isMainList
     },
     end: (item, monitor) => {
       const dropResult = monitor.getDropResult()
