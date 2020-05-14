@@ -28,12 +28,7 @@ export default {
 
     token: (data) => api.post('auth/token', data).then((res) => res.data),
 
-    verificationEmail: (data) =>
-      api.post('verification/token', data).then((res) => res.data),
-  },
-
-  verification: {
-    email: (data) =>
+    verifyUser: (data) =>
       api.put('verification/email', data).then((res) => res.data),
   },
 

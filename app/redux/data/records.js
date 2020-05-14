@@ -157,6 +157,7 @@ export const AppStateStore = Record({
 export const AuthStore = Record(
   {
     isLogged: false,
+    isVerificationFailed: false,
     accessToken: null,
     expiresIn: null,
     expiresAt: null,

@@ -183,17 +183,17 @@ export function* authFlow() {
 
       // login or register
       if (!auth) {
-        const { login, register } = yield race({
+        const { login, verify } = yield race({
           login: take(AUTH.LOGIN),
-          register: take(AUTH.SIGN_UP),
+          verify: take(AUTH.VERIFY_USER)
         })
 
         if (login) {
           auth = yield call(authorizeUser, api.auth.login, login)
         }
 
-        if (register) {
-          auth = yield call(registerUser, api.users.create, register)
+        if (verify) {
+          auth = yield call(authorizeUser, api.auth.verifyUser, verify)
         }
 
         // if api return error on login or register
@@ -214,7 +214,42 @@ export function* authFlow() {
         tagType: sentryTagType.ACTION,
         tagValue: 'AUTH_SIGN',
         breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
-        breadcrumbMessage: 'AUTH_SIGN',
+        breadcrumbMessage: 'AUTH_SIGN'
+      })
+    )
+  }
+}
+
+export function* registerUser(action) {
+  const { PENDING, FULFILLED, REJECTED } = createLoadActions(action.type)
+  const { payload } = action
+
+  try {
+    yield put({ type: PENDING, payload })
+
+    // call server
+    yield call(api.users.create, payload)
+
+    // dispatch action with auth data
+    yield put({ type: FULFILLED })
+
+    // hide loader
+    yield put(appStateActions.deselectLoader('form'))
+  } catch (err) {
+    yield put({ type: REJECTED, err })
+
+    if (action.type === 'AUTH/SIGN_UP' || action.type === 'AUTH/SIGN_UP_INVITATION') {
+      yield put(appStateActions.setError('signUp', toastCommon.errorMessages.signUp.conflict))
+      yield put(appStateActions.deselectLoader('form'))
+    }
+
+    // send error to sentry
+    yield put(
+      errorActions.errorSentry(err, {
+        tagType: sentryTagType.ACTION,
+        tagValue: action.type,
+        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+        breadcrumbMessage: action.type
       })
     )
   }
@@ -567,53 +602,6 @@ export function* resetPassword(action) {
 
 // ------ HELPER FUNCTIONS ----------------------------------------------------
 
-function* registerUser(authApiCall, action) {
-  const { PENDING, FULFILLED, REJECTED } = createLoadActions(AUTH.SIGN_UP)
-  const { payload } = action
-
-  try {
-    yield put({ type: PENDING, payload: action.payload })
-
-    // call server
-    yield call(authApiCall, payload)
-
-    // dispatch action with auth data
-    yield put({ type: FULFILLED })
-
-    // hide loader
-    yield put(appStateActions.deselectLoader('form'))
-
-    return null
-  } catch (err) {
-    yield put({ type: REJECTED, err })
-
-    if (
-      action.type === 'AUTH/SIGN_UP' ||
-      action.type === 'AUTH/SIGN_UP_INVITATION'
-    ) {
-      yield put(
-        appStateActions.setError(
-          'signUp',
-          toastCommon.errorMessages.signUp.conflict
-        )
-      )
-    }
-
-    yield put(appStateActions.deselectLoader('form'))
-
-    // send error to sentry
-    yield put(
-      errorActions.errorSentry(err, {
-        tagType: sentryTagType.ACTION,
-        tagValue: action.type,
-        breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
-        breadcrumbMessage: action.type,
-      })
-    )
-    return null
-  }
-}
-
 function* authorizeUser(authApiCall, action) {
   const { PENDING, FULFILLED, REJECTED } = createLoadActions(AUTH.LOGIN)
   const { payload } = action
@@ -639,7 +627,14 @@ function* authorizeUser(authApiCall, action) {
     })
 
     // hide loader
-    yield put(appStateActions.deselectLoader('form'))
+    if (action.type === 'AUTH/LOGIN') {
+      yield put(appStateActions.deselectLoader('form'))
+    }
+
+    // hide loader
+    if (action.type === 'AUTH/VERIFY_USER') {
+      yield delay(5000)
+    }
 
     // redirect
     const redirectAction = push(routes.user.tasks)
@@ -669,9 +664,9 @@ function* authorizeUser(authApiCall, action) {
           )
         )
       }
-    }
 
-    yield put(appStateActions.deselectLoader('form'))
+      yield put(appStateActions.deselectLoader('form'))
+    }
 
     // send error to sentry
     yield put(

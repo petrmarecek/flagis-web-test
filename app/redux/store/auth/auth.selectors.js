@@ -2,6 +2,7 @@
 
 // Export selectors
 export const getAuth = state => state.getIn(['auth'])
+export const getVerificationFailed = state => state.getIn(['auth', 'isVerificationFailed'])
 
 export const getAuthRequest = state => {
   if (!state.auth.isLogged) {
