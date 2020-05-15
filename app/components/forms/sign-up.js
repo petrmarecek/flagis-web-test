@@ -120,10 +120,13 @@ const SignUp = ({
       {isSubmitted && (
         <SuccessSignUpWrapper>
           <Text>
-            Well done! You have just signed up. Please, confirm your email.
+            Well done!
           </Text>
           <Text>
-            We have just sent you an email with a link for the confirmation.
+            You have just signed up.
+          </Text>
+          <Text>
+            Please, check your mailbox and click on the confirmation link to verify your account.
           </Text>
           <IconWrapper
             icon={ICONS.TASK_COMPLETED}
