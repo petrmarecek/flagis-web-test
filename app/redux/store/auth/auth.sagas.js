@@ -603,7 +603,7 @@ export function* resetPassword(action) {
 // ------ HELPER FUNCTIONS ----------------------------------------------------
 
 function* authorizeUser(authApiCall, action) {
-  const { PENDING, FULFILLED, REJECTED } = createLoadActions(AUTH.LOGIN)
+  const { PENDING, FULFILLED, REJECTED } = createLoadActions(action.type)
   const { payload } = action
 
   try {
@@ -633,7 +633,7 @@ function* authorizeUser(authApiCall, action) {
 
     // hide loader
     if (action.type === 'AUTH/VERIFY_USER') {
-      yield delay(5000)
+      yield delay(3000)
     }
 
     // redirect

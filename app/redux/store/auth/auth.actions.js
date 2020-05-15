@@ -28,6 +28,11 @@ export const controlRedirectTasks = () => ({
   type: AUTH.CONTROL_REDIRECT_TASKS,
 })
 
+export const verifyUser = code => ({
+  type: AUTH.VERIFY_USER,
+  payload: code,
+})
+
 export const signUp = userData => ({
   type: AUTH.SIGN_UP,
   payload: userData,
