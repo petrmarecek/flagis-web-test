@@ -4,6 +4,7 @@ export const AUTH = {
   SIGN_UP: 'AUTH/SIGN_UP',
   SET_FIREBASE_TOKENS: 'AUTH/SET_FIREBASE_TOKENS',
   INIT_EMAIL: 'AUTH/INIT_EMAIL',
+  VERIFY_USER: 'AUTH/VERIFY_USER',
   LOGIN: 'AUTH/LOGIN',
   LOGOUT: 'AUTH/LOGOUT',
   UPDATE_PROFILE: 'AUTH/UPDATE_PROFILE',
@@ -25,6 +26,11 @@ export const controlRedirectSignIn = () => ({
 
 export const controlRedirectTasks = () => ({
   type: AUTH.CONTROL_REDIRECT_TASKS,
+})
+
+export const verifyUser = code => ({
+  type: AUTH.VERIFY_USER,
+  payload: code,
 })
 
 export const signUp = userData => ({

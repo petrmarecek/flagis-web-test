@@ -44,6 +44,7 @@ export const Profile = Record({
   firstName: null,
   lastName: null,
   photo: null,
+  verifiedAt: null,
   settings: new Settings(),
 })
 
@@ -156,6 +157,7 @@ export const AppStateStore = Record({
 export const AuthStore = Record(
   {
     isLogged: false,
+    isVerificationFailed: false,
     accessToken: null,
     expiresIn: null,
     expiresAt: null,
@@ -208,7 +210,7 @@ export const AttachmentStore = Record({
 
 export const StatsStore = Record({
   isFetching: true,
-  data: null
+  data: null,
 })
 
 export const TasksMenuStore = Record({
