@@ -225,6 +225,10 @@ export function* registerUser(action) {
   const { payload } = action
 
   try {
+    // clear errors
+    yield put(appStateActions.deselectError('signUp'))
+
+    // create pending
     yield put({ type: PENDING, payload })
 
     // call server
