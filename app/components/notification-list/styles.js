@@ -4,6 +4,7 @@ import {
   fontMain,
   textOverflow,
 } from 'components/styled-components-mixins'
+import { colors } from 'components/styled-components-mixins/colors'
 import { fadeInUp } from 'react-animations'
 
 /*--------------------------------- Animations -----------------------------------*/
@@ -18,11 +19,10 @@ const ItemWrapper = styled.li`
   margin: 0 0 4px;
   cursor: pointer;
   position: relative;
-  background-color: ${props => (props.isRead ? '#F9F9F9' : '#fff')};
+  background-color: ${props => (props.isRead ? colors.whitePorcelain : colors.white)};
   height: 70px;
   animation: 400ms ${fadeUp};
   padding: 6px 15px 6px 30px;
-  font-size: 14px;
   ${fontMain}
 `
 
@@ -40,58 +40,58 @@ const Indicator = styled.div`
     content: '';
     height: 8px;
     width: 8px;
-    background-color: #44ffb1;
+    background-color: ${colors.hanumanGreen};
     ${borderRadius('50%')}
   }
 `
 
-const UserNotificationEntityWrapper = styled.div`
+const ItemContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  height: 58px;
+  justify-content: center;
   overflow: hidden;
   white-space: nowrap;
   ${textOverflow('ellipsis')}
 `
 
-const User = styled.div`
-  color: #b1b5b8;
-  font-size: 12px;
-`
-
-const TitleNotification = styled.div`
+const MainTitle = styled.div`
   font-weight: bold;
   overflow: hidden;
   white-space: nowrap;
+  font-size: 14px;
   line-height: 16px;
   ${textOverflow('ellipsis')}
 
   span {
+    margin-left: 6px;
     font-weight: normal;
   }
 `
 
-const TitleEntity = styled.div`
-  color: #a2a2a2;
-  font-size: 12px;
+const SecondTitle = styled.div`
+  color: ${colors.astrocopusGrey};
+  font-size: 14px;
+  line-height: 16px;
   overflow: hidden;
   white-space: nowrap;
+  margin-top: 4px;
   ${textOverflow('ellipsis')}
 `
 
 const Date = styled.div`
   position: absolute;
-  top: 6px;
+  top: 4px;
   right: 15px;
-  color: #b1b5b8;
+  color: ${colors.greyOfDarkness};
   font-size: 12px;
+  line-height: 14px;
 `
 
 const Icons = styled.div`
   display: flex;
   align-items: center;
-  height: 58px;
+  padding-top: 6px;
+  margin-left: 6px;
 
   img {
     object-fit: cover;
@@ -105,10 +105,9 @@ const Icons = styled.div`
 export {
   ItemWrapper,
   Indicator,
-  UserNotificationEntityWrapper,
-  User,
-  TitleNotification,
-  TitleEntity,
+  ItemContentWrapper,
+  MainTitle,
+  SecondTitle,
   Date,
   Icons,
 }

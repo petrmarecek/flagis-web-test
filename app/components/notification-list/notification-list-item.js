@@ -18,13 +18,13 @@ import { ICONS } from 'components/icons/icon-constants'
 import {
   ItemWrapper,
   Indicator,
-  UserNotificationEntityWrapper,
-  User,
-  TitleNotification,
-  TitleEntity,
+  ItemContentWrapper,
+  MainTitle,
+  SecondTitle,
   Date,
   Icons,
 } from './styles'
+import { colors } from '../styled-components-mixins/colors'
 
 const NotificationListItem = ({
   notification,
@@ -50,6 +50,7 @@ const NotificationListItem = ({
     type === 'TASKS/DATES/DUE-DATE'
 
   // prepare data
+  const avatarSize = isAssigneeOfTask ? "20" : "30"
   const date = dateUtils.formatDateTimeSecondary(sentAt)
   const commentContent = data && data.content ? data.content : null
   const attachmentName = data && data.fileName ? data.fileName : null
@@ -70,23 +71,24 @@ const NotificationListItem = ({
       }
       isRead={isRead}
     >
-      <Date>{date}</Date>
+      <Date>{date} from {isSystemNotification ? 'Flagis' : profileName}</Date>
       {!isRead && <Indicator onClick={onHandleReadNotification} />}
-      <UserNotificationEntityWrapper>
-        <User>{isSystemNotification ? 'Flagis' : profileName}</User>
-        <TitleNotification isRead={isRead}>
-          {notificationText(type)}
-          {commentContent && <span>: {commentContent}</span>}
-          {attachmentName && <span>: {attachmentName}</span>}
-        </TitleNotification>
-        <TitleEntity isRead={isRead}>{taskSubject}</TitleEntity>
-      </UserNotificationEntityWrapper>
+      <ItemContentWrapper>
+        <MainTitle isRead={isRead}>
+          [{notificationText(type)}]
+          <span>{taskSubject}</span>
+        </MainTitle>
+        <SecondTitle isRead={isRead}>
+          {commentContent && <span>{commentContent}</span>}
+          {attachmentName && <span>{attachmentName}</span>}
+        </SecondTitle>
+      </ItemContentWrapper>
       {!isSystemNotification && (
         <Icons>
           <Avatar
             src={profile.photo}
             name={profileName}
-            size="20"
+            size={avatarSize}
             textSizeRatio={2}
             round
           />
@@ -96,7 +98,7 @@ const NotificationListItem = ({
               width={22}
               height={15}
               scale={0.68}
-              color={['#b1b5b8']}
+              color={[colors.astrocopusGrey]}
             />
           )}
         </Icons>
