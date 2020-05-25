@@ -15,7 +15,7 @@ import {
 } from 'redux/utils/component-helper'
 
 // components
-import TextEditor from 'components/editor'
+import { MarkdownEditor } from 'components/editor/markdown-editor'
 import TagDetailColors from 'components/detail/tag-detail-colors'
 import DetailMenu from 'components/detail/detail-menu'
 import Icon from 'components/icons/icon'
@@ -124,15 +124,17 @@ const TagDetail = props => {
             </DetailTagColorSelector>
           </DetailContentTagColor>
           <DetailContentDescriptionTag>
-            <span onClick={onHandleRemoveEventListener}>
-              <TextEditor
+            <div onClick={onHandleRemoveEventListener}>
+              <MarkdownEditor
                 componentId={tag.id}
                 content={description}
                 setDescription={onHandleDescriptionUpdate}
                 editorHeight={editorHeight}
                 scrollStyle={scrollStyle}
+                disabled={false}
+                view="simple"
               />
-            </span>
+            </div>
           </DetailContentDescriptionTag>
         </DetailContentCenter>
       </DetailInner>

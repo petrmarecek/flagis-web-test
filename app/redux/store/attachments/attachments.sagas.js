@@ -107,7 +107,7 @@ export function* initAttachmentsData() {
 
 export function* createAttachment(action) {
   try {
-    const { taskId, files } = action.payload
+    const { taskId, files, callback } = action.payload
 
     yield put(appStateActions.setLoader(loaderTypes.ATTACHMENTS))
 
@@ -148,6 +148,10 @@ export function* createAttachment(action) {
 
       // save attachment to redux store
       yield put(attachmentActions.addAttachment(attachment))
+
+      if (callback) {
+        callback(attachment.url, attachment.filename)
+      }
     }
 
     yield put(appStateActions.deselectLoader(loaderTypes.ATTACHMENTS))
