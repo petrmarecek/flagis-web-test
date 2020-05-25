@@ -4,7 +4,7 @@ import { withHandlers } from 'recompose'
 import constants from 'utils/constants'
 
 // components
-import TextEditor from 'components/editor'
+import { MarkdownEditor } from 'components/editor/markdown-editor'
 import Avatar from 'react-avatar'
 import DetailMenu from './detail-menu'
 import Icon from '../icons/icon'
@@ -140,15 +140,17 @@ const ContactDetail = props => {
           </DetailContentProperties>
 
           <DetailContentDescriptionContact>
-            <span onClick={onHandleRemoveEventListener}>
-              <TextEditor
+            <div onClick={onHandleRemoveEventListener}>
+              <MarkdownEditor
                 componentId={contact.id}
                 content={description}
                 setDescription={onHandleDescriptionUpdate}
                 editorHeight={editorHeight}
                 scrollStyle={scrollStyle}
+                disabled={false}
+                view="simple"
               />
-            </span>
+            </div>
           </DetailContentDescriptionContact>
         </DetailContentCenter>
       </DetailInner>

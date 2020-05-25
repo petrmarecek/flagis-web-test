@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components'
+import styled, { keyframes, css } from 'styled-components'
 import { fadeInUp, flipOutX } from 'react-animations'
 import {
   transition,
@@ -43,7 +43,7 @@ const TaskItem = styled.div`
       return 'none'
     }
 
-    return props.isMounted ? `${showAnimation} 400ms` : `${hideAnimation} 400ms`
+    return props.isMounted ? css`${showAnimation} 400ms` : css`${hideAnimation} 400ms`
   }};
 
   :before {

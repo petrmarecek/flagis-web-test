@@ -12,10 +12,15 @@ import ResetPasswordPage from 'containers/reset-password-page'
 import VerificationEmailPage from 'containers/verification-email-page'
 import UserContainer from 'containers/user-container'
 import NotFoundPage from 'containers/not-found-page/loadable'
+import { GlobalStyles } from 'global-styles'
+import { EditorStyles, CodeMirrorStyles } from 'components/editor/markdown-editor-styles'
 
 export default function App() {
   return (
     <div>
+      <GlobalStyles />
+      <EditorStyles />
+      <CodeMirrorStyles />
       <Switch>
         <Route exact path="/" component={LandingPage} />
         <Route exact path="/legal*" component={LegalPage} />

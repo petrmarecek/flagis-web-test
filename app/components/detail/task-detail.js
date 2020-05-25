@@ -13,7 +13,6 @@ import * as toastCommon from 'components/toast-notifications/toast-notifications
 import constants from 'utils/constants'
 
 // components
-import TextEditor from 'components/editor'
 import DetailMenu from 'components/detail/detail-menu'
 import FollowerStatus from 'components/common/follower-status'
 import FollowerResponseButtons from '../common/follower-response-buttons'
@@ -68,6 +67,7 @@ import {
   DetailContentCommentsAddInput,
 } from './styles'
 import { colors } from 'components/styled-components-mixins/colors'
+import { MarkdownEditor } from 'components/editor/markdown-editor'
 
 const TaskDetail = (props) => {
   const {
@@ -163,10 +163,10 @@ const TaskDetail = (props) => {
   const contentTopElem = contentTopRef
     ? domUtils.getDimensions(contentTopRef)
     : { height: 0 }
-  const editorOffset = 84 + contentTopElem.height
-  const scrollOffset = 144 + contentTopElem.height
-  const contentOffset = 84 + contentTopElem.height
-  const attachmentScrollOffset = 300 + contentTopElem.height
+  const editorOffset = 134 + contentTopElem.height
+  const scrollOffset = 194 + contentTopElem.height
+  const contentOffset = 134 + contentTopElem.height
+  const attachmentScrollOffset = 350 + contentTopElem.height
   const editorHeight = `calc(100vh - ${editorOffset}px)`
   const contentHeight = `calc(100vh - ${contentOffset}px)`
   const attachmentScrollHeight = `calc(100vh - ${attachmentScrollOffset}px)`
@@ -631,16 +631,18 @@ const TaskDetail = (props) => {
             </DetailContentAttachments>
           </DetailContentProperties>
           <DetailContentDescriptionTask>
-            <span onClick={onHandleRemoveEventListener}>
-              <TextEditor
+            <div onClick={onHandleRemoveEventListener}>
+              <MarkdownEditor
                 componentId={task.id}
                 content={description}
                 setDescription={onHandleDescriptionUpdate}
                 editorHeight={editorHeight}
                 scrollStyle={scrollStyle}
                 disabled={isCollaboratedOrCompleted}
+                onInsertImage={onHandleFileUploaded}
+                view="full"
               />
-            </span>
+            </div>
           </DetailContentDescriptionTask>
           <DetailContentComments
             allowed={!isCompleted}
@@ -857,10 +859,11 @@ export default compose(
       const data = { task: props.task, attachmentId }
       props.onHandleTaskAttachmentDelete(data)
     },
-    onHandleFileUploaded: (props) => (attachment) => {
+    onHandleFileUploaded: (props) => (attachments, callback) => {
       const data = {
         taskId: props.task.id,
-        files: attachment,
+        files: attachments,
+        callback,
       }
 
       props.onHandleTaskFileUploaded(data)
