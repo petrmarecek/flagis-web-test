@@ -163,10 +163,10 @@ const TaskDetail = (props) => {
   const contentTopElem = contentTopRef
     ? domUtils.getDimensions(contentTopRef)
     : { height: 0 }
-  const editorOffset = 134 + contentTopElem.height
-  const scrollOffset = 194 + contentTopElem.height
-  const contentOffset = 134 + contentTopElem.height
-  const attachmentScrollOffset = 350 + contentTopElem.height
+  const editorOffset = 84 + contentTopElem.height
+  const scrollOffset = 144 + contentTopElem.height
+  const contentOffset = 84 + contentTopElem.height
+  const attachmentScrollOffset = 300 + contentTopElem.height
   const editorHeight = `calc(100vh - ${editorOffset}px)`
   const contentHeight = `calc(100vh - ${contentOffset}px)`
   const attachmentScrollHeight = `calc(100vh - ${attachmentScrollOffset}px)`
