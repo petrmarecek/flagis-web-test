@@ -70,7 +70,7 @@ const AddTagTreeItemSectionForm = props => {
   return parentId === null ? (
     <AddSection>
       <SectionInput
-        innerRef={getInputRef}
+        ref={getInputRef}
         placeholder="Add Title"
         type="text"
         onKeyDown={onHandleKeyDown}

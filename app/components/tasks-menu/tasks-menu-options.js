@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import PropTypes from 'prop-types'
 import constants from 'utils/constants'
 import domUtils from 'redux/utils/dom'
-import { withStateHandlers } from 'recompose'
+import { withHandlers } from 'recompose'
 
 // components
 import { ICONS } from 'components/icons/icon-constants'
@@ -21,24 +21,25 @@ import {
 const TasksMenuOptions = props => {
   const {
     tasksMenu,
-    optionsRef,
-    getOptionsRef,
     onHandleClick,
     onHandleArchiveCompletedTasks,
     onHandleSelectAllTasks,
     isVisibleArchivedTasks,
   } = props
 
+  const optionsRef = useRef()
+
   const { menu } = tasksMenu.options
   const iconColor = menu.isVisible ? '#293034' : '#B1B5B8'
   const getCenterIconPosition = () => {
-    const position = domUtils.getOffset(optionsRef)
-    return window.innerWidth - position.left - constants.TASKS_MENU_ICON_OFFSET
+    const position = domUtils.getOffset(optionsRef.current)
+    const left = position ? position.left : 0
+    return window.innerWidth - left - constants.TASKS_MENU_ICON_OFFSET
   }
 
   return (
     <TasksMenuItem
-      innerRef={getOptionsRef}
+      ref={optionsRef}
       onClick={onHandleClick}
     >
       <IconWrapper iconColor={iconColor} hoverIconColor="#293034">
@@ -47,7 +48,7 @@ const TasksMenuOptions = props => {
       {menu.isVisible && (
         <MenuBoxContainer
           animation="transition.fadeIn"
-          menuIcon={optionsRef}
+          menuIcon={optionsRef.current}
           clickOutsideMenu={onHandleClick}
           trianglePosition={getCenterIconPosition}
         >
@@ -97,12 +98,11 @@ TasksMenuOptions.propTypes = {
   hideMenuOption: PropTypes.func,
 }
 
-export default withStateHandlers(() => ({ optionsRef: null }), {
-  getOptionsRef: () => ref => ({ optionsRef: ref }),
-  onHandleClick: (state, props) => () => {
+export default withHandlers({
+  onHandleClick: (props) => () => {
     if (props.tasksMenu.options.menu.isVisible) {
       props.hideMenuOption()
-      return {}
+      return
     }
 
     if (props.tasksMenu.filters.menu.isVisible) {
@@ -114,14 +114,7 @@ export default withStateHandlers(() => ({ optionsRef: null }), {
     }
 
     props.visibleMenuOption()
-    return {}
   },
-  onHandleArchiveCompletedTasks: (state, props) => () => {
-    props.onArchiveCompletedTasks()
-    return {}
-  },
-  onHandleSelectAllTasks: (state, props) => () => {
-    props.onSelectAllTasks()
-    return {}
-  },
+  onHandleArchiveCompletedTasks: (props) => () => props.onArchiveCompletedTasks(),
+  onHandleSelectAllTasks: (props) => () => props.onSelectAllTasks(),
 })(TasksMenuOptions)

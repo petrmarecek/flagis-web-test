@@ -261,7 +261,7 @@ const TaskDetail = (props) => {
       />
       <DetailInner isMounted={isMounted} isRejected={isRejected}>
         <DetailContentTop
-          innerRef={getContentTopRef}
+          ref={getContentTopRef}
           animation={animation}
           completed={isCompletedMainList}
           backgroundColor={backgroundColor}

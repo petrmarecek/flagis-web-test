@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import PropTypes from 'prop-types'
 import domUtils from 'redux/utils/dom'
 import constants from 'utils/constants'
-import { withStateHandlers } from 'recompose'
+import { withHandlers } from 'recompose'
 
 // component
 import { ICONS } from 'components/icons/icon-constants'
@@ -21,8 +21,6 @@ import {
 const TasksMenuFilters = props => {
   const {
     tasksMenu,
-    filterRef,
-    getFilterRef,
     onHandleClick,
     onHandleToggleAssigneeFilter,
     onHandleRangeFilterChange,
@@ -41,21 +39,24 @@ const TasksMenuFilters = props => {
     noTags,
   } = tasksMenu.filters
 
+  const filterRef = useRef()
+
   const iconColor = active.size !== 0 || menu.isVisible ? '#293034' : '#B1B5B8'
   const getCenterIconPosition = () => {
-    const position = domUtils.getOffset(filterRef)
-    return window.innerWidth - position.left - constants.TASKS_MENU_ICON_OFFSET
+    const position = domUtils.getOffset(filterRef.current)
+    const left = position ? position.left : 0
+    return window.innerWidth - left - constants.TASKS_MENU_ICON_OFFSET
   }
 
   return (
-    <TasksMenuItem innerRef={getFilterRef} onClick={onHandleClick}>
+    <TasksMenuItem ref={filterRef} onClick={onHandleClick}>
       <IconWrapper iconColor={iconColor} hoverIconColor="#293034">
         <Icon icon={ICONS.FILTER} width={19} height={20} scale={0.8} />
       </IconWrapper>
       {menu.isVisible && (
         <MenuBoxContainer
           animation="transition.fadeIn"
-          menuIcon={filterRef}
+          menuIcon={filterRef.current}
           clickOutsideMenu={onHandleClick}
           trianglePosition={getCenterIconPosition}
         >
@@ -158,14 +159,13 @@ TasksMenuFilters.propTypes = {
   hideMenuOption: PropTypes.func,
 }
 
-export default withStateHandlers(() => ({ filterRef: null }), {
-  getFilterRef: () => ref => ({ filterRef: ref }),
-  onHandleClick: (state, props) => () => {
+export default withHandlers({
+  onHandleClick: (props) => () => {
     const { filters, sort, options } = props.tasksMenu
 
     if (filters.menu.isVisible) {
       props.hideMenuFilter()
-      return {}
+      return
     }
 
     if (sort.menu.isVisible) {
@@ -177,26 +177,10 @@ export default withStateHandlers(() => ({ filterRef: null }), {
     }
 
     props.visibleMenuFilter()
-    return {}
   },
-  onHandleToggleAssigneeFilter: (state, props) => () => {
-    props.onToggleAssigneeFilter()
-    return {}
-  },
-  onHandleRangeFilterChange: (state, props) => value => {
-    props.onChangeRangeFilter(value)
-    return {}
-  },
-  onHandleToggleImportantFilter: (state, props) => () => {
-    props.onToggleImportantFilter()
-    return {}
-  },
-  onHandleToggleUnimportantFilter: (state, props) => () => {
-    props.onToggleUnimportantFilter()
-    return {}
-  },
-  onHandleToggleNoTagsFilter: (state, props) => () => {
-    props.onToggleNoTagsFilter()
-    return {}
-  },
+  onHandleToggleAssigneeFilter: (props) => () => props.onToggleAssigneeFilter(),
+  onHandleRangeFilterChange: (props) => value => props.onChangeRangeFilter(value),
+  onHandleToggleImportantFilter: (props) => () => props.onToggleImportantFilter(),
+  onHandleToggleUnimportantFilter: (props) => () => props.onToggleUnimportantFilter(),
+  onHandleToggleNoTagsFilter: (props) => () => props.onToggleNoTagsFilter(),
 })(TasksMenuFilters)

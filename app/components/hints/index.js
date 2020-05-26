@@ -72,7 +72,7 @@ const Hints = props => {
     if (noHintFound) {
       return {
         title: 'No hint found',
-        items: <Hint innerRef={ref => getHintRef(ref)} noHintFound />,
+        items: <Hint ref={ref => getHintRef(ref)} noHintFound />,
       }
     }
 
@@ -82,7 +82,7 @@ const Hints = props => {
         title: `Create a new ${typeHint[dataType]}`,
         items: (
           <Hint
-            innerRef={ref => getHintRef(ref)}
+            ref={ref => getHintRef(ref)}
             onClick={onHandleSubmit}
             selected
           >

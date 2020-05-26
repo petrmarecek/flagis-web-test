@@ -456,7 +456,7 @@ const AutocompleteInput = props => {
   return (
     <InputContainer>
       <Input
-        innerRef={ref => getInputRef(ref)}
+        ref={ref => getInputRef(ref)}
         type="text"
         autoComplete="off"
         size={location === 'taskDetailTags' ? 5 : 10}

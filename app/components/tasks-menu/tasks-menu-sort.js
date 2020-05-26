@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import PropTypes from 'prop-types'
 import domUtils from 'redux/utils/dom'
 import constants from 'utils/constants'
-import { withStateHandlers } from 'recompose'
+import { withHandlers } from 'recompose'
 
 // components
 import { ICONS } from 'components/icons/icon-constants'
@@ -22,15 +22,15 @@ import { colors } from 'components/styled-components-mixins/colors'
 const TasksMenuSort = (props) => {
   const {
     tasksMenu,
-    sortRef,
-    getSortRef,
     onHandleClick,
     onHandleSortAlgorithmToggle,
   } = props
 
+  const sortRef = useRef()
+
   const { defaultSort, alphabet, important, incomplete, menu } = tasksMenu.sort
   const getCenterIconPosition = () => {
-    const position = domUtils.getOffset(sortRef)
+    const position = domUtils.getOffset(sortRef.current)
     return window.innerWidth - position.left - constants.TASKS_MENU_ICON_OFFSET
   }
 
@@ -55,14 +55,14 @@ const TasksMenuSort = (props) => {
     !defaultSort || menu.isVisible ? colors.aztec : colors.astrocopusGrey
 
   return (
-    <TasksMenuItem innerRef={getSortRef} onClick={onHandleClick}>
+    <TasksMenuItem ref={sortRef} onClick={onHandleClick}>
       <IconWrapper iconColor={iconColor} hoverIconColor={colors.aztec}>
         <Icon icon={icon} width={20} height={20} scale={0.83} />
       </IconWrapper>
       {menu.isVisible && (
         <MenuBoxContainer
           animation="transition.fadeIn"
-          menuIcon={sortRef}
+          menuIcon={sortRef.current}
           clickOutsideMenu={onHandleClick}
           trianglePosition={getCenterIconPosition}
         >
@@ -145,12 +145,11 @@ TasksMenuSort.propTypes = {
   hideMenuOption: PropTypes.func,
 }
 
-export default withStateHandlers(() => ({ sortRef: null }), {
-  getSortRef: () => (ref) => ({ sortRef: ref }),
-  onHandleClick: (state, props) => () => {
+export default withHandlers({
+  onHandleClick: (props) => () => {
     if (props.tasksMenu.sort.menu.isVisible) {
       props.hideMenuSort()
-      return {}
+      return
     }
 
     if (props.tasksMenu.filters.menu.isVisible) {
@@ -162,10 +161,8 @@ export default withStateHandlers(() => ({ sortRef: null }), {
     }
 
     props.visibleMenuSort()
-    return {}
   },
-  onHandleSortAlgorithmToggle: (state, props) => (algorithm) => {
+  onHandleSortAlgorithmToggle: (props) => (algorithm) => {
     props.onToggleSortAlgorithm(algorithm)
-    return {}
   },
 })(TasksMenuSort)
