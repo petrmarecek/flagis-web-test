@@ -58,10 +58,7 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   lifecycle({
     componentDidUpdate() {
       const { tasksItems, pathname, selectTasksItems } = this.props
