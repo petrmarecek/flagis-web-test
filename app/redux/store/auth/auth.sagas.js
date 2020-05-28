@@ -46,7 +46,11 @@ import {
   sentryBreadcrumbCategory,
   sentryTagType,
 } from 'redux/store/errors/errors.common'
-import { createLoadActions, callApi, refreshToken } from 'redux/store/common.sagas'
+import {
+  createLoadActions,
+  callApi,
+  refreshToken,
+} from 'redux/store/common.sagas'
 import api from 'redux/utils/api'
 import firebase from 'redux/utils/firebase'
 import dateUtil from 'redux/utils/date'
@@ -599,7 +603,11 @@ function* authorizeUser(authApiCall, action) {
     yield put({ type: REJECTED, err })
 
     if (action.type === 'AUTH/LOGIN') {
-      if (err.response && err.response.data && err.response.data.type === 'PasswordResetRequired') {
+      if (
+        err.response &&
+        err.response.data &&
+        err.response.data.type === 'PasswordResetRequired'
+      ) {
         yield put(
           appStateActions.setError(
             'signIn',

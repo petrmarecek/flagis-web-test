@@ -48,7 +48,7 @@ const fontSub = css`
 
 const fontBold = css`
   font-family: 'Roboto', sans-serif;
-  font-weight: 600;
+  font-weight: 500;
 `
 
 const fontIconMdi = css`

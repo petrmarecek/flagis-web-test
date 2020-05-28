@@ -69,7 +69,7 @@ import {
 import { colors } from 'components/styled-components-mixins/colors'
 import { MarkdownEditor } from 'components/editor/markdown-editor'
 
-const TaskDetail = (props) => {
+const TaskDetail = props => {
   const {
     userId,
     task,
@@ -116,7 +116,7 @@ const TaskDetail = (props) => {
     subject: task.subject,
     createdBy: task.createdBy,
     followerStatus: assignee !== null ? assignee.status : null,
-    tags: task.tags.filter((tag) => tag !== undefined), // eslint-disable-line
+    tags: task.tags.filter(tag => tag !== undefined), // eslint-disable-line
     followers: task.followers,
     startDate: dateUtil.toMoment(task.startDate),
     dueDate: dateUtil.toMoment(task.dueDate),
@@ -503,7 +503,7 @@ const TaskDetail = (props) => {
                       placeholder="Add contact"
                       selectedItems={{
                         contacts: isFollowers
-                          ? followers.map((follower) => follower.profile)
+                          ? followers.map(follower => follower.profile)
                           : null,
                       }}
                       parentId={id}
@@ -741,7 +741,7 @@ export default compose(
       contentTopRef: null,
     }),
     {
-      getContentTopRef: () => (ref) => ({ contentTopRef: ref }),
+      getContentTopRef: () => ref => ({ contentTopRef: ref }),
       onHandleArchive: (state, props) => () => {
         window.setTimeout(() => props.onHandleTaskArchive(props.task), 400)
         return { isMounted: false }
@@ -770,7 +770,7 @@ export default compose(
     }
   ),
   withHandlers({
-    onHandleComplete: (props) => () => {
+    onHandleComplete: props => () => {
       const { id } = props.task
 
       if (!props.task.isCompleted) {
@@ -779,7 +779,7 @@ export default compose(
         props.onHandleTaskSetIncomplete(id)
       }
     },
-    onHandleSend: (props) => () => {
+    onHandleSend: props => () => {
       const { id, followers } = props.task
       const assignee = getAssigneeOfTask(followers)
       const data = {
@@ -789,7 +789,7 @@ export default compose(
 
       props.onHandleTaskSend(data)
     },
-    onHandleSubjectUpdate: (props) => (event) => {
+    onHandleSubjectUpdate: props => event => {
       const subject = event.target.value
       if (subject === props.task.subject || subject === '') {
         return
@@ -798,12 +798,12 @@ export default compose(
       const data = { task: props.task, subject }
       props.onHandleTaskSubjectUpdate(data)
     },
-    onHandleTagDelete: (props) => (tagInfo) => {
+    onHandleTagDelete: props => tagInfo => {
       const data = { task: props.task, tagInfo }
       props.onHandleTaskTagDeleted(data)
     },
-    onHandleDelete: (props) => () => props.onHandleTaskDelete(props.task.id),
-    onHandleFollowerDelete: (props) => (user, isAssignee) => {
+    onHandleDelete: props => () => props.onHandleTaskDelete(props.task.id),
+    onHandleFollowerDelete: props => (user, isAssignee) => {
       const { id, followers } = props.task
       const assignee = getAssigneeOfTask(followers)
 
@@ -815,13 +815,13 @@ export default compose(
 
       props.onHandleTaskFollowerDeleted(data)
     },
-    onHandleAddNewContact: (props) => (email) =>
+    onHandleAddNewContact: props => email =>
       props.onHandleTaskAddNewContact(email),
-    onHandleStartDateChanged: (props) => (date) => {
+    onHandleStartDateChanged: props => date => {
       const data = { task: props.task, date, typeDate: 'startDate' }
       props.onHandleTaskDateChanged(data)
     },
-    onHandleDueDateChanged: (props) => (date) => {
+    onHandleDueDateChanged: props => date => {
       if (date) {
         date.set({
           second: 0,
@@ -836,7 +836,7 @@ export default compose(
       const data = { task: props.task, date, typeDate: 'dueDate' }
       props.onHandleTaskDateChanged(data)
     },
-    onHandleReminderDateChanged: (props) => (date) => {
+    onHandleReminderDateChanged: props => date => {
       if (date) {
         date.set({
           second: 0,
@@ -851,15 +851,15 @@ export default compose(
       const data = { task: props.task, date, typeDate: 'reminderDate' }
       props.onHandleTaskDateChanged(data)
     },
-    onHandleToggleImportant: (props) => (event) => {
+    onHandleToggleImportant: props => event => {
       event.stopPropagation()
       props.onHandleTaskToggleImportant(props.task)
     },
-    onHandleAttachmentDelete: (props) => (attachmentId) => {
+    onHandleAttachmentDelete: props => attachmentId => {
       const data = { task: props.task, attachmentId }
       props.onHandleTaskAttachmentDelete(data)
     },
-    onHandleFileUploaded: (props) => (attachments, callback) => {
+    onHandleFileUploaded: props => (attachments, callback) => {
       const data = {
         taskId: props.task.id,
         files: attachments,
@@ -868,7 +868,7 @@ export default compose(
 
       props.onHandleTaskFileUploaded(data)
     },
-    onHandleDescriptionUpdate: (props) => (value) => {
+    onHandleDescriptionUpdate: props => value => {
       const description = value
       if (description === props.task.description) {
         return
@@ -877,7 +877,7 @@ export default compose(
       const data = { task: props.task, description }
       props.onHandleTaskDescriptionUpdate(data)
     },
-    onHandleAddComment: (props) => (event) => {
+    onHandleAddComment: props => event => {
       const isSubmit = event.which === 13 || event.type === 'click'
       if (!isSubmit) {
         return

@@ -11,8 +11,6 @@ firebase.initializeApp(config.firebase)
 
 // Firestore
 const db = firebase.firestore()
-const settings = { timestampsInSnapshots: true }
-db.settings(settings)
 
 export default {
   getTasksChannel: (userId, initTime) => {

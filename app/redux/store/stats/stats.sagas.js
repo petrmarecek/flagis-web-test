@@ -8,9 +8,7 @@ export function* fetchStats() {
   const { PENDING, FULFILLED } = createLoadActions(STATS.FETCH)
 
   // Load selected tags
-  const tagsIds = yield select(state =>
-    tagSelectors.getActiveTagsIds(state)
-  )
+  const tagsIds = yield select(state => tagSelectors.getActiveTagsIds(state))
 
   // Fetch
   yield put({ type: PENDING })

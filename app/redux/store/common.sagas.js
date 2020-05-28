@@ -23,7 +23,6 @@ import {
 } from 'redux/store/errors/errors.common'
 
 export function* refreshToken(auth) {
-
   // Initialize request
   const { PENDING, FULFILLED, REJECTED } = createLoadActions(AUTH.REFRESH_TOKEN)
   yield put({ type: PENDING })
@@ -31,10 +30,9 @@ export function* refreshToken(auth) {
   try {
     // Call API with current refresh token
     const data = {
-      userId:
-        Map.isMap(auth.profile)
-          ? auth.profile.get('id')
-          : auth.profile.id,
+      userId: Map.isMap(auth.profile)
+        ? auth.profile.get('id')
+        : auth.profile.id,
       refreshToken: auth.refreshToken,
     }
 

@@ -1,7 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { withHandlers } from 'recompose'
-import { DetailTagColorSelectorOptions, DetailTagColorSelectorItems } from './styles'
+import {
+  DetailTagColorSelectorOptions,
+  DetailTagColorSelectorItems,
+} from './styles'
 
 const TagDetailColors = ({ colors, colorIndex, onHandleSetColor }) => (
   <DetailTagColorSelectorOptions>
@@ -9,8 +12,10 @@ const TagDetailColors = ({ colors, colorIndex, onHandleSetColor }) => (
       <DetailTagColorSelectorItems
         key={index}
         onClick={() => onHandleSetColor(index)}
-        color={color} 
-        selected={colorIndex === index} /> ))}
+        color={color}
+        selected={colorIndex === index}
+      />
+    ))}
   </DetailTagColorSelectorOptions>
 )
 

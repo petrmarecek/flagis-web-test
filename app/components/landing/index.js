@@ -88,7 +88,4 @@ class Landing extends PureComponent {
 const mapStateToProps = () => ({})
 const mapDispatchToProps = { controlRedirectTasks }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Landing)
+export default connect(mapStateToProps, mapDispatchToProps)(Landing)

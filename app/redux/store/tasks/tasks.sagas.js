@@ -845,12 +845,17 @@ export function* setTaskTags(action) {
     taskSelectors.getTaskTags(state, taskId)
   )
 
-  const resultTagIds = strategy === TagsUpdateStrategy.OVERRIDE
-    ? tagIds
-    : _.uniq([...tagIds, ...originalTagList.toJS()])
+  const resultTagIds =
+    strategy === TagsUpdateStrategy.OVERRIDE
+      ? tagIds
+      : _.uniq([...tagIds, ...originalTagList.toJS()])
 
   // Write new tag IDs
-  yield callApi(api.tasks.setTags, taskId, resultTagIds.map(tagId => ({ id: tagId })))
+  yield callApi(
+    api.tasks.setTags,
+    taskId,
+    resultTagIds.map(tagId => ({ id: tagId }))
+  )
 
   // Update local task cache
   yield put(taskActions.setTaskTagStore(taskId, resultTagIds))

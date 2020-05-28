@@ -233,10 +233,7 @@ const mapDispatchToProps = {
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
-  branch(
-    props => props.tasks.isFetching,
-    renderComponent(Loader)
-  ),
+  branch(props => props.tasks.isFetching, renderComponent(Loader)),
   withStateHandlers(
     () => ({
       dueDate: null,
