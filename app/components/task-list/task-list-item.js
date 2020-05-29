@@ -16,7 +16,11 @@ import * as toastCommon from 'components/toast-notifications/toast-notifications
 import { connect } from 'react-redux'
 import { setTaskTags } from 'redux/store/tasks/tasks.actions'
 import dateUtils from 'redux/utils/date'
-import { getAssigneeOfTask, getSortedTags, isStringEmpty } from 'redux/utils/component-helper'
+import {
+  getAssigneeOfTask,
+  getSortedTags,
+  isStringEmpty,
+} from 'redux/utils/component-helper'
 
 // components
 import { ICONS } from 'components/icons/icon-constants'
@@ -46,7 +50,16 @@ import {
 
 // TaskListItem
 const TaskListItem = props => {
-  const { userId, task, isSelected, noTaskFound, listType, selectedTags, leftPanelWidth, windowWidth } = props
+  const {
+    userId,
+    task,
+    isSelected,
+    noTaskFound,
+    listType,
+    selectedTags,
+    leftPanelWidth,
+    windowWidth,
+  } = props
 
   const [isMounted, setIsMounted] = useState(true)
 
@@ -180,7 +193,8 @@ const TaskListItem = props => {
   }
 
   description = removeMd(description)
-  description = description.length > 88 ? description.substr(0, 87) : description
+  description =
+    description.length > 88 ? description.substr(0, 87) : description
 
   // Task-Item width
   const taskItemWidth = windowWidth - leftPanelWidth - 20
@@ -269,7 +283,11 @@ const TaskListItem = props => {
               }}
             >
               <Icon
-                icon={task.isCompleted ? ICONS.TASK_COMPLETED : ICONS.TASK_UNCOMPLETED}
+                icon={
+                  task.isCompleted
+                    ? ICONS.TASK_COMPLETED
+                    : ICONS.TASK_UNCOMPLETED
+                }
                 color={completedIconColor()}
                 width={22}
                 height={22}
@@ -304,10 +322,16 @@ const TaskListItem = props => {
           )}
           {isInboxList && (
             <FollowerResponse>
-              <FollowerResponseButtons acceptClicked={onHandleAcceptClicked} rejectClicked={onHandleRejectClicked} />
+              <FollowerResponseButtons
+                acceptClicked={onHandleAcceptClicked}
+                rejectClicked={onHandleRejectClicked}
+              />
             </FollowerResponse>
           )}
-          <Content marginLeft={contentMarginLeft} marginRight={contentMarginRight}>
+          <Content
+            marginLeft={contentMarginLeft}
+            marginRight={contentMarginRight}
+          >
             <SubjectTags>
               <Subject
                 archived={isArchivedList}
@@ -315,7 +339,9 @@ const TaskListItem = props => {
                 important={task.isImportant}
                 description={isDescription}
               >
-                <Linkify properties={{ target: '_blank' }}>{task.subject}</Linkify>
+                <Linkify properties={{ target: '_blank' }}>
+                  {task.subject}
+                </Linkify>
               </Subject>
               <Tags>
                 <TaskListTagItems
@@ -327,7 +353,11 @@ const TaskListItem = props => {
               </Tags>
             </SubjectTags>
             <DescriptionDueDate>
-              {isDescription && <Description completed={isCompletedMainList}>{description}</Description>}
+              {isDescription && (
+                <Description completed={isCompletedMainList}>
+                  {description}
+                </Description>
+              )}
               <DueDate
                 title={fromNow}
                 overdue={moment(dueDate) < now && !isArchivedList}
@@ -355,7 +385,11 @@ const TaskListItem = props => {
                 status={followerStatus}
                 assigneeInbox={isInboxList || !isOwner}
                 isCompleted={isCompletedMainList}
-                photo={!isOwner ? createdByFollower.profile.photo : assignee.profile.photo}
+                photo={
+                  !isOwner
+                    ? createdByFollower.profile.photo
+                    : assignee.profile.photo
+                }
                 nickname={
                   !isOwner
                     ? createdByFollower.profile.nickname === null

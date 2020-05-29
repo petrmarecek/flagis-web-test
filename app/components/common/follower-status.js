@@ -33,6 +33,7 @@ const Button = styled.button`
   width: 123px;
   border: none;
   padding: 0;
+  cursor: pointer;
 
   :hover {
     ${transition('500ms')}

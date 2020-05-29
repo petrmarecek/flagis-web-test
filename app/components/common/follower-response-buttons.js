@@ -26,6 +26,7 @@ const Button = styled.button`
   color: #fff;
   border: none;
   animation: ${props => (props.animation ? css`500ms linear ${show}` : 'none')};
+  cursor: pointer;
 
   :hover {
     ${transition('500ms')}

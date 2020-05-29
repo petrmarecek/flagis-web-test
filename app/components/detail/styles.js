@@ -518,6 +518,10 @@ const DetailContentDescriptionTask = styled.div`
   flex: 6;
   margin-right: 22px;
   z-index: 1;
+
+  .te-editor {
+    cursor: text;
+  }
 `
 
 // --------------------------------------- Tag detail ---------------------------------------

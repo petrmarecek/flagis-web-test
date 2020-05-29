@@ -1,13 +1,70 @@
 import React, { useRef, useEffect, useCallback } from 'react'
 import debounce from 'lodash/debounce'
-import PropTypes from 'prop-types';
-import { Editor } from '@toast-ui/react-editor'
+import PropTypes from 'prop-types'
+import { Editor, Viewer } from '@toast-ui/react-editor'
+
+// styles
+import styled from 'styled-components'
+
+// styles for disabled mode
+const ViewerWrapper = styled.div`
+  border: 1px solid #e5e5e5;
+  height: ${props => props.height};
+  max-height: ${props => props.height};
+  padding: 16px 25px;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  // set viewer max-height for scrolling
+  .tui-editor-contents {
+    max-height: ${props => `calc(${props.height} - 32px)`};
+  }
+
+  // disable list
+  .task-list-item {
+    pointer-events: none;
+  }
+`
 
 const toolsByView = {
-  full: ['heading', 'bold', 'italic', 'strike', 'divider', 'hr', 'quote', 'divider', 'ul',
-   'ol', 'task', 'divider', 'table', 'link', 'image', 'divider', 'code', 'codeblock'],
-  simple: ['heading', 'bold', 'italic', 'strike', 'divider', 'hr', 'quote', 'divider', 'ul',
-   'ol', 'task', 'divider', 'link', 'divider', 'code', 'codeblock'],
+  full: [
+    'heading',
+    'bold',
+    'italic',
+    'strike',
+    'divider',
+    'hr',
+    'quote',
+    'divider',
+    'ul',
+    'ol',
+    'task',
+    'divider',
+    'table',
+    'link',
+    'image',
+    'divider',
+    'code',
+    'codeblock',
+  ],
+  simple: [
+    'heading',
+    'bold',
+    'italic',
+    'strike',
+    'divider',
+    'hr',
+    'quote',
+    'divider',
+    'ul',
+    'ol',
+    'task',
+    'divider',
+    'link',
+    'divider',
+    'code',
+    'codeblock',
+  ],
 }
 
 /**
@@ -20,8 +77,8 @@ export const MarkdownEditor = ({
   editorHeight,
   onInsertImage,
   view,
+  disabled,
 }) => {
-
   const editorRef = useRef()
 
   useEffect(() => {
@@ -39,30 +96,38 @@ export const MarkdownEditor = ({
 
   return (
     <div>
-      <Editor
-        ref={editorRef}
-        initialValue={content}
-        previewStyle="horizontal"
-        height={editorHeight}
-        initialEditType="wysiwyg"
-        useCommandShortcut
-        usageStatistics={false}
-        hideModeSwitch={false}
-        events={{
-          change: debouncedSaveDescription,
-        }}
-        hooks={{
-          addImageBlobHook: (file, callback) => {
-            if (onInsertImage) {
-              onInsertImage([file], callback)
-              return true
-            }
+      {disabled && (
+        <ViewerWrapper height={editorHeight}>
+          <Viewer ref={editorRef} initialValue={content} />
+        </ViewerWrapper>
+      )}
+      {!disabled && (
+        <Editor
+          ref={editorRef}
+          initialValue={content}
+          previewStyle="horizontal"
+          height={editorHeight}
+          initialEditType="wysiwyg"
+          useCommandShortcut
+          usageStatistics={false}
+          hideModeSwitch={false}
+          placeholder="Add description..."
+          events={{
+            change: debouncedSaveDescription,
+          }}
+          hooks={{
+            addImageBlobHook: (file, callback) => {
+              if (onInsertImage) {
+                onInsertImage([file], callback)
+                return true
+              }
 
-            return false
-          }
-        }}
-        toolbarItems={toolsByView[view]}
-      />
+              return false
+            },
+          }}
+          toolbarItems={toolsByView[view]}
+        />
+      )}
     </div>
   )
 }
@@ -78,4 +143,5 @@ MarkdownEditor.propTypes = {
   setDescription: PropTypes.func,
   onInsertImage: PropTypes.func,
   view: PropTypes.oneOf(['full', 'simple']),
+  disabled: PropTypes.bool,
 }
