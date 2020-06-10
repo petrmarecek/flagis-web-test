@@ -28,7 +28,7 @@ const TaskList = props => {
     rejectTask,
   } = props
 
-  const getTaskItems = (taskItems) => {
+  const getTaskItems = taskItems => {
     if (!listType) {
       return null
     }

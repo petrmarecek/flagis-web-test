@@ -111,7 +111,7 @@ const TagDetail = props => {
           </DetailContentIcon>
         </DetailContentTop>
         <DetailContentCenter column allowed>
-          <DetailContentTagColor innerRef={getTagColorsRef}>
+          <DetailContentTagColor ref={getTagColorsRef}>
             <DetailTagColorSelector>
               <DetailTagColorSelectorLabel>
                 Select a color

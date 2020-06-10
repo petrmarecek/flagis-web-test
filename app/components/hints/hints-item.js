@@ -23,7 +23,7 @@ const HintsItem = props => {
   return (
     <Hint
       key={hint.id}
-      innerRef={ref => getHintRef(ref)}
+      ref={ref => getHintRef(ref)}
       onMouseOver={onHandleMouseOver}
       onClick={onHandleClickItem}
       onKeyDown={onHandleKeyDown}

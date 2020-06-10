@@ -18,7 +18,7 @@ const ContentEditable = ({
   onHandleKeyDown,
 }) => (
   <Editable
-    innerRef={getEditableRef}
+    ref={getEditableRef}
     className={className}
     onBlur={onHandleUpdateText}
     onKeyDown={onHandleKeyDown}

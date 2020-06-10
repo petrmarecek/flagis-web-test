@@ -4,13 +4,12 @@ import { findDOMNode } from 'react-dom'
 import moment from 'moment'
 import { DragType, TaskDropTarget, TagsUpdateStrategy } from 'utils/enums'
 
-const useTaskListItemDragDrop = (props) => {
-
+const useTaskListItemDragDrop = props => {
   // Keeps reference to drop DOM element
   const dropTarget = useRef()
 
   // Tree item drag
-  const [dragProps, drag] = useDrag({
+  const [ dragProps, drag ] = useDrag({
     item: {
       type: DragType.TASK,
       listType: props.listType,
@@ -44,21 +43,20 @@ const useTaskListItemDragDrop = (props) => {
       }
 
       if (dropResult.target === TaskDropTarget.TAG_TREE) {
-        const strategy = dropResult.dropEffect === 'copy'
-          ? TagsUpdateStrategy.OVERRIDE
-          : TagsUpdateStrategy.MERGE
+        const strategy =
+          dropResult.dropEffect === 'copy' ? TagsUpdateStrategy.OVERRIDE : TagsUpdateStrategy.MERGE
         props.setTaskTags(dropResult.item.task.id, dropResult.tags, strategy)
       }
-    }
+    },
   })
 
   // Tree item drop
-  const [dropProps, drop] = useDrop({
+  const [ dropProps, drop ] = useDrop({
     accept: DragType.TASK,
-    collect: (monitor) => ({
-      isOver: monitor.isOver()
+    collect: monitor => ({
+      isOver: monitor.isOver(),
     }),
-    canDrop: (dragSource) => {
+    canDrop: dragSource => {
       // No task for this week
       if (props.section === 'weekTasks') {
         const now = moment()
@@ -156,10 +154,10 @@ const useTaskListItemDragDrop = (props) => {
         target: TaskDropTarget.TASK_LIST,
         item,
       }
-    }
+    },
   })
 
-  const attachDrop = useCallback((domElement) => {
+  const attachDrop = useCallback(domElement => {
     drop(domElement)
     drag(domElement)
     dropTarget.current = domElement
@@ -172,6 +170,4 @@ const useTaskListItemDragDrop = (props) => {
   }
 }
 
-export {
-  useTaskListItemDragDrop,
-}
+export { useTaskListItemDragDrop }

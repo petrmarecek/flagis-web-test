@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { withHandlers } from 'recompose'
 
-import styled, { keyframes } from 'styled-components'
+import styled, { css, keyframes } from 'styled-components'
 import { pulse } from 'react-animations'
 import { transition } from 'components/styled-components-mixins'
 
@@ -25,7 +25,8 @@ const Button = styled.button`
   font-size: 16px;
   color: #fff;
   border: none;
-  animation: ${props => (props.animation ? `500ms linear ${show}` : 'none')};
+  animation: ${props => (props.animation ? css`500ms linear ${show}` : 'none')};
+  cursor: pointer;
 
   :hover {
     ${transition('500ms')}

@@ -36,27 +36,27 @@ const TasksContent = ({
   isVisibleArchive,
   onHandleSearchChange,
 }) => (
-    <div>
-      <CenterPanelTop>
-        <CenterPanelTopPrimary bottomBorder>
-          <CenterPanelTopPrimaryLeft flexStart>
-            <CenterPageTitle>My Tasks</CenterPageTitle>
-            <MainSearch />
-          </CenterPanelTopPrimaryLeft>
-          <SearchBox value={search} onChange={onHandleSearchChange} />
-        </CenterPanelTopPrimary>
-        <CenterPanelTopSecondary smallOffsetPadding>
-          {!isMultiSelect && !isVisibleArchive && <NavigationSecondary />}
-          <TasksMenuContainer />
-        </CenterPanelTopSecondary>
-        <AddTaskForm />
-      </CenterPanelTop>
-      <CenterPanelScroll offsetTop={172} offsetBottom={30}>
-        <TaskListContainer />
-      </CenterPanelScroll>
-      <TasksProgressBar />
-    </div>
-  )
+  <div>
+    <CenterPanelTop>
+      <CenterPanelTopPrimary bottomBorder>
+        <CenterPanelTopPrimaryLeft flexStart>
+          <CenterPageTitle>My Tasks</CenterPageTitle>
+          <MainSearch />
+        </CenterPanelTopPrimaryLeft>
+        <SearchBox value={search} onChange={onHandleSearchChange} />
+      </CenterPanelTopPrimary>
+      <CenterPanelTopSecondary smallOffsetPadding>
+        {!isMultiSelect && !isVisibleArchive && <NavigationSecondary />}
+        <TasksMenuContainer />
+      </CenterPanelTopSecondary>
+      <AddTaskForm />
+    </CenterPanelTop>
+    <CenterPanelScroll offsetTop={172} offsetBottom={30}>
+      <TaskListContainer />
+    </CenterPanelScroll>
+    <TasksProgressBar />
+  </div>
+)
 
 TasksContent.propTypes = {
   search: PropTypes.string,
@@ -74,10 +74,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = { updateTaskSearch }
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   withHandlers({
     onHandleSearchChange: props => search => props.updateTaskSearch(search),
   })

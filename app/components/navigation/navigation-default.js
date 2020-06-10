@@ -84,7 +84,7 @@ const NavigationDefault = ({
         </NotificationsWrapper>
         <div>
           <AccountWrapper
-            innerRef={getAccountRef}
+            ref={getAccountRef}
             title="Account"
             isVisibleAccountNavigation={isVisibleAccountNavigation}
             onClick={onHandleClickAccount}

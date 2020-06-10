@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { withHandlers } from 'recompose'
 
-import styled, { keyframes } from 'styled-components'
+import styled, { css, keyframes } from 'styled-components'
 import { transition, boxSizing } from 'components/styled-components-mixins'
 import { pulse } from 'react-animations'
 
@@ -22,7 +22,7 @@ const Container = styled.div`
   bottom: 0;
   margin: 0 5px;
   animation: ${props =>
-    props.animation ? `500ms ${hide}, 500ms ${show} linear 500ms` : 'none'};
+    props.animation ? css`500ms ${hide}, 500ms ${show} linear 500ms` : 'none'};
 `
 
 const Button = styled.button`
@@ -33,6 +33,7 @@ const Button = styled.button`
   width: 123px;
   border: none;
   padding: 0;
+  cursor: pointer;
 
   :hover {
     ${transition('500ms')}
@@ -45,7 +46,7 @@ const Title = styled.span`
   line-height: 25px;
   color: ${props => props.color};
   animation: ${props =>
-    props.animation ? `500ms ${hide}, 500ms ${show} linear 500ms` : 'none'};
+    props.animation ? css`500ms ${hide}, 500ms ${show} linear 500ms` : 'none'};
 `
 
 const FollowerStatus = ({ status, animation, onHandleSend }) => {

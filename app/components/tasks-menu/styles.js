@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components'
+import styled, { keyframes, css } from 'styled-components'
 import { fadeIn, flipInX, flipOutX } from 'react-animations'
 import MenuBox from 'components/menux-box/menu-box'
 import MenuBoxGroupItems from 'components/menux-box/menu-box-group-items'
@@ -109,7 +109,7 @@ const FilterActiveItem = styled.li`
   padding: 0 10px 0 18px;
   font-size: 14px;
   animation: ${props =>
-    props.isMounted ? `${flipIn} 250ms` : `${flipOut} 250ms`};
+    props.isMounted ? css`${flipIn} 250ms` : css`${flipOut} 250ms`};
 `
 
 const FilterActiveItemIcon = styled.div`
@@ -146,6 +146,7 @@ const MenuBoxContainer = styled(MenuBox)`
   font-size: 14px;
   color: #616f78;
   padding: 20px 15px 0 0;
+  animation: 400ms ${fade};
 
   :before,
   :after {

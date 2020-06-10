@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { findDOMNode } from 'react-dom'
-import velocity from 'velocity-animate'
 import { compose, withHandlers, lifecycle } from 'recompose'
 
 const MenuBox = ({ className, children }) => (
@@ -32,8 +31,6 @@ export default compose(
   }),
   lifecycle({
     componentDidMount() {
-      const elem = document.getElementById('menuBox')
-      velocity(elem, this.props.animation, { duration: 400 })
       // Add listener for close menu
       document.getElementById('user-container').addEventListener('click', this.props.onHandleClick, false)
     },

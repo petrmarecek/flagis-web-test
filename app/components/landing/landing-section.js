@@ -60,12 +60,11 @@ const LandingSection = props => {
     description,
     isCollapse,
     toggleCollapse,
-    onHandleScroll,
   } = props
   const { innerHeight, innerWidth } = window
 
   return (
-    <SectionWrapper height={innerHeight} onScroll={onHandleScroll}>
+    <SectionWrapper height={innerHeight}>
       <SectionTop>
         <SectionLeft>
           <SectionLeftTop>
@@ -117,10 +116,8 @@ LandingSection.propTypes = {
   description: PropTypes.string,
   isCollapse: PropTypes.bool,
   toggleCollapse: PropTypes.func,
-  onHandleScroll: PropTypes.func,
 }
 
 export default withStateHandlers(() => ({ isCollapse: true }), {
   toggleCollapse: ({ isCollapse }) => () => ({ isCollapse: !isCollapse }),
-  onHandleScroll: () => () => console.log('scroll'),
 })(LandingSection)

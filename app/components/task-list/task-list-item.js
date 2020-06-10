@@ -49,7 +49,7 @@ import {
 } from './styles'
 
 // TaskListItem
-const TaskListItem = (props) => {
+const TaskListItem = props => {
   const {
     userId,
     task,
@@ -61,17 +61,11 @@ const TaskListItem = (props) => {
     windowWidth,
   } = props
 
-  const [isInitialMount, setIsInitialMount] = useState(true)
   const [isMounted, setIsMounted] = useState(true)
 
   const { dragDropHandle, dragProps } = useTaskListItemDragDrop(props)
 
-  useEffect(() => {
-    // Wait for initial animation
-    window.setTimeout(() => setIsInitialMount(false), 400)
-  }, [])
-
-  const onHandleMouseDown = (event) => {
+  const onHandleMouseDown = event => {
     const { isCompleted } = props.task
     const isInboxList = props.listType === 'inbox'
 
@@ -87,7 +81,7 @@ const TaskListItem = (props) => {
     }
   }
 
-  const onHandleClicked = (event) => {
+  const onHandleClicked = event => {
     event.persist()
     const isInboxList = props.listType === 'inbox'
     const isMultiselect = event.ctrlKey || event.metaKey
@@ -105,7 +99,7 @@ const TaskListItem = (props) => {
     props.onClick(props.task, event)
   }
 
-  const onHandleTagClicked = (tag) => props.onTagClick(tag)
+  const onHandleTagClicked = tag => props.onTagClick(tag)
 
   const onHandleCompleteClicked = () => {
     // Data of assignee
@@ -279,12 +273,11 @@ const TaskListItem = (props) => {
           completed={isCompletedMainList}
           dragging={dragProps.isDragging}
           isMounted={isMounted}
-          animationEnabled={isInitialMount}
         >
           {!isArchivedList && !isInboxList && (
             <Completed
               completed={task.isCompleted}
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation()
                 onHandleCompleteClicked(e)
               }}
@@ -304,7 +297,7 @@ const TaskListItem = (props) => {
           {task.isCompleted && !isInboxList && (
             <Archived
               archived={isArchivedList}
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation()
                 onHandleArchiveClicked(e)
               }}
@@ -446,7 +439,7 @@ TaskListItem.propTypes = {
 
 const mapStateToProps = () => ({})
 const mapDispatchToProps = {
-  setTaskTags
+  setTaskTags,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TaskListItem)

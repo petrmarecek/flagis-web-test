@@ -53,7 +53,7 @@ const SearchBox = ({
 }) => (
   <Search>
     <Input
-      innerRef={getInputRef}
+      ref={getInputRef}
       id="search"
       type="search"
       name="search"

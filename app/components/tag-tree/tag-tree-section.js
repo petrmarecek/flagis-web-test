@@ -186,7 +186,7 @@ const TagTreeSection = props => {
               onBlur={onHandleSubmitTitle}
               onKeyDown={onHandleKeyDown}
               onSubmit={onHandleSubmitTitle}
-              innerRef={getInputRef}
+              ref={getInputRef}
               style={styleWidth}
             />
             <SectionHeaderIcon leftOffset title="Delete">

@@ -27,24 +27,19 @@ const hideAnimation = keyframes`${flipOutX}`
 
 const TaskItem = styled.div`
   /* Fill space between tasks while dragging */
-  height: ${(props) => (props.dragging ? '58px' : '50px')};
-  margin: ${(props) => (props.dragging ? '-4px 0 0' : '0 0 4px')};
-  visibility: ${(props) => (props.dragging ? 'hidden' : 'visible')};
+  height: ${props => (props.dragging ? '58px' : '50px')};
+  margin: ${props => (props.dragging ? '-4px 0 0' : '0 0 4px')};
+  visibility: ${props => (props.dragging ? 'hidden' : 'visible')};
 
   overflow: hidden;
   list-style-type: none;
   cursor: pointer;
   position: relative;
   outline: none;
-  background-color: ${(props) => props.backgroundColor};
-  visibility: ${(props) => (props.dragging ? 'hidden' : 'visible')};
-  animation: ${(props) => {
-    if (!props.animationEnabled) {
-      return 'none'
-    }
-
-    return props.isMounted ? css`${showAnimation} 400ms` : css`${hideAnimation} 400ms`
-  }};
+  background-color: ${props => props.backgroundColor};
+  visibility: ${props => (props.dragging ? 'hidden' : 'visible')};
+  animation: ${props =>
+    props.isMounted ? css`${showAnimation} 400ms;` : css`${hideAnimation} 400ms;`};
 
   :before {
     content: "";
@@ -54,10 +49,10 @@ const TaskItem = styled.div`
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: ${(props) => (props.selected ? '#ecfff7' : '#F6F7F8')};
-    ${transform((props) => (props.completed ? 'scaleX(1)' : 'scaleX(0)'))}
-    ${transformOrigin('0 50%')}
-    ${transition('transform 500ms ease-out')}
+    background-color: ${props => (props.selected ? '#ecfff7' : '#F6F7F8')};
+    ${transform(props => (props.completed ? 'scaleX(1)' : 'scaleX(0)'))} ${transformOrigin(
+        '0 50%'
+      )} ${transition('transform 500ms ease-out')};
   }
 `
 
@@ -89,9 +84,9 @@ const Archived = styled.div`
   position: absolute;
   top: 0;
   bottom: 0;
-  left: ${(props) => (props.archived ? '0' : '45px')};
+  left: ${props => (props.archived ? '0' : '45px')};
   width: 45px;
-  padding-left: ${(props) => (props.archived ? '13px' : '6px')};
+  padding-left: ${props => (props.archived ? '13px' : '6px')};
   z-index: 1;
 `
 
@@ -104,8 +99,8 @@ const FollowerResponse = styled.div`
 const Content = styled.div`
   display: flex;
   flex-direction: column;
-  margin-left: ${(props) => props.marginLeft};
-  margin-right: ${(props) => props.marginRight};
+  margin-left: ${props => props.marginLeft};
+  margin-right: ${props => props.marginRight};
   ${transition('margin 500ms ease-out')};
 `
 
@@ -115,21 +110,19 @@ const SubjectTags = styled.div`
 `
 
 const Subject = styled.div`
-  ${textOverflow('ellipsis')}
-  flex: auto;
+  ${textOverflow('ellipsis')} flex: auto;
   max-width: 70%;
-  margin: ${(props) => (props.description ? '5px 0' : '14px 0 0 0')};
+  margin: ${props => (props.description ? '5px 0' : '14px 0 0 0')};
   height: 23px;
   line-height: 23px;
   font-size: 16px;
   overflow: hidden;
   white-space: nowrap;
-  color: ${(props) => (props.completed ? '#CECECE' : '#293034')};
-  font-weight: ${(props) => (props.important ? 'bold' : 'normal')};
-  text-decoration: ${(props) =>
-    props.completed || props.archived ? 'line-through' : 'none'};
+  color: ${props => (props.completed ? '#CECECE' : '#293034')};
+  font-weight: ${props => (props.important ? 'bold' : 'normal')};
+  text-decoration: ${props => (props.completed || props.archived ? 'line-through' : 'none')};
   ${transition('color 500ms ease-out')};
-  ${link}
+  ${link};
 `
 
 const Tags = styled.div`
@@ -143,15 +136,14 @@ const DescriptionDueDate = styled.div`
 `
 
 const Description = styled.div`
-  ${textOverflow('ellipsis')}
-  flex: 10 10 auto;
+  ${textOverflow('ellipsis')} flex: 10 10 auto;
   font-size: 14px;
   height: 18px;
   line-height: 18px;
   max-height: 18px;
   white-space: nowrap;
   overflow: hidden;
-  color: ${(props) => (props.completed ? '#CECECE' : '#8C9DA9')};
+  color: ${props => (props.completed ? '#CECECE' : '#8C9DA9')};
   margin: -5px 0 5px 0;
 `
 
@@ -161,14 +153,12 @@ const DueDate = styled.div`
   line-height: 18px;
   right: 18px;
   font-size: 12px;
-  color: ${(props) =>
-    props.overdue && !props.completed ? '#ff6a6a' : '#8C9DA9'};
-  font-weight: ${(props) =>
-    props.overdue && !props.completed ? 600 : 'normal'};
+  color: ${props => (props.overdue && !props.completed ? '#ff6a6a' : '#8C9DA9')};
+  font-weight: ${props => (props.overdue && !props.completed ? 600 : 'normal')};
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  margin: ${(props) => (props.description ? '-4px 8px 0 0' : '-7px 8px 0 0')};
+  margin: ${props => (props.description ? '-4px 8px 0 0' : '-7px 8px 0 0')};
   z-index: 1;
 `
 
@@ -177,7 +167,7 @@ const Followers = styled.div`
   align-items: center;
   justify-content: flex-end;
   height: 50px;
-  width: ${(props) => (props.assigneeInbox ? '76px' : '63px')};
+  width: ${props => (props.assigneeInbox ? '76px' : '63px')};
   padding-right: 17px;
   position: absolute;
   right: 0;
@@ -196,28 +186,25 @@ const TagItems = styled.ul`
 `
 
 const Item = styled.li`
-  ${borderRadius('9px')}
-  margin: 0 4px 8px 0;
+  ${borderRadius('9px')} margin: 0 4px 8px 0;
   float: left;
   border: none;
   height: 18px;
-  background-color: ${(props) => props.bgColor};
-  opacity: ${(props) => (props.isCompleted ? '0.4' : '1')};
-  max-width: ${(props) => (props.isItemCollapse ? '15px' : '120px')};
+  background-color: ${props => props.bgColor};
+  opacity: ${props => (props.isCompleted ? '0.4' : '1')};
+  max-width: ${props => (props.isItemCollapse ? '15px' : '120px')};
   ${transition('500ms')};
 `
 
 const Text = styled.div`
-  ${textOverflow('ellipsis')}
-  ${fontMain}
-  display: flex;
+  ${textOverflow('ellipsis')} ${fontMain} display: flex;
   align-items: center;
   height: 18px;
   font-size: 12px;
   padding: 0 6px;
   overflow: hidden;
   white-space: nowrap;
-  color: ${(props) => (props.isItemCollapse ? props.bgColor : '#fff')};
+  color: ${props => (props.isItemCollapse ? props.bgColor : '#fff')};
   ${transition('250ms')};
 `
 

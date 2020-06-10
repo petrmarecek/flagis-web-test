@@ -1,8 +1,7 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import PropTypes from 'prop-types'
 import domUtils from 'redux/utils/dom'
 import constants from 'utils/constants'
-import { withStateHandlers } from 'recompose'
 
 // components
 import { ICONS } from 'components/icons/icon-constants'
@@ -19,56 +18,74 @@ import {
 } from './styles'
 import { colors } from 'components/styled-components-mixins/colors'
 
-const TasksMenuSort = (props) => {
-  const {
-    tasksMenu,
-    sortRef,
-    getSortRef,
-    onHandleClick,
-    onHandleSortAlgorithmToggle,
-  } = props
+const TasksMenuSort = props => {
+  const { filters, sort, options } = props.tasksMenu
+  const sortRef = useRef()
 
-  const { defaultSort, alphabet, important, incomplete, menu } = tasksMenu.sort
+  // get menu triangle icon position
   const getCenterIconPosition = () => {
-    const position = domUtils.getOffset(sortRef)
+    const position = domUtils.getOffset(sortRef.current)
     return window.innerWidth - position.left - constants.TASKS_MENU_ICON_OFFSET
   }
 
+  // get main icon properties
   const getActiveIcon = () => {
-    if (alphabet) {
+    if (sort.alphabet) {
       return ICONS.SORT_ALPHABET
     }
 
-    if (important) {
+    if (sort.important) {
       return ICONS.SORT_IMPORTANT
     }
 
-    if (incomplete) {
+    if (sort.incomplete) {
       return ICONS.SORT_INCOMPLETE
     }
 
     return ICONS.SORT_DEFAULT
   }
-
-  const icon = getActiveIcon()
   const iconColor =
-    !defaultSort || menu.isVisible ? colors.aztec : colors.astrocopusGrey
+    !sort.defaultSort || sort.menu.isVisible
+      ? colors.aztec
+      : colors.astrocopusGrey
+
+  // handlers
+  const onHandleClick = () => {
+    if (sort.menu.isVisible) {
+      props.hideMenuSort()
+      return
+    }
+
+    if (filters.menu.isVisible) {
+      props.hideMenuFilter()
+    }
+
+    if (options.menu.isVisible) {
+      props.hideMenuOption()
+    }
+
+    props.visibleMenuSort()
+  }
+
+  const onHandleSortAlgorithmToggle = algorithm => {
+    props.onToggleSortAlgorithm(algorithm)
+  }
 
   return (
-    <TasksMenuItem innerRef={getSortRef} onClick={onHandleClick}>
+    <TasksMenuItem ref={sortRef} onClick={onHandleClick}>
       <IconWrapper iconColor={iconColor} hoverIconColor={colors.aztec}>
-        <Icon icon={icon} width={20} height={20} scale={0.83} />
+        <Icon icon={getActiveIcon()} width={20} height={20} scale={0.83} />
       </IconWrapper>
-      {menu.isVisible && (
+      {sort.menu.isVisible && (
         <MenuBoxContainer
           animation="transition.fadeIn"
-          menuIcon={sortRef}
+          menuIcon={sortRef.current}
           clickOutsideMenu={onHandleClick}
           trianglePosition={getCenterIconPosition}
         >
           <MenuBoxGroup>
             <MenuBoxItemIcon
-              active={defaultSort}
+              active={sort.defaultSort}
               type="defaultSort"
               icon={ICONS.SORT_DEFAULT}
               iconScale={0.66}
@@ -77,13 +94,13 @@ const TasksMenuSort = (props) => {
             <MenuBoxItemTitle
               title="Default user sorting"
               type="defaultSort"
-              active={defaultSort}
+              active={sort.defaultSort}
               onChange={onHandleSortAlgorithmToggle}
             />
           </MenuBoxGroup>
           <MenuBoxGroup>
             <MenuBoxItemIcon
-              active={alphabet}
+              active={sort.alphabet}
               type="alphabet"
               icon={ICONS.ALPHABET}
               iconWidth={1.14}
@@ -92,13 +109,13 @@ const TasksMenuSort = (props) => {
             <MenuBoxItemTitle
               title="Sort alphabetically"
               type="alphabet"
-              active={alphabet}
+              active={sort.alphabet}
               onChange={onHandleSortAlgorithmToggle}
             />
           </MenuBoxGroup>
           <MenuBoxGroup>
             <MenuBoxItemIcon
-              active={important}
+              active={sort.important}
               type="important"
               icon={ICONS.IMPORTANT}
               iconScale={0.24}
@@ -107,13 +124,13 @@ const TasksMenuSort = (props) => {
             <MenuBoxItemTitle
               title="Sort by Importance"
               type="important"
-              active={important}
+              active={sort.important}
               onChange={onHandleSortAlgorithmToggle}
             />
           </MenuBoxGroup>
           <MenuBoxGroup>
             <MenuBoxItemIcon
-              active={incomplete}
+              active={sort.incomplete}
               type="incomplete"
               icon={ICONS.TASK_UNCOMPLETED}
               iconScale={0.72}
@@ -122,7 +139,7 @@ const TasksMenuSort = (props) => {
             <MenuBoxItemTitle
               title="Sort incompleted"
               type="incomplete"
-              active={incomplete}
+              active={sort.incomplete}
               onChange={onHandleSortAlgorithmToggle}
             />
           </MenuBoxGroup>
@@ -134,10 +151,6 @@ const TasksMenuSort = (props) => {
 
 TasksMenuSort.propTypes = {
   tasksMenu: PropTypes.object,
-  sortRef: PropTypes.object,
-  getSortRef: PropTypes.func,
-  onHandleClick: PropTypes.func,
-  onHandleSortAlgorithmToggle: PropTypes.func,
   onToggleSortAlgorithm: PropTypes.func,
   visibleMenuSort: PropTypes.func,
   hideMenuFilter: PropTypes.func,
@@ -145,27 +158,4 @@ TasksMenuSort.propTypes = {
   hideMenuOption: PropTypes.func,
 }
 
-export default withStateHandlers(() => ({ sortRef: null }), {
-  getSortRef: () => (ref) => ({ sortRef: ref }),
-  onHandleClick: (state, props) => () => {
-    if (props.tasksMenu.sort.menu.isVisible) {
-      props.hideMenuSort()
-      return {}
-    }
-
-    if (props.tasksMenu.filters.menu.isVisible) {
-      props.hideMenuFilter()
-    }
-
-    if (props.tasksMenu.options.menu.isVisible) {
-      props.hideMenuOption()
-    }
-
-    props.visibleMenuSort()
-    return {}
-  },
-  onHandleSortAlgorithmToggle: (state, props) => (algorithm) => {
-    props.onToggleSortAlgorithm(algorithm)
-    return {}
-  },
-})(TasksMenuSort)
+export default TasksMenuSort
