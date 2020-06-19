@@ -12,7 +12,7 @@ import Icon from 'components/icons/icon';
 import { ICONS } from 'components/icons/icon-constants';
 
 // styles
-import styled, { keyframes } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import { fontMain, mediaQueries } from 'components/styled-components-mixins';
 import { colors } from 'components/styled-components-mixins/colors';
 import { pulse, fadeInDown, shake } from 'react-animations';
@@ -49,7 +49,7 @@ const Text = styled.div`
 	text-align: center;
 	line-height: 40px;
 	color: ${props => (props.error ? colors.pompelmo : colors.darkJungleGreen)};
-	animation: ${props => (props.error ? `${shakeAnimation} 1000ms` : `${fadeDownAnimation} 500ms`)};
+	animation: ${props => (props.error ? css`${shakeAnimation} 1000ms` : css`${fadeDownAnimation} 500ms`)};
 
 	${mediaQueries.sm} {
 		font-size: 20px;
