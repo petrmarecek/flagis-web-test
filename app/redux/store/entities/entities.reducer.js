@@ -99,8 +99,10 @@ export default typeToReducer(
       ),
 
     [TASKS.SET_TASK_TAG_STORE]: (state, action) =>
-      state.setIn(['tasks', action.payload.taskId, 'tags'], List (action.payload.tagIds)),
-
+      state.setIn(
+        ['tasks', action.payload.taskId, 'tags'],
+        List(action.payload.tagIds)
+      ),
 
     [TASKS.REMOVE_TASK_TAG_STORE]: (state, action) =>
       state.updateIn(['tasks', action.payload.taskId, 'tags'], tagList =>

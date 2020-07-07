@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import debounce from 'lodash/debounce'
 import R from 'ramda'
@@ -93,7 +93,7 @@ const TaskListContainer = props => {
   }
 
   const debouncedMoveTask = debounce(onInvokeMove, 10)
-  const onMoveTask = move => debouncedMoveTask(move)
+  const onMoveTask = useCallback(move => debouncedMoveTask(move), [])
   let offset = props.isVisibleArchivedTasks ? 118 : 202
 
   if (isVisibleInbox) {

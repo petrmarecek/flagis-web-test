@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { routes } from 'utils/routes'
 import debounce from 'lodash/debounce'
@@ -92,7 +92,7 @@ const TagTreeContainer = props => {
   } = props
 
   const debouncedMoveSection = debounce(onInvokeMove, 10)
-  const onMoveSection = move => debouncedMoveSection(move)
+  const onMoveSection = useCallback(move => debouncedMoveSection(move), [])
   const offset = isVisibleMoreNavigation ? 326 : 250
   const scrollStyle = {
     height: `calc(100vh - ${offset}px)`,

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { memo, useMemo, useCallback, useState } from 'react'
 import PropTypes from 'prop-types'
 import Linkify from 'react-linkify'
 import moment from 'moment'
@@ -65,41 +65,47 @@ const TaskListItem = props => {
 
   const { dragDropHandle, dragProps } = useTaskListItemDragDrop(props)
 
-  const onHandleMouseDown = event => {
-    const { isCompleted } = props.task
-    const isInboxList = props.listType === 'inbox'
+  const onHandleMouseDown = useCallback(
+    event => {
+      const { isCompleted } = props.task
+      const isInboxList = props.listType === 'inbox'
 
-    // allowed only right mouse button
-    if (event.button !== 2) {
-      return
-    }
+      // allowed only right mouse button
+      if (event.button !== 2) {
+        return
+      }
 
-    // set task as important by right mouse
-    if (!isCompleted && !isInboxList) {
-      props.onToggleImportant(props.task)
-      return
-    }
-  }
+      // set task as important by right mouse
+      if (!isCompleted && !isInboxList) {
+        props.onToggleImportant(props.task)
+        return
+      }
+    },
+    [props.task, props.listType]
+  )
 
-  const onHandleClicked = event => {
-    event.persist()
-    const isInboxList = props.listType === 'inbox'
-    const isMultiselect = event.ctrlKey || event.metaKey
+  const onHandleClicked = useCallback(
+    event => {
+      event.persist()
+      const isInboxList = props.listType === 'inbox'
+      const isMultiselect = event.ctrlKey || event.metaKey
 
-    // Not allowed multiselect in inbox list
-    if (isMultiselect && isInboxList) {
-      return
-    }
+      // Not allowed multiselect in inbox list
+      if (isMultiselect && isInboxList) {
+        return
+      }
 
-    // Click on link
-    if (event.target.nodeName === 'A') {
-      return
-    }
+      // Click on link
+      if (event.target.nodeName === 'A') {
+        return
+      }
 
-    props.onClick(props.task, event)
-  }
+      props.onClick(props.task, event)
+    },
+    [props.listType, props.task]
+  )
 
-  const onHandleTagClicked = tag => props.onTagClick(tag)
+  const onHandleTagClicked = useCallback(tag => props.onTagClick(tag), [])
 
   const onHandleCompleteClicked = () => {
     // Data of assignee
@@ -166,7 +172,10 @@ const TaskListItem = props => {
   }
 
   // Sorted tags
-  const sortedTags = getSortedTags(task.tags, selectedTags)
+  const sortedTags = useMemo(() => getSortedTags(task.tags, selectedTags), [
+    task.tags,
+    selectedTags,
+  ])
 
   // Data of assignee
   const assignee = getAssigneeOfTask(task.followers)
@@ -177,12 +186,12 @@ const TaskListItem = props => {
   // Date from dueDate
   const now = moment()
   const dueDate = task.dueDate
-  const dueDateFormat = dateUtils.formatDate(dueDate)
+  const dueDateFormat = useMemo(() => dateUtils.formatDate(dueDate), [dueDate])
   const fromNow = task.dueDate ? moment(dueDate).fromNow() : ''
 
   // Description
   let description = isDescription ? task.description : ''
-  description = markdownToHTML(description)
+  description = useMemo(() => markdownToHTML(description), [description])
   const indexOfBr = description.indexOf('br />')
   const indexOfEndHtmlTag = description.indexOf('</')
 
@@ -192,7 +201,7 @@ const TaskListItem = props => {
     description = description.substr(0, description.indexOf('</'))
   }
 
-  description = removeMd(description)
+  description = useMemo(() => removeMd(description), [description])
   description =
     description.length > 88 ? description.substr(0, 87) : description
 
@@ -442,4 +451,11 @@ const mapDispatchToProps = {
   setTaskTags,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TaskListItem)
+const areEqual = (prev, next) => {
+  return prev.task.equals(next.task)
+}
+
+export default memo(
+  connect(mapStateToProps, mapDispatchToProps)(TaskListItem),
+  areEqual
+)

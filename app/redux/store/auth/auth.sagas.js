@@ -115,7 +115,7 @@ export function* initDataFlow() {
       yield cancel(notificationsSyncing)
 
       // Cancel snapshot for comments and attachments from firestore
-      const { task, inbox } = yield select((state) =>
+      const { task, inbox } = yield select(state =>
         appStateSelectors.getDetail(state)
       )
       if (task) {
@@ -140,7 +140,7 @@ export function* initDataFlow() {
 }
 
 function* restoreAuth() {
-  const auth = yield select((state) => authSelectors.getAuth(state))
+  const auth = yield select(state => authSelectors.getAuth(state))
 
   // Authorization not in persisted state
   if (!auth || !auth.isLogged) {
@@ -185,7 +185,7 @@ export function* authFlow() {
       if (!auth) {
         const { login, verify } = yield race({
           login: take(AUTH.LOGIN),
-          verify: take(AUTH.VERIFY_USER)
+          verify: take(AUTH.VERIFY_USER),
         })
 
         if (login) {
@@ -214,7 +214,7 @@ export function* authFlow() {
         tagType: sentryTagType.ACTION,
         tagValue: 'AUTH_SIGN',
         breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
-        breadcrumbMessage: 'AUTH_SIGN'
+        breadcrumbMessage: 'AUTH_SIGN',
       })
     )
   }
@@ -242,8 +242,16 @@ export function* registerUser(action) {
   } catch (err) {
     yield put({ type: REJECTED, err })
 
-    if (action.type === 'AUTH/SIGN_UP' || action.type === 'AUTH/SIGN_UP_INVITATION') {
-      yield put(appStateActions.setError('signUp', toastCommon.errorMessages.signUp.conflict))
+    if (
+      action.type === 'AUTH/SIGN_UP' ||
+      action.type === 'AUTH/SIGN_UP_INVITATION'
+    ) {
+      yield put(
+        appStateActions.setError(
+          'signUp',
+          toastCommon.errorMessages.signUp.conflict
+        )
+      )
       yield put(appStateActions.deselectLoader('form'))
     }
 
@@ -253,7 +261,7 @@ export function* registerUser(action) {
         tagType: sentryTagType.ACTION,
         tagValue: action.type,
         breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
-        breadcrumbMessage: action.type
+        breadcrumbMessage: action.type,
       })
     )
   }
@@ -290,7 +298,7 @@ export function* initEmail(action) {
 }
 
 export function* controlRedirectSignIn() {
-  const auth = yield select((state) => authSelectors.getAuth(state))
+  const auth = yield select(state => authSelectors.getAuth(state))
 
   if (!auth.isLogged) {
     const redirectAction = push(routes.signIn)
@@ -299,7 +307,7 @@ export function* controlRedirectSignIn() {
 }
 
 export function* controlRedirectTasks() {
-  const auth = yield select((state) => authSelectors.getAuth(state))
+  const auth = yield select(state => authSelectors.getAuth(state))
 
   if (auth.isLogged) {
     const redirectAction = push(routes.user.tasks)
@@ -317,7 +325,7 @@ export function* changeName(action) {
 
     // update nickname for me contact
     const nickname = `${profile.firstName} ${profile.lastName}`
-    const me = yield select((state) =>
+    const me = yield select(state =>
       contactsSelectors.getContactById(state, profile.id)
     )
     yield put(contactsActions.updateContact(me, nickname, 'nickname', true))
@@ -394,7 +402,7 @@ export function* changeUserPhoto(action) {
     yield put(authActions.updateProfile(profile))
 
     // update photo for me contact
-    const me = yield select((state) =>
+    const me = yield select(state =>
       contactsSelectors.getContactById(state, profile.id)
     )
     yield put(contactsActions.updateContact(me, profile.photo, 'photo', true))
