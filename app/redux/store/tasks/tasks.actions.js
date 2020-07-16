@@ -45,6 +45,7 @@ export const TASKS = {
   ACCEPT: 'TASK/ACCEPT',
   REJECT: 'TASK/REJECT',
   UNDO_REJECT: 'UNDO_TASK/REJECT',
+  TOGGLE_DRAG_AND_DROP: 'TASK/TOGGLE_DRAG_AND_DROP',
 }
 
 export const fetchTasks = () => ({
@@ -232,7 +233,7 @@ export const setTaskTags = (taskId, tagIds, strategy) => ({
     taskId,
     tagIds,
     strategy,
-  }
+  },
 })
 
 export const addRemoveTaskTags = (taskId, addTags, removeTags) => ({
@@ -318,4 +319,9 @@ export const acceptTask = (taskId, followerId) => ({
 export const rejectTask = originalData => ({
   type: TASKS.REJECT,
   payload: { originalData },
+})
+
+export const toggleDragAndDrop = value => ({
+  type: TASKS.TOGGLE_DRAG_AND_DROP,
+  payload: { value },
 })

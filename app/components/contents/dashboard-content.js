@@ -17,7 +17,7 @@ import {
   CenterPageTitle,
   CenterPanelScroll,
   CenterPanelTopPrimaryLeft,
-  CenterPanelTopSecondary
+  CenterPanelTopSecondary,
 } from '../panels/styles'
 
 const DashboardContent = () => (
@@ -41,14 +41,10 @@ const DashboardContent = () => (
 
 DashboardContent.propTypes = {}
 
-const mapStateToProps = () => ({
-})
+const mapStateToProps = () => ({})
 
 const mapDispatchToProps = { updateTaskSearch }
 
-export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
-)(DashboardContent)
+export default compose(connect(mapStateToProps, mapDispatchToProps))(
+  DashboardContent
+)

@@ -118,6 +118,9 @@ export default typeToReducer(
     [TASKS.UPDATE_SEARCH]: (state, action) =>
       state.setIn(['search'], action.payload.search),
 
+    [TASKS.TOGGLE_DRAG_AND_DROP]: (state, action) =>
+      state.setIn(['isDragAndDropActive'], action.payload.value),
+
     [TASKS.SET_COMPLETE]: (state, action) =>
       state.updateIn(['completed'], list =>
         list.unshift(action.payload.taskId)

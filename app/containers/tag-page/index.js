@@ -49,10 +49,7 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   lifecycle({
     componentDidUpdate() {
       const { tagsItems, pathname, currentTagId } = this.props

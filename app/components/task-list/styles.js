@@ -38,8 +38,19 @@ const TaskItem = styled.div`
   outline: none;
   background-color: ${props => props.backgroundColor};
   visibility: ${props => (props.dragging ? 'hidden' : 'visible')};
-  animation: ${props =>
-    props.isMounted ? css`${showAnimation} 400ms;` : css`${hideAnimation} 400ms;`};
+  animation: ${props => {
+    if (!props.animationEnabled) {
+      return 'none'
+    }
+
+    return props.isMounted
+      ? css`
+          ${showAnimation} 400ms;
+        `
+      : css`
+          ${hideAnimation} 400ms;
+        `
+  }};
 
   :before {
     content: "";
@@ -50,9 +61,9 @@ const TaskItem = styled.div`
     right: 0;
     bottom: 0;
     background-color: ${props => (props.selected ? '#ecfff7' : '#F6F7F8')};
-    ${transform(props => (props.completed ? 'scaleX(1)' : 'scaleX(0)'))} ${transformOrigin(
-        '0 50%'
-      )} ${transition('transform 500ms ease-out')};
+    ${transform(props =>
+      props.completed ? 'scaleX(1)' : 'scaleX(0)'
+    )} ${transformOrigin('0 50%')} ${transition('transform 500ms ease-out')};
   }
 `
 
@@ -120,7 +131,8 @@ const Subject = styled.div`
   white-space: nowrap;
   color: ${props => (props.completed ? '#CECECE' : '#293034')};
   font-weight: ${props => (props.important ? 'bold' : 'normal')};
-  text-decoration: ${props => (props.completed || props.archived ? 'line-through' : 'none')};
+  text-decoration: ${props =>
+    props.completed || props.archived ? 'line-through' : 'none'};
   ${transition('color 500ms ease-out')};
   ${link};
 `
@@ -153,7 +165,8 @@ const DueDate = styled.div`
   line-height: 18px;
   right: 18px;
   font-size: 12px;
-  color: ${props => (props.overdue && !props.completed ? '#ff6a6a' : '#8C9DA9')};
+  color: ${props =>
+    props.overdue && !props.completed ? '#ff6a6a' : '#8C9DA9'};
   font-weight: ${props => (props.overdue && !props.completed ? 600 : 'normal')};
   display: flex;
   align-items: center;

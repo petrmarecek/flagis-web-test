@@ -14,6 +14,7 @@ const TaskList = props => {
     sort,
     leftPanelWidth,
     windowWidth,
+    isDragAndDropActive,
 
     // handlers
     onCompleteClick,
@@ -26,6 +27,7 @@ const TaskList = props => {
     cancelArchiveTasks,
     acceptTask,
     rejectTask,
+    toggleDragAndDrop,
   } = props
 
   // return nul for unknown list type
@@ -64,6 +66,8 @@ const TaskList = props => {
             rejectTask={rejectTask}
             leftPanelWidth={leftPanelWidth}
             windowWidth={windowWidth}
+            toggleDragAndDrop={toggleDragAndDrop}
+            isDragAndDropActive={isDragAndDropActive}
           />
         ))}
       </TaskListItems>
@@ -81,6 +85,7 @@ TaskList.propTypes = {
   sort: PropTypes.object,
   leftPanelWidth: PropTypes.number,
   windowWidth: PropTypes.number,
+  isDragAndDropActive: PropTypes.bool,
 
   // Handlers
   onCompleteClick: PropTypes.func,
@@ -93,6 +98,7 @@ TaskList.propTypes = {
   cancelArchiveTasks: PropTypes.func,
   acceptTask: PropTypes.func,
   rejectTask: PropTypes.func,
+  toggleDragAndDrop: PropTypes.func,
 }
 
 export default TaskList

@@ -59,6 +59,7 @@ const TaskListItem = props => {
     selectedTags,
     leftPanelWidth,
     windowWidth,
+    isDragAndDropActive,
   } = props
 
   const [isMounted, setIsMounted] = useState(true)
@@ -282,6 +283,7 @@ const TaskListItem = props => {
           completed={isCompletedMainList}
           dragging={dragProps.isDragging}
           isMounted={isMounted}
+          animationEnabled={!isDragAndDropActive}
         >
           {!isArchivedList && !isInboxList && (
             <Completed
@@ -426,11 +428,11 @@ TaskListItem.propTypes = {
   listType: PropTypes.string,
   selectedTags: PropTypes.object,
   isSelected: PropTypes.bool,
+  isDragAndDropActive: PropTypes.bool,
   sort: PropTypes.object,
   leftPanelWidth: PropTypes.number,
   windowWidth: PropTypes.number,
   index: PropTypes.number,
-  isMoving: PropTypes.bool,
 
   // Handlers
   onClick: PropTypes.func,
@@ -443,7 +445,7 @@ TaskListItem.propTypes = {
   cancelArchiveTasks: PropTypes.func,
   acceptTask: PropTypes.func,
   rejectTask: PropTypes.func,
-  setIsMoving: PropTypes.func,
+  toggleDragAndDrop: PropTypes.func,
 }
 
 const mapStateToProps = () => ({})
@@ -452,7 +454,10 @@ const mapDispatchToProps = {
 }
 
 const areEqual = (prev, next) => {
-  return prev.task.equals(next.task)
+  const areTaskEqual =
+    next.task.size >= 2 ? prev.task.equals(next.task) : prev.task !== next.task
+
+  return areTaskEqual && prev.index === next.index
 }
 
 export default memo(

@@ -28,10 +28,10 @@ function loadAttachments(data) {
 
   // Sort by createdAt
   attachments = attachments.sort((a, b) => {
-    if (moment(a.createdAt) < moment(b.createdAt)) return -1;
-    if (moment(a.createdAt) > moment(b.createdAt)) return 1;
+    if (moment(a.createdAt) < moment(b.createdAt)) return -1
+    if (moment(a.createdAt) > moment(b.createdAt)) return 1
 
-    return 0;
+    return 0
   })
 
   return attachments
@@ -40,7 +40,8 @@ function loadAttachments(data) {
 // ------ Selectors -------------------------------------------------------------
 
 // Local selectors
-const getAttachmentsIsFetching = state => state.getIn(['attachments', 'isFetching'])
+const getAttachmentsIsFetching = state =>
+  state.getIn(['attachments', 'isFetching'])
 
 // ------ Reselect selectors ----------------------------------------------------
 
@@ -51,9 +52,9 @@ export const getAttachments = createSelector(
   (attachmentsIsFetching, selectionTasks, entitiesAttachments) => {
     const data = { selectionTasks, entitiesAttachments }
 
-    return ({
+    return {
       isFetching: attachmentsIsFetching,
-      items: loadAttachments(data)
-    })
+      items: loadAttachments(data),
+    }
   }
 )

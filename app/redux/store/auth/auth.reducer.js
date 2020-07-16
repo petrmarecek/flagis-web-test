@@ -31,16 +31,17 @@ export default typeToReducer(
         .set('firebaseRefreshToken', action.payload.firebaseRefreshToken),
 
     [AUTH.VERIFY_USER]: {
-      FULFILLED: (state, action) => state
-        .set('isVerificationFailed', false)
-        .set('isLogged', true)
-        .set('accessToken', action.payload.accessToken)
-        .set('expiresAt', action.payload.expiresAt)
-        .set('expiresIn', action.payload.expiresIn)
-        .set('refreshToken', action.payload.refreshToken)
-        .set('firebaseToken', action.payload.firebaseToken)
-        .set('profile', new Profile(action.payload.profile)),
-      REJECTED: state => state.set('isVerificationFailed', true)
+      FULFILLED: (state, action) =>
+        state
+          .set('isVerificationFailed', false)
+          .set('isLogged', true)
+          .set('accessToken', action.payload.accessToken)
+          .set('expiresAt', action.payload.expiresAt)
+          .set('expiresIn', action.payload.expiresIn)
+          .set('refreshToken', action.payload.refreshToken)
+          .set('firebaseToken', action.payload.firebaseToken)
+          .set('profile', new Profile(action.payload.profile)),
+      REJECTED: state => state.set('isVerificationFailed', true),
     },
 
     [AUTH.LOGOUT]: () => new AuthStore(),

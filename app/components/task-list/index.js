@@ -37,6 +37,7 @@ import {
   acceptTask,
   rejectTask,
   removeTaskFollower,
+  toggleDragAndDrop,
 } from 'redux/store/tasks/tasks.actions'
 import {
   getTasksItems,
@@ -44,6 +45,7 @@ import {
   getArchivedTasksItems,
   getSelectionTasks,
   getTasks,
+  getIsDragAndDropActive,
 } from 'redux/store/tasks/tasks.selectors'
 import {
   getSelectionInfo,
@@ -73,6 +75,7 @@ const TaskListContainer = props => {
     leftPanelWidth,
     windowWidth,
     scrollbarPosition,
+    isDragAndDropActive,
 
     // handlers
     onInvokeMove,
@@ -86,6 +89,7 @@ const TaskListContainer = props => {
     onHandleAcceptTask,
     onHandleRejectTask,
     onHandleSetScrollbarPosition,
+    onHandleToggleDragAndDrop,
   } = props
 
   if (!tasks.isFetching && tasks.items.length === 0) {
@@ -135,6 +139,8 @@ const TaskListContainer = props => {
           cancelArchiveTasks={onHandleCancelArchiveTasks}
           acceptTask={onHandleAcceptTask}
           rejectTask={onHandleRejectTask}
+          toggleDragAndDrop={onHandleToggleDragAndDrop}
+          isDragAndDropActive={isDragAndDropActive}
         />
       </span>
     </ShadowScrollbar>
@@ -153,6 +159,7 @@ TaskListContainer.propTypes = {
   selectedTasks: PropTypes.object,
   isVisibleArchivedTasks: PropTypes.bool,
   isVisibleInbox: PropTypes.bool,
+  isDragAndDropActive: PropTypes.bool,
   sort: PropTypes.object,
   leftPanelWidth: PropTypes.number,
   windowWidth: PropTypes.number,
@@ -174,6 +181,7 @@ TaskListContainer.propTypes = {
   onHandleAcceptTask: PropTypes.func,
   onHandleRejectTask: PropTypes.func,
   onHandleSetScrollbarPosition: PropTypes.func,
+  onHandleToggleDragAndDrop: PropTypes.func,
 
   // actions
   selectTask: PropTypes.func,
@@ -211,6 +219,7 @@ const mapStateToProps = state => {
     leftPanelWidth: getLeftPanel(state).width,
     windowWidth: getWindow(state).width,
     scrollbarPosition: getScrollbarPosition(state, list),
+    isDragAndDropActive: getIsDragAndDropActive(state),
   }
 }
 
@@ -229,6 +238,7 @@ const mapDispatchToProps = {
   rejectTask,
   removeTaskFollower,
   setScrollbarPosition,
+  toggleDragAndDrop,
 }
 
 export default compose(
@@ -377,6 +387,10 @@ export default compose(
         const { type } = props.tasks
 
         props.setScrollbarPosition(type === 'main' ? 'task' : type, position)
+        return {}
+      },
+      onHandleToggleDragAndDrop: (state, props) => value => {
+        props.toggleDragAndDrop(value)
         return {}
       },
     }

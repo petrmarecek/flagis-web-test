@@ -183,6 +183,7 @@ export const EntitiesStore = Record({
 
 export const TaskStore = Record({
   isFetching: false,
+  isDragAndDropActive: false,
   items: List(),
   completed: List(),
   archived: new ListAlreadyRecord(),

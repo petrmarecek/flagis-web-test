@@ -67,7 +67,7 @@ NavigationButtonWithIcon.propTypes = {
   children: PropTypes.node,
 }
 
-const NavigationPrimary = (props) => {
+const NavigationPrimary = props => {
   const {
     inboxCount,
     pathname,
@@ -185,7 +185,7 @@ NavigationPrimary.propTypes = {
   onHandleClickContacts: PropTypes.func,
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   inboxCount: getInboxTasksItems(state).size,
   pathname: getRoutingPathname(state),
   colorTheme: getColorTheme(state),
@@ -204,7 +204,7 @@ const mapDispatchToProps = {
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withHandlers({
-    onHandleClickMore: (props) => () => {
+    onHandleClickMore: props => () => {
       if (props.isVisibleMore) {
         props.primaryHiddenNavigationHide()
         props.deselectPrimaryHiddenNavigationAnimation()
@@ -214,15 +214,14 @@ export default compose(
       props.primaryHiddenNavigationVisible()
       window.setTimeout(() => props.setPrimaryHiddenNavigationAnimation(), 350)
     },
-    onHandleClickTasks: (props) => () =>
+    onHandleClickTasks: props => () =>
       props.changeNavigation(routes.user.tasks),
-    onHandleClickTags: (props) => () =>
-      props.changeNavigation(routes.user.tags),
-    onHandleClickInbox: (props) => () =>
+    onHandleClickTags: props => () => props.changeNavigation(routes.user.tags),
+    onHandleClickInbox: props => () =>
       props.changeNavigation(routes.user.inbox, 'inbox'),
-    onHandleClickArchive: (props) => () =>
+    onHandleClickArchive: props => () =>
       props.changeNavigation(routes.user.archive, 'archived'),
-    onHandleClickContacts: (props) => () =>
+    onHandleClickContacts: props => () =>
       props.changeNavigation(routes.user.contacts),
   })
 )(NavigationPrimary)

@@ -58,10 +58,7 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   lifecycle({
     componentDidUpdate() {
       const { inboxItems, pathname, selectTasksItems } = this.props

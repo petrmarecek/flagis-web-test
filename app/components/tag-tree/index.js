@@ -22,9 +22,7 @@ import {
   getLeftPanel,
   getPrimaryHiddenNavigationVisibility,
 } from 'redux/store/app-state/app-state.selectors'
-import {
-  getColorTheme,
-} from 'redux/store/auth/auth.selectors'
+import { getColorTheme } from 'redux/store/auth/auth.selectors'
 import { deselectTasks } from 'redux/store/tasks/tasks.actions'
 import { selectTag } from 'redux/store/tags/tags.actions'
 import { getTagsRelations } from 'redux/store/tags/tags.selectors'

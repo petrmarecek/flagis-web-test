@@ -25,10 +25,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = { changeLocation }
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   lifecycle({
     componentDidMount() {
       const { colorTheme } = routes.user.account.settings

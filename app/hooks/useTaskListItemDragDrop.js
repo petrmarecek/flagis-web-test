@@ -9,7 +9,7 @@ const useTaskListItemDragDrop = props => {
   const dropTarget = useRef()
 
   // Tree item drag
-  const [ dragProps, drag ] = useDrag({
+  const [dragProps, drag] = useDrag({
     item: {
       type: DragType.TASK,
       listType: props.listType,
@@ -25,11 +25,16 @@ const useTaskListItemDragDrop = props => {
       const { alphabet, important, incomplete } = sort
 
       const isSort = alphabet || important || incomplete
-      const isMainList = props.listType !== 'archived' && props.listType !== 'inbox'
+      const isMainList =
+        props.listType !== 'archived' && props.listType !== 'inbox'
 
       return !isSort && isMainList
     },
+    begin: () => {
+      props.toggleDragAndDrop(true)
+    },
     end: (item, monitor) => {
+      props.toggleDragAndDrop(false)
       const dropResult = monitor.getDropResult()
       if (!dropResult) {
         return
@@ -44,14 +49,16 @@ const useTaskListItemDragDrop = props => {
 
       if (dropResult.target === TaskDropTarget.TAG_TREE) {
         const strategy =
-          dropResult.dropEffect === 'copy' ? TagsUpdateStrategy.OVERRIDE : TagsUpdateStrategy.MERGE
+          dropResult.dropEffect === 'copy'
+            ? TagsUpdateStrategy.OVERRIDE
+            : TagsUpdateStrategy.MERGE
         props.setTaskTags(dropResult.item.task.id, dropResult.tags, strategy)
       }
     },
   })
 
   // Tree item drop
-  const [ dropProps, drop ] = useDrop({
+  const [dropProps, drop] = useDrop({
     accept: DragType.TASK,
     collect: monitor => ({
       isOver: monitor.isOver(),
@@ -105,7 +112,9 @@ const useTaskListItemDragDrop = props => {
       }
 
       // Get size of target component
-      const hoverBoundingRect = findDOMNode(dropTarget.current).getBoundingClientRect()
+      const hoverBoundingRect = findDOMNode(
+        dropTarget.current
+      ).getBoundingClientRect()
       // Height of task / 2 = 25
       const hoverMiddleY = hoverBoundingRect.height / 2
       // Current position of mouse

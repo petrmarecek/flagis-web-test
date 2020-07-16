@@ -50,7 +50,7 @@ const NotificationListItem = ({
     type === 'TASKS/DATES/DUE-DATE'
 
   // prepare data
-  const avatarSize = isAssigneeOfTask ? "20" : "30"
+  const avatarSize = isAssigneeOfTask ? '20' : '30'
   const date = dateUtils.formatDateTimeSecondary(sentAt)
   const commentContent = data && data.content ? data.content : null
   const attachmentName = data && data.fileName ? data.fileName : null
@@ -60,8 +60,8 @@ const NotificationListItem = ({
       ? nickname !== null
         ? nickname
         : fromUserEmail !== null
-          ? fromUserEmail
-          : email
+        ? fromUserEmail
+        : email
       : ''
 
   return (
@@ -71,12 +71,13 @@ const NotificationListItem = ({
       }
       isRead={isRead}
     >
-      <Date>{date} from {isSystemNotification ? 'Flagis' : profileName}</Date>
+      <Date>
+        {date} from {isSystemNotification ? 'Flagis' : profileName}
+      </Date>
       {!isRead && <Indicator onClick={onHandleReadNotification} />}
       <ItemContentWrapper>
         <MainTitle isRead={isRead}>
-          [{notificationText(type)}]
-          <span>{taskSubject}</span>
+          [{notificationText(type)}]<span>{taskSubject}</span>
         </MainTitle>
         <SecondTitle isRead={isRead}>
           {commentContent && <span>{commentContent}</span>}

@@ -105,10 +105,7 @@ const mapStateToProps = state => ({
 const actionCreators = { createTask }
 
 export default compose(
-  connect(
-    mapStateToProps,
-    actionCreators
-  ),
+  connect(mapStateToProps, actionCreators),
   withStateHandlers(() => ({ subject: '' }), {
     handleChange: () => event => {
       const subject = event.target.value
@@ -129,17 +126,14 @@ export default compose(
       }
 
       // due date sorting algorithm or some date filter is activated
-      const dueDate =
-        filters.range
-          ? moment()
-              .startOf('day')
-              .set({
-                hour: 23,
-                minute: 45,
-                second: 0,
-                millisecond: 0,
-              })
-          : null
+      const dueDate = filters.range
+        ? moment().startOf('day').set({
+            hour: 23,
+            minute: 45,
+            second: 0,
+            millisecond: 0,
+          })
+        : null
 
       props.createTask({
         id: null,
