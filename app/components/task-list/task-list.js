@@ -28,6 +28,7 @@ const TaskList = props => {
     acceptTask,
     rejectTask,
     toggleDragAndDrop,
+    setDraggingTask,
   } = props
 
   // return nul for unknown list type
@@ -68,6 +69,7 @@ const TaskList = props => {
             windowWidth={windowWidth}
             toggleDragAndDrop={toggleDragAndDrop}
             isDragAndDropActive={isDragAndDropActive}
+            setDraggingTask={setDraggingTask}
           />
         ))}
       </TaskListItems>
@@ -99,6 +101,7 @@ TaskList.propTypes = {
   acceptTask: PropTypes.func,
   rejectTask: PropTypes.func,
   toggleDragAndDrop: PropTypes.func,
+  setDraggingTask: PropTypes.func,
 }
 
 export default TaskList

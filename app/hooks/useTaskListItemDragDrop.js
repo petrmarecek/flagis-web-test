@@ -31,6 +31,7 @@ const useTaskListItemDragDrop = props => {
       return !isSort && isMainList
     },
     begin: () => {
+      props.setDraggingTask(props.task)
       props.toggleDragAndDrop(true)
     },
     end: (item, monitor) => {

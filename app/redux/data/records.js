@@ -190,6 +190,7 @@ export const TaskStore = Record({
   inbox: new ListRecord(),
   selection: OrderedSet(),
   search: '',
+  draggingTask: null,
 })
 
 export const ActivitiesStore = Record({

@@ -63,7 +63,6 @@ const TaskListItem = props => {
   } = props
 
   const [isMounted, setIsMounted] = useState(true)
-
   const { dragDropHandle, dragProps } = useTaskListItemDragDrop(props)
 
   const onHandleMouseDown = useCallback(
@@ -446,6 +445,7 @@ TaskListItem.propTypes = {
   acceptTask: PropTypes.func,
   rejectTask: PropTypes.func,
   toggleDragAndDrop: PropTypes.func,
+  setDraggingTask: PropTypes.func,
 }
 
 const mapStateToProps = () => ({})
@@ -457,7 +457,11 @@ const areEqual = (prev, next) => {
   const areTaskEqual =
     next.task.size >= 2 ? prev.task.equals(next.task) : prev.task !== next.task
 
-  return areTaskEqual && prev.index === next.index
+  return (
+    areTaskEqual &&
+    prev.index === next.index &&
+    prev.isSelected === next.isSelected
+  )
 }
 
 export default memo(

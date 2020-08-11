@@ -545,6 +545,9 @@ export function* setOrder(action) {
     const order = action.payload.order
     const update = { order }
 
+    // remove dragging task
+    yield put(taskActions.removeDraggingTask())
+
     // call server
     yield callApi(api.tasks.update, taskId, update)
   } catch (err) {
@@ -841,6 +844,13 @@ export function* addTaskTag(action) {
 
 export function* setTaskTags(action) {
   const { taskId, tagIds, strategy } = action.payload
+
+  // set original order of task
+  const draggingTask = yield select(state =>
+    taskSelectors.getDraggingTask(state)
+  )
+  yield put(taskActions.setOrder(draggingTask, draggingTask.order))
+
   let originalTagList = yield select(state =>
     taskSelectors.getTaskTags(state, taskId)
   )

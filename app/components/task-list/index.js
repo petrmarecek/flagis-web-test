@@ -38,6 +38,7 @@ import {
   rejectTask,
   removeTaskFollower,
   toggleDragAndDrop,
+  setDraggingTask,
 } from 'redux/store/tasks/tasks.actions'
 import {
   getTasksItems,
@@ -90,6 +91,7 @@ const TaskListContainer = props => {
     onHandleRejectTask,
     onHandleSetScrollbarPosition,
     onHandleToggleDragAndDrop,
+    onHandleSetDraggingTask,
   } = props
 
   if (!tasks.isFetching && tasks.items.length === 0) {
@@ -141,6 +143,7 @@ const TaskListContainer = props => {
           rejectTask={onHandleRejectTask}
           toggleDragAndDrop={onHandleToggleDragAndDrop}
           isDragAndDropActive={isDragAndDropActive}
+          setDraggingTask={onHandleSetDraggingTask}
         />
       </span>
     </ShadowScrollbar>
@@ -182,6 +185,7 @@ TaskListContainer.propTypes = {
   onHandleRejectTask: PropTypes.func,
   onHandleSetScrollbarPosition: PropTypes.func,
   onHandleToggleDragAndDrop: PropTypes.func,
+  onHandleSetDraggingTask: PropTypes.func,
 
   // actions
   selectTask: PropTypes.func,
@@ -198,6 +202,7 @@ TaskListContainer.propTypes = {
   rejectTask: PropTypes.func,
   removeTaskFollower: PropTypes.func,
   setScrollbarPosition: PropTypes.func,
+  setDraggingTask: PropTypes.func,
 }
 
 const mapStateToProps = state => {
@@ -239,6 +244,7 @@ const mapDispatchToProps = {
   removeTaskFollower,
   setScrollbarPosition,
   toggleDragAndDrop,
+  setDraggingTask,
 }
 
 export default compose(
@@ -391,6 +397,10 @@ export default compose(
       },
       onHandleToggleDragAndDrop: (state, props) => value => {
         props.toggleDragAndDrop(value)
+        return {}
+      },
+      onHandleSetDraggingTask: (state, props) => task => {
+        props.setDraggingTask(task)
         return {}
       },
     }

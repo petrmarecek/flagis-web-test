@@ -46,6 +46,8 @@ export const TASKS = {
   REJECT: 'TASK/REJECT',
   UNDO_REJECT: 'UNDO_TASK/REJECT',
   TOGGLE_DRAG_AND_DROP: 'TASK/TOGGLE_DRAG_AND_DROP',
+  SET_DRAGGING_TASK: 'TASK/SET_DRAGGING_TASK',
+  REMOVE_DRAGGING_TASK: 'TASK/REMOVE_DRAGGING_TASK',
 }
 
 export const fetchTasks = () => ({
@@ -324,4 +326,15 @@ export const rejectTask = originalData => ({
 export const toggleDragAndDrop = value => ({
   type: TASKS.TOGGLE_DRAG_AND_DROP,
   payload: { value },
+})
+
+export const setDraggingTask = task => ({
+  type: TASKS.SET_DRAGGING_TASK,
+  payload: {
+    task,
+  },
+})
+
+export const removeDraggingTask = () => ({
+  type: TASKS.REMOVE_DRAGGING_TASK,
 })

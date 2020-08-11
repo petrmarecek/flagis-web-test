@@ -417,6 +417,7 @@ export const getTaskById = (state, taskId) => {
 }
 export const getIsDragAndDropActive = state =>
   state.getIn(['tasks', 'isDragAndDropActive'])
+export const getDraggingTask = state => state.getIn(['tasks', 'draggingTask'])
 
 // ------ Reselect selectors ----------------------------------------------------
 

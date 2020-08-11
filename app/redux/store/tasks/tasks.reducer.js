@@ -188,6 +188,11 @@ export default typeToReducer(
           list.filter(taskId => taskId !== action.payload.originalData.task.id)
         ),
 
+    [TASKS.SET_DRAGGING_TASK]: (state, action) =>
+      state.setIn(['draggingTask'], action.payload.task),
+
+    [TASKS.REMOVE_DRAGGING_TASK]: state => state.setIn(['draggingTask'], null),
+
     [AUTH.LOGOUT]: () => new TaskStore(),
   },
   new TaskStore()
