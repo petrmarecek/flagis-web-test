@@ -10,18 +10,18 @@ export const COMMENTS = {
 
 export const fetchComment = taskId => ({
   type: COMMENTS.FETCH,
-  payload: taskId
+  payload: taskId,
 })
 
 export const createComment = comment => ({
   type: COMMENTS.CREATE,
-  payload: comment
+  payload: comment,
 })
 
 export const addComment = comment => ({
   type: COMMENTS.ADD,
   payload: comment,
-  meta: { schema: schema.comment }
+  meta: { schema: schema.comment },
 })
 
 export const deleteComment = (taskId, commentId) => ({
@@ -29,5 +29,5 @@ export const deleteComment = (taskId, commentId) => ({
   payload: {
     taskId,
     commentId,
-  }
+  },
 })

@@ -78,7 +78,7 @@ function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
   if (isCollaboratedTask) {
     // Set isInbox property in task entities
     const assignee = getAssigneeOfTask(Object.values(followers))
-    const { status } = assignee
+    const status = assignee !== null ? assignee.status : assignee
     task.isInbox = status === 'pending'
 
     // rewrite isArchived of task for assignee
@@ -120,7 +120,7 @@ function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
 
     // Move task from inbox to tasks list (accepted)
     if (
-      assignee.status === 'accepted' &&
+      status === 'accepted' &&
       !isTrashed &&
       !storeItems.includes(id) &&
       storeInboxItems.includes(id)

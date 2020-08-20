@@ -11,14 +11,14 @@ export const createFollower = (taskId, userId, type = 'assignee') => ({
   payload: {
     taskId,
     userId,
-    type
+    type,
   },
 })
 
 export const addFollower = follower => ({
   type: FOLLOWERS.ADD,
   payload: follower,
-  meta: { schema: schema.follower }
+  meta: { schema: schema.follower },
 })
 
 export const deleteFollower = (taskId, userId, followerId) => ({
@@ -26,7 +26,6 @@ export const deleteFollower = (taskId, userId, followerId) => ({
   payload: {
     taskId,
     userId,
-    followerId
+    followerId,
   },
 })
-

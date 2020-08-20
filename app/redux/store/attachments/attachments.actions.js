@@ -10,18 +10,18 @@ export const ATTACHMENTS = {
 
 export const fetchAttachment = taskId => ({
   type: ATTACHMENTS.FETCH,
-  payload: taskId
+  payload: taskId,
 })
 
 export const createAttachment = attachment => ({
   type: ATTACHMENTS.CREATE,
-  payload: attachment
+  payload: attachment,
 })
 
 export const addAttachment = attachment => ({
   type: ATTACHMENTS.ADD,
   payload: attachment,
-  meta: { schema: schema.attachment }
+  meta: { schema: schema.attachment },
 })
 
 export const deleteAttachment = (taskId, attachmentId) => ({
@@ -29,5 +29,5 @@ export const deleteAttachment = (taskId, attachmentId) => ({
   payload: {
     taskId,
     attachmentId,
-  }
+  },
 })
