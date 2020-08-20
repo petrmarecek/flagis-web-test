@@ -19,7 +19,7 @@ const Wrapper = styled.div`
   align-items: center;
   position: relative;
   pointer-events: none;
-  width: ${props => (props.isAssignee ? '48px' : '35px')};
+  width: 35px;
   height: 30px;
   opacity: ${props => (props.isCompleted ? '0.4' : '1')};
   ${transition(props => (props.animation ? 'opacity 400ms ease-out' : 'none'))}
@@ -34,8 +34,6 @@ const IconStatus = styled.div`
 `
 
 const IconAccount = styled.div`
-  margin-right: ${props => (props.isAssignee ? '5px' : '0')};
-
   img {
     object-fit: cover;
   }
@@ -72,29 +70,10 @@ const FollowerIcon = ({
   const isFollower = followerStatus !== 'new'
 
   return (
-    <Wrapper
-      isCompleted={isCompleted}
-      animation={animation}
-      isAssignee={isAssignee}
-    >
-      <IconAccount isAssignee={isAssignee}>
-        <Avatar
-          src={photo}
-          name={nickname}
-          size={isAssignee ? '20' : '30'}
-          textSizeRatio={2}
-          round
-        />
+    <Wrapper isCompleted={isCompleted} animation={animation}>
+      <IconAccount>
+        <Avatar src={photo} name={nickname} size="30" textSizeRatio={2} round />
       </IconAccount>
-      {isAssignee && (
-        <Icon
-          icon={ICONS[icons[followerStatus]]}
-          width={22}
-          height={15}
-          scale={0.68}
-          color={color[followerStatus]}
-        />
-      )}
       {isFollower && !isAssignee && (
         <IconStatus>
           <Icon

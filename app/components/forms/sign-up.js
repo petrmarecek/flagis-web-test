@@ -94,7 +94,7 @@ const IconWrapper = styled(Icon)`
   animation: 600ms ${hide}, 1000ms ${show} linear 600ms;
 `
 
-const getToken = (pathname) => {
+const getToken = pathname => {
   const numberCharacter = '/sign-up/'.length
   return pathname.substring(numberCharacter)
 }
@@ -119,14 +119,11 @@ const SignUp = ({
       <NavigationLandingPrimary location={location} />
       {isSubmitted && (
         <SuccessSignUpWrapper>
+          <Text>Well done!</Text>
+          <Text>You have just signed up.</Text>
           <Text>
-            Well done!
-          </Text>
-          <Text>
-            You have just signed up.
-          </Text>
-          <Text>
-            Please, check your mailbox and click on the confirmation link to verify your account.
+            Please, check your mailbox and click on the confirmation link to
+            verify your account.
           </Text>
           <IconWrapper
             icon={ICONS.TASK_COMPLETED}
@@ -140,9 +137,7 @@ const SignUp = ({
       {!isSubmitted && (
         <Form maxWidth={500}>
           <FormBody
-            onSubmit={
-              isAgree ? handleSubmit((values) => onSubmit(values)) : null
-            }
+            onSubmit={isAgree ? handleSubmit(values => onSubmit(values)) : null}
           >
             <FormBodyFields>
               <FormErrors>
@@ -278,7 +273,7 @@ export default compose(
     enableReinitialize: true,
   }),
   withHandlers({
-    onSubmit: (props) => (values) => {
+    onSubmit: props => values => {
       const token = getToken(props.location.pathname)
       const data = {
         email: values.get('email'),

@@ -91,14 +91,13 @@ const TagTreeContainer = props => {
 
   const debouncedMoveSection = debounce(onInvokeMove, 10)
   const onMoveSection = useCallback(move => debouncedMoveSection(move), [])
-  const offset = isVisibleMoreNavigation ? 326 : 250
   const scrollStyle = {
-    height: `calc(100vh - ${offset}px)`,
+    height: `calc(100vh - 260px)`,
     shadowHeight: 30,
     boxShadowTop: `inset 0 30px 30px -15px ${colors[colorTheme].tagTreeShadowScrollbar}`,
     boxShadowBottom: `inset 0 -30px 30px -15px ${colors[colorTheme].tagTreeShadowScrollbar}`,
     overflow: 'hidden',
-    top: '10px',
+    padding: '20px 0 0 0',
   }
   const verticalStyle = {
     backgroundColor: colors[colorTheme].tagTreeScrollbar,

@@ -47,10 +47,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = { updateTagSearch }
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   withHandlers({
     onHandleSearchChange: props => search => props.updateTagSearch(search),
   })

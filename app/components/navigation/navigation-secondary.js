@@ -9,14 +9,14 @@ import { changeNavigationSecondary } from 'redux/store/routing/routing.actions'
 import { getRoutingPathname } from 'redux/store/routing/routing.selectors'
 
 // styles
-import { NavigationSecondaryWrapper, SecondaryButton } from './styles'
+import {
+  NavigationSecondaryWrapper,
+  SecondaryButtonsWrapper,
+  SecondaryButton,
+} from './styles'
 
 const NavigationSecondary = props => {
-  const {
-    pathname,
-    onHandleClickTasks,
-    onHandleClickDashboard,
-  } = props
+  const { pathname, onHandleClickTasks, onHandleClickDashboard } = props
   const { user } = routes
 
   const isTaskActive = pathname === user.tasks
@@ -24,15 +24,17 @@ const NavigationSecondary = props => {
 
   return (
     <NavigationSecondaryWrapper>
-      <SecondaryButton active={isTaskActive} onClick={onHandleClickTasks}>
-        List
-      </SecondaryButton>
-      <SecondaryButton
-        active={isDashboardActive}
-        onClick={onHandleClickDashboard}
-      >
-        Charts
-      </SecondaryButton>
+      <SecondaryButtonsWrapper>
+        <SecondaryButton active={isTaskActive} onClick={onHandleClickTasks}>
+          List
+        </SecondaryButton>
+        <SecondaryButton
+          active={isDashboardActive}
+          onClick={onHandleClickDashboard}
+        >
+          Charts
+        </SecondaryButton>
+      </SecondaryButtonsWrapper>
     </NavigationSecondaryWrapper>
   )
 }
@@ -52,10 +54,7 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   withHandlers({
     onHandleClickTasks: props => () =>
       props.changeNavigationSecondary(routes.user.tasks),

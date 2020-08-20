@@ -20,7 +20,7 @@ export default class TasksMenuMultiSelect extends PureComponent {
   }
 
   componentDidMount() {
-    velocity(this.refs.elem, 'transition.fadeIn', {
+    velocity(this.refs.multiSelectElem, 'transition.fadeIn', {
       duration: 600,
       display: 'flex',
     })
@@ -51,10 +51,12 @@ export default class TasksMenuMultiSelect extends PureComponent {
   }
 
   handleClick = event => {
-    const elem = findDOMNode(this.refs.elem)
-    const notContainsElem = elem ? !elem.contains(event.target) : true
+    const multiSelectElem = findDOMNode(this.refs.multiSelectElem)
+    const notContainsElem = multiSelectElem
+      ? !multiSelectElem.contains(event.target)
+      : true
 
-    const taskPanel = document.getElementsByClassName('task-list-items')[0]
+    const taskPanel = document.getElementsByClassName('task-list-items')[1]
     const elemTaskPanel = findDOMNode(taskPanel)
     const notContainsElemTaskPanel = elemTaskPanel
       ? !elemTaskPanel.contains(event.target)
@@ -101,7 +103,7 @@ export default class TasksMenuMultiSelect extends PureComponent {
     }))
 
     return (
-      <div ref="elem" className="multi-select">
+      <div ref="multiSelectElem" className="multi-select">
         {!this.props.isVisibleArchivedTasks && (
           <Icon
             icon={ICONS.ADD_REMOVE_TAG}

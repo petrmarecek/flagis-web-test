@@ -14,6 +14,7 @@ import { changeLocation } from 'redux/store/routing/routing.actions'
 import { getRoutingPathname } from 'redux/store/routing/routing.selectors'
 import {
   getTasksItems,
+  getInboxTasksItems,
   getSelectionTasks,
 } from 'redux/store/tasks/tasks.selectors'
 
@@ -23,11 +24,12 @@ import CenterPanel from 'components/panels/center-panel'
 import DetailContent from 'components/contents/detail-content'
 import TasksContent from 'components/contents/tasks-content'
 
-const TaskPage = ({ tasksItems, pathname }) => {
+const TaskPage = ({ tasksItems, inboxTasksItems, pathname }) => {
   const template = '/user/tasks/'
   const numberTemplate = template.length
   const taskId = pathname.substring(numberTemplate)
-  const isTaskId = tasksItems.includes(taskId)
+  const isTaskId =
+    tasksItems.includes(taskId) || inboxTasksItems.includes(taskId)
 
   return (
     <div>
@@ -46,6 +48,7 @@ TaskPage.propTypes = {
 
 const mapStateToProps = state => ({
   tasksItems: getTasksItems(state),
+  inboxTasksItems: getInboxTasksItems(state),
   selectTasksItems: getSelectionTasks(state),
   pathname: getRoutingPathname(state),
 })
@@ -61,11 +64,15 @@ export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   lifecycle({
     componentDidUpdate() {
-      const { tasksItems, pathname, selectTasksItems } = this.props
+      const {
+        tasksItems,
+        inboxTasksItems,
+        pathname,
+        selectTasksItems,
+      } = this.props
       const { user } = routes
 
-      // Hide inbox and archived tasks
-      this.props.hideInboxTasks()
+      // Hide archived tasks
       this.props.hideArchivedTasks()
 
       // redirect to tags detail
@@ -86,8 +93,9 @@ export default compose(
       let template = '/user/tasks/'
       const numberTemplate = template.length
       const taskId = pathname.substring(numberTemplate)
-      const isTaskId = tasksItems.includes(taskId)
-      let newSelectTaskItems = selectTasksItems
+      const isTaskId =
+        tasksItems.includes(taskId) || inboxTasksItems.includes(taskId)
+      let newSelectTaskItems = _.cloneDeep(selectTasksItems)
 
       if (!isTaskId) {
         template = user.tasks

@@ -600,9 +600,6 @@ export function* selectTask(action) {
     const archivedTasksVisible = yield select(state =>
       appStateSelectors.getArchivedTasksVisibility(state)
     )
-    const inboxTasksVisible = yield select(state =>
-      appStateSelectors.getInboxTasksVisibility(state)
-    )
 
     yield put(appStateActions.hideMultiSelect())
 
@@ -612,12 +609,6 @@ export function* selectTask(action) {
     if (archivedTasksVisible) {
       yield put(push(`/user/archive/${taskId}`))
       yield put(appStateActions.setDetail('archive'))
-      return
-    }
-
-    if (inboxTasksVisible) {
-      yield put(push(`/user/inbox/${taskId}`))
-      yield put(appStateActions.setDetail('inbox'))
       return
     }
 
@@ -635,7 +626,7 @@ export function* deselectTasks() {
   const isMultiSelectVisible = yield select(state =>
     appStateSelectors.getMultiSelectVisibility(state)
   )
-  const { task, archive, inbox } = yield select(state =>
+  const { task, archive } = yield select(state =>
     appStateSelectors.getDetail(state)
   )
 
@@ -649,10 +640,6 @@ export function* deselectTasks() {
 
   if (archive) {
     yield put(appStateActions.deselectDetail('archive'))
-  }
-
-  if (inbox) {
-    yield put(appStateActions.deselectDetail('inbox'))
   }
 }
 

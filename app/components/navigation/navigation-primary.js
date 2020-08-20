@@ -7,18 +7,7 @@ import { compose, withHandlers } from 'recompose'
 import { connect } from 'react-redux'
 import { changeNavigation } from 'redux/store/routing/routing.actions'
 import { getRoutingPathname } from 'redux/store/routing/routing.selectors'
-import {
-  getPrimaryHiddenNavigationVisibility,
-  getPrimaryHiddenNavigationAnimation,
-} from 'redux/store/app-state/app-state.selectors'
 import { getColorTheme } from 'redux/store/auth/auth.selectors'
-import { getInboxTasksItems } from 'redux/store/tasks/tasks.selectors'
-import {
-  primaryHiddenNavigationVisible,
-  primaryHiddenNavigationHide,
-  setPrimaryHiddenNavigationAnimation,
-  deselectPrimaryHiddenNavigationAnimation,
-} from 'redux/store/app-state/app-state.actions'
 
 // components
 import { ICONS } from 'components/icons/icon-constants'
@@ -26,16 +15,10 @@ import Icon from 'components/icons/icon'
 
 // styles
 import {
-  TriangleIcon,
   NavigationPrimaryWrapper,
-  NavigationPrimaryHidden,
   PrimaryButton,
   PrimaryButtonText,
-  InboxCounter,
-  ShowMoreButton,
-  ShowMoreTitle,
 } from './styles'
-import colors from 'components/styled-components-mixins/colors'
 
 const NavigationButtonWithIcon = ({
   active,
@@ -69,15 +52,10 @@ NavigationButtonWithIcon.propTypes = {
 
 const NavigationPrimary = props => {
   const {
-    inboxCount,
     pathname,
     colorTheme,
-    isVisibleMore,
-    isAnimationMore,
-    onHandleClickMore,
     onHandleClickTasks,
     onHandleClickTags,
-    onHandleClickInbox,
     onHandleClickArchive,
     onHandleClickContacts,
   } = props
@@ -87,14 +65,13 @@ const NavigationPrimary = props => {
     pathname.substring(0, user.tasks.length) === user.tasks ||
     pathname.substring(0, user.dashboard.length) === user.dashboard
   const isTagsActive = pathname.substring(0, user.tags.length) === user.tags
-  const isInboxActive = pathname.substring(0, user.inbox.length) === user.inbox
   const isArchiveActive =
     pathname.substring(0, user.archive.length) === user.archive
   const isContactsActive =
     pathname.substring(0, user.contacts.length) === user.contacts
 
   return (
-    <NavigationPrimaryWrapper isVisibleMore={isVisibleMore}>
+    <NavigationPrimaryWrapper>
       <NavigationButtonWithIcon
         active={isTasksActive}
         onClick={onHandleClickTasks}
@@ -116,109 +93,54 @@ const NavigationPrimary = props => {
         label={'Tags'}
       />
       <NavigationButtonWithIcon
-        active={isInboxActive}
-        onClick={onHandleClickInbox}
+        active={isContactsActive}
+        onClick={onHandleClickContacts}
         colorTheme={colorTheme}
-        icon={ICONS.INBOX}
+        icon={ICONS.CONTACTS}
         iconWidth={18}
-        iconHeight={13}
-        iconScale={0.58}
-        label={'Inbox'}
-      >
-        {inboxCount > 0 && <InboxCounter count={inboxCount} />}
-      </NavigationButtonWithIcon>
-
-      {isAnimationMore && (
-        <NavigationPrimaryHidden>
-          <NavigationButtonWithIcon
-            active={isArchiveActive}
-            onClick={onHandleClickArchive}
-            colorTheme={colorTheme}
-            icon={ICONS.ARCHIVED}
-            iconWidth={18}
-            iconHeight={16}
-            iconScale={1.05}
-            label={'Archived Tasks'}
-          />
-          <NavigationButtonWithIcon
-            active={isContactsActive}
-            onClick={onHandleClickContacts}
-            colorTheme={colorTheme}
-            icon={ICONS.CONTACTS}
-            iconWidth={18}
-            iconHeight={14}
-            iconScale={0.6}
-            label={'Contacts'}
-          />
-        </NavigationPrimaryHidden>
-      )}
-      <ShowMoreButton
-        onClick={onHandleClickMore}
-        isVisibleMore={isVisibleMore}
+        iconHeight={14}
+        iconScale={0.6}
+        label={'Contacts'}
+      />
+      <NavigationButtonWithIcon
+        active={isArchiveActive}
+        onClick={onHandleClickArchive}
         colorTheme={colorTheme}
-      >
-        <ShowMoreTitle>
-          {isVisibleMore ? 'Show less' : 'Show more'}
-        </ShowMoreTitle>
-        <TriangleIcon
-          icon={ICONS.TRIANGLE}
-          width={11}
-          height={5}
-          color={[colors[colorTheme].navigationPrimaryShowMore]}
-        />
-      </ShowMoreButton>
+        icon={ICONS.ARCHIVED}
+        iconWidth={18}
+        iconHeight={16}
+        iconScale={1.05}
+        label={'Archived Tasks'}
+      />
     </NavigationPrimaryWrapper>
   )
 }
 
 NavigationPrimary.propTypes = {
-  inboxCount: PropTypes.number,
   pathname: PropTypes.string,
   colorTheme: PropTypes.string,
-  isVisibleMore: PropTypes.bool,
-  isAnimationMore: PropTypes.bool,
   onHandleClickMore: PropTypes.func,
   onHandleClickTasks: PropTypes.func,
   onHandleClickTags: PropTypes.func,
-  onHandleClickInbox: PropTypes.func,
   onHandleClickArchive: PropTypes.func,
   onHandleClickContacts: PropTypes.func,
 }
 
 const mapStateToProps = state => ({
-  inboxCount: getInboxTasksItems(state).size,
   pathname: getRoutingPathname(state),
   colorTheme: getColorTheme(state),
-  isVisibleMore: getPrimaryHiddenNavigationVisibility(state),
-  isAnimationMore: getPrimaryHiddenNavigationAnimation(state),
 })
 
 const mapDispatchToProps = {
   changeNavigation,
-  primaryHiddenNavigationVisible,
-  primaryHiddenNavigationHide,
-  setPrimaryHiddenNavigationAnimation,
-  deselectPrimaryHiddenNavigationAnimation,
 }
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withHandlers({
-    onHandleClickMore: props => () => {
-      if (props.isVisibleMore) {
-        props.primaryHiddenNavigationHide()
-        props.deselectPrimaryHiddenNavigationAnimation()
-        return
-      }
-
-      props.primaryHiddenNavigationVisible()
-      window.setTimeout(() => props.setPrimaryHiddenNavigationAnimation(), 350)
-    },
     onHandleClickTasks: props => () =>
       props.changeNavigation(routes.user.tasks),
     onHandleClickTags: props => () => props.changeNavigation(routes.user.tags),
-    onHandleClickInbox: props => () =>
-      props.changeNavigation(routes.user.inbox, 'inbox'),
     onHandleClickArchive: props => () =>
       props.changeNavigation(routes.user.archive, 'archived'),
     onHandleClickContacts: props => () =>

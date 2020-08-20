@@ -16,9 +16,10 @@ import { generateTicks } from 'utils/charts'
 
 const colorForTag = (tag, storeTags) => {
   const storeTag = storeTags.find(item => item.id === tag.id)
-  const colorIndexCandidate = storeTag && typeof (storeTag.colorIndex) === 'number'
-    ? storeTag.colorIndex
-    : null
+  const colorIndexCandidate =
+    storeTag && typeof storeTag.colorIndex === 'number'
+      ? storeTag.colorIndex
+      : null
 
   const colorIndex = getColorIndex(colorIndexCandidate, tag.title)
   const color = getTagColor(colorIndex)
@@ -40,19 +41,25 @@ const prepareData = items => {
 }
 
 const prepareTaskStats = stats => {
-  const datesToShow = date.makeDateArray(moment().subtract(1, "months").toDate(), new Date())
+  const datesToShow = date.makeDateArray(
+    moment().subtract(1, 'months').toDate(),
+    new Date()
+  )
   const newTasksByDate = prepareData(stats.newTasksByDate)
   const completedTasksByDate = prepareData(stats.completedTasksByDate)
 
   const items = datesToShow.map(dateLabel => {
     return {
       label: dateLabel,
-      ["New Tasks"]: newTasksByDate.index[dateLabel] || 0,
-      ["Completed Tasks"]: completedTasksByDate.index[dateLabel] || 0,
+      ['New Tasks']: newTasksByDate.index[dateLabel] || 0,
+      ['Completed Tasks']: completedTasksByDate.index[dateLabel] || 0,
     }
   })
 
-  const maxValue = Math.max(newTasksByDate.maxValue, completedTasksByDate.maxValue)
+  const maxValue = Math.max(
+    newTasksByDate.maxValue,
+    completedTasksByDate.maxValue
+  )
   const ticks = generateTicks(5, maxValue)
 
   return {
@@ -83,7 +90,6 @@ const prepareTagStats = (stats, storeTags) => {
 }
 
 const Dashboard = ({ tags, stats, activeTags, fetchStats }) => {
-
   const [statsReady, setStatsReady] = useState(false)
   const [taskStats, setTaskStats] = useState({})
   const [tagStats, setTagStats] = useState({})
@@ -114,9 +120,9 @@ const Dashboard = ({ tags, stats, activeTags, fetchStats }) => {
     <ShadowScrollbar style={scrollStyle}>
       <DashboardWrapper>
         <TaskFrequencyByDateChart stats={taskStats} />
-        {activeTags && activeTags.size === 0 &&
+        {activeTags && activeTags.size === 0 && (
           <TagUseFrequencyChart stats={tagStats} />
-        }
+        )}
       </DashboardWrapper>
     </ShadowScrollbar>
   )
@@ -136,7 +142,7 @@ Dashboard.propTypes = {
 }
 
 const mapDispatchToProps = {
-  fetchStats: statsActions.fetchStats
+  fetchStats: statsActions.fetchStats,
 }
 
 const mapStateToProps = state => ({

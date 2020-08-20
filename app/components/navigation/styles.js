@@ -8,6 +8,7 @@ import {
   transition,
   userSelect,
   mediaQueries,
+  boxShadow,
 } from '../styled-components-mixins'
 import colors, {
   colors as defaultColors,
@@ -97,7 +98,7 @@ const LandingButtonSignIn = styled.div`
   padding: 0;
   margin-right: 50px;
   color: ${defaultColors.darkJungleGreen};
-  pointer-events: ${(props) => (props.active ? 'none' : 'auto')};
+  pointer-events: ${props => (props.active ? 'none' : 'auto')};
 
   :after {
     ${transform('scaleX(0)')}
@@ -134,7 +135,7 @@ const LandingButtonSignUp = styled.div`
   transition: 500ms;
   color: ${defaultColors.darkJungleGreen};
   border: 1px solid ${defaultColors.hanumanGreen};
-  pointer-events: ${(props) => (props.active ? 'none' : 'auto')};
+  pointer-events: ${props => (props.active ? 'none' : 'auto')};
   ${borderRadius('100px')} :hover {
     background-color: ${defaultColors.hanumanGreen};
   }
@@ -170,8 +171,8 @@ const LandingSecondaryButton = styled.div`
   font-size: 20px;
   margin: 0 50px 0 0;
   padding: 0;
-  color: ${(props) => (props.active ? '#293034' : '#B1B5B8')};
-  pointer-events: ${(props) => (props.active ? 'none' : 'auto')};
+  color: ${props => (props.active ? '#293034' : '#B1B5B8')};
+  pointer-events: ${props => (props.active ? 'none' : 'auto')};
 
   :after {
     ${transform('scaleX(0)')}
@@ -219,7 +220,7 @@ const NavigationLegalWrapper = styled.div`
 `
 
 const LegalButton = styled.div`
-  ${(props) => (props.active ? fontBold : fontMain)}
+  ${props => (props.active ? fontBold : fontMain)}
   ${userSelect('none')};
   display: inline-block;
   cursor: pointer;
@@ -227,7 +228,7 @@ const LegalButton = styled.div`
   margin: 0 50px 0 0;
   padding: 0;
   color: ${defaultColors.darkJungleGreen};
-  pointer-events: ${(props) => (props.active ? 'none' : 'auto')};
+  pointer-events: ${props => (props.active ? 'none' : 'auto')};
   width: max-content;
 
   :after {
@@ -265,24 +266,15 @@ const LegalButton = styled.div`
 
 /*---------------------------------- Navigation Primary ----------------------------------*/
 
-const flexColumn = css`
+const NavigationPrimaryWrapper = styled.div`
+  ${transition('height 300ms ease-out')};
   display: flex;
   flex-direction: column;
-`
-
-const NavigationPrimaryWrapper = styled.div`
-  ${flexColumn}
-  ${transition('height 300ms ease-out')}
-  height: ${(props) => (props.isVisibleMore ? '209px' : '133px')};
   position: relative;
 `
 
-const NavigationPrimaryHidden = styled.div`
-  ${flexColumn}
-`
-
 const PrimaryButton = styled.div`
-  ${boxSizing('border-box')}
+  ${boxSizing('border-box')};
   display: flex;
   align-items: center;
   position: relative;
@@ -291,19 +283,19 @@ const PrimaryButton = styled.div`
   cursor: pointer;
   padding: 0 20px 0 27px;
   border-style: solid;
-  color: ${(props) =>
+  color: ${props =>
     props.active
       ? colors[props.colorTheme].navigationPrimaryHover
       : colors[props.colorTheme].navigationPrimary};
-  border-width: ${(props) => (props.active ? '1px 0 1px 3px' : '0 0 0 3px')};
-  border-color: ${(props) =>
+  border-width: ${props => (props.active ? '1px 0 1px 3px' : '0 0 0 3px')};
+  border-color: ${props =>
     props.active
       ? `rgba(151, 151, 151, 0.2)  ${colors.navigationPrimaryBorderHover}`
       : colors[props.colorTheme].navigationPrimaryBorder};
 
   svg {
     path {
-      fill: ${(props) =>
+      fill: ${props =>
         props.active
           ? colors[props.colorTheme].navigationPrimaryHover
           : colors[props.colorTheme].navigationPrimary};
@@ -311,14 +303,14 @@ const PrimaryButton = styled.div`
   }
 
   :hover {
-    color: ${(props) => colors[props.colorTheme].navigationPrimaryHover};
-    border-width: ${(props) => (props.active ? '1px 0 1px 3px' : '0 0 0 3px')};
+    color: ${props => colors[props.colorTheme].navigationPrimaryHover};
+    border-width: ${props => (props.active ? '1px 0 1px 3px' : '0 0 0 3px')};
     border-color: rgba(151, 151, 151, 0.2)
       ${colors.navigationPrimaryBorderHover};
 
     svg {
       path {
-        fill: ${(props) => colors[props.colorTheme].navigationPrimaryHover};
+        fill: ${props => colors[props.colorTheme].navigationPrimaryHover};
       }
     }
   }
@@ -329,87 +321,42 @@ const PrimaryButtonText = styled.div`
   font-size: 14px;
 `
 
-const InboxCounter = styled(Counter)`
-  position: absolute;
-  right: 30px;
-  font-size: 11px;
-  background-color: #44ffb1;
-  ${borderRadius('10px')}
-`
-
-const ShowMoreButton = styled.span`
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  position: absolute;
-  bottom: 0;
-  color: ${(props) => colors[props.colorTheme].navigationPrimaryShowMore};
-  padding-right: 33px;
-  width: 100%;
-  cursor: pointer;
-  font-size: 12px;
-  font-weight: 500;
-
-  svg {
-    ${transition('transform 300ms ease-out')}
-    ${transform((props) =>
-      props.isVisibleMore ? 'rotate(180deg)' : 'rotate(0deg)'
-    )}
-  }
-
-  :hover {
-    color: ${colors.navigationPrimaryShowMoreHover};
-
-    svg {
-      path {
-        fill: ${colors.navigationPrimaryShowMoreHover};
-      }
-    }
-  }
-`
-
-const ShowMoreTitle = styled.div`
-  font-size: 12px;
-  font-weight: 500;
-`
-
 /*------------------------------ Navigation Secondary ----------------------------------*/
 
 const NavigationSecondaryWrapper = styled.div`
   flex: 1;
   display: flex;
-  font-size: 14px;
-  ${borderRadius('5px')}
+  position: relative;
+`
+
+const SecondaryButtonsWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 2px;
+  height: 26px;
+  ${borderRadius('13px')};
+  background-color: ${defaultColors.coldWind};
 `
 
 const SecondaryButton = styled.div`
-  ${fontMain}
+  ${fontMain};
   ${userSelect('none')};
-  display: inline-block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
   cursor: pointer;
-  margin: 0 14px 0 0;
-  padding: 0;
-  color: ${(props) => (props.active ? '#293034' : '#B1B5B8')};
-  pointer-events: ${(props) => (props.active ? 'none' : 'auto')};
-
-  :after {
-    ${transform('scaleX(0)')}
-    ${transition('transform 250ms ease-in-out')}
-    display: block;
-    content: '';
-    margin-top: 2px;
-    border-bottom: 1px solid #293034;
-  }
+  height: 22px;
+  width: 115px;
+  ${borderRadius('11px')};
+  ${props => (props.active ? boxShadow('0 2px 4px 0 #CECECE') : null)};
+  background-color: ${props =>
+    props.active ? defaultColors.white : 'transparent'};
+  pointer-events: ${props => (props.active ? 'none' : 'auto')};
 
   :hover {
-    color: #293034;
-
-    :after {
-      ${transform('scaleX(1)')}
-    }
+    font-weight: bold;
   }
-
-  border-bottom: ${(props) => (props.active ? '1px solid #293034' : '0')};
 `
 
 /*------------------------------ Navigation Default -----------------------------*/
@@ -432,7 +379,7 @@ const AccountWrapper = styled.div`
 
   svg:nth-of-type(1) {
     ${transition('transform 300ms ease-out')}
-    ${transform((props) =>
+    ${transform(props =>
       props.isVisibleAccountNavigation ? 'rotate(180deg)' : 'rotate(0deg)'
     )}
   }
@@ -510,7 +457,7 @@ const MenuBoxWrapper = styled(MenuBox)`
 `
 
 const MenuBoxGroup = styled(MenuBoxGroupItems)`
-  ${fontMain}
+  ${fontMain};
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -535,10 +482,10 @@ const MenuBoxGroup = styled(MenuBoxGroupItems)`
 const MenuBoxItemIcon = styled(MenuBoxItem)`
   display: inline-block;
   margin: 0 11px 0 22px;
-  pointer-events: ${(props) => (props.active ? 'none' : 'auto')};
+  pointer-events: ${props => (props.active ? 'none' : 'auto')};
 
   path {
-    fill: ${(props) => (props.active ? '#293034' : '#8C9DA9')};
+    fill: ${props => (props.active ? '#293034' : '#8C9DA9')};
   }
 `
 
@@ -548,8 +495,8 @@ const MenuBoxItemTitle = styled(MenuBoxItem)`
   cursor: pointer;
   margin: 0 8px;
   padding: 0;
-  color: ${(props) => (props.active ? '#293034' : '#8C9DA9')};
-  pointer-events: ${(props) => (props.active ? 'none' : 'auto')};
+  color: ${props => (props.active ? '#293034' : '#8C9DA9')};
+  pointer-events: ${props => (props.active ? 'none' : 'auto')};
 
   &:after {
     ${transform('scaleX(0)')}
@@ -566,7 +513,7 @@ const MenuBoxItemTitle = styled(MenuBoxItem)`
     }
   }
 
-  border-bottom: ${(props) => (props.active ? '1px solid #293034' : '0')};
+  border-bottom: ${props => (props.active ? '1px solid #293034' : '0')};
 `
 
 /*------------------------------ Navigation Account Settings ----------------------------------*/
@@ -584,8 +531,8 @@ const SettingsButton = styled.div`
   padding: 0 5px 5px 5px;
   margin-right: 34px;
   cursor: pointer;
-  color: ${(props) => (props.active ? '#1C2124' : '#B1B5B8')};
-  border-bottom: ${(props) =>
+  color: ${props => (props.active ? '#1C2124' : '#B1B5B8')};
+  border-bottom: ${props =>
     props.active ? '3px solid #44FFB1' : '3px solid #fff'};
 
   :hover {
@@ -611,14 +558,11 @@ export {
   LegalButton,
   // Navigation Primary
   NavigationPrimaryWrapper,
-  NavigationPrimaryHidden,
   PrimaryButton,
   PrimaryButtonText,
-  InboxCounter,
-  ShowMoreButton,
-  ShowMoreTitle,
   // Navigation Secondary
   NavigationSecondaryWrapper,
+  SecondaryButtonsWrapper,
   SecondaryButton,
   // Navigation Default
   NavigationDefaultWrapper,

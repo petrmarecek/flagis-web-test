@@ -56,8 +56,8 @@ const CenterPanelTopPrimaryRight = styled.div`
 
 const CenterPanelTopSecondary = styled.div`
   ${centerPanelTopCss};
-  height: 48px;
-  padding: 0 10px 0 17px;
+  height: 38px;
+  padding: 0 10px 0 0;
   border-bottom: ${props =>
     props.bottomBorder ? '1px solid rgba(151, 151, 151, 0.2)' : 'none'};
 `
@@ -71,7 +71,7 @@ const CenterPanelScroll = styled.div`
 `
 
 const CenterPageTitle = styled.div`
-  margin-left: ${props => props.leftMargin ? '12px' : '0'};
+  margin-left: ${props => (props.leftMargin ? '12px' : '0')};
   font-size: 24px;
   font-weight: bold;
   color: #1c2124;

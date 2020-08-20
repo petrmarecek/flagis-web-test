@@ -46,7 +46,9 @@ import {
   getArchivedTasksItems,
   getSelectionTasks,
   getTasks,
+  getInboxTasks,
   getIsDragAndDropActive,
+  getInboxTasksItems,
 } from 'redux/store/tasks/tasks.selectors'
 import {
   getSelectionInfo,
@@ -62,12 +64,15 @@ import TaskList from './task-list'
 
 // styles
 import { EmptyList } from 'components/styled-components-mixins'
+import { InboxTaskList, InboxCounter } from './styles'
 
 const TaskListContainer = props => {
   const {
     // data
     userId,
     tasks,
+    inboxTasks,
+    inboxCount,
     selectedTags,
     selectedTasks,
     isVisibleArchivedTasks,
@@ -100,11 +105,7 @@ const TaskListContainer = props => {
 
   const debouncedMoveTask = debounce(onInvokeMove, 10)
   const onMoveTask = useCallback(move => debouncedMoveTask(move), [])
-  let offset = props.isVisibleArchivedTasks ? 118 : 202
-
-  if (isVisibleInbox) {
-    offset = 70
-  }
+  let offset = props.isVisibleArchivedTasks ? 108 : 192
 
   const scrollStyle = {
     height: `calc(100vh - ${offset}px)`,
@@ -121,6 +122,35 @@ const TaskListContainer = props => {
       setPosition={onHandleSetScrollbarPosition}
     >
       <span onContextMenu={e => e.preventDefault()}>
+        {!_.isEmpty(inboxTasks.items) && !isVisibleArchivedTasks && (
+          <InboxTaskList>
+            <InboxCounter>({inboxCount}) Incomming tasks</InboxCounter>
+            <TaskList
+              userId={userId}
+              listType={inboxTasks.type}
+              tasks={inboxTasks.items}
+              selectedTags={selectedTags}
+              selectedTasks={selectedTasks}
+              sort={sort}
+              isVisibleArchivedTasks={isVisibleArchivedTasks}
+              leftPanelWidth={leftPanelWidth}
+              windowWidth={windowWidth}
+              moveTask={onMoveTask}
+              dropTask={onDropTask}
+              onTaskSelect={onHandleTaskSelect}
+              onToggleImportant={onHandleToggleImportant}
+              onCompleteClick={onHandleCompleteClick}
+              onTagClick={onHandleTagClick}
+              setArchiveTasks={onHandleSetArchiveTasks}
+              cancelArchiveTasks={onHandleCancelArchiveTasks}
+              acceptTask={onHandleAcceptTask}
+              rejectTask={onHandleRejectTask}
+              toggleDragAndDrop={onHandleToggleDragAndDrop}
+              isDragAndDropActive={isDragAndDropActive}
+              setDraggingTask={onHandleSetDraggingTask}
+            />
+          </InboxTaskList>
+        )}
         <TaskList
           userId={userId}
           listType={tasks.type}
@@ -154,6 +184,8 @@ TaskListContainer.propTypes = {
   // data
   userId: PropTypes.string,
   tasks: PropTypes.object,
+  inboxTasks: PropTypes.object,
+  inboxCount: PropTypes.number,
   tasksId: PropTypes.object,
   completedTasks: PropTypes.object,
   archivedTasks: PropTypes.object,
@@ -212,6 +244,8 @@ const mapStateToProps = state => {
   return {
     userId: getUserId(state),
     tasks: getTasks(state),
+    inboxTasks: getInboxTasks(state),
+    inboxCount: getInboxTasksItems(state).size,
     tasksId: getTasksItems(state),
     completedTasks: getCompletedTasksItems(state),
     archivedTasks: getArchivedTasksItems(state),

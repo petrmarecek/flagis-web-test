@@ -68,7 +68,6 @@ const TaskListItem = props => {
   const onHandleMouseDown = useCallback(
     event => {
       const { isCompleted } = props.task
-      const isInboxList = props.listType === 'inbox'
 
       // allowed only right mouse button
       if (event.button !== 2) {
@@ -76,7 +75,7 @@ const TaskListItem = props => {
       }
 
       // set task as important by right mouse
-      if (!isCompleted && !isInboxList) {
+      if (!isCompleted) {
         props.onToggleImportant(props.task)
         return
       }

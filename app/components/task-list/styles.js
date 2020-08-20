@@ -9,6 +9,23 @@ import {
   fontMain,
   link,
 } from '../styled-components-mixins'
+import { colors } from '../styled-components-mixins/colors'
+
+/*--------------------------- Task List Container (index) ------------------------------------*/
+
+const InboxTaskList = styled.div`
+  padding: 0 0 14px 0;
+`
+
+const InboxCounter = styled.div`
+  font-size: 12px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  padding: 0 0 0 2px;
+  color: ${colors.astrocopusGrey};
+  ${fontMain};
+`
 
 /*----------------------------------- Task List ----------------------------------------------*/
 
@@ -20,7 +37,7 @@ const TaskListItems = styled.ul`
   }
 `
 
-/*----------------------------------- Task List Item ----------------------------------------------*/
+/*--------------------------------- Task List Item ------------------------------------------*/
 
 const showAnimation = keyframes`${fadeInUp}`
 const hideAnimation = keyframes`${flipOutX}`
@@ -31,6 +48,7 @@ const TaskItem = styled.div`
   margin: ${props => (props.dragging ? '-4px 0 0' : '0 0 4px')};
   visibility: ${props => (props.dragging ? 'hidden' : 'visible')};
 
+  ${borderRadius('3px')};
   overflow: hidden;
   list-style-type: none;
   cursor: pointer;
@@ -222,6 +240,8 @@ const Text = styled.div`
 `
 
 export {
+  InboxTaskList,
+  InboxCounter,
   TaskListItems,
   TaskItem,
   Completed,

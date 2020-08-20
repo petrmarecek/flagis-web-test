@@ -38,10 +38,7 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   withHandlers({
     onHandleResize: props => position => props.resizeLeftPanel(position.x),
   })

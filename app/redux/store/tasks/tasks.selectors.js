@@ -303,51 +303,6 @@ function loadArchiveTasks(ids, data) {
 }
 
 /**
- * Loads task entities for given task IDs (only inbox tasks)
- * @param {Array} ids Array of tasks
- * @param {Object} data Object
- * @returns {Array} array of tasks
- */
-
-function loadInboxTasks(ids, data) {
-  const {
-    entitiesTasks,
-    entitiesTags,
-    entitiesFollowers,
-    entitiesContacts,
-  } = data
-
-  const tasks = ids.map(taskId => {
-    const task = entitiesTasks.get(taskId)
-    const tags = task.tags
-      .map(tagId => entitiesTags.get(tagId))
-      .sort(compareTagByTitle)
-    const createdBy = entitiesContacts.get(task.createdById)
-    const followers = task.followers.map(followerId => {
-      const follower = entitiesFollowers.get(followerId)
-      const profile = entitiesContacts.get(follower.userId)
-
-      return follower.set('profile', profile)
-    })
-
-    return task
-      .set('tags', tags)
-      .set('createdBy', createdBy)
-      .set('followers', followers)
-  })
-
-  // sort task by order
-  tasks.sort((a, b) => {
-    if (a.order > b.order) return -1
-    if (a.order < b.order) return 1
-
-    return 0
-  })
-
-  return tasks
-}
-
-/**
  * Return last selected task
  * @param {List} selectionTasks List of selected tasks
  * @returns {String} id of task
@@ -453,13 +408,10 @@ export const getAllTasks = createSelector(
 
 export const getTasks = createSelector(
   getArchivedTasksVisibility,
-  getInboxTasksVisibility,
   getArchivedTasksIsFetching,
   getArchivedTasksItems,
   getTasksIsFetching,
   getTasksItems,
-  getInboxTasksIsFetching,
-  getInboxTasksItems,
   getTasksSearch,
   getTasksMenu,
   getEntitiesTasks,
@@ -470,13 +422,10 @@ export const getTasks = createSelector(
   getUserId,
   (
     isArchivedTasksVisible,
-    isInboxTasksVisible,
     archivedTasksIsFetching,
     archivedTasksItems,
     tasksIsFetching,
     tasksItems,
-    inboxTasksIsFetching,
-    InboxTasksItems,
     tasksSearch,
     tasksMenu,
     entitiesTasks,
@@ -506,20 +455,64 @@ export const getTasks = createSelector(
       }
     }
 
-    // Load inbox tasks
-    if (isInboxTasksVisible) {
-      return {
-        isFetching: inboxTasksIsFetching,
-        items: loadInboxTasks(InboxTasksItems.toArray(), data),
-        type: 'inbox',
-      }
-    }
-
     // Load main tasks
     return {
       isFetching: tasksIsFetching,
       items: loadTasks(tasksItems.toArray(), data),
       type: 'main',
+    }
+  }
+)
+
+export const getInboxTasks = createSelector(
+  getArchivedTasksVisibility,
+  getInboxTasksIsFetching,
+  getInboxTasksItems,
+  getTasksSearch,
+  getTasksMenu,
+  getEntitiesTasks,
+  getActiveEntitiesTags,
+  getEntitiesFollowers,
+  getEntitiesContacts,
+  getActiveTagsIds,
+  getUserId,
+  (
+    isArchivedTasksVisible,
+    inboxTasksIsFetching,
+    InboxTasksItems,
+    tasksSearch,
+    tasksMenu,
+    entitiesTasks,
+    entitiesTags,
+    entitiesFollowers,
+    entitiesContacts,
+    activeTagsIds,
+    userId
+  ) => {
+    const data = {
+      entitiesTasks,
+      entitiesTags,
+      entitiesFollowers,
+      entitiesContacts,
+      activeTagsIds,
+      tasksSearch,
+      tasksMenu,
+      userId,
+    }
+
+    if (isArchivedTasksVisible) {
+      return {
+        isFetching: inboxTasksIsFetching,
+        items: [],
+        type: 'inbox',
+      }
+    }
+
+    // Load inbox tasks
+    return {
+      isFetching: inboxTasksIsFetching,
+      items: loadTasks(InboxTasksItems.toArray(), data),
+      type: 'inbox',
     }
   }
 )
@@ -779,6 +772,7 @@ export const getNextTask = createSelector(
       userId,
     }
 
+    const selectedTask = entitiesTasks.get(selectedTaskId)
     let typeTask = loadTasks(tasksItems.toArray(), data)
     typeTask = List(typeTask.map(task => task.id))
     if (isArchivedTasksVisible) {
@@ -786,8 +780,8 @@ export const getNextTask = createSelector(
       typeTask = List(typeTask.map(task => task.id))
     }
 
-    if (isInboxTasksVisible) {
-      typeTask = List(loadInboxTasks(InboxTasksItems.toArray(), data))
+    if (selectedTask.isInbox) {
+      typeTask = List(loadTasks(InboxTasksItems.toArray(), data))
       typeTask = List(typeTask.map(task => task.id))
     }
 
@@ -859,6 +853,7 @@ export const getPreviousTask = createSelector(
       userId,
     }
 
+    const selectedTask = entitiesTasks.get(selectedTaskId)
     let typeTask = loadTasks(tasksItems.toArray(), data)
     typeTask = List(typeTask.map(task => task.id))
     if (isArchivedTasksVisible) {
@@ -866,8 +861,8 @@ export const getPreviousTask = createSelector(
       typeTask = List(typeTask.map(task => task.id))
     }
 
-    if (isInboxTasksVisible) {
-      typeTask = List(loadInboxTasks(InboxTasksItems.toArray(), data))
+    if (selectedTask.isInbox) {
+      typeTask = List(loadTasks(InboxTasksItems.toArray(), data))
       typeTask = List(typeTask.map(task => task.id))
     }
 

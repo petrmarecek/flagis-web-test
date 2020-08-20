@@ -83,10 +83,7 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   withHandlers({
     onHandleClickOutSide: props => () => props.onClickOutSide(),
     onHandleClickLogOut: props => () => props.logout(),

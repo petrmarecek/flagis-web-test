@@ -37,7 +37,7 @@ const ArchiveContent = ({ search, onHandleSearchChange }) => (
         <TasksMenuContainer />
       </CenterPanelTopSecondary>
     </CenterPanelTop>
-    <CenterPanelScroll offsetTop={108} offsetBottom={10}>
+    <CenterPanelScroll offsetTop={98} offsetBottom={10}>
       <TaskListContainer />
     </CenterPanelScroll>
   </div>

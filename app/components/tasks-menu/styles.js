@@ -52,7 +52,7 @@ const IconWrapper = styled.div`
 
 // ---------------------------------- TasksMenuContainer ----------------------------------
 const TaskMenuWrapper = styled.div`
-  height: 48px;
+  height: 38px;
   position: relative;
   flex: 1;
   display: flex;
@@ -109,7 +109,13 @@ const FilterActiveItem = styled.li`
   padding: 0 10px 0 18px;
   font-size: 14px;
   animation: ${props =>
-    props.isMounted ? css`${flipIn} 250ms` : css`${flipOut} 250ms`};
+    props.isMounted
+      ? css`
+          ${flipIn} 250ms
+        `
+      : css`
+          ${flipOut} 250ms
+        `};
 `
 
 const FilterActiveItemIcon = styled.div`
@@ -139,7 +145,7 @@ const MenuBoxContainer = styled(MenuBox)`
   ${boxShadow('0px 1px 6px 1px rgba(163,163,163,0.5)')}
   position: absolute;
   right: 0;
-  top: 48px;
+  top: 38px;
   z-index: 100;
   border: 1px solid #c1cad0;
   background-color: #fff;

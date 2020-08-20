@@ -160,7 +160,9 @@ const TaskDetail = props => {
   }
 
   // editor styles
-  const contentTopElem = contentTopRef ? domUtils.getDimensions(contentTopRef) : { height: 0 }
+  const contentTopElem = contentTopRef
+    ? domUtils.getDimensions(contentTopRef)
+    : { height: 0 }
   const editorOffset = 84 + contentTopElem.height
   const scrollOffset = 144 + contentTopElem.height
   const contentOffset = 84 + contentTopElem.height
@@ -175,15 +177,19 @@ const TaskDetail = props => {
 
   // Conditionals
   const isAcceptedStatus =
-    followerStatus !== 'new' && followerStatus !== 'pending' && followerStatus !== 'rejected'
-  const isCollaborated = followerStatus === 'pending' || followerStatus === 'accepted'
+    followerStatus !== 'new' &&
+    followerStatus !== 'pending' &&
+    followerStatus !== 'rejected'
+  const isCollaborated =
+    followerStatus === 'pending' || followerStatus === 'accepted'
   const isCollaboratedOrCompleted = isCollaborated || isCompleted
   const isOwnerCollaborated = isOwner && isCollaborated
   const isOwnerAccepted = isOwner && followerStatus === 'accepted'
   const isAssigneeAccepted = !isOwner && followerStatus === 'accepted'
   const isCompletedMainList = isCompleted && !isArchived
   const isArchivedOrCollaborated = isArchived || !isOwner
-  const isUnknownContact = isAssigneeAccepted && !isCompleted && !createdBy.isContact
+  const isUnknownContact =
+    isAssigneeAccepted && !isCompleted && !createdBy.isContact
 
   // Data about owner of task
   const createdByFollower = {
@@ -207,14 +213,14 @@ const TaskDetail = props => {
   // Color of completed icon
   const completedIconColor = () => {
     if (task.isCompleted) {
-      return [ colors.hanumanGreen ]
+      return [colors.hanumanGreen]
     }
 
     if (isOwnerAccepted) {
-      return [ colors.mercury ]
+      return [colors.mercury]
     }
 
-    return [ colors.crystalBell ]
+    return [colors.crystalBell]
   }
 
   // Margin-left of subject
@@ -248,7 +254,11 @@ const TaskDetail = props => {
 
   return (
     <div>
-      <DetailMenu back={onHandleToggleList} previous={onHandlePrevious} next={onHandleNext} />
+      <DetailMenu
+        back={onHandleToggleList}
+        previous={onHandlePrevious}
+        next={onHandleNext}
+      />
       <DetailInner isMounted={isMounted} isRejected={isRejected}>
         <DetailContentTop
           ref={getContentTopRef}
@@ -267,35 +277,41 @@ const TaskDetail = props => {
                 </DetailSubjectTaskFollowerResponse>
               )}
               {!isInboxVisible &&
-              !isArchived &&
-              isFollowers &&
-              !isAcceptedStatus && (
-                <FollowerStatus
-                  status={followerStatus}
-                  animation={animation}
-                  onSend={onHandleSend}
-                />
-              )}
-              {!isArchived &&
-              isAcceptedStatus && (
-                <DetailSubjectTaskCompleted completed={task.isCompleted} onClick={onHandleComplete}>
+                !isArchived &&
+                isFollowers &&
+                !isAcceptedStatus && (
+                  <FollowerStatus
+                    status={followerStatus}
+                    animation={animation}
+                    onSend={onHandleSend}
+                  />
+                )}
+              {!isArchived && isAcceptedStatus && (
+                <DetailSubjectTaskCompleted
+                  completed={task.isCompleted}
+                  onClick={onHandleComplete}
+                >
                   <Icon
-                    icon={isCompleted ? ICONS.TASK_COMPLETED : ICONS.TASK_UNCOMPLETED}
+                    icon={
+                      isCompleted
+                        ? ICONS.TASK_COMPLETED
+                        : ICONS.TASK_UNCOMPLETED
+                    }
                     color={completedIconColor()}
                     width={22}
                     height={22}
                   />
                 </DetailSubjectTaskCompleted>
               )}
-              {isCompleted &&
-              animation &&
-              !isArchived &&
-              isAcceptedStatus && (
-                <DetailSubjectTaskArchived archived={isArchived} onClick={onHandleArchive}>
+              {isCompleted && animation && !isArchived && isAcceptedStatus && (
+                <DetailSubjectTaskArchived
+                  archived={isArchived}
+                  onClick={onHandleArchive}
+                >
                   <Icon
                     icon={ICONS.ARCHIVE}
-                    color={[ colors.astrocopusGrey ]}
-                    hoverColor={[ colors.aztec ]}
+                    color={[colors.astrocopusGrey]}
+                    hoverColor={[colors.aztec]}
                     width={24}
                     height={25}
                     scale={0.926}
@@ -306,15 +322,15 @@ const TaskDetail = props => {
                   />
                 </DetailSubjectTaskArchived>
               )}
-              {isCompleted &&
-              !animation &&
-              !isArchived &&
-              isAcceptedStatus && (
-                <DetailSubjectTaskArchived archived={isArchived} onClick={onHandleArchive}>
+              {isCompleted && !animation && !isArchived && isAcceptedStatus && (
+                <DetailSubjectTaskArchived
+                  archived={isArchived}
+                  onClick={onHandleArchive}
+                >
                   <Icon
                     icon={ICONS.ARCHIVE}
-                    color={[ colors.astrocopusGrey ]}
-                    hoverColor={[ colors.aztec ]}
+                    color={[colors.astrocopusGrey]}
+                    hoverColor={[colors.aztec]}
                     width={24}
                     height={25}
                     scale={0.926}
@@ -322,12 +338,15 @@ const TaskDetail = props => {
                 </DetailSubjectTaskArchived>
               )}
               {isArchived && (
-                <DetailSubjectTaskArchived archived={isArchived} onClick={onHandleArchive}>
+                <DetailSubjectTaskArchived
+                  archived={isArchived}
+                  onClick={onHandleArchive}
+                >
                   <Icon
                     archived
                     icon={ICONS.NON_ARCHIVE}
-                    color={[ colors.astrocopusGrey ]}
-                    hoverColor={[ colors.aztec ]}
+                    color={[colors.astrocopusGrey]}
+                    hoverColor={[colors.aztec]}
                     width={24}
                     height={27}
                     scale={0.926}
@@ -372,12 +391,16 @@ const TaskDetail = props => {
               />
             )}
           </DetailContentTagAutocomplete>
-          {!isArchived &&
-          !isInboxVisible &&
-          isCollaborated && (
-            <DetailContentButton allowed={!isCompleted} isCompleted={isCompletedMainList} animation>
+          {!isArchived && !isInboxVisible && isCollaborated && (
+            <DetailContentButton
+              allowed={!isCompleted}
+              isCompleted={isCompletedMainList}
+              animation
+            >
               <FollowerResponseButtons
-                takeBackClicked={() => onHandleFollowerDelete(assignee, 'isAssignee')}
+                takeBackClicked={() =>
+                  onHandleFollowerDelete(assignee, 'isAssignee')
+                }
                 rejectClicked={onHandleReject}
                 isTakeBack={isOwnerCollaborated}
                 isAccepted={isAssigneeAccepted}
@@ -388,32 +411,32 @@ const TaskDetail = props => {
             <DetailContentIcon
               contactIcon
               title={
-                !isOwner ? createdByFollower.profile.nickname === null ? (
-                  createdByFollower.profile.email
-                ) : (
-                  createdByFollower.profile.nickname
-                ) : assignee.profile.nickname === null ? (
-                  assignee.profile.email
-                ) : (
-                  assignee.profile.nickname
-                )
+                !isOwner
+                  ? createdByFollower.profile.nickname === null
+                    ? createdByFollower.profile.email
+                    : createdByFollower.profile.nickname
+                  : assignee.profile.nickname === null
+                  ? assignee.profile.email
+                  : assignee.profile.nickname
               }
             >
               <FollowerIcon
                 status={followerStatus}
                 assigneeInbox={isInboxVisible || !isOwner}
                 isCompleted={isCompletedMainList}
-                photo={!isOwner ? createdByFollower.profile.photo : assignee.profile.photo}
+                photo={
+                  !isOwner
+                    ? createdByFollower.profile.photo
+                    : assignee.profile.photo
+                }
                 nickname={
-                  !isOwner ? createdByFollower.profile.nickname === null ? (
-                    createdByFollower.profile.email
-                  ) : (
-                    createdByFollower.profile.nickname
-                  ) : assignee.profile.nickname === null ? (
-                    assignee.profile.email
-                  ) : (
-                    assignee.profile.nickname
-                  )
+                  !isOwner
+                    ? createdByFollower.profile.nickname === null
+                      ? createdByFollower.profile.email
+                      : createdByFollower.profile.nickname
+                    : assignee.profile.nickname === null
+                    ? assignee.profile.email
+                    : assignee.profile.nickname
                 }
                 animation={animation}
               />
@@ -426,7 +449,7 @@ const TaskDetail = props => {
                 width={19}
                 height={25}
                 scale={1.25}
-                color={[ colors.astrocopusGrey ]}
+                color={[colors.astrocopusGrey]}
                 title={ruleMessage}
               />
             </DetailContentIcon>
@@ -438,7 +461,7 @@ const TaskDetail = props => {
                 width={23}
                 height={26}
                 scale={1}
-                color={[ colors.pompelmo ]}
+                color={[colors.pompelmo]}
                 onClick={onHandleDelete}
               />
             </DetailContentIcon>
@@ -454,7 +477,7 @@ const TaskDetail = props => {
                     width={15}
                     height={11}
                     scale={0.5}
-                    color={[ colors.astrocopusGrey ]}
+                    color={[colors.astrocopusGrey]}
                   />
                 </DetailContentAddContactIcon>
                 <DetailContentAddContactLabel changeColor>
@@ -467,18 +490,21 @@ const TaskDetail = props => {
                   {isArchivedOrCollaborated && (
                     <DetailContentAutocompleteContacts>
                       <FollowerItems
-                        followers={!isOwner ? List().push(createdByFollower) : followers}
+                        followers={
+                          !isOwner ? List().push(createdByFollower) : followers
+                        }
                       />
                     </DetailContentAutocompleteContacts>
                   )}
-                  {!isArchived &&
-                  isOwner && (
+                  {!isArchived && isOwner && (
                     <Autocomplete
                       dataType="contacts"
                       location="taskDetailContacts"
                       placeholder="Add contact"
                       selectedItems={{
-                        contacts: isFollowers ? followers.map(follower => follower.profile) : null,
+                        contacts: isFollowers
+                          ? followers.map(follower => follower.profile)
+                          : null,
                       }}
                       parentId={id}
                       onItemDelete={onHandleFollowerDelete}
@@ -489,14 +515,16 @@ const TaskDetail = props => {
                 </DetailContentAddContactContent>
                 {isUnknownContact && (
                   <DetailContentAddNewContact
-                    onClick={() => onHandleAddNewContact(createdByFollower.profile.email)}
+                    onClick={() =>
+                      onHandleAddNewContact(createdByFollower.profile.email)
+                    }
                   >
                     <Icon
                       icon={ICONS.PLUS}
                       width={10}
                       height={10}
                       scale={0.34}
-                      color={[ colors.white ]}
+                      color={[colors.white]}
                     />
                   </DetailContentAddNewContact>
                 )}
@@ -527,7 +555,7 @@ const TaskDetail = props => {
                   icon={ICONS.DUE_DATE}
                   height={12}
                   width={12}
-                  color={[ colors.astrocopusGrey ]}
+                  color={[colors.astrocopusGrey]}
                 />
                 <DetailContentDateLabel>Due date</DetailContentDateLabel>
                 <DetailContentDatePicker onClick={onHandleRemoveEventListener}>
@@ -548,9 +576,11 @@ const TaskDetail = props => {
                   icon={ICONS.REMINDER_DATE}
                   height={13}
                   width={15}
-                  color={[ colors.astrocopusGrey ]}
+                  color={[colors.astrocopusGrey]}
                 />
-                <DetailContentDateLabel reminder>Reminder date</DetailContentDateLabel>
+                <DetailContentDateLabel reminder>
+                  Reminder date
+                </DetailContentDateLabel>
                 <DetailContentDatePicker onClick={onHandleRemoveEventListener}>
                   <DatePicker
                     todayButton="Today"
@@ -575,7 +605,7 @@ const TaskDetail = props => {
                   width={16}
                   height={16}
                   scale={0.24}
-                  color={[ colors.astrocopusGrey ]}
+                  color={[colors.astrocopusGrey]}
                 />
                 <DetailContentImportantLabel important={isImportant}>
                   Important
@@ -614,7 +644,10 @@ const TaskDetail = props => {
               />
             </div>
           </DetailContentDescriptionTask>
-          <DetailContentComments allowed={!isCompleted} contentHeight={contentHeight}>
+          <DetailContentComments
+            allowed={!isCompleted}
+            contentHeight={contentHeight}
+          >
             {comments.isFetching && <Loader />}
             {!comments.isFetching && <CommentList comments={comments} />}
             {!isArchived && (
@@ -622,7 +655,7 @@ const TaskDetail = props => {
                 <DetailContentCommentsAddIcon>
                   <Icon
                     icon={ICONS.COMMENT}
-                    color={[ colors.darkJungleGreen ]}
+                    color={[colors.darkJungleGreen]}
                     width={26}
                     height={23}
                   />
@@ -782,7 +815,8 @@ export default compose(
 
       props.onHandleTaskFollowerDeleted(data)
     },
-    onHandleAddNewContact: props => email => props.onHandleTaskAddNewContact(email),
+    onHandleAddNewContact: props => email =>
+      props.onHandleTaskAddNewContact(email),
     onHandleStartDateChanged: props => date => {
       const data = { task: props.task, date, typeDate: 'startDate' }
       props.onHandleTaskDateChanged(data)

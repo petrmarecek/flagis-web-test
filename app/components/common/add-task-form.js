@@ -20,6 +20,7 @@ import Icon from 'components/icons/icon'
 import styled from 'styled-components'
 import {
   boxShadow,
+  borderRadius,
   boxSizing,
   placeholderColor,
 } from '../styled-components-mixins'
@@ -31,7 +32,8 @@ const AddForm = styled.form`
   margin-bottom: 6px;
   background-color: #fff;
   height: 58px;
-  ${boxShadow('0 0 6px 0 #CECECE')}
+  ${boxShadow('0 1px 6px 0 #CECECE')}
+  ${borderRadius('3px')}
 `
 
 const SubmitIcon = styled.div`
