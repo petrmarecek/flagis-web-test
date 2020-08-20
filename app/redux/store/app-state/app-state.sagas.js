@@ -27,7 +27,6 @@ import api from 'redux/utils/api'
 
 export function* defaultDisplay() {
   yield put(appStateActions.hideArchivedTasks())
-  yield put(appStateActions.hideInboxTasks())
   yield put(taskActions.deselectTasks())
   yield put(taskActions.updateTaskSearch(''))
   yield put(tagActions.deselectTags())

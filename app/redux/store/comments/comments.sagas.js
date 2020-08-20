@@ -84,7 +84,7 @@ export function* initCommentsData() {
     // eslint-disable-line
     let detail = (yield take(APP_STATE.SET_DETAIL)).payload.detail
 
-    if (detail === 'task' || detail === 'inbox') {
+    if (detail === 'task') {
       const initTime = dateUtil.getDateToISOString()
       const taskId = yield select(state =>
         taskSelectors.getSelectionTasks(state).first()

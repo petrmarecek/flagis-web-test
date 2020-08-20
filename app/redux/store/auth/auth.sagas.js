@@ -115,15 +115,10 @@ export function* initDataFlow() {
       yield cancel(notificationsSyncing)
 
       // Cancel snapshot for comments and attachments from firestore
-      const { task, inbox } = yield select(state =>
-        appStateSelectors.getDetail(state)
-      )
+      const { task } = yield select(state => appStateSelectors.getDetail(state))
+
       if (task) {
         yield put(appStateActions.deselectDetail('task'))
-      }
-
-      if (inbox) {
-        yield put(appStateActions.deselectDetail('inbox'))
       }
     }
   } catch (err) {

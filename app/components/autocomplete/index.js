@@ -170,10 +170,7 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = { hintSelected }
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   withHandlers({
     onHandleDeselectInput: props => () => props.onDeselectInput(),
     onHandleItemDelete: props => item => props.onItemDelete(item),

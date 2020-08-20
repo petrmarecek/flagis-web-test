@@ -17,10 +17,6 @@ export const APP_STATE = {
   ARCHIVED_TASKS_VISIBLE: 'APP-STATE/ARCHIVED_TASKS_VISIBLE',
   ARCHIVED_TASKS_HIDE: 'APP-STATE/ARCHIVED_TASKS_HIDE',
 
-  // Inbox tasks
-  INBOX_TASKS_VISIBLE: 'APP-STATE/INBOX_TASKS_VISIBLE',
-  INBOX_TASKS_HIDE: 'APP-STATE/INBOX_TASKS_HIDE',
-
   // Task tag detail
   SET_ANIMATION: 'APP-STATE/SET_ANIMATION',
   DESELECT_ANIMATION: 'APP-STATE/DESELECT_ANIMATION',
@@ -105,16 +101,6 @@ export const visibleArchivedTasks = () => ({
 
 export const hideArchivedTasks = () => ({
   type: APP_STATE.ARCHIVED_TASKS_HIDE,
-})
-
-// ------ Inbox tasks ------------------------------------------------------------
-
-export const visibleInboxTasks = () => ({
-  type: APP_STATE.INBOX_TASKS_VISIBLE,
-})
-
-export const hideInboxTasks = () => ({
-  type: APP_STATE.INBOX_TASKS_HIDE,
 })
 
 // ------ Task tag detail -----------------------------------------------------------

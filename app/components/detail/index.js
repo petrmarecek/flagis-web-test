@@ -62,7 +62,6 @@ import {
 import { getUserId } from 'redux/store/auth/auth.selectors'
 import {
   getDetail,
-  getInboxTasksVisibility,
   getWindow,
   getLeftPanel,
 } from 'redux/store/app-state/app-state.selectors'
@@ -104,7 +103,6 @@ import ContactDetail from './contact-detail'
 const Detail = props => {
   const {
     detail,
-    isInboxVisible,
     windowWidth,
     leftPanelWidth,
 
@@ -154,7 +152,7 @@ const Detail = props => {
 
   return (
     <DetailStyle>
-      {(detail.task || detail.archive || detail.inbox) && (
+      {(detail.task || detail.archive) && (
         <TaskDetail
           detail={detail}
           userId={userId}
@@ -162,7 +160,6 @@ const Detail = props => {
           animation={detail.animation}
           attachments={attachments}
           comments={comments}
-          isInboxVisible={isInboxVisible}
           onHandleFetchAttachment={onHandleFetchAttachment}
           onHandleFetchActivities={onHandleFetchActivities}
           onHandleFetchComment={onHandleFetchComment}
@@ -226,7 +223,6 @@ const Detail = props => {
 
 Detail.propTypes = {
   detail: PropTypes.object,
-  isInboxVisible: PropTypes.bool,
   windowWidth: PropTypes.number,
   leftPanelWidth: PropTypes.number,
   prevPathname: PropTypes.string,
@@ -279,7 +275,6 @@ Detail.propTypes = {
 
 const mapStateToProps = state => ({
   detail: getDetail(state),
-  isInboxVisible: getInboxTasksVisibility(state),
   windowWidth: getWindow(state).width,
   leftPanelWidth: getLeftPanel(state).width,
   prevPathname: getRoutingPrevPathname(state),
@@ -353,25 +348,13 @@ export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withHandlers({
     onHandleToggleList: props => () => {
-      const {
-        tasks,
-        tags,
-        inbox,
-        archive,
-        contacts,
-        notifications,
-      } = routes.user
+      const { tasks, tags, archive, contacts, notifications } = routes.user
       const { detail, prevPathname } = props
       const isPrevNotifications = prevPathname === notifications
 
-      if (detail.task || detail.archive || detail.inbox) {
+      if (detail.task || detail.archive) {
         if (detail.task) {
           const route = isPrevNotifications ? notifications : tasks
-          props.changeLocation(route)
-        }
-
-        if (detail.inbox) {
-          const route = isPrevNotifications ? notifications : inbox
           props.changeLocation(route)
         }
 
@@ -399,7 +382,7 @@ export default compose(
     onHandleNext: props => () => {
       const { detail, nextTask, nextTag, nextContact, selectedTasks } = props
 
-      if (detail.task || detail.archive || detail.inbox) {
+      if (detail.task || detail.archive) {
         if (!nextTask) {
           return
         }
@@ -440,7 +423,7 @@ export default compose(
         selectedTasks,
       } = props
 
-      if (detail.task || detail.archive || detail.inbox) {
+      if (detail.task || detail.archive) {
         if (!previousTask) {
           return
         }

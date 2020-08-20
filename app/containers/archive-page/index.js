@@ -6,7 +6,6 @@ import { compose, lifecycle } from 'recompose'
 // redux
 import { connect } from 'react-redux'
 import {
-  hideInboxTasks,
   visibleArchivedTasks,
   primaryHiddenNavigationVisible,
   setPrimaryHiddenNavigationAnimation,
@@ -61,7 +60,6 @@ const mapDispatchToProps = {
   changeLocation,
   changeNavigation,
   selectTask,
-  hideInboxTasks,
   visibleArchivedTasks,
   primaryHiddenNavigationVisible,
   setPrimaryHiddenNavigationAnimation,
@@ -79,9 +77,6 @@ export default compose(
     componentDidUpdate() {
       const { archivedItems, pathname, selectTasksItems } = this.props
       const { user } = routes
-
-      // Hide inbox tasks
-      this.props.hideInboxTasks()
 
       // redirect to tasks
       if (pathname === user.tasks) {

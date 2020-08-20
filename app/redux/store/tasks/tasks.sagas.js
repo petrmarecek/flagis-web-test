@@ -96,11 +96,6 @@ function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
         yield put(appStateActions.deselectDetail('task'))
       }
 
-      // Close inbox detail
-      if (isDetailVisible.inbox && storeSelectionItem === id) {
-        yield put(appStateActions.deselectDetail('inbox'))
-      }
-
       // Rejected action
       if (!storeItems.includes(id) && !storeInboxItems.includes(id)) {
         return
@@ -135,11 +130,6 @@ function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
         position: toastCommon.position.DEFAULT,
         autoClose: toastCommon.duration.SUCCESS_DURATION,
       })
-
-      // Close inbox detail
-      if (isDetailVisible.inbox && storeSelectionItem === id) {
-        yield put(appStateActions.deselectDetail('inbox'))
-      }
     }
 
     // Owner deleted task -> show notification
@@ -200,11 +190,6 @@ function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
     // Close archive detail
     if (isDetailVisible.archive && storeSelectionItem === id) {
       yield put(appStateActions.deselectDetail('archive'))
-    }
-
-    // Close inbox detail
-    if (isDetailVisible.inbox && storeSelectionItem === id) {
-      yield put(appStateActions.deselectDetail('inbox'))
     }
   }
 
@@ -982,11 +967,6 @@ export function* rejectTask(action) {
   try {
     const { task } = action.payload.originalData
     const { reject } = api.followers
-    const { inbox } = yield select(state => appStateSelectors.getDetail(state))
-
-    if (inbox) {
-      yield put(appStateActions.deselectDetail('inbox'))
-    }
 
     // Debounce by 50ms
     yield call(delay, 50)

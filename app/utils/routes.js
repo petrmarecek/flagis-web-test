@@ -18,7 +18,6 @@ export const routes = {
   user: {
     tasks: '/user/tasks',
     tags: '/user/tags',
-    inbox: '/user/inbox',
     archive: '/user/archive',
     contacts: '/user/contacts',
     dashboard: '/user/dashboard',

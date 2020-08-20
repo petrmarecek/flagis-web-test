@@ -30,12 +30,10 @@ const CommentListItem = ({ comment, userId, photo }) => {
       <Date>{dateText}</Date>
       <Content isAssigneeComment={isAssigneeComment}>
         {type ? (
-          <div style={{ fontWeight: 'bold' }}>
-            {activityText(type, data)}
-          </div>
+          <div style={{ fontWeight: 'bold' }}>{activityText(type, data)}</div>
         ) : (
-            <Linkify properties={{ target: '_blank' }}>{content}</Linkify>
-          )}
+          <Linkify properties={{ target: '_blank' }}>{content}</Linkify>
+        )}
       </Content>
     </ItemWrapper>
   )

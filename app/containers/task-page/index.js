@@ -5,10 +5,7 @@ import { compose, lifecycle } from 'recompose'
 
 // redux
 import { connect } from 'react-redux'
-import {
-  hideInboxTasks,
-  hideArchivedTasks,
-} from 'redux/store/app-state/app-state.actions'
+import { hideArchivedTasks } from 'redux/store/app-state/app-state.actions'
 import { selectTask } from 'redux/store/tasks/tasks.actions'
 import { changeLocation } from 'redux/store/routing/routing.actions'
 import { getRoutingPathname } from 'redux/store/routing/routing.selectors'
@@ -56,7 +53,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   changeLocation,
   selectTask,
-  hideInboxTasks,
   hideArchivedTasks,
 }
 

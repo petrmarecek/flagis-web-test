@@ -48,7 +48,7 @@ import {
 } from '../styled-components-mixins'
 
 const ContactUsWrapper = styled.div`
-  padding: ${(props) => (props.nonPadding ? '0' : '0 25px 50px')};
+  padding: ${props => (props.nonPadding ? '0' : '0 25px 50px')};
 `
 
 const ContactUsContainer = ({
@@ -72,9 +72,9 @@ const ContactUsContainer = ({
         <FormBody
           onSubmit={
             isUserContactUs
-              ? handleSubmit((values) => onSubmit(values))
+              ? handleSubmit(values => onSubmit(values))
               : isAgree
-              ? handleSubmit((values) => onSubmit(values))
+              ? handleSubmit(values => onSubmit(values))
               : null
           }
         >
@@ -183,7 +183,7 @@ ContactUsContainer.propTypes = {
   onSubmit: PropTypes.func,
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   const userNames = getUsername(state)
   const email = { email: getUserEmail(state) }
 
@@ -210,7 +210,7 @@ export default compose(
     onSubmitSuccess: afterSubmitContactUs,
   }),
   withHandlers({
-    onSubmit: (props) => (values) => {
+    onSubmit: props => values => {
       props.setLoader(loaderTypes.FORM)
       props.sendContactUs({
         firstName: values.get('firstName'),

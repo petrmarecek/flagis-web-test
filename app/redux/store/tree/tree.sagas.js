@@ -177,15 +177,6 @@ export function* selectPath(action) {
   yield put(contactActions.deselectContacts())
   yield put(taskMenuActions.deselectNoTagsFilter())
 
-  // hide inbox
-  const isInboxTasks = yield select(state =>
-    appStateSelectors.getInboxTasksVisibility(state)
-  )
-
-  if (isInboxTasks) {
-    yield put(appStateActions.hideInboxTasks())
-  }
-
   // redirect to archive
   const isArchivedTasks = yield select(state =>
     appStateSelectors.getArchivedTasksVisibility(state)

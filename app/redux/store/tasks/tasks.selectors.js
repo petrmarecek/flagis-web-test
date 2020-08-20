@@ -3,10 +3,7 @@ import { createSelector } from 'reselect'
 import moment from 'moment'
 
 import { getUserId } from '../auth/auth.selectors'
-import {
-  getArchivedTasksVisibility,
-  getInboxTasksVisibility,
-} from '../app-state/app-state.selectors'
+import { getArchivedTasksVisibility } from '../app-state/app-state.selectors'
 import {
   getEntitiesTasks,
   getActiveEntitiesTags,
@@ -728,7 +725,6 @@ export const getNextTask = createSelector(
   getSelectionTasks,
   getArchivedTasksVisibility,
   getArchivedTasksItems,
-  getInboxTasksVisibility,
   getInboxTasksItems,
   getTasksItems,
   getTasksSearch,
@@ -743,7 +739,6 @@ export const getNextTask = createSelector(
     selectionTasks,
     isArchivedTasksVisible,
     archivedTasksItems,
-    isInboxTasksVisible,
     InboxTasksItems,
     tasksItems,
     tasksSearch,
@@ -809,7 +804,6 @@ export const getPreviousTask = createSelector(
   getSelectionTasks,
   getArchivedTasksVisibility,
   getArchivedTasksItems,
-  getInboxTasksVisibility,
   getInboxTasksItems,
   getTasksItems,
   getTasksSearch,
@@ -824,7 +818,6 @@ export const getPreviousTask = createSelector(
     selectionTasks,
     isArchivedTasksVisible,
     archivedTasksItems,
-    isInboxTasksVisible,
     InboxTasksItems,
     tasksItems,
     tasksSearch,

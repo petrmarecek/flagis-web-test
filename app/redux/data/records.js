@@ -73,7 +73,6 @@ export const Loader = Record({
 export const Lists = Record({
   task: null,
   tag: null,
-  inbox: null,
   archived: null,
   contact: null,
   notification: null,
@@ -82,7 +81,6 @@ export const Lists = Record({
 export const Detail = Record({
   task: false,
   archive: false,
-  inbox: false,
   tag: false,
   contact: false,
   animation: false,
@@ -141,7 +139,6 @@ export const AppStateStore = Record({
   leftPanel: new LeftPanel(),
   multiSelect: new Visibility(),
   archivedTasks: new Visibility(),
-  inboxTasks: new Visibility(),
   detail: new Detail(),
   scrollbarPosition: new Lists(),
   navigation: new Navigation(),

@@ -19,7 +19,6 @@ import { computeOrder } from 'redux/utils/redux-helper'
 import { setScrollbarPosition } from 'redux/store/app-state/app-state.actions'
 import {
   getArchivedTasksVisibility,
-  getInboxTasksVisibility,
   getLeftPanel,
   getWindow,
   getScrollbarPosition,
@@ -76,7 +75,6 @@ const TaskListContainer = props => {
     selectedTags,
     selectedTasks,
     isVisibleArchivedTasks,
-    isVisibleInbox,
     sort,
     leftPanelWidth,
     windowWidth,
@@ -193,7 +191,6 @@ TaskListContainer.propTypes = {
   selectedTags: PropTypes.object,
   selectedTasks: PropTypes.object,
   isVisibleArchivedTasks: PropTypes.bool,
-  isVisibleInbox: PropTypes.bool,
   isDragAndDropActive: PropTypes.bool,
   sort: PropTypes.object,
   leftPanelWidth: PropTypes.number,
@@ -254,7 +251,6 @@ const mapStateToProps = state => {
     selectedTags: getActiveTagsIds(state),
     sort: getTasksMenuSort(state),
     isVisibleArchivedTasks: getArchivedTasksVisibility(state),
-    isVisibleInbox: getInboxTasksVisibility(state),
     leftPanelWidth: getLeftPanel(state).width,
     windowWidth: getWindow(state).width,
     scrollbarPosition: getScrollbarPosition(state, list),

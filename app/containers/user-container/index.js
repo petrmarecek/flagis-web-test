@@ -17,7 +17,6 @@ import ToastNotificationsContainer from 'components/toast-notifications'
 import Loader from 'components/common/loader'
 import TaskPage from 'containers/task-page'
 import TagPage from 'containers/tag-page'
-import InboxPage from 'containers/inbox-page'
 import ArchivePage from '../archive-page/'
 import ContactPage from '../contact-page/'
 import NotificationPage from '../notification-page/'
@@ -68,10 +67,6 @@ class UserContainer extends PureComponent {
               <Route
                 path={`${this.props.match.path}/tags`}
                 component={TagPage}
-              />
-              <Route
-                path={`${this.props.match.path}/inbox`}
-                component={InboxPage}
               />
               <Route
                 path={`${this.props.match.path}/dashboard`}

@@ -30,15 +30,11 @@ export const getCurrentDialog = state =>
   state.getIn(['appState', 'currentDialog'])
 export const getArchivedTasksVisibility = state =>
   state.getIn(['appState', 'archivedTasks', 'isVisible'])
-export const getInboxTasksVisibility = state =>
-  state.getIn(['appState', 'inboxTasks', 'isVisible'])
 export const getDetail = state => state.getIn(['appState', 'detail'])
 export const getTaskDetail = state =>
   state.getIn(['appState', 'detail', 'task'])
 export const getTaskArchiveDetail = state =>
   state.getIn(['appState', 'detail', 'archive'])
-export const getTaskInboxDetail = state =>
-  state.getIn(['appState', 'detail', 'inbox'])
 export const getTagDetail = state => state.getIn(['appState', 'detail', 'tag'])
 export const getContactDetail = state =>
   state.getIn(['appState', 'detail', 'contact'])

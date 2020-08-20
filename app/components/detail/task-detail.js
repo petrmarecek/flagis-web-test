@@ -75,7 +75,6 @@ const TaskDetail = props => {
     task,
     attachments,
     comments,
-    isInboxVisible,
     isMounted,
     isRejected,
     contentTopRef,
@@ -125,10 +124,11 @@ const TaskDetail = props => {
     isCompleted: task.isCompleted,
     isArchived: task.isArchived,
     isTags: task.tags.size !== 0,
+    isInbox: task.isInbox,
     isImportant: task.isImportant,
     isFollowers: assignee !== null,
     isOwner: task.createdById === userId,
-    isArchivedOrInbox: task.isArchived || isInboxVisible,
+    isArchivedOrInbox: task.isArchived || task.isInbox,
   }
 
   const {
@@ -147,6 +147,7 @@ const TaskDetail = props => {
     isFollowers,
     isImportant,
     isOwner,
+    isInbox,
     isArchivedOrInbox,
   } = getBindingData
 
@@ -155,7 +156,7 @@ const TaskDetail = props => {
     ? toastCommon.infoMessages.taskDetail.completedRules
     : toastCommon.infoMessages.taskDetail.acceptedRules
 
-  if (isInboxVisible) {
+  if (isInbox) {
     ruleMessage = toastCommon.infoMessages.taskDetail.inboxRules
   }
 
@@ -229,7 +230,7 @@ const TaskDetail = props => {
       return '50px'
     }
 
-    if (isInboxVisible) {
+    if (isInbox) {
       return '250px'
     }
 
@@ -268,7 +269,7 @@ const TaskDetail = props => {
         >
           <DetailContentSubject>
             <DetailSubject>
-              {isInboxVisible && (
+              {isInbox && (
                 <DetailSubjectTaskFollowerResponse>
                   <FollowerResponseButtons
                     acceptClicked={onHandleAccept}
@@ -276,16 +277,13 @@ const TaskDetail = props => {
                   />
                 </DetailSubjectTaskFollowerResponse>
               )}
-              {!isInboxVisible &&
-                !isArchived &&
-                isFollowers &&
-                !isAcceptedStatus && (
-                  <FollowerStatus
-                    status={followerStatus}
-                    animation={animation}
-                    onSend={onHandleSend}
-                  />
-                )}
+              {!isInbox && !isArchived && isFollowers && !isAcceptedStatus && (
+                <FollowerStatus
+                  status={followerStatus}
+                  animation={animation}
+                  onSend={onHandleSend}
+                />
+              )}
               {!isArchived && isAcceptedStatus && (
                 <DetailSubjectTaskCompleted
                   completed={task.isCompleted}
@@ -364,7 +362,7 @@ const TaskDetail = props => {
                   archived={isArchived}
                   marginLeft={subjectMarginLeft}
                   animation={animation}
-                  allowed={!isCompleted && !isInboxVisible && !isCollaborated}
+                  allowed={!isCompleted && !isInbox && !isCollaborated}
                 />
               </ContentEditableWrapper>
             </DetailSubject>
@@ -391,7 +389,7 @@ const TaskDetail = props => {
               />
             )}
           </DetailContentTagAutocomplete>
-          {!isArchived && !isInboxVisible && isCollaborated && (
+          {!isArchived && !isInbox && isCollaborated && (
             <DetailContentButton
               allowed={!isCompleted}
               isCompleted={isCompletedMainList}
@@ -422,7 +420,7 @@ const TaskDetail = props => {
             >
               <FollowerIcon
                 status={followerStatus}
-                assigneeInbox={isInboxVisible || !isOwner}
+                assigneeInbox={isInbox || !isOwner}
                 isCompleted={isCompletedMainList}
                 photo={
                   !isOwner
@@ -597,7 +595,7 @@ const TaskDetail = props => {
               <DetailContentImportant
                 title="Use the right mouse button for this action in the task list."
                 onClick={onHandleToggleImportant}
-                allowed={!isCompleted && !isInboxVisible}
+                allowed={!isCompleted && !isInbox}
                 last
               >
                 <DetailContentImportantIcon
@@ -689,7 +687,6 @@ TaskDetail.propTypes = {
   animation: PropTypes.bool,
   attachments: PropTypes.object,
   comments: PropTypes.object,
-  isInboxVisible: PropTypes.bool,
   getContentTopRef: PropTypes.func,
   onHandleComplete: PropTypes.func,
   onHandleTaskSetComplete: PropTypes.func,
@@ -758,10 +755,10 @@ export default compose(
         return { isMounted: false }
       },
       onHandleReject: (state, props) => () => {
-        const { task, detail } = props
+        const { task } = props
         const data = {
           task,
-          type: detail.inbox ? 'inbox' : 'task',
+          type: task.isInbox ? 'inbox' : 'task',
         }
 
         window.setTimeout(() => props.onHandleTaskReject(data), 400)

@@ -29,12 +29,6 @@ export default typeToReducer(
     [APP_STATE.ARCHIVED_TASKS_HIDE]: state =>
       state.setIn(['archivedTasks', 'isVisible'], false),
 
-    [APP_STATE.INBOX_TASKS_VISIBLE]: state =>
-      state.setIn(['inboxTasks', 'isVisible'], true),
-
-    [APP_STATE.INBOX_TASKS_HIDE]: state =>
-      state.setIn(['inboxTasks', 'isVisible'], false),
-
     [APP_STATE.SET_ANIMATION]: state =>
       state.setIn(['detail', 'animation'], true),
 
@@ -63,7 +57,6 @@ export default typeToReducer(
       state
         .setIn(['scrollbarPosition', 'task'], null)
         .setIn(['scrollbarPosition', 'tag'], null)
-        .setIn(['scrollbarPosition', 'inbox'], null)
         .setIn(['scrollbarPosition', 'archived'], null)
         .setIn(['scrollbarPosition', 'contact'], null)
         .setIn(['scrollbarPosition', 'notification'], null),

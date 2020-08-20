@@ -25,12 +25,6 @@ export function* changeNavigation(action) {
   yield put(appStateActions.resetScrollbarPosition())
   yield put(tagActions.selectActiveTags([]))
 
-  if (type === 'inbox') {
-    yield put(appStateActions.visibleInboxTasks())
-  } else {
-    yield put(appStateActions.hideInboxTasks())
-  }
-
   if (type === 'archived') {
     yield put(taskActions.fetchArchivedTasks())
   } else {

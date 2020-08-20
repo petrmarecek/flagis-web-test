@@ -85,10 +85,6 @@ export function* readNotification(action) {
         yield put(appStateActions.visibleArchivedTasks())
       }
 
-      if (task.isInbox) {
-        yield put(appStateActions.visibleInboxTasks())
-      }
-
       yield put(taskActions.selectTask(OrderedSet().add(task.id), false))
     }
 
