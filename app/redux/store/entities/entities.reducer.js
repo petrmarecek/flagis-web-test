@@ -1,4 +1,4 @@
-import { Map, List } from 'immutable'
+import { Map, List, Record } from 'immutable'
 import typeToReducer from 'type-to-reducer'
 import dateUtil from 'redux/utils/date'
 import _ from 'lodash'
@@ -438,7 +438,7 @@ function saveTree(payload, state) {
 }
 
 function saveTasks(payload, state) {
-  const { profile, createdBy } = payload.entities
+  const { profile, createdBy, followers } = payload.entities
   const profiles = profile ? _.assign(profile, createdBy) : createdBy
 
   // filter contacts
@@ -468,19 +468,35 @@ function saveTasks(payload, state) {
         }, {})
     : null
 
+  // receive followers without profile from firestore, so set old value
+  const entitiesFollowers = state.get('followers')
+  const preparedFollowers = followers
+    ? Object.keys(followers).reduce((result, key) => {
+        const entityFollower = entitiesFollowers.get(key)
+        const follower = followers[key]
+
+        if (!follower.profile) {
+          follower.profile = entityFollower.profile
+        }
+
+        result[key] = follower
+        return result
+      }, {})
+    : null
+
   const rawTasks = payload.entities.tasks || {}
   const rawTags = payload.entities.tags || {}
-  const rawFollowers = payload.entities.followers || {}
+  const rawFollowers = preparedFollowers || {}
   const rawContacts = filterProfiles || {}
   const contacts = convertToImmutable(rawContacts, records.Contact)
-  const followers = convertToImmutable(rawFollowers, records.Follower)
   const tags = convertToImmutable(rawTags, records.Tag)
   const tasks = convertToImmutable(rawTasks, records.Task)
+  const immutableFollowers = convertToImmutable(rawFollowers, records.Follower)
 
   return state
     .mergeIn(['tasks'], tasks)
     .mergeIn(['tags'], tags)
-    .mergeIn(['followers'], followers)
+    .mergeIn(['followers'], immutableFollowers)
     .mergeIn(['contacts'], contacts)
 }
 
