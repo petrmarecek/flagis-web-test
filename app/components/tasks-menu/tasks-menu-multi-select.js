@@ -56,7 +56,9 @@ export default class TasksMenuMultiSelect extends PureComponent {
       ? !multiSelectElem.contains(event.target)
       : true
 
-    const taskPanel = document.getElementsByClassName('task-list-items')[1]
+    const taskPanel =
+      document.getElementsByClassName('task-list-items')[1] ||
+      document.getElementsByClassName('task-list-items')[0]
     const elemTaskPanel = findDOMNode(taskPanel)
     const notContainsElemTaskPanel = elemTaskPanel
       ? !elemTaskPanel.contains(event.target)
