@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { findDOMNode } from 'react-dom'
 import { Scrollbars } from 'react-custom-scrollbars'
+import debounce from 'lodash/debounce'
 
 export default class ShadowScrollbar extends PureComponent {
   static propTypes = {
@@ -74,11 +75,12 @@ export default class ShadowScrollbar extends PureComponent {
     const { left, top, right, bottom } = findDOMNode(
       scrollRef
     ).getBoundingClientRect()
+
     // Current position of mouse
     const { clientX, clientY } = values
     const conditionX = clientX >= left && clientX <= right
-    const conditionTopY = clientY >= top && clientY <= top + 50
-    const conditionBottomY = clientY >= bottom - 50 && clientY <= bottom
+    const conditionTopY = clientY >= top && clientY <= top + 100
+    const conditionBottomY = clientY >= bottom - 100 && clientY <= bottom
 
     // Scroll to top
     if (conditionX && conditionTopY) {
@@ -127,7 +129,7 @@ export default class ShadowScrollbar extends PureComponent {
             renderThumbVertical={scrollProps => (
               <div {...scrollProps} style={this.props.verticalStyle} />
             )}
-            onDragEnter={this.handleDrag}
+            onDragOver={this.handleDrag}
             onUpdate={this.handleUpdate}
             onScrollStop={this.handleScrollStop}
             children={this.props.children}
@@ -135,7 +137,7 @@ export default class ShadowScrollbar extends PureComponent {
         ) : (
           <Scrollbars
             ref="scrollRef"
-            onDragEnter={this.handleDrag}
+            onDragOver={this.handleDrag}
             onUpdate={this.handleUpdate}
             onScrollStop={this.handleScrollStop}
             children={this.props.children}
