@@ -54,9 +54,11 @@ import ShadowScrollbar from 'components/common/shadow-scrollbar'
 import AddTagTreeItemSectionForm from 'components/common/add-tag-tree-item-section-form'
 
 // styles
-import { CollabsibleContent } from '../styled-components-mixins'
+import { CollabsibleContent, EmptyList } from '../styled-components-mixins'
 import colors from 'components/styled-components-mixins/colors'
 import { Wrapper, AddSection, AddSectionText } from './styles'
+import { ICONS } from 'components/icons/icon-constants'
+import Icon from 'components/icons/icon'
 
 const TagTreeContainer = props => {
   const {
@@ -66,7 +68,6 @@ const TagTreeContainer = props => {
     tagsRelations,
     tree,
     colorTheme,
-    isVisibleMoreNavigation,
     leftPanel,
 
     // state
@@ -109,25 +110,30 @@ const TagTreeContainer = props => {
       <ShadowScrollbar style={scrollStyle} verticalStyle={verticalStyle}>
         <Wrapper>
           <CollabsibleContent>
-            <TagTree
-              treeItems={tree}
-              selection={selection}
-              addControlParentId={addControlParentId}
-              tagsRelations={tagsRelations}
-              onMoveSection={onMoveSection}
-              onTreeItemSelected={onHandleTreeItemsSelected}
-              onSubitemCreated={onHandleSubitemCreated}
-              onTreeItemEdit={onHandleEditTreeItem}
-              onTreeItemDelete={onHandleDeleteTreeItem}
-              onAddChild={onHandleAddTreeItem}
-              onAddControlCancel={onHandleAddItemCancel}
-              onUpdateSectionTitle={onHandleUpdateSectionTitle}
-              onCollapse={onHandleCollapse}
-              onDrop={onHandleDrop}
-              onDropSection={onHandleDropSection}
-              maxWidth={leftPanel.width}
-              colorTheme={colorTheme}
-            />
+            {tree.size === 0 && !showAddControl && (
+              <EmptyList>No sections found</EmptyList>
+            )}
+            {tree.size > 0 && (
+              <TagTree
+                treeItems={tree}
+                selection={selection}
+                addControlParentId={addControlParentId}
+                tagsRelations={tagsRelations}
+                onMoveSection={onMoveSection}
+                onTreeItemSelected={onHandleTreeItemsSelected}
+                onSubitemCreated={onHandleSubitemCreated}
+                onTreeItemEdit={onHandleEditTreeItem}
+                onTreeItemDelete={onHandleDeleteTreeItem}
+                onAddChild={onHandleAddTreeItem}
+                onAddControlCancel={onHandleAddItemCancel}
+                onUpdateSectionTitle={onHandleUpdateSectionTitle}
+                onCollapse={onHandleCollapse}
+                onDrop={onHandleDrop}
+                onDropSection={onHandleDropSection}
+                maxWidth={leftPanel.width}
+                colorTheme={colorTheme}
+              />
+            )}
             {showAddControl && (
               <AddTagTreeItemSectionForm
                 parentId={null}
@@ -139,6 +145,13 @@ const TagTreeContainer = props => {
         </Wrapper>
       </ShadowScrollbar>
       <AddSection onClick={onHandleAddButtonClicked} colorTheme={colorTheme}>
+        <Icon
+          icon={ICONS.PLUS}
+          width={12}
+          height={12}
+          scale={0.38}
+          color={[colors[colorTheme].tagTreeAddNewGroup]}
+        />
         <AddSectionText>Add Section</AddSectionText>
       </AddSection>
     </div>
