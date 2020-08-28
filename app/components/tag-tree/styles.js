@@ -33,22 +33,15 @@ const AddSection = styled.div`
   flex-direction: row;
   color: ${props => colors[props.colorTheme].tagTreeAddNewGroup};
   cursor: pointer;
-  font-size: 14px;
-  padding-left: 28px;
+  font-size: 12px;
 
   :hover {
     color: ${props => colors[props.colorTheme].tagTreeAddNewGroupHover};
-
-    svg {
-      path {
-        fill: ${props => colors[props.colorTheme].tagTreeAddNewGroupHover};
-      }
-    }
   }
 `
 
 const AddSectionText = styled.div`
-  margin-left: 5px;
+  margin-left: 28px;
 `
 
 /* ---------------------------- Tag-Tree Section -------------------------------- */

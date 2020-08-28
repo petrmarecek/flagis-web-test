@@ -152,13 +152,6 @@ const TagTreeContainer = props => {
         </Wrapper>
       </ShadowScrollbar>
       <AddSection onClick={onHandleAddButtonClicked} colorTheme={colorTheme}>
-        <Icon
-          icon={ICONS.PLUS}
-          width={12}
-          height={12}
-          scale={0.38}
-          color={[colors[colorTheme].tagTreeAddNewGroup]}
-        />
         <AddSectionText>Add Section</AddSectionText>
       </AddSection>
     </div>
@@ -309,6 +302,15 @@ export default compose(
           position: toastCommon.position.DEFAULT,
           autoClose: toastCommon.duration.INFO_DURATION,
         })
+        return {}
+      }
+
+      if (props.tree.size === 1) {
+        toast.error(toastCommon.errorMessages.treeSections.notAllowedDelete, {
+          position: toastCommon.position.DEFAULT,
+          autoClose: toastCommon.duration.ERROR_DURATION,
+        })
+
         return {}
       }
 

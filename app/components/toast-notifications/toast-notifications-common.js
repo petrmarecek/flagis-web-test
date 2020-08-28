@@ -61,6 +61,11 @@ export const errorMessages = {
       'The same tag found on the same tree level.',
   },
 
+  treeSections: {
+    notAllowedDelete:
+      'Not allowed to delete. You must have at least one section!',
+  },
+
   createEntity: {
     createConflict: item => `This ${item} has already been created.`,
     notAllowedCreate: (item, location) =>
