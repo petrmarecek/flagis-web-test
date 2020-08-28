@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import debounce from 'lodash/debounce'
 import R from 'ramda'
 import { compose, branch, renderComponent, withStateHandlers } from 'recompose'
+import constants from 'utils/constants'
 
 // toast notifications
 import toast from 'utils/toastify-helper'
@@ -118,6 +119,9 @@ const TaskListContainer = props => {
       style={scrollStyle}
       position={scrollbarPosition}
       setPosition={onHandleSetScrollbarPosition}
+      scrollSpaceHeight={constants.list.tasks.SCROLL_SPACE_HEIGHT}
+      scrollStep={constants.list.tasks.SCROLL_STEP}
+      isDraggable={tasks.type === 'main'}
     >
       <span onContextMenu={e => e.preventDefault()}>
         {!_.isEmpty(inboxTasks.items) && !isVisibleArchivedTasks && (

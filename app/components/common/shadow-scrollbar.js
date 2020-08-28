@@ -1,22 +1,42 @@
-import React, { PureComponent } from 'react'
+import React, { memo, PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { findDOMNode } from 'react-dom'
 import { Scrollbars } from 'react-custom-scrollbars'
-import debounce from 'lodash/debounce'
 
 export default class ShadowScrollbar extends PureComponent {
   static propTypes = {
+    // data
     style: PropTypes.object,
     position: PropTypes.number,
+    scrollSpaceHeight: PropTypes.number,
+    scrollStep: PropTypes.number,
     verticalStyle: PropTypes.object,
     children: PropTypes.any,
     isToggleTaskList: PropTypes.bool,
     isScrollBottom: PropTypes.bool,
+    isDraggable: PropTypes.bool,
+
+    // functions
     setPosition: PropTypes.func,
     addScrollRef: PropTypes.func,
+    setMouseCoordinates: PropTypes.func,
     handleDrag: PropTypes.func,
     handleUpdate: PropTypes.func,
     handleScrollStop: PropTypes.func,
+    handleSetInterval: PropTypes.func,
+    handleClearInterval: PropTypes.func,
+  }
+
+  static defaultProps = {
+    isDraggable: false,
+    scrollSpaceHeight: 0,
+    scrollStep: 0,
+  }
+
+  state = {
+    intervalFunc: null,
+    clientX: null,
+    clientY: null,
   }
 
   componentDidUpdate(prevProps) {
@@ -69,7 +89,20 @@ export default class ShadowScrollbar extends PureComponent {
     }
   }
 
-  handleDrag = values => {
+  setMouseCoordinates = values => {
+    if (!this.props.isDraggable) {
+      return
+    }
+
+    const { clientX, clientY } = values
+    this.setState({ clientX, clientY })
+  }
+
+  handleDrag = () => {
+    if (!this.props.isDraggable) {
+      return
+    }
+
     // Position of tasks list
     const { scrollRef } = this.refs
     const { left, top, right, bottom } = findDOMNode(
@@ -77,20 +110,43 @@ export default class ShadowScrollbar extends PureComponent {
     ).getBoundingClientRect()
 
     // Current position of mouse
-    const { clientX, clientY } = values
+    const { clientX, clientY } = this.state
+    const { scrollSpaceHeight, scrollStep } = this.props
+    const bottomLineOfTop = top + scrollSpaceHeight
+    const topLineOfBottom = bottom - scrollSpaceHeight
     const conditionX = clientX >= left && clientX <= right
-    const conditionTopY = clientY >= top && clientY <= top + 100
-    const conditionBottomY = clientY >= bottom - 100 && clientY <= bottom
+    const conditionTopY = clientY >= top && clientY <= top + scrollSpaceHeight
+    const conditionBottomY =
+      clientY >= bottom - scrollSpaceHeight && clientY <= bottom
 
     // Scroll to top
     if (conditionX && conditionTopY) {
-      scrollRef.view.scrollTop -= 10
+      const step = Math.floor((bottomLineOfTop - clientY) / scrollStep)
+      scrollRef.view.scrollTop -= step
     }
 
     // Scroll to bottom
     if (conditionX && conditionBottomY) {
-      scrollRef.view.scrollTop += 10
+      const step = Math.floor((clientY - topLineOfBottom) / scrollStep)
+      scrollRef.view.scrollTop += step
     }
+  }
+
+  handleSetInterval = () => {
+    if (!this.props.isDraggable) {
+      return
+    }
+
+    this.setState({ intervalFunc: window.setInterval(this.handleDrag, 10) })
+  }
+
+  handleClearInterval = () => {
+    if (!this.props.isDraggable) {
+      return
+    }
+
+    const { intervalFunc } = this.state
+    window.clearInterval(intervalFunc)
   }
 
   render() {
@@ -129,7 +185,9 @@ export default class ShadowScrollbar extends PureComponent {
             renderThumbVertical={scrollProps => (
               <div {...scrollProps} style={this.props.verticalStyle} />
             )}
-            onDragOver={this.handleDrag}
+            onDragStart={this.handleSetInterval}
+            onDragOver={this.setMouseCoordinates}
+            onDragEnd={this.handleClearInterval}
             onUpdate={this.handleUpdate}
             onScrollStop={this.handleScrollStop}
             children={this.props.children}
@@ -137,7 +195,9 @@ export default class ShadowScrollbar extends PureComponent {
         ) : (
           <Scrollbars
             ref="scrollRef"
-            onDragOver={this.handleDrag}
+            onDragStart={this.handleSetInterval}
+            onDragOver={this.setMouseCoordinates}
+            onDragEnd={this.handleClearInterval}
             onUpdate={this.handleUpdate}
             onScrollStop={this.handleScrollStop}
             children={this.props.children}

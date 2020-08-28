@@ -40,4 +40,16 @@ export default {
 
   // Contacts
   CONTACTS_TITLE_MAX_CHARACTERS: 60,
+
+  // Lists
+  list: {
+    tasks: {
+      SCROLL_SPACE_HEIGHT: 75,
+      SCROLL_STEP: 5,
+    },
+    tagTrees: {
+      SCROLL_SPACE_HEIGHT: 50,
+      SCROLL_STEP: 5,
+    },
+  },
 }

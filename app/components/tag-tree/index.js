@@ -9,6 +9,7 @@ import {
   withStateHandlers,
   pure,
 } from 'recompose'
+import constants from 'utils/constants'
 
 // toast notifications
 import toast from 'utils/toastify-helper'
@@ -107,7 +108,13 @@ const TagTreeContainer = props => {
 
   return (
     <div>
-      <ShadowScrollbar style={scrollStyle} verticalStyle={verticalStyle}>
+      <ShadowScrollbar
+        style={scrollStyle}
+        verticalStyle={verticalStyle}
+        scrollSpaceHeight={constants.list.tagTrees.SCROLL_SPACE_HEIGHT}
+        scrollStep={constants.list.tagTrees.SCROLL_STEP}
+        isDraggable={true}
+      >
         <Wrapper>
           <CollabsibleContent>
             {tree.size === 0 && !showAddControl && (
