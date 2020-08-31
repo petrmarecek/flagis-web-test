@@ -488,6 +488,7 @@ function saveTasks(payload, state) {
   const rawTags = payload.entities.tags || {}
   const rawFollowers = preparedFollowers || {}
   const rawContacts = filterProfiles || {}
+
   const contacts = convertToImmutable(rawContacts, records.Contact)
   const tags = convertToImmutable(rawTags, records.Tag)
   const tasks = convertToImmutable(rawTasks, records.Task)
@@ -569,17 +570,16 @@ function saveFollowers(payload, state) {
 
 function convertToImmutable(entities, record) {
   const recordItems = Object.keys(entities).reduce((result, key) => {
-    result[key] = new record(entities[key])
-
     switch (record) {
       // Task record -> tags to List
       case records.Task:
-        result[key] = result[key]
-          .set('tags', List(result[key].tags))
-          .set('followers', List(result[key].followers))
+        result[key] = new record(entities[key])
+          .set('tags', List(entities[key].tags))
+          .set('followers', List(entities[key].followers))
         break
 
       default:
+        result[key] = new record(entities[key])
         break
     }
 
