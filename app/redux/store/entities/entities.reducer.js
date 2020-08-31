@@ -475,7 +475,7 @@ function saveTasks(payload, state) {
         const entityFollower = entitiesFollowers.get(key)
         const follower = followers[key]
 
-        if (!follower.profile) {
+        if (!follower.profile && entityFollower) {
           follower.profile = entityFollower.profile
         }
 
