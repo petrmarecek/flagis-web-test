@@ -121,8 +121,11 @@ export const infoMessages = {
   },
 
   taskDetail: {
-    acceptedRules: 'Not allowed to edit subject, due date and description.',
-    inboxRules: 'Allowed to add comments and accept/reject only.',
-    completedRules: 'Allowed to uncomplete and archive only.',
+    acceptedRules:
+      'Not allowed to edit subject, due date, reminder date and description.',
+    inboxRules:
+      'Allowed to accept, reject and add comments and attachments only.',
+    completedRules:
+      'Allowed to uncomplete, archive and add comments and attachments only.',
   },
 }

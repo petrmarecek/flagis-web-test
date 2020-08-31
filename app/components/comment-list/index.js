@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import PropTypes from 'prop-types'
 
 // redux
@@ -23,7 +23,11 @@ const CommentList = ({ comments, userId }) => {
   }
 
   return (
-    <ShadowScrollbar style={scrollStyle} isScrollBottom>
+    <ShadowScrollbar
+      style={scrollStyle}
+      isScrollBottom
+      isScrollBottomAfterUpdate
+    >
       <ListWrapper>
         <ul>
           {!comments.isFetching &&
@@ -49,4 +53,4 @@ const mapStateToProps = state => ({
   userId: getUserId(state),
 })
 
-export default connect(mapStateToProps)(CommentList)
+export default memo(connect(mapStateToProps)(CommentList))

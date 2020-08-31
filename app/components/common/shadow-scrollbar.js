@@ -14,6 +14,7 @@ export default class ShadowScrollbar extends PureComponent {
     children: PropTypes.any,
     isToggleTaskList: PropTypes.bool,
     isScrollBottom: PropTypes.bool,
+    isScrollBottomAfterUpdate: PropTypes.bool,
     isDraggable: PropTypes.bool,
 
     // functions
@@ -40,7 +41,7 @@ export default class ShadowScrollbar extends PureComponent {
   }
 
   componentDidUpdate(prevProps) {
-    const { position, isToggleTaskList } = this.props
+    const { position, isToggleTaskList, isScrollBottomAfterUpdate } = this.props
     const { scrollRef } = this.refs
 
     if (prevProps.position > 0 && position === 0) {
@@ -49,6 +50,10 @@ export default class ShadowScrollbar extends PureComponent {
 
     if (prevProps.isToggleTaskList !== isToggleTaskList) {
       scrollRef.view.scrollTop = 0
+    }
+
+    if (isScrollBottomAfterUpdate) {
+      scrollRef.scrollToBottom()
     }
   }
 

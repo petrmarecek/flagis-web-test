@@ -643,7 +643,7 @@ const TaskDetail = props => {
             </div>
           </DetailContentDescriptionTask>
           <DetailContentComments
-            allowed={!isCompleted}
+            allowed={!isArchived}
             contentHeight={contentHeight}
           >
             {comments.isFetching && <Loader />}
