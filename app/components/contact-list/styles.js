@@ -1,11 +1,12 @@
 import styled, { keyframes } from 'styled-components'
 import { fadeInUp } from 'react-animations'
-import { textOverflow } from '../styled-components-mixins'
+import { textOverflow, borderRadius } from '../styled-components-mixins'
 import Icon from '../icons/icon'
 
 const fadeUp = keyframes`${fadeInUp}`
 
 const ContactItemContainer = styled.li`
+  ${borderRadius('3px')};
   overflow: hidden;
   list-style-type: none;
   margin: 0 0 4px;

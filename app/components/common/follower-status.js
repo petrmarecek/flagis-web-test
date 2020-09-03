@@ -3,7 +3,13 @@ import PropTypes from 'prop-types'
 import { withHandlers } from 'recompose'
 
 import styled, { css, keyframes } from 'styled-components'
-import { transition, boxSizing } from 'components/styled-components-mixins'
+import {
+  transition,
+  boxSizing,
+  borderRadius,
+  boxShadow,
+} from 'components/styled-components-mixins'
+import { colors } from 'components/styled-components-mixins/colors'
 import { pulse } from 'react-animations'
 
 const show = keyframes`${pulse}`
@@ -26,18 +32,23 @@ const Container = styled.div`
 `
 
 const Button = styled.button`
-  ${boxSizing('border-box')}
+  ${boxSizing('border-box')};
+  ${borderRadius('4px')};
+  ${boxShadow(`0 0 1px 0 ${colors.americanSilver}`)};
+  border: 1px solid ${colors.coldWind};
   display: flex;
   justify-content: center;
-  background-color: #44ffb1;
+  background-color: ${colors.white};
   width: 123px;
-  border: none;
   padding: 0;
   cursor: pointer;
+  color: ${colors.hanumanGreen};
 
   :hover {
-    ${transition('500ms')}
-    background-color: #293034;
+    ${transition('500ms')};
+    background-color: ${colors.hanumanGreen};
+    color: ${colors.white};
+    border: 1px solid ${colors.hanumanGreen};
   }
 `
 
@@ -53,16 +64,16 @@ const FollowerStatus = ({ status, animation, onHandleSend }) => {
   const getStatus = {
     new: (
       <Button onClick={onHandleSend}>
-        <Title color="#fff">SEND TASK</Title>
+        <Title>Send Task</Title>
       </Button>
     ),
     pending: (
-      <Title color="#8C9DA9" animation={animation}>
+      <Title color={colors.lostAtSea} animation={animation}>
         WAITING FOR RESPONSE
       </Title>
     ),
     rejected: (
-      <Title color="#FF6A6A" animation={animation}>
+      <Title color={colors.pompelmo} animation={animation}>
         REJECTED
       </Title>
     ),

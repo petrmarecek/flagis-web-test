@@ -8,6 +8,7 @@ import Counter from 'components/common/counter'
 const fadeUp = keyframes`${fadeInUp}`
 
 const Item = styled.li`
+  ${borderRadius('3px')};
   display: flex;
   align-items: center;
   justify-content: flex-start;

@@ -81,22 +81,16 @@ export const MarkdownEditor = ({
 }) => {
   const editorRef = useRef()
 
-  useEffect(
-    () => {
-      const editor = editorRef.current.getInstance()
-      editor.setMarkdown(content || '', false)
-    },
-    [ componentId ]
-  )
+  useEffect(() => {
+    const editor = editorRef.current.getInstance()
+    editor.setMarkdown(content || '', false)
+  }, [componentId])
 
-  const saveDescription = useCallback(
-    () => {
-      const editor = editorRef.current.getInstance()
-      const markdown = editor.getMarkdown()
-      setDescription(markdown)
-    },
-    [ editorRef ]
-  )
+  const saveDescription = useCallback(() => {
+    const editor = editorRef.current.getInstance()
+    const markdown = editor.getMarkdown()
+    setDescription(markdown)
+  }, [editorRef])
 
   const debouncedSaveDescription = debounce(saveDescription, 1000)
 
@@ -124,7 +118,7 @@ export const MarkdownEditor = ({
           hooks={{
             addImageBlobHook: (file, callback) => {
               if (onInsertImage) {
-                onInsertImage([ file ], callback)
+                onInsertImage([file], callback)
                 return true
               }
 
@@ -148,6 +142,6 @@ MarkdownEditor.propTypes = {
   editorHeight: PropTypes.string,
   setDescription: PropTypes.func,
   onInsertImage: PropTypes.func,
-  view: PropTypes.oneOf([ 'full', 'simple' ]),
+  view: PropTypes.oneOf(['full', 'simple']),
   disabled: PropTypes.bool,
 }

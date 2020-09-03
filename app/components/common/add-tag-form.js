@@ -19,6 +19,7 @@ import Icon from 'components/icons/icon'
 import styled from 'styled-components'
 import {
   boxShadow,
+  borderRadius,
   boxSizing,
   placeholderColor,
 } from '../styled-components-mixins'
@@ -30,11 +31,12 @@ const AddForm = styled.form`
   margin-bottom: 6px;
   background-color: #fff;
   height: 38px;
-  ${boxShadow('0 0 6px 0 #CECECE')}
+  ${borderRadius('3px')}
+  ${boxShadow('0 1px 6px 0 #CECECE')}
 `
 
 const SubmitIcon = styled.div`
-  ${boxSizing('border-box')}
+  ${boxSizing('border-box')};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -105,10 +107,7 @@ const mapStateToProps = () => ({})
 const mapDispatchToProps = { createTag }
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   withStateHandlers(() => ({ title: '' }), {
     handleChange: () => event => {
       const title = event.target.value

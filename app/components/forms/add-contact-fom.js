@@ -22,7 +22,7 @@ import AddField from 'components/forms/fields/add-field'
 
 // styles
 import styled from 'styled-components'
-import { boxSizing, boxShadow } from '../styled-components-mixins'
+import { boxSizing, boxShadow, borderRadius } from '../styled-components-mixins'
 
 const AddForm = styled.form`
   display: flex;
@@ -31,11 +31,12 @@ const AddForm = styled.form`
   margin-bottom: 6px;
   background-color: #fff;
   height: 38px;
-  ${boxShadow('0 0 6px 0 #CECECE')}
+  ${borderRadius('3px')};
+  ${boxShadow('0 1px 6px 0 #CECECE')}
 `
 
 const SubmitIcon = styled.div`
-  ${boxSizing('border-box')}
+  ${boxSizing('border-box')};
   display: flex;
   justify-content: center;
   align-items: center;

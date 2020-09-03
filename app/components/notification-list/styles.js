@@ -12,6 +12,7 @@ const fadeUp = keyframes`${fadeInUp}`
 
 /*--------------------------------- Notification Item ----------------------------*/
 const ItemWrapper = styled.li`
+  ${borderRadius('3px')};
   display: flex;
   justify-content: space-between;
   overflow: hidden;
@@ -19,7 +20,8 @@ const ItemWrapper = styled.li`
   margin: 0 0 4px;
   cursor: pointer;
   position: relative;
-  background-color: ${props => (props.isRead ? colors.whitePorcelain : colors.white)};
+  background-color: ${props =>
+    props.isRead ? colors.whitePorcelain : colors.white};
   height: 70px;
   animation: 400ms ${fadeUp};
   padding: 6px 15px 6px 30px;

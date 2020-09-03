@@ -21,7 +21,7 @@ const Container = styled.div`
 
 const Button = styled.button`
   ${borderRadius('4px')};
-  ${boxShadow('0 0 1px 0 #CECECE')};
+  ${boxShadow(`0 0 1px 0 ${colors.americanSilver}`)};
   border: 1px solid ${colors.coldWind};
   height: 26px;
   width: 117px;
