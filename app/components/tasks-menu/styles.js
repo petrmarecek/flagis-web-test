@@ -15,7 +15,7 @@ import {
 
 const fade = keyframes`${fadeIn}`
 const TasksMenuItem = styled.div`
-  ${boxSizing('border-box')}
+  ${boxSizing('border-box')};
   height: 100%;
   width: 40px;
   margin: 0 0 0 10px;
@@ -27,7 +27,7 @@ const TasksMenuItem = styled.div`
 `
 
 const IconWrapper = styled.div`
-  ${boxSizing('border-box')}
+  ${boxSizing('border-box')};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -69,7 +69,7 @@ const TaskCountIndicator = styled.span`
 `
 
 const TaskCountIndicatorInner = styled.span`
-  ${borderRadius('14px')}
+  ${borderRadius('14px')};
   color: #293034;
   background-color: ${props => (props.multiSelect ? '#ecfff7' : '#fff')};
   margin: 0 0 0 5px;
@@ -84,7 +84,7 @@ const TaskCountIndicatorInner = styled.span`
 
 // ---------------------------------- TasksMenuFiltersActive ----------------------------------
 const TasksMenuFiltersActive = styled.ul`
-  ${boxSizing('border-box')}
+  ${boxSizing('border-box')};
   display: flex;
   flex-shrink: 0;
   align-items: center;
@@ -98,7 +98,7 @@ const TasksMenuFiltersActive = styled.ul`
 const flipIn = keyframes`${flipInX}`
 const flipOut = keyframes`${flipOutX}`
 const FilterActiveItem = styled.li`
-  ${borderRadius('15px')}
+  ${borderRadius('15px')};
   display: flex;
   align-items: center;
   list-style-type: none;
@@ -180,7 +180,7 @@ const MenuBoxContainer = styled(MenuBox)`
 `
 
 const MenuBoxGroup = styled(MenuBoxGroupItems)`
-  ${fontMain}
+  ${fontMain};
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -205,7 +205,8 @@ const MenuBoxGroup = styled(MenuBoxGroupItems)`
 const MenuBoxItemIcon = styled(MenuBoxItem)`
   display: inline-block;
   margin: 0 11px 0 22px;
-  pointer-events: ${props => (props.active ? 'none' : 'auto')};
+  pointer-events: ${props =>
+    props.active && !props.canClickAgain ? 'none' : 'auto'};
 
   path {
     fill: ${props => (props.active ? '#293034' : '#8C9DA9')};
@@ -219,7 +220,8 @@ const MenuBoxItemTitle = styled(MenuBoxItem)`
   margin: 0 8px;
   padding: 0;
   color: ${props => (props.active ? '#293034' : '#8C9DA9')};
-  pointer-events: ${props => (props.active ? 'none' : 'auto')};
+  pointer-events: ${props =>
+    props.active && !props.canClickAgain ? 'none' : 'auto'};
 
   &:after {
     ${transform('scaleX(0)')}
@@ -232,7 +234,7 @@ const MenuBoxItemTitle = styled(MenuBoxItem)`
 
   &:hover {
     &:after {
-      ${transform('scaleX(1)')}
+      ${transform(props => (props.active ? 'scaleX(0)' : 'scaleX(1)'))}
     }
   }
 

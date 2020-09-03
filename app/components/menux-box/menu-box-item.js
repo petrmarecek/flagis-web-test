@@ -4,17 +4,9 @@ import Icon from '../icons/icon'
 import { compose, withHandlers } from 'recompose'
 
 const MenuBoxItem = ({ className, icon, iconScale, title, onHandleClick }) => (
-  <div
-    className={className}
-    onClick={onHandleClick}>
-    {icon &&
-      <Icon
-        icon={icon}
-        width={16}
-        height={16}
-        scale={iconScale} />}
-    {title &&
-    <span>{title}</span>}
+  <div className={className} onClick={onHandleClick}>
+    {icon && <Icon icon={icon} width={16} height={16} scale={iconScale} />}
+    {title && <span>{title}</span>}
   </div>
 )
 
@@ -24,6 +16,7 @@ MenuBoxItem.propTypes = {
   iconScale: PropTypes.number,
   title: PropTypes.string,
   active: PropTypes.bool,
+  canClickAgain: PropTypes.bool,
   type: PropTypes.string,
   onChange: PropTypes.func,
   onHandleClick: PropTypes.func,
@@ -32,7 +25,7 @@ MenuBoxItem.propTypes = {
 export default compose(
   withHandlers({
     onHandleClick: props => () => {
-      if (props.active) {
+      if (props.active && !props.canClickAgain) {
         return
       }
 
@@ -42,6 +35,6 @@ export default compose(
       }
 
       props.onChange()
-    }
+    },
   })
 )(MenuBoxItem)

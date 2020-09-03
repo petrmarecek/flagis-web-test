@@ -85,32 +85,19 @@ const TasksMenuSort = props => {
         >
           <MenuBoxGroup>
             <MenuBoxItemIcon
-              active={sort.defaultSort}
-              type="defaultSort"
-              icon={ICONS.SORT_DEFAULT}
-              iconScale={0.66}
-              onChange={onHandleSortAlgorithmToggle}
-            />
-            <MenuBoxItemTitle
-              title="Default user sorting"
-              type="defaultSort"
-              active={sort.defaultSort}
-              onChange={onHandleSortAlgorithmToggle}
-            />
-          </MenuBoxGroup>
-          <MenuBoxGroup>
-            <MenuBoxItemIcon
               active={sort.alphabet}
               type="alphabet"
               icon={ICONS.ALPHABET}
               iconWidth={1.14}
               onChange={onHandleSortAlgorithmToggle}
+              canClickAgain
             />
             <MenuBoxItemTitle
               title="Sort alphabetically"
               type="alphabet"
               active={sort.alphabet}
               onChange={onHandleSortAlgorithmToggle}
+              canClickAgain
             />
           </MenuBoxGroup>
           <MenuBoxGroup>
@@ -120,12 +107,14 @@ const TasksMenuSort = props => {
               icon={ICONS.IMPORTANT}
               iconScale={0.24}
               onChange={onHandleSortAlgorithmToggle}
+              canClickAgain
             />
             <MenuBoxItemTitle
               title="Sort by Importance"
               type="important"
               active={sort.important}
               onChange={onHandleSortAlgorithmToggle}
+              canClickAgain
             />
           </MenuBoxGroup>
           <MenuBoxGroup>
@@ -135,12 +124,14 @@ const TasksMenuSort = props => {
               icon={ICONS.TASK_UNCOMPLETED}
               iconScale={0.72}
               onChange={onHandleSortAlgorithmToggle}
+              canClickAgain
             />
             <MenuBoxItemTitle
               title="Sort incompleted"
               type="incomplete"
               active={sort.incomplete}
               onChange={onHandleSortAlgorithmToggle}
+              canClickAgain
             />
           </MenuBoxGroup>
         </MenuBoxContainer>

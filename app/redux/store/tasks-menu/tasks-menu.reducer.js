@@ -91,6 +91,15 @@ export default typeToReducer(
 
     [TASKS_MENU.TOGGLE_SORT_ALGORITHM]: (state, action) => {
       const algorithm = action.payload.algorithm
+      const isSameAlgorithm = state.getIn(['sort', algorithm])
+
+      if (isSameAlgorithm) {
+        return state
+          .setIn(['sort', 'defaultSort'], true)
+          .setIn(['sort', 'alphabet'], false)
+          .setIn(['sort', 'important'], false)
+          .setIn(['sort', 'incomplete'], false)
+      }
 
       return state
         .setIn(['sort', 'defaultSort'], false)
