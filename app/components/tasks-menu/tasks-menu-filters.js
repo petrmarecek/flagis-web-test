@@ -52,6 +52,7 @@ const TasksMenuFilters = props => {
 
     props.visibleMenuFilter()
   }
+  const onHandleToggleSenderFilter = () => props.onToggleSenderFilter()
   const onHandleToggleAssigneeFilter = () => props.onToggleAssigneeFilter()
   const onHandleRangeFilterChange = value => props.onChangeRangeFilter(value)
   const onHandleToggleImportantFilter = () => props.onToggleImportantFilter()
@@ -82,6 +83,19 @@ const TasksMenuFilters = props => {
               title="Sent to ..."
               active={filters.assignee}
               onChange={onHandleToggleAssigneeFilter}
+            />
+          </MenuBoxGroup>
+          <MenuBoxGroup>
+            <MenuBoxItemIcon
+              active={filters.sender}
+              icon={ICONS.FOLLOWER_NEW}
+              iconScale={0.66}
+              onChange={onHandleToggleSenderFilter}
+            />
+            <MenuBoxItemTitle
+              title="Received from ..."
+              active={filters.sender}
+              onChange={onHandleToggleSenderFilter}
             />
           </MenuBoxGroup>
           <MenuBoxGroup>
@@ -153,6 +167,7 @@ const TasksMenuFilters = props => {
 
 TasksMenuFilters.propTypes = {
   tasksMenu: PropTypes.object,
+  onToggleSenderFilter: PropTypes.func,
   onToggleAssigneeFilter: PropTypes.func,
   onChangeRangeFilter: PropTypes.func,
   onToggleImportantFilter: PropTypes.func,

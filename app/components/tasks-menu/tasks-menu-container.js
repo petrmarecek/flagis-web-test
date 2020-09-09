@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { OrderedSet } from 'immutable'
+import { OrderedSet, List } from 'immutable'
 
 // toast notifications
 import toast from 'utils/toastify-helper'
@@ -31,6 +31,7 @@ import {
   getCompletedTasksId,
 } from 'redux/store/tasks/tasks.selectors'
 import {
+  toggleSenderFilter,
   toggleAssigneeFilter,
   changeRangeFilter,
   toggleImportantFilter,
@@ -44,10 +45,12 @@ import {
   hideMenuSort,
   visibleMenuOption,
   hideMenuOption,
+  deselectActiveSender,
   deselectActiveAssignee,
 } from 'redux/store/tasks-menu/tasks-menu.actions'
 import {
   getTasksMenu,
+  getTasksMenuFiltersActiveSender,
   getTasksMenuFiltersActiveAssignee,
 } from 'redux/store/tasks-menu/tasks-menu.selectors'
 import { archiveCompletedTasks } from 'redux/utils/component-helper'
@@ -74,6 +77,7 @@ class TasksMenuContainer extends PureComponent {
     showCompletedTasks: PropTypes.object,
     archivedTasks: PropTypes.object,
     entitiesTasks: PropTypes.object,
+    toggleSenderFilter: PropTypes.func,
     toggleAssigneeFilter: PropTypes.func,
     changeRangeFilter: PropTypes.func,
     toggleImportantFilter: PropTypes.func,
@@ -88,6 +92,7 @@ class TasksMenuContainer extends PureComponent {
     selectTasks: PropTypes.object,
     selectTaskCount: PropTypes.number,
     tasksMenu: PropTypes.object,
+    activeSender: PropTypes.object,
     activeAssignee: PropTypes.object,
     multiSelect: PropTypes.bool,
     activeTags: PropTypes.object,
@@ -100,11 +105,16 @@ class TasksMenuContainer extends PureComponent {
     visibleMenuOption: PropTypes.func,
     hideMenuOption: PropTypes.func,
     selectAllTask: PropTypes.func,
+    deselectActiveSender: PropTypes.func,
     deselectActiveAssignee: PropTypes.func,
     prepareDeleteTask: PropTypes.func,
   }
 
   // Filters
+  handleSenderFilterToggle = () => {
+    this.props.toggleSenderFilter()
+  }
+
   handleAssigneeFilterToggle = () => {
     this.props.toggleAssigneeFilter()
   }
@@ -210,20 +220,45 @@ class TasksMenuContainer extends PureComponent {
           <TasksMenuFiltersActive
             isFilterActive={this.props.tasksMenu.filters.active.size !== 0}
           >
-            {this.props.tasksMenu.filters.active.map((filter, key) => (
-              <TasksMenuFiltersActiveItem
-                key={key}
-                title={filter}
-                activeAssignee={this.props.activeAssignee}
-                onDeselectActiveAssignee={this.props.deselectActiveAssignee}
-                onDelete={this.handleDeleteFilter}
-              />
-            ))}
+            {this.props.tasksMenu.filters.active.map((filter, key) => {
+              const { props } = this
+              let canAutocomplete = false
+              let autocompleteItems = List()
+              let onDeselectAutocomplete = null
+              let autocompleteLocation = ''
+
+              if (filter === 'assignee') {
+                canAutocomplete = true
+                autocompleteItems = props.activeAssignee
+                onDeselectAutocomplete = props.deselectActiveAssignee
+                autocompleteLocation = 'tasksMenuFilterContactsAssignee'
+              }
+
+              if (filter === 'sender') {
+                canAutocomplete = true
+                autocompleteItems = props.activeSender
+                onDeselectAutocomplete = props.deselectActiveSender
+                autocompleteLocation = 'tasksMenuFilterContactsSender'
+              }
+
+              return (
+                <TasksMenuFiltersActiveItem
+                  key={key}
+                  title={filter}
+                  canAutocomplete={canAutocomplete}
+                  autocompleteItems={autocompleteItems}
+                  autocompleteLocation={autocompleteLocation}
+                  onDeselectAutocomplete={onDeselectAutocomplete}
+                  onDelete={this.handleDeleteFilter}
+                />
+              )
+            })}
           </TasksMenuFiltersActive>
         )}
 
         {!isVisibleArchivedTasks && !isMultiSelect && (
           <TasksMenuFilters
+            onToggleSenderFilter={this.handleSenderFilterToggle}
             onToggleAssigneeFilter={this.handleAssigneeFilterToggle}
             onChangeRangeFilter={this.handleRangeFilterChange}
             onToggleImportantFilter={this.handleImportantFilterToggle}
@@ -283,6 +318,7 @@ const mapStateToProps = state => ({
   selectTasks: getSelectionTasks(state),
   selectTaskCount: getSelectionTasks(state).size,
   tasksMenu: getTasksMenu(state),
+  activeSender: getTasksMenuFiltersActiveSender(state),
   activeAssignee: getTasksMenuFiltersActiveAssignee(state),
   multiSelect: getMultiSelectVisibility(state),
   activeTags: getActiveTagsIds(state),
@@ -290,6 +326,7 @@ const mapStateToProps = state => ({
   isVisibleArchivedTasks: getArchivedTasksVisibility(state),
 })
 const mapDispatchToProps = {
+  toggleSenderFilter,
   toggleAssigneeFilter,
   changeRangeFilter,
   toggleImportantFilter,
@@ -308,6 +345,7 @@ const mapDispatchToProps = {
   visibleMenuOption,
   hideMenuOption,
   selectAllTask,
+  deselectActiveSender,
   deselectActiveAssignee,
   prepareDeleteTask,
 }

@@ -88,6 +88,55 @@ function loadAllTasks(ids, data) {
 }
 
 /**
+ * Get filtered tasks for assignee filter
+ * @param {Array} tasks Array
+ * @param {Object} tasksMenu Object
+ * @param {string} userId string
+ * @returns {Array} array of tasks
+ */
+
+function getFilteredTasksForAssignee(tasks, tasksMenu, userId) {
+  return tasks.filter(task => {
+    const activeAssignee = tasksMenu.getIn(['filters', 'activeAssignee'])
+    const followers = task.getIn(['followers'])
+    const assignee = getAssigneeOfTask(followers)
+
+    // No followers exist
+    if (assignee === null) {
+      return false
+    }
+
+    // filter every sent tasks
+    if (activeAssignee === null) {
+      return assignee.userId !== userId && assignee.status !== 'rejected'
+    }
+
+    return assignee.userId === activeAssignee && assignee.status !== 'rejected'
+  })
+}
+
+/**
+ * Get filtered tasks for assignee filter
+ * @param {Array} tasks Array
+ * @param {Object} tasksMenu Object
+ * @param {string} userId string
+ * @returns {Array} array of tasks
+ */
+
+function getFilteredTasksForSender(tasks, tasksMenu, userId) {
+  return tasks.filter(task => {
+    const activeSender = tasksMenu.getIn(['filters', 'activeSender'])
+
+    // filter every received tasks
+    if (activeSender === null) {
+      return task.createdById !== userId
+    }
+
+    return task.createdById === activeSender
+  })
+}
+
+/**
  * Loads task entities for given task IDs
  * @param {Array} ids Array of tasks
  * @param {Object} data Object
@@ -162,21 +211,32 @@ function loadTasks(ids, data) {
     tasks = findTasksByTags(tasks, tags)
   }
 
-  // apply assignee filter
-  if (tasksMenu.getIn(['filters', 'activeAssignee'])) {
-    tasks = tasks.filter(task => {
-      const activeAssignee = tasksMenu.getIn(['filters', 'activeAssignee'])
-      const followers = task.getIn(['followers'])
-      const assignee = getAssigneeOfTask(followers)
-      const assigneeId = assignee ? assignee.userId : null
+  // apply assignee and sender filter
+  const isAssigneeFilter = tasksMenu.getIn(['filters', 'assignee'])
+  const isSenderFilter = tasksMenu.getIn(['filters', 'sender'])
+  if (isAssigneeFilter && isSenderFilter) {
+    const filteredTasksForAssignee = getFilteredTasksForAssignee(
+      tasks,
+      tasksMenu,
+      userId
+    )
+    const filteredTasksForSender = getFilteredTasksForSender(
+      tasks,
+      tasksMenu,
+      userId
+    )
 
-      // filter every send tasks
-      if (activeAssignee === 'sendAll' && assigneeId !== null) {
-        return assigneeId !== userId && assignee.status !== 'rejected'
-      }
+    tasks = filteredTasksForAssignee.concat(filteredTasksForSender)
+  }
 
-      return assigneeId === activeAssignee && assignee.status !== 'rejected'
-    })
+  // apply only assignee filter
+  if (isAssigneeFilter && !isSenderFilter) {
+    tasks = getFilteredTasksForAssignee(tasks, tasksMenu, userId)
+  }
+
+  // apply only sender filter
+  if (isSenderFilter && !isAssigneeFilter) {
+    tasks = getFilteredTasksForSender(tasks, tasksMenu, userId)
   }
 
   // apply date range filter
@@ -186,17 +246,20 @@ function loadTasks(ids, data) {
   }
 
   // apply important filter
-  if (tasksMenu.getIn(['filters', 'important'])) {
+  const isImportantFilter = tasksMenu.getIn(['filters', 'important'])
+  if (isImportantFilter) {
     tasks = tasks.filter(task => task.isImportant)
   }
 
   // apply unimportant filter
-  if (tasksMenu.getIn(['filters', 'unimportant'])) {
+  const isUnimportantFilter = tasksMenu.getIn(['filters', 'unimportant'])
+  if (isUnimportantFilter) {
     tasks = tasks.filter(task => !task.isImportant)
   }
 
   // apply no tags filter
-  if (tasksMenu.getIn(['filters', 'noTags'])) {
+  const isNoTagsFilter = tasksMenu.getIn(['filters', 'noTags'])
+  if (isNoTagsFilter) {
     tasks = tasks.filter(task => task.tags.size === 0)
   }
 
@@ -206,7 +269,8 @@ function loadTasks(ids, data) {
   }
 
   // apply sort by importance
-  if (tasksMenu.getIn(['sort', 'important'])) {
+  const isImportantSorting = tasksMenu.getIn(['sort', 'important'])
+  if (isImportantSorting) {
     const tasksImportant = tasks.filter(task => task.isImportant)
     const tasksUnimportant = tasks.filter(task => !task.isImportant)
 
@@ -214,7 +278,8 @@ function loadTasks(ids, data) {
   }
 
   // apply sort incomplete
-  if (tasksMenu.getIn(['sort', 'incomplete'])) {
+  const isIncompleteSorting = tasksMenu.getIn(['sort', 'incomplete'])
+  if (isIncompleteSorting) {
     const tasksIncomplete = tasks.filter(task => !task.isCompleted)
     const tasksComplete = tasks.filter(task => task.isCompleted)
 

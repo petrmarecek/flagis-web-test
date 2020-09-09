@@ -2,13 +2,16 @@ export const TASKS_MENU = {
   RESET: 'TASKS-MENU/RESET',
 
   // Filters
+  TOGGLE_SENDER_FILTER: 'TASKS-MENU/TOGGLE_SENDER_FILTER',
   TOGGLE_ASSIGNEE_FILTER: 'TASKS-MENU/TOGGLE_ASSIGNEE_FILTER',
   CHANGE_RANGE_FILTER: 'TASKS-MENU/CHANGE_RANGE_FILTER',
   TOGGLE_IMPORTANT_FILTER: 'TASKS-MENU/TOGGLE_IMPORTANT_FILTER',
   TOGGLE_UNIMPORTANT_FILTER: 'TASKS-MENU/TOGGLE_UNIMPORTANT_FILTER',
   TOGGLE_NO_TAGS_FILTER: 'TASKS-MENU/TOGGLE_NO_TAGS_FILTER',
   DESELECT_NO_TAGS_FILTER: 'TASKS-MENU/DESELECT_NO_TAGS_FILTER',
+  SET_ACTIVE_SENDER: 'TASKS-MENU/SET_ACTIVE_SENDER',
   SET_ACTIVE_ASSIGNEE: 'TASKS-MENU/SET_ACTIVE_ASSIGNEE',
+  DESELECT_ACTIVE_SENDER: 'TASKS-MENU/DESELECT_ACTIVE_SENDER',
   DESELECT_ACTIVE_ASSIGNEE: 'TASKS-MENU/DESELECT_ACTIVE_ASSIGNEE',
   ADD_ACTIVE_FILTER: 'TASKS-MENU/ADD_ACTIVE_FILTER',
   DELETE_ACTIVE_FILTER: 'TASKS-MENU/DELETE_ACTIVE_FILTER',
@@ -31,6 +34,10 @@ export const resetTasksMenu = () => ({
 })
 
 // ------ Filters -----------------------------------------------------------
+
+export const toggleSenderFilter = () => ({
+  type: TASKS_MENU.TOGGLE_SENDER_FILTER,
+})
 
 export const toggleAssigneeFilter = () => ({
   type: TASKS_MENU.TOGGLE_ASSIGNEE_FILTER,
@@ -57,9 +64,18 @@ export const deselectNoTagsFilter = () => ({
   type: TASKS_MENU.DESELECT_NO_TAGS_FILTER,
 })
 
+export const setActiveSender = sender => ({
+  type: TASKS_MENU.SET_ACTIVE_SENDER,
+  payload: { sender },
+})
+
 export const setActiveAssignee = assignee => ({
   type: TASKS_MENU.SET_ACTIVE_ASSIGNEE,
   payload: { assignee },
+})
+
+export const deselectActiveSender = () => ({
+  type: TASKS_MENU.DESELECT_ACTIVE_SENDER,
 })
 
 export const deselectActiveAssignee = () => ({

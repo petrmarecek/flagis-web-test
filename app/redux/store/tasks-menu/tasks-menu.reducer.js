@@ -25,6 +25,9 @@ export default typeToReducer(
     [TASKS_MENU.TOGGLE_ASSIGNEE_FILTER]: state =>
       state.setIn(['filters', 'assignee'], !state.filters.assignee),
 
+    [TASKS_MENU.TOGGLE_SENDER_FILTER]: state =>
+      state.setIn(['filters', 'sender'], !state.filters.sender),
+
     [TASKS_MENU.CHANGE_RANGE_FILTER]: (state, action) => {
       // same filter --> toggle, otherwise set
       const previousValue = state.filters.range
@@ -50,8 +53,14 @@ export default typeToReducer(
     [TASKS_MENU.DESELECT_NO_TAGS_FILTER]: state =>
       state.setIn(['filters', 'noTags'], false),
 
+    [TASKS_MENU.SET_ACTIVE_SENDER]: (state, action) =>
+      state.setIn(['filters', 'activeSender'], action.payload.sender),
+
     [TASKS_MENU.SET_ACTIVE_ASSIGNEE]: (state, action) =>
       state.setIn(['filters', 'activeAssignee'], action.payload.assignee),
+
+    [TASKS_MENU.DESELECT_ACTIVE_SENDER]: state =>
+      state.setIn(['filters', 'activeSender'], null),
 
     [TASKS_MENU.DESELECT_ACTIVE_ASSIGNEE]: state =>
       state.setIn(['filters', 'activeAssignee'], null),

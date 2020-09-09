@@ -8,23 +8,30 @@ import Autocomplete from 'components/autocomplete'
 
 import {
   FilterActiveItem,
-  FilterActiveItemIcon,
+  FilterActiveItemIconUser,
+  FilterActiveItemIconCancel,
   FilterActiveItemTitle,
   FilterActiveItemAutocomplete,
 } from './styles'
+import Avatar from 'react-avatar'
 
 const TasksMenuFiltersActiveItem = ({
   title,
-  activeAssignee,
+  canAutocomplete,
+  autocompleteItems,
+  autocompleteLocation,
   isMounted,
-  onHandleDeselectActiveAssignee,
+  onHandleDeselectAutocomplete,
   onHandleDelete,
 }) => {
-  const isAssignee = title === 'assignee'
   const renameTitle = filterTitle => {
     switch (filterTitle) {
       case 'assignee':
         filterTitle = 'Sent to:'
+        break
+
+      case 'sender':
+        filterTitle = 'Received from:'
         break
 
       case 'today':
@@ -54,38 +61,48 @@ const TasksMenuFiltersActiveItem = ({
     return filterTitle
   }
 
+  const hasAutocompleteItems =
+    autocompleteItems !== null && autocompleteItems.size > 0
+  const autocompleteItem = hasAutocompleteItems
+    ? autocompleteItems.first()
+    : autocompleteItems
+
   return (
     <FilterActiveItem isMounted={isMounted}>
-      {isAssignee && (
-        <FilterActiveItemIcon>
-          <Icon
-            icon={ICONS.FOLLOWER_NEW}
-            width={14}
-            height={16}
-            scale={0.66}
-            color={['#B1B5B8']}
-            onClick={onHandleDelete}
-          />
-        </FilterActiveItemIcon>
-      )}
-      <FilterActiveItemTitle isAssignee={isAssignee}>
+      <FilterActiveItemTitle canAutocomplete={canAutocomplete}>
         {renameTitle(title)}
       </FilterActiveItemTitle>
-      {isAssignee && (
+      {canAutocomplete && autocompleteItem && (
+        <FilterActiveItemIconUser>
+          <Avatar
+            src={autocompleteItem.photo}
+            name={
+              autocompleteItem.nickname !== null
+                ? autocompleteItem.nickname
+                : autocompleteItem.email
+            }
+            size={25}
+            textSizeRatio={2}
+            round
+          />
+        </FilterActiveItemIconUser>
+      )}
+      {canAutocomplete && (
         <FilterActiveItemAutocomplete>
           <Autocomplete
             dataType="contacts"
-            location="tasksMenuFilterContacts"
+            location={autocompleteLocation}
             placeholder="Select Contact"
-            selectedItems={{ contacts: activeAssignee }}
+            selectedItems={{ contacts: autocompleteItems }}
             parentId={null}
-            onDeselectInput={onHandleDeselectActiveAssignee}
+            onDeselectInput={onHandleDeselectAutocomplete}
             isWithoutItems
             isInputMode
+            canAllContacts
           />
         </FilterActiveItemAutocomplete>
       )}
-      <FilterActiveItemIcon>
+      <FilterActiveItemIconCancel>
         <Icon
           icon={ICONS.CROSS_SIMPLE}
           width={14}
@@ -94,18 +111,20 @@ const TasksMenuFiltersActiveItem = ({
           hoverColor={['#293034']}
           onClick={onHandleDelete}
         />
-      </FilterActiveItemIcon>
+      </FilterActiveItemIconCancel>
     </FilterActiveItem>
   )
 }
 
 TasksMenuFiltersActiveItem.propTypes = {
   title: PropTypes.string,
-  activeAssignee: PropTypes.object,
+  canAutocomplete: PropTypes.bool,
+  autocompleteItems: PropTypes.object,
+  autocompleteLocation: PropTypes.string,
   delayTime: PropTypes.number,
   isMounted: PropTypes.bool,
-  onDeselectActiveAssignee: PropTypes.func,
-  onHandleDeselectActiveAssignee: PropTypes.func,
+  onDeselectAutocomplete: PropTypes.func,
+  onHandleDeselectAutocomplete: PropTypes.func,
   onDelete: PropTypes.func,
   onHandleDelete: PropTypes.func,
 }
@@ -122,8 +141,8 @@ export default compose(
 
         return { isMounted: false }
       },
-      onHandleDeselectActiveAssignee: (state, props) => () => {
-        props.onDeselectActiveAssignee()
+      onHandleDeselectAutocomplete: (state, props) => () => {
+        props.onDeselectAutocomplete()
         return {}
       },
     }

@@ -15,7 +15,6 @@ import * as tagActions from 'redux/store/tags/tags.actions'
 import * as treeActions from 'redux/store/tree/tree.actions'
 import * as contactActions from 'redux/store/contacts/contacts.actions'
 import * as followerActions from 'redux/store/followers/followers.actions'
-import * as authSelectors from 'redux/store/auth/auth.selectors'
 import * as tagSelectors from 'redux/store/tags/tags.selectors'
 import * as errorActions from 'redux/store/errors/errors.actions'
 import {
@@ -104,21 +103,9 @@ export function* hintSelected(action) {
     }
 
     // Hint(contact) selected within tasks menu filter
-    if (location === 'tasksMenuFilterContacts') {
-      // Click on Sent Me button in tasksMenu for assignee filter
-      if (isSendMe) {
-        const userId = yield select(state => authSelectors.getUserId(state))
-
-        yield put(tasksMenuActions.setActiveAssignee(userId))
-        return
-      }
-
-      // Click on Sent All button in tasksMenu for assignee filter
-      if (isSendAll) {
-        yield put(tasksMenuActions.setActiveAssignee('sendAll'))
-        return
-      }
-
+    const isAssigneeFilter = location === 'tasksMenuFilterContactsAssignee'
+    const isSenderFilter = location === 'tasksMenuFilterContactsSender'
+    if (isAssigneeFilter || isSenderFilter) {
       // Not allowed create a new contact
       if (isNewHint) {
         toast.error(
@@ -135,7 +122,13 @@ export function* hintSelected(action) {
         return
       }
 
-      yield put(tasksMenuActions.setActiveAssignee(hint.id))
+      if (isAssigneeFilter) {
+        yield put(tasksMenuActions.setActiveAssignee(hint.id))
+      }
+
+      if (isSenderFilter) {
+        yield put(tasksMenuActions.setActiveSender(hint.id))
+      }
     }
   } catch (err) {
     // send error to sentry

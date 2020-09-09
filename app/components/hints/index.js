@@ -50,7 +50,6 @@ const Hints = props => {
   const hintsLength = hints[dataType].length
   const isCreateNewHint = hints[dataType].length === 0
   const noHintFound = isCreateNewHint && isStringEmpty(value)
-  const isFilterContacts = location === 'tasksMenuFilterContacts'
   const directionRender = getHintDirectionRender(position.top)
   const isScroll = getScroll(hintsLength, position.top, directionRender)
   const overflowHeight = getOverflowHeight(position.top, directionRender)
@@ -81,11 +80,7 @@ const Hints = props => {
       return {
         title: `Create a new ${typeHint[dataType]}`,
         items: (
-          <Hint
-            ref={ref => getHintRef(ref)}
-            onClick={onHandleSubmit}
-            selected
-          >
+          <Hint ref={ref => getHintRef(ref)} onClick={onHandleSubmit} selected>
             {value}
           </Hint>
         ),
@@ -114,20 +109,7 @@ const Hints = props => {
   const getRender = {
     topToBottom: (
       <HintsContainer position={{ top: position.top, left: position.left }}>
-        {isFilterContacts && (
-          <Buttons directionRender={directionRender}>
-            <Button onClick={() => onHandleSubmit('sendMe')} first>
-              Me
-            </Button>
-            <Button onClick={() => onHandleSubmit('sendAll')}>All</Button>
-          </Buttons>
-        )}
-        <Title
-          directionRender={directionRender}
-          isFilterContacts={isFilterContacts}
-        >
-          {data.title}
-        </Title>
+        <Title directionRender={directionRender}>{data.title}</Title>
         {!isScroll ? (
           data.items
         ) : (
@@ -152,20 +134,7 @@ const Hints = props => {
             {data.items}
           </ShadowScrollbar>
         )}
-        <Title
-          directionRender={directionRender}
-          isFilterContacts={isFilterContacts}
-        >
-          {data.title}
-        </Title>
-        {isFilterContacts && (
-          <Buttons directionRender={directionRender}>
-            <Button onClick={() => onHandleSubmit('sendMe')} first>
-              Me
-            </Button>
-            <Button onClick={() => onHandleSubmit('sendAll')}>All</Button>
-          </Buttons>
-        )}
+        <Title directionRender={directionRender}>{data.title}</Title>
       </HintsContainer>
     ),
   }

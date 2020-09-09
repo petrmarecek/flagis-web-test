@@ -5,6 +5,18 @@ import * as tagActions from 'redux/store/tags/tags.actions'
 import * as treeActions from 'redux/store/tree/tree.actions'
 import * as taskMenuSelectros from 'redux/store/tasks-menu/tasks-menu.selectors'
 
+export function* toggleSenderFilter() {
+  const sender = yield select(state =>
+    taskMenuSelectros.getTasksMenuFiltersItem(state, 'sender')
+  )
+
+  if (sender) {
+    yield put(taskMenuActions.addActiveFilter('sender'))
+  } else {
+    yield put(taskMenuActions.deleteActiveFilter('sender'))
+  }
+}
+
 export function* toggleAssigneeFilter() {
   const assignee = yield select(state =>
     taskMenuSelectros.getTasksMenuFiltersItem(state, 'assignee')

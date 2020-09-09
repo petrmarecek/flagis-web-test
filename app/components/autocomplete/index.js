@@ -8,6 +8,7 @@ import { connect } from 'react-redux'
 import { hintSelected } from 'redux/store/app-state/app-state.actions'
 import { getTags, getTagsTitle } from 'redux/store/tags/tags.selectors'
 import {
+  getAllContacts,
   getContacts,
   getContactsEmail,
 } from 'redux/store/contacts/contacts.selectors'
@@ -102,6 +103,7 @@ Autocomplete.propTypes = {
   isFocusTagTree: PropTypes.bool,
   isAllowUpdate: PropTypes.bool,
   isHideItemDelete: PropTypes.bool,
+  canAllContacts: PropTypes.bool,
   selectedItems: PropTypes.object,
   parentId: PropTypes.string,
   hints: PropTypes.object,
@@ -119,9 +121,12 @@ Autocomplete.propTypes = {
 }
 
 const mapStateToProps = (state, props) => {
-  const { selectedItems, dataType, isInputMode } = props
+  const { selectedItems, dataType, isInputMode, canAllContacts } = props
   let inputValue = ''
   const eqA = R.eqBy(R.prop('id'))
+  const contactsData = canAllContacts
+    ? getAllContacts(state).items
+    : getContacts(state).items
 
   // Get data of tags and contacts from store
   const storeData = {
@@ -130,7 +135,7 @@ const mapStateToProps = (state, props) => {
       validationItems: getTagsTitle(state),
     },
     contacts: {
-      data: getContacts(state).items,
+      data: contactsData,
       validationItems: getContactsEmail(state),
     },
   }

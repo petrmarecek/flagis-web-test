@@ -111,7 +111,9 @@ export const MultiSelectTasks = Record({
 export const TasksFilters = Record({
   menu: new Visibility(),
   active: List(),
+  activeSender: null,
   activeAssignee: null,
+  sender: false,
   assignee: false,
   range: null,
   important: false,

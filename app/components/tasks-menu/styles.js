@@ -118,13 +118,21 @@ const FilterActiveItem = styled.li`
         `};
 `
 
-const FilterActiveItemIcon = styled.div`
+const FilterActiveItemIconUser = styled.div`
+  margin: 0 5px 0 0;
+
+  img {
+    object-fit: cover;
+  }
+`
+
+const FilterActiveItemIconCancel = styled.div`
   margin: 0 0 2px 0;
 `
 
 const FilterActiveItemTitle = styled.div`
   font-weight: bold;
-  margin: ${props => (props.isAssignee ? '0 10px 0 10px' : '0 10px 0 0')};
+  margin: ${props => (props.canAutocomplete ? '0 5px 0 0' : '0 10px 0 0')};
 `
 
 const FilterActiveItemAutocomplete = styled.div`
@@ -249,7 +257,8 @@ export {
   IconWrapper,
   TasksMenuFiltersActive,
   FilterActiveItem,
-  FilterActiveItemIcon,
+  FilterActiveItemIconUser,
+  FilterActiveItemIconCancel,
   FilterActiveItemTitle,
   FilterActiveItemAutocomplete,
   MenuBoxContainer,

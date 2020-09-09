@@ -459,7 +459,7 @@ const AutocompleteInput = props => {
         ref={ref => getInputRef(ref)}
         type="text"
         autoComplete="off"
-        size={location === 'taskDetailTags' ? 5 : 10}
+        size={location === 'taskDetailTags' ? 5 : 15}
         placeholder={placeholder}
         onFocus={onHandleFocus}
         onKeyDown={onHandleKeyDown}

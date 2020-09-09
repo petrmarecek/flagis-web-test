@@ -82,6 +82,20 @@ export const getContacts = createSelector(
   }
 )
 
+export const getAllContacts = createSelector(
+  getContactsIsFetching,
+  getEntitiesContacts,
+  (contactsIsFetching, entitiesContacts) => {
+    return {
+      isFetching: contactsIsFetching,
+      items: entitiesContacts
+        .filter(contact => !contact.me)
+        .sort(compareContactByEmail)
+        .toArray(),
+    }
+  }
+)
+
 export const getVisibleContacts = createSelector(
   getContactsIsFetching,
   getContactsSearch,
