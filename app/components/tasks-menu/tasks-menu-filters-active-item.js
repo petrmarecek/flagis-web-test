@@ -14,6 +14,7 @@ import {
   FilterActiveItemAutocomplete,
 } from './styles'
 import Avatar from 'react-avatar'
+import { colors } from 'components/styled-components-mixins/colors'
 
 const TasksMenuFiltersActiveItem = ({
   title,
@@ -61,6 +62,7 @@ const TasksMenuFiltersActiveItem = ({
     return filterTitle
   }
 
+  const isSender = title === 'sender'
   const hasAutocompleteItems =
     autocompleteItems !== null && autocompleteItems.size > 0
   const autocompleteItem = hasAutocompleteItems
@@ -72,8 +74,22 @@ const TasksMenuFiltersActiveItem = ({
       <FilterActiveItemTitle canAutocomplete={canAutocomplete}>
         {renameTitle(title)}
       </FilterActiveItemTitle>
+      {canAutocomplete && isSender && (
+        <div>
+          <Icon
+            icon={ICONS.INCOMING}
+            width={16}
+            height={12}
+            color={[
+              colors.astrocopusGrey,
+              colors.astrocopusGrey,
+              colors.astrocopusGrey,
+            ]}
+          />
+        </div>
+      )}
       {canAutocomplete && autocompleteItem && (
-        <FilterActiveItemIconUser>
+        <FilterActiveItemIconUser isSender={isSender}>
           <Avatar
             src={autocompleteItem.photo}
             name={
@@ -88,7 +104,7 @@ const TasksMenuFiltersActiveItem = ({
         </FilterActiveItemIconUser>
       )}
       {canAutocomplete && (
-        <FilterActiveItemAutocomplete>
+        <FilterActiveItemAutocomplete isSender={isSender}>
           <Autocomplete
             dataType="contacts"
             location={autocompleteLocation}

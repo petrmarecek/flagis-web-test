@@ -50,7 +50,6 @@ const NotificationListItem = ({
     type === 'TASKS/DATES/DUE-DATE'
 
   // prepare data
-  const avatarSize = isAssigneeOfTask ? '20' : '30'
   const date = dateUtils.formatDateTimeSecondary(sentAt)
   const commentContent = data && data.content ? data.content : null
   const attachmentName = data && data.fileName ? data.fileName : null
@@ -86,22 +85,25 @@ const NotificationListItem = ({
       </ItemContentWrapper>
       {!isSystemNotification && (
         <Icons>
+          {isAssigneeOfTask && (
+            <Icon
+              icon={ICONS.INCOMING}
+              width={16}
+              height={12}
+              color={[
+                colors.astrocopusGrey,
+                colors.astrocopusGrey,
+                colors.astrocopusGrey,
+              ]}
+            />
+          )}
           <Avatar
             src={profile.photo}
             name={profileName}
-            size={avatarSize}
+            size="30"
             textSizeRatio={2}
             round
           />
-          {isAssigneeOfTask && (
-            <Icon
-              icon={ICONS.INBOX}
-              width={22}
-              height={15}
-              scale={0.68}
-              color={[colors.astrocopusGrey]}
-            />
-          )}
         </Icons>
       )}
     </ItemWrapper>

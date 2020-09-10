@@ -100,7 +100,7 @@ const Icons = styled.div`
   }
 
   svg {
-    margin: 0 0 0 5px;
+    margin: 0 5px 0 0;
   }
 `
 

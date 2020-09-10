@@ -19,7 +19,7 @@ const Wrapper = styled.div`
   align-items: center;
   position: relative;
   pointer-events: none;
-  width: 35px;
+  width: ${props => (props.isAssignee ? '56px' : '35px')};
   height: 30px;
   opacity: ${props => (props.isCompleted ? '0.4' : '1')};
   ${transition(props => (props.animation ? 'opacity 400ms ease-out' : 'none'))}
@@ -34,6 +34,8 @@ const IconStatus = styled.div`
 `
 
 const IconAccount = styled.div`
+  margin-left: ${props => (props.isAssignee ? '5px' : '0')};
+
   img {
     object-fit: cover;
   }
@@ -52,7 +54,7 @@ const FollowerIcon = ({
 
   const color = {
     new: ['#8C9DA9'],
-    assigneeInbox: ['#b1b5b8'],
+    assigneeInbox: ['#b1b5b8', '#b1b5b8', '#b1b5b8'],
     pending: ['#fff', '#8C9DA9', '#fff'],
     accepted: ['#fff', '#44FFB1', '#fff'],
     rejected: ['#fff', '#FF6A6A', '#fff'],
@@ -60,7 +62,7 @@ const FollowerIcon = ({
 
   const icons = {
     new: 'FOLLOWER_NEW',
-    assigneeInbox: 'INBOX',
+    assigneeInbox: 'INCOMING',
     pending: 'FOLLOWER_PENDING',
     accepted: 'FOLLOWER_ACCEPTED',
     rejected: 'FOLLOWER_REJECTED',
@@ -70,8 +72,20 @@ const FollowerIcon = ({
   const isFollower = followerStatus !== 'new'
 
   return (
-    <Wrapper isCompleted={isCompleted} animation={animation}>
-      <IconAccount>
+    <Wrapper
+      isCompleted={isCompleted}
+      animation={animation}
+      isAssignee={isAssignee}
+    >
+      {isAssignee && (
+        <Icon
+          icon={ICONS[icons[followerStatus]]}
+          width={16}
+          height={12}
+          color={color[followerStatus]}
+        />
+      )}
+      <IconAccount isAssignee={isAssignee}>
         <Avatar src={photo} name={nickname} size="30" textSizeRatio={2} round />
       </IconAccount>
       {isFollower && !isAssignee && (

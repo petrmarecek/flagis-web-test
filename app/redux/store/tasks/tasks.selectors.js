@@ -108,10 +108,18 @@ function getFilteredTasksForAssignee(tasks, tasksMenu, userId) {
 
     // filter every sent tasks
     if (activeAssignee === null) {
-      return assignee.userId !== userId && assignee.status !== 'rejected'
+      return (
+        assignee.userId !== userId &&
+        assignee.status !== 'rejected' &&
+        assignee.status !== 'new'
+      )
     }
 
-    return assignee.userId === activeAssignee && assignee.status !== 'rejected'
+    return (
+      assignee.userId === activeAssignee &&
+      assignee.status !== 'rejected' &&
+      assignee.status !== 'new'
+    )
   })
 }
 

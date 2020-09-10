@@ -119,7 +119,7 @@ const FilterActiveItem = styled.li`
 `
 
 const FilterActiveItemIconUser = styled.div`
-  margin: 0 5px 0 0;
+  margin: ${props => (props.isSender ? '0 0 0 5px' : '0 5px 0 0')};
 
   img {
     object-fit: cover;
@@ -142,7 +142,7 @@ const FilterActiveItemAutocomplete = styled.div`
   width: 100%;
   height: 100%;
   padding: 2px 0 0 0;
-  margin: 0 10px 0 0;
+  margin: ${props => (props.isSender ? '0 10px 0 5px' : '0 10px 0 0')};
   border-left: 2px solid #e7eced;
   border-right: 2px solid #e7eced;
 `
