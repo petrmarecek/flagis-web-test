@@ -6,15 +6,18 @@ import * as authSelectors from 'redux/store/auth/auth.selectors'
 
 export function* errorSentry(action) {
   const { err, data } = action.payload
-  const userEmail = yield select(state => authSelectors.getUserEmail(state))
+  const userId = yield select(state => authSelectors.getUserId(state))
 
-  if (process.env.NODE_ENV === 'development') {
+  if (
+    process.env.NODE_ENV === 'local' ||
+    process.env.NODE_ENV === 'development'
+  ) {
     console.error(err)
   } else {
     // set user and tag
     Sentry.configureScope(scope => {
       scope.setUser({
-        email: userEmail,
+        id: userId,
       })
       scope.setTag(data.tagType, data.tagValue)
     })
@@ -22,7 +25,7 @@ export function* errorSentry(action) {
     // set breadcrumb
     Sentry.addBreadcrumb({
       category: data.breadcrumbCategory,
-      message: `USER: ${userEmail} => ${data.breadcrumbMessage}`,
+      message: `USER: ${userId} => ${data.breadcrumbMessage}`,
       level: Sentry.Severity.Info,
     })
 
