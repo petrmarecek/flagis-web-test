@@ -5,12 +5,14 @@ import PropTypes from 'prop-types'
 import NavigationLandingPrimary from 'components/navigation/navigation-landing-primary'
 import NavigationLegal from 'components/navigation/navigation-legal'
 import LegalContainer from '../legal'
+import LandingFooter from 'components/landing/landing-footer'
 
 const LegalContent = ({ location }) => (
   <div>
     <NavigationLandingPrimary location={location} />
     <NavigationLegal location={location} />
     <LegalContainer location={location} />
+    <LandingFooter />
   </div>
 )
 

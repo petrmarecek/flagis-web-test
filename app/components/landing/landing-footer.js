@@ -1,4 +1,5 @@
 import React from 'react'
+import moment from 'moment'
 
 // components
 import { Link } from 'react-router-dom'
@@ -16,6 +17,7 @@ import {
 
 const LandingFooter = () => {
   const { innerHeight } = window
+  const year = moment().year()
   return (
     <FooterWrapper height={innerHeight}>
       <FooterTop>
@@ -29,7 +31,7 @@ const LandingFooter = () => {
       <FooterBottom>
         <NavigationLandingSecondary />
         <FooterText>info@flagis.com</FooterText>
-        <FooterText>© 2019 Flagis</FooterText>
+        <FooterText>{`© ${year} Flagis`}</FooterText>
       </FooterBottom>
     </FooterWrapper>
   )

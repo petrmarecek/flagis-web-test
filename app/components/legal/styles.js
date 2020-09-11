@@ -15,6 +15,7 @@ const LegalWrapper = styled.div`
   text-align: justify;
   font-size: 18px;
   line-height: 27px;
+  min-height: ${props => props.height - 140}px;
 
   ${mediaQueries.smx} {
     font-size: 16px;

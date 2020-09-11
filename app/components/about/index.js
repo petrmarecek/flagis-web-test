@@ -10,7 +10,7 @@ import {
 } from './styles'
 
 const AboutContainer = () => (
-  <AboutWrapper>
+  <AboutWrapper height={window.innerHeight}>
     <AboutInner>
       <AboutTitle>About</AboutTitle>
       <AboutContent>

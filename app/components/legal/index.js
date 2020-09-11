@@ -30,7 +30,9 @@ const getLegalContent = location => {
 }
 
 const LegalContainer = ({ location }) => (
-  <LegalWrapper>{getLegalContent(location)}</LegalWrapper>
+  <LegalWrapper height={window.innerHeight}>
+    {getLegalContent(location)}
+  </LegalWrapper>
 )
 
 LegalContainer.propTypes = {

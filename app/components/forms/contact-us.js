@@ -49,6 +49,7 @@ import {
 
 const ContactUsWrapper = styled.div`
   padding: ${props => (props.nonPadding ? '0' : '0 25px 50px')};
+  min-height: ${props => props.height - 140}px;
 `
 
 const ContactUsContainer = ({
@@ -63,7 +64,7 @@ const ContactUsContainer = ({
   const isAgree = contactUsValues && contactUsValues.get('agree')
 
   return (
-    <ContactUsWrapper nonPadding={isUserContactUs}>
+    <ContactUsWrapper nonPadding={isUserContactUs} height={window.innerHeight}>
       <Form
         maxWidth={500}
         nonMargin={isUserContactUs}

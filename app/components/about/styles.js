@@ -14,6 +14,7 @@ const AboutWrapper = styled.div`
   display: flex;
   justify-content: center;
   padding: 0 25px 25px;
+  min-height: ${props => props.height - 140}px;
 `
 const AboutInner = styled.div`
   max-width: ${maxWidth}px;

@@ -10,11 +10,13 @@ import { deselectError } from 'redux/store/app-state/app-state.actions'
 import ToastNotificationsContainer from 'components/toast-notifications'
 import NavigationLandingPrimary from 'components/navigation/navigation-landing-primary'
 import ContactUsContainer from '../forms/contact-us'
+import LandingFooter from 'components/landing/landing-footer'
 
 const ContactUsContent = ({ location }) => (
   <div>
     <NavigationLandingPrimary location={location} />
     <ContactUsContainer />
+    <LandingFooter />
     <div className="floating-components">
       <ToastNotificationsContainer />
     </div>
