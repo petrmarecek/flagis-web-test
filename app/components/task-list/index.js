@@ -98,10 +98,6 @@ const TaskListContainer = props => {
     onHandleSetDraggingTask,
   } = props
 
-  if (!tasks.isFetching && tasks.items.length === 0) {
-    return <EmptyList>No tasks found</EmptyList>
-  }
-
   const debouncedMoveTask = debounce(onInvokeMove, 10)
   const onMoveTask = useCallback(move => debouncedMoveTask(move), [])
   let offset = props.isVisibleArchivedTasks ? 108 : 192
@@ -126,7 +122,7 @@ const TaskListContainer = props => {
       <span onContextMenu={e => e.preventDefault()}>
         {!_.isEmpty(inboxTasks.items) && !isVisibleArchivedTasks && (
           <InboxTaskList>
-            <InboxCounter>({inboxCount}) Incomming tasks</InboxCounter>
+            <InboxCounter>({inboxCount}) Incoming tasks</InboxCounter>
             <TaskList
               userId={userId}
               listType={inboxTasks.type}
@@ -153,30 +149,35 @@ const TaskListContainer = props => {
             />
           </InboxTaskList>
         )}
-        <TaskList
-          userId={userId}
-          listType={tasks.type}
-          tasks={tasks.items}
-          selectedTags={selectedTags}
-          selectedTasks={selectedTasks}
-          sort={sort}
-          isVisibleArchivedTasks={isVisibleArchivedTasks}
-          leftPanelWidth={leftPanelWidth}
-          windowWidth={windowWidth}
-          moveTask={onMoveTask}
-          dropTask={onDropTask}
-          onTaskSelect={onHandleTaskSelect}
-          onToggleImportant={onHandleToggleImportant}
-          onCompleteClick={onHandleCompleteClick}
-          onTagClick={onHandleTagClick}
-          setArchiveTasks={onHandleSetArchiveTasks}
-          cancelArchiveTasks={onHandleCancelArchiveTasks}
-          acceptTask={onHandleAcceptTask}
-          rejectTask={onHandleRejectTask}
-          toggleDragAndDrop={onHandleToggleDragAndDrop}
-          isDragAndDropActive={isDragAndDropActive}
-          setDraggingTask={onHandleSetDraggingTask}
-        />
+        {!tasks.isFetching && _.isEmpty(tasks.items) && (
+          <EmptyList>No tasks found</EmptyList>
+        )}
+        {!tasks.isFetching && !_.isEmpty(tasks.items) && (
+          <TaskList
+            userId={userId}
+            listType={tasks.type}
+            tasks={tasks.items}
+            selectedTags={selectedTags}
+            selectedTasks={selectedTasks}
+            sort={sort}
+            isVisibleArchivedTasks={isVisibleArchivedTasks}
+            leftPanelWidth={leftPanelWidth}
+            windowWidth={windowWidth}
+            moveTask={onMoveTask}
+            dropTask={onDropTask}
+            onTaskSelect={onHandleTaskSelect}
+            onToggleImportant={onHandleToggleImportant}
+            onCompleteClick={onHandleCompleteClick}
+            onTagClick={onHandleTagClick}
+            setArchiveTasks={onHandleSetArchiveTasks}
+            cancelArchiveTasks={onHandleCancelArchiveTasks}
+            acceptTask={onHandleAcceptTask}
+            rejectTask={onHandleRejectTask}
+            toggleDragAndDrop={onHandleToggleDragAndDrop}
+            isDragAndDropActive={isDragAndDropActive}
+            setDraggingTask={onHandleSetDraggingTask}
+          />
+        )}
       </span>
     </ShadowScrollbar>
   )
