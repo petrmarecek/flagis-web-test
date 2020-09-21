@@ -1,10 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {
-  compose,
-  withHandlers,
-  shouldUpdate,
-} from 'recompose'
+import { compose, withHandlers, shouldUpdate } from 'recompose'
 
 import {
   getColorIndex,
@@ -68,9 +64,9 @@ const TagTreeItem = props => {
     treeItem,
     parents: parents.map(item => item.id),
     tags: [...parents, treeItem]
-      .map(item => item.tag ? item.tag.id : null)
+      .map(item => (item.tag ? item.tag.id : null))
       .filter(item => item),
-    onDrop
+    onDrop,
   })
 
   const isChildItems = treeItem.childItems.size > 0

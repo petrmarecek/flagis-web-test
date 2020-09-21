@@ -27,7 +27,7 @@ const TaskList = props => {
     cancelArchiveTasks,
     acceptTask,
     rejectTask,
-    toggleDragAndDrop,
+    prepareToggleDragAndDrop,
     setDraggingTask,
   } = props
 
@@ -67,7 +67,7 @@ const TaskList = props => {
             rejectTask={rejectTask}
             leftPanelWidth={leftPanelWidth}
             windowWidth={windowWidth}
-            toggleDragAndDrop={toggleDragAndDrop}
+            prepareToggleDragAndDrop={prepareToggleDragAndDrop}
             isDragAndDropActive={isDragAndDropActive}
             setDraggingTask={setDraggingTask}
           />
@@ -100,7 +100,7 @@ TaskList.propTypes = {
   cancelArchiveTasks: PropTypes.func,
   acceptTask: PropTypes.func,
   rejectTask: PropTypes.func,
-  toggleDragAndDrop: PropTypes.func,
+  prepareToggleDragAndDrop: PropTypes.func,
   setDraggingTask: PropTypes.func,
 }
 

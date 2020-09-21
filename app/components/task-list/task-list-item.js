@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import Linkify from 'react-linkify'
 import moment from 'moment'
 import removeMd from 'remove-markdown'
-import { markdownToHTML } from '../../redux/utils/component-helper'
 
 // hooks
 import { useTaskListItemDragDrop } from 'hooks/useTaskListItemDragDrop'
@@ -20,6 +19,7 @@ import {
   getAssigneeOfTask,
   getSortedTags,
   isStringEmpty,
+  markdownToHTML,
 } from 'redux/utils/component-helper'
 
 // components
@@ -80,7 +80,7 @@ const TaskListItem = props => {
         return
       }
     },
-    [props.task, props.listType]
+    [props.onToggleImportant, props.task]
   )
 
   const onHandleClicked = useCallback(
@@ -104,9 +104,11 @@ const TaskListItem = props => {
     [props.listType, props.task]
   )
 
-  const onHandleTagClicked = useCallback(tag => props.onTagClick(tag), [])
+  const onHandleTagClicked = useCallback(tag => props.onTagClick(tag), [
+    props.onTagClick,
+  ])
 
-  const onHandleCompleteClicked = () => {
+  const onHandleCompleteClicked = useCallback(() => {
     // Data of assignee
     const assignee = getAssigneeOfTask(props.task.followers)
     const isFollowers = assignee !== null
@@ -121,9 +123,9 @@ const TaskListItem = props => {
     }
 
     props.onCompleteClick(props.task)
-  }
+  }, [getAssigneeOfTask, props.onCompleteClick, props.task])
 
-  const onHandleArchiveClicked = () => {
+  const onHandleArchiveClicked = useCallback(() => {
     // allowed left mouse button
     if (props.listType === 'archived') {
       window.setTimeout(() => props.cancelArchiveTasks(props.task.id), 400)
@@ -133,9 +135,14 @@ const TaskListItem = props => {
 
     window.setTimeout(() => props.setArchiveTasks(props.task.id), 400)
     setIsMounted(false)
-  }
+  }, [
+    props.cancelArchiveTasks,
+    props.setArchiveTasks,
+    props.task,
+    props.listType,
+  ])
 
-  const onHandleAcceptClicked = () => {
+  const onHandleAcceptClicked = useCallback(() => {
     const { id, followers } = props.task
     const assignee = getAssigneeOfTask(followers)
     const data = {
@@ -145,17 +152,17 @@ const TaskListItem = props => {
 
     window.setTimeout(() => props.acceptTask(data), 400)
     setIsMounted(false)
-  }
+  }, [getAssigneeOfTask, props.acceptTask, props.task])
 
-  const onHandleRejectClicked = () => {
+  const onHandleRejectClicked = useCallback(() => {
     const data = {
       task,
-      type: listType,
+      type: props.listType,
     }
 
     window.setTimeout(() => props.rejectTask(data), 400)
     setIsMounted(false)
-  }
+  }, [props.rejectTask, props.listType])
 
   // Conditions
   const isArchivedList = listType === 'archived'
@@ -172,12 +179,16 @@ const TaskListItem = props => {
 
   // Sorted tags
   const sortedTags = useMemo(() => getSortedTags(task.tags, selectedTags), [
-    task.tags,
+    getSortedTags,
     selectedTags,
+    task,
   ])
 
   // Data of assignee
-  const assignee = getAssigneeOfTask(task.followers)
+  const assignee = useMemo(() => getAssigneeOfTask(task.followers), [
+    getAssigneeOfTask,
+    task,
+  ])
   const isFollowers = assignee !== null
   const followerStatus = isFollowers ? assignee.status : 'new'
   const isOwnerAccepted = isOwner && followerStatus === 'accepted'
@@ -185,12 +196,18 @@ const TaskListItem = props => {
   // Date from dueDate
   const now = moment()
   const dueDate = task.dueDate
-  const dueDateFormat = useMemo(() => dateUtils.formatDate(dueDate), [dueDate])
+  const dueDateFormat = useMemo(() => dateUtils.formatDate(dueDate), [
+    dateUtils.formatDate,
+    dueDate,
+  ])
   const fromNow = task.dueDate ? moment(dueDate).fromNow() : ''
 
   // Description
   let description = isDescription ? task.description : ''
-  description = useMemo(() => markdownToHTML(description), [description])
+  description = useMemo(() => markdownToHTML(description), [
+    markdownToHTML,
+    description,
+  ])
   const indexOfBr = description.indexOf('br />')
   const indexOfEndHtmlTag = description.indexOf('</')
 
@@ -200,7 +217,7 @@ const TaskListItem = props => {
     description = description.substr(0, description.indexOf('</'))
   }
 
-  description = useMemo(() => removeMd(description), [description])
+  description = useMemo(() => removeMd(description), [removeMd, description])
   description =
     description.length > 88 ? description.substr(0, 87) : description
 
@@ -443,11 +460,12 @@ TaskListItem.propTypes = {
   cancelArchiveTasks: PropTypes.func,
   acceptTask: PropTypes.func,
   rejectTask: PropTypes.func,
-  toggleDragAndDrop: PropTypes.func,
+  prepareToggleDragAndDrop: PropTypes.func,
   setDraggingTask: PropTypes.func,
 }
 
 const mapStateToProps = () => ({})
+
 const mapDispatchToProps = {
   setTaskTags,
 }
@@ -459,7 +477,9 @@ const areEqual = (prev, next) => {
   return (
     areTaskEqual &&
     prev.index === next.index &&
-    prev.isSelected === next.isSelected
+    prev.updatedAt === next.updatedAt &&
+    prev.isSelected === next.isSelected &&
+    prev.windowWidth === next.windowWidth
   )
 }
 

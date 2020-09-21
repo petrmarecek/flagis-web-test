@@ -56,19 +56,12 @@ const TaskItem = styled.div`
   outline: none;
   background-color: ${props => props.backgroundColor};
   visibility: ${props => (props.dragging ? 'hidden' : 'visible')};
-  animation: ${props => {
-    if (!props.animationEnabled) {
-      return 'none'
-    }
-
-    return props.isMounted
+  animation: ${props =>
+    !props.isMounted
       ? css`
-          ${showAnimation} 400ms;
-        `
-      : css`
           ${hideAnimation} 400ms;
         `
-  }};
+      : 'none'};
 
   :before {
     content: "";

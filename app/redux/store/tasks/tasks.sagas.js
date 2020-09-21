@@ -394,6 +394,24 @@ export function* toggleImportant(action) {
   }
 }
 
+export function* prepareToggleDragAndDrop(action) {
+  const newDragAndDrop = action.payload.value
+
+  if (!newDragAndDrop) {
+    yield delay(500)
+    const currentDraggingTask = yield select(taskSelectors.getDraggingTask)
+
+    if (!currentDraggingTask) {
+      yield put(taskActions.toggleDragAndDrop(false))
+      return
+    }
+
+    return
+  }
+
+  yield put(taskActions.toggleDragAndDrop(newDragAndDrop))
+}
+
 export function* setArchiveTasks(action) {
   const newArchiveTasks = action.payload.newArchiveTasksList
 

@@ -37,7 +37,7 @@ import {
   acceptTask,
   rejectTask,
   removeTaskFollower,
-  toggleDragAndDrop,
+  prepareToggleDragAndDrop,
   setDraggingTask,
 } from 'redux/store/tasks/tasks.actions'
 import {
@@ -94,7 +94,7 @@ const TaskListContainer = props => {
     onHandleAcceptTask,
     onHandleRejectTask,
     onHandleSetScrollbarPosition,
-    onHandleToggleDragAndDrop,
+    onHandlePrepareToggleDragAndDrop,
     onHandleSetDraggingTask,
   } = props
 
@@ -143,7 +143,7 @@ const TaskListContainer = props => {
               cancelArchiveTasks={onHandleCancelArchiveTasks}
               acceptTask={onHandleAcceptTask}
               rejectTask={onHandleRejectTask}
-              toggleDragAndDrop={onHandleToggleDragAndDrop}
+              prepareToggleDragAndDrop={onHandlePrepareToggleDragAndDrop}
               isDragAndDropActive={isDragAndDropActive}
               setDraggingTask={onHandleSetDraggingTask}
             />
@@ -173,7 +173,7 @@ const TaskListContainer = props => {
             cancelArchiveTasks={onHandleCancelArchiveTasks}
             acceptTask={onHandleAcceptTask}
             rejectTask={onHandleRejectTask}
-            toggleDragAndDrop={onHandleToggleDragAndDrop}
+            prepareToggleDragAndDrop={onHandlePrepareToggleDragAndDrop}
             isDragAndDropActive={isDragAndDropActive}
             setDraggingTask={onHandleSetDraggingTask}
           />
@@ -218,7 +218,7 @@ TaskListContainer.propTypes = {
   onHandleAcceptTask: PropTypes.func,
   onHandleRejectTask: PropTypes.func,
   onHandleSetScrollbarPosition: PropTypes.func,
-  onHandleToggleDragAndDrop: PropTypes.func,
+  onHandlePrepareToggleDragAndDrop: PropTypes.func,
   onHandleSetDraggingTask: PropTypes.func,
 
   // actions
@@ -278,7 +278,7 @@ const mapDispatchToProps = {
   rejectTask,
   removeTaskFollower,
   setScrollbarPosition,
-  toggleDragAndDrop,
+  prepareToggleDragAndDrop,
   setDraggingTask,
 }
 
@@ -430,8 +430,8 @@ export default compose(
         props.setScrollbarPosition(type === 'main' ? 'task' : type, position)
         return {}
       },
-      onHandleToggleDragAndDrop: (state, props) => value => {
-        props.toggleDragAndDrop(value)
+      onHandlePrepareToggleDragAndDrop: (state, props) => value => {
+        props.prepareToggleDragAndDrop(value)
         return {}
       },
       onHandleSetDraggingTask: (state, props) => task => {

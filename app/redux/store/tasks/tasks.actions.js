@@ -45,6 +45,7 @@ export const TASKS = {
   ACCEPT: 'TASK/ACCEPT',
   REJECT: 'TASK/REJECT',
   UNDO_REJECT: 'UNDO_TASK/REJECT',
+  PREPARE_TOGGLE_DRAG_AND_DROP: 'TASK/PREPARE_TOGGLE_DRAG_AND_DROP',
   TOGGLE_DRAG_AND_DROP: 'TASK/TOGGLE_DRAG_AND_DROP',
   SET_DRAGGING_TASK: 'TASK/SET_DRAGGING_TASK',
   REMOVE_DRAGGING_TASK: 'TASK/REMOVE_DRAGGING_TASK',
@@ -321,6 +322,11 @@ export const acceptTask = (taskId, followerId) => ({
 export const rejectTask = originalData => ({
   type: TASKS.REJECT,
   payload: { originalData },
+})
+
+export const prepareToggleDragAndDrop = value => ({
+  type: TASKS.PREPARE_TOGGLE_DRAG_AND_DROP,
+  payload: { value },
 })
 
 export const toggleDragAndDrop = value => ({

@@ -252,25 +252,26 @@ export const ContactStore = Record({
 
 export const Task = Record({
   id: null,
-  createdAt: null,
   subject: null,
   description: null,
   startDate: null,
   dueDate: null,
   reminderDate: null,
   order: null,
-  isImportant: false,
   isCompleted: null,
-  completedAt: null,
   isArchived: null,
-  archivedAt: null,
+  isImportant: false,
   isTrashed: null,
-  trashedAt: null,
+  isInbox: false,
   createdById: null,
   createdBy: null,
-  isInbox: false,
   followers: List(),
   tags: List(),
+  completedAt: null,
+  archivedAt: null,
+  trashedAt: null,
+  createdAt: null,
+  updatedAt: null,
 })
 
 export const Comment = Record({
