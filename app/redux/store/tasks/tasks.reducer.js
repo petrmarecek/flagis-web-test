@@ -12,6 +12,11 @@ export default typeToReducer(
       const { entities, result } = action.payload
       const task = entities.tasks[result]
       const type = task.isInbox ? ['inbox', 'items'] : ['items']
+      const tasksItems = state.getIn(type)
+
+      if (tasksItems.includes(task.id)) {
+        return state
+      }
 
       return state.updateIn(type, items => items.insert(0, result))
     },
