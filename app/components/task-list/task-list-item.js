@@ -211,16 +211,18 @@ const TaskListItem = props => {
   ])
   const indexOfBr = description.indexOf('br />')
   const indexOfEndHtmlTag = description.indexOf('</')
+  const lastIndexOfEndHtmlTag = description.lastIndexOf('</')
+  const hasDescriptionMoreLines = indexOfEndHtmlTag !== lastIndexOfEndHtmlTag
 
   if (indexOfBr !== -1 && indexOfBr < indexOfEndHtmlTag) {
     description = description.substr(0, description.indexOf('br />') + 5)
+    description = useMemo(() => removeMd(description), [removeMd, description])
+    description = `${description}...`
   } else {
     description = description.substr(0, description.indexOf('</'))
+    description = useMemo(() => removeMd(description), [removeMd, description])
+    description = hasDescriptionMoreLines ? `${description}...` : description
   }
-
-  description = useMemo(() => removeMd(description), [removeMd, description])
-  description =
-    description.length > 88 ? description.substr(0, 87) : description
 
   // Task-Item width
   const taskItemWidth = windowWidth - leftPanelWidth - 20
