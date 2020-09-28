@@ -556,7 +556,10 @@ const TaskDetail = props => {
                   color={[colors.astrocopusGrey]}
                 />
                 <DetailContentDateLabel>Due date</DetailContentDateLabel>
-                <DetailContentDatePicker onClick={onHandleRemoveEventListener}>
+                <DetailContentDatePicker
+                  onClick={onHandleRemoveEventListener}
+                  isClearable={!isCompleted && !isCollaborated}
+                >
                   <DatePicker
                     todayButton="Today"
                     locale="en-gb"
@@ -565,6 +568,7 @@ const TaskDetail = props => {
                     timeIntervals={5}
                     dateFormat={dateUtil.DEFAULT_DATE_TIME_FORMAT}
                     selected={dueDate}
+                    isClearable={!isCompleted && !isCollaborated}
                     onChange={onHandleDueDateChanged}
                   />
                 </DetailContentDatePicker>
@@ -579,7 +583,10 @@ const TaskDetail = props => {
                 <DetailContentDateLabel reminder>
                   Reminder date
                 </DetailContentDateLabel>
-                <DetailContentDatePicker onClick={onHandleRemoveEventListener}>
+                <DetailContentDatePicker
+                  onClick={onHandleRemoveEventListener}
+                  isClearable={!isCompleted && !isCollaborated}
+                >
                   <DatePicker
                     todayButton="Today"
                     locale="en-gb"
@@ -588,6 +595,7 @@ const TaskDetail = props => {
                     timeIntervals={5}
                     dateFormat={dateUtil.DEFAULT_DATE_TIME_FORMAT}
                     selected={reminderDate}
+                    isClearable={!isCompleted && !isCollaborated}
                     onChange={onHandleReminderDateChanged}
                   />
                 </DetailContentDatePicker>

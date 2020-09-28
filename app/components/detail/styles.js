@@ -14,6 +14,7 @@ import {
   markdownStyles,
   fontMain,
 } from '../styled-components-mixins/'
+import { colors } from '../styled-components-mixins/colors'
 import { tada, fadeOutLeft, fadeOutRight } from 'react-animations'
 
 // --------------------------------------- Animations ---------------------------------------
@@ -40,7 +41,7 @@ const DetailStyle = styled.div`
 `
 
 const DetailInner = styled.div`
-  background-color: #fff;
+  background-color: ${colors.white};
   position: absolute;
   top: 42px;
   bottom: 0;
@@ -62,7 +63,7 @@ const DetailInner = styled.div`
 `
 
 const DetailContentTop = styled.div`
-  ${boxSizing('border-box')}
+  ${boxSizing('border-box')};
   display: flex;
   justify-content: flex-start;
   position: relative;
@@ -78,7 +79,7 @@ const DetailContentTop = styled.div`
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #F6F7F8;
+    background-color: ${colors.lynxWhite};
     ${transform(props => (props.completed ? 'scaleX(1)' : 'scaleX(0)'))}
     ${transformOrigin('0 50%')}
     ${transition(props =>
@@ -92,12 +93,12 @@ const DetailContentTop = styled.div`
     left: 10px;
     right: 10px;
     bottom: 0;
-    border-bottom: 1px solid #44FFB1;
+    border-bottom: 1px solid ${colors.hanumanGreen};
   }
 `
 
 const DetailContentSubject = styled.div`
-  ${boxSizing('border-box')}
+  ${boxSizing('border-box')};
   flex: 1 1 auto;
   padding: 0 10px 0 0;
   max-width: 100%;
@@ -112,7 +113,7 @@ const DetailSubject = styled.div`
 `
 
 const DetailContentTagAutocomplete = styled.div`
-  ${boxSizing('border-box')}
+  ${boxSizing('border-box')};
   flex: 0 1 auto;
   padding: 5px 10px 0 0;
   max-width: 70%;
@@ -127,7 +128,7 @@ const DetailContentTagAutocompleteTags = styled.ul`
 `
 
 const DetailContentButton = styled.div`
-  ${boxSizing('border-box')}
+  ${boxSizing('border-box')};
   flex: 0 0 117px;
   display: flex;
   align-items: center;
@@ -138,7 +139,7 @@ const DetailContentButton = styled.div`
 `
 
 const DetailContentIcon = styled.div`
-  ${boxSizing('border-box')}
+  ${boxSizing('border-box')};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -167,7 +168,7 @@ const DetailContentProperties = styled.div`
   margin: 0 25px 0 13px;
   display: flex;
   flex-direction: column;
-  justify-content: space-start;
+  justify-content: flex-start;
   max-height: ${props => props.contentHeight};
 `
 
@@ -178,7 +179,7 @@ const DetailContentOptions = styled.div`
 
 const detailContentOptionsItemLabel = css`
   font-size: 14px;
-  color: ${props => (props.changeColor ? '#293034' : '#b1b5b8')};
+  color: ${props => (props.changeColor ? colors.aztec : colors.astrocopusGrey)};
   font-weight: ${props => (props.important ? 'bold' : 'normal')};
 `
 
@@ -217,8 +218,8 @@ const DetailContentAddNewContact = styled.span`
   bottom: 4px;
   height: 18px;
   width: 18px;
-  background-color: #b1b5b8;
-  ${borderRadius('50%')}
+  background-color: ${colors.astrocopusGrey};
+  ${borderRadius('50%')};
   pointer-events: auto;
   cursor: pointer;
 
@@ -239,7 +240,7 @@ const DetailContentImportant = styled.div`
   margin: 0 0 10px 0;
   padding-top: 24px;
   pointer-events: ${props => (props.allowed ? 'auto' : 'none')};
-  border-bottom: 1px solid #e1e4e5;
+  border-bottom: 1px solid ${colors.coldWind};
   cursor: pointer;
 `
 
@@ -250,7 +251,7 @@ const DetailContentImportantIcon = styled(Icon)`
 `
 
 const DetailContentImportantLabel = styled.div`
-  ${detailContentOptionsItemLabel}
+  ${detailContentOptionsItemLabel};
   position: absolute;
   left: 30px;
   bottom: 4px;
@@ -280,7 +281,7 @@ const DetailContentDateLabel = styled.div`
   top: 7px;
   left: 30px;
   z-index: 1;
-  color: #b1b5b8;
+  color: ${colors.astrocopusGrey};
   font-size: 14px;
   pointer-events: none;
 `
@@ -297,6 +298,25 @@ const DetailContentDatePicker = styled.div`
 
   .react-datepicker-wrapper {
     width: 100%;
+  }
+
+  .react-datepicker__close-icon {
+    height: 6px;
+    right: -7px;
+
+    :after {
+      background-color: transparent;
+      color: ${colors.midnightHour};
+      border: 1px solid ${colors.midnightHour};
+      padding: 1px;
+    }
+  }
+
+  .react-datepicker__input-container {
+    input {
+      padding: ${props =>
+        props.isClearable ? '5px 20px 2px 5px' : '5px 5px 2px'};
+    }
   }
 
   .react-datepicker-popper {
@@ -403,7 +423,7 @@ const ContentEditableWrapper = styled.span`
 `
 
 const ContentEditableStyles = css`
-  ${boxSizing('border-box')}
+  ${boxSizing('border-box')};
   line-height: 24px;
   font-size: 18px;
   outline: none !important;
@@ -414,7 +434,7 @@ const ContentEditableStyles = css`
     props.animation ? 'margin 500ms ease-out, color 500ms ease-out' : 'none'
   )};
   color: ${props =>
-    props.completed && !props.archived ? '#D7E3EC' : '#293034'};
+    props.completed && !props.archived ? colors.snowShadow : colors.aztec};
   margin-left: ${props => props.marginLeft};
   text-decoration: ${props =>
     props.completed || props.archived ? 'line-through' : 'none'};
@@ -422,7 +442,7 @@ const ContentEditableStyles = css`
   pointer-events: ${props => (props.allowed ? 'auto' : 'none')};
 
   :empty:before {
-    color: #b1b5b8;
+    color: ${colors.astrocopusGrey};
     content: attr(data-placeholder);
   }
 `
@@ -433,19 +453,19 @@ const MarkdownEditableContainer = styled(MarkdownEditable)`
   ${boxSizing('border-box')}
   position: relative;
   padding: 15px 2px 15px 15px;
-  border: 1px solid #e1e4e5;
+  border: 1px solid ${colors.coldWind};
   width: 100%;
   height: 100%;
   font-size: 14px;
   cursor: text;
 
   .markdown__html {
-    ${markdownStyles}
-    color: #1c2124;
+    ${markdownStyles};
+    color: ${colors.darkJungleGreen};
     padding-right: 13px;
 
     :empty:before {
-      color: #b1b5b8;
+      color: ${colors.astrocopusGrey};
       display: block;
       padding: 2px;
       content: attr(data-placeholder);
@@ -453,8 +473,8 @@ const MarkdownEditableContainer = styled(MarkdownEditable)`
   }
 
   .markdown__edit {
-    ${placeholderColor('#1c2124')}
-    color: #1c2124;
+    ${placeholderColor(colors.darkJungleGreen)};
+    color: ${colors.darkJungleGreen};
     border: none;
     padding-right: 13px;
     resize: none;
@@ -481,7 +501,7 @@ const DetailSubjectTaskCompleted = styled.div`
   :hover {
     svg {
       path {
-        fill: #44ffb1;
+        fill: ${colors.hanumanGreen};
       }
     }
   }
@@ -556,9 +576,9 @@ const DetailTagColorSelectorOptions = styled.ul`
 
 const DetailTagColorSelectorItems = styled.li`
   flex: none;
-  ${borderRadius('50%')}
+  ${borderRadius('50%')};
   background-color: ${props => props.color};
-  border: ${props => (props.selected ? '1px solid #293034' : 'none')};
+  border: ${props => (props.selected ? `1px solid ${colors.aztec}` : 'none')};
   width: 24px;
   height: 24px;
   margin: 0 10px 10px 0;
@@ -591,11 +611,11 @@ const DetailContentDescriptionContact = styled.div`
 
 const DetailContentContactData = styled.div`
   position: relative;
-  color: #b1b5b8;
+  color: ${colors.astrocopusGrey};
   font-size: 14px;
   padding: 0 0 2px 0;
   margin: 10px 0;
-  border-bottom: 1px solid #e1e4e5;
+  border-bottom: 1px solid ${colors.coldWind};
   height: 22px;
 `
 
@@ -609,24 +629,24 @@ const DetailContentContactDataContent = styled.div`
   margin: 0 5px 0 0;
   float: right;
   font-size: 18px;
-  color: #293034;
+  color: ${colors.aztec};
   cursor: ${props => (props.button ? 'pointer' : 'default')};
 
   span {
     margin: 0 0 0 10px;
     font-size: 14px;
     font-weight: bold;
-    color: #b1b5b8;
+    color: ${colors.astrocopusGrey};
   }
 
   :hover {
     span {
-      color: ${props => (props.button ? '#293034' : '#b1b5b8')};
+      color: ${props => (props.button ? colors.aztec : colors.astrocopusGrey)};
     }
 
     svg {
       path {
-        fill: ${props => (props.button ? '#293034' : '#b1b5b8')};
+        fill: ${props => (props.button ? colors.aztec : colors.astrocopusGrey)};
       }
     }
   }
