@@ -90,7 +90,6 @@ export const successMessages = {
     archive: 'Task has been archived.',
     cancelArchive: 'Task has been returned to My Tasks as completed task.',
     accepted: 'Task has been moved to My Tasks.',
-    rejected: 'Task has been returned to the sender.',
   },
 
   multiSelect: {

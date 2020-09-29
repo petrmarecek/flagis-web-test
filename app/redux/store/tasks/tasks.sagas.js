@@ -1002,12 +1002,6 @@ export function* rejectTask(action) {
       return
     }
 
-    // Show notification
-    toast.success(toastCommon.successMessages.tasks.rejected, {
-      position: toastCommon.position.DEFAULT,
-      autoClose: toastCommon.duration.SUCCESS_DURATION,
-    })
-
     // read all notification for task
     yield put(notificationActions.readTaskNotifications(task.id))
 
