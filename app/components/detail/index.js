@@ -622,19 +622,20 @@ export default compose(
           props.onHandleToggleList()
           return
 
-        // backspace
-        case 8:
-          props.onHandleToggleList()
-          return
-
         // arrow left key
         case 37:
-          props.onHandlePrevious()
+          if (event.altKey) {
+            props.onHandlePrevious()
+          }
+
           return
 
         // arrow right key
         case 39:
-          props.onHandleNext()
+          if (event.altKey) {
+            props.onHandleNext()
+          }
+
           return
 
         default:
