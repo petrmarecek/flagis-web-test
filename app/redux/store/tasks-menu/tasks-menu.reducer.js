@@ -13,6 +13,9 @@ export default typeToReducer(
         .setIn(['filters', 'range'], null)
         .setIn(['filters', 'important'], false)
         .setIn(['filters', 'unimportant'], false)
+        .setIn(['filters', 'completed'], false)
+        .setIn(['filters', 'uncompleted'], false)
+        .setIn(['filters', 'noIncoming'], false)
         .setIn(['filters', 'noTags'], false)
         .updateIn(['filters', 'active'], list => list.clear())
         .setIn(['sort', 'defaultSort'], true)
@@ -46,6 +49,19 @@ export default typeToReducer(
       state
         .setIn(['filters', 'unimportant'], !state.filters.unimportant)
         .setIn(['filters', 'important'], false),
+
+    [TASKS_MENU.TOGGLE_COMPLETED_FILTER]: state =>
+      state
+        .setIn(['filters', 'completed'], !state.filters.completed)
+        .setIn(['filters', 'uncompleted'], false),
+
+    [TASKS_MENU.TOGGLE_UNCOMPLETED_FILTER]: state =>
+      state
+        .setIn(['filters', 'uncompleted'], !state.filters.uncompleted)
+        .setIn(['filters', 'completed'], false),
+
+    [TASKS_MENU.TOGGLE_NO_INCOMING_FILTER]: state =>
+      state.setIn(['filters', 'noIncoming'], !state.filters.noIncoming),
 
     [TASKS_MENU.TOGGLE_NO_TAGS_FILTER]: state =>
       state.setIn(['filters', 'noTags'], !state.filters.noTags),

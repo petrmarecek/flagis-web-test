@@ -118,6 +118,9 @@ export const TasksFilters = Record({
   range: null,
   important: false,
   unimportant: false,
+  completed: false,
+  uncompleted: false,
+  noIncoming: false,
   noTags: false,
 })
 

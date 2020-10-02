@@ -52,12 +52,17 @@ const TasksMenuFilters = props => {
 
     props.visibleMenuFilter()
   }
+
   const onHandleToggleSenderFilter = () => props.onToggleSenderFilter()
   const onHandleToggleAssigneeFilter = () => props.onToggleAssigneeFilter()
   const onHandleRangeFilterChange = value => props.onChangeRangeFilter(value)
   const onHandleToggleImportantFilter = () => props.onToggleImportantFilter()
   const onHandleToggleUnimportantFilter = () =>
     props.onToggleUnimportantFilter()
+  const onHandleToggleCompletedFilter = () => props.onToggleCompletedFilter()
+  const onHandleToggleUncompletedFilter = () =>
+    props.onToggleUncompletedFilter()
+  const onHandleToggleNoIncomingFilter = () => props.onToggleNoIncomingFilter()
   const onHandleToggleNoTagsFilter = () => props.onToggleNoTagsFilter()
 
   return (
@@ -148,6 +153,38 @@ const TasksMenuFilters = props => {
           </MenuBoxGroup>
           <MenuBoxGroup>
             <MenuBoxItemIcon
+              active={filters.completed || filters.uncompleted}
+              icon={ICONS.TASK_COMPLETED}
+              iconScale={0.66}
+              onChange={onHandleToggleCompletedFilter}
+            />
+            <MenuBoxItemTitle
+              title="Completed"
+              active={filters.completed}
+              onChange={onHandleToggleCompletedFilter}
+            />
+            <span>|</span>
+            <MenuBoxItemTitle
+              title="Uncompleted"
+              active={filters.uncompleted}
+              onChange={onHandleToggleUncompletedFilter}
+            />
+          </MenuBoxGroup>
+          <MenuBoxGroup>
+            <MenuBoxItemIcon
+              active={filters.noIncoming}
+              icon={ICONS.NO_TAGS}
+              iconScale={1}
+              onChange={onHandleToggleNoIncomingFilter}
+            />
+            <MenuBoxItemTitle
+              title="No incoming"
+              active={filters.noIncoming}
+              onChange={onHandleToggleNoIncomingFilter}
+            />
+          </MenuBoxGroup>
+          <MenuBoxGroup>
+            <MenuBoxItemIcon
               active={filters.noTags}
               icon={ICONS.NO_TAGS}
               iconScale={1}
@@ -172,6 +209,9 @@ TasksMenuFilters.propTypes = {
   onChangeRangeFilter: PropTypes.func,
   onToggleImportantFilter: PropTypes.func,
   onToggleUnimportantFilter: PropTypes.func,
+  onToggleCompletedFilter: PropTypes.func,
+  onToggleUncompletedFilter: PropTypes.func,
+  onToggleNoIncomingFilter: PropTypes.func,
   onToggleNoTagsFilter: PropTypes.func,
   visibleMenuFilter: PropTypes.func,
   hideMenuFilter: PropTypes.func,

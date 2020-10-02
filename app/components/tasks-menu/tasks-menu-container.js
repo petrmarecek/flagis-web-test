@@ -36,6 +36,9 @@ import {
   changeRangeFilter,
   toggleImportantFilter,
   toggleUnimportantFilter,
+  toggleCompletedFilter,
+  toggleUncompletedFilter,
+  toggleNoIncomingFilter,
   toggleNoTagsFilter,
   deleteFilter,
   toggleSortAlgorithm,
@@ -82,6 +85,9 @@ class TasksMenuContainer extends PureComponent {
     changeRangeFilter: PropTypes.func,
     toggleImportantFilter: PropTypes.func,
     toggleUnimportantFilter: PropTypes.func,
+    toggleCompletedFilter: PropTypes.func,
+    toggleUncompletedFilter: PropTypes.func,
+    toggleNoIncomingFilter: PropTypes.func,
     toggleNoTagsFilter: PropTypes.func,
     deleteFilter: PropTypes.func,
     toggleSortAlgorithm: PropTypes.func,
@@ -111,42 +117,54 @@ class TasksMenuContainer extends PureComponent {
   }
 
   // Filters
-  handleSenderFilterToggle = () => {
+  onHandleToggleSenderFilter = () => {
     this.props.toggleSenderFilter()
   }
 
-  handleAssigneeFilterToggle = () => {
+  onHandleToggleAssigneeFilter = () => {
     this.props.toggleAssigneeFilter()
   }
 
-  handleRangeFilterChange = value => {
+  onHandleRangeFilterChange = value => {
     this.props.changeRangeFilter(value)
   }
 
-  handleImportantFilterToggle = () => {
+  onHandleToggleImportantFilter = () => {
     this.props.toggleImportantFilter()
   }
 
-  handleUnimportantFilterToggle = () => {
+  onHandleToggleUnimportantFilter = () => {
     this.props.toggleUnimportantFilter()
   }
 
-  handleNoTagsFilterToggle = () => {
+  onHandleToggleCompletedFilter = () => {
+    this.props.toggleCompletedFilter()
+  }
+
+  onHandleToggleUncompletedFilter = () => {
+    this.props.toggleUncompletedFilter()
+  }
+
+  onHandleToggleNoIncomingFilter = () => {
+    this.props.toggleNoIncomingFilter()
+  }
+
+  onHandleToggleNoTagsFilter = () => {
     this.props.toggleNoTagsFilter()
   }
 
-  handleDeleteFilter = filter => {
+  onHandleDeleteFilter = filter => {
     this.setState({ isMounted: false })
     this.props.deleteFilter(filter)
   }
 
   // Sort
-  handleSortAlgorithmToggle = algorithm => {
+  onHandleSortAlgorithmToggle = algorithm => {
     this.props.toggleSortAlgorithm(algorithm)
   }
 
   // Options
-  handleArchiveCompletedTasks = () => {
+  onHandleArchiveCompletedTasks = () => {
     const tasks = this.props.tasksId
     const showCompletedTasks = this.props.showCompletedTasks
     const completedTasks = this.props.completedTasks
@@ -178,17 +196,17 @@ class TasksMenuContainer extends PureComponent {
     })
   }
 
-  handleSelectAllTasks = () => {
+  onHandleSelectAllTasks = () => {
     const tasksId = OrderedSet(this.props.showTasksId)
     this.props.selectAllTask(tasksId)
   }
 
   // Multi Select
-  handleAddRemoveTags = () => {
+  onHandleAddRemoveTags = () => {
     this.props.showDialog('add-remove-tags', { tasks: this.props.selectTasks })
   }
 
-  handleDelete = () => {
+  onHandleDelete = () => {
     if (this.props.selectTaskCount === 0) {
       return
     }
@@ -207,8 +225,8 @@ class TasksMenuContainer extends PureComponent {
       <TaskMenuWrapper>
         {isMultiSelect && (
           <TasksMenuMultiSelect
-            onAddRemoveTags={this.handleAddRemoveTags}
-            onDelete={this.handleDelete}
+            onAddRemoveTags={this.onHandleAddRemoveTags}
+            onDelete={this.onHandleDelete}
             auth={this.props.auth}
             activeTags={this.props.activeTags}
             isVisibleArchivedTasks={isVisibleArchivedTasks}
@@ -249,7 +267,7 @@ class TasksMenuContainer extends PureComponent {
                   autocompleteItems={autocompleteItems}
                   autocompleteLocation={autocompleteLocation}
                   onDeselectAutocomplete={onDeselectAutocomplete}
-                  onDelete={this.handleDeleteFilter}
+                  onDelete={this.onHandleDeleteFilter}
                 />
               )
             })}
@@ -258,12 +276,15 @@ class TasksMenuContainer extends PureComponent {
 
         {!isVisibleArchivedTasks && !isMultiSelect && (
           <TasksMenuFilters
-            onToggleSenderFilter={this.handleSenderFilterToggle}
-            onToggleAssigneeFilter={this.handleAssigneeFilterToggle}
-            onChangeRangeFilter={this.handleRangeFilterChange}
-            onToggleImportantFilter={this.handleImportantFilterToggle}
-            onToggleUnimportantFilter={this.handleUnimportantFilterToggle}
-            onToggleNoTagsFilter={this.handleNoTagsFilterToggle}
+            onToggleSenderFilter={this.onHandleToggleSenderFilter}
+            onToggleAssigneeFilter={this.onHandleToggleAssigneeFilter}
+            onChangeRangeFilter={this.onHandleRangeFilterChange}
+            onToggleImportantFilter={this.onHandleToggleImportantFilter}
+            onToggleUnimportantFilter={this.onHandleToggleUnimportantFilter}
+            onToggleCompletedFilter={this.onHandleToggleCompletedFilter}
+            onToggleUncompletedFilter={this.onHandleToggleUncompletedFilter}
+            onToggleNoIncomingFilter={this.onHandleToggleNoIncomingFilter}
+            onToggleNoTagsFilter={this.onHandleToggleNoTagsFilter}
             visibleMenuFilter={this.props.visibleMenuFilter}
             hideMenuFilter={this.props.hideMenuFilter}
             hideMenuSort={this.props.hideMenuSort}
@@ -274,7 +295,7 @@ class TasksMenuContainer extends PureComponent {
 
         {!isVisibleArchivedTasks && !isMultiSelect && (
           <TasksMenuSort
-            onToggleSortAlgorithm={this.handleSortAlgorithmToggle}
+            onToggleSortAlgorithm={this.onHandleSortAlgorithmToggle}
             visibleMenuSort={this.props.visibleMenuSort}
             hideMenuFilter={this.props.hideMenuFilter}
             hideMenuSort={this.props.hideMenuSort}
@@ -285,8 +306,8 @@ class TasksMenuContainer extends PureComponent {
 
         {!isMultiSelect && (
           <TasksMenuOptions
-            onArchiveCompletedTasks={this.handleArchiveCompletedTasks}
-            onSelectAllTasks={this.handleSelectAllTasks}
+            onArchiveCompletedTasks={this.onHandleArchiveCompletedTasks}
+            onSelectAllTasks={this.onHandleSelectAllTasks}
             visibleMenuOption={this.props.visibleMenuOption}
             hideMenuFilter={this.props.hideMenuFilter}
             hideMenuSort={this.props.hideMenuSort}
@@ -331,6 +352,9 @@ const mapDispatchToProps = {
   changeRangeFilter,
   toggleImportantFilter,
   toggleUnimportantFilter,
+  toggleCompletedFilter,
+  toggleUncompletedFilter,
+  toggleNoIncomingFilter,
   toggleNoTagsFilter,
   deleteFilter,
   toggleSortAlgorithm,

@@ -95,6 +95,56 @@ export function* toggleUnimportantFilter() {
   }
 }
 
+export function* toggleCompletedFilter() {
+  const activeFilters = yield select(state =>
+    taskMenuSelectros.getTasksMenuFiltersItem(state, 'active')
+  )
+  const completed = yield select(state =>
+    taskMenuSelectros.getTasksMenuFiltersItem(state, 'completed')
+  )
+
+  if (completed) {
+    if (activeFilters.includes('uncompleted')) {
+      yield put(taskMenuActions.deleteActiveFilter('uncompleted'))
+    }
+
+    yield put(taskMenuActions.addActiveFilter('completed'))
+  } else {
+    yield put(taskMenuActions.deleteActiveFilter('completed'))
+  }
+}
+
+export function* toggleUncompletedFilter() {
+  const activeFilters = yield select(state =>
+    taskMenuSelectros.getTasksMenuFiltersItem(state, 'active')
+  )
+  const uncompleted = yield select(state =>
+    taskMenuSelectros.getTasksMenuFiltersItem(state, 'uncompleted')
+  )
+
+  if (uncompleted) {
+    if (activeFilters.includes('completed')) {
+      yield put(taskMenuActions.deleteActiveFilter('completed'))
+    }
+
+    yield put(taskMenuActions.addActiveFilter('uncompleted'))
+  } else {
+    yield put(taskMenuActions.deleteActiveFilter('uncompleted'))
+  }
+}
+
+export function* toggleNoIncomingFilter() {
+  const noIncoming = yield select(state =>
+    taskMenuSelectros.getTasksMenuFiltersItem(state, 'noIncoming')
+  )
+
+  if (noIncoming) {
+    yield put(taskMenuActions.addActiveFilter('noIncoming'))
+  } else {
+    yield put(taskMenuActions.deleteActiveFilter('noIncoming'))
+  }
+}
+
 export function* toggleNoTagsFilter() {
   const noTags = yield select(state =>
     taskMenuSelectros.getTasksMenuFiltersItem(state, 'noTags')

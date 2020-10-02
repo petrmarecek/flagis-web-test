@@ -265,6 +265,24 @@ function loadTasks(ids, data) {
     tasks = tasks.filter(task => !task.isImportant)
   }
 
+  // apply completed filter
+  const isCompletedFilter = tasksMenu.getIn(['filters', 'completed'])
+  if (isCompletedFilter) {
+    tasks = tasks.filter(task => task.isCompleted)
+  }
+
+  // apply uncompleted filter
+  const isUncompletedFilter = tasksMenu.getIn(['filters', 'uncompleted'])
+  if (isUncompletedFilter) {
+    tasks = tasks.filter(task => !task.isCompleted)
+  }
+
+  // apply no incoming filter
+  const isNoIncomingFilter = tasksMenu.getIn(['filters', 'noIncoming'])
+  if (isNoIncomingFilter) {
+    tasks = tasks.filter(task => !task.isInbox)
+  }
+
   // apply no tags filter
   const isNoTagsFilter = tasksMenu.getIn(['filters', 'noTags'])
   if (isNoTagsFilter) {

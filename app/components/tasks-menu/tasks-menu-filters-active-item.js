@@ -51,6 +51,18 @@ const TasksMenuFiltersActiveItem = ({
         filterTitle = 'Normal'
         break
 
+      case 'completed':
+        filterTitle = 'Completed'
+        break
+
+      case 'uncompleted':
+        filterTitle = 'Uncompleted'
+        break
+
+      case 'noIncoming':
+        filterTitle = 'No incoming'
+        break
+
       case 'noTags':
         filterTitle = 'No tags'
         break

@@ -7,6 +7,9 @@ export const TASKS_MENU = {
   CHANGE_RANGE_FILTER: 'TASKS-MENU/CHANGE_RANGE_FILTER',
   TOGGLE_IMPORTANT_FILTER: 'TASKS-MENU/TOGGLE_IMPORTANT_FILTER',
   TOGGLE_UNIMPORTANT_FILTER: 'TASKS-MENU/TOGGLE_UNIMPORTANT_FILTER',
+  TOGGLE_COMPLETED_FILTER: 'TASKS-MENU/TOGGLE_COMPLETED_FILTER',
+  TOGGLE_UNCOMPLETED_FILTER: 'TASKS-MENU/TOGGLE_UNCOMPLETED_FILTER',
+  TOGGLE_NO_INCOMING_FILTER: 'TASKS-MENU/TOGGLE_NO_INCOMING_FILTER',
   TOGGLE_NO_TAGS_FILTER: 'TASKS-MENU/TOGGLE_NO_TAGS_FILTER',
   DESELECT_NO_TAGS_FILTER: 'TASKS-MENU/DESELECT_NO_TAGS_FILTER',
   SET_ACTIVE_SENDER: 'TASKS-MENU/SET_ACTIVE_SENDER',
@@ -56,12 +59,29 @@ export const toggleUnimportantFilter = () => ({
   type: TASKS_MENU.TOGGLE_UNIMPORTANT_FILTER,
 })
 
+export const toggleCompletedFilter = () => ({
+  type: TASKS_MENU.TOGGLE_COMPLETED_FILTER,
+})
+
+export const toggleUncompletedFilter = () => ({
+  type: TASKS_MENU.TOGGLE_UNCOMPLETED_FILTER,
+})
+
+export const toggleNoIncomingFilter = () => ({
+  type: TASKS_MENU.TOGGLE_NO_INCOMING_FILTER,
+})
+
 export const toggleNoTagsFilter = () => ({
   type: TASKS_MENU.TOGGLE_NO_TAGS_FILTER,
 })
 
 export const deselectNoTagsFilter = () => ({
   type: TASKS_MENU.DESELECT_NO_TAGS_FILTER,
+})
+
+export const deleteFilter = filter => ({
+  type: TASKS_MENU.DELETE_FILTER,
+  payload: { filter },
 })
 
 export const setActiveSender = sender => ({
@@ -89,11 +109,6 @@ export const addActiveFilter = filter => ({
 
 export const deleteActiveFilter = filter => ({
   type: TASKS_MENU.DELETE_ACTIVE_FILTER,
-  payload: { filter },
-})
-
-export const deleteFilter = filter => ({
-  type: TASKS_MENU.DELETE_FILTER,
   payload: { filter },
 })
 
