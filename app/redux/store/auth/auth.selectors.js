@@ -92,3 +92,5 @@ export const getUserPhoto = state => {
 
   return state.getIn(['auth', 'profile', 'photo'])
 }
+
+export const getUserSettings = state => state.getIn(['auth', 'profile', 'settings']) || {}
