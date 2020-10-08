@@ -27,43 +27,43 @@ import {
 
 // adding title
 const LandingPageWithTitle = withTitle({
-  component: LandingPage,
+  Component: LandingPage,
   title: titles.LANDING,
 })
 const LegalPageWithTitle = withTitle({
-  component: LegalPage,
+  Component: LegalPage,
   title: titles.LEGAL,
 })
 const AboutPageWithTitle = withTitle({
-  component: AboutPage,
+  Component: AboutPage,
   title: titles.ABOUT,
 })
 const ContactUsPageWithTitle = withTitle({
-  component: ContactUsPage,
+  Component: ContactUsPage,
   title: titles.CONTACT_US,
 })
 const SignInPageWithTitle = withTitle({
-  component: SignInPage,
+  Component: SignInPage,
   title: titles.SIGN_IN,
 })
 const SignUpPageWithTitle = withTitle({
-  component: SignUpPage,
+  Component: SignUpPage,
   title: titles.SIGN_UP,
 })
 const EmailResetPasswordPageWithTitle = withTitle({
-  component: EmailResetPasswordPage,
+  Component: EmailResetPasswordPage,
   title: titles.EMAIL_RESET_PASSWORD,
 })
 const ResetPasswordPageWithTitle = withTitle({
-  component: ResetPasswordPage,
+  Component: ResetPasswordPage,
   title: titles.RESET_PASSWORD,
 })
 const VerificationEmailPageWithTitle = withTitle({
-  component: VerificationEmailPage,
+  Component: VerificationEmailPage,
   title: titles.VERIFICATION_EMAIL,
 })
 const NotFoundPageWithTitle = withTitle({
-  component: NotFoundPage,
+  Component: NotFoundPage,
   title: titles.NOT_FOUND,
 })
 

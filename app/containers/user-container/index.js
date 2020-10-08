@@ -34,28 +34,28 @@ import UndoBox from 'components/common/undo-box'
 
 // adding title
 const TaskPageWithTitle = withTitle({
-  component: TaskPage,
+  Component: TaskPage,
   title: titles.TASKS,
 })
 const TagPageWithTitle = withTitle({ component: TagPage, title: titles.TAGS })
 const ArchivePageWithTitle = withTitle({
-  component: ArchivePage,
+  Component: ArchivePage,
   title: titles.ARCHIVE,
 })
 const ContactPageWithTitle = withTitle({
-  component: ContactPage,
+  Component: ContactPage,
   title: titles.CONTACTS,
 })
 const NotificationPageWithTitle = withTitle({
-  component: NotificationPage,
+  Component: NotificationPage,
   title: titles.NOTIFICATIONS,
 })
 const DashboardPageWithTitle = withTitle({
-  component: DashboardPage,
+  Component: DashboardPage,
   title: titles.DASHBOARD,
 })
 const NotFoundPageWithTitle = withTitle({
-  component: NotFoundPage,
+  Component: NotFoundPage,
   title: titles.NOT_FOUND,
 })
 

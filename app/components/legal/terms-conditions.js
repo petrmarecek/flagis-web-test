@@ -306,6 +306,6 @@ const TermsConditions = () => (
 )
 
 export default withTitle({
-  component: TermsConditions,
+  Component: TermsConditions,
   title: titles.LEGAL_TERMS_AND_CONDITIONS,
 })

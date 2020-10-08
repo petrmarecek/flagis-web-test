@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { withStateHandlers } from 'recompose'
 import domUtils from 'redux/utils/dom'
 import constants from 'utils/constants'
-import { titles } from 'utils/titles-enums'
+import { titles as headTitles } from 'utils/titles-enums'
 import {
   tagColor,
   getColorIndex,
@@ -72,7 +72,7 @@ const TagDetail = props => {
 
   return (
     <div>
-      <HeadTitle title={`${titles.TAG_DETAIL} ${tag.title}`} />
+      <HeadTitle title={`${headTitles.TAG_DETAIL} ${tag.title}`} />
       <DetailMenu
         back={onHandleToggleList}
         previous={onHandlePrevious}
@@ -170,7 +170,7 @@ export default withStateHandlers(() => ({ tagColorsRef: null }), {
   onHandleTitleUpdate: (state, props) => event => {
     const title = event.target.value
     const originalTitle = props.tag.title
-    const titles = props.titles
+    const { titles } = props
 
     if (originalTitle === title || title === '') {
       return {}

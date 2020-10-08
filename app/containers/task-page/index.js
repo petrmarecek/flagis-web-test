@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { routes } from 'utils/routes'
 import { compose, lifecycle } from 'recompose'
+import * as _ from 'lodash'
 
 // redux
 import { connect } from 'react-redux'
@@ -40,6 +41,7 @@ const TaskPage = ({ tasksItems, inboxTasksItems, pathname }) => {
 
 TaskPage.propTypes = {
   tasksItems: PropTypes.object,
+  inboxTasksItems: PropTypes.object,
   pathname: PropTypes.string,
 }
 

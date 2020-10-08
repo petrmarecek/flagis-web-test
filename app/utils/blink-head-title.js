@@ -1,7 +1,7 @@
 import { titles } from 'utils/titles-enums'
 
 const blinkHeadTitle = title => {
-  let oldTitle = document.title
+  const oldTitle = document.title
   let timeoutId
 
   const blink = () => {
@@ -16,7 +16,7 @@ const blinkHeadTitle = title => {
   }
 
   if (!timeoutId) {
-    timeoutId = setInterval(blink, 800)
+    timeoutId = window.setInterval(blink, 800)
     window.onmousemove = clear
   }
 }

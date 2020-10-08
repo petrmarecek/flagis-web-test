@@ -1,4 +1,4 @@
-import React, { memo, PureComponent } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { findDOMNode } from 'react-dom'
 import { Scrollbars } from 'react-custom-scrollbars'

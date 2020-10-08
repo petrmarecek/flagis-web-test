@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import TaskListItem from 'components/task-list/task-list-item'
 import { TaskListItems } from './styles'

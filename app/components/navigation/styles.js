@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 import {
   fontMain,
   fontBold,
@@ -419,7 +419,7 @@ const NotificationsCounter = styled(Counter)`
 
 /*------------------------------ Navigation Account ----------------------------------*/
 const MenuBoxWrapper = styled(MenuBox)`
-  ${borderRadius('5px')}
+  ${borderRadius('5px')};
   position: absolute;
   right: 5px;
   top: 60px;

@@ -1,4 +1,4 @@
-import { Map, List, Record } from 'immutable'
+import { Map, List } from 'immutable'
 import typeToReducer from 'type-to-reducer'
 import dateUtil from 'redux/utils/date'
 import _ from 'lodash'

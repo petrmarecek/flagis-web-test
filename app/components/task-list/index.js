@@ -4,6 +4,7 @@ import debounce from 'lodash/debounce'
 import R from 'ramda'
 import { compose, branch, renderComponent, withStateHandlers } from 'recompose'
 import constants from 'utils/constants'
+import * as _ from 'lodash'
 
 // toast notifications
 import toast from 'utils/toastify-helper'
@@ -100,7 +101,7 @@ const TaskListContainer = props => {
 
   const debouncedMoveTask = debounce(onInvokeMove, 10)
   const onMoveTask = useCallback(move => debouncedMoveTask(move), [])
-  let offset = props.isVisibleArchivedTasks ? 108 : 192
+  const offset = props.isVisibleArchivedTasks ? 108 : 192
 
   const scrollStyle = {
     height: `calc(100vh - ${offset}px)`,

@@ -58,8 +58,6 @@ import AddTagTreeItemSectionForm from 'components/common/add-tag-tree-item-secti
 import { CollabsibleContent, EmptyList } from '../styled-components-mixins'
 import colors from 'components/styled-components-mixins/colors'
 import { Wrapper, AddSection, AddSectionText } from './styles'
-import { ICONS } from 'components/icons/icon-constants'
-import Icon from 'components/icons/icon'
 
 const TagTreeContainer = props => {
   const {
@@ -113,7 +111,7 @@ const TagTreeContainer = props => {
         verticalStyle={verticalStyle}
         scrollSpaceHeight={constants.list.tagTrees.SCROLL_SPACE_HEIGHT}
         scrollStep={constants.list.tagTrees.SCROLL_STEP}
-        isDraggable={true}
+        isDraggable
       >
         <Wrapper>
           <CollabsibleContent>

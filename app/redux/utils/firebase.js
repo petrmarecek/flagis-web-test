@@ -4,8 +4,6 @@ import 'firebase/firestore'
 import config from '../../config'
 import { eventChannel } from 'redux-saga'
 
-import axios from 'axios'
-
 // Initialize Firebase
 firebase.initializeApp(config.firebase)
 

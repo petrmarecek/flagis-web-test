@@ -1,5 +1,5 @@
 import styled, { keyframes, css } from 'styled-components'
-import { fadeInUp, flipOutX } from 'react-animations'
+import { flipOutX } from 'react-animations'
 import {
   transition,
   transform,
@@ -39,7 +39,6 @@ const TaskListItems = styled.ul`
 
 /*--------------------------------- Task List Item ------------------------------------------*/
 
-const showAnimation = keyframes`${fadeInUp}`
 const hideAnimation = keyframes`${flipOutX}`
 
 const TaskItem = styled.div`
@@ -132,7 +131,8 @@ const SubjectTags = styled.div`
 `
 
 const Subject = styled.div`
-  ${textOverflow('ellipsis')} flex: auto;
+  ${textOverflow('ellipsis')};
+  flex: auto;
   max-width: 70%;
   margin: ${props => (props.description ? '5px 0' : '14px 0 0 0')};
   height: 23px;
@@ -159,7 +159,8 @@ const DescriptionDueDate = styled.div`
 `
 
 const Description = styled.div`
-  ${textOverflow('ellipsis')} flex: 10 10 auto;
+  ${textOverflow('ellipsis')};
+  flex: 10 10 auto;
   font-size: 14px;
   height: 18px;
   line-height: 18px;
@@ -210,7 +211,8 @@ const TagItems = styled.ul`
 `
 
 const Item = styled.li`
-  ${borderRadius('9px')} margin: 0 4px 8px 0;
+  ${borderRadius('9px')};
+  margin: 0 4px 8px 0;
   float: left;
   border: none;
   height: 18px;

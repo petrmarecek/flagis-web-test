@@ -11,7 +11,7 @@ import {
 
 import HintItem from './hints-item'
 
-import { HintsContainer, Buttons, Button, Title, Hint } from './styles'
+import { HintsContainer, Title, Hint } from './styles'
 
 const getTopHeight = (positionTop, directionRender) => {
   return directionRender === 'topToBottom'
@@ -40,7 +40,6 @@ const Hints = props => {
     position,
     value,
     selectIndex,
-    location,
     getScrollRef,
     getHintRef,
     onHandleSubmit,

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
+import { compose, withHandlers } from 'recompose'
 
 // redux
 import { connect } from 'react-redux'
@@ -44,7 +45,8 @@ const Content = styled.div`
 `
 
 const Text = styled.div`
-  ${fontMain} font-size: 24px;
+  ${fontMain};
+  font-size: 24px;
   margin-bottom: 50px;
   text-align: center;
   line-height: 40px;
@@ -69,13 +71,13 @@ const IconWrapper = styled(Icon)`
 
 const VerificationEmailContent = ({
   location,
-  verifyUser,
+  onHandleVerifyUser,
   isVerificationFailed,
 }) => {
   useEffect(() => {
     const numberCharacter = '/verification/email/'.length
     const code = location.pathname.substring(numberCharacter)
-    verifyUser({ code })
+    onHandleVerifyUser(code)
   }, [])
 
   return (
@@ -112,6 +114,7 @@ const VerificationEmailContent = ({
 VerificationEmailContent.propTypes = {
   location: PropTypes.object,
   verifyUser: PropTypes.func,
+  onHandleVerifyUser: PropTypes.func,
   isVerificationFailed: PropTypes.bool,
 }
 
@@ -123,7 +126,11 @@ const mapStateToProps = state => ({
   isVerificationFailed: getVerificationFailed(state),
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withHandlers({
+    onHandleVerifyUser: props => code => {
+      props.verifyUser({ code })
+    },
+  })
 )(VerificationEmailContent)

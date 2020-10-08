@@ -1,9 +1,11 @@
 import React, { Fragment } from 'react'
-import HeadTitle from 'components/head-title'
+import HeadTitle from './index'
 
-export const withTitle = ({ component: Component, title }) => props => (
+const withTitle = ({ Component, title }) => props => (
   <Fragment>
     <HeadTitle title={title} />
     <Component {...props} />
   </Fragment>
 )
+
+export { withTitle }

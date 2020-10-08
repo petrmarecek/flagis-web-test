@@ -38,7 +38,7 @@ export function* defaultDisplay() {
 
 export function* hintSelected(action) {
   const { location, context, hint } = action.payload
-  const { parentId, isNewHint, isSendMe, isSendAll } = context
+  const { parentId, isNewHint } = context
 
   // Hint selected within main search context
   try {
