@@ -5,7 +5,9 @@ import { connect } from 'react-redux'
 import HTML5Backend from 'react-dnd-html5-backend'
 import { DndProvider } from 'react-dnd'
 import debounce from 'lodash/debounce'
+import { titles } from 'utils/titles-enums'
 
+// redux
 import { controlRedirectSignIn } from 'redux/store/auth/auth.actions'
 import { updateWindow } from 'redux/store/app-state/app-state.actions'
 import {
@@ -13,6 +15,10 @@ import {
   getLoader,
 } from 'redux/store/app-state/app-state.selectors'
 
+// components
+import { withTitle } from 'components/head-title/withTitle'
+
+// containers
 import ToastNotificationsContainer from 'components/toast-notifications'
 import Loader from 'components/common/loader'
 import TaskPage from 'containers/task-page'
@@ -25,6 +31,33 @@ import AccountContainer from 'containers/account-container'
 import NotFoundPage from 'containers/not-found-page/loadable'
 import Dialogs from 'components/dialogs/dialogs'
 import UndoBox from 'components/common/undo-box'
+
+// adding title
+const TaskPageWithTitle = withTitle({
+  component: TaskPage,
+  title: titles.TASKS,
+})
+const TagPageWithTitle = withTitle({ component: TagPage, title: titles.TAGS })
+const ArchivePageWithTitle = withTitle({
+  component: ArchivePage,
+  title: titles.ARCHIVE,
+})
+const ContactPageWithTitle = withTitle({
+  component: ContactPage,
+  title: titles.CONTACTS,
+})
+const NotificationPageWithTitle = withTitle({
+  component: NotificationPage,
+  title: titles.NOTIFICATIONS,
+})
+const DashboardPageWithTitle = withTitle({
+  component: DashboardPage,
+  title: titles.DASHBOARD,
+})
+const NotFoundPageWithTitle = withTitle({
+  component: NotFoundPage,
+  title: titles.NOT_FOUND,
+})
 
 class UserContainer extends PureComponent {
   static propTypes = {
@@ -62,33 +95,33 @@ class UserContainer extends PureComponent {
             <Switch>
               <Route
                 path={`${this.props.match.path}/tasks`}
-                component={TaskPage}
+                component={TaskPageWithTitle}
               />
               <Route
                 path={`${this.props.match.path}/tags`}
-                component={TagPage}
+                component={TagPageWithTitle}
               />
               <Route
-                path={`${this.props.match.path}/dashboard`}
-                component={DashboardPage}
+                path={`${this.props.match.path}/charts`}
+                component={DashboardPageWithTitle}
               />
               <Route
                 path={`${this.props.match.path}/archive`}
-                component={ArchivePage}
+                component={ArchivePageWithTitle}
               />
               <Route
                 path={`${this.props.match.path}/contacts`}
-                component={ContactPage}
+                component={ContactPageWithTitle}
               />
               <Route
                 path={`${this.props.match.path}/notifications`}
-                component={NotificationPage}
+                component={NotificationPageWithTitle}
               />
               <Route
                 path={`${this.props.match.path}/account`}
                 component={AccountContainer}
               />
-              <Route component={NotFoundPage} />
+              <Route component={NotFoundPageWithTitle} />
             </Switch>
           </div>
           <div className="dialog-container">

@@ -33,7 +33,7 @@ const NavigationAccountSettings = props => {
         active={pathname === settings.changePassword}
         onClick={onHandleClickChangePassword}
       >
-        Change password
+        Change Password
       </SettingsButton>
       <SettingsButton
         active={pathname === settings.contactUs}

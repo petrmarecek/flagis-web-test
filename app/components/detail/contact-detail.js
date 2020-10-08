@@ -2,8 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { withHandlers } from 'recompose'
 import constants from 'utils/constants'
+import { titles } from 'utils/titles-enums'
 
 // components
+import HeadTitle from 'components/head-title'
 import { MarkdownEditor } from 'components/editor/markdown-editor'
 import Avatar from 'react-avatar'
 import DetailMenu from './detail-menu'
@@ -46,6 +48,8 @@ const ContactDetail = props => {
   }
 
   const nickname = contact.nickname === null ? '' : contact.nickname
+  const contactName =
+    contact.nickname !== null ? contact.nickname : contact.email
   const description = contact.description === null ? '' : contact.description
   const editorHeight = 'calc(100vh - 132px)'
   const scrollStyle = {
@@ -55,6 +59,7 @@ const ContactDetail = props => {
 
   return (
     <div>
+      <HeadTitle title={`${titles.CONTACT_DETAIL} ${contactName}`} />
       <DetailMenu
         back={onHandleToggleList}
         previous={onHandlePrevious}

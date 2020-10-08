@@ -6,6 +6,7 @@ export const colors = {
   batman: '#676d71',
   doveGrey: '#6C6C6C',
   lostAtSea: '#8c9da9',
+  spanishGrey: '#979797',
   greyOfDarkness: '#a2a2a2',
   astrocopusGrey: '#b1b5b8',
   bayOfHope: '#c1cad0',

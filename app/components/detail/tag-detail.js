@@ -3,18 +3,19 @@ import PropTypes from 'prop-types'
 import { withStateHandlers } from 'recompose'
 import domUtils from 'redux/utils/dom'
 import constants from 'utils/constants'
-
-// toast notifications
-import toast from 'utils/toastify-helper'
-import * as toastCommon from 'components/toast-notifications/toast-notifications-common'
-
+import { titles } from 'utils/titles-enums'
 import {
   tagColor,
   getColorIndex,
   getTagColor,
 } from 'redux/utils/component-helper'
 
+// toast notifications
+import toast from 'utils/toastify-helper'
+import * as toastCommon from 'components/toast-notifications/toast-notifications-common'
+
 // components
+import HeadTitle from 'components/head-title'
 import { MarkdownEditor } from 'components/editor/markdown-editor'
 import TagDetailColors from 'components/detail/tag-detail-colors'
 import DetailMenu from 'components/detail/detail-menu'
@@ -71,6 +72,7 @@ const TagDetail = props => {
 
   return (
     <div>
+      <HeadTitle title={`${titles.TAG_DETAIL} ${tag.title}`} />
       <DetailMenu
         back={onHandleToggleList}
         previous={onHandlePrevious}

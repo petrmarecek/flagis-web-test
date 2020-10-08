@@ -1,5 +1,7 @@
 import { OrderedSet } from 'immutable'
 import { normalize } from 'normalizr'
+import { notificationText } from 'components/notification-list/notifications-common'
+import { blinkHeadTitle } from 'utils/blink-head-title'
 
 // redux
 import { all, put, select, cancelled, fork, take } from 'redux-saga/effects'
@@ -22,6 +24,13 @@ const NOTIFICATIONS = notificationsActions.NOTIFICATIONS
 function* saveChangeFromFirestore(change) {
   const { FULFILLED } = createLoadActions(NOTIFICATIONS.FIREBASE)
   const notification = change.doc.data()
+  const changeType = change.type
+
+  // set title for a new notification
+  if (changeType === 'added') {
+    const title = notificationText(notification.type)
+    blinkHeadTitle(title)
+  }
 
   // Prepare data
   const normalizeData = normalize(notification, schema.notification)

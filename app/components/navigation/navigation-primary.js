@@ -80,7 +80,7 @@ const NavigationPrimary = props => {
         iconWidth={18}
         iconHeight={18}
         iconScale={0.77}
-        label={'My Tasks'}
+        label="My Tasks"
       />
       <NavigationButtonWithIcon
         active={isTagsActive}
@@ -90,7 +90,7 @@ const NavigationPrimary = props => {
         iconWidth={18}
         iconHeight={11}
         iconScale={0.9}
-        label={'Tags'}
+        label="Tags"
       />
       <NavigationButtonWithIcon
         active={isContactsActive}
@@ -100,7 +100,7 @@ const NavigationPrimary = props => {
         iconWidth={18}
         iconHeight={14}
         iconScale={0.6}
-        label={'Contacts'}
+        label="Contacts"
       />
       <NavigationButtonWithIcon
         active={isArchiveActive}
@@ -110,7 +110,7 @@ const NavigationPrimary = props => {
         iconWidth={18}
         iconHeight={16}
         iconScale={1.05}
-        label={'Archived Tasks'}
+        label="Archive"
       />
     </NavigationPrimaryWrapper>
   )

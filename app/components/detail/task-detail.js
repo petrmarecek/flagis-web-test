@@ -7,12 +7,14 @@ import { List } from 'immutable'
 import dateUtil from 'redux/utils/date'
 import { getAssigneeOfTask } from 'redux/utils/component-helper'
 import domUtils from 'redux/utils/dom'
+import { titles } from 'utils/titles-enums'
 
 // toast notifications
 import * as toastCommon from 'components/toast-notifications/toast-notifications-common'
 import constants from 'utils/constants'
 
 // components
+import HeadTitle from 'components/head-title'
 import DetailMenu from 'components/detail/detail-menu'
 import FollowerStatus from 'components/common/follower-status'
 import FollowerResponseButtons from '../common/follower-response-buttons'
@@ -253,8 +255,22 @@ const TaskDetail = props => {
     return '50px'
   }
 
+  const getTitlePrefix = () => {
+    if (isArchived) {
+      return titles.ARCHIVE_DETAIL
+    }
+
+    if (isInbox) {
+      return titles.INCOMING_DETAIL
+    }
+
+    return titles.TASK_DETAIL
+  }
+  const titlePrefix = getTitlePrefix()
+
   return (
     <div>
+      <HeadTitle title={`${titlePrefix} ${task.subject}`} />
       <DetailMenu
         back={onHandleToggleList}
         previous={onHandlePrevious}

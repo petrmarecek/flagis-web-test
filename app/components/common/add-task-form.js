@@ -24,20 +24,21 @@ import {
   boxSizing,
   placeholderColor,
 } from '../styled-components-mixins'
+import { colors } from '../styled-components-mixins/colors'
 
 const AddForm = styled.form`
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 6px;
-  background-color: #fff;
+  background-color: ${colors.white};
   height: 58px;
-  ${boxShadow('0 1px 6px 0 #CECECE')}
+  ${boxShadow(`0 1px 6px 0 ${colors.americanSilver}`)}
   ${borderRadius('3px')}
 `
 
 const SubmitIcon = styled.div`
-  ${boxSizing('border-box')}
+  ${boxSizing('border-box')};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -56,7 +57,7 @@ const SubjectContainer = styled.div`
 `
 
 const Subject = styled.input`
-  ${placeholderColor('#CECECE')}
+  ${placeholderColor(colors.doveGrey)}
   ${boxSizing('border-box')}
   border: none;
   width: 100%;
@@ -66,12 +67,14 @@ const Subject = styled.input`
   padding-left: 24px;
   margin: 0;
   font-weight: ${props => (props.isImportant ? 'bold' : 'normal')};
-  background-color: #fff;
+  background-color: ${colors.white};
 `
 
 const AddTaskForm = ({ subject, tasksMenu, handleChange, handleSubmit }) => {
   const addButtonDisabled = isStringEmpty(subject)
-  const plusColor = addButtonDisabled ? '#CECECE' : '#44FFB1'
+  const plusColor = addButtonDisabled
+    ? colors.americanSilver
+    : colors.hanumanGreen
 
   return (
     <AddForm autoComplete="off" onSubmit={handleSubmit}>

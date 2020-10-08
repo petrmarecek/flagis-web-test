@@ -1,8 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { routes } from 'utils/routes'
+import { titles } from 'utils/titles-enums'
 
 // styles
+import { withTitle } from 'components/head-title/withTitle'
 import { DisclaimerWrapper } from './styles'
 
 const Disclaimer = () => (
@@ -53,4 +55,7 @@ const Disclaimer = () => (
   </DisclaimerWrapper>
 )
 
-export default Disclaimer
+export default withTitle({
+  component: Disclaimer,
+  title: titles.LEGAL_DISCLAIMER,
+})

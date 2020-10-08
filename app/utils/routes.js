@@ -1,4 +1,4 @@
-export const routes = {
+const routes = {
   landing: '/',
   legal: {
     default: '/legal',
@@ -14,13 +14,14 @@ export const routes = {
   signUp: '/sign-up',
   emailResetPassword: '/email-reset-password',
   resetPassword: '/reset-password',
+  verificationEmail: '/verification/email',
 
   user: {
     tasks: '/user/tasks',
     tags: '/user/tags',
     archive: '/user/archive',
     contacts: '/user/contacts',
-    dashboard: '/user/dashboard',
+    dashboard: '/user/charts',
     notifications: '/user/notifications',
 
     account: {
@@ -33,3 +34,5 @@ export const routes = {
     },
   },
 }
+
+export { routes }

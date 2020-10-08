@@ -1,8 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { routes } from 'utils/routes'
+import { titles } from 'utils/titles-enums'
 
 // components
+import { withTitle } from 'components/head-title/withTitle'
 import MoveUpButton from 'components/common/move-up-button'
 
 // styles
@@ -804,4 +806,7 @@ const PrivacyPolicy = () => (
   </PrivacyPolicyWrapper>
 )
 
-export default PrivacyPolicy
+export default withTitle({
+  component: PrivacyPolicy,
+  title: titles.LEGAL_PRIVACY_POLICY,
+})
