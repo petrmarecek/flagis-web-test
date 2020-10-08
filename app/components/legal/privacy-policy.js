@@ -807,6 +807,6 @@ const PrivacyPolicy = () => (
 )
 
 export default withTitle({
-  Component: PrivacyPolicy,
+  component: PrivacyPolicy,
   title: titles.LEGAL_PRIVACY_POLICY,
 })

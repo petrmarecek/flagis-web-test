@@ -353,6 +353,6 @@ const Eula = () => (
 )
 
 export default withTitle({
-  Component: Eula,
+  component: Eula,
   title: titles.LEGAL_EULA,
 })

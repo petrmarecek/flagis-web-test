@@ -1,11 +1,18 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import HeadTitle from './index'
 
-const withTitle = ({ Component, title }) => props => (
-  <Fragment>
-    <HeadTitle title={title} />
-    <Component {...props} />
-  </Fragment>
-)
+// withTitle function
+const withTitle = ({ component: Component, title }) => {
+  return class Title extends React.Component {
+    render() {
+      return (
+        <React.Fragment>
+          <HeadTitle title={title} />
+          <Component {...this.props} />
+        </React.Fragment>
+      )
+    }
+  }
+}
 
 export { withTitle }

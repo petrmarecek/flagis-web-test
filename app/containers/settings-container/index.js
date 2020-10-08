@@ -15,23 +15,23 @@ import NotFoundPage from 'containers/not-found-page/loadable'
 
 // adding title
 const EditProfilePageWithTitle = withTitle({
-  Component: EditProfilePage,
+  component: EditProfilePage,
   title: titles.SETTINGS_EDIT_PROFILE,
 })
 const ChangePasswordWithTitle = withTitle({
-  Component: ChangePasswordPage,
+  component: ChangePasswordPage,
   title: titles.SETTINGS_CHANGE_PASSWORD,
 })
 const ColorThemePageWithTitle = withTitle({
-  Component: ColorThemePage,
+  component: ColorThemePage,
   title: titles.SETTINGS_COLOR_THEME,
 })
 const UserContactUsPageWithTitle = withTitle({
-  Component: UserContactUsPage,
+  component: UserContactUsPage,
   title: titles.SETTINGS_CONTACT_US,
 })
 const NotFoundPageWithTitle = withTitle({
-  Component: NotFoundPage,
+  component: NotFoundPage,
   title: titles.NOT_FOUND,
 })
 

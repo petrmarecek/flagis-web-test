@@ -56,6 +56,6 @@ const Disclaimer = () => (
 )
 
 export default withTitle({
-  Component: Disclaimer,
+  component: Disclaimer,
   title: titles.LEGAL_DISCLAIMER,
 })

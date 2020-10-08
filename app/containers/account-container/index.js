@@ -12,7 +12,7 @@ import NotFoundPage from 'containers/not-found-page/loadable'
 
 // adding title
 const NotFoundPageWithTitle = withTitle({
-  Component: NotFoundPage,
+  component: NotFoundPage,
   title: titles.NOT_FOUND,
 })
 

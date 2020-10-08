@@ -189,6 +189,6 @@ const CookiesPolicy = () => (
 )
 
 export default withTitle({
-  Component: CookiesPolicy,
+  component: CookiesPolicy,
   title: titles.LEGAL_COOKIES_POLICY,
 })
