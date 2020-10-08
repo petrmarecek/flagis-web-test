@@ -25,6 +25,7 @@ import AccountContainer from 'containers/account-container'
 import NotFoundPage from 'containers/not-found-page/loadable'
 import Dialogs from 'components/dialogs/dialogs'
 import UndoBox from 'components/common/undo-box'
+import TipsContainer from 'containers/tips-container'
 
 class UserContainer extends PureComponent {
   static propTypes = {
@@ -100,6 +101,7 @@ class UserContainer extends PureComponent {
             <UndoBox />
             {this.props.loader && <Loader global />}
           </div>
+          <TipsContainer />
         </div>
       </DndProvider>
     )

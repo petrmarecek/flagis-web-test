@@ -48,6 +48,13 @@ export default typeToReducer(
 
     [AUTH.UPDATE_PROFILE]: (state, action) =>
       state.set('profile', new Profile(action.payload.profile)),
+
+    [AUTH.READ_TIP]: {
+      PENDING: (state, { payload }) => state
+        .mergeIn(['profile', 'settings'], { tips: { [payload]: true } }),
+
+      FULFILLED: (state, { payload }) => state.setIn(['profile'], new Profile(payload)),
+    },
   },
-  new AuthStore()
+  new AuthStore(),
 )

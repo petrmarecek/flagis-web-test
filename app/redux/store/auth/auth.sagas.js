@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import { routes } from 'utils/routes'
 import date from '../../utils/date'
 import fileHelper from 'utils/file-helper'
@@ -129,7 +130,7 @@ export function* initDataFlow() {
         tagValue: 'AUTH_INIT_DATA',
         breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
         breadcrumbMessage: 'AUTH_INIT_DATA',
-      })
+      }),
     )
   }
 }
@@ -210,7 +211,7 @@ export function* authFlow() {
         tagValue: 'AUTH_SIGN',
         breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
         breadcrumbMessage: 'AUTH_SIGN',
-      })
+      }),
     )
   }
 }
@@ -244,8 +245,8 @@ export function* registerUser(action) {
       yield put(
         appStateActions.setError(
           'signUp',
-          toastCommon.errorMessages.signUp.conflict
-        )
+          toastCommon.errorMessages.signUp.conflict,
+        ),
       )
       yield put(appStateActions.deselectLoader('form'))
     }
@@ -257,7 +258,7 @@ export function* registerUser(action) {
         tagValue: action.type,
         breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
         breadcrumbMessage: action.type,
-      })
+      }),
     )
   }
 }
@@ -287,7 +288,7 @@ export function* initEmail(action) {
         tagValue: action.type,
         breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
         breadcrumbMessage: action.type,
-      })
+      }),
     )
   }
 }
@@ -321,7 +322,7 @@ export function* changeName(action) {
     // update nickname for me contact
     const nickname = `${profile.firstName} ${profile.lastName}`
     const me = yield select(state =>
-      contactsSelectors.getContactById(state, profile.id)
+      contactsSelectors.getContactById(state, profile.id),
     )
     yield put(contactsActions.updateContact(me, nickname, 'nickname', true))
 
@@ -339,8 +340,8 @@ export function* changeName(action) {
     yield put(
       appStateActions.setError(
         'changeName',
-        toastCommon.errorMessages.somethingWrong
-      )
+        toastCommon.errorMessages.somethingWrong,
+      ),
     )
     yield put(appStateActions.deselectLoader('form'))
 
@@ -351,7 +352,7 @@ export function* changeName(action) {
         tagValue: action.type,
         breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
         breadcrumbMessage: action.type,
-      })
+      }),
     )
   }
 }
@@ -375,7 +376,7 @@ export function* changeUserPhoto(action) {
     // get upload data
     const { fileKey, uploadUrl } = yield callApi(
       api.files.getUploadData,
-      fileMetaData
+      fileMetaData,
     )
 
     const fileBuffer = yield call(fileHelper.readFileAsArrayBuffer, prepareFile)
@@ -398,7 +399,7 @@ export function* changeUserPhoto(action) {
 
     // update photo for me contact
     const me = yield select(state =>
-      contactsSelectors.getContactById(state, profile.id)
+      contactsSelectors.getContactById(state, profile.id),
     )
     yield put(contactsActions.updateContact(me, profile.photo, 'photo', true))
 
@@ -412,7 +413,7 @@ export function* changeUserPhoto(action) {
         tagValue: action.type,
         breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
         breadcrumbMessage: action.type,
-      })
+      }),
     )
   }
 }
@@ -432,7 +433,7 @@ export function* resetUserPhoto(action) {
         tagValue: action.type,
         breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
         breadcrumbMessage: action.type,
-      })
+      }),
     )
   }
 }
@@ -456,7 +457,7 @@ export function* toggleColorTheme(action) {
         tagValue: action.type,
         breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
         breadcrumbMessage: action.type,
-      })
+      }),
     )
   }
 }
@@ -475,8 +476,8 @@ export function* changePassword(action) {
     yield put(
       appStateActions.setError(
         'changePassword',
-        toastCommon.errorMessages.changePassword.badRequest
-      )
+        toastCommon.errorMessages.changePassword.badRequest,
+      ),
     )
     yield put(appStateActions.deselectLoader('form'))
 
@@ -487,7 +488,7 @@ export function* changePassword(action) {
         tagValue: action.type,
         breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
         breadcrumbMessage: action.type,
-      })
+      }),
     )
   }
 }
@@ -507,7 +508,7 @@ export function* emailResetPassword(action) {
       {
         position: toastCommon.position.DEFAULT,
         autoClose: toastCommon.duration.SUCCESS_DURATION,
-      }
+      },
     )
   } catch (err) {
     yield put(appStateActions.deselectLoader('form'))
@@ -522,7 +523,7 @@ export function* emailResetPassword(action) {
       {
         position: toastCommon.position.DEFAULT,
         autoClose: toastCommon.duration.SUCCESS_DURATION,
-      }
+      },
     )
 
     // send error to sentry
@@ -532,7 +533,7 @@ export function* emailResetPassword(action) {
         tagValue: action.type,
         breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
         breadcrumbMessage: action.type,
-      })
+      }),
     )
   }
 }
@@ -551,8 +552,8 @@ export function* sendContactUs(action) {
     yield put(
       appStateActions.setError(
         'contactUs',
-        toastCommon.errorMessages.somethingWrong
-      )
+        toastCommon.errorMessages.somethingWrong,
+      ),
     )
     yield put(appStateActions.deselectLoader('form'))
 
@@ -563,7 +564,7 @@ export function* sendContactUs(action) {
         tagValue: action.type,
         breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
         breadcrumbMessage: action.type,
-      })
+      }),
     )
   }
 }
@@ -602,9 +603,30 @@ export function* resetPassword(action) {
         tagValue: action.type,
         breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
         breadcrumbMessage: action.type,
-      })
+      }),
     )
   }
+}
+
+export function* readTip({ payload }) {
+  const { PENDING, FULFILLED } = createLoadActions(AUTH.READ_TIP)
+
+  // Optimistic update
+  yield put({ type: PENDING, payload })
+
+  // Get actual setting from API
+  const { settings } = yield callApi(api.users.profile)
+
+  // Prepare update
+  const preparedUpdate = {
+    settings: _.merge(settings, { tips: { [payload]: true } }),
+  }
+
+  // Call API
+  const result = yield callApi(api.users.update, preparedUpdate)
+
+  // Update user settings in store
+  yield put({ type: FULFILLED, payload: result })
 }
 
 // ------ HELPER FUNCTIONS ----------------------------------------------------
@@ -660,15 +682,15 @@ function* authorizeUser(authApiCall, action) {
         yield put(
           appStateActions.setError(
             'signIn',
-            toastCommon.errorMessages.signIn.passwordResetRequired
-          )
+            toastCommon.errorMessages.signIn.passwordResetRequired,
+          ),
         )
       } else {
         yield put(
           appStateActions.setError(
             'signIn',
-            toastCommon.errorMessages.signIn.unauthorized
-          )
+            toastCommon.errorMessages.signIn.unauthorized,
+          ),
         )
       }
 
@@ -682,7 +704,7 @@ function* authorizeUser(authApiCall, action) {
         tagValue: action.type,
         breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
         breadcrumbMessage: action.type,
-      })
+      }),
     )
     return null
   }
