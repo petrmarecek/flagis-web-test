@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { withHandlers } from 'recompose'
 import constants from 'utils/constants'
-import { titles } from 'utils/titles-enums'
+import { titles } from 'components/head-title/head-title-common'
 
 // components
 import HeadTitle from 'components/head-title'

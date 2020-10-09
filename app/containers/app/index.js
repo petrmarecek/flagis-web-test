@@ -1,9 +1,9 @@
 import React from 'react'
 import { Switch, Route } from 'react-router-dom'
-import { titles } from 'utils/titles-enums'
+import { titles } from 'components/head-title/head-title-common'
 
 // components
-import { withTitle } from 'components/head-title/with-title'
+import { withTitle } from 'components/head-title/withTitle'
 
 // containers
 import LandingPage from 'containers/landing-page/loadable'
@@ -26,46 +26,25 @@ import {
 } from 'components/editor/markdown-editor-styles'
 
 // adding title
-const LandingPageWithTitle = withTitle({
-  component: LandingPage,
-  title: titles.LANDING,
-})
-const LegalPageWithTitle = withTitle({
-  component: LegalPage,
-  title: titles.LEGAL,
-})
-const AboutPageWithTitle = withTitle({
-  component: AboutPage,
-  title: titles.ABOUT,
-})
-const ContactUsPageWithTitle = withTitle({
-  component: ContactUsPage,
-  title: titles.CONTACT_US,
-})
-const SignInPageWithTitle = withTitle({
-  component: SignInPage,
-  title: titles.SIGN_IN,
-})
-const SignUpPageWithTitle = withTitle({
-  component: SignUpPage,
-  title: titles.SIGN_UP,
-})
-const EmailResetPasswordPageWithTitle = withTitle({
-  component: EmailResetPasswordPage,
-  title: titles.EMAIL_RESET_PASSWORD,
-})
-const ResetPasswordPageWithTitle = withTitle({
-  component: ResetPasswordPage,
-  title: titles.RESET_PASSWORD,
-})
-const VerificationEmailPageWithTitle = withTitle({
-  component: VerificationEmailPage,
-  title: titles.VERIFICATION_EMAIL,
-})
-const NotFoundPageWithTitle = withTitle({
-  component: NotFoundPage,
-  title: titles.NOT_FOUND,
-})
+const LandingPageWithTitle = withTitle(LandingPage, titles.LANDING)
+const LegalPageWithTitle = withTitle(LegalPage, titles.LEGAL)
+const AboutPageWithTitle = withTitle(AboutPage, titles.ABOUT)
+const ContactUsPageWithTitle = withTitle(ContactUsPage, titles.CONTACT_US)
+const SignInPageWithTitle = withTitle(SignInPage, titles.SIGN_IN)
+const SignUpPageWithTitle = withTitle(SignUpPage, titles.SIGN_UP)
+const EmailResetPasswordPageWithTitle = withTitle(
+  EmailResetPasswordPage,
+  titles.EMAIL_RESET_PASSWORD
+)
+const ResetPasswordPageWithTitle = withTitle(
+  ResetPasswordPage,
+  titles.RESET_PASSWORD
+)
+const VerificationEmailPageWithTitle = withTitle(
+  VerificationEmailPage,
+  titles.VERIFICATION_EMAIL
+)
+const NotFoundPageWithTitle = withTitle(NotFoundPage, titles.NOT_FOUND)
 
 export default function App() {
   return (

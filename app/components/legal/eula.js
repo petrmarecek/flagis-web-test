@@ -1,10 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { routes } from 'utils/routes'
-import { titles } from 'utils/titles-enums'
+import { titles } from 'components/head-title/head-title-common'
 
 // components
-import { withTitle } from 'components/head-title/with-title'
+import { withTitle } from 'components/head-title/withTitle'
 import MoveUpButton from 'components/common/move-up-button'
 
 // styles
@@ -352,7 +352,4 @@ const Eula = () => (
   </EulaWrapper>
 )
 
-export default withTitle({
-  component: Eula,
-  title: titles.LEGAL_EULA,
-})
+export default withTitle(Eula, titles.LEGAL_EULA)

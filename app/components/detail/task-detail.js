@@ -7,7 +7,7 @@ import { List } from 'immutable'
 import dateUtil from 'redux/utils/date'
 import { getAssigneeOfTask } from 'redux/utils/component-helper'
 import domUtils from 'redux/utils/dom'
-import { titles } from 'utils/titles-enums'
+import { titles } from 'components/head-title/head-title-common'
 
 // toast notifications
 import * as toastCommon from 'components/toast-notifications/toast-notifications-common'

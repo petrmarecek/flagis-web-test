@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import HTML5Backend from 'react-dnd-html5-backend'
 import { DndProvider } from 'react-dnd'
 import debounce from 'lodash/debounce'
-import { titles } from 'utils/titles-enums'
+import { titles } from 'components/head-title/head-title-common'
 
 // redux
 import { controlRedirectSignIn } from 'redux/store/auth/auth.actions'
@@ -16,7 +16,7 @@ import {
 } from 'redux/store/app-state/app-state.selectors'
 
 // components
-import { withTitle } from 'components/head-title/with-title'
+import { withTitle } from 'components/head-title/withTitle'
 
 // containers
 import ToastNotificationsContainer from 'components/toast-notifications'
@@ -33,31 +33,16 @@ import Dialogs from 'components/dialogs/dialogs'
 import UndoBox from 'components/common/undo-box'
 
 // adding title
-const TaskPageWithTitle = withTitle({
-  component: TaskPage,
-  title: titles.TASKS,
-})
-const TagPageWithTitle = withTitle({ component: TagPage, title: titles.TAGS })
-const ArchivePageWithTitle = withTitle({
-  component: ArchivePage,
-  title: titles.ARCHIVE,
-})
-const ContactPageWithTitle = withTitle({
-  component: ContactPage,
-  title: titles.CONTACTS,
-})
-const NotificationPageWithTitle = withTitle({
-  component: NotificationPage,
-  title: titles.NOTIFICATIONS,
-})
-const DashboardPageWithTitle = withTitle({
-  component: DashboardPage,
-  title: titles.DASHBOARD,
-})
-const NotFoundPageWithTitle = withTitle({
-  component: NotFoundPage,
-  title: titles.NOT_FOUND,
-})
+const TaskPageWithTitle = withTitle(TaskPage, titles.TASKS)
+const TagPageWithTitle = withTitle(TagPage, titles.TAGS)
+const ArchivePageWithTitle = withTitle(ArchivePage, titles.ARCHIVE)
+const ContactPageWithTitle = withTitle(ContactPage, titles.CONTACTS)
+const NotificationPageWithTitle = withTitle(
+  NotificationPage,
+  titles.NOTIFICATIONS
+)
+const DashboardPageWithTitle = withTitle(DashboardPage, titles.DASHBOARD)
+const NotFoundPageWithTitle = withTitle(NotFoundPage, titles.NOT_FOUND)
 
 class UserContainer extends PureComponent {
   static propTypes = {

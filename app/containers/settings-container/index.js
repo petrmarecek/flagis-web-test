@@ -1,10 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Switch, Route } from 'react-router-dom'
-import { titles } from 'utils/titles-enums'
+import { titles } from 'components/head-title/head-title-common'
 
 // components
-import { withTitle } from 'components/head-title/with-title'
+import { withTitle } from 'components/head-title/withTitle'
 
 // containers
 import EditProfilePage from '../edit-profile-page/'
@@ -14,26 +14,23 @@ import UserContactUsPage from '../user-contact-us-page/'
 import NotFoundPage from 'containers/not-found-page/loadable'
 
 // adding title
-const EditProfilePageWithTitle = withTitle({
-  component: EditProfilePage,
-  title: titles.SETTINGS_EDIT_PROFILE,
-})
-const ChangePasswordWithTitle = withTitle({
-  component: ChangePasswordPage,
-  title: titles.SETTINGS_CHANGE_PASSWORD,
-})
-const ColorThemePageWithTitle = withTitle({
-  component: ColorThemePage,
-  title: titles.SETTINGS_COLOR_THEME,
-})
-const UserContactUsPageWithTitle = withTitle({
-  component: UserContactUsPage,
-  title: titles.SETTINGS_CONTACT_US,
-})
-const NotFoundPageWithTitle = withTitle({
-  component: NotFoundPage,
-  title: titles.NOT_FOUND,
-})
+const EditProfilePageWithTitle = withTitle(
+  EditProfilePage,
+  titles.SETTINGS_EDIT_PROFILE
+)
+const ChangePasswordWithTitle = withTitle(
+  ChangePasswordPage,
+  titles.SETTINGS_CHANGE_PASSWORD
+)
+const ColorThemePageWithTitle = withTitle(
+  ColorThemePage,
+  titles.SETTINGS_COLOR_THEME
+)
+const UserContactUsPageWithTitle = withTitle(
+  UserContactUsPage,
+  titles.SETTINGS_CONTACT_US
+)
+const NotFoundPageWithTitle = withTitle(NotFoundPage, titles.NOT_FOUND)
 
 const SettingsContainer = ({ match }) => (
   <Switch>

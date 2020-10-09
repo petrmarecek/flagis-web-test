@@ -1,7 +1,7 @@
 import { OrderedSet } from 'immutable'
 import { normalize } from 'normalizr'
 import { notificationText } from 'components/notification-list/notifications-common'
-import { blinkHeadTitle } from 'utils/blink-head-title'
+import { blinkHeadTitle } from 'components/head-title/head-title-common'
 
 // redux
 import { all, put, select, cancelled, fork, take } from 'redux-saga/effects'

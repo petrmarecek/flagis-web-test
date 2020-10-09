@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { withStateHandlers } from 'recompose'
 import domUtils from 'redux/utils/dom'
 import constants from 'utils/constants'
-import { titles as headTitles } from 'utils/titles-enums'
+import { titles as headTitles } from 'components/head-title/head-title-common'
 import {
   tagColor,
   getColorIndex,
