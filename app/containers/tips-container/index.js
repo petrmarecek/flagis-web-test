@@ -6,15 +6,12 @@ import { InitialTips } from 'components/tips'
 import { readTip } from 'redux/store/auth/auth.actions'
 import { getUserSettings } from 'redux/store/auth/auth.selectors'
 
-const TipsContainer = ({ data, readTip }) => {
-  const handleRead = useCallback(
-    name => readTip(name),
-    [readTip],
-  )
+const TipsContainer = props => {
+  const handleRead = useCallback(name => props.readTip(name), [props.readTip])
 
   return (
     <div>
-      {Boolean(!data.initial) && <InitialTips onClose={handleRead} />}
+      {Boolean(!props.data.initial) && <InitialTips onClose={handleRead} />}
     </div>
   )
 }
