@@ -4,7 +4,7 @@ import { Switch, Route } from 'react-router-dom'
 import { titles } from 'utils/titles-enums'
 
 // components
-import { withTitle } from 'components/head-title/withTitle'
+import { withTitle } from 'components/head-title/with-title'
 
 // containers
 import SettingsContainer from 'containers/settings-container'

@@ -326,7 +326,6 @@ export function* changeName(action) {
     yield put(contactsActions.updateContact(me, nickname, 'nickname', true))
 
     // deselect form for change name
-    yield put(appStateActions.deselectForm('changeName'))
     yield put(appStateActions.deselectLoader('form'))
 
     // show notification of successful profile update
@@ -464,7 +463,6 @@ export function* toggleColorTheme(action) {
 export function* changePassword(action) {
   try {
     yield callApi(api.users.password, action.payload)
-    yield put(appStateActions.deselectForm('changePassword'))
     yield put(appStateActions.deselectLoader('form'))
 
     toast.success(toastCommon.successMessages.changePassword, {

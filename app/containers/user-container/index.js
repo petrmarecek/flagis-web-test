@@ -16,7 +16,7 @@ import {
 } from 'redux/store/app-state/app-state.selectors'
 
 // components
-import { withTitle } from 'components/head-title/withTitle'
+import { withTitle } from 'components/head-title/with-title'
 
 // containers
 import ToastNotificationsContainer from 'components/toast-notifications'

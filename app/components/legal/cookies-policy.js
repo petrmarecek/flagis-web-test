@@ -4,7 +4,7 @@ import { routes } from 'utils/routes'
 import { titles } from 'utils/titles-enums'
 
 // components
-import { withTitle } from 'components/head-title/withTitle'
+import { withTitle } from 'components/head-title/with-title'
 import MoveUpButton from 'components/common/move-up-button'
 
 // styles

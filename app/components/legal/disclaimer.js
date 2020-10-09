@@ -4,7 +4,7 @@ import { routes } from 'utils/routes'
 import { titles } from 'utils/titles-enums'
 
 // styles
-import { withTitle } from 'components/head-title/withTitle'
+import { withTitle } from 'components/head-title/with-title'
 import { DisclaimerWrapper } from './styles'
 
 const Disclaimer = () => (
