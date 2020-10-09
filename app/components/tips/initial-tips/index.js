@@ -17,7 +17,19 @@ import {
 const InitialTips = ({ onClose }) => {
   const [step, setStep] = useState(1)
 
-  const handleClose = useCallback(() => onClose('initial'), [onClose])
+  const handleBackStep = useCallback(event => {
+    event.preventDefault()
+    if (step < 2) {
+      return
+    }
+
+    setStep(step - 1)
+  }, [setStep, step])
+
+  const handleClose = useCallback(event => {
+    event.preventDefault()
+    onClose('initial')
+  }, [onClose])
 
   const handleNextStep = useCallback(
     event => {
@@ -91,7 +103,7 @@ const InitialTips = ({ onClose }) => {
           <Inner>
             <Title>{data[step].title}</Title>
             {data[step].description.split('<br />').map((item, i) =>
-              <Description key={i}>{item}</Description>
+              <Description key={i}>{item}</Description>,
             )}
           </Inner>
           <Footer>
@@ -101,6 +113,7 @@ const InitialTips = ({ onClose }) => {
             </FooterLeft>
             <FooterRight>
               <FooterButton onClick={handleClose}>Skip all</FooterButton>
+              {step > 1 && <FooterButton onClick={handleBackStep}>Back</FooterButton>}
               <FooterButton
                 bold
                 onClick={step === 5 ? handleClose : handleNextStep}
