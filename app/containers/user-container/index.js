@@ -31,6 +31,7 @@ import AccountContainer from 'containers/account-container'
 import NotFoundPage from 'containers/not-found-page/loadable'
 import Dialogs from 'components/dialogs/dialogs'
 import UndoBox from 'components/common/undo-box'
+import TipsContainer from 'containers/tips-container'
 
 // adding title
 const TaskPageWithTitle = withTitle(TaskPage, titles.TASKS)
@@ -118,6 +119,7 @@ class UserContainer extends PureComponent {
             <UndoBox />
             {this.props.loader && <Loader global />}
           </div>
+          <TipsContainer />
         </div>
       </DndProvider>
     )

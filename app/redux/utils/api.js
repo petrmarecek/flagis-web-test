@@ -50,6 +50,10 @@ export default {
 
     resetPassword: (userData) =>
       api.put('users/reset-password', userData).then((res) => res.data),
+
+    profile: () => api
+      .get('profile')
+      .then(res => res.data),
   },
 
   invitation: {
