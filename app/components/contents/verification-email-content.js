@@ -75,8 +75,7 @@ const VerificationEmailContent = ({
   isVerificationFailed,
 }) => {
   useEffect(() => {
-    const numberCharacter = '/verification/email/'.length
-    const code = location.pathname.substring(numberCharacter)
+    const code = location.pathname.split('/').pop()
     onHandleVerifyUser(code)
   }, [])
 
