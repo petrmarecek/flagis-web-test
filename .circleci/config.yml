@@ -17,6 +17,13 @@ jobs:
           command: |
             NODE_ENV=production COMPILE_ENV=development npm run build
       - run:
+          name: Install Heroku CLI
+          command: |
+            if [[ $(command -v heroku) == "" ]]; then
+              curl https://cli-assets.heroku.com/install.sh | sh
+            else
+              echo "Heroku is already installed. No operation was performed."
+      - run:
           name: Login to Heroku Container Registry
           command: |
             docker login --username=$HEROKU_USER --password=$HEROKU_TOKEN registry.heroku.com
@@ -31,7 +38,7 @@ jobs:
       - run:
           name: Release Container
           command: |
-            git push heroku master
+            heroku container:release --app flagis-web-development web
 
   build_staging:
     docker:
@@ -48,6 +55,13 @@ jobs:
           name: Run Webpack
           command: |
             NODE_ENV=production COMPILE_ENV=staging npm run build
+      - run:
+          name: Install Heroku CLI
+          command: |
+            if [[ $(command -v heroku) == "" ]]; then
+              curl https://cli-assets.heroku.com/install.sh | sh
+            else
+              echo "Heroku is already installed. No operation was performed."
       - run:
           name: Login to Heroku Container Registry
           command: |
@@ -80,6 +94,13 @@ jobs:
           name: Run Webpack
           command: |
             NODE_ENV=production COMPILE_ENV=production npm run build
+      - run:
+          name: Install Heroku CLI
+          command: |
+            if [[ $(command -v heroku) == "" ]]; then
+              curl https://cli-assets.heroku.com/install.sh | sh
+            else
+              echo "Heroku is already installed. No operation was performed."
       - run:
           name: Login to Heroku Container Registry
           command: |
