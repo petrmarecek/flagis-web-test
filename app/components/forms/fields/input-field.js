@@ -3,7 +3,11 @@ import PropTypes from 'prop-types'
 import { withStateHandlers } from 'recompose'
 
 import styled, { css } from 'styled-components'
-import { commonInput, commonInputSmall } from '../../styled-components-mixins'
+import {
+  commonInput,
+  commonInputSmall,
+  ErrorListItem, ErrorListItemText,
+} from '../../styled-components-mixins'
 import { colors } from '../../styled-components-mixins/colors'
 
 const activeLabel = css`
@@ -56,8 +60,8 @@ const InputField = props => {
   const borderColor = isError
     ? colors.pompelmo
     : isFocused
-    ? colors.hanumanGreen
-    : colors.snowShadow
+      ? colors.hanumanGreen
+      : colors.snowShadow
 
   return (
     <Field>
@@ -80,6 +84,13 @@ const InputField = props => {
       >
         {label}
       </Label>
+      {isError && (
+        <ErrorListItem withoutBorder>
+          <ErrorListItemText>
+            {error}
+          </ErrorListItemText>
+        </ErrorListItem>
+      )}
     </Field>
   )
 }
