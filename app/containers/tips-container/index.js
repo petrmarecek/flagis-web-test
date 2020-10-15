@@ -11,7 +11,7 @@ const TipsContainer = props => {
 
   return (
     <div>
-      {Boolean(props.isAuthenticated && !props.data.initial) &&
+      {Boolean(props.isLogged && !props.data.initial) &&
       <InitialTips onClose={handleRead} />}
     </div>
   )
@@ -19,13 +19,13 @@ const TipsContainer = props => {
 
 TipsContainer.propTypes = {
   data: PropTypes.object.isRequired,
-  isAuthenticated: PropTypes.bool.isRequired,
+  isLogged: PropTypes.bool.isRequired,
   readTip: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = state => ({
   data: getUserSettings(state).tips || {},
-  isAuthenticated: getAuth(state).isAuthenticated,
+  isLogged: getAuth(state).isLogged,
 })
 
 const mapDispatchToProps = { readTip }
