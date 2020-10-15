@@ -19,6 +19,7 @@ export const AUTH = {
   TOGGLE_COLOR_THEME: 'APP-STATE/TOGGLE_COLOR_THEME',
   CONTACT_US: 'AUTH/CONTACT_US',
   READ_TIP: 'AUTH/READ-TIP',
+  UNREAD_TIP: 'AUTH/UNREAD-TIP',
 }
 
 export const controlRedirectSignIn = () => ({
@@ -104,5 +105,10 @@ export const sendContactUs = userData => ({
 
 export const readTip = tipName => ({
   type: AUTH.READ_TIP,
+  payload: tipName,
+})
+
+export const unreadTip = tipName => ({
+  type: AUTH.UNREAD_TIP,
   payload: tipName,
 })

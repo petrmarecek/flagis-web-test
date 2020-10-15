@@ -125,6 +125,7 @@ const TagTreeSection = props => {
     isDragging,
     maxWidth,
     title,
+    isSectionNameVisible,
 
     // Handlers
     getInputRef,
@@ -177,7 +178,7 @@ const TagTreeSection = props => {
     connectDropTarget(
       <li>
         <SectionWrapper dragging={isDragging} collapsed={section.collapsed}>
-          <SectionHeader colorTheme={colorTheme}>
+          {isSectionNameVisible && <SectionHeader colorTheme={colorTheme}>
             <SectionHeaderTitle
               type="text"
               value={title}
@@ -201,7 +202,18 @@ const TagTreeSection = props => {
               />
             </SectionHeaderIcon>
             {renderArrowIcon(section.childItems)}
-          </SectionHeader>
+          </SectionHeader>}
+
+          {!isSectionNameVisible && (
+            <SectionHeader colorTheme={colorTheme}>
+              <SectionHeaderTitle
+                type="text"
+                value="Favorite filters"
+                style={styleWidth}
+              />
+            </SectionHeader>
+          )}
+
           <SectionContent>
             <TagTreeItems
               addControlParentId={addControlParentId}
@@ -242,9 +254,13 @@ const TagTreeSection = props => {
             )}
           </SectionContent>
         </SectionWrapper>
-      </li>
-    )
+      </li>,
+    ),
   )
+}
+
+TagTreeSection.defaultProps = {
+  isSectionNameVisible: false,
 }
 
 TagTreeSection.propTypes = {
@@ -257,6 +273,7 @@ TagTreeSection.propTypes = {
   isDragging: PropTypes.bool,
   index: PropTypes.number,
   maxWidth: PropTypes.number,
+  isSectionNameVisible: PropTypes.bool,
 
   // state
   title: PropTypes.string,
@@ -291,13 +308,13 @@ TagTreeSection.propTypes = {
 export default DragSource(
   TagTreeSectionDragDrop.type,
   TagTreeSectionDragDrop.sectionSource,
-  TagTreeSectionDragDrop.collectDragSource
+  TagTreeSectionDragDrop.collectDragSource,
 )(
   compose(
     DropTarget(
       TagTreeSectionDragDrop.type,
       TagTreeSectionDragDrop.sectionTarget,
-      TagTreeSectionDragDrop.collectDropTarget
+      TagTreeSectionDragDrop.collectDropTarget,
     ),
     withStateHandlers(
       props => ({ inputRef: null, title: props.section.title }),
@@ -328,7 +345,7 @@ export default DragSource(
           props.onUpdateSectionTitle(props.section, title)
           return {}
         },
-      }
+      },
     ),
     withHandlers({
       onHandleAddChildClicked: props => event => {
@@ -363,6 +380,6 @@ export default DragSource(
             return
         }
       },
-    })
-  )(TagTreeSection)
+    }),
+  )(TagTreeSection),
 )

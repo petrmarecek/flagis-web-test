@@ -57,7 +57,7 @@ import AddTagTreeItemSectionForm from 'components/common/add-tag-tree-item-secti
 // styles
 import { CollabsibleContent, EmptyList } from '../styled-components-mixins'
 import colors from 'components/styled-components-mixins/colors'
-import { Wrapper, AddSection, AddSectionText } from './styles'
+import { Wrapper } from './styles'
 
 const TagTreeContainer = props => {
   const {
@@ -78,7 +78,6 @@ const TagTreeContainer = props => {
     onHandleAddTreeItem,
     onHandleTreeItemsSelected,
     onHandleSubitemCreated,
-    onHandleAddButtonClicked,
     onHandleAddSectionCancel,
     onHandleAddSectionSubmit,
     onHandleUpdateSectionTitle,
@@ -149,9 +148,6 @@ const TagTreeContainer = props => {
           </CollabsibleContent>
         </Wrapper>
       </ShadowScrollbar>
-      <AddSection onClick={onHandleAddButtonClicked} colorTheme={colorTheme}>
-        <AddSectionText>Add Section</AddSectionText>
-      </AddSection>
     </div>
   )
 }

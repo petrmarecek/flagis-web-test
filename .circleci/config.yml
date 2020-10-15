@@ -17,6 +17,10 @@ jobs:
           command: |
             NODE_ENV=production COMPILE_ENV=development npm run build
       - run:
+          name: Install Heroku CLI
+          command: |
+            bash .circleci/setup-heroku.sh
+      - run:
           name: Login to Heroku Container Registry
           command: |
             docker login --username=$HEROKU_USER --password=$HEROKU_TOKEN registry.heroku.com
@@ -28,6 +32,10 @@ jobs:
           name: Push to Heroku Container Registry
           command: |
             docker push registry.heroku.com/flagis-web-development/web
+      - run:
+          name: Release Container
+          command: |
+            heroku container:release --app flagis-web-development web
 
   build_staging:
     docker:
@@ -45,6 +53,10 @@ jobs:
           command: |
             NODE_ENV=production COMPILE_ENV=staging npm run build
       - run:
+          name: Install Heroku CLI
+          command: |
+            bash .circleci/setup-heroku.sh
+      - run:
           name: Login to Heroku Container Registry
           command: |
             docker login --username=$HEROKU_USER --password=$HEROKU_TOKEN registry.heroku.com
@@ -56,6 +68,10 @@ jobs:
           name: Push to Heroku Container Registry
           command: |
             docker push registry.heroku.com/flagis-web-staging/web
+      - run:
+          name: Release Container
+          command: |
+            heroku container:release --app flagis-web-staging web
 
   build_prod:
     docker:
@@ -73,6 +89,10 @@ jobs:
           command: |
             NODE_ENV=production COMPILE_ENV=production npm run build
       - run:
+          name: Install Heroku CLI
+          command: |
+            bash .circleci/setup-heroku.sh
+      - run:
           name: Login to Heroku Container Registry
           command: |
             docker login --username=$HEROKU_USER --password=$HEROKU_TOKEN registry.heroku.com
@@ -84,6 +104,10 @@ jobs:
           name: Push to Heroku Container Registry
           command: |
             docker push registry.heroku.com/flagis-web-production/web
+      - run:
+          name: Release Container
+          command: |
+            heroku container:release --app flagis-web-production web
 
 workflows:
   version: 2
