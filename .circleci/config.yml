@@ -3,7 +3,7 @@ version: 2
 jobs:
   build_dev:
     docker:
-      - image: circleci/node:10
+      - image: circleci/node:lts
     steps:
       - checkout
       - setup_remote_docker
@@ -30,7 +30,7 @@ jobs:
 
   build_staging:
     docker:
-      - image: circleci/node:10
+      - image: circleci/node:lts
     steps:
       - checkout
       - setup_remote_docker
@@ -57,7 +57,7 @@ jobs:
 
   build_prod:
     docker:
-      - image: circleci/node:10
+      - image: circleci/node:lts
     steps:
       - checkout
       - setup_remote_docker
