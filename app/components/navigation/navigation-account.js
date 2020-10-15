@@ -5,7 +5,7 @@ import { compose, withHandlers } from 'recompose'
 
 // redux
 import { connect } from 'react-redux'
-import { logout } from 'redux/store/auth/auth.actions'
+import { logout, unreadTip } from 'redux/store/auth/auth.actions'
 import { getRoutingPathname } from 'redux/store/routing/routing.selectors'
 import { changeNavigation } from 'redux/store/routing/routing.actions'
 
@@ -27,6 +27,7 @@ const NavigationAccount = props => {
     onHandleClickOutSide,
     onHandleClickSettings,
     onHandleClickLogOut,
+    onShowTips,
   } = props
   const { settings } = routes.user.account
   const isSettings = pathname.substring(0, settings.length) === settings
@@ -53,6 +54,10 @@ const NavigationAccount = props => {
         />
       </MenuBoxGroup>
       <MenuBoxGroup>
+        <MenuBoxItemIcon icon={ICONS.INFO} iconScale={1} onChange={onShowTips} />
+        <MenuBoxItemTitle title="Show tips" onChange={onShowTips} />
+      </MenuBoxGroup>
+      <MenuBoxGroup>
         <MenuBoxItemIcon
           icon={ICONS.LOG_OUT}
           iconScale={1}
@@ -71,6 +76,7 @@ NavigationAccount.propTypes = {
   onHandleClickOutSide: PropTypes.func,
   onHandleClickSettings: PropTypes.func,
   onHandleClickLogOut: PropTypes.func,
+  onShowTips: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = state => ({
@@ -80,6 +86,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   changeNavigation,
   logout,
+  unreadTip,
 }
 
 export default compose(
@@ -90,5 +97,7 @@ export default compose(
     onHandleClickSettings: props => () => {
       props.changeNavigation(routes.user.account.settings.editProfile)
     },
-  })
+    onShowTips: props => () =>
+      props.unreadTip('initial'),
+  }),
 )(NavigationAccount)

@@ -635,6 +635,27 @@ export function* readTip({ payload }) {
   yield put({ type: FULFILLED, payload: result })
 }
 
+export function* unreadTip({ payload }) {
+  const { PENDING, FULFILLED } = createLoadActions(AUTH.UNREAD_TIP)
+
+  // Optimistic update
+  yield put({ type: PENDING, payload })
+
+  // Get actual setting from API
+  const { settings } = yield callApi(api.users.profile)
+
+  // Prepare update
+  const preparedUpdate = {
+    settings: _.merge(settings, { tips: { [payload]: false } }),
+  }
+
+  // Call API
+  const result = yield callApi(api.users.update, preparedUpdate)
+
+  // Update user settings in store
+  yield put({ type: FULFILLED, payload: result })
+}
+
 // ------ HELPER FUNCTIONS ----------------------------------------------------
 
 function* authorizeUser(authApiCall, action) {
