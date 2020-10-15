@@ -28,6 +28,10 @@ jobs:
           name: Push to Heroku Container Registry
           command: |
             docker push registry.heroku.com/flagis-web-development/web
+      - run:
+          name: Release Container
+          command: |
+            heroku container:release --app flagis-web-development web
 
   build_staging:
     docker:
@@ -56,6 +60,10 @@ jobs:
           name: Push to Heroku Container Registry
           command: |
             docker push registry.heroku.com/flagis-web-staging/web
+      - run:
+          name: Release Container
+          command: |
+            heroku container:release --app flagis-web-staging web
 
   build_prod:
     docker:
@@ -84,6 +92,10 @@ jobs:
           name: Push to Heroku Container Registry
           command: |
             docker push registry.heroku.com/flagis-web-production/web
+      - run:
+          name: Release Container
+          command: |
+            heroku container:release --app flagis-web-production web
 
 workflows:
   version: 2
