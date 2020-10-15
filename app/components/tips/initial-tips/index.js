@@ -76,19 +76,19 @@ const InitialTips = ({ onClose }) => {
       description: `
         Sending and receiving Tasks is like sending and receiving emails.
         If you send a Task to someone, you cannot modify its content unless you take it back.
-        What is more, you can see the status of the send task - if the Task was accepted,
+        What is more, you can see the status of the sent task - if the Task was accepted,
         rejected or the recipient has not responded yet.
         <br />The entire list of all Contacts are managed in "Contacts" list.
       `,
       img: img4,
-      title: 'Collaboration with others',
+      title: 'Collaboration with the others',
     },
     5: {
       description: `
         Once you complete a Task, it's completed for all who can see the task.
         Once you archive a Task, it's archived in your list only. The other users manages their
         archiving independently.
-        <br />The entire list of all archived Tasks are managed in "Contacts" list.
+        <br />The entire list of all archived Tasks are managed in "Archive".
       `,
       img: img5,
       title: 'Completing and Archiving of Tasks',
