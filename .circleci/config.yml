@@ -31,7 +31,7 @@ jobs:
       - run:
           name: Release Container
           command: |
-            heroku container:release --app flagis-web-development web
+            git push heroku master
 
   build_staging:
     docker:
