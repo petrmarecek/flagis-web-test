@@ -8,11 +8,11 @@ import AppStore from 'assets/img/store-buttons/app-store.png'
 
 const StoreButtons = ({ className }) => (
   <div className={className}>
-    <a href={links.appStore}>
-      <img src={AppStore} />
+    <a href={links.appStore} target="_blank">
+      <img src={AppStore} alt="App store" />
     </a>
-    <a href={links.googlePlay}>
-      <img src={GooglePlay} />
+    <a href={links.googlePlay} target="_blank">
+      <img src={GooglePlay} alt="Google play" />
     </a>
   </div>
 )
