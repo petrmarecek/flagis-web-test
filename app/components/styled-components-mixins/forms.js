@@ -26,10 +26,12 @@ const ErrorList = styled.ul`
   list-style-type: none;
 `
 
-const ErrorListItem = styled.li`
+const ErrorListItem = styled.li.attrs(props => ({
+  borderWidth: props.withoutBorder ? 0 : 1,
+}))`
   display: flex;
   flex-flow: row wrap;
-  border-bottom: 1px solid red;
+  border-bottom: ${props => props.borderWidth}px solid red;
   font-size: 15px;
   margin-bottom: 20px;
   padding: 5px 10px;
