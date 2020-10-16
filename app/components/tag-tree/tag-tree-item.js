@@ -242,8 +242,6 @@ const checkPropsChange = (props, nextProps) => {
 
   return (
     !treeItem.equals(nextTreeItem) ||
-    colorTheme !== nextColorTheme ||
-    tagsRelations !== nextTagsRelations ||
     (!selection.equals(nextSelection) &&
       (nextSelection.includes(treeItem.id) ||
         selection.includes(treeItem.id))) ||

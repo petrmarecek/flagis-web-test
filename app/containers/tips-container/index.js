@@ -11,15 +11,16 @@ const TipsContainer = props => {
 
   return (
     <div>
-      {Boolean(props.isAuthenticated && !props.data.initial) &&
-      <InitialTips onClose={handleRead} />}
+      {Boolean(props.isAuthenticated && !props.data.initial) && (
+        <InitialTips onClose={handleRead} />
+      )}
     </div>
   )
 }
 
 TipsContainer.propTypes = {
   data: PropTypes.object.isRequired,
-  isAuthenticated: PropTypes.bool.isRequired,
+  isAuthenticated: PropTypes.bool,
   readTip: PropTypes.func.isRequired,
 }
 

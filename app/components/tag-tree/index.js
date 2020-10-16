@@ -8,6 +8,7 @@ import {
   renderComponent,
   withStateHandlers,
   pure,
+  shouldUpdate,
 } from 'recompose'
 import constants from 'utils/constants'
 
@@ -229,6 +230,32 @@ const mapDispatchToProps = {
   deleteTreeItem,
 }
 
+const checkPropsChange = (props, nextProps) => {
+  // props and state
+  const {
+    tree,
+    selection,
+    addControlParentId,
+    tagsRelations,
+    colorTheme,
+  } = props
+
+  // nextProps and nextState
+  const nextTree = nextProps.tree
+  const nextSelection = nextProps.selection
+  const nextAddControlParentId = nextProps.addControlParentId
+  const nextTagsRelations = nextProps.tagsRelations
+  const nextColorTheme = nextProps.colorTheme
+
+  return (
+    !tree.equals(nextTree) ||
+    colorTheme !== nextColorTheme ||
+    tagsRelations !== nextTagsRelations ||
+    !selection.equals(nextSelection) ||
+    addControlParentId !== nextAddControlParentId
+  )
+}
+
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   branch(
@@ -324,5 +351,6 @@ export default compose(
       return {}
     },
   }),
+  shouldUpdate(checkPropsChange),
   pure
 )(TagTreeContainer)
