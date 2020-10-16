@@ -1,3 +1,38 @@
+# Change Log
+
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+<a name="1.7.0"></a>
+# [1.7.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.4.1...v1.7.0) (2020-10-16)
+
+
+### Bug Fixes
+
+* Fix showing tips for a second when user is logging out ([e9ba51b](https://github.com/react-boilerplate/react-boilerplate/commit/e9ba51b))
+* Fix showing tips for a second when user is logging out ([53f8329](https://github.com/react-boilerplate/react-boilerplate/commit/53f8329))
+* Fix syntax error in Circle CI config with remote docker version ([d9170d0](https://github.com/react-boilerplate/react-boilerplate/commit/d9170d0))
+* Fix text in initial tips ([0fa4820](https://github.com/react-boilerplate/react-boilerplate/commit/0fa4820))
+* Fix updated Circle CI settings with automatic container release ([07730a2](https://github.com/react-boilerplate/react-boilerplate/commit/07730a2))
+* Fix updated Circle CI settings with automatic container release ([ebbd05b](https://github.com/react-boilerplate/react-boilerplate/commit/ebbd05b))
+* Fix updated Circle CI settings with automatic container release ([1fcd08e](https://github.com/react-boilerplate/react-boilerplate/commit/1fcd08e))
+* Fix updated Circle CI settings with automatic container release ([22dbe7b](https://github.com/react-boilerplate/react-boilerplate/commit/22dbe7b))
+* Fix updated Circle CI settings with automatic container release ([ba1c5f9](https://github.com/react-boilerplate/react-boilerplate/commit/ba1c5f9))
+* Fix updating user settings (fetch actual settings before) ([882d733](https://github.com/react-boilerplate/react-boilerplate/commit/882d733))
+
+
+### Features
+
+* Add app store url ([282b5f6](https://github.com/react-boilerplate/react-boilerplate/commit/282b5f6))
+* Add button for showing initial tips ([5cdab2a](https://github.com/react-boilerplate/react-boilerplate/commit/5cdab2a))
+* Add render for error message in input field ([93cf057](https://github.com/react-boilerplate/react-boilerplate/commit/93cf057))
+* Add tag tree without sections and renamed to "Favorite filters" ([5b90407](https://github.com/react-boilerplate/react-boilerplate/commit/5b90407))
+* Add updated Circle CI config with latest node.js docker image ([3157139](https://github.com/react-boilerplate/react-boilerplate/commit/3157139))
+* Add updated Circle CI config with specified remote docker version ([8c2458d](https://github.com/react-boilerplate/react-boilerplate/commit/8c2458d))
+* Add updated Circle CI settings with automatic container release ([1c9b768](https://github.com/react-boilerplate/react-boilerplate/commit/1c9b768))
+* Add updated Dockerfile with latest node.js version ([f153cbe](https://github.com/react-boilerplate/react-boilerplate/commit/f153cbe))
+
+
+
 # Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
