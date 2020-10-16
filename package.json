@@ -1,6 +1,6 @@
 {
   "name": "react-boilerplate",
-  "version": "3.5.0",
+  "version": "1.6.0",
   "description": "A highly scalable, offline-first foundation with the best DX and a focus on performance and best practices",
   "repository": {
     "type": "git",
@@ -44,7 +44,8 @@
     "test:clean": "rimraf ./coverage",
     "test": "cross-env NODE_ENV=test jest",
     "test:watch": "cross-env NODE_ENV=test jest --watchAll",
-    "coveralls": "cat ./coverage/lcov.info | coveralls"
+    "coveralls": "cat ./coverage/lcov.info | coveralls",
+    "release": "standard-version"
   },
   "lint-staged": {
     "*.js": [
@@ -336,7 +337,7 @@
     "react-test-renderer": "^16.6.3",
     "rimraf": "^2.6.2",
     "shelljs": "^0.8.3",
-    "standard-version": "^4.4.0",
+    "standard-version": "^9.0.0",
     "style-loader": "^0.23.1",
     "url-loader": "^1.1.2",
     "webpack": "^3.11.0",
