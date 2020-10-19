@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { routes } from 'utils/routes'
-import { compose, lifecycle } from 'recompose'
+import { compose, lifecycle, pure, shouldUpdate } from 'recompose'
 import * as _ from 'lodash'
 
 // redux
@@ -58,8 +58,18 @@ const mapDispatchToProps = {
   hideArchivedTasks,
 }
 
+const checkPropsChange = (prev, next) => {
+  return (
+    !prev.tasksItems.equals(next.tasksItems) ||
+    !prev.inboxTasksItems.equals(next.inboxTasksItems) ||
+    !prev.selectTasksItems.equals(next.selectTasksItems) ||
+    prev.pathname !== next.pathname
+  )
+}
+
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
+  shouldUpdate(checkPropsChange),
   lifecycle({
     componentDidUpdate() {
       const {

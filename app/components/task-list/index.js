@@ -2,7 +2,13 @@ import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import debounce from 'lodash/debounce'
 import R from 'ramda'
-import { compose, branch, renderComponent, withStateHandlers } from 'recompose'
+import {
+  compose,
+  branch,
+  renderComponent,
+  withStateHandlers,
+  shouldUpdate,
+} from 'recompose'
 import constants from 'utils/constants'
 import * as _ from 'lodash'
 
@@ -283,6 +289,27 @@ const mapDispatchToProps = {
   setDraggingTask,
 }
 
+const checkPropsChange = (prev, next) => {
+  return (
+    prev.userId !== next.userId ||
+    !prev.tasks.equals(next.tasks) ||
+    !prev.inboxTasks.equals(next.inboxTasks) ||
+    prev.inboxCount !== next.inboxCount ||
+    !prev.tasksId.equals(next.tasksId) ||
+    !prev.completedTasks.equals(next.completedTasks) ||
+    !prev.archivedTasks.equals(next.archivedTasks) ||
+    !prev.entitiesTasks.equals(next.entitiesTasks) ||
+    !prev.selectedTasks.equals(next.selectedTasks) ||
+    !prev.selectedTags.equals(next.selectedTags) ||
+    !prev.sort.equals(next.sort) ||
+    prev.isVisibleArchivedTasks !== next.isVisibleArchivedTasks ||
+    prev.leftPanelWidth !== next.leftPanelWidth ||
+    prev.windowWidth !== next.windowWidth ||
+    prev.scrollbarPosition !== next.scrollbarPosition ||
+    prev.isDragAndDropActive !== next.isDragAndDropActive
+  )
+}
+
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   branch(props => props.tasks.isFetching, renderComponent(Loader)),
@@ -439,6 +466,7 @@ export default compose(
         props.setDraggingTask(task)
         return {}
       },
-    }
+    },
+    shouldUpdate(checkPropsChange)
   )
 )(TaskListContainer)

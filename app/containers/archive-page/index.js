@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { routes } from 'utils/routes'
-import { compose, lifecycle } from 'recompose'
+import { compose, lifecycle, shouldUpdate } from 'recompose'
 
 // redux
 import { connect } from 'react-redux'
@@ -65,8 +65,19 @@ const mapDispatchToProps = {
   setPrimaryHiddenNavigationAnimation,
 }
 
+const checkPropsChange = (prev, next) => {
+  return (
+    !prev.archivedItems.equals(next.archivedItems) ||
+    !prev.selectTasksItems.equals(next.selectTasksItems) ||
+    prev.isNavigationPrimaryMoreVisible !==
+      next.isNavigationPrimaryMoreVisible ||
+    prev.pathname !== next.pathname
+  )
+}
+
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
+  shouldUpdate(checkPropsChange),
   lifecycle({
     componentDidMount() {
       if (!this.props.isNavigationPrimaryMoreVisible) {

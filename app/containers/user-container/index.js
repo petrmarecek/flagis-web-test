@@ -6,6 +6,7 @@ import HTML5Backend from 'react-dnd-html5-backend'
 import { DndProvider } from 'react-dnd'
 import debounce from 'lodash/debounce'
 import { titles } from 'components/head-title/head-title-common'
+import { compose, shouldUpdate } from 'recompose'
 
 // redux
 import { controlRedirectSignIn } from 'redux/store/auth/auth.actions'
@@ -136,4 +137,11 @@ const mapDispatchToProps = {
   controlRedirectSignIn,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserContainer)
+const checkPropsChange = (prev, next) => {
+  return prev.undoBox !== next.undoBox || prev.loader !== next.loader
+}
+
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  shouldUpdate(checkPropsChange)
+)(UserContainer)

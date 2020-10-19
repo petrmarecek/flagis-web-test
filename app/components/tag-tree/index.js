@@ -7,7 +7,6 @@ import {
   branch,
   renderComponent,
   withStateHandlers,
-  pure,
   shouldUpdate,
 } from 'recompose'
 import constants from 'utils/constants'
@@ -230,29 +229,17 @@ const mapDispatchToProps = {
   deleteTreeItem,
 }
 
-const checkPropsChange = (props, nextProps) => {
-  // props and state
-  const {
-    tree,
-    selection,
-    addControlParentId,
-    tagsRelations,
-    colorTheme,
-  } = props
-
-  // nextProps and nextState
-  const nextTree = nextProps.tree
-  const nextSelection = nextProps.selection
-  const nextAddControlParentId = nextProps.addControlParentId
-  const nextTagsRelations = nextProps.tagsRelations
-  const nextColorTheme = nextProps.colorTheme
-
+const checkPropsChange = (prev, next) => {
   return (
-    !tree.equals(nextTree) ||
-    colorTheme !== nextColorTheme ||
-    tagsRelations !== nextTagsRelations ||
-    !selection.equals(nextSelection) ||
-    addControlParentId !== nextAddControlParentId
+    prev.isFetching !== next.isFetching ||
+    !prev.tree.equals(next.tree) ||
+    prev.colorTheme !== next.colorTheme ||
+    !prev.sections.equals(next.sections) ||
+    !prev.selection.equals(next.selection) ||
+    prev.addControlParentId !== next.addControlParentId ||
+    !prev.tagsRelations.equals(next.tagsRelations) ||
+    prev.isVisibleMoreNavigation !== next.isVisibleMoreNavigation ||
+    !prev.leftPanel.equals(next.leftPanel)
   )
 }
 
@@ -351,6 +338,5 @@ export default compose(
       return {}
     },
   }),
-  shouldUpdate(checkPropsChange),
-  pure
+  shouldUpdate(checkPropsChange)
 )(TagTreeContainer)
