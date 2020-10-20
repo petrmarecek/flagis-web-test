@@ -491,10 +491,6 @@ const areEqual = (prev, next) => {
     prev.windowWidth === next.windowWidth
   )
 
-  if (!isEqual) {
-    console.log(`Task item render - ${next.task.subject}`)
-  }
-
   return isEqual
 }
 

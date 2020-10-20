@@ -251,10 +251,6 @@ const areEqual = (props, nextProps) => {
     && addControlParentId === nextAddControlParentId
     && isTagsRelationsEqual
 
-  if (!isEqual) {
-    console.log(`Tag tree item render - ${treeItem.tag.title}`)
-  }
-
   return isEqual
 }
 
