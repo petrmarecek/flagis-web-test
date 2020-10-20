@@ -1,4 +1,5 @@
-import React, { memo, useMemo, useCallback, useState } from 'react'
+import _ from 'lodash'
+import React, { useMemo, useCallback, useState } from 'react'
 import PropTypes from 'prop-types'
 import Linkify from 'react-linkify'
 import moment from 'moment'
@@ -480,19 +481,24 @@ const mapDispatchToProps = {
 }
 
 const areEqual = (prev, next) => {
-  const areTaskEqual =
-    next.task.size >= 2 ? prev.task.equals(next.task) : prev.task !== next.task
+  const areTaskEqual = _.isEqual(prev.task.toJS(), next.task.toJS())
 
-  return (
+  const isEqual = (
     areTaskEqual &&
     prev.index === next.index &&
     prev.updatedAt === next.updatedAt &&
     prev.isSelected === next.isSelected &&
     prev.windowWidth === next.windowWidth
   )
+
+  if (!isEqual) {
+    console.log(`Task item render - ${next.task.subject}`)
+  }
+
+  return isEqual
 }
 
-export default memo(
+export default React.memo(
   connect(mapStateToProps, mapDispatchToProps)(TaskListItem),
   areEqual
 )

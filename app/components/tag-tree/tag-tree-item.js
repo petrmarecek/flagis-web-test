@@ -1,6 +1,7 @@
+import _ from 'lodash'
 import React from 'react'
 import PropTypes from 'prop-types'
-import { compose, withHandlers, shouldUpdate } from 'recompose'
+import { compose, withHandlers } from 'recompose'
 
 import {
   getColorIndex,
@@ -78,7 +79,7 @@ const TagTreeItem = props => {
   const currentTagRelations = getTagRelations(
     tagsRelations,
     parentTagRelations,
-    treeItem.tagId
+    treeItem.tagId,
   )
 
   const draggingData = {
@@ -223,38 +224,41 @@ TagTreeItem.propTypes = {
   onHandleDeleteIconClicked: PropTypes.func,
 }
 
-const checkPropsChange = (props, nextProps) => {
+const areEqual = (props, nextProps) => {
   // props and state
   const {
     treeItem,
     selection,
     addControlParentId,
-    tagsRelations,
-    colorTheme,
   } = props
 
   // nextProps and nextState
   const nextTreeItem = nextProps.treeItem
   const nextSelection = nextProps.selection
   const nextAddControlParentId = nextProps.addControlParentId
-  const nextTagsRelations = nextProps.tagsRelations
-  const nextColorTheme = nextProps.colorTheme
 
-  return (
-    !treeItem.equals(nextTreeItem) ||
-    colorTheme !== nextColorTheme ||
-    tagsRelations !== nextTagsRelations ||
-    (!selection.equals(nextSelection) &&
-      (nextSelection.includes(treeItem.id) ||
-        selection.includes(treeItem.id))) ||
-    (addControlParentId !== nextAddControlParentId &&
-      (nextAddControlParentId === treeItem.id ||
-        addControlParentId === treeItem.id ||
-        nextTreeItem.childItems.size > 0))
+  const isTreeItemEqual = _.isEqual(treeItem.toJS(), nextTreeItem.toJS())
+  const isInSelection = selection.includes(treeItem.id) || nextSelection.includes(treeItem.id)
+  const isSelectionEqual = isInSelection ? _.isEqual(selection.toJS(), nextSelection.toJS()) : true
+  const isTagsRelationsEqual = _.isEqual(
+    props.tagsRelations.get(treeItem.tag.id) ? props.tagsRelations.get(treeItem.tag.id).toJS : null,
+    nextProps.tagsRelations.get(nextTreeItem.tag.id) ? nextProps.tagsRelations.get(nextTreeItem.tag.id).toJS : null,
   )
+
+  const isEqual =
+    isTreeItemEqual
+    && isSelectionEqual
+    && addControlParentId === nextAddControlParentId
+    && isTagsRelationsEqual
+
+  if (!isEqual) {
+    console.log(`Tag tree item render - ${treeItem.tag.title}`)
+  }
+
+  return isEqual
 }
 
-export default compose(
+export default React.memo(compose(
   withHandlers({
     onHandleTreeItemSelected: props => selectedTreeItems => {
       selectedTreeItems.push(props.treeItem.toJS())
@@ -279,5 +283,4 @@ export default compose(
       props.onTreeItemDelete(props.treeItem.toJS())
     },
   }),
-  shouldUpdate(checkPropsChange)
-)(TagTreeItem)
+)(TagTreeItem), areEqual)
