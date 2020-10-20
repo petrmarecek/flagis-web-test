@@ -1,6 +1,18 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## [1.8.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.7.0...v1.8.0) (2020-10-20)
+
+
+### Features
+
+* Add some optimizations for reduce re-rendering tasks and tag tree ([8334022](https://github.com/react-boilerplate/react-boilerplate/commit/8334022dd4c8f58484bc48100d241e6205ea1dda))
+
+
+### Bug Fixes
+
+* Fix logging rendering to console ([dcaaeb8](https://github.com/react-boilerplate/react-boilerplate/commit/dcaaeb8561e3ad24721bc85d40f844c88c0e46af))
 
 <a name="1.7.0"></a>
 # [1.7.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.4.1...v1.7.0) (2020-10-16)
