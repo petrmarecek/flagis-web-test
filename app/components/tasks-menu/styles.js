@@ -5,13 +5,14 @@ import MenuBoxGroupItems from 'components/menux-box/menu-box-group-items'
 import MenuBoxItem from 'components/menux-box/menu-box-item'
 import {
   boxSizing,
-  transition,
   borderRadius,
+  transform,
   boxShadow,
   fontMain,
-  transform,
   userSelect,
+  animateLineFromMiddle,
 } from '../styled-components-mixins/'
+import { colors } from 'components/styled-components-mixins/colors'
 
 const fade = keyframes`${fadeIn}`
 const TasksMenuItem = styled.div`
@@ -230,18 +231,10 @@ const MenuBoxItemTitle = styled(MenuBoxItem)`
   color: ${props => (props.active ? '#293034' : '#8C9DA9')};
   pointer-events: ${props =>
     props.active && !props.canClickAgain ? 'none' : 'auto'};
+  ${animateLineFromMiddle(2, 1, colors.darkJungleGreen)};
 
-  &:after {
-    ${transform('scaleX(0)')}
-    ${transition('transform 250ms ease-in-out')}
-    display: block;
-    content: '';
-    margin-top: 2px;
-    border-bottom: 1px solid #293034;
-  }
-
-  &:hover {
-    &:after {
+  :hover {
+    :after {
       ${transform(props => (props.active ? 'scaleX(0)' : 'scaleX(1)'))}
     }
   }

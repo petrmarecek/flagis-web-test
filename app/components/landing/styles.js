@@ -4,9 +4,8 @@ import {
   mediaQueries,
   fontMain,
   userSelect,
-  transform,
-  transformOrigin,
-  transition,
+  animateLineFromMiddle,
+  animateTwoLinesTogether,
 } from '../styled-components-mixins'
 import StoreButtons from 'components/common/store-buttons'
 import { fadeIn } from 'react-animations'
@@ -397,47 +396,8 @@ const SectionButtonParent = styled.div`
 
 const SectionButton = styled.div`
   span {
-    ${fontMain}
-    ${userSelect('none')};
-    display: inline-block;
-    font-size: 18px;
+    ${animateTwoLinesTogether(18, 2, 2, colors.darkJungleGreen)};
     font-weight: 500;
-    color: ${colors.darkJungleGreen};
-    cursor: pointer;
-
-    :after {
-      ${transform('scaleX(1)')}
-      ${transformOrigin('100% 0%')}
-      ${transition('250ms ease-in-out')}
-      display: block;
-      content: '';
-      margin-top: 2px;
-      border-bottom: 2px solid ${colors.darkJungleGreen};
-    }
-
-    :before {
-      ${transform('scaleX(0)')}
-      ${transformOrigin('0% 100%')}
-      ${transition('250ms ease-in-out 150ms')}
-      display: block;
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: 0;
-      right: 0;
-      margin-bottom: 2px;
-      border-bottom: 2px solid ${colors.darkJungleGreen};
-    }
-
-    :hover {
-      :after {
-        ${transform('scaleX(0)')}
-      }
-
-      :before {
-        ${transform('scaleX(1)')}
-      }
-    }
 
     ${mediaQueries.md} {
       font-size: 16px;
@@ -525,7 +485,7 @@ const SectionCollapseDescription = styled.div`
 const FooterWrapper = styled.footer`
   display: flex;
   flex-direction: column;
-  align-items: space-between;
+  justify-content: space-between;
   padding: 100px 200px 60px 200px;
   background: #f9f9f9;
 
@@ -557,34 +517,23 @@ const FooterTop = styled.div`
     flex-direction: column;
   }
 `
-
 const FooterTitle = styled.div`
+  position: relative;
+
   ${fontMain}
   ${userSelect('none')};
   display: inline-block;
   font-size: 56px;
   color: ${colors.darkJungleGreen};
   cursor: pointer;
-
-  :after {
-    ${transform('scaleX(0)')}
-    ${transition('transform 250ms ease-in-out')}
-    display: block;
-    content: '';
-    margin-top: 6px;
-    border-bottom: 3px solid #293034;
-  }
-
-  :hover {
-    color: #293034;
-
-    :after {
-      ${transform('scaleX(1)')}
-    }
-  }
+  ${animateLineFromMiddle(6, 3, colors.darkJungleGreen)}
 
   span {
     font-weight: bold;
+  }
+
+  ${mediaQueries.md} {
+    font-size: 16px;
   }
 
   ${mediaQueries.mdx} {

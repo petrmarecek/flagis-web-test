@@ -21,6 +21,12 @@ import { markdownStyles } from './markdown-styles'
 // media queries
 import { mediaQueries } from './media-queries'
 
+// animations
+import {
+  animateLineFromMiddle,
+  animateTwoLinesTogether,
+} from './css-animations'
+
 /* ----------------------------- Common -----------------------------------*/
 const EmptyList = styled.div`
   color: #b1b5b8;
@@ -143,7 +149,7 @@ const input = css`
 `
 
 const commonInput = css`
-  ${input}
+  ${input};
   margin: 0 0 12px;
   padding: 0 10px 0 10px;
   font-size: 24px;
@@ -151,7 +157,7 @@ const commonInput = css`
 `
 
 const commonInputSmall = css`
-  ${input}
+  ${input};
   margin: 0 0 12px;
   padding: 0 10px 0 10px;
   font-size: 18px;
@@ -159,7 +165,7 @@ const commonInputSmall = css`
 `
 
 const commonCommentInputSmall = css`
-  ${input}
+  ${input};
   padding: 2px;
   font-size: 14px;
   border-bottom: 1px solid #e1e4e5;
@@ -181,7 +187,7 @@ const link = css`
 /* ----------------------------- Buttons -----------------------------------*/
 
 const button = css`
-  ${fontMain}
+  ${fontMain};
   outline: none;
   cursor: ${props => (props.disabled ? 'auto' : 'pointer')};
   font-size: 18px;
@@ -189,7 +195,7 @@ const button = css`
   text-decoration: none;
   border: none;
 
-  ${borderRadius('23px')}
+  ${borderRadius('23px')};
 
   color: ${colors.white};
   background-color: ${props =>
@@ -197,17 +203,17 @@ const button = css`
 
   :hover {
     background-color: ${props =>
-      props.disabled ? colors.lostAtSea : colors.hanumanGreen};;
+      props.disabled ? colors.lostAtSea : colors.hanumanGreen};
   }
 `
 
 const ButtonDefault = styled.input`
-  ${button}
+  ${button};
   font-size: 18px;
 `
 
 const ButtonDefaultSmall = styled.input`
-  ${button}
+  ${button};
   font-size: 14px;
 `
 
@@ -253,4 +259,7 @@ export {
   markdownStyles,
   // media queries
   mediaQueries,
+  // animations
+  animateLineFromMiddle,
+  animateTwoLinesTogether,
 }

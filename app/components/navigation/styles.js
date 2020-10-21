@@ -9,6 +9,7 @@ import {
   userSelect,
   mediaQueries,
   boxShadow,
+  animateLineFromMiddle,
 } from '../styled-components-mixins'
 import colors, {
   colors as defaultColors,
@@ -99,23 +100,7 @@ const LandingButtonSignIn = styled.div`
   margin-right: 50px;
   color: ${defaultColors.darkJungleGreen};
   pointer-events: ${props => (props.active ? 'none' : 'auto')};
-
-  :after {
-    ${transform('scaleX(0)')}
-    ${transition('transform 250ms ease-in-out')}
-    display: block;
-    content: '';
-    margin-top: 2px;
-    border-bottom: 2px solid #293034;
-  }
-
-  :hover {
-    color: #293034;
-
-    :after {
-      ${transform('scaleX(1)')}
-    }
-  }
+  ${animateLineFromMiddle(2, 2, defaultColors.darkJungleGreen)}
 
   ${mediaQueries.md} {
     margin-right: 35px;
@@ -173,23 +158,7 @@ const LandingSecondaryButton = styled.div`
   padding: 0;
   color: ${props => (props.active ? '#293034' : '#B1B5B8')};
   pointer-events: ${props => (props.active ? 'none' : 'auto')};
-
-  :after {
-    ${transform('scaleX(0)')}
-    ${transition('transform 250ms ease-in-out')}
-    display: block;
-    content: '';
-    margin-top: 2px;
-    border-bottom: 2px solid #293034;
-  }
-
-  :hover {
-    color: #293034;
-
-    :after {
-      ${transform('scaleX(1)')}
-    }
-  }
+  ${animateLineFromMiddle(2, 2, defaultColors.darkJungleGreen)}
 
   ${mediaQueries.md} {
     margin: 0 25px 0 0;
@@ -230,21 +199,7 @@ const LegalButton = styled.div`
   color: ${defaultColors.darkJungleGreen};
   pointer-events: ${props => (props.active ? 'none' : 'auto')};
   width: max-content;
-
-  :after {
-    ${transform('scaleX(0)')}
-    ${transition('transform 250ms ease-in-out')}
-    display: block;
-    content: '';
-    margin-top: 2px;
-    border-bottom: 2px solid #293034;
-  }
-
-  :hover {
-    :after {
-      ${transform('scaleX(1)')}
-    }
-  }
+  ${animateLineFromMiddle(2, 2, defaultColors.darkJungleGreen)}
 
   :last-of-type {
     margin: 0;
@@ -497,21 +452,7 @@ const MenuBoxItemTitle = styled(MenuBoxItem)`
   padding: 0;
   color: ${props => (props.active ? '#293034' : '#8C9DA9')};
   pointer-events: ${props => (props.active ? 'none' : 'auto')};
-
-  &:after {
-    ${transform('scaleX(0)')}
-    ${transition('transform 250ms ease-in-out')}
-    display: block;
-    content: '';
-    margin-top: 2px;
-    border-bottom: 1px solid #293034;
-  }
-
-  &:hover {
-    &:after {
-      ${transform('scaleX(1)')}
-    }
-  }
+  ${animateLineFromMiddle(2, 1, defaultColors.darkJungleGreen)};
 
   border-bottom: ${props => (props.active ? '1px solid #293034' : '0')};
 `
