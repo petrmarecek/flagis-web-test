@@ -296,7 +296,7 @@ const DetailContentDatePicker = styled.div`
 
   .react-datepicker-wrapper {
     width: 100%;
-    max-width: 145px;
+    max-width: ${props => (!props.selectedDate ? '95px' : '143px')};
   }
 
   .react-datepicker__input-container {
@@ -307,7 +307,11 @@ const DetailContentDatePicker = styled.div`
       background-color: transparent;
       margin: 0;
       padding: ${props =>
-        props.isClearable ? '3px 22px 4px 5px' : '3px 5px 4px'};
+        !props.selectedDate
+          ? '3px 5px 4px'
+          : props.isClearable
+          ? '3px 22px 4px 5px'
+          : '3px 5px 4px'};
     }
   }
 
