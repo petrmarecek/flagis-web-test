@@ -1,5 +1,6 @@
 import React from 'react'
 import moment from 'moment'
+import { flagisInfo } from 'utils/flagis-info'
 
 // components
 import { Link } from 'react-router-dom'
@@ -12,6 +13,7 @@ import {
   FooterTitle,
   FooterButtons,
   FooterBottom,
+  FooterTextEmail,
   FooterText,
 } from './styles'
 
@@ -30,7 +32,11 @@ const LandingFooter = () => {
       </FooterTop>
       <FooterBottom>
         <NavigationLandingSecondary />
-        <FooterText>info@flagis.com</FooterText>
+        <FooterTextEmail
+          onClick={() => window.open(`mailto:${flagisInfo.emails.info}`)}
+        >
+          {flagisInfo.emails.info}
+        </FooterTextEmail>
         <FooterText>{`© ${year} Flagis`}</FooterText>
       </FooterBottom>
     </FooterWrapper>

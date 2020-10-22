@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components'
+import styled, { css, keyframes } from 'styled-components'
 import { colors } from '../styled-components-mixins/colors'
 import {
   mediaQueries,
@@ -594,7 +594,28 @@ const FooterBottom = styled.div`
   }
 `
 
+const footerTextCss = css`
+  font-size: 20px;
+  margin: 0 0 0 40px;
+
+  ${mediaQueries.smx} {
+    font-size: 16px;
+  }
+
+  ${mediaQueries.sm} {
+    margin: 5px 0 0 0;
+  }
+`
+const FooterTextEmail = styled.p`
+  ${footerTextCss};
+  cursor: pointer;
+
+  :hover {
+    color: ${colors.pervenche};
+  }
+`
 const FooterText = styled.p`
+  ${footerTextCss};
   font-size: 20px;
   margin: 0 0 0 40px;
 
@@ -650,5 +671,6 @@ export {
   FooterTitle,
   FooterButtons,
   FooterBottom,
+  FooterTextEmail,
   FooterText,
 }
