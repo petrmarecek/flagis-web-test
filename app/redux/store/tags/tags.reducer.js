@@ -32,10 +32,18 @@ export default typeToReducer(
     [TAGS.SET_ACTIVE_TAGS]: (state, action) =>
       state.setIn(['activeTags'], List(action.payload.tagIds)),
 
-    [TAGS.ADD]: (state, action) =>
-      state.updateIn(['all', 'items'], list =>
+    [TAGS.ADD]: (state, action) => {
+      const { tag } = action.payload
+      const tagsItems = state.getIn(['all', 'items'])
+
+      if (tagsItems.includes(tag.id)) {
+        return state
+      }
+
+      return state.updateIn(['all', 'items'], list =>
         list.push(action.payload.tag.id)
-      ),
+      )
+    },
 
     [TAGS.REPLACE]: (state, action) =>
       state
