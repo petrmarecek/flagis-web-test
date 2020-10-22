@@ -264,44 +264,55 @@ const DetailContentImportantContent = styled(ToggleSwitch)`
 `
 
 const DetailContentDate = styled.div`
-  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
   pointer-events: ${props => (props.allowed ? 'auto' : 'none')};
+  border-bottom: 1px solid ${colors.coldWind};
+  margin-bottom: 10px;
 `
 
 const DetailContentDateIcon = styled(Icon)`
-  position: absolute;
-  top: 7px;
-  left: ${props => (props.reminder ? '5px' : '7px')};
   z-index: 1;
   pointer-events: none;
 `
 
 const DetailContentDateLabel = styled.div`
-  position: absolute;
-  top: 7px;
-  left: 30px;
   z-index: 1;
+  padding-left: ${props => (props.reminder ? '7px' : '8px')};
   color: ${colors.astrocopusGrey};
   font-size: 14px;
   pointer-events: none;
+
+  svg {
+    margin-bottom: 2px;
+    margin-right: ${props => (props.reminder ? '8px' : '10px')};
+  }
 `
 
 const DetailContentDatePicker = styled.div`
   z-index: 2;
-  .react-datepicker__input-container {
-    input {
-      text-align: right;
-      font-size: 15px;
-      background-color: transparent;
-    }
-  }
 
   .react-datepicker-wrapper {
     width: 100%;
+    max-width: 145px;
+  }
+
+  .react-datepicker__input-container {
+    input {
+      border: none;
+      text-align: right;
+      font-size: 15px;
+      background-color: transparent;
+      margin: 0;
+      padding: ${props =>
+        props.isClearable ? '3px 22px 4px 5px' : '3px 5px 4px'};
+    }
   }
 
   .react-datepicker__close-icon {
-    height: 6px;
+    top: 10px;
     right: -7px;
 
     :after {
@@ -309,13 +320,6 @@ const DetailContentDatePicker = styled.div`
       color: ${colors.midnightHour};
       border: 1px solid ${colors.midnightHour};
       padding: 1px;
-    }
-  }
-
-  .react-datepicker__input-container {
-    input {
-      padding: ${props =>
-        props.isClearable ? '5px 20px 2px 5px' : '5px 5px 2px'};
     }
   }
 

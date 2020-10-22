@@ -565,13 +565,15 @@ const TaskDetail = props => {
                 </DetailContentDatePicker>
               </DetailContentDate> */}
               <DetailContentDate allowed={!isCompleted && !isCollaborated}>
-                <DetailContentDateIcon
-                  icon={ICONS.DUE_DATE}
-                  height={12}
-                  width={12}
-                  color={[colors.astrocopusGrey]}
-                />
-                <DetailContentDateLabel>Due date</DetailContentDateLabel>
+                <DetailContentDateLabel>
+                  <DetailContentDateIcon
+                    icon={ICONS.DUE_DATE}
+                    height={12}
+                    width={12}
+                    color={[colors.astrocopusGrey]}
+                  />
+                  Due date
+                </DetailContentDateLabel>
                 <DetailContentDatePicker
                   onClick={onHandleRemoveEventListener}
                   isClearable={!isCompleted && !isCollaborated}
@@ -590,13 +592,13 @@ const TaskDetail = props => {
                 </DetailContentDatePicker>
               </DetailContentDate>
               <DetailContentDate allowed={!isCompleted && !isCollaborated}>
-                <DetailContentDateIcon
-                  icon={ICONS.REMINDER_DATE}
-                  height={13}
-                  width={15}
-                  color={[colors.astrocopusGrey]}
-                />
                 <DetailContentDateLabel reminder>
+                  <DetailContentDateIcon
+                    icon={ICONS.REMINDER_DATE}
+                    height={13}
+                    width={15}
+                    color={[colors.astrocopusGrey]}
+                  />
                   Reminder date
                 </DetailContentDateLabel>
                 <DetailContentDatePicker
