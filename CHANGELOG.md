@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.9.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.7.0...v1.9.0) (2020-10-22)
+
+
+### Features
+
+* Add a mailto for the flagis email in the landing page footer ([30eb36b](https://github.com/react-boilerplate/react-boilerplate/commit/30eb36bd2445c27e3f361b0b1cafaae0e2d8a590))
+* Add some optimizations for reduce re-rendering tasks and tag tree ([8334022](https://github.com/react-boilerplate/react-boilerplate/commit/8334022dd4c8f58484bc48100d241e6205ea1dda))
+* Ref css animations ([ecf5371](https://github.com/react-boilerplate/react-boilerplate/commit/ecf5371c14e7132d138e8c22aca2fed24376fe46))
+
+
+### Bug Fixes
+
+* Fix a duplication in tag-list ([8828c27](https://github.com/react-boilerplate/react-boilerplate/commit/8828c27411688f981757ed04eb5b5ff506424046))
+* Fix logging rendering to console ([dcaaeb8](https://github.com/react-boilerplate/react-boilerplate/commit/dcaaeb8561e3ad24721bc85d40f844c88c0e46af))
+* Fix position of dates in task-detail ([d7aed15](https://github.com/react-boilerplate/react-boilerplate/commit/d7aed15ac084bf20270341829847edd974f354b2))
+* Fix responzive design for dates in task-detail ([3853586](https://github.com/react-boilerplate/react-boilerplate/commit/3853586edd397348284ce9bfbc766bfc4ca15dd8))
+* Fix zero tagRelations in tags-list ([bb2de79](https://github.com/react-boilerplate/react-boilerplate/commit/bb2de79522cac32000ad7c8ba71a15a7f6c2825e))
+
 ## [1.8.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.7.0...v1.8.0) (2020-10-20)
 
 
