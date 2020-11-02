@@ -1,12 +1,18 @@
 import moment from 'moment'
 
+const DEFAULT_SIMPLE_DATE_FORMAT = 'D.M.YYYY'
 const DEFAULT_DATE_FORMAT = 'DD.MM.YYYY'
 const DEFAULT_TIME_FORMAT = 'HH:mm'
+const DEFAULT_SIMPLE_DATE_SIMPLE_TIME_FORMAT = 'D.M.YYYY H:m'
+const DEFAULT_SIMPLE_DATE_TIME_FORMAT = 'D.M.YYYY HH:mm'
 const DEFAULT_DATE_TIME_FORMAT = 'DD.MM.YYYY HH:mm'
 
 export default {
+  DEFAULT_SIMPLE_DATE_FORMAT,
   DEFAULT_DATE_FORMAT,
   DEFAULT_TIME_FORMAT,
+  DEFAULT_SIMPLE_DATE_SIMPLE_TIME_FORMAT,
+  DEFAULT_SIMPLE_DATE_TIME_FORMAT,
   DEFAULT_DATE_TIME_FORMAT,
 
   formatDate(date) {
@@ -51,16 +57,16 @@ export default {
     return moment().isSameOrAfter(expiresAt)
   },
 
-  makeDateArray(startDate, stopDate, interval = 1, intervalUnit = "days") {
+  makeDateArray(startDate, stopDate, interval = 1, intervalUnit = 'days') {
     const dateArray = []
     let momentCurrent = moment(startDate)
     const momentStop = moment(stopDate)
 
     while (momentCurrent <= momentStop) {
-      dateArray.push(moment(momentCurrent).format("YYYY-MM-DD"))
+      dateArray.push(moment(momentCurrent).format('YYYY-MM-DD'))
       momentCurrent = moment(momentCurrent).add(interval, intervalUnit)
     }
 
     return dateArray
-  }
+  },
 }
