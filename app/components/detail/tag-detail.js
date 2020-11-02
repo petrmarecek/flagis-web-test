@@ -170,7 +170,9 @@ export default withStateHandlers(() => ({ tagColorsRef: null }), {
   onHandleTitleUpdate: (state, props) => event => {
     const title = event.target.value
     const originalTitle = props.tag.title
-    const { titles } = props
+
+    // Get tag titles without edited tag
+    const titles = props.titles.filter(value => value !== originalTitle.toLowerCase())
 
     if (originalTitle === title || title === '') {
       return {}
