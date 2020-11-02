@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.9.1](https://github.com/react-boilerplate/react-boilerplate/compare/v1.9.0...v1.9.1) (2020-11-02)
+
+
+### Bug Fixes
+
+* Fix renaming tag title from lower case to upper case etc. ([d85d866](https://github.com/react-boilerplate/react-boilerplate/commit/d85d86666263fcb7440621ce151277dd03b4c340))
+* Fix resolution of initial tip images ([434cc3c](https://github.com/react-boilerplate/react-boilerplate/commit/434cc3cfbf1631efe0c3c08ec268eb7ea8752b8e))
+
 ## [1.9.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.7.0...v1.9.0) (2020-10-22)
 
 
