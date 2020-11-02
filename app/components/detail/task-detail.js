@@ -477,6 +477,7 @@ const TaskDetail = props => {
                 scale={1}
                 color={[colors.pompelmo]}
                 onClick={onHandleDelete}
+                title="Delete"
               />
             </DetailContentIcon>
           )}

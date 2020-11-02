@@ -56,7 +56,11 @@ const TasksMenuOptions = props => {
 
   return (
     <TasksMenuItem ref={optionsRef} onClick={onHandleClick}>
-      <IconWrapper iconColor={iconColor} hoverIconColor="#293034">
+      <IconWrapper
+        iconColor={iconColor}
+        hoverIconColor="#293034"
+        title="More options"
+      >
         <Icon icon={ICONS.OPTIONS} width={6} height={20} scale={0.86} />
       </IconWrapper>
       {options.menu.isVisible && (

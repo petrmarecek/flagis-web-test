@@ -10,7 +10,7 @@ import commonUtils from 'redux/utils/common'
 import { createTask } from 'redux/store/tasks/tasks.actions'
 import { getTasksMenu } from 'redux/store/tasks-menu/tasks-menu.selectors'
 import { getActiveTagsId } from 'redux/store/tags/tags.selectors'
-import { isStringEmpty } from '../../redux/utils/component-helper'
+import { isStringEmpty } from 'redux/utils/component-helper'
 
 // components
 import { ICONS } from 'components/icons/icon-constants'
@@ -89,7 +89,13 @@ const AddTaskForm = ({ subject, tasksMenu, handleChange, handleSubmit }) => {
         />
       </SubjectContainer>
       <SubmitIcon onClick={handleSubmit} disabled={addButtonDisabled}>
-        <Icon icon={ICONS.PLUS} width={29} height={29} color={[plusColor]} />
+        <Icon
+          icon={ICONS.PLUS}
+          width={29}
+          height={29}
+          color={[plusColor]}
+          title={addButtonDisabled ? '' : 'Add new task'}
+        />
       </SubmitIcon>
     </AddForm>
   )

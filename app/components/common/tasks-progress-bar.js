@@ -23,7 +23,7 @@ const ProgressBar = styled.div`
 `
 
 const Count = styled.div`
-  ${fontMain}
+  ${fontMain};
   position: absolute;
   white-space: nowrap;
   color: ${colors.lostAtSea};
@@ -34,7 +34,7 @@ const Count = styled.div`
 `
 
 const Bar = styled.span`
-  ${borderRadius('2px')}
+  ${borderRadius('2px')};
   position: absolute;
   bottom: 4px;
   right: 0;
@@ -62,7 +62,7 @@ const TasksProgressBar = ({ tasksCount, completedTasksCount }) => {
   const preparedWidth = isNaN(width) ? 0 : width
 
   return (
-    <ProgressBar>
+    <ProgressBar title="Completed/Uncompleted My Tasks">
       <Count>{count}</Count>
       <Bar />
       <CompletedBar style={{ width: `${preparedWidth}px` }} />

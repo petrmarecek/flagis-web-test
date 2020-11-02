@@ -73,7 +73,11 @@ const TasksMenuSort = props => {
 
   return (
     <TasksMenuItem ref={sortRef} onClick={onHandleClick}>
-      <IconWrapper iconColor={iconColor} hoverIconColor={colors.aztec}>
+      <IconWrapper
+        iconColor={iconColor}
+        hoverIconColor={colors.aztec}
+        title="Sorting"
+      >
         <Icon icon={getActiveIcon()} width={20} height={20} scale={0.83} />
       </IconWrapper>
       {sort.menu.isVisible && (

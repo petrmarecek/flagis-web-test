@@ -67,7 +67,11 @@ const TasksMenuFilters = props => {
 
   return (
     <TasksMenuItem ref={filterRef} onClick={onHandleClick}>
-      <IconWrapper iconColor={iconColor} hoverIconColor={colors.aztec}>
+      <IconWrapper
+        iconColor={iconColor}
+        hoverIconColor={colors.aztec}
+        title="Filters"
+      >
         <Icon icon={ICONS.FILTER} width={19} height={20} scale={0.8} />
       </IconWrapper>
       {filters.menu.isVisible && (

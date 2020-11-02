@@ -109,6 +109,7 @@ const TagDetail = props => {
               scale={1}
               color={['#FF6A6A']}
               onClick={onHandleDelete}
+              title="Delete"
             />
           </DetailContentIcon>
         </DetailContentTop>
@@ -172,7 +173,9 @@ export default withStateHandlers(() => ({ tagColorsRef: null }), {
     const originalTitle = props.tag.title
 
     // Get tag titles without edited tag
-    const titles = props.titles.filter(value => value !== originalTitle.toLowerCase())
+    const titles = props.titles.filter(
+      value => value !== originalTitle.toLowerCase()
+    )
 
     if (originalTitle === title || title === '') {
       return {}

@@ -25,12 +25,17 @@ const NavigationSecondary = props => {
   return (
     <NavigationSecondaryWrapper>
       <SecondaryButtonsWrapper>
-        <SecondaryButton active={isTaskActive} onClick={onHandleClickTasks}>
+        <SecondaryButton
+          active={isTaskActive}
+          onClick={onHandleClickTasks}
+          title="My Tasks"
+        >
           List
         </SecondaryButton>
         <SecondaryButton
           active={isDashboardActive}
           onClick={onHandleClickDashboard}
+          title="Charts and statistics of My Tasks"
         >
           Charts
         </SecondaryButton>
