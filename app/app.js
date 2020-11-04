@@ -10,8 +10,10 @@ import 'babel-polyfill'
 
 // Import all the third party stuff
 import React from 'react'
+import ReactGA from 'react-ga'
 import ReactDOM from 'react-dom'
-import createHistory from 'history/createBrowserHistory'
+import { createBrowserHistory } from 'history'
+import config from 'config/index'
 import 'sanitize.css/sanitize.css'
 import 'animate.css/animate.min.css'
 
@@ -43,11 +45,17 @@ import './assets/less/site.less'
 
 // Create redux store with history
 const initialState = {}
-const history = createHistory()
+const history = createBrowserHistory()
 const store = configureStore(initialState, history)
 const MOUNT_NODE = document.getElementById('app')
 
 const render = messages => {
+  history.listen(location => {
+    ReactGA.initialize(config.analyticsId)
+    ReactGA.set({ page: location.pathname })
+    ReactGA.pageview(location.pathname)
+  })
+
   ReactDOM.render(
     <AppRender store={store} message={messages} history={history} />,
     MOUNT_NODE
