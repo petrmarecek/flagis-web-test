@@ -210,7 +210,7 @@ const TagTreeSection = props => {
             <SectionHeader colorTheme={colorTheme}>
               <SectionHeaderTitle
                 type="text"
-                value="Favorite filters"
+                value="Favorite Filters"
                 style={styleWidth}
               />
             </SectionHeader>
