@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.10.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.9.1...v1.10.0) (2020-11-06)
+
+
+### Features
+
+* Add google analytics ([5c06292](https://github.com/react-boilerplate/react-boilerplate/commit/5c06292dbeb7ae7634a3e8e2a74e1228f7280222))
+* Add separated task reminder date for assignee and owner ([6c32885](https://github.com/react-boilerplate/react-boilerplate/commit/6c32885143b0612c71e8388b126631d03d2e3780))
+* Add titles for icons ([576d27d](https://github.com/react-boilerplate/react-boilerplate/commit/576d27df3895563403ad6c21ebc8437ecc71a8fe))
+
+
+### Bug Fixes
+
+* Fix design of details in tablets (mainly iPad) ([e63e12e](https://github.com/react-boilerplate/react-boilerplate/commit/e63e12e0d270eaca7264492e869bd77700b95478))
+* Fix ids of google analytics for each envs ([3bf2fb9](https://github.com/react-boilerplate/react-boilerplate/commit/3bf2fb9f30623f38592588cd75699dd67b6d40d2))
+* Fix name of "Favorite Filetrs" with first letters upper case ([6d4fb2b](https://github.com/react-boilerplate/react-boilerplate/commit/6d4fb2ba98d42824b74c28f6fe79f62f97e5753f))
+* Fix reminder date editing is not allowed ([8ad8c45](https://github.com/react-boilerplate/react-boilerplate/commit/8ad8c45097f1a1965e9d344a73f39873d479b9c4))
+* Fix task date format (due date, reminder date) ([7931cc5](https://github.com/react-boilerplate/react-boilerplate/commit/7931cc54f4b20a519905d7212467f9c9f7154034))
+* Fix texts on landing page ([3515795](https://github.com/react-boilerplate/react-boilerplate/commit/3515795713ecd5631ed091442d3ec516070af224))
+* Fix tile of tag tree in in initial tips ([d68d166](https://github.com/react-boilerplate/react-boilerplate/commit/d68d16603eec5a733d1fe793f5b83792e941fe3f))
+
 ### [1.9.1](https://github.com/react-boilerplate/react-boilerplate/compare/v1.9.0...v1.9.1) (2020-11-02)
 
 
