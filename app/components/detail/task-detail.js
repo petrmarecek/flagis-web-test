@@ -581,7 +581,7 @@ const TaskDetail = props => {
                 </DetailContentDateLabel>
                 <DetailContentDatePicker
                   onClick={onHandleRemoveEventListener}
-                  selectedDate={!!dueDate}
+                  selectedDate={Boolean(dueDate)}
                   isClearable={!isCompleted && !isCollaborated}
                 >
                   <DatePicker
@@ -603,7 +603,7 @@ const TaskDetail = props => {
                   />
                 </DetailContentDatePicker>
               </DetailContentDate>
-              <DetailContentDate allowed={!isCompleted && !isCollaborated}>
+              <DetailContentDate allowed={!isCompleted}>
                 <DetailContentDateLabel reminder>
                   <DetailContentDateIcon
                     icon={ICONS.REMINDER_DATE}
@@ -615,7 +615,7 @@ const TaskDetail = props => {
                 </DetailContentDateLabel>
                 <DetailContentDatePicker
                   onClick={onHandleRemoveEventListener}
-                  selectedDate={!!reminderDate}
+                  selectedDate={Boolean(reminderDate)}
                   isClearable={!isCompleted && !isCollaborated}
                 >
                   <DatePicker
