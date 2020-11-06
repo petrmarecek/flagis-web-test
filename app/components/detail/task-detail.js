@@ -603,7 +603,7 @@ const TaskDetail = props => {
                   />
                 </DetailContentDatePicker>
               </DetailContentDate>
-              <DetailContentDate allowed={!isCompleted}>
+              <DetailContentDate allowed={!isCompleted && !isInbox}>
                 <DetailContentDateLabel reminder>
                   <DetailContentDateIcon
                     icon={ICONS.REMINDER_DATE}
