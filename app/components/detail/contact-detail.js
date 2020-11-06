@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { withHandlers } from 'recompose'
 import constants from 'utils/constants'
 import { titles } from 'components/head-title/head-title-common'
+import * as userAgent from 'utils/userAgent'
 
 // components
 import HeadTitle from 'components/head-title'
@@ -51,7 +52,8 @@ const ContactDetail = props => {
   const contactName =
     contact.nickname !== null ? contact.nickname : contact.email
   const description = contact.description === null ? '' : contact.description
-  const editorHeight = 'calc(100vh - 132px)'
+  const deviceOffset = userAgent.isTablet ? 75 : 0
+  const editorHeight = `calc(100vh - ${deviceOffset + 132}px)`
   const scrollStyle = {
     height: 'calc(100vh - 192px)',
     overflow: 'hidden',

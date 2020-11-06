@@ -9,6 +9,7 @@ import {
   getColorIndex,
   getTagColor,
 } from 'redux/utils/component-helper'
+import * as userAgent from 'utils/userAgent'
 
 // toast notifications
 import toast from 'utils/toastify-helper'
@@ -63,7 +64,8 @@ const TagDetail = props => {
   const description = tag.description === null ? '' : tag.description
   const tagColorElem = domUtils.getDimensions(tagColorsRef)
   const offset = tagColorElem ? 143 + tagColorElem.height : 202
-  const editorHeight = `calc(100vh - ${offset}px)`
+  const deviceOffset = userAgent.isTablet ? 75 : 0
+  const editorHeight = `calc(100vh - ${offset + deviceOffset}px)`
   const scrollStyle = {
     width: `calc(100vw - ${leftPanelWidth + 84}px)`,
     height: `calc(100vh - ${offset + 62}px)`,

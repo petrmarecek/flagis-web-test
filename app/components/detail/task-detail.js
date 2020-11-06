@@ -8,6 +8,7 @@ import dateUtil from 'redux/utils/date'
 import { getAssigneeOfTask } from 'redux/utils/component-helper'
 import domUtils from 'redux/utils/dom'
 import { titles } from 'components/head-title/head-title-common'
+import * as userAgent from 'utils/userAgent'
 
 // toast notifications
 import * as toastCommon from 'components/toast-notifications/toast-notifications-common'
@@ -170,9 +171,12 @@ const TaskDetail = props => {
   const scrollOffset = 144 + contentTopElem.height
   const contentOffset = 84 + contentTopElem.height
   const attachmentScrollOffset = 300 + contentTopElem.height
-  const editorHeight = `calc(100vh - ${editorOffset}px)`
+  const deviceOffset = userAgent.isTablet ? 75 : 0
+  const editorHeight = `calc(100vh - ${editorOffset + deviceOffset}px)`
   const contentHeight = `calc(100vh - ${contentOffset}px)`
-  const attachmentScrollHeight = `calc(100vh - ${attachmentScrollOffset}px)`
+  const attachmentScrollHeight = `calc(100vh - ${
+    attachmentScrollOffset + deviceOffset
+  }px)`
   const scrollStyle = {
     height: `calc(100vh - ${scrollOffset}px)`,
     overflow: 'hidden',
