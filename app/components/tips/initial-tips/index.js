@@ -86,7 +86,7 @@ const InitialTips = ({ onClose }) => {
       img: img3,
       img2x: img3x2,
       img3x: img3x3,
-      title: 'Favorite filter views',
+      title: 'Favorite Filters View',
     },
     4: {
       description: `
