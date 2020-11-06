@@ -42,31 +42,31 @@ const configs = {
     isProduction: false,
     apiURL: 'http://localhost:3001',
     firebase: firebaseLocal,
-    analyticsId: '251634587',
+    analyticsId: 'UA-182109266-1',
   },
   development: {
     isProduction: false,
     apiURL: 'https://flagis-api-development.herokuapp.com',
     firebase: firebaseDevelopment,
-    analyticsId: '251634587',
+    analyticsId: 'UA-182109266-1',
   },
   test: {
     isProduction: false,
     apiURL: 'https://flagis-api-development.herokuapp.com',
     firebase: firebaseDevelopment,
-    analyticsId: '251634587',
+    analyticsId: 'UA-182109266-1',
   },
   staging: {
     isProduction: false,
     apiURL: 'https://flagis-api-staging.herokuapp.com',
     firebase: firebaseStaging,
-    analyticsId: '251630213',
+    analyticsId: 'UA-182109266-2',
   },
   production: {
     isProduction: true,
     apiURL: 'https://flagis-api-production.herokuapp.com',
     firebase: firebaseProduction,
-    analyticsId: '251604809',
+    analyticsId: 'UA-182109266-3',
   },
 }
 
