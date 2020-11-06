@@ -48,7 +48,6 @@ const task = new schema.Entity(
         const { createdById, userId } = entity
         const assignee = getAssigneeOfTask(entity.followers)
         if (createdById !== userId && assignee !== null) {
-          console.log(entity)
           const { isArchived, isImportant, order, reminderDate } = assignee
 
           _.set(entity, 'isArchived', isArchived)

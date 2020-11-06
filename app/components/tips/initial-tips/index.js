@@ -77,9 +77,9 @@ const InitialTips = ({ onClose }) => {
     },
     3: {
       description: `
-        On the left-hand side under „My Filters” you can create and manage filtered views on your
-        Tasks. What is more, you can even compose the hierarchies of the Tags which can represent
-        mind structures of categories and sub-categories of your favorite filtered views
+        On the left-hand side under „Favorite Filters” you can create and manage filtered views on
+        your Tasks. What is more, you can even compose the hierarchies of the Tags which can
+        represent mind structures of categories and sub-categories of your favorite filtered views
         you use most frequently.
         <br />The entire list of all created Tags are managed in "Tags" list.
       `,
