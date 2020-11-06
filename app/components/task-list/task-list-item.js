@@ -326,6 +326,11 @@ const TaskListItem = props => {
                   color={completedIconColor()}
                   width={22}
                   height={22}
+                  title={
+                    task.isCompleted
+                      ? 'Incomplete the task'
+                      : 'Complete the task'
+                  }
                 />
               </Completed>
             )}
@@ -351,6 +356,11 @@ const TaskListItem = props => {
                           action: 'transition.expandIn',
                           duration: 1000,
                         }
+                  }
+                  title={
+                    isArchivedList
+                      ? 'Return the task to the My Tasks'
+                      : 'Archive the task'
                   }
                 />
               </Archived>
@@ -389,12 +399,15 @@ const TaskListItem = props => {
               </SubjectTags>
               <DescriptionDueDate>
                 {isDescription && (
-                  <Description completed={isCompletedMainList}>
+                  <Description
+                    completed={isCompletedMainList}
+                    title="Description"
+                  >
                     {description}
                   </Description>
                 )}
                 <DueDate
-                  title={fromNow}
+                  title={`Due Date - ${fromNow}`}
                   overdue={moment(dueDate) < now && !isArchivedList}
                   completed={isCompletedMainList}
                   description={isDescription}
@@ -483,13 +496,12 @@ const mapDispatchToProps = {
 const areEqual = (prev, next) => {
   const areTaskEqual = _.isEqual(prev.task.toJS(), next.task.toJS())
 
-  const isEqual = (
+  const isEqual =
     areTaskEqual &&
     prev.index === next.index &&
     prev.updatedAt === next.updatedAt &&
     prev.isSelected === next.isSelected &&
     prev.windowWidth === next.windowWidth
-  )
 
   return isEqual
 }

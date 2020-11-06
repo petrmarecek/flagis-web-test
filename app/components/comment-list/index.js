@@ -1,5 +1,6 @@
 import React, { memo } from 'react'
 import PropTypes from 'prop-types'
+import * as userAgent from 'utils/userAgent'
 
 // redux
 import { connect } from 'react-redux'
@@ -13,8 +14,9 @@ import ShadowScrollbar from 'components/common/shadow-scrollbar'
 import { ListWrapper } from './styles'
 
 const CommentList = ({ comments, userId }) => {
+  const deviceOffset = userAgent.isTablet ? 75 : 0
   const scrollStyle = {
-    height: `calc(100vh - 172px)`,
+    height: `calc(100vh - ${deviceOffset + 172}px)`,
     shadowHeight: 20,
     boxShadowTop: 'inset 0 10px 10px -5px #fff',
     boxShadowBottom: 'inset 0 -10px 10px -5px #fff',

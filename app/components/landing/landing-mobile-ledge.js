@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react'
 import { links } from 'utils/links'
+import * as userAgent from 'utils/userAgent'
 
 // components
 import { ICONS } from 'components/icons/icon-constants'
@@ -16,15 +17,12 @@ import {
 
 class LandingMobileLedge extends PureComponent {
   detectMobileSystem = () => {
-    const isAndroid = navigator.userAgent.match(/Android/i)
-    const isIOS = navigator.userAgent.match(/iphone/i)
-
-    if (isAndroid) {
+    if (userAgent.isMobile && userAgent.isAndroid) {
       return {
         text: 'Get Flagis for Android',
         href: links.googlePlay,
       }
-    } else if (isIOS) {
+    } else if (userAgent.isMobile && userAgent.isIPhone) {
       return {
         text: 'Get Flagis for iOS',
         href: links.appStore,

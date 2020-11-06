@@ -6,10 +6,7 @@ import { compose, withStateHandlers } from 'recompose'
 // redux
 import { connect } from 'react-redux'
 import { createTag } from 'redux/store/tags/tags.actions'
-import {
-  isStringEmpty,
-  getColorIndex,
-} from '../../redux/utils/component-helper'
+import { isStringEmpty, getColorIndex } from 'redux/utils/component-helper'
 
 // components
 import { ICONS } from 'components/icons/icon-constants'
@@ -23,16 +20,17 @@ import {
   boxSizing,
   placeholderColor,
 } from '../styled-components-mixins'
+import { colors } from '../styled-components-mixins/colors'
 
 const AddForm = styled.form`
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 6px;
-  background-color: #fff;
+  background-color: ${colors.white};
   height: 38px;
   ${borderRadius('3px')}
-  ${boxShadow('0 1px 6px 0 #CECECE')}
+  ${boxShadow(`0 1px 6px 0 ${colors.americanSilver}`)}
 `
 
 const SubmitIcon = styled.div`
@@ -55,7 +53,7 @@ const SubjectContainer = styled.div`
 `
 
 const Subject = styled.input`
-  ${placeholderColor('#CECECE')}
+  ${placeholderColor(colors.doveGrey)}
   ${boxSizing('border-box')}
   border: none;
   width: 100%;
@@ -65,12 +63,12 @@ const Subject = styled.input`
   padding-left: 24px;
   margin: 0;
   font-weight: ${props => (props.isImportant ? 'bold' : 'normal')};
-  background-color: #fff;
+  background-color: ${colors.white};
 `
 
 const AddTagForm = ({ title, handleChange, handleSubmit }) => {
   const addButtonDisabled = isStringEmpty(title)
-  const plusColor = addButtonDisabled ? '#CECECE' : '#44FFB1'
+  const plusColor = addButtonDisabled ? colors.doveGrey : colors.hanumanGreen
 
   return (
     <AddForm autoComplete="off" onSubmit={handleSubmit}>
@@ -90,6 +88,7 @@ const AddTagForm = ({ title, handleChange, handleSubmit }) => {
           height={16}
           scale={0.55}
           color={[plusColor]}
+          title={addButtonDisabled ? '' : 'Add new tag'}
         />
       </SubmitIcon>
     </AddForm>

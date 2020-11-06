@@ -90,7 +90,7 @@ const AddTagTreeItemSectionForm = props => {
         <Autocomplete
           dataType="tags"
           location="tagTree"
-          placeholder="Add filter"
+          placeholder="Add tag"
           selectedItems={selectedItems}
           parentId={parentId}
           onAddInputRef={getInputRef}

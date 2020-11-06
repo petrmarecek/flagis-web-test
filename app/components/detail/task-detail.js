@@ -8,6 +8,7 @@ import dateUtil from 'redux/utils/date'
 import { getAssigneeOfTask } from 'redux/utils/component-helper'
 import domUtils from 'redux/utils/dom'
 import { titles } from 'components/head-title/head-title-common'
+import * as userAgent from 'utils/userAgent'
 
 // toast notifications
 import * as toastCommon from 'components/toast-notifications/toast-notifications-common'
@@ -170,9 +171,12 @@ const TaskDetail = props => {
   const scrollOffset = 144 + contentTopElem.height
   const contentOffset = 84 + contentTopElem.height
   const attachmentScrollOffset = 300 + contentTopElem.height
-  const editorHeight = `calc(100vh - ${editorOffset}px)`
+  const deviceOffset = userAgent.isTablet ? 75 : 0
+  const editorHeight = `calc(100vh - ${editorOffset + deviceOffset}px)`
   const contentHeight = `calc(100vh - ${contentOffset}px)`
-  const attachmentScrollHeight = `calc(100vh - ${attachmentScrollOffset}px)`
+  const attachmentScrollHeight = `calc(100vh - ${
+    attachmentScrollOffset + deviceOffset
+  }px)`
   const scrollStyle = {
     height: `calc(100vh - ${scrollOffset}px)`,
     overflow: 'hidden',
@@ -477,6 +481,7 @@ const TaskDetail = props => {
                 scale={1}
                 color={[colors.pompelmo]}
                 onClick={onHandleDelete}
+                title="Delete"
               />
             </DetailContentIcon>
           )}
@@ -576,7 +581,7 @@ const TaskDetail = props => {
                 </DetailContentDateLabel>
                 <DetailContentDatePicker
                   onClick={onHandleRemoveEventListener}
-                  selectedDate={!!dueDate}
+                  selectedDate={Boolean(dueDate)}
                   isClearable={!isCompleted && !isCollaborated}
                 >
                   <DatePicker
@@ -585,7 +590,12 @@ const TaskDetail = props => {
                     showTimeSelect
                     timeFormat="HH:mm"
                     timeIntervals={5}
-                    dateFormat={dateUtil.DEFAULT_DATE_TIME_FORMAT}
+                    dateFormat={[
+                      dateUtil.DEFAULT_DATE_TIME_FORMAT,
+                      dateUtil.DEFAULT_SIMPLE_DATE_SIMPLE_TIME_FORMAT,
+                      dateUtil.DEFAULT_SIMPLE_DATE_TIME_FORMAT,
+                      dateUtil.DEFAULT_SIMPLE_DATE_FORMAT,
+                    ]}
                     selected={dueDate}
                     isClearable={!isCompleted && !isCollaborated}
                     onChange={onHandleDueDateChanged}
@@ -593,7 +603,7 @@ const TaskDetail = props => {
                   />
                 </DetailContentDatePicker>
               </DetailContentDate>
-              <DetailContentDate allowed={!isCompleted && !isCollaborated}>
+              <DetailContentDate allowed={!isCompleted && !isInbox}>
                 <DetailContentDateLabel reminder>
                   <DetailContentDateIcon
                     icon={ICONS.REMINDER_DATE}
@@ -605,7 +615,7 @@ const TaskDetail = props => {
                 </DetailContentDateLabel>
                 <DetailContentDatePicker
                   onClick={onHandleRemoveEventListener}
-                  selectedDate={!!reminderDate}
+                  selectedDate={Boolean(reminderDate)}
                   isClearable={!isCompleted && !isCollaborated}
                 >
                   <DatePicker
@@ -614,7 +624,12 @@ const TaskDetail = props => {
                     showTimeSelect
                     timeFormat="HH:mm"
                     timeIntervals={5}
-                    dateFormat={dateUtil.DEFAULT_DATE_TIME_FORMAT}
+                    dateFormat={[
+                      dateUtil.DEFAULT_DATE_TIME_FORMAT,
+                      dateUtil.DEFAULT_SIMPLE_DATE_SIMPLE_TIME_FORMAT,
+                      dateUtil.DEFAULT_SIMPLE_DATE_TIME_FORMAT,
+                      dateUtil.DEFAULT_SIMPLE_DATE_FORMAT,
+                    ]}
                     selected={reminderDate}
                     isClearable={!isCompleted && !isCollaborated}
                     onChange={onHandleReminderDateChanged}
@@ -849,30 +864,32 @@ export default compose(
       props.onHandleTaskDateChanged(data)
     },
     onHandleDueDateChanged: props => date => {
-      if (date) {
-        date.set({
-          second: 0,
-          millisecond: 0,
-        })
+      date.set({
+        second: 0,
+        millisecond: 0,
+      })
 
-        if (date.hour() === 0 && date.minute() === 0) {
-          date.add(59, 's').add(999, 'ms')
-        }
+      if (date.hour() === 0 && date.minute() === 0) {
+        date.set({
+          hour: 12,
+          minute: 0,
+        })
       }
 
       const data = { task: props.task, date, typeDate: 'dueDate' }
       props.onHandleTaskDateChanged(data)
     },
     onHandleReminderDateChanged: props => date => {
-      if (date) {
-        date.set({
-          second: 0,
-          millisecond: 0,
-        })
+      date.set({
+        second: 0,
+        millisecond: 0,
+      })
 
-        if (date.hour() === 0 && date.minute() === 0) {
-          date.add(59, 's').add(999, 'ms')
-        }
+      if (date.hour() === 0 && date.minute() === 0) {
+        date.set({
+          hour: 12,
+          minute: 0,
+        })
       }
 
       const data = { task: props.task, date, typeDate: 'reminderDate' }

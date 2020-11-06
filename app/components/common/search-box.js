@@ -71,6 +71,7 @@ const SearchBox = ({
       color={['#676D71']}
       hoverColor={['#293034']}
       onClick={onHandleClickIcon}
+      title="Search in My Tasks"
     />
   </Search>
 )
