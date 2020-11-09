@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-### [1.9.1](https://github.com/react-boilerplate/react-boilerplate/compare/v1.9.0...v1.9.1) (2020-11-09)
+## [1.10.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.9.1...v1.10.0) (2020-11-06)
 
 
 ### Features
@@ -14,16 +14,21 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Bug Fixes
 
-* Fix delete a date in task-detail ([9196aab](https://github.com/react-boilerplate/react-boilerplate/commit/9196aab42b2447a7163865d71af2b24419a462da))
 * Fix design of details in tablets (mainly iPad) ([e63e12e](https://github.com/react-boilerplate/react-boilerplate/commit/e63e12e0d270eaca7264492e869bd77700b95478))
 * Fix ids of google analytics for each envs ([3bf2fb9](https://github.com/react-boilerplate/react-boilerplate/commit/3bf2fb9f30623f38592588cd75699dd67b6d40d2))
 * Fix name of "Favorite Filetrs" with first letters upper case ([6d4fb2b](https://github.com/react-boilerplate/react-boilerplate/commit/6d4fb2ba98d42824b74c28f6fe79f62f97e5753f))
 * Fix reminder date editing is not allowed ([8ad8c45](https://github.com/react-boilerplate/react-boilerplate/commit/8ad8c45097f1a1965e9d344a73f39873d479b9c4))
-* Fix renaming tag title from lower case to upper case etc. ([d85d866](https://github.com/react-boilerplate/react-boilerplate/commit/d85d86666263fcb7440621ce151277dd03b4c340))
-* Fix resolution of initial tip images ([434cc3c](https://github.com/react-boilerplate/react-boilerplate/commit/434cc3cfbf1631efe0c3c08ec268eb7ea8752b8e))
 * Fix task date format (due date, reminder date) ([7931cc5](https://github.com/react-boilerplate/react-boilerplate/commit/7931cc54f4b20a519905d7212467f9c9f7154034))
 * Fix texts on landing page ([3515795](https://github.com/react-boilerplate/react-boilerplate/commit/3515795713ecd5631ed091442d3ec516070af224))
 * Fix tile of tag tree in in initial tips ([d68d166](https://github.com/react-boilerplate/react-boilerplate/commit/d68d16603eec5a733d1fe793f5b83792e941fe3f))
+
+### [1.9.1](https://github.com/react-boilerplate/react-boilerplate/compare/v1.9.0...v1.9.1) (2020-11-02)
+
+
+### Bug Fixes
+
+* Fix renaming tag title from lower case to upper case etc. ([d85d866](https://github.com/react-boilerplate/react-boilerplate/commit/d85d86666263fcb7440621ce151277dd03b4c340))
+* Fix resolution of initial tip images ([434cc3c](https://github.com/react-boilerplate/react-boilerplate/commit/434cc3cfbf1631efe0c3c08ec268eb7ea8752b8e))
 
 ## [1.9.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.7.0...v1.9.0) (2020-10-22)
 
