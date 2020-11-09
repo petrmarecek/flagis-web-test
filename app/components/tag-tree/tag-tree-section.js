@@ -178,37 +178,39 @@ const TagTreeSection = props => {
     connectDropTarget(
       <li>
         <SectionWrapper dragging={isDragging} collapsed={section.collapsed}>
-          {isSectionNameVisible && <SectionHeader colorTheme={colorTheme}>
-            <SectionHeaderTitle
-              type="text"
-              value={title}
-              onClick={onHandleTitleClicked}
-              onChange={onHandleChangeTitle}
-              onBlur={onHandleSubmitTitle}
-              onKeyDown={onHandleKeyDown}
-              onSubmit={onHandleSubmitTitle}
-              ref={getInputRef}
-              style={styleWidth}
-            />
-            <SectionHeaderIcon leftOffset title="Delete">
-              <Icon
-                icon={ICONS.TRASH}
-                width={12}
-                height={13}
-                scale={0.5}
-                color={[colors.tagTreeSectionIcon]}
-                hoverColor={[colors.trashHover]}
-                onClick={onHandleDeleteIconClicked}
+          {isSectionNameVisible && (
+            <SectionHeader colorTheme={colorTheme}>
+              <SectionHeaderTitle
+                type="text"
+                value={title}
+                onClick={onHandleTitleClicked}
+                onChange={onHandleChangeTitle}
+                onBlur={onHandleSubmitTitle}
+                onKeyDown={onHandleKeyDown}
+                onSubmit={onHandleSubmitTitle}
+                ref={getInputRef}
+                style={styleWidth}
               />
-            </SectionHeaderIcon>
-            {renderArrowIcon(section.childItems)}
-          </SectionHeader>}
+              <SectionHeaderIcon leftOffset title="Delete">
+                <Icon
+                  icon={ICONS.TRASH}
+                  width={12}
+                  height={13}
+                  scale={0.5}
+                  color={[colors.tagTreeSectionIcon]}
+                  hoverColor={[colors.trashHover]}
+                  onClick={onHandleDeleteIconClicked}
+                />
+              </SectionHeaderIcon>
+              {renderArrowIcon(section.childItems)}
+            </SectionHeader>
+          )}
 
           {!isSectionNameVisible && (
             <SectionHeader colorTheme={colorTheme}>
               <SectionHeaderTitle
                 type="text"
-                value="Favorite filters"
+                value="Favorite Filters"
                 style={styleWidth}
               />
             </SectionHeader>
@@ -235,7 +237,6 @@ const TagTreeSection = props => {
             />
             {!section.collapsed && (
               <SectionFooter
-                title="Add filter"
                 onClick={onHandleAddChildClicked}
                 addSubtag
                 colorTheme={colorTheme}
@@ -254,8 +255,8 @@ const TagTreeSection = props => {
             )}
           </SectionContent>
         </SectionWrapper>
-      </li>,
-    ),
+      </li>
+    )
   )
 }
 
@@ -308,13 +309,13 @@ TagTreeSection.propTypes = {
 export default DragSource(
   TagTreeSectionDragDrop.type,
   TagTreeSectionDragDrop.sectionSource,
-  TagTreeSectionDragDrop.collectDragSource,
+  TagTreeSectionDragDrop.collectDragSource
 )(
   compose(
     DropTarget(
       TagTreeSectionDragDrop.type,
       TagTreeSectionDragDrop.sectionTarget,
-      TagTreeSectionDragDrop.collectDropTarget,
+      TagTreeSectionDragDrop.collectDropTarget
     ),
     withStateHandlers(
       props => ({ inputRef: null, title: props.section.title }),
@@ -345,7 +346,7 @@ export default DragSource(
           props.onUpdateSectionTitle(props.section, title)
           return {}
         },
-      },
+      }
     ),
     withHandlers({
       onHandleAddChildClicked: props => event => {
@@ -380,6 +381,6 @@ export default DragSource(
             return
         }
       },
-    }),
-  )(TagTreeSection),
+    })
+  )(TagTreeSection)
 )

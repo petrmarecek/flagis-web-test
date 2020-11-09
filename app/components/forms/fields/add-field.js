@@ -3,9 +3,10 @@ import PropTypes from 'prop-types'
 
 import styled from 'styled-components'
 import { placeholderColor, boxSizing } from '../../styled-components-mixins'
+import { colors } from 'components/styled-components-mixins/colors'
 
 const AddFieldStyle = styled.input`
-  ${placeholderColor('#CECECE')}
+  ${placeholderColor(colors.doveGrey)}
   ${boxSizing('border-box')}
   width: 100%;
   border: none;
@@ -13,7 +14,7 @@ const AddFieldStyle = styled.input`
   height: 30px;
   padding: 5px 0 5px 24px;
   color: ${props => (props.isError ? 'red' : 'black')};
-  background-color: #fff;
+  background-color: ${colors.white};
 `
 
 const AddField = props => {

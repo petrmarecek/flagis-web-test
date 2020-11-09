@@ -138,6 +138,7 @@ const TasksMenuFiltersActiveItem = ({
           color={['#B1B5B8']}
           hoverColor={['#293034']}
           onClick={onHandleDelete}
+          title="Remove filter"
         />
       </FilterActiveItemIconCancel>
     </FilterActiveItem>

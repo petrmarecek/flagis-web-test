@@ -466,6 +466,7 @@ const AutocompleteInput = props => {
         onChange={onHandleChange}
         mainSearch={location === 'mainSearch'}
         value={value}
+        title="Select existing tag"
       />
       {hintsElement && showHints && createPortal(hints, hintsElement)}
     </InputContainer>

@@ -292,8 +292,6 @@ const DetailContentDateLabel = styled.div`
 `
 
 const DetailContentDatePicker = styled.div`
-  z-index: 2;
-
   .react-datepicker-wrapper {
     width: 100%;
     max-width: ${props => (!props.selectedDate ? '95px' : '143px')};
@@ -301,6 +299,7 @@ const DetailContentDatePicker = styled.div`
 
   .react-datepicker__input-container {
     input {
+      z-index: 2;
       border: none;
       text-align: right;
       font-size: 15px;
@@ -328,7 +327,7 @@ const DetailContentDatePicker = styled.div`
   }
 
   .react-datepicker-popper {
-    z-index: 2;
+    z-index: 10;
 
     .react-datepicker {
       ${borderRadius('5px 0 5px 5px')}

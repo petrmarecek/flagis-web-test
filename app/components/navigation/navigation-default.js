@@ -77,6 +77,7 @@ const NavigationDefault = ({
                 : [colors[colorTheme].navigationNotifications]
             }
             hoverColor={[colors[colorTheme].navigationNotificationsHover]}
+            title="Notifications"
           />
           {notificationsCount > 0 && (
             <NotificationsCounter count={notificationsCount} />
@@ -85,7 +86,7 @@ const NavigationDefault = ({
         <div>
           <AccountWrapper
             ref={getAccountRef}
-            title="Account"
+            title="Account and Settings"
             isVisibleAccountNavigation={isVisibleAccountNavigation}
             onClick={onHandleClickAccount}
             colorTheme={colorTheme}

@@ -85,6 +85,8 @@ const FooterStatus = styled.span`
 const Image = styled.img`
   width: 100%;
   height: auto;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 `
 
 const Inner = styled.div``

@@ -2,11 +2,21 @@ import ProTypes from 'prop-types'
 import React, { useCallback, useMemo, useState } from 'react'
 
 import icon from 'assets/img/tips/tips-icon.png'
-import img1 from 'assets/img/tips/initial/tips-initial-1.png'
-import img2 from 'assets/img/tips/initial/tips-initial-2.png'
-import img3 from 'assets/img/tips/initial/tips-initial-3.png'
-import img4 from 'assets/img/tips/initial/tips-initial-4.png'
-import img5 from 'assets/img/tips/initial/tips-initial-5.png'
+import img1 from 'assets/img/tips/initial/tips-initial-1.jpg'
+import img1x2 from 'assets/img/tips/initial/tips-initial-1@2x.jpg'
+import img1x3 from 'assets/img/tips/initial/tips-initial-1@3x.jpg'
+import img2 from 'assets/img/tips/initial/tips-initial-2.jpg'
+import img2x2 from 'assets/img/tips/initial/tips-initial-2@2x.jpg'
+import img2x3 from 'assets/img/tips/initial/tips-initial-2@3x.jpg'
+import img3 from 'assets/img/tips/initial/tips-initial-3.jpg'
+import img3x2 from 'assets/img/tips/initial/tips-initial-3@2x.jpg'
+import img3x3 from 'assets/img/tips/initial/tips-initial-3@3x.jpg'
+import img4 from 'assets/img/tips/initial/tips-initial-4.jpg'
+import img4x2 from 'assets/img/tips/initial/tips-initial-4@2x.jpg'
+import img4x3 from 'assets/img/tips/initial/tips-initial-4@3x.jpg'
+import img5 from 'assets/img/tips/initial/tips-initial-5.jpg'
+import img5x2 from 'assets/img/tips/initial/tips-initial-5@2x.jpg'
+import img5x3 from 'assets/img/tips/initial/tips-initial-5@3x.jpg'
 
 import {
   Box, Content, Description,
@@ -51,6 +61,8 @@ const InitialTips = ({ onClose }) => {
         All the Tasks are managed here at one place regardless of who created them.
       `,
       img: img1,
+      img2x: img1x2,
+      img3x: img1x3,
       title: 'Tasks - all in one',
     },
     2: {
@@ -59,18 +71,22 @@ const InitialTips = ({ onClose }) => {
         the Task belongs to. By doing that, you can always find the Task under more Tags.
       `,
       img: img2,
+      img2x: img2x2,
+      img3x: img2x3,
       title: 'Categorization by Tags',
     },
     3: {
       description: `
-        On the left-hand side under „My Filters” you can create and manage filtered views on your
-        Tasks. What is more, you can even compose the hierarchies of the Tags which can represent
-        mind structures of categories and sub-categories of your favorite filtered views
+        On the left-hand side under „Favorite Filters” you can create and manage filtered views on
+        your Tasks. What is more, you can even compose the hierarchies of the Tags which can
+        represent mind structures of categories and sub-categories of your favorite filtered views
         you use most frequently.
         <br />The entire list of all created Tags are managed in "Tags" list.
       `,
       img: img3,
-      title: 'Favorite filter views',
+      img2x: img3x2,
+      img3x: img3x3,
+      title: 'Favorite Filters View',
     },
     4: {
       description: `
@@ -81,6 +97,8 @@ const InitialTips = ({ onClose }) => {
         <br />The entire list of all Contacts are managed in "Contacts" list.
       `,
       img: img4,
+      img2x: img4x2,
+      img3x: img4x3,
       title: 'Collaboration with the others',
     },
     5: {
@@ -91,6 +109,8 @@ const InitialTips = ({ onClose }) => {
         <br />The entire list of all archived Tasks are managed in "Archive".
       `,
       img: img5,
+      img2x: img5x2,
+      img3x: img5x3,
       title: 'Completing and Archiving of Tasks',
     },
   }), [])
@@ -98,7 +118,10 @@ const InitialTips = ({ onClose }) => {
   return (
     <Wrapper>
       <Box>
-        <Image src={data[step].img} />
+        <Image
+          src={data[step].img}
+          srcSet={`${data[step].img} 768w, ${data[step].img2x} 1024w, ${data[step].img3x} 1280w`}
+        />
         <Content>
           <Inner>
             <Title>{data[step].title}</Title>

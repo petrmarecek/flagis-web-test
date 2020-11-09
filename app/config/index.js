@@ -1,13 +1,13 @@
 const compileEnv = process.env.COMPILE_ENV || 'development'
 
 const firebaseLocal = {
-  apiKey: "AIzaSyBWyOwLGhjOVZ9SHC3uuqiUR8wnf4ZGABk",
-  authDomain: "flagis-local-f62f4.firebaseapp.com",
-  databaseURL: "https://flagis-local-f62f4.firebaseio.com",
-  projectId: "flagis-local-f62f4",
-  storageBucket: "flagis-local-f62f4.appspot.com",
-  messagingSenderId: "5299835482",
-  appId: "1:5299835482:web:10f35f3ca45bf56a9cfe63"
+  apiKey: 'AIzaSyBWyOwLGhjOVZ9SHC3uuqiUR8wnf4ZGABk',
+  authDomain: 'flagis-local-f62f4.firebaseapp.com',
+  databaseURL: 'https://flagis-local-f62f4.firebaseio.com',
+  projectId: 'flagis-local-f62f4',
+  storageBucket: 'flagis-local-f62f4.appspot.com',
+  messagingSenderId: '5299835482',
+  appId: '1:5299835482:web:10f35f3ca45bf56a9cfe63',
 }
 
 const firebaseDevelopment = {
@@ -42,27 +42,32 @@ const configs = {
     isProduction: false,
     apiURL: 'http://localhost:3001',
     firebase: firebaseLocal,
+    analyticsId: 'UA-182109266-1',
   },
   development: {
     isProduction: false,
     apiURL: 'https://flagis-api-development.herokuapp.com',
     firebase: firebaseDevelopment,
+    analyticsId: 'UA-182109266-1',
   },
   test: {
     isProduction: false,
     apiURL: 'https://flagis-api-development.herokuapp.com',
     firebase: firebaseDevelopment,
+    analyticsId: 'UA-182109266-1',
   },
   staging: {
     isProduction: false,
     apiURL: 'https://flagis-api-staging.herokuapp.com',
     firebase: firebaseStaging,
+    analyticsId: 'UA-182109266-2',
   },
   production: {
     isProduction: true,
     apiURL: 'https://flagis-api-production.herokuapp.com',
     firebase: firebaseProduction,
-  }
+    analyticsId: 'UA-182109266-3',
+  },
 }
 
 export default configs[compileEnv]

@@ -23,16 +23,17 @@ import AddField from 'components/forms/fields/add-field'
 // styles
 import styled from 'styled-components'
 import { boxSizing, boxShadow, borderRadius } from '../styled-components-mixins'
+import { colors } from '../styled-components-mixins/colors'
 
 const AddForm = styled.form`
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 6px;
-  background-color: #fff;
+  background-color: ${colors.white};
   height: 38px;
   ${borderRadius('3px')};
-  ${boxShadow('0 1px 6px 0 #CECECE')}
+  ${boxShadow(`0 1px 6px 0 ${colors.americanSilver}`)}
 `
 
 const SubmitIcon = styled.div`
@@ -56,7 +57,7 @@ const SubjectContainer = styled.div`
 
 const AddContactForm = ({ valid, handleSubmit, onSubmit }) => {
   const addButtonDisabled = !valid
-  const plusColor = addButtonDisabled ? '#CECECE' : '#44FFB1'
+  const plusColor = addButtonDisabled ? colors.doveGrey : colors.hanumanGreen
 
   return (
     <AddForm
@@ -82,6 +83,7 @@ const AddContactForm = ({ valid, handleSubmit, onSubmit }) => {
           height={16}
           scale={0.55}
           color={[plusColor]}
+          title={addButtonDisabled ? '' : 'Add new contact'}
         />
       </SubmitIcon>
     </AddForm>
