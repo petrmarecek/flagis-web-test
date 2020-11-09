@@ -864,32 +864,36 @@ export default compose(
       props.onHandleTaskDateChanged(data)
     },
     onHandleDueDateChanged: props => date => {
-      date.set({
-        second: 0,
-        millisecond: 0,
-      })
-
-      if (date.hour() === 0 && date.minute() === 0) {
+      if (date) {
         date.set({
-          hour: 12,
-          minute: 0,
+          second: 0,
+          millisecond: 0,
         })
+
+        if (date.hour() === 0 && date.minute() === 0) {
+          date.set({
+            hour: 12,
+            minute: 0,
+          })
+        }
       }
 
       const data = { task: props.task, date, typeDate: 'dueDate' }
       props.onHandleTaskDateChanged(data)
     },
     onHandleReminderDateChanged: props => date => {
-      date.set({
-        second: 0,
-        millisecond: 0,
-      })
-
-      if (date.hour() === 0 && date.minute() === 0) {
+      if (date) {
         date.set({
-          hour: 12,
-          minute: 0,
+          second: 0,
+          millisecond: 0,
         })
+
+        if (date.hour() === 0 && date.minute() === 0) {
+          date.set({
+            hour: 12,
+            minute: 0,
+          })
+        }
       }
 
       const data = { task: props.task, date, typeDate: 'reminderDate' }
