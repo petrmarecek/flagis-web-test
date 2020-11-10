@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.10.1...v1.12.0) (2020-11-10)
+
+
+### Features
+
+* Add deleting comments ([9db00ce](https://github.com/react-boilerplate/react-boilerplate/commit/9db00ce54f93448433bc1954561299764ffb209b))
+* Tracking some redux actions as events to the google analytics ([53c617a](https://github.com/react-boilerplate/react-boilerplate/commit/53c617a50d7af0ccb0e9746f27f92b9b53c9975e))
+
 ## [1.11.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.10.1...v1.11.0) (2020-11-10)
 
 
