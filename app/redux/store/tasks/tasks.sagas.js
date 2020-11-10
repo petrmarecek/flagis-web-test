@@ -49,6 +49,9 @@ import { getAssigneeOfTask } from 'redux/utils/component-helper'
 import { loaderTypes } from 'redux/store/app-state/app-state.common'
 import { TagsUpdateStrategy } from 'utils/enums'
 
+// google analytics
+import * as ga from 'redux/utils/react-ga-helper'
+
 const TASKS = taskActions.TASKS
 
 function* saveChangeFromFirestore(change, userId, isCollaboratedTask) {
@@ -340,6 +343,9 @@ export function* createTask(action) {
       tags: action.payload.tags,
     }
     const task = yield callApi(api.tasks.create, data)
+
+    // track the create task action to the google analytics
+    ga.trackEvent(ga.events[action.type])
 
     if (action.payload.isImportant) {
       yield put(taskActions.requestToggleImportant(task))
@@ -946,6 +952,9 @@ export function* sendTask(action) {
     const { taskId } = action.payload
     const { send } = api.followers
     yield callApi(send, taskId)
+
+    // track the send task action to the google analytics
+    ga.trackEvent(ga.events[action.type])
   } catch (err) {
     // send error to sentry
     yield put(

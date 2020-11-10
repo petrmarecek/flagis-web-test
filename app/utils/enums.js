@@ -1,7 +1,6 @@
-
 const DragType = {
   TREE_ITEM: 'tree-item',
-  TASK: 'task'
+  TASK: 'task',
 }
 
 const TaskDropTarget = {
@@ -14,8 +13,4 @@ const TagsUpdateStrategy = {
   MERGE: 'merge',
 }
 
-export {
-  DragType,
-  TaskDropTarget,
-  TagsUpdateStrategy,
-}
+export { DragType, TaskDropTarget, TagsUpdateStrategy }
