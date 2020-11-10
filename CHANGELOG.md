@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.11.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.10.1...v1.11.0) (2020-11-10)
+
+
+### Features
+
+* Add deleting comments ([9db00ce](https://github.com/react-boilerplate/react-boilerplate/commit/9db00ce54f93448433bc1954561299764ffb209b))
+
 ### [1.10.1](https://github.com/react-boilerplate/react-boilerplate/compare/v1.10.0...v1.10.1) (2020-11-09)
 
 
