@@ -286,6 +286,7 @@ export const Comment = Record({
   taskId: null,
   createdById: null,
   isDeleted: null,
+  trashedAt: null,
 })
 
 export const Activities = Record({

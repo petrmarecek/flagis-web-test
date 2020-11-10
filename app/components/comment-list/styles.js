@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { fontMain } from 'components/styled-components-mixins'
+import Icon from '../icons/icon'
 import { link } from '../styled-components-mixins/'
 
 /*--------------------------------- Comment List ----------------------------*/
@@ -52,8 +53,15 @@ const Date = styled.div`
   float: right;
 `
 
+const ContentWrapper = styled.div`
+  width: 100%;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+
 const Content = styled.div`
-  display: block;
   line-height: 18px;
   margin: 4px 0 0 37px;
   word-wrap: break-word;
@@ -61,4 +69,17 @@ const Content = styled.div`
   ${link}
 `
 
-export { ListWrapper, ItemWrapper, UserPhoto, Author, Date, Content }
+const Delete = styled.div`
+  visibility: hidden;
+
+  ${ItemWrapper}:hover & {
+    visibility: visible;
+  }
+`
+
+const DeleteIcon = styled(Icon)``
+
+export {
+  ListWrapper, ItemWrapper, UserPhoto, Author, Date, Content, Delete, DeleteIcon,
+  ContentWrapper,
+}
