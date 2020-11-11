@@ -53,7 +53,7 @@ const NotificationListItem = ({
   const date = dateUtils.formatDateTimeSecondary(sentAt)
   const commentContent = data && data.content ? data.content : null
   const attachmentName = data && data.fileName ? data.fileName : null
-  const taskSubject = subject !== null ? subject : data.subject
+  const taskSubject = subject !== null ? subject : (data ? data.subject : '')
   const profileName =
     email !== null
       ? nickname !== null
