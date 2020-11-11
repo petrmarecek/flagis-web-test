@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.12.1](https://github.com/react-boilerplate/react-boilerplate/compare/v1.12.0...v1.12.1) (2020-11-11)
+
+
+### Bug Fixes
+
+* Fix missing subject in notification data ([69cfeec](https://github.com/react-boilerplate/react-boilerplate/commit/69cfeec9321daa6cc9ec58047ce901358a5a1280))
+
 ## [1.12.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.10.1...v1.12.0) (2020-11-10)
 
 
