@@ -37,7 +37,13 @@ const useTaskListItemDragDrop = props => {
     end: (item, monitor) => {
       props.prepareToggleDragAndDrop(false)
       const dropResult = monitor.getDropResult()
+
       if (!dropResult) {
+        props.dropTask({
+          dropTask: item.task,
+          targetSection: item.section,
+        })
+
         return
       }
 
