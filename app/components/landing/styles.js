@@ -331,7 +331,7 @@ const SectionLeftTop = styled.div`
 
 const SectionIcon = styled.div`
   position: absolute;
-  top: -15px;
+  top: -5px;
   left: -100px;
 
   ${mediaQueries.lgx} {

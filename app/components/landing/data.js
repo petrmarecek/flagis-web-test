@@ -138,9 +138,8 @@ export const TagTreeOneDescriptionSolution = () => (
 )
 
 export const taskInOne = {
-  title: 'Send Task instead of Email',
+  title: 'Send Task instead of Email\n... if you want to manage it',
   description:
-    '... if you want to manage it.\n' +
     'Flagis provides one solution for managing your own tasks and the tasks you sent to and received from others in the same easy way as emails.',
 }
 
