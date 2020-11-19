@@ -9,8 +9,6 @@ import TagTreeGif from 'assets/img/landing-page/animations/tag-tree-gif.gif'
 
 // assets
 import CheckImg from 'assets/img/landing-page/check-img.png'
-import CheckImg2 from 'assets/img/landing-page/check-img-2.png'
-import CheckImg3 from 'assets/img/landing-page/check-img-3.png'
 
 // components
 import ScrollAnimation from 'react-animate-on-scroll'
@@ -71,10 +69,7 @@ const LandingSection = props => {
             <ScrollAnimation animateIn="fadeInUp" animateOnce>
               {innerWidth > 768 && (
                 <SectionIcon>
-                  <img
-                    src={CheckImg}
-                    srcSet={`${CheckImg} 768w, ${CheckImg2} 1024w, ${CheckImg3} 1280w`}
-                  />
+                  <img src={CheckImg} alt="Check" />
                 </SectionIcon>
               )}
               <SectionTitle>{title}</SectionTitle>

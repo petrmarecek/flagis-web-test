@@ -74,7 +74,7 @@ const MobileLedgeStoreLink = styled.div`
 const SectionMainWrapper = styled.section`
   display: flex;
   position: relative;
-  height: ${props => props.height - 140}px;
+  min-height: ${props => props.height - 140}px;
   padding: 30px 200px 0 200px;
 
   ${mediaQueries.lg} {
@@ -325,18 +325,18 @@ const SectionLeft = styled.div`
 `
 
 const SectionLeftTop = styled.div`
-  flex: 2;
   position: relative;
+  margin-bottom: 20px;
 `
 
 const SectionIcon = styled.div`
   position: absolute;
   top: -15px;
-  left: -116px;
+  left: -100px;
 
   ${mediaQueries.lgx} {
-    top: -15px;
-    left: -96px;
+    top: -5px;
+    left: -86px;
   }
 
   ${mediaQueries.mdx} {
@@ -364,7 +364,7 @@ const SectionTitle = styled.h1`
 `
 
 const SectionLeftMiddle = styled.div`
-  flex: 5;
+  margin-bottom: 20px;
 `
 
 const SectionDescription = styled.p`
@@ -385,7 +385,6 @@ const SectionDescription = styled.p`
 `
 
 const SectionLeftBottom = styled.div`
-  flex: 1;
   display: flex;
   align-items: flex-end;
 `
