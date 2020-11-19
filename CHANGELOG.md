@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.12.4](https://github.com/react-boilerplate/react-boilerplate/compare/v1.12.3...v1.12.4) (2020-11-19)
+
+
+### Bug Fixes
+
+* Fix spaces between title, description and button on landing page ([62c0f30](https://github.com/react-boilerplate/react-boilerplate/commit/62c0f30f980bf9ea3c30467e2adf2be01d361e7d))
+
 ### [1.12.3](https://github.com/react-boilerplate/react-boilerplate/compare/v1.12.2...v1.12.3) (2020-11-19)
 
 
