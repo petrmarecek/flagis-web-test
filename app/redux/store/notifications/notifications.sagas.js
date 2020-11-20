@@ -1,5 +1,7 @@
 import { OrderedSet } from 'immutable'
 import { normalize } from 'normalizr'
+
+// TODO: fix a blinkHeadTitle function
 import { notificationText } from 'components/notification-list/notifications-common'
 import { blinkHeadTitle } from 'components/head-title/head-title-common'
 
@@ -26,11 +28,12 @@ function* saveChangeFromFirestore(change) {
   const notification = change.doc.data()
   const changeType = change.type
 
+  // TODO: fix a blinkHeadTitle function
   // set title for a new notification
-  if (changeType === 'added') {
-    const title = notificationText(notification.type)
-    blinkHeadTitle(title)
-  }
+  // if (changeType === 'added') {
+  //   const title = notificationText(notification.type)
+  //   blinkHeadTitle(title)
+  // }
 
   // Prepare data
   const normalizeData = normalize(notification, schema.notification)
