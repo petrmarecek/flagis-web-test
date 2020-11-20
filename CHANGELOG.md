@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.13.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.12.4...v1.13.0) (2020-11-20)
+
+
+### Features
+
+* Add a sorting by due date ([1987bbf](https://github.com/react-boilerplate/react-boilerplate/commit/1987bbfc18563d1987878b31aede545557806524))
+
+
+### Bug Fixes
+
+* Remove blinkHeadTitle function for change browser title (Add TODO for further fix) ([1946348](https://github.com/react-boilerplate/react-boilerplate/commit/19463482555011c130e0db8450e0933046c59f80))
+
 ### [1.12.4](https://github.com/react-boilerplate/react-boilerplate/compare/v1.12.3...v1.12.4) (2020-11-19)
 
 
