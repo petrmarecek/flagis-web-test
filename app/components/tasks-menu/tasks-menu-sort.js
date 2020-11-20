@@ -34,12 +34,16 @@ const TasksMenuSort = props => {
       return ICONS.SORT_ALPHABET
     }
 
-    if (sort.important) {
-      return ICONS.SORT_IMPORTANT
-    }
-
     if (sort.incomplete) {
       return ICONS.SORT_INCOMPLETE
+    }
+
+    if (sort.dueDate) {
+      return ICONS.SORT_DUE_DATE
+    }
+
+    if (sort.important) {
+      return ICONS.SORT_IMPORTANT
     }
 
     return ICONS.SORT_DEFAULT
@@ -106,23 +110,6 @@ const TasksMenuSort = props => {
           </MenuBoxGroup>
           <MenuBoxGroup>
             <MenuBoxItemIcon
-              active={sort.important}
-              type="important"
-              icon={ICONS.IMPORTANT}
-              iconScale={0.24}
-              onChange={onHandleSortAlgorithmToggle}
-              canClickAgain
-            />
-            <MenuBoxItemTitle
-              title="Sort by Importance"
-              type="important"
-              active={sort.important}
-              onChange={onHandleSortAlgorithmToggle}
-              canClickAgain
-            />
-          </MenuBoxGroup>
-          <MenuBoxGroup>
-            <MenuBoxItemIcon
               active={sort.incomplete}
               type="incomplete"
               icon={ICONS.TASK_UNCOMPLETED}
@@ -134,6 +121,40 @@ const TasksMenuSort = props => {
               title="Sort incompleted"
               type="incomplete"
               active={sort.incomplete}
+              onChange={onHandleSortAlgorithmToggle}
+              canClickAgain
+            />
+          </MenuBoxGroup>
+          <MenuBoxGroup>
+            <MenuBoxItemIcon
+              active={sort.dueDate}
+              type="dueDate"
+              icon={ICONS.DUE_DATE}
+              iconScale={1.33}
+              onChange={onHandleSortAlgorithmToggle}
+              canClickAgain
+            />
+            <MenuBoxItemTitle
+              title="Sort by Due date"
+              type="dueDate"
+              active={sort.dueDate}
+              onChange={onHandleSortAlgorithmToggle}
+              canClickAgain
+            />
+          </MenuBoxGroup>
+          <MenuBoxGroup>
+            <MenuBoxItemIcon
+              active={sort.important}
+              type="important"
+              icon={ICONS.IMPORTANT}
+              iconScale={0.24}
+              onChange={onHandleSortAlgorithmToggle}
+              canClickAgain
+            />
+            <MenuBoxItemTitle
+              title="Sort by Importance"
+              type="important"
+              active={sort.important}
               onChange={onHandleSortAlgorithmToggle}
               canClickAgain
             />

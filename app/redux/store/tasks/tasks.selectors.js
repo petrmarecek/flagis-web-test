@@ -16,6 +16,7 @@ import {
   compareTaskBySubject,
   getAssigneeOfTask,
   compareTagByTitle,
+  compareTaskByDueDate,
 } from '../../utils/component-helper'
 
 // ------ Helper functions ----------------------------------------------------
@@ -290,17 +291,9 @@ function loadTasks(ids, data) {
   }
 
   // apply sort alphabetically
-  if (tasksMenu.getIn(['sort', 'alphabet'])) {
+  const isAlphabetSorting = tasksMenu.getIn(['sort', 'alphabet'])
+  if (isAlphabetSorting) {
     tasks.sort(compareTaskBySubject)
-  }
-
-  // apply sort by importance
-  const isImportantSorting = tasksMenu.getIn(['sort', 'important'])
-  if (isImportantSorting) {
-    const tasksImportant = tasks.filter(task => task.isImportant)
-    const tasksUnimportant = tasks.filter(task => !task.isImportant)
-
-    tasks = tasksImportant.concat(tasksUnimportant)
   }
 
   // apply sort incomplete
@@ -310,6 +303,27 @@ function loadTasks(ids, data) {
     const tasksComplete = tasks.filter(task => task.isCompleted)
 
     tasks = tasksIncomplete.concat(tasksComplete)
+  }
+
+  // apply sort by Due date
+  const isDueDateSorting = tasksMenu.getIn(['sort', 'dueDate'])
+  if (isDueDateSorting) {
+    const tasksWithDueDate = tasks.filter(task => task.dueDate)
+    const tasksWithNullDueDate = tasks.filter(task => !task.dueDate)
+
+    // sort by due date
+    tasksWithDueDate.sort(compareTaskByDueDate)
+
+    tasks = tasksWithDueDate.concat(tasksWithNullDueDate)
+  }
+
+  // apply sort by Importance
+  const isImportantSorting = tasksMenu.getIn(['sort', 'important'])
+  if (isImportantSorting) {
+    const tasksImportant = tasks.filter(task => task.isImportant)
+    const tasksUnimportant = tasks.filter(task => !task.isImportant)
+
+    tasks = tasksImportant.concat(tasksUnimportant)
   }
 
   return tasks

@@ -20,8 +20,9 @@ export default typeToReducer(
         .updateIn(['filters', 'active'], list => list.clear())
         .setIn(['sort', 'defaultSort'], true)
         .setIn(['sort', 'alphabet'], false)
-        .setIn(['sort', 'important'], false)
-        .setIn(['sort', 'incomplete'], false),
+        .setIn(['sort', 'incomplete'], false)
+        .setIn(['sort', 'dueDate'], false)
+        .setIn(['sort', 'important'], false),
 
     // ------ FILTERS ACTIONS --------------------------------------------------
 
@@ -122,15 +123,17 @@ export default typeToReducer(
         return state
           .setIn(['sort', 'defaultSort'], true)
           .setIn(['sort', 'alphabet'], false)
-          .setIn(['sort', 'important'], false)
           .setIn(['sort', 'incomplete'], false)
+          .setIn(['sort', 'dueDate'], false)
+          .setIn(['sort', 'important'], false)
       }
 
       return state
         .setIn(['sort', 'defaultSort'], false)
         .setIn(['sort', 'alphabet'], false)
-        .setIn(['sort', 'important'], false)
         .setIn(['sort', 'incomplete'], false)
+        .setIn(['sort', 'dueDate'], false)
+        .setIn(['sort', 'important'], false)
         .setIn(['sort', algorithm], true)
     },
 

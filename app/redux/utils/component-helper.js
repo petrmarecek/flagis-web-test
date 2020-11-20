@@ -1,7 +1,8 @@
 import { List, Set } from 'immutable'
-import showdown from 'showdown'
 import commonUtils from 'redux/utils/common'
-import constants from '../../utils/constants'
+import constants from 'utils/constants'
+import moment from 'moment'
+import showdown from 'showdown'
 import R from 'ramda'
 
 export function getSelectionInfo(event, task, selectedTasks) {
@@ -241,6 +242,13 @@ export const compareTaskBySubject = (taskA, taskB) => {
   const subjectB = taskB.subject.toLowerCase()
 
   return subjectA.localeCompare(subjectB)
+}
+
+export const compareTaskByDueDate = (taskA, taskB) => {
+  const subjectA = moment(taskA.dueDate).valueOf()
+  const subjectB = moment(taskB.dueDate).valueOf()
+
+  return subjectA - subjectB
 }
 
 export const compareTagByTitle = (tagA, tagB) => {

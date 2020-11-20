@@ -128,8 +128,9 @@ export const TasksSort = Record({
   menu: new Visibility(),
   defaultSort: true,
   alphabet: false,
-  important: false,
   incomplete: false,
+  dueDate: false,
+  important: false,
 })
 
 export const TasksOptions = Record({
