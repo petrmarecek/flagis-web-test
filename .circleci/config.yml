@@ -11,11 +11,11 @@ jobs:
       - run:
           name: Install Dependencies
           command: |
-            NODE_ENV=development npm install
+            NODE_ENV=development yarn install
       - run:
           name: Run Webpack
           command: |
-            NODE_ENV=production COMPILE_ENV=development npm run build
+            NODE_ENV=production COMPILE_ENV=development yarn build
       - run:
           name: Install Heroku CLI
           command: |
@@ -47,11 +47,11 @@ jobs:
       - run:
           name: Install Dependencies
           command: |
-            NODE_ENV=development npm install
+            NODE_ENV=development yarn install
       - run:
           name: Run Webpack
           command: |
-            NODE_ENV=production COMPILE_ENV=staging npm run build
+            NODE_ENV=production COMPILE_ENV=staging yarn build
       - run:
           name: Install Heroku CLI
           command: |
@@ -83,11 +83,11 @@ jobs:
       - run:
           name: Install Dependencies
           command: |
-            NODE_ENV=development npm install
+            NODE_ENV=development yarn install
       - run:
           name: Run Webpack
           command: |
-            NODE_ENV=production COMPILE_ENV=production npm run build
+            NODE_ENV=production COMPILE_ENV=production yarn build
       - run:
           name: Install Heroku CLI
           command: |
