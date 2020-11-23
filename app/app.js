@@ -21,7 +21,6 @@ import 'animate.css/animate.min.css'
 import AppRender from 'app-render'
 
 // Load the favicon, the manifest.json file and the .htaccess file
-/* eslint-disable import/no-unresolved, import/extensions */
 import '!file-loader?name=[name].[ext]!./assets/img/favicon/favicon.ico'
 import '!file-loader?name=[name].[ext]!./assets/img/favicon/icon-72x72.png'
 import '!file-loader?name=[name].[ext]!./assets/img/favicon/icon-96x96.png'
@@ -33,7 +32,6 @@ import '!file-loader?name=[name].[ext]!./assets/img/favicon/icon-384x384.png'
 import '!file-loader?name=[name].[ext]!./assets/img/favicon/icon-512x512.png'
 import '!file-loader?name=[name].[ext]!./manifest.json'
 import 'file-loader?name=[name].[ext]!./.htaccess'
-/* eslint-enable import/no-unresolved, import/extensions */
 
 import configureStore from 'redux/configure-store'
 

@@ -6,7 +6,6 @@ import { connect } from 'react-redux'
 import { compose, withHandlers } from 'recompose'
 import { resizeLeftPanel } from 'redux/store/app-state/app-state.actions'
 import { getLeftPanel } from 'redux/store/app-state/app-state.selectors'
-import { getColorTheme } from 'redux/store/auth/auth.selectors'
 
 // components
 import ResizeHandle from 'components/common/resize-handle'
@@ -14,8 +13,8 @@ import ResizeHandle from 'components/common/resize-handle'
 // styles
 import { LeftPanelWrapper } from './styles'
 
-const LeftPanel = ({ children, leftPanel, colorTheme, onHandleResize }) => (
-  <LeftPanelWrapper width={leftPanel.width} colorTheme={colorTheme}>
+const LeftPanel = ({ children, leftPanel, onHandleResize }) => (
+  <LeftPanelWrapper width={leftPanel.width}>
     <ResizeHandle onResize={onHandleResize} />
     {children}
   </LeftPanelWrapper>
@@ -30,7 +29,6 @@ LeftPanel.propTypes = {
 
 const mapStateToProps = state => ({
   leftPanel: getLeftPanel(state),
-  colorTheme: getColorTheme(state),
 })
 
 const mapDispatchToProps = {

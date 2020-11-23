@@ -110,8 +110,8 @@ const NotFoundPage = ({ handleClick }) => (
   </div>
 )
 
-NotFoundPage.propeTypes = {
-  handleClick: PropTypes.func,
+NotFoundPage.propTypes = {
+  handleClick: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = () => ({})

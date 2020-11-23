@@ -54,6 +54,7 @@ TagUseFrequencyChart.propTypes = {
   stats: PropTypes.shape({
     items: PropTypes.array,
     maxValue: PropTypes.number,
+    ticks: PropTypes.any,
   })
 }
 

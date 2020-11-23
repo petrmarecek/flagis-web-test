@@ -240,32 +240,32 @@ const PrimaryButton = styled.div`
   border-style: solid;
   color: ${props =>
     props.active
-      ? colors[props.colorTheme].navigationPrimaryHover
-      : colors[props.colorTheme].navigationPrimary};
+      ? props.theme.navigationPrimaryHover
+      : props.theme.navigationPrimary};
   border-width: ${props => (props.active ? '1px 0 1px 3px' : '0 0 0 3px')};
   border-color: ${props =>
     props.active
       ? `rgba(151, 151, 151, 0.2)  ${colors.navigationPrimaryBorderHover}`
-      : colors[props.colorTheme].navigationPrimaryBorder};
+      : props.theme.navigationPrimaryBorder};
 
   svg {
     path {
       fill: ${props =>
         props.active
-          ? colors[props.colorTheme].navigationPrimaryHover
-          : colors[props.colorTheme].navigationPrimary};
+          ? props.theme.navigationPrimaryHover
+          : props.theme.navigationPrimary};
     }
   }
 
   :hover {
-    color: ${props => colors[props.colorTheme].navigationPrimaryHover};
+    color: ${props => props.theme.navigationPrimaryHover};
     border-width: ${props => (props.active ? '1px 0 1px 3px' : '0 0 0 3px')};
     border-color: rgba(151, 151, 151, 0.2)
       ${colors.navigationPrimaryBorderHover};
 
     svg {
       path {
-        fill: ${props => colors[props.colorTheme].navigationPrimaryHover};
+        fill: ${props => props.theme.navigationPrimaryHover};
       }
     }
   }

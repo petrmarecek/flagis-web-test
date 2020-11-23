@@ -2,7 +2,9 @@ import { OrderedSet } from 'immutable'
 import { normalize } from 'normalizr'
 
 // TODO: fix a blinkHeadTitle function
+/* eslint-disable-next-line */
 import { notificationText } from 'components/notification-list/notifications-common'
+/* eslint-disable-next-line */
 import { blinkHeadTitle } from 'components/head-title/head-title-common'
 
 // redux
@@ -26,6 +28,7 @@ const NOTIFICATIONS = notificationsActions.NOTIFICATIONS
 function* saveChangeFromFirestore(change) {
   const { FULFILLED } = createLoadActions(NOTIFICATIONS.FIREBASE)
   const notification = change.doc.data()
+  /* eslint-disable-next-line */
   const changeType = change.type
 
   // TODO: fix a blinkHeadTitle function

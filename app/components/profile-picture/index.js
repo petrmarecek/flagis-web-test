@@ -45,17 +45,17 @@ const textCss = css`
 
 const Email = styled.div`
   ${textCss}
-  color: ${props => colors[props.colorTheme].primaryText};
+  color: ${props => props.theme.primaryText};
 `
 
 const Button = styled.div`
   ${textCss}
   cursor: pointer;
   width: 130px;
-  color: ${props => colors[props.colorTheme].imagePickerButton};
+  color: ${props => props.theme.imagePickerButton};
 
   :hover {
-    color: ${props => colors[props.colorTheme].imagePickerButtonHover};
+    color: ${props => props.theme.imagePickerButtonHover};
     ${transition('color 250ms')}
   }
 `

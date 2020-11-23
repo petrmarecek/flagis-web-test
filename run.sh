@@ -4,10 +4,10 @@ echo "Running project, using env $NODE_ENV"
 
 if [ "$NODE_ENV" = "production" ]
 then
-  npm run start:prod
+  yarn start:prod
 elif [ "$NODE_ENV" = "staging" ]
 then
-  npm run start:staging
+  yarn start:staging
 else
-  npm run start
+  yarn start
 fi

@@ -12,6 +12,7 @@ import LanguageProvider from 'containers/language-provider'
 import { ConnectedRouter } from 'react-router-redux'
 import App from 'containers/app'
 import Loader from 'components/common/loader'
+import MyThemeProvider from 'components/common/my-theme-provider'
 
 // auth store to persist storage
 const persistConfig = {
@@ -66,11 +67,13 @@ export default class AppRender extends PureComponent {
 
     return (
       <Provider store={this.props.store}>
-        <LanguageProvider messages={this.props.message}>
-          <ConnectedRouter history={this.props.history}>
-            <App />
-          </ConnectedRouter>
-        </LanguageProvider>
+        <MyThemeProvider>
+          <LanguageProvider messages={this.props.message}>
+            <ConnectedRouter history={this.props.history}>
+              <App />
+            </ConnectedRouter>
+          </LanguageProvider>
+        </MyThemeProvider>
       </Provider>
     )
   }

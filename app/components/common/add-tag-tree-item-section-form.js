@@ -52,7 +52,7 @@ const AddSection = styled.div`
 const SectionInput = styled.input`
   ${commonInputSmall}
   ${placeholderColor(colors.tagTreeAddNewGroupInputPlaceholder)}
-  color: ${props => colors[props.colorTheme].tagTreeAddNewGroupInput};
+  color: ${props => props.theme.tagTreeAddNewGroupInput};
   font-size: 14px;
   padding: 5px;
 `

@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components'
-import colors from 'components/styled-components-mixins/colors'
 import { boxSizing } from '../styled-components-mixins'
 
 /*------------------------------------------ Center Panel --------------------------------------*/
@@ -81,7 +80,7 @@ const CenterPageTitle = styled.div`
 
 const LeftPanelWrapper = styled.div`
   ${boxSizing('border-box')}
-  background-color: ${props => colors[props.colorTheme].leftPanelBackground};
+  background-color: ${props => props.theme.leftPanelBackground};
   width: ${props => (props.width ? props.width : '290')}px;
   position: absolute;
   top: 0;

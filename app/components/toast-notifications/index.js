@@ -6,9 +6,7 @@ import { ToastContainer } from 'react-toastify'
 // style
 import 'react-toastify/dist/ReactToastify.css'
 import { borderRadius, fontBold } from '../styled-components-mixins'
-import defaultColors, {
-  colors,
-} from 'components/styled-components-mixins/colors'
+import { colors } from 'components/styled-components-mixins/colors'
 
 // redux
 import { connect } from 'react-redux'
@@ -33,9 +31,9 @@ const ToastNotificationsWrapper = styled.div`
     ${fontBold}
     ${borderRadius('5px')}
     padding: 10px 10px 10px 0;
-    color: ${props => defaultColors[props.colorTheme].toastNotificationText};
+    color: ${props => props.theme.toastNotificationText};
     background: ${props =>
-      defaultColors[props.colorTheme].toastNotificationBackground};
+  props.theme.toastNotificationBackground};
     font-size: 14px;
     min-height: 80px;
   }

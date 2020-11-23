@@ -52,4 +52,7 @@ export default {
       SCROLL_STEP: 5,
     },
   },
+
+  // Color themes
+  DEFAULT_COLOR_THEME: 'standard',
 }

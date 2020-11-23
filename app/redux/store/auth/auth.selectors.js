@@ -1,3 +1,5 @@
+import constants from '../../../utils/constants'
+
 // ------ Selectors -------------------------------------------------------------
 
 // Export selectors
@@ -27,22 +29,9 @@ export const getFirebaseRefreshToken = state =>
   state.getIn(['auth', 'firebaseRefreshToken'])
 
 export const getColorTheme = state => {
-  const profile = state.getIn(['auth', 'profile'])
-  if (!profile) {
-    return 'standard'
-  }
+  const settings = state.getIn(['auth', 'profile', 'settings']) || {}
 
-  if (!profile.has('settings')) {
-    return 'standard'
-  }
-
-  const settings = state.getIn(['auth', 'profile', 'settings'])
-  if (settings === null) {
-    return 'standard'
-  }
-
-  const isColorTheme = settings.hasOwnProperty('colorTheme')
-  return isColorTheme ? settings.colorTheme : 'standard'
+  return settings.colorTheme || constants.DEFAULT_COLOR_THEME
 }
 
 export const getUserId = state => {

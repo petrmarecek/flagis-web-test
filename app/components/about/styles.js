@@ -1,6 +1,5 @@
 // styles
 import styled from 'styled-components'
-import { colors } from 'components/styled-components-mixins/colors'
 import { fontBold, mediaQueries } from 'components/styled-components-mixins'
 
 /*--------------------------------- Variables ---------------------------------*/
@@ -38,7 +37,7 @@ const AboutTitle = styled.h1`
 const AboutLine = styled.div`
   height: 2px;
   width: 50px;
-  border: 2px solid ${colors.darkJungleGreen};
+  border: 2px solid ${props => props.theme.COLORS.darkJungleGreen};
   margin: 0 0 30px;
 
   ${mediaQueries.smx} {

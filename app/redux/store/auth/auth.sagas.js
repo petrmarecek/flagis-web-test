@@ -1,4 +1,3 @@
-import ReactGA from 'react-ga'
 import _ from 'lodash'
 import { routes } from 'utils/routes'
 import date from '../../utils/date'

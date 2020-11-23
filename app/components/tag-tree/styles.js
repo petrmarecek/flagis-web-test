@@ -31,12 +31,12 @@ const AddSection = styled.div`
   bottom: 0;
   left: 0;
   flex-direction: row;
-  color: ${props => colors[props.colorTheme].tagTreeAddNewGroup};
+  color: ${props => props.theme.tagTreeAddNewGroup};
   cursor: pointer;
   font-size: 12px;
 
   :hover {
-    color: ${props => colors[props.colorTheme].tagTreeAddNewGroupHover};
+    color: ${props => props.theme.tagTreeAddNewGroupHover};
   }
 `
 
@@ -66,7 +66,7 @@ const SectionHeader = styled.div`
   font-size: 20px;
   padding: 0 5px;
   border-bottom: 1px solid
-    ${props => colors[props.colorTheme].tagTreeSectionBorder};
+    ${props => props.theme.tagTreeSectionBorder};
   cursor: pointer;
   margin: 0 14px 0 7px;
 
@@ -77,7 +77,7 @@ const SectionHeader = styled.div`
 
   input {
     :focus {
-      color: ${props => colors[props.colorTheme].tagTreeSectionInputFocus};
+      color: ${props => props.theme.tagTreeSectionInputFocus};
     }
   }
 
@@ -89,7 +89,7 @@ const SectionHeader = styled.div`
     }
 
     input {
-      color: ${props => colors[props.colorTheme].tagTreeSectionInputFocus};
+      color: ${props => props.theme.tagTreeSectionInputFocus};
     }
   }
 `
@@ -121,15 +121,15 @@ const SectionFooter = styled.div`
   align-items: center;
   width: 100%;
   height: 45px;
-  color: ${props => colors[props.colorTheme].tagTreeAddFilterText};
+  color: ${props => props.theme.tagTreeAddFilterText};
   cursor: pointer;
 
   :hover {
-    color: ${props => colors[props.colorTheme].tagTreeAddFilterHover};
+    color: ${props => props.theme.tagTreeAddFilterHover};
 
     svg {
       path {
-        fill: ${props => colors[props.colorTheme].tagTreeAddFilterHover};
+        fill: ${props => props.theme.tagTreeAddFilterHover};
       }
     }
   }
@@ -142,7 +142,7 @@ const AddFilterIcon = styled.span`
   height: 25px;
   width: 25px;
   background-color: ${props =>
-    colors[props.colorTheme].tagTreeAddFilterIconBackground};
+    props.theme.tagTreeAddFilterIconBackground};
   margin: 0 10px 0 4px;
   ${borderRadius('50%')}
 `
@@ -212,9 +212,9 @@ const ItemWrapper = styled.div`
 const itemSelected = css`
   ${borderRadius('13px')}
   font-weight: bold;
-  color: ${props => colors[props.colorTheme].tagTreeItemHover};
+  color: ${props => props.theme.tagTreeItemHover};
   background-color: ${props =>
-    colors[props.colorTheme].tagTreeItemBackgroundHover};
+    props.theme.tagTreeItemBackgroundHover};
 `
 
 const Item = styled.div`
@@ -229,7 +229,7 @@ const Item = styled.div`
   margin-bottom: 5px;
   color: ${props =>
     props.selected
-      ? colors[props.colorTheme].tagTreeItemHover
+      ? props.theme.tagTreeItemHover
       : colors.tagTreeItem};
   background-color: transparent;
   ${props => (props.dragOver ? dragOver : null)}
@@ -248,8 +248,8 @@ const Item = styled.div`
   :hover {
     ${borderRadius('13px')}
     background-color: ${props =>
-      colors[props.colorTheme].tagTreeItemBackgroundHover};
-    color: ${props => colors[props.colorTheme].tagTreeItemHover};
+      props.theme.tagTreeItemBackgroundHover};
+    color: ${props => props.theme.tagTreeItemHover};
 
     .tag-tree-item--relations {
       visibility: hidden;
@@ -280,7 +280,7 @@ const ItemTitle = styled.div`
 const ItemRelations = styled.div`
   color: ${props =>
     props.selected
-      ? colors[props.colorTheme].tagTreeItemHover
+      ? props.theme.tagTreeItemHover
       : colors.tagTreeItem};
   position: absolute;
   right: 15px;
