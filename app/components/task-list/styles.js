@@ -70,7 +70,7 @@ const TaskItem = styled.div`
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: ${props => (props.selected ? '#ecfff7' : '#F6F7F8')};
+    background-color: ${props => props.selected ? props.theme.taskItem.wrapperSelectedBgColor : props.theme.taskItem.wrapperCompletedBgColor};
     ${transform(props =>
       props.completed ? 'scaleX(1)' : 'scaleX(0)'
     )} ${transformOrigin('0 50%')} ${transition('transform 500ms ease-out')};
@@ -140,7 +140,9 @@ const Subject = styled.div`
   font-size: 16px;
   overflow: hidden;
   white-space: nowrap;
-  color: ${props => (props.completed ? '#CECECE' : '#293034')};
+  color: ${props => (props.completed
+    ? props.theme.taskItem.subjectCompletedTextColor
+    : props.theme.taskItem.subjectTextColor)};
   font-weight: ${props => (props.important ? 'bold' : 'normal')};
   text-decoration: ${props =>
     props.completed || props.archived ? 'line-through' : 'none'};

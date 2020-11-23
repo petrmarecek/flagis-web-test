@@ -42,6 +42,11 @@ export default {
   navigationPrimaryHover: colors.white,
   navigationPrimaryBorder: colors.darkJungleGreen,
   navigationPrimaryShowMore: colors.midnightHour,
+  navigationSecondaryWrapper: colors.coldWind,
+  navigationSecondaryButton: 'transparent',
+  navigationSecondaryButtonActive: colors.white,
+  navigationSecondaryShadow: colors.americanSilver,
+  navigationSecondaryButtonColor: colors.darkJungleGreen,
 
   // tag-tree
   tagTreeSectionBorder: colors.midnightHour,
@@ -66,4 +71,30 @@ export default {
   // toast notifications
   toastNotificationBackground: colors.darkJungleGreen,
   toastNotificationText: colors.white,
+
+  // center page
+  centerPageTitle: colors.darkJungleGreen,
+
+  taskItem: {
+    subjectTextColor: colors.aztec,
+    subjectCompletedTextColor: colors.americanSilver,
+    wrapperBgColor: colors.white,
+    wrapperAcceptedBgColor: colors.lynxWhite,
+    wrapperArchivedBgColor: colors.porpoise,
+    wrapperCompletedBgColor: colors.lynxWhite,
+    wrapperSelectedBgColor: colors.meltingGlacier,
+  },
+
+  // Tasks
+  tasks: {
+    scrollBoxShadow: 'rgba(239, 239, 239, 1)',
+    wrapperBgColor: colors.crystalBell,
+  },
+
+  // Add task form
+  addTaskForm: {
+    boxShadowColor: colors.americanSilver,
+    textColor: colors.darkJungleGreen,
+    wrapperBgColor: colors.white,
+  }
 }

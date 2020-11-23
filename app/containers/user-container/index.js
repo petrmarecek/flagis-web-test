@@ -32,6 +32,7 @@ import NotFoundPage from 'containers/not-found-page/loadable'
 import Dialogs from 'components/dialogs/dialogs'
 import UndoBox from 'components/common/undo-box'
 import TipsContainer from 'containers/tips-container'
+import PageOverflowFix from 'components/common/page-overflow-fix'
 
 // adding title
 const TaskPageWithTitle = withTitle(TaskPage, titles.TASKS)
@@ -40,7 +41,7 @@ const ArchivePageWithTitle = withTitle(ArchivePage, titles.ARCHIVE)
 const ContactPageWithTitle = withTitle(ContactPage, titles.CONTACTS)
 const NotificationPageWithTitle = withTitle(
   NotificationPage,
-  titles.NOTIFICATIONS
+  titles.NOTIFICATIONS,
 )
 const DashboardPageWithTitle = withTitle(DashboardPage, titles.DASHBOARD)
 const NotFoundPageWithTitle = withTitle(NotFoundPage, titles.NOT_FOUND)
@@ -77,7 +78,7 @@ class UserContainer extends PureComponent {
     return (
       <DndProvider backend={HTML5Backend}>
         <div id="user-container">
-          <div className="page-overflow-fix">
+          <PageOverflowFix>
             <Switch>
               <Route
                 path={`${this.props.match.path}/tasks`}
@@ -109,7 +110,7 @@ class UserContainer extends PureComponent {
               />
               <Route component={NotFoundPageWithTitle} />
             </Switch>
-          </div>
+          </PageOverflowFix>
           <div className="dialog-container">
             <Dialogs />
           </div>

@@ -14,6 +14,8 @@ const Resize = styled.div`
   width: 8px;
   cursor: col-resize;
   z-index: 150;
+  background-color: ${props => props.theme.tasks.wrapperBgColor};
+  border-left: 1px solid ${props => props.theme.tagTreeSectionBorder};
 `;
 
 const withResizeHandle = WrappedComponent => {

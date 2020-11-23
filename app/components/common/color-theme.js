@@ -37,7 +37,7 @@ const Item = styled.div`
 
   :hover {
     border: ${props =>
-      props.disabled ? '1px solid #fff' : '1px solid #efefef'};
+  props.disabled ? '1px solid #fff' : '1px solid #efefef'};
   }
 `
 
@@ -51,17 +51,6 @@ const ItemText = styled.div`
   font-weight: bold;
   text-align: center;
   margin-bottom: 15px;
-`
-
-const CommingSoon = styled.div`
-  position: absolute;
-  top: 40px;
-  left: 57px;
-  color: #fff;
-  font-size: 14px;
-  white-space: normal;
-  width: 65px;
-  text-align: center;
 `
 
 const ColorTheme = ({ colorTheme, onHandleToggleColorTheme }) => (
@@ -86,12 +75,14 @@ const ColorTheme = ({ colorTheme, onHandleToggleColorTheme }) => (
         </ItemImage>
         <ItemText>Light</ItemText>
       </Item>
-      <Item disabled>
+      <Item
+        onClick={() => onHandleToggleColorTheme('dark')}
+        active={colorTheme === 'dark'}
+      >
         <ItemImage>
           <img src={ColorThemeDark} width="154" height="89" />
         </ItemImage>
         <ItemText>Dark</ItemText>
-        <CommingSoon>Comming Soon</CommingSoon>
       </Item>
     </WrapperItems>
   </Wrapper>
@@ -111,9 +102,9 @@ const mapDispatchToProps = { toggleColorTheme }
 export default compose(
   connect(
     mapStateToProps,
-    mapDispatchToProps
+    mapDispatchToProps,
   ),
   withHandlers({
     onHandleToggleColorTheme: props => theme => props.toggleColorTheme(theme),
-  })
+  }),
 )(ColorTheme)

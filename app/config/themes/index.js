@@ -18,8 +18,6 @@ const getTheme = (name = constants.DEFAULT_COLOR_THEME) => {
       colorTheme = standard
   }
 
-  console.log(colorTheme)
-
   return {
     COLORS: colors,
     ...colorTheme.components,

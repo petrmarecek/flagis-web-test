@@ -49,6 +49,7 @@ import {
   DueDate,
   Followers,
 } from './styles'
+import { useTheme } from 'styled-components'
 
 // TaskListItem
 const TaskListItem = props => {
@@ -66,6 +67,7 @@ const TaskListItem = props => {
 
   const [isMounted, setIsMounted] = useState(true)
   const { dragDropHandle, dragProps } = useTaskListItemDragDrop(props)
+  const theme = useTheme()
 
   const onHandleMouseDown = useCallback(
     event => {
@@ -231,22 +233,22 @@ const TaskListItem = props => {
   // Background color of task item
   const backgroundColor = () => {
     if (isSelected) {
-      return colors.meltingGlacier
+      return theme.taskItem.wrapperSelectedBgColor
     }
 
     if (dragProps.isDragging) {
-      return colors.lynxWhite
+      return theme.taskItem.wrapperAcceptedBgColor
     }
 
     if (isArchivedList) {
-      return colors.porpoise
+      return theme.taskItem.wrapperArchivedBgColor
     }
 
     if (isOwnerAccepted) {
-      return colors.lynxWhite
+      return theme.taskItem.wrapperAcceptedBgColor
     }
 
-    return colors.white
+    return theme.taskItem.wrapperBgColor
   }
 
   // Color of completed icon

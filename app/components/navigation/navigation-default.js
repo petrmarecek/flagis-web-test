@@ -36,6 +36,7 @@ import {
   NotificationsCounter,
 } from './styles'
 import colors from 'components/styled-components-mixins/colors'
+import { useTheme } from 'styled-components'
 
 const NavigationDefault = ({
   pathname,
@@ -53,6 +54,7 @@ const NavigationDefault = ({
   const { user } = routes
   const isNotificationsActive =
     pathname.substring(0, user.notifications.length) === user.notifications
+  const theme = useTheme()
 
   return (
     <NavigationDefaultWrapper id="navbar">
@@ -61,7 +63,7 @@ const NavigationDefault = ({
           icon={ICONS.LOGO}
           width={67}
           height={25}
-          color={[colors[colorTheme].logoIcon]}
+          color={[theme.logoIcon]}
           onClick={onHandleClickLogo}
         />
       </div>
@@ -73,10 +75,10 @@ const NavigationDefault = ({
             height={19}
             color={
               isNotificationsActive
-                ? [colors[colorTheme].navigationNotificationsHover]
-                : [colors[colorTheme].navigationNotifications]
+                ? [theme.navigationNotificationsHover]
+                : [theme.navigationNotifications]
             }
-            hoverColor={[colors[colorTheme].navigationNotificationsHover]}
+            hoverColor={[theme.navigationNotificationsHover]}
             title="Notifications"
           />
           {notificationsCount > 0 && (
@@ -107,7 +109,7 @@ const NavigationDefault = ({
               icon={ICONS.TRIANGLE}
               width={11}
               height={5}
-              color={[colors[colorTheme].navigationDefaultTriangle]}
+              color={[theme.navigationDefaultTriangle]}
             />
           </AccountWrapper>
           {isVisibleAccountNavigation && (

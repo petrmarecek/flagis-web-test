@@ -22,6 +22,7 @@ import {
   AddFilterText,
 } from './styles'
 import colors from 'components/styled-components-mixins/colors'
+import { useTheme } from 'styled-components'
 
 const TagTreeSectionDragDrop = {
   type: 'tree-section',
@@ -150,6 +151,8 @@ const TagTreeSection = props => {
     connectDropTarget,
   } = props
 
+  const theme = useTheme()
+
   const parents = [section]
   const styleWidth = { width: maxWidth - 125 }
   const renderArrowIcon = children => {
@@ -167,7 +170,7 @@ const TagTreeSection = props => {
           height={12}
           scale={0.85}
           color={[colors.tagTreeSectionIcon]}
-          hoverColor={[colors[colorTheme].tagTreeSectionIconHover]}
+          hoverColor={[theme.tagTreeSectionIconHover]}
           onClick={onHandleCollapse}
         />
       </SectionHeaderIcon>

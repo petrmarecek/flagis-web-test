@@ -56,8 +56,8 @@ import AddTagTreeItemSectionForm from 'components/common/add-tag-tree-item-secti
 
 // styles
 import { CollabsibleContent, EmptyList } from '../styled-components-mixins'
-import colors from 'components/styled-components-mixins/colors'
 import { Wrapper } from './styles'
+import { useTheme } from 'styled-components'
 
 const TagTreeContainer = props => {
   const {
@@ -88,18 +88,20 @@ const TagTreeContainer = props => {
     onHandleDrop,
   } = props
 
+  const theme = useTheme()
+
   const debouncedMoveSection = debounce(onInvokeMove, 10)
   const onMoveSection = useCallback(move => debouncedMoveSection(move), [])
   const scrollStyle = {
     height: `calc(100vh - 260px)`,
     shadowHeight: 30,
-    boxShadowTop: `inset 0 30px 30px -15px ${colors[colorTheme].tagTreeShadowScrollbar}`,
-    boxShadowBottom: `inset 0 -30px 30px -15px ${colors[colorTheme].tagTreeShadowScrollbar}`,
+    boxShadowTop: `inset 0 30px 30px -15px ${theme.tagTreeShadowScrollbar}`,
+    boxShadowBottom: `inset 0 -30px 30px -15px ${theme.tagTreeShadowScrollbar}`,
     overflow: 'hidden',
     padding: '20px 0 0 0',
   }
   const verticalStyle = {
-    backgroundColor: colors[colorTheme].tagTreeScrollbar,
+    backgroundColor: theme.tagTreeScrollbar,
     borderRadius: 3,
   }
 

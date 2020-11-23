@@ -73,7 +73,7 @@ const CenterPageTitle = styled.div`
   margin-left: ${props => (props.leftMargin ? '12px' : '0')};
   font-size: 24px;
   font-weight: bold;
-  color: #1c2124;
+  color: ${props => props.theme.centerPageTitle};
 `
 
 /*------------------------------------------ Left Panel --------------------------------------*/

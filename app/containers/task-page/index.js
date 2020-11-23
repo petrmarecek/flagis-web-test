@@ -21,6 +21,7 @@ import LeftPanelPrimaryContent from 'components/contents/left-panel-primary-cont
 import CenterPanel from 'components/panels/center-panel'
 import DetailContent from 'components/contents/detail-content'
 import TasksContent from 'components/contents/tasks-content'
+import { useTheme } from 'styled-components'
 
 const TaskPage = ({ tasksItems, inboxTasksItems, pathname }) => {
   const template = '/user/tasks/'
@@ -28,11 +29,12 @@ const TaskPage = ({ tasksItems, inboxTasksItems, pathname }) => {
   const taskId = pathname.substring(numberTemplate)
   const isTaskId =
     tasksItems.includes(taskId) || inboxTasksItems.includes(taskId)
+  const theme = useTheme()
 
   return (
     <div>
       <LeftPanelPrimaryContent />
-      <CenterPanel>
+      <CenterPanel style={{ backgroundColor: theme.tasks.wrapperBgColor }}>
         {isTaskId ? <DetailContent /> : <TasksContent />}
       </CenterPanel>
     </div>
@@ -116,5 +118,5 @@ export default compose(
       newSelectTaskItems = newSelectTaskItems.clear().add(taskId)
       this.props.selectTask(newSelectTaskItems, null)
     },
-  })
+  }),
 )(TaskPage)

@@ -27,6 +27,7 @@ import {
 } from './styles'
 import colors from 'components/styled-components-mixins/colors'
 import { useTreeItemDragDrop } from 'hooks/useTreeItemDragDrop'
+import { useTheme } from 'styled-components'
 
 const TagTreeItem = props => {
   const {
@@ -88,6 +89,8 @@ const TagTreeItem = props => {
     dragOverBottom: dropProps.isOver && dropPosition === 'BOTTOM',
   }
 
+  const theme = useTheme()
+
   const renderArrowIcon = children => {
     const title = treeItem.collapsed ? 'Expand' : 'Collapse'
     return children.size > 0 ? (
@@ -102,7 +105,7 @@ const TagTreeItem = props => {
           width={10}
           height={12}
           scale={0.85}
-          color={[colors[colorTheme].tagTreeItemIcon]}
+          color={[theme.tagTreeItemIcon]}
           onClick={onHandleCollapse}
         />
       </ItemIcon>
@@ -144,7 +147,7 @@ const TagTreeItem = props => {
                   width={12}
                   height={13}
                   scale={0.5}
-                  color={[colors[colorTheme].tagTreeItemIcon]}
+                  color={[theme.tagTreeItemIcon]}
                   hoverColor={[colors.trashHover]}
                   onClick={onHandleDeleteIconClicked}
                 />
@@ -155,7 +158,7 @@ const TagTreeItem = props => {
                   width={11}
                   height={11}
                   scale={0.73}
-                  color={[colors[colorTheme].tagTreeItemIcon]}
+                  color={[theme.tagTreeItemIcon]}
                   onClick={onHandleEditIconClicked}
                 />
               </ItemIcon>
@@ -165,7 +168,7 @@ const TagTreeItem = props => {
                   width={12}
                   height={12}
                   scale={0.38}
-                  color={[colors[colorTheme].tagTreeItemIcon]}
+                  color={[theme.tagTreeItemIcon]}
                   onClick={onHandleAddChildClicked}
                 />
               </ItemIcon>

@@ -31,9 +31,9 @@ const AddForm = styled.form`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 6px;
-  background-color: ${colors.white};
+  background-color: ${props => props.theme.addTaskForm.wrapperBgColor};
   height: 58px;
-  ${boxShadow(`0 1px 6px 0 ${colors.americanSilver}`)}
+  ${boxShadow(`0 1px 6px 0 ${props => props.theme.addTaskForm.boxShadowColor}`)}
   ${borderRadius('3px')}
 `
 
@@ -67,7 +67,8 @@ const Subject = styled.input`
   padding-left: 24px;
   margin: 0;
   font-weight: ${props => (props.isImportant ? 'bold' : 'normal')};
-  background-color: ${colors.white};
+  background-color: ${props => props.theme.addTaskForm.wrapperBgColor};
+  color: ${props => props.theme.addTaskForm.textColor};
 `
 
 const AddTaskForm = ({ subject, tasksMenu, handleChange, handleSubmit }) => {

@@ -66,6 +66,7 @@ import TaskList from './task-list'
 // styles
 import { EmptyList } from 'components/styled-components-mixins'
 import { InboxTaskList, InboxCounter } from './styles'
+import { useTheme } from 'styled-components'
 
 const TaskListContainer = props => {
   const {
@@ -102,12 +103,13 @@ const TaskListContainer = props => {
   const debouncedMoveTask = debounce(onInvokeMove, 10)
   const onMoveTask = useCallback(move => debouncedMoveTask(move), [])
   const offset = props.isVisibleArchivedTasks ? 108 : 192
+  const theme = useTheme()
 
   const scrollStyle = {
     height: `calc(100vh - ${offset}px)`,
     shadowHeight: 20,
-    boxShadowTop: 'inset 0 10px 10px -5px rgba(239, 239, 239, 1)',
-    boxShadowBottom: 'inset 0 -10px 10px -5px  rgba(239, 239, 239, 1)',
+    boxShadowTop: `inset 0 10px 10px -5px ${theme.tasks.scrollBoxShadow}`,
+    boxShadowBottom: `inset 0 -10px 10px -5px ${theme.tasks.scrollBoxShadow}`,
     overflow: 'hidden',
   }
 

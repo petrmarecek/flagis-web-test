@@ -290,7 +290,7 @@ const SecondaryButtonsWrapper = styled.div`
   padding: 2px;
   height: 26px;
   ${borderRadius('13px')};
-  background-color: ${defaultColors.coldWind};
+  background-color: ${props => props.theme.navigationSecondaryWrapper};
 `
 
 const SecondaryButton = styled.div`
@@ -304,10 +304,11 @@ const SecondaryButton = styled.div`
   height: 22px;
   width: 115px;
   ${borderRadius('11px')};
-  ${props => (props.active ? boxShadow('0 2px 4px 0 #CECECE') : null)};
+  ${props => (props.active ? boxShadow(`0 2px 4px 0 ${props.theme.navigationSecondaryShadow}`) : null)};
   background-color: ${props =>
-    props.active ? defaultColors.white : 'transparent'};
+    props.active ? props.theme.navigationSecondaryButtonActive : props.theme.navigationSecondaryButton};
   pointer-events: ${props => (props.active ? 'none' : 'auto')};
+  color: ${props => props.theme.navigationSecondaryButtonColor};
 
   :hover {
     font-weight: bold;

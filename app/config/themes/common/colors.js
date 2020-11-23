@@ -19,6 +19,12 @@ export default {
   lynxWhite: '#F6F7F8',
   whitePorcelain: '#fafafa',
   white: '#fff',
+  antiFlashWhite: '#F1F4F5',
+  mineShaft: '#363D42',
+  washedBlack: '#202528',
+  lacquerGreen: '#1D2E2F',
+  waiting: '#9D9D9D',
+  coverOfNight: '#474F50',
 
   // blue shades
   pervenche: '#0799ea',
