@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.14.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.12.2...v1.14.0) (2020-11-24)
+
+
+### Features
+
+* Add a count of unread notifications in a browser tab title ([67921f5](https://github.com/react-boilerplate/react-boilerplate/commit/67921f580e30b8cb983ee1ca10fbf2e70413c87c))
+* Add a sorting by due date ([1987bbf](https://github.com/react-boilerplate/react-boilerplate/commit/1987bbfc18563d1987878b31aede545557806524))
+
+
+### Bug Fixes
+
+* Fix spaces between title, description and button on landing page ([62c0f30](https://github.com/react-boilerplate/react-boilerplate/commit/62c0f30f980bf9ea3c30467e2adf2be01d361e7d))
+* Fix spaces between title, description and button on landing page ([4e290a7](https://github.com/react-boilerplate/react-boilerplate/commit/4e290a740bb468c0492378c486ad49ea15824e77))
+* Fix text paste to markdown editor without html span element ([ea947fa](https://github.com/react-boilerplate/react-boilerplate/commit/ea947fa26c1f5a551d6143ca156cba07395c7505))
+* Remove blinkHeadTitle function for change browser title (Add TODO for further fix) ([1946348](https://github.com/react-boilerplate/react-boilerplate/commit/19463482555011c130e0db8450e0933046c59f80))
+
 ## [1.13.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.12.4...v1.13.0) (2020-11-20)
 
 
