@@ -13,21 +13,29 @@ import {
   CenterPanelScroll,
   CenterPageTitle,
 } from 'components/panels/styles'
+import { useTheme } from 'styled-components'
 
-const EditProfileContent = () => (
-  <CenterPanel style={{ backgroundColor: '#fff', margin: '0 0 0 1px' }}>
-    <CenterPanelTop>
-      <CenterPanelTopPrimary>
-        <CenterPageTitle leftMargin>Settings</CenterPageTitle>
-      </CenterPanelTopPrimary>
-      <CenterPanelTopSecondary bottomBorder>
-        <NavigationAccountSettings />
-      </CenterPanelTopSecondary>
-    </CenterPanelTop>
-    <CenterPanelScroll offsetTop={108} offsetBottom={0}>
-      <EditProfile />
-    </CenterPanelScroll>
-  </CenterPanel>
-)
+const EditProfileContent = () => {
+  const theme = useTheme()
+
+  return (
+    <CenterPanel style={{
+      backgroundColor: theme.otherPages.wrapperBgColor,
+      margin: '0 0 0 1px',
+    }}>
+      <CenterPanelTop>
+        <CenterPanelTopPrimary>
+          <CenterPageTitle leftMargin>Settings</CenterPageTitle>
+        </CenterPanelTopPrimary>
+        <CenterPanelTopSecondary bottomBorder>
+          <NavigationAccountSettings />
+        </CenterPanelTopSecondary>
+      </CenterPanelTop>
+      <CenterPanelScroll offsetTop={108} offsetBottom={0}>
+        <EditProfile />
+      </CenterPanelScroll>
+    </CenterPanel>
+  )
+}
 
 export default EditProfileContent

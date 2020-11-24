@@ -239,21 +239,21 @@ const PrimaryButton = styled.div`
   padding: 0 20px 0 27px;
   border-style: solid;
   color: ${props =>
-    props.active
-      ? props.theme.navigationPrimaryHover
-      : props.theme.navigationPrimary};
+  props.active
+    ? props.theme.navigationPrimaryHover
+    : props.theme.navigationPrimary};
   border-width: ${props => (props.active ? '1px 0 1px 3px' : '0 0 0 3px')};
   border-color: ${props =>
-    props.active
-      ? `rgba(151, 151, 151, 0.2)  ${colors.navigationPrimaryBorderHover}`
-      : props.theme.navigationPrimaryBorder};
+  props.active
+    ? `rgba(151, 151, 151, 0.2)  ${colors.navigationPrimaryBorderHover}`
+    : props.theme.navigationPrimaryBorder};
 
   svg {
     path {
       fill: ${props =>
-        props.active
-          ? props.theme.navigationPrimaryHover
-          : props.theme.navigationPrimary};
+  props.active
+    ? props.theme.navigationPrimaryHover
+    : props.theme.navigationPrimary};
     }
   }
 
@@ -306,7 +306,7 @@ const SecondaryButton = styled.div`
   ${borderRadius('11px')};
   ${props => (props.active ? boxShadow(`0 2px 4px 0 ${props.theme.navigationSecondaryShadow}`) : null)};
   background-color: ${props =>
-    props.active ? props.theme.navigationSecondaryButtonActive : props.theme.navigationSecondaryButton};
+  props.active ? props.theme.navigationSecondaryButtonActive : props.theme.navigationSecondaryButton};
   pointer-events: ${props => (props.active ? 'none' : 'auto')};
   color: ${props => props.theme.navigationSecondaryButtonColor};
 
@@ -336,8 +336,8 @@ const AccountWrapper = styled.div`
   svg:nth-of-type(1) {
     ${transition('transform 300ms ease-out')}
     ${transform(props =>
-      props.isVisibleAccountNavigation ? 'rotate(180deg)' : 'rotate(0deg)'
-    )}
+  props.isVisibleAccountNavigation ? 'rotate(180deg)' : 'rotate(0deg)',
+)}
   }
 
   :hover {
@@ -473,13 +473,16 @@ const SettingsButton = styled.div`
   padding: 0 5px 5px 5px;
   margin-right: 34px;
   cursor: pointer;
-  color: ${props => (props.active ? '#1C2124' : '#B1B5B8')};
-  border-bottom: ${props =>
-    props.active ? '3px solid #44FFB1' : '3px solid #fff'};
+  color: ${props => (props.active
+  ? props.theme.navigationSettingsButtonActiveColor
+  : props.theme.navigationSettingsButtonColor)};
+  border-bottom: ${props => props.active
+  ? `3px solid ${props.theme.navigationSettingsButtonActiveBorder}`
+  : `3px solid ${props.theme.navigationSettingsButtonBorder}`};
 
   :hover {
-    color: #1c2124;
-    border-bottom: 3px solid #44ffb1;
+    color: ${props => props.theme.navigationSettingsButtonActiveColor};
+    border-bottom: 3px solid ${props => props.theme.navigationSettingsButtonActiveBorder};
   }
 `
 

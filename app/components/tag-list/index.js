@@ -23,6 +23,7 @@ import ShadowScrollbar from 'components/common/shadow-scrollbar'
 
 // styles
 import { EmptyList } from 'components/styled-components-mixins'
+import { useTheme } from 'styled-components'
 
 const TagListContainer = ({
   tags,
@@ -32,6 +33,8 @@ const TagListContainer = ({
   onHandleTagClick,
   onHandleSetScrollbarPosition,
 }) => {
+  const theme = useTheme()
+
   if (tags.items.length === 0) {
     return <EmptyList>No tags found</EmptyList>
   }
@@ -39,8 +42,8 @@ const TagListContainer = ({
   const scrollStyle = {
     height: 'calc(100vh - 114px)',
     shadowHeight: 20,
-    boxShadowTop: 'inset 0 10px 10px -5px rgba(239, 239, 239, 1)',
-    boxShadowBottom: 'inset 0 -10px 10px -5px  rgba(239, 239, 239, 1)',
+    boxShadowTop: `inset 0 10px 10px -5px ${theme.tasks.scrollBoxShadow}`,
+    boxShadowBottom: `inset 0 -10px 10px -5px ${theme.tasks.scrollBoxShadow}`,
     overflow: 'hidden',
   }
 

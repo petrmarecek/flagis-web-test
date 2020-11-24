@@ -13,21 +13,29 @@ import {
   CenterPanelTopSecondary,
   CenterPanelScroll,
 } from 'components/panels/styles'
+import { useTheme } from 'styled-components'
 
-const ColorThemeContent = () => (
-  <CenterPanel style={{ backgroundColor: '#fff', margin: '0 0 0 1px' }}>
-    <CenterPanelTop>
-      <CenterPanelTopPrimary>
-        <CenterPageTitle leftMargin>Settings</CenterPageTitle>
-      </CenterPanelTopPrimary>
-      <CenterPanelTopSecondary bottomBorder>
-        <NavigationAccountSettings />
-      </CenterPanelTopSecondary>
-    </CenterPanelTop>
-    <CenterPanelScroll offsetTop={108} offsetBottom={0}>
-      <ColorTheme />
-    </CenterPanelScroll>
-  </CenterPanel>
-)
+const ColorThemeContent = () => {
+  const theme = useTheme()
+
+  return (
+    <CenterPanel style={{
+      backgroundColor: theme.otherPages.wrapperBgColor,
+      margin: '0 0 0 1px',
+    }}>
+      <CenterPanelTop>
+        <CenterPanelTopPrimary>
+          <CenterPageTitle leftMargin>Settings</CenterPageTitle>
+        </CenterPanelTopPrimary>
+        <CenterPanelTopSecondary bottomBorder>
+          <NavigationAccountSettings />
+        </CenterPanelTopSecondary>
+      </CenterPanelTop>
+      <CenterPanelScroll offsetTop={108} offsetBottom={0}>
+        <ColorTheme />
+      </CenterPanelScroll>
+    </CenterPanel>
+  )
+}
 
 export default ColorThemeContent

@@ -14,7 +14,8 @@ const AddFieldStyle = styled.input`
   height: 30px;
   padding: 5px 0 5px 24px;
   color: ${props => (props.isError ? 'red' : 'black')};
-  background-color: ${colors.white};
+  background-color: ${props => props.theme.addContactForm.subjectBgColor};
+  color: ${props => props.theme.addContactForm.textColor};
 `
 
 const AddField = props => {

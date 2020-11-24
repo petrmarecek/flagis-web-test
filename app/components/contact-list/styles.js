@@ -12,7 +12,7 @@ const ContactItemContainer = styled.li`
   margin: 0 0 4px;
   cursor: pointer;
   position: relative;
-  background-color: white;
+  background-color: ${props => props.theme.contactItem.wrapperBgColor};
   height: 30px;
   animation: 400ms ${fadeUp};
 `
@@ -44,6 +44,7 @@ const ContactItemTitle = styled.div`
   white-space: nowrap;
   overflow: hidden;
   font-size: 16px;
+  color: ${props => props.theme.contactItem.subjectTextColor};
 `
 
 const ContactItemInvite = styled.div`

@@ -16,17 +16,21 @@ import LeftPanelPrimaryContent from 'components/contents/left-panel-primary-cont
 import CenterPanel from 'components/panels/center-panel'
 import DetailContent from 'components/contents/detail-content'
 import TagsContent from 'components/contents/tags-content'
+import { useTheme } from 'styled-components'
 
 const TagPage = ({ tagsItems, pathname }) => {
   const template = '/user/tags/'
   const numberTemplate = template.length
   const tagId = pathname.substring(numberTemplate)
   const isTagId = tagsItems.includes(tagId)
+  const theme = useTheme()
 
   return (
     <div>
       <LeftPanelPrimaryContent />
-      <CenterPanel>{isTagId ? <DetailContent /> : <TagsContent />}</CenterPanel>
+      <CenterPanel style={{ backgroundColor: theme.tasks.wrapperBgColor }}>
+        {isTagId ? <DetailContent /> : <TagsContent />}
+      </CenterPanel>
     </div>
   )
 }

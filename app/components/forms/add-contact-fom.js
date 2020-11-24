@@ -30,10 +30,10 @@ const AddForm = styled.form`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 6px;
-  background-color: ${props => props.theme.COLORS.white};
+  background-color: ${props => props.theme.addContactForm.wrapperBgColor};
   height: 38px;
   ${borderRadius('3px')};
-  ${boxShadow(`0 1px 6px 0 ${props => props.theme.COLORS.americanSilver}`)}
+  ${boxShadow(`0 1px 6px 0 ${props => props.theme.addContactForm.wrapperShadowColor}`)}
 `
 
 const SubmitIcon = styled.div`

@@ -18,7 +18,7 @@ const Item = styled.li`
   height: 30px;
   margin: 0 0 4px;
   cursor: pointer;
-  background-color: ${props => (props.selected ? '#ecfff7' : '#fff')};
+  background-color: ${props => (props.selected ? '#ecfff7' : props.theme.tagItem.wrapperBgColor)};
   animation: 400ms ${fadeUp};
 `
 
@@ -36,6 +36,7 @@ const ItemTitle = styled.div`
   white-space: nowrap;
   overflow: hidden;
   height: 19px;
+  color: ${props => props.theme.tagItem.subjectTextColor};
 `
 
 const ItemTagRelations = styled(Counter)`

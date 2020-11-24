@@ -14,6 +14,8 @@ const ViewerWrapper = styled.div`
   padding: 16px 25px;
   overflow-y: auto;
   overflow-x: hidden;
+  background-color: ${props => props.theme.markdownEditor.wrapperBgColor};
+  color: ${props => props.theme.markdownEditor.wrapperTextColor};
 
   // set viewer max-height for scrolling
   .tui-editor-contents {

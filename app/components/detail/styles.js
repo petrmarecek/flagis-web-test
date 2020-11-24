@@ -41,7 +41,7 @@ const DetailStyle = styled.div`
 `
 
 const DetailInner = styled.div`
-  background-color: ${colors.white};
+  background-color: ${props => props.theme.detailInnerBg};
   position: absolute;
   top: 42px;
   bottom: 0;
@@ -51,15 +51,15 @@ const DetailInner = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   animation: ${props =>
-    props.isMounted === false
-      ? props.isRejected
-        ? css`
+  props.isMounted === false
+    ? props.isRejected
+    ? css`
             ${rightHideDetailAnimation} 400ms
           `
-        : css`
+    : css`
             ${leftHideDetailAnimation} 400ms
           `
-      : 'none'};
+    : 'none'};
 `
 
 const DetailContentTop = styled.div`
@@ -83,8 +83,8 @@ const DetailContentTop = styled.div`
     ${transform(props => (props.completed ? 'scaleX(1)' : 'scaleX(0)'))}
     ${transformOrigin('0 50%')}
     ${transition(props =>
-      props.animation ? 'transform 500ms ease-out' : 'none'
-    )}
+  props.animation ? 'transform 500ms ease-out' : 'none',
+)}
   }
 
   :after {
@@ -148,7 +148,7 @@ const DetailContentIcon = styled.div`
   text-align: right;
   padding-right: 6px;
   animation: ${props =>
-    props.animation ? css`500ms linear 1s ${tadaAnimation}` : 'none'};
+  props.animation ? css`500ms linear 1s ${tadaAnimation}` : 'none'};
   opacity: ${props => (props.isCompleted ? '0.4' : '1')};
   ${transition(props => (props.animation ? 'opacity 400ms ease-out' : 'none'))}
 `
@@ -306,11 +306,11 @@ const DetailContentDatePicker = styled.div`
       background-color: transparent;
       margin: 0;
       padding: ${props =>
-        !props.selectedDate
-          ? '3px 5px 4px'
-          : props.isClearable
-          ? '3px 22px 4px 5px'
-          : '3px 5px 4px'};
+  !props.selectedDate
+    ? '3px 5px 4px'
+    : props.isClearable
+    ? '3px 22px 4px 5px'
+    : '3px 5px 4px'};
     }
   }
 
@@ -438,13 +438,15 @@ const ContentEditableStyles = css`
   overflow-y: auto;
   overflow-x: hidden;
   ${transition(props =>
-    props.animation ? 'margin 500ms ease-out, color 500ms ease-out' : 'none'
-  )};
+  props.animation ? 'margin 500ms ease-out, color 500ms ease-out' : 'none',
+)};
   color: ${props =>
-    props.completed && !props.archived ? colors.snowShadow : colors.aztec};
+  props.completed && !props.archived
+    ? props.theme.taskDetail.subjectCompletedTextColor
+    : props.theme.taskDetail.subjectTextColor};
   margin-left: ${props => props.marginLeft};
   text-decoration: ${props =>
-    props.completed || props.archived ? 'line-through' : 'none'};
+  props.completed || props.archived ? 'line-through' : 'none'};
   font-weight: ${props => (props.important ? 'bold' : 'normal')};
   pointer-events: ${props => (props.allowed ? 'auto' : 'none')};
 

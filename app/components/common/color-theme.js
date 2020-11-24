@@ -20,7 +20,7 @@ const Wrapper = styled.div`
 `
 
 const Title = styled.div`
-  color: #b1b5b8;
+  color: ${props => props.theme.colorTheme.title};
   font-size: 14px;
   margin-bottom: 15px;
 `
@@ -46,11 +46,22 @@ const ItemImage = styled.div`
 `
 
 const ItemText = styled.div`
-  color: #293034;
+  color: ${props => props.theme.colorTheme.itemText};
   font-size: 15px;
   font-weight: bold;
   text-align: center;
   margin-bottom: 15px;
+`
+
+const CommingSoon = styled.div`
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  color: #fff;
+  font-size: 14px;
+  white-space: normal;
+  width: 100px;
+  text-align: center;
 `
 
 const ColorTheme = ({ colorTheme, onHandleToggleColorTheme }) => (
@@ -83,6 +94,7 @@ const ColorTheme = ({ colorTheme, onHandleToggleColorTheme }) => (
           <img src={ColorThemeDark} width="154" height="89" />
         </ItemImage>
         <ItemText>Dark</ItemText>
+        <CommingSoon>Experimental</CommingSoon>
       </Item>
     </WrapperItems>
   </Wrapper>

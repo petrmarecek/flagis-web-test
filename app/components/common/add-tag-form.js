@@ -27,10 +27,10 @@ const AddForm = styled.form`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 6px;
-  background-color: ${colors.white};
+  background-color: ${props => props.theme.addTagForm.wrapperBgColor};
   height: 38px;
   ${borderRadius('3px')}
-  ${boxShadow(`0 1px 6px 0 ${colors.americanSilver}`)}
+  ${boxShadow(`0 1px 6px 0 ${props => props.theme.addTagForm.wrapperShadowColor}`)}
 `
 
 const SubmitIcon = styled.div`
@@ -63,7 +63,8 @@ const Subject = styled.input`
   padding-left: 24px;
   margin: 0;
   font-weight: ${props => (props.isImportant ? 'bold' : 'normal')};
-  background-color: ${colors.white};
+  background-color: ${props => props.theme.addTagForm.subjectBgColor};
+  color: ${props => props.theme.addTagForm.textColor};
 `
 
 const AddTagForm = ({ title, handleChange, handleSubmit }) => {

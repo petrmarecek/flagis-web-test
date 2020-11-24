@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { withStateHandlers } from 'recompose'
 
-import styled, { css } from 'styled-components'
+import styled, { css, useTheme } from 'styled-components'
 import {
   commonInput,
   commonInputSmall,
@@ -55,8 +55,10 @@ const InputField = props => {
     onHandleBlur,
   } = props
 
+  const theme = useTheme()
+
   const isError = touched && error
-  const color = isError ? colors.pompelmo : colors.darkJungleGreen
+  const color = isError ? theme.form.errorText : theme.form.text
   const borderColor = isError
     ? colors.pompelmo
     : isFocused

@@ -71,6 +71,7 @@ import {
 } from './styles'
 import { colors } from 'components/styled-components-mixins/colors'
 import { MarkdownEditor } from 'components/editor/markdown-editor'
+import { useTheme } from 'styled-components'
 
 const TaskDetail = props => {
   const {
@@ -204,17 +205,19 @@ const TaskDetail = props => {
     profile: createdBy,
   }
 
+  const theme = useTheme()
+
   // Background color of top content
   const backgroundColor = () => {
     if (isArchived) {
-      return colors.porpoise
+      return theme.taskDetail.wrapperArchivedBgColor
     }
 
     if (isOwnerAccepted) {
-      return colors.lynxWhite
+      return theme.taskDetail.wrapperAcceptedBgColor
     }
 
-    return colors.white
+    return theme.taskDetail.wrapperBgColor
   }
 
   // Color of completed icon

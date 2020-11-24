@@ -47,6 +47,10 @@ export default {
   navigationSecondaryButtonActive: colors.white,
   navigationSecondaryShadow: colors.americanSilver,
   navigationSecondaryButtonColor: colors.darkJungleGreen,
+  navigationSettingsButtonColor: colors.astrocopusGrey,
+  navigationSettingsButtonActiveColor: colors.darkJungleGreen,
+  navigationSettingsButtonBorder: colors.white,
+  navigationSettingsButtonActiveBorder: colors.hanumanGreen,
 
   // tag-tree
   tagTreeSectionBorder: colors.midnightHour,
@@ -91,10 +95,63 @@ export default {
     wrapperBgColor: colors.crystalBell,
   },
 
+  otherPages: {
+    wrapperBgColor: colors.white,
+  },
+
   // Add task form
   addTaskForm: {
     boxShadowColor: colors.americanSilver,
     textColor: colors.darkJungleGreen,
     wrapperBgColor: colors.white,
-  }
+  },
+
+  detailInnerBg: colors.white,
+
+  taskDetail: {
+    subjectTextColor: colors.aztec,
+    subjectCompletedTextColor: colors.snowShadow,
+    wrapperBgColor: colors.white,
+    wrapperAcceptedBgColor: colors.lynxWhite,
+    wrapperArchivedBgColor: colors.porpoise,
+  },
+
+  addTagForm: {
+    subjectBgColor: colors.white,
+    textColor: colors.darkJungleGreen,
+    wrapperBgColor: colors.white,
+    wrapperShadowColor: colors.americanSilver,
+  },
+
+  tagItem: {
+    subjectTextColor: colors.darkJungleGreen,
+    wrapperBgColor: colors.white,
+  },
+
+  addContactForm: {
+    subjectBgColor: colors.white,
+    textColor: colors.darkJungleGreen,
+    wrapperBgColor: colors.white,
+    wrapperShadowColor: colors.americanSilver,
+  },
+
+  contactItem: {
+    subjectTextColor: colors.darkJungleGreen,
+    wrapperBgColor: colors.white,
+  },
+
+  form: {
+    errorText: colors.pompelmo,
+    text: colors.darkJungleGreen,
+  },
+
+  colorTheme: {
+    title: colors.astrocopusGrey,
+    itemText: colors.aztec,
+  },
+
+  markdownEditor: {
+    wrapperBgColor: colors.white,
+    wrapperTextColor: colors.darkJungleGreen,
+  },
 }
