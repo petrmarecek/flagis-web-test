@@ -10,8 +10,6 @@ import { connect } from 'react-redux'
 import { getCountActiveNotification } from 'redux/store/entities/entities.selectors'
 
 const HeadTitle = ({ title, notificationsCount }) => {
-  console.log(new Date())
-  console.log(notificationsCount)
   const editedTitle =
     notificationsCount > 0 ? `(${notificationsCount}) ${title}` : title
 
