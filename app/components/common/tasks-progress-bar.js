@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import {
-  getTasksId,
+  getTaskIds,
   getCompletedTasksId,
 } from 'redux/store/tasks/tasks.selectors'
 
@@ -76,7 +76,7 @@ TasksProgressBar.propTypes = {
 }
 
 const mapStateToProps = state => ({
-  tasksCount: getTasksId(state).size,
+  tasksCount: getTaskIds(state).size,
   completedTasksCount: getCompletedTasksId(state).size,
 })
 

@@ -11,7 +11,7 @@ import { getTasksSearch } from 'redux/store/tasks/tasks.selectors'
 import MainSearch from 'components/common/main-search'
 import SearchBox from 'components/common/search-box'
 import TaskListContainer from '../task-list'
-import TasksMenuContainer from '../tasks-menu/tasks-menu-container'
+import TasksMenuContainer from '../tasks-menu'
 
 // styles
 import {

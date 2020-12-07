@@ -706,7 +706,7 @@ export const getSelectTasks = createSelector(
   }
 )
 
-export const getTasksId = createSelector(
+export const getTaskIds = createSelector(
   getArchivedTasksVisibility,
   getArchivedTasksItems,
   getTasksItems,

@@ -15,7 +15,7 @@ import {
 import MainSearch from 'components/common/main-search'
 import SearchBox from 'components/common/search-box'
 import NavigationSecondary from 'components/navigation/navigation-secondary'
-import TasksMenuContainer from 'components/tasks-menu/tasks-menu-container'
+import TasksMenuContainer from 'components/tasks-menu'
 import AddTaskForm from 'components/common/add-task-form'
 import TaskListContainer from '../task-list'
 import TasksProgressBar from 'components/common/tasks-progress-bar'
