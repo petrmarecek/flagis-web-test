@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { OrderedSet, List } from 'immutable'
 
 // toast notifications
@@ -325,4 +325,6 @@ const mapDispatchToProps = {
   prepareDeleteTask,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TasksMenuContainer)
+export default memo(
+  connect(mapStateToProps, mapDispatchToProps)(TasksMenuContainer)
+)

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, memo } from 'react'
 import PropTypes from 'prop-types'
 import { findDOMNode } from 'react-dom'
 import velocity from 'velocity-animate'
@@ -111,4 +111,4 @@ TasksMenuMultiSelect.propTypes = {
   onAddRemoveTags: PropTypes.func,
 }
 
-export default TasksMenuMultiSelect
+export default memo(TasksMenuMultiSelect)

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, memo } from 'react'
 import PropTypes from 'prop-types'
 import domUtils from 'redux/utils/dom'
 import constants from 'utils/constants'
@@ -174,4 +174,4 @@ TasksMenuSort.propTypes = {
   hideMenuOption: PropTypes.func,
 }
 
-export default TasksMenuSort
+export default memo(TasksMenuSort)

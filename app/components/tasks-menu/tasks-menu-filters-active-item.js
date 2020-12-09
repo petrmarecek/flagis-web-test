@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, memo } from 'react'
 import PropTypes from 'prop-types'
 
 // components
@@ -165,4 +165,4 @@ TasksMenuFiltersActiveItem.propTypes = {
   onDelete: PropTypes.func,
 }
 
-export default TasksMenuFiltersActiveItem
+export default memo(TasksMenuFiltersActiveItem)
