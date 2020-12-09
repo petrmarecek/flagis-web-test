@@ -170,5 +170,9 @@ export function* deleteFilter(action) {
     yield put(taskMenuActions.deselectActiveAssignee())
   }
 
+  if (action.payload.filter === 'sender') {
+    yield put(taskMenuActions.deselectActiveSender())
+  }
+
   yield put(taskMenuActions.deleteActiveFilter(action.payload.filter))
 }

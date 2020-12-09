@@ -150,8 +150,8 @@ const FilterActiveItemAutocomplete = styled.div`
   height: 100%;
   padding: 2px 0 0 0;
   margin: ${props => (props.isSender ? '0 10px 0 5px' : '0 10px 0 0')};
-  border-left: 2px solid ${colors.meltingGlacier};
-  border-right: 2px solid ${colors.meltingGlacier};
+  border-left: 2px solid ${colors.crystalBell};
+  border-right: 2px solid ${colors.crystalBell};
 `
 
 // ---------------------------------------- Multiselect ------------------------------------

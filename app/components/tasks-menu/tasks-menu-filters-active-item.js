@@ -1,11 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { compose, withStateHandlers } from 'recompose'
 
+// components
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
 import Autocomplete from 'components/autocomplete'
 
+// styles
 import {
   FilterActiveItem,
   FilterActiveItemIconUser,
@@ -21,10 +22,20 @@ const TasksMenuFiltersActiveItem = ({
   canAutocomplete,
   autocompleteItems,
   autocompleteLocation,
-  isMounted,
-  onHandleDeselectAutocomplete,
-  onHandleDelete,
+  onDeselectAutocomplete,
+  onDelete,
 }) => {
+  const [isMounted, setMounted] = useState(true)
+
+  const handleDelete = () => {
+    setMounted(false)
+    window.setTimeout(() => onDelete(title), 200)
+  }
+
+  const handleDeselectAutocomplete = () => {
+    onDeselectAutocomplete()
+  }
+
   const renameTitle = filterTitle => {
     switch (filterTitle) {
       case 'assignee':
@@ -123,7 +134,7 @@ const TasksMenuFiltersActiveItem = ({
             placeholder="Select Contact"
             selectedItems={{ contacts: autocompleteItems }}
             parentId={null}
-            onDeselectInput={onHandleDeselectAutocomplete}
+            onDeselectInput={handleDeselectAutocomplete}
             isWithoutItems
             isInputMode
             canAllContacts
@@ -135,9 +146,9 @@ const TasksMenuFiltersActiveItem = ({
           icon={ICONS.CROSS_SIMPLE}
           width={14}
           height={14}
-          color={['#B1B5B8']}
-          hoverColor={['#293034']}
-          onClick={onHandleDelete}
+          color={[colors.astrocopusGrey]}
+          hoverColor={[colors.aztec]}
+          onClick={handleDelete}
           title="Remove filter"
         />
       </FilterActiveItemIconCancel>
@@ -150,30 +161,8 @@ TasksMenuFiltersActiveItem.propTypes = {
   canAutocomplete: PropTypes.bool,
   autocompleteItems: PropTypes.object,
   autocompleteLocation: PropTypes.string,
-  delayTime: PropTypes.number,
-  isMounted: PropTypes.bool,
   onDeselectAutocomplete: PropTypes.func,
-  onHandleDeselectAutocomplete: PropTypes.func,
   onDelete: PropTypes.func,
-  onHandleDelete: PropTypes.func,
 }
 
-export default compose(
-  withStateHandlers(
-    () => ({
-      delayTime: 250,
-      isMounted: true,
-    }),
-    {
-      onHandleDelete: ({ delayTime }, props) => () => {
-        window.setTimeout(() => props.onDelete(props.title), delayTime)
-
-        return { isMounted: false }
-      },
-      onHandleDeselectAutocomplete: (state, props) => () => {
-        props.onDeselectAutocomplete()
-        return {}
-      },
-    }
-  )
-)(TasksMenuFiltersActiveItem)
+export default TasksMenuFiltersActiveItem
