@@ -520,6 +520,20 @@ export function* setComplete(action) {
   }
 }
 
+export function* setCompleteTasks() {
+  const selectedTasks = yield select(state =>
+    taskSelectors.getSelectTasks(state)
+  )
+
+  for (const task of selectedTasks) {
+    if (task.isCompleted) {
+      continue
+    }
+
+    yield put(taskActions.setComplete(task.id))
+  }
+}
+
 export function* setIncomplete(action) {
   try {
     const taskId = action.payload.taskId
@@ -544,6 +558,20 @@ export function* setIncomplete(action) {
         breadcrumbMessage: action.type,
       })
     )
+  }
+}
+
+export function* setIncompleteTasks() {
+  const selectedTasks = yield select(state =>
+    taskSelectors.getSelectTasks(state)
+  )
+
+  for (const task of selectedTasks) {
+    if (!task.isCompleted) {
+      continue
+    }
+
+    yield put(taskActions.setIncomplete(task.id))
   }
 }
 

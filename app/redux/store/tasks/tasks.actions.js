@@ -1,4 +1,5 @@
 import schema from '../../data/schema'
+import { MULTI_SELECT } from 'redux/store/multi-select/multi-select.actions'
 
 export const TASKS = {
   FETCH: 'TASK/FETCH',
@@ -14,7 +15,9 @@ export const TASKS = {
   DESELECT: 'TASK/DESELECT',
   UPDATE_SEARCH: 'TASK/UPDATE_SEARCH',
   SET_COMPLETE: 'TASK/SET_COMPLETE',
+  SET_COMPLETE_TASKS: 'TASK/SET_COMPLETE_TASKS',
   SET_INCOMPLETE: 'TASK/SET_INCOMPLETE',
+  SET_INCOMPLETE_TASKS: 'TASK/SET_INCOMPLETE_TASKS',
   SET_ARCHIVE: 'TASK/SET_ARCHIVE',
   CANCEL_ARCHIVE: 'TASK/CANCEL_ARCHIVE',
   TOGGLE_IMPORTANT_REQUESTED: 'TASK/TOGGLE_IMPORTANT-REQUESTED',
@@ -99,9 +102,17 @@ export const setComplete = taskId => ({
   payload: { taskId },
 })
 
+export const setCompleteTasks = () => ({
+  type: TASKS.SET_COMPLETE_TASKS,
+})
+
 export const setIncomplete = taskId => ({
   type: TASKS.SET_INCOMPLETE,
   payload: { taskId },
+})
+
+export const setIncompleteTasks = () => ({
+  type: TASKS.SET_INCOMPLETE_TASKS,
 })
 
 export const setArchiveTasks = (

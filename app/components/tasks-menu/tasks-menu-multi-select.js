@@ -80,15 +80,35 @@ const TasksMenuMultiSelect = props => {
   return (
     <MultiSelectWrapper ref={multiSelectRef}>
       {!props.isVisibleArchivedTasks && (
-        <MultiSelectItem
-          icon={ICONS.ADD_REMOVE_TAG}
-          width={59}
-          height={23}
-          scale={1.3}
-          color={[colors.astrocopusGrey]}
-          hoverColor={[colors.aztec]}
-          onClick={props.onAddRemoveTags}
-        />
+        <span>
+          <MultiSelectItem
+            icon={ICONS.TASK_UNCOMPLETED}
+            width={22}
+            height={22}
+            scale={1}
+            color={[colors.astrocopusGrey]}
+            hoverColor={[colors.hanumanGreen]}
+            onClick={props.onSetCompleteTasks}
+          />
+          <MultiSelectItem
+            icon={ICONS.TASK_COMPLETED}
+            width={22}
+            height={22}
+            scale={1}
+            color={[colors.astrocopusGrey]}
+            hoverColor={[colors.hanumanGreen]}
+            onClick={props.onSetIncompleteTasks}
+          />
+          <MultiSelectItem
+            icon={ICONS.ADD_REMOVE_TAG}
+            width={59}
+            height={23}
+            scale={1.3}
+            color={[colors.astrocopusGrey]}
+            hoverColor={[colors.aztec]}
+            onClick={props.onAddRemoveTags}
+          />
+        </span>
       )}
       <MultiSelectItem
         icon={ICONS.TRASH}
@@ -109,6 +129,8 @@ TasksMenuMultiSelect.propTypes = {
   onDelete: PropTypes.func,
   deselectTasks: PropTypes.func,
   onAddRemoveTags: PropTypes.func,
+  onSetCompleteTasks: PropTypes.func,
+  onSetIncompleteTasks: PropTypes.func,
 }
 
 export default memo(TasksMenuMultiSelect)
