@@ -401,7 +401,7 @@ export function* toggleImportant(action) {
   }
 }
 
-export function* setImportantTasks(action) {
+export function* setSelectedTasksImportant(action) {
   const selectedTasks = yield select(state =>
     taskSelectors.getSelectTasks(state)
   )
@@ -434,7 +434,7 @@ export function* setImportantTasks(action) {
   }
 }
 
-export function* setUnimportantTasks(action) {
+export function* setSelectedTasksUnimportant(action) {
   const selectedTasks = yield select(state =>
     taskSelectors.getSelectTasks(state)
   )
@@ -587,7 +587,7 @@ export function* setComplete(action) {
   }
 }
 
-export function* setCompleteTasks() {
+export function* setSelectedTasksComplete() {
   const selectedTasks = yield select(state =>
     taskSelectors.getSelectTasks(state)
   )
@@ -628,7 +628,7 @@ export function* setIncomplete(action) {
   }
 }
 
-export function* setIncompleteTasks() {
+export function* setSelectedTasksIncomplete() {
   const selectedTasks = yield select(state =>
     taskSelectors.getSelectTasks(state)
   )

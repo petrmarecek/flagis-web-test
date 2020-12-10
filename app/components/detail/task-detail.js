@@ -590,6 +590,7 @@ const TaskDetail = props => {
                     showTimeSelect
                     timeFormat="HH:mm"
                     timeIntervals={5}
+                    dropdownMode="scroll"
                     dateFormat={[
                       dateUtil.DEFAULT_DATE_TIME_FORMAT,
                       dateUtil.DEFAULT_SIMPLE_DATE_SIMPLE_TIME_FORMAT,
@@ -624,6 +625,7 @@ const TaskDetail = props => {
                     showTimeSelect
                     timeFormat="HH:mm"
                     timeIntervals={5}
+                    dropdownMode="scroll"
                     dateFormat={[
                       dateUtil.DEFAULT_DATE_TIME_FORMAT,
                       dateUtil.DEFAULT_SIMPLE_DATE_SIMPLE_TIME_FORMAT,

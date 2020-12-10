@@ -15,15 +15,15 @@ export const TASKS = {
   DESELECT: 'TASK/DESELECT',
   UPDATE_SEARCH: 'TASK/UPDATE_SEARCH',
   SET_COMPLETE: 'TASK/SET_COMPLETE',
-  SET_COMPLETE_TASKS: 'TASK/SET_COMPLETE_TASKS',
+  SET_SELECTED_TASKS_COMPLETE: 'TASK/SET_SELECTED_TASKS_COMPLETE',
   SET_INCOMPLETE: 'TASK/SET_INCOMPLETE',
-  SET_INCOMPLETE_TASKS: 'TASK/SET_INCOMPLETE_TASKS',
+  SET_SELECTED_TASKS_INCOMPLETE: 'TASK/SET_SELECTED_TASKS_INCOMPLETE',
   SET_ARCHIVE: 'TASK/SET_ARCHIVE',
   CANCEL_ARCHIVE: 'TASK/CANCEL_ARCHIVE',
   TOGGLE_IMPORTANT_REQUESTED: 'TASK/TOGGLE_IMPORTANT-REQUESTED',
   SET_IMPORTANT: 'TASK/SET_IMPORTANT',
-  SET_IMPORTANT_TASKS: 'TASK/SET_IMPORTANT_TASKS',
-  SET_UNIMPORTANT_TASKS: 'TASK/SET_UNIMPORTANT_TASKS',
+  SET_SELECTED_TASKS_IMPORTANT: 'TASK/SET_SELECTED_TASKS_IMPORTANT',
+  SET_SELECTED_TASKS_UNIMPORTANT: 'TASK/SET_SELECTED_TASKS_UNIMPORTANT',
   REPLACE: 'TASK/REPLACE',
   ADD: 'TASK/ADD',
   SET_DATE: 'TASK/SET_DATE',
@@ -105,8 +105,8 @@ export const setComplete = taskId => ({
   payload: { taskId },
 })
 
-export const setCompleteTasks = () => ({
-  type: TASKS.SET_COMPLETE_TASKS,
+export const setSelectedTasksComplete = () => ({
+  type: TASKS.SET_SELECTED_TASKS_COMPLETE,
 })
 
 export const setIncomplete = taskId => ({
@@ -114,8 +114,8 @@ export const setIncomplete = taskId => ({
   payload: { taskId },
 })
 
-export const setIncompleteTasks = () => ({
-  type: TASKS.SET_INCOMPLETE_TASKS,
+export const setSelectedTasksIncomplete = () => ({
+  type: TASKS.SET_SELECTED_TASKS_INCOMPLETE,
 })
 
 export const setArchiveTasks = (
@@ -166,12 +166,12 @@ export const setImportant = (task, isImportant) => ({
   payload: { task, isImportant },
 })
 
-export const setImportantTasks = () => ({
-  type: TASKS.SET_IMPORTANT_TASKS,
+export const setSelectedTasksImportant = () => ({
+  type: TASKS.SET_SELECTED_TASKS_IMPORTANT,
 })
 
-export const setUnimportantTasks = () => ({
-  type: TASKS.SET_UNIMPORTANT_TASKS,
+export const setSelectedTasksUnimportant = () => ({
+  type: TASKS.SET_SELECTED_TASKS_UNIMPORTANT,
 })
 
 export const setDate = (task, date, type) => ({

@@ -20,10 +20,10 @@ import {
   deselectTasks,
   selectAllTask,
   prepareDeleteTask,
-  setCompleteTasks,
-  setIncompleteTasks,
-  setImportantTasks,
-  setUnimportantTasks,
+  setSelectedTasksImportant,
+  setSelectedTasksUnimportant,
+  setSelectedTasksComplete,
+  setSelectedTasksIncomplete,
   setSelectedTasksDate,
 } from 'redux/store/tasks/tasks.actions'
 import {
@@ -99,20 +99,20 @@ const TasksMenuContainer = props => {
     isVisibleArchivedTasks: props.isVisibleArchivedTasks,
   }
 
-  const handleSetImportantTasks = () => {
-    props.setImportantTasks()
+  const handleSetSelectedTasksImportant = () => {
+    props.setSelectedTasksImportant()
   }
 
-  const handleSetUnimportantTasks = () => {
-    props.setUnimportantTasks()
+  const handleSetSelectedTasksUnimportant = () => {
+    props.setSelectedTasksUnimportant()
   }
 
-  const handleSetIncompleteTasks = () => {
-    props.setIncompleteTasks()
+  const handleSetSelectedTasksComplete = () => {
+    props.setSelectedTasksComplete()
   }
 
-  const handleSetCompleteTasks = () => {
-    props.setCompleteTasks()
+  const handleSetSelectedTasksIncomplete = () => {
+    props.setSelectedTasksIncomplete()
   }
 
   const handleSetSelectedTasksDueDate = date => {
@@ -216,10 +216,10 @@ const TasksMenuContainer = props => {
       {props.isMultiSelect && (
         <TasksMenuMultiSelect
           {...multiSelectProps}
-          onSetImportantTasks={handleSetImportantTasks}
-          onSetUnimportantTasks={handleSetUnimportantTasks}
-          onSetCompleteTasks={handleSetCompleteTasks}
-          onSetIncompleteTasks={handleSetIncompleteTasks}
+          onSetSelectedTasksImportant={handleSetSelectedTasksImportant}
+          onSetSelectedTasksUnimportant={handleSetSelectedTasksUnimportant}
+          onSetSelectedTasksComplete={handleSetSelectedTasksComplete}
+          onSetSelectedTasksIncomplete={handleSetSelectedTasksIncomplete}
           onSetSelectedTasksDueDate={handleSetSelectedTasksDueDate}
           onSetSelectedTasksReminderDate={handleSetSelectedTasksReminderDate}
           onAddRemoveTags={handleAddRemoveTags}
@@ -358,10 +358,10 @@ const mapDispatchToProps = {
   deselectActiveSender,
   deselectActiveAssignee,
   prepareDeleteTask,
-  setCompleteTasks,
-  setIncompleteTasks,
-  setImportantTasks,
-  setUnimportantTasks,
+  setSelectedTasksImportant,
+  setSelectedTasksUnimportant,
+  setSelectedTasksComplete,
+  setSelectedTasksIncomplete,
   setSelectedTasksDate,
 }
 

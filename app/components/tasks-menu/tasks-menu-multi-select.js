@@ -87,9 +87,10 @@ const TasksMenuMultiSelect = props => {
           width={22}
           height={22}
           scale={0.3}
+          title="Important"
           color={[colors.astrocopusGrey]}
           hoverColor={[colors.aztec]}
-          onClick={props.onSetImportantTasks}
+          onClick={props.onSetSelectedTasksImportant}
         />
       )}
       {!props.isVisibleArchivedTasks && (
@@ -98,9 +99,10 @@ const TasksMenuMultiSelect = props => {
           width={22}
           height={22}
           scale={0.3}
+          title="Unimportant"
           color={[colors.astrocopusGrey]}
           hoverColor={[colors.aztec]}
-          onClick={props.onSetUnimportantTasks}
+          onClick={props.onSetSelectedTasksUnimportant}
         />
       )}
       {!props.isVisibleArchivedTasks && (
@@ -109,9 +111,10 @@ const TasksMenuMultiSelect = props => {
           width={22}
           height={22}
           scale={1}
+          title="Complete"
           color={[colors.astrocopusGrey]}
           hoverColor={[colors.hanumanGreen]}
-          onClick={props.onSetCompleteTasks}
+          onClick={props.onSetSelectedTasksComplete}
         />
       )}
       {!props.isVisibleArchivedTasks && (
@@ -120,9 +123,10 @@ const TasksMenuMultiSelect = props => {
           width={22}
           height={22}
           scale={1}
+          title="Incomplete"
           color={[colors.astrocopusGrey]}
           hoverColor={[colors.hanumanGreen]}
-          onClick={props.onSetIncompleteTasks}
+          onClick={props.onSetSelectedTasksIncomplete}
         />
       )}
       {!props.isVisibleArchivedTasks && (
@@ -134,6 +138,8 @@ const TasksMenuMultiSelect = props => {
           timeIntervals={5}
           dateFormat={dateUtil.DEFAULT_DATE_TIME_FORMAT}
           withPortal
+          dropdownMode="select"
+          title="Due Date"
           onChange={props.onSetSelectedTasksDueDate}
           customInput={
             <MultiSelectItem
@@ -156,6 +162,8 @@ const TasksMenuMultiSelect = props => {
           timeIntervals={5}
           dateFormat={dateUtil.DEFAULT_DATE_TIME_FORMAT}
           withPortal
+          dropdownMode="scroll"
+          title="Reminder Date"
           onChange={props.onSetSelectedTasksReminderDate}
           customInput={
             <MultiSelectItem
@@ -175,6 +183,7 @@ const TasksMenuMultiSelect = props => {
           width={59}
           height={23}
           scale={1.3}
+          title="Add/Remove tags"
           color={[colors.astrocopusGrey]}
           hoverColor={[colors.aztec]}
           onClick={props.onAddRemoveTags}
@@ -184,6 +193,7 @@ const TasksMenuMultiSelect = props => {
         icon={ICONS.TRASH}
         width={23}
         height={26}
+        title="Delete"
         color={[colors.astrocopusGrey]}
         hoverColor={[colors.pompelmo]}
         onClick={props.onDelete}
@@ -199,10 +209,10 @@ TasksMenuMultiSelect.propTypes = {
   onDelete: PropTypes.func,
   deselectTasks: PropTypes.func,
   onAddRemoveTags: PropTypes.func,
-  onSetImportantTasks: PropTypes.func,
-  onSetUnimportantTasks: PropTypes.func,
-  onSetCompleteTasks: PropTypes.func,
-  onSetIncompleteTasks: PropTypes.func,
+  onSetSelectedTasksImportant: PropTypes.func,
+  onSetSelectedTasksUnimportant: PropTypes.func,
+  onSetSelectedTasksComplete: PropTypes.func,
+  onSetSelectedTasksIncomplete: PropTypes.func,
   onSetSelectedTasksDueDate: PropTypes.func,
   onSetSelectedTasksReminderDate: PropTypes.func,
 }

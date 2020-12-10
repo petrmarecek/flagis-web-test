@@ -61,8 +61,14 @@ export default function* root() {
     takeLatest(TASKS.FETCH_INBOX, task.fetchInboxTasks),
     takeLatest(TASKS.FETCH_ARCHIVED, task.fetchArchivedTasks),
     takeLatest(TASKS.TOGGLE_IMPORTANT_REQUESTED, task.toggleImportant),
-    takeLatest(TASKS.SET_IMPORTANT_TASKS, task.setImportantTasks),
-    takeLatest(TASKS.SET_UNIMPORTANT_TASKS, task.setUnimportantTasks),
+    takeLatest(
+      TASKS.SET_SELECTED_TASKS_IMPORTANT,
+      task.setSelectedTasksImportant
+    ),
+    takeLatest(
+      TASKS.SET_SELECTED_TASKS_UNIMPORTANT,
+      task.setSelectedTasksUnimportant
+    ),
     takeLatest(TASKS.SET_DATE, task.setDate),
     takeLatest(TASKS.SET_SELECTED_TASKS_DATE, task.setSelectedTasksDate),
     takeLatest(TASKS.SET_ORDER, task.setOrder),
@@ -70,9 +76,15 @@ export default function* root() {
     takeLatest(TASKS.SET_SUBJECT, task.setSubject),
     takeEvery(TASKS.CREATE, task.createTask),
     takeLatest(TASKS.SET_COMPLETE, task.setComplete),
-    takeLatest(TASKS.SET_COMPLETE_TASKS, task.setCompleteTasks),
+    takeLatest(
+      TASKS.SET_SELECTED_TASKS_COMPLETE,
+      task.setSelectedTasksComplete
+    ),
     takeLatest(TASKS.SET_INCOMPLETE, task.setIncomplete),
-    takeLatest(TASKS.SET_INCOMPLETE_TASKS, task.setIncompleteTasks),
+    takeLatest(
+      TASKS.SET_SELECTED_TASKS_INCOMPLETE,
+      task.setSelectedTasksIncomplete
+    ),
     takeLatest(TASKS.SET_ARCHIVE, task.setArchiveTasks),
     takeLatest(TASKS.CANCEL_ARCHIVE, task.cancelArchiveTasks),
     takeEvery(TASKS.ADD_TASK_TAG, task.addTaskTag),
