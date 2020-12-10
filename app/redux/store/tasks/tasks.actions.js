@@ -27,6 +27,7 @@ export const TASKS = {
   REPLACE: 'TASK/REPLACE',
   ADD: 'TASK/ADD',
   SET_DATE: 'TASK/SET_DATE',
+  SET_SELECTED_TASKS_DATE: 'TASK/SET_SELECTED_TASKS_DATE',
   SET_ORDER: 'TASK/SET_ORDER',
   SET_DESCRIPTION: 'TASK/SET_DESCRIPTION',
   SET_SUBJECT: 'TASK/SET_SUBJECT',
@@ -176,6 +177,11 @@ export const setUnimportantTasks = () => ({
 export const setDate = (task, date, type) => ({
   type: TASKS.SET_DATE,
   payload: { task, date, type },
+})
+
+export const setSelectedTasksDate = (date, type) => ({
+  type: TASKS.SET_SELECTED_TASKS_DATE,
+  payload: { date, type },
 })
 
 export const setOrder = (task, order) => ({

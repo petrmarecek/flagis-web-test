@@ -69,4 +69,22 @@ export default {
 
     return dateArray
   },
+
+  setNoonTimeForZero(date) {
+    if (date) {
+      date.set({
+        second: 0,
+        millisecond: 0,
+      })
+
+      if (date.hour() === 0 && date.minute() === 0) {
+        date.set({
+          hour: 12,
+          minute: 0,
+        })
+      }
+    }
+
+    return date
+  },
 }

@@ -24,6 +24,7 @@ import {
   setIncompleteTasks,
   setImportantTasks,
   setUnimportantTasks,
+  setSelectedTasksDate,
 } from 'redux/store/tasks/tasks.actions'
 import {
   getTasksItems,
@@ -112,6 +113,14 @@ const TasksMenuContainer = props => {
 
   const handleSetCompleteTasks = () => {
     props.setCompleteTasks()
+  }
+
+  const handleSetSelectedTasksDueDate = date => {
+    props.setSelectedTasksDate(date, 'dueDate')
+  }
+
+  const handleSetSelectedTasksReminderDate = date => {
+    props.setSelectedTasksDate(date, 'reminderDate')
   }
 
   const handleAddRemoveTags = () => {
@@ -211,6 +220,8 @@ const TasksMenuContainer = props => {
           onSetUnimportantTasks={handleSetUnimportantTasks}
           onSetCompleteTasks={handleSetCompleteTasks}
           onSetIncompleteTasks={handleSetIncompleteTasks}
+          onSetSelectedTasksDueDate={handleSetSelectedTasksDueDate}
+          onSetSelectedTasksReminderDate={handleSetSelectedTasksReminderDate}
           onAddRemoveTags={handleAddRemoveTags}
           onDelete={handleDelete}
         />
@@ -351,6 +362,7 @@ const mapDispatchToProps = {
   setIncompleteTasks,
   setImportantTasks,
   setUnimportantTasks,
+  setSelectedTasksDate,
 }
 
 export default memo(

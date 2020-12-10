@@ -162,6 +162,11 @@ const MultiSelectWrapper = styled.div`
   height: 100%;
   font-size: 14px;
   color: ${colors.lostAtSea};
+
+  .react-datepicker__portal {
+    background-color: ${colors.midnightHour};
+    opacity: 0.85;
+  }
 `
 
 const MultiSelectItem = styled(Icon)`

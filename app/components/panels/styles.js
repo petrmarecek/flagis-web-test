@@ -36,7 +36,7 @@ const centerPanelTopCss = css`
 `
 
 const CenterPanelTopPrimary = styled.div`
-  ${centerPanelTopCss}
+  ${centerPanelTopCss};
   height: 60px;
   padding: 0 20px 0 17px;
   border-bottom: ${props =>
@@ -44,12 +44,12 @@ const CenterPanelTopPrimary = styled.div`
 `
 
 const CenterPanelTopPrimaryLeft = styled.div`
-  ${centerPanelTopCss}
+  ${centerPanelTopCss};
   flex: 1 1 auto;
 `
 
 const CenterPanelTopPrimaryRight = styled.div`
-  ${centerPanelTopCss}
+  ${centerPanelTopCss};
   margin: 0 0 0 40px;
   flex: 1 1 80px;
 `
@@ -80,14 +80,14 @@ const CenterPageTitle = styled.div`
 /*------------------------------------------ Left Panel --------------------------------------*/
 
 const LeftPanelWrapper = styled.div`
-  ${boxSizing('border-box')}
+  ${boxSizing('border-box')};
   background-color: ${props => colors[props.colorTheme].leftPanelBackground};
   width: ${props => (props.width ? props.width : '290')}px;
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
-  z-index: 100;
+  z-index: 50;
 
   .loader {
     margin: 0 auto;

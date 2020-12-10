@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import { normalize } from 'normalizr'
+import moment from 'moment'
 
 // toast notifications
 import toast from 'utils/toastify-helper'
@@ -670,9 +671,30 @@ export function* setOrder(action) {
 }
 
 export function* setDate(action) {
-  const fieldName = action.payload.type
-  const fieldValue = action.payload.date
-  yield* setTaskField(action.payload.task, fieldName, fieldValue)
+  const { task, type, date } = action.payload
+  const prepareDate = dateUtil.setNoonTimeForZero(date)
+
+  if (moment(task[type]).isSame(date)) {
+    return
+  }
+
+  yield* setTaskField(task, type, prepareDate)
+}
+
+export function* setSelectedTasksDate(action) {
+  const { type, date } = action.payload
+  const prepareDate = dateUtil.setNoonTimeForZero(date)
+  const selectedTasks = yield select(state =>
+    taskSelectors.getSelectTasks(state)
+  )
+
+  for (const task of selectedTasks) {
+    if (moment(task[type]).isSame(date)) {
+      continue
+    }
+
+    yield* setTaskField(task, type, prepareDate)
+  }
 }
 
 export function* setDescription(action) {

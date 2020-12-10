@@ -64,6 +64,7 @@ export default function* root() {
     takeLatest(TASKS.SET_IMPORTANT_TASKS, task.setImportantTasks),
     takeLatest(TASKS.SET_UNIMPORTANT_TASKS, task.setUnimportantTasks),
     takeLatest(TASKS.SET_DATE, task.setDate),
+    takeLatest(TASKS.SET_SELECTED_TASKS_DATE, task.setSelectedTasksDate),
     takeLatest(TASKS.SET_ORDER, task.setOrder),
     takeLatest(TASKS.SET_DESCRIPTION, task.setDescription),
     takeLatest(TASKS.SET_SUBJECT, task.setSubject),
