@@ -22,6 +22,8 @@ import {
   prepareDeleteTask,
   setCompleteTasks,
   setIncompleteTasks,
+  setImportantTasks,
+  setUnimportantTasks,
 } from 'redux/store/tasks/tasks.actions'
 import {
   getTasksItems,
@@ -94,6 +96,14 @@ const TasksMenuContainer = props => {
     activeTags: props.activeTags,
     deselectTasks: props.deselectTasks,
     isVisibleArchivedTasks: props.isVisibleArchivedTasks,
+  }
+
+  const handleSetImportantTasks = () => {
+    props.setImportantTasks()
+  }
+
+  const handleSetUnimportantTasks = () => {
+    props.setUnimportantTasks()
   }
 
   const handleSetIncompleteTasks = () => {
@@ -197,6 +207,8 @@ const TasksMenuContainer = props => {
       {props.isMultiSelect && (
         <TasksMenuMultiSelect
           {...multiSelectProps}
+          onSetImportantTasks={handleSetImportantTasks}
+          onSetUnimportantTasks={handleSetUnimportantTasks}
           onSetCompleteTasks={handleSetCompleteTasks}
           onSetIncompleteTasks={handleSetIncompleteTasks}
           onAddRemoveTags={handleAddRemoveTags}
@@ -337,6 +349,8 @@ const mapDispatchToProps = {
   prepareDeleteTask,
   setCompleteTasks,
   setIncompleteTasks,
+  setImportantTasks,
+  setUnimportantTasks,
 }
 
 export default memo(

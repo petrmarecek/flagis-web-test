@@ -400,6 +400,72 @@ export function* toggleImportant(action) {
   }
 }
 
+export function* setImportantTasks(action) {
+  const selectedTasks = yield select(state =>
+    taskSelectors.getSelectTasks(state)
+  )
+
+  for (const task of selectedTasks) {
+    if (task.isImportant) {
+      continue
+    }
+
+    yield put(taskActions.setImportant(task, true))
+
+    // call server
+    try {
+      const update = { isImportant: true }
+      yield updateTask(task.id, update)
+    } catch (err) {
+      // revert to original state
+      yield put(taskActions.setImportant(task, false))
+
+      // send error to sentry
+      yield put(
+        errorActions.errorSentry(err, {
+          tagType: sentryTagType.ACTION,
+          tagValue: action.type,
+          breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+          breadcrumbMessage: action.type,
+        })
+      )
+    }
+  }
+}
+
+export function* setUnimportantTasks(action) {
+  const selectedTasks = yield select(state =>
+    taskSelectors.getSelectTasks(state)
+  )
+
+  for (const task of selectedTasks) {
+    if (!task.isImportant) {
+      continue
+    }
+
+    yield put(taskActions.setImportant(task, false))
+
+    // call server
+    try {
+      const update = { isImportant: false }
+      yield updateTask(task.id, update)
+    } catch (err) {
+      // revert to original state
+      yield put(taskActions.setImportant(task, true))
+
+      // send error to sentry
+      yield put(
+        errorActions.errorSentry(err, {
+          tagType: sentryTagType.ACTION,
+          tagValue: action.type,
+          breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
+          breadcrumbMessage: action.type,
+        })
+      )
+    }
+  }
+}
+
 export function* prepareToggleDragAndDrop(action) {
   const newDragAndDrop = action.payload.value
 

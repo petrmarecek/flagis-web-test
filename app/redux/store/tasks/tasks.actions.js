@@ -22,6 +22,8 @@ export const TASKS = {
   CANCEL_ARCHIVE: 'TASK/CANCEL_ARCHIVE',
   TOGGLE_IMPORTANT_REQUESTED: 'TASK/TOGGLE_IMPORTANT-REQUESTED',
   SET_IMPORTANT: 'TASK/SET_IMPORTANT',
+  SET_IMPORTANT_TASKS: 'TASK/SET_IMPORTANT_TASKS',
+  SET_UNIMPORTANT_TASKS: 'TASK/SET_UNIMPORTANT_TASKS',
   REPLACE: 'TASK/REPLACE',
   ADD: 'TASK/ADD',
   SET_DATE: 'TASK/SET_DATE',
@@ -161,6 +163,14 @@ export const requestToggleImportant = task => ({
 export const setImportant = (task, isImportant) => ({
   type: TASKS.SET_IMPORTANT,
   payload: { task, isImportant },
+})
+
+export const setImportantTasks = () => ({
+  type: TASKS.SET_IMPORTANT_TASKS,
+})
+
+export const setUnimportantTasks = () => ({
+  type: TASKS.SET_UNIMPORTANT_TASKS,
 })
 
 export const setDate = (task, date, type) => ({

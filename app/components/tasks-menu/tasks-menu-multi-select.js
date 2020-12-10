@@ -82,6 +82,24 @@ const TasksMenuMultiSelect = props => {
       {!props.isVisibleArchivedTasks && (
         <span>
           <MultiSelectItem
+            icon={ICONS.IMPORTANT}
+            width={22}
+            height={22}
+            scale={0.3}
+            color={[colors.astrocopusGrey]}
+            hoverColor={[colors.aztec]}
+            onClick={props.onSetImportantTasks}
+          />
+          <MultiSelectItem
+            icon={ICONS.IMPORTANT}
+            width={22}
+            height={22}
+            scale={0.3}
+            color={[colors.astrocopusGrey]}
+            hoverColor={[colors.aztec]}
+            onClick={props.onSetUnimportantTasks}
+          />
+          <MultiSelectItem
             icon={ICONS.TASK_UNCOMPLETED}
             width={22}
             height={22}
@@ -129,6 +147,8 @@ TasksMenuMultiSelect.propTypes = {
   onDelete: PropTypes.func,
   deselectTasks: PropTypes.func,
   onAddRemoveTags: PropTypes.func,
+  onSetImportantTasks: PropTypes.func,
+  onSetUnimportantTasks: PropTypes.func,
   onSetCompleteTasks: PropTypes.func,
   onSetIncompleteTasks: PropTypes.func,
 }
