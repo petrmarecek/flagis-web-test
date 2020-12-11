@@ -67,9 +67,15 @@ const TaskListItem = props => {
   const [isMounted, setIsMounted] = useState(true)
   const { dragDropHandle, dragProps } = useTaskListItemDragDrop(props)
 
+  // right mouse button for set task as important/unimportant
   const onHandleMouseDown = useCallback(
     event => {
-      const { isCompleted } = props.task
+      const { isCompleted, isInbox } = props.task
+
+      // not allowed to set an important/unimportant for a completed task or a task in inbox
+      if (isCompleted || isInbox) {
+        return
+      }
 
       // allowed only right mouse button
       if (event.button !== 2) {
@@ -77,10 +83,7 @@ const TaskListItem = props => {
       }
 
       // set task as important by right mouse
-      if (!isCompleted) {
-        props.onToggleImportant(props.task)
-        return
-      }
+      props.onToggleImportant(props.task)
     },
     [props.onToggleImportant, props.task]
   )

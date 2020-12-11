@@ -406,7 +406,14 @@ export function* setSelectedTasksImportant(action) {
     taskSelectors.getSelectTasks(state)
   )
 
+  yield put(appStateActions.setLoader(loaderTypes.GLOBAL))
   for (const task of selectedTasks) {
+    // not allowed to set an important for a completed task
+    if (task.isCompleted) {
+      continue
+    }
+
+    // continue with a next task if the task is already important
     if (task.isImportant) {
       continue
     }
@@ -432,6 +439,7 @@ export function* setSelectedTasksImportant(action) {
       )
     }
   }
+  yield put(appStateActions.deselectLoader(loaderTypes.GLOBAL))
 }
 
 export function* setSelectedTasksUnimportant(action) {
@@ -439,7 +447,14 @@ export function* setSelectedTasksUnimportant(action) {
     taskSelectors.getSelectTasks(state)
   )
 
+  yield put(appStateActions.setLoader(loaderTypes.GLOBAL))
   for (const task of selectedTasks) {
+    // not allowed to set an unimportant for a completed task
+    if (task.isCompleted) {
+      continue
+    }
+
+    // continue with a next task if the task is already unimportant
     if (!task.isImportant) {
       continue
     }
@@ -465,6 +480,7 @@ export function* setSelectedTasksUnimportant(action) {
       )
     }
   }
+  yield put(appStateActions.deselectLoader(loaderTypes.GLOBAL))
 }
 
 export function* prepareToggleDragAndDrop(action) {
@@ -592,6 +608,7 @@ export function* setSelectedTasksComplete() {
     taskSelectors.getSelectTasks(state)
   )
 
+  yield put(appStateActions.setLoader(loaderTypes.GLOBAL))
   for (const task of selectedTasks) {
     if (task.isCompleted) {
       continue
@@ -599,6 +616,7 @@ export function* setSelectedTasksComplete() {
 
     yield put(taskActions.setComplete(task.id))
   }
+  yield put(appStateActions.deselectLoader(loaderTypes.GLOBAL))
 }
 
 export function* setIncomplete(action) {
@@ -633,6 +651,7 @@ export function* setSelectedTasksIncomplete() {
     taskSelectors.getSelectTasks(state)
   )
 
+  yield put(appStateActions.setLoader(loaderTypes.GLOBAL))
   for (const task of selectedTasks) {
     if (!task.isCompleted) {
       continue
@@ -640,6 +659,7 @@ export function* setSelectedTasksIncomplete() {
 
     yield put(taskActions.setIncomplete(task.id))
   }
+  yield put(appStateActions.deselectLoader(loaderTypes.GLOBAL))
 }
 
 export function* setOrder(action) {
@@ -688,13 +708,26 @@ export function* setSelectedTasksDate(action) {
     taskSelectors.getSelectTasks(state)
   )
 
+  yield put(appStateActions.setLoader(loaderTypes.GLOBAL))
   for (const task of selectedTasks) {
+    // not allowed to set a date for a completed task
+    if (task.isCompleted) {
+      continue
+    }
+
+    // not allowed to set the dueDate for a collaborated task
+    if (type === 'dueDate' && task.followers.size > 0) {
+      continue
+    }
+
+    // continue with a next task if the task has already the date
     if (moment(task[type]).isSame(date)) {
       continue
     }
 
     yield* setTaskField(task, type, prepareDate)
   }
+  yield put(appStateActions.deselectLoader(loaderTypes.GLOBAL))
 }
 
 export function* setDescription(action) {

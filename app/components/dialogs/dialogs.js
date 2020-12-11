@@ -124,7 +124,7 @@ class Dialogs extends PureComponent {
     this.props.clearLists()
     this.props.deselectTasks()
     this.props.hideDialog()
-    this.props.deselectLoader('global')
+    this.props.deselectLoader(loaderTypes.GLOBAL)
   }
 
   // Get current dialog

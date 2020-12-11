@@ -120,8 +120,7 @@ export const infoMessages = {
   },
 
   taskDetail: {
-    acceptedRules:
-      'Not allowed to edit subject, due date, reminder date and description.',
+    acceptedRules: 'Not allowed to edit subject, due date and description.',
     inboxRules:
       'Allowed to accept, reject and add comments and attachments only.',
     completedRules:
