@@ -406,7 +406,10 @@ export function* setSelectedTasksImportant(action) {
     taskSelectors.getSelectTasks(state)
   )
 
-  yield put(appStateActions.setLoader(loaderTypes.GLOBAL))
+  if (selectedTasks.length > 3) {
+    yield put(appStateActions.setLoader(loaderTypes.GLOBAL))
+  }
+
   for (const task of selectedTasks) {
     // not allowed to set an important for a completed task
     if (task.isCompleted) {
@@ -447,7 +450,10 @@ export function* setSelectedTasksUnimportant(action) {
     taskSelectors.getSelectTasks(state)
   )
 
-  yield put(appStateActions.setLoader(loaderTypes.GLOBAL))
+  if (selectedTasks.length > 3) {
+    yield put(appStateActions.setLoader(loaderTypes.GLOBAL))
+  }
+
   for (const task of selectedTasks) {
     // not allowed to set an unimportant for a completed task
     if (task.isCompleted) {
@@ -608,7 +614,10 @@ export function* setSelectedTasksComplete() {
     taskSelectors.getSelectTasks(state)
   )
 
-  yield put(appStateActions.setLoader(loaderTypes.GLOBAL))
+  if (selectedTasks.length > 3) {
+    yield put(appStateActions.setLoader(loaderTypes.GLOBAL))
+  }
+
   for (const task of selectedTasks) {
     if (task.isCompleted) {
       continue
@@ -651,7 +660,10 @@ export function* setSelectedTasksIncomplete() {
     taskSelectors.getSelectTasks(state)
   )
 
-  yield put(appStateActions.setLoader(loaderTypes.GLOBAL))
+  if (selectedTasks.length > 3) {
+    yield put(appStateActions.setLoader(loaderTypes.GLOBAL))
+  }
+
   for (const task of selectedTasks) {
     if (!task.isCompleted) {
       continue
@@ -708,7 +720,10 @@ export function* setSelectedTasksDate(action) {
     taskSelectors.getSelectTasks(state)
   )
 
-  yield put(appStateActions.setLoader(loaderTypes.GLOBAL))
+  if (selectedTasks.length > 3) {
+    yield put(appStateActions.setLoader(loaderTypes.GLOBAL))
+  }
+
   for (const task of selectedTasks) {
     // not allowed to set a date for a completed task
     if (task.isCompleted) {
