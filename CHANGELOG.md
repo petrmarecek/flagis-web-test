@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.15.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.14.0...v1.15.0) (2020-12-11)
+
+
+### Features
+
+* Add complete/incomplete task action to multiselect ([70b98bc](https://github.com/react-boilerplate/react-boilerplate/commit/70b98bcb75845697463d8202f79413ba0ce5433f))
+* Add due-date and reminder-date action to multiselect ([5693b09](https://github.com/react-boilerplate/react-boilerplate/commit/5693b09ec1320875b31c1ac90e2e084e51a32776))
+* Add important/unimportant task action to multiselect ([61ac110](https://github.com/react-boilerplate/react-boilerplate/commit/61ac1101260dac85c37d90fbf02950681dadc95a))
+* Add React memo for tasks menu components ([dd03a4f](https://github.com/react-boilerplate/react-boilerplate/commit/dd03a4fdc70dea780ebb1112054f3a871fbc27ca))
+* Add unimportant icon ([44e60aa](https://github.com/react-boilerplate/react-boilerplate/commit/44e60aa78020381e83e09818bb8cf45a9d10e312))
+* Tasks menu active filters refactoring ([d0661c9](https://github.com/react-boilerplate/react-boilerplate/commit/d0661c95d277e23085cd0f6567d3e98076a32983))
+* Tasks menu index refactoring ([5861766](https://github.com/react-boilerplate/react-boilerplate/commit/5861766677b64de90b90f9438946cbda9ef7163f))
+* Tasks menu multiselect refactoring ([2202b2a](https://github.com/react-boilerplate/react-boilerplate/commit/2202b2a5124effd054c445206b3ab2e9c6f8c222))
+* Tasks menu multiselect refactoring ([693570d](https://github.com/react-boilerplate/react-boilerplate/commit/693570d26df14c69feb4ef00b6a9fb1555ce728d))
+
+
+### Bug Fixes
+
+* Fix conditions for multiselect actions ([4273850](https://github.com/react-boilerplate/react-boilerplate/commit/42738508317510363d177ed643bd0af0ff0acef0))
+* Fix opacity of datepicker in multiselect ([f911343](https://github.com/react-boilerplate/react-boilerplate/commit/f911343ec422c6de366d041311f96397e43667eb))
+
 ## [1.14.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.12.2...v1.14.0) (2020-11-24)
 
 
