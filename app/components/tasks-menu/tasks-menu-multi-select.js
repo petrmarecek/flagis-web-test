@@ -83,10 +83,10 @@ const TasksMenuMultiSelect = props => {
     <MultiSelectWrapper ref={multiSelectRef}>
       {!props.isVisibleArchivedTasks && (
         <MultiSelectItem
-          icon={ICONS.IMPORTANT}
-          width={22}
-          height={22}
-          scale={0.3}
+          icon={ICONS.UNIMPORTANT}
+          width={18}
+          height={18}
+          scale={1}
           title="Important"
           color={[colors.astrocopusGrey]}
           hoverColor={[colors.aztec]}
@@ -96,9 +96,9 @@ const TasksMenuMultiSelect = props => {
       {!props.isVisibleArchivedTasks && (
         <MultiSelectItem
           icon={ICONS.IMPORTANT}
-          width={22}
-          height={22}
-          scale={0.3}
+          width={18}
+          height={18}
+          scale={0.27}
           title="Unimportant"
           color={[colors.astrocopusGrey]}
           hoverColor={[colors.aztec]}
@@ -108,9 +108,9 @@ const TasksMenuMultiSelect = props => {
       {!props.isVisibleArchivedTasks && (
         <MultiSelectItem
           icon={ICONS.TASK_UNCOMPLETED}
-          width={22}
-          height={22}
-          scale={1}
+          width={18}
+          height={18}
+          scale={0.81}
           title="Complete"
           color={[colors.astrocopusGrey]}
           hoverColor={[colors.hanumanGreen]}
@@ -120,9 +120,9 @@ const TasksMenuMultiSelect = props => {
       {!props.isVisibleArchivedTasks && (
         <MultiSelectItem
           icon={ICONS.TASK_COMPLETED}
-          width={22}
-          height={22}
-          scale={1}
+          width={18}
+          height={18}
+          scale={0.81}
           title="Incomplete"
           color={[colors.astrocopusGrey]}
           hoverColor={[colors.hanumanGreen]}
@@ -144,9 +144,9 @@ const TasksMenuMultiSelect = props => {
           customInput={
             <MultiSelectItem
               icon={ICONS.DUE_DATE}
-              width={22}
-              height={22}
-              scale={1.83}
+              width={18}
+              height={18}
+              scale={1.5}
               color={[colors.astrocopusGrey]}
               hoverColor={[colors.aztec]}
             />
@@ -168,9 +168,9 @@ const TasksMenuMultiSelect = props => {
           customInput={
             <MultiSelectItem
               icon={ICONS.REMINDER_DATE}
-              width={25}
-              height={22}
-              scale={1.69}
+              width={21}
+              height={18}
+              scale={1.38}
               color={[colors.astrocopusGrey]}
               hoverColor={[colors.aztec]}
             />
@@ -180,9 +180,9 @@ const TasksMenuMultiSelect = props => {
       {!props.isVisibleArchivedTasks && (
         <MultiSelectItem
           icon={ICONS.ADD_REMOVE_TAG}
-          width={59}
-          height={23}
-          scale={1.3}
+          width={45}
+          height={17}
+          scale={1}
           title="Add/Remove tags"
           color={[colors.astrocopusGrey]}
           hoverColor={[colors.aztec]}
@@ -191,8 +191,9 @@ const TasksMenuMultiSelect = props => {
       )}
       <MultiSelectItem
         icon={ICONS.TRASH}
-        width={23}
-        height={26}
+        width={18}
+        height={21}
+        scale={0.8}
         title="Delete"
         color={[colors.astrocopusGrey]}
         hoverColor={[colors.pompelmo]}
