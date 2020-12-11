@@ -164,8 +164,7 @@ const MultiSelectWrapper = styled.div`
   color: ${colors.lostAtSea};
 
   .react-datepicker__portal {
-    background-color: ${colors.midnightHour};
-    opacity: 0.85;
+    background-color: rgba(62, 72, 79, 0.85);
   }
 `
 
