@@ -22,6 +22,7 @@ const titles = {
   NOTIFICATIONS: 'Notifications',
   SETTINGS_EDIT_PROFILE: 'Settings - Edit Profile',
   SETTINGS_CHANGE_PASSWORD: 'Settings - Change Password',
+  SETTINGS_NOTIFICATIONS: 'Settings - Notifications',
   SETTINGS_COLOR_THEME: 'Settings - Color Theme',
   SETTINGS_CONTACT_US: 'Settings - Contact Us',
   NOT_FOUND: 'Not Found!',

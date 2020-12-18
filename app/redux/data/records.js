@@ -2,6 +2,10 @@ import { Record, Map, OrderedSet, List, Set } from 'immutable'
 
 // ------ Common --------------------------------------------------------------
 
+export const Initial = Record({
+  initial: false,
+})
+
 export const ListRecord = Record({
   isFetching: false,
   items: List(),
@@ -34,8 +38,15 @@ export const Position = Record({
   left: 0,
 })
 
+export const NotificationsSettings = Record({
+  push: {},
+  email: {},
+})
+
 export const Settings = Record({
+  tips: new Initial(),
   colorTheme: null,
+  notifications: new NotificationsSettings(),
 })
 
 export const Profile = Record({

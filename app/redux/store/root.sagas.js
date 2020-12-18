@@ -55,6 +55,10 @@ export default function* root() {
     takeLatest(AUTH.CONTACT_US, auth.sendContactUs),
     takeLatest(AUTH.READ_TIP, auth.readTip),
     takeLatest(AUTH.UNREAD_TIP, auth.unreadTip),
+    takeLatest(
+      AUTH.UPDATE_NOTIFICATIONS_SETTINGS,
+      auth.updateNotificationsSettings
+    ),
 
     // task
     takeLatest(TASKS.FETCH, task.fetchTasks),
