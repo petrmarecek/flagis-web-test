@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form/dist/index.ie11'
 import * as _ from 'lodash'
 
 // redux
@@ -104,7 +104,7 @@ const SettingsNotificationsForm = ({
   }
 
   return (
-    <SettingsNotificationsFormWrapper disabled={true}>
+    <SettingsNotificationsFormWrapper>
       <Form nonMargin leftPadding maxWidth={500}>
         <FormHeader>
           <HeaderTitle>Push</HeaderTitle>

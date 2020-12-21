@@ -680,7 +680,6 @@ export function* updateNotificationsSettings({ payload }) {
   const preparedUpdate = {
     settings: _.merge(settings, { notifications: payload }),
   }
-  console.log(preparedUpdate)
 
   // Call API TODO: Uncomment next line after working notifications settings
   // const result = yield callApi(api.users.update, preparedUpdate)
