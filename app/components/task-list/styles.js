@@ -10,6 +10,7 @@ import {
   link,
 } from '../styled-components-mixins'
 import { colors } from '../styled-components-mixins/colors'
+import Icon from 'components/icons/icon'
 
 /*--------------------------- Task List Container (index) ------------------------------------*/
 
@@ -43,7 +44,7 @@ const hideAnimation = keyframes`${flipOutX}`
 
 const TaskItem = styled.div`
   /* Fill space between tasks while dragging */
-  height: ${props => (props.dragging ? '58px' : '50px')};
+  height: ${props => (props.dragging ? '66px' : '58px')};
   margin: ${props => (props.dragging ? '-4px 0 0' : '0 0 4px')};
   visibility: ${props => (props.dragging ? 'hidden' : 'visible')};
 
@@ -134,7 +135,7 @@ const Subject = styled.div`
   ${textOverflow('ellipsis')};
   flex: auto;
   max-width: 70%;
-  margin: ${props => (props.description ? '5px 0' : '14px 0 0 0')};
+  margin: 18px 0 0 0;
   height: 23px;
   line-height: 23px;
   font-size: 16px;
@@ -156,6 +157,8 @@ const Tags = styled.div`
 const DescriptionDueDate = styled.div`
   display: flex;
   z-index: 1;
+  align-items: flex-end;
+  justify-content: flex-end;
 `
 
 const Description = styled.div`
@@ -172,19 +175,18 @@ const Description = styled.div`
 `
 
 const DueDate = styled.div`
-  flex: 10 0 65px;
   height: 18px;
   line-height: 18px;
-  right: 18px;
   font-size: 12px;
   color: ${props =>
     props.overdue && !props.completed ? '#ff6a6a' : '#8C9DA9'};
   font-weight: ${props => (props.overdue && !props.completed ? 600 : 'normal')};
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  margin: ${props => (props.description ? '-4px 8px 0 0' : '-7px 8px 0 0')};
+  margin: -5px 3px 0 10px;
   z-index: 1;
+`
+
+const DueDateIcon = styled(Icon)`
+  margin-right: 4px;
 `
 
 const Followers = styled.div`
@@ -249,6 +251,7 @@ export {
   DescriptionDueDate,
   Description,
   DueDate,
+  DueDateIcon,
   Followers,
   TagItems,
   Item,

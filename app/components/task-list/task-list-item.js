@@ -45,9 +45,8 @@ import {
   Subject,
   Tags,
   DescriptionDueDate,
-  Description,
   DueDate,
-  Followers,
+  Followers, DueDateIcon,
 } from './styles'
 
 // TaskListItem
@@ -85,7 +84,7 @@ const TaskListItem = props => {
       // set task as important by right mouse
       props.onToggleImportant(props.task)
     },
-    [props.onToggleImportant, props.task]
+    [props.onToggleImportant, props.task],
   )
 
   const onHandleClicked = useCallback(
@@ -106,7 +105,7 @@ const TaskListItem = props => {
 
       props.onClick(props.task, event)
     },
-    [props.listType, props.task]
+    [props.listType, props.task],
   )
 
   const onHandleTagClicked = useCallback(tag => props.onTagClick(tag), [
@@ -201,11 +200,17 @@ const TaskListItem = props => {
   // Date from dueDate
   const now = moment()
   const dueDate = task.dueDate
-  const dueDateFormat = useMemo(() => dateUtils.formatDate(dueDate), [
+  const dueDateFormat = useMemo(() => dateUtils.formatDate(dueDate, 'DD.MM.'), [
     dateUtils.formatDate,
     dueDate,
   ])
   const fromNow = task.dueDate ? moment(dueDate).fromNow() : ''
+
+  // Format reminder date
+  const reminderDateFormat = useMemo(
+    () => dateUtils.formatDate(task.reminderDate, 'DD/MM HH:mm'),
+    [task.reminderDate],
+  )
 
   // Description
   let description = isDescription ? task.description : ''
@@ -300,7 +305,7 @@ const TaskListItem = props => {
         >
           <TaskItem
             key={task.id}
-            tabIndex="-1"
+            tabIndex='-1'
             data-item-id={task.id}
             onMouseDown={onHandleMouseDown}
             onClick={onHandleClicked}
@@ -356,9 +361,9 @@ const TaskListItem = props => {
                     !task.isCompleted
                       ? null
                       : {
-                          action: 'transition.expandIn',
-                          duration: 1000,
-                        }
+                        action: 'transition.expandIn',
+                        duration: 1000,
+                      }
                   }
                   title={
                     isArchivedList
@@ -401,22 +406,67 @@ const TaskListItem = props => {
                 </Tags>
               </SubjectTags>
               <DescriptionDueDate>
-                {isDescription && (
-                  <Description
+                {task.attachmentsCount > 0  && (
+                  <DueDate
+                    title={`Number of attachments - ${task.attachmentsCount}`}
                     completed={isCompletedMainList}
-                    title="Description"
                   >
-                    {description}
-                  </Description>
+                    <DueDateIcon
+                      icon={ICONS.PIN}
+                      color={[colors.astrocopusGrey]}
+                      width={9}
+                      height={10}
+                      scale={0.4}
+                    />
+                    {task.attachmentsCount}
+                  </DueDate>
                 )}
-                <DueDate
-                  title={`Due Date - ${fromNow}`}
-                  overdue={moment(dueDate) < now && !isArchivedList}
-                  completed={isCompletedMainList}
-                  description={isDescription}
-                >
-                  {dueDateFormat}
-                </DueDate>
+                {task.commentsCount > 0  && (
+                  <DueDate
+                    title={`Number of comments - ${task.commentsCount}`}
+                    completed={isCompletedMainList}
+                  >
+                    <DueDateIcon
+                      icon={ICONS.COMMENT_FILL}
+                      color={[colors.astrocopusGrey]}
+                      width={10}
+                      height={9}
+                      scale={0.7}
+                    />
+                    {task.commentsCount}
+                  </DueDate>
+                )}
+                {task.reminderDate !== null && (
+                  <DueDate
+                    title={`Reminder Date - ${reminderDateFormat}`}
+                    completed={isCompletedMainList}
+                  >
+                    <DueDateIcon
+                      icon={ICONS.REMINDER_DATE}
+                      color={[colors.astrocopusGrey]}
+                      width={10}
+                      height={9}
+                      scale={0.7}
+                    />
+                    {reminderDateFormat}
+                  </DueDate>
+                )}
+                {task.dueDate != null && (
+                  <DueDate
+                    title={`Due Date - ${fromNow}`}
+                    overdue={moment(dueDate) < now && !isArchivedList}
+                    completed={isCompletedMainList}
+                  >
+                    <DueDateIcon
+                      icon={ICONS.DUE_DATE}
+                      color={[colors.astrocopusGrey]}
+                      width={9}
+                      height={9}
+                      scale={0.7}
+                    />
+                    {dueDateFormat}
+                  </DueDate>
+                )}
               </DescriptionDueDate>
             </Content>
             {isFollowers && (
@@ -425,8 +475,8 @@ const TaskListItem = props => {
                 title={
                   !isOwner
                     ? createdByFollower.profile.nickname === null
-                      ? createdByFollower.profile.email
-                      : createdByFollower.profile.nickname
+                    ? createdByFollower.profile.email
+                    : createdByFollower.profile.nickname
                     : assignee.profile.nickname === null
                     ? assignee.profile.email
                     : assignee.profile.nickname
@@ -444,8 +494,8 @@ const TaskListItem = props => {
                   nickname={
                     !isOwner
                       ? createdByFollower.profile.nickname === null
-                        ? createdByFollower.profile.email
-                        : createdByFollower.profile.nickname
+                      ? createdByFollower.profile.email
+                      : createdByFollower.profile.nickname
                       : assignee.profile.nickname === null
                       ? assignee.profile.email
                       : assignee.profile.nickname
@@ -511,5 +561,5 @@ const areEqual = (prev, next) => {
 
 export default React.memo(
   connect(mapStateToProps, mapDispatchToProps)(TaskListItem),
-  areEqual
+  areEqual,
 )
