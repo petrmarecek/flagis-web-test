@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.16.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.15.1...v1.16.0) (2021-01-07)
+
+
+### Features
+
+* Add notifications settings page (disabled yet) ([eeabb6f](https://github.com/react-boilerplate/react-boilerplate/commit/eeabb6ffe800988c0ae2c94c9742218c362afece))
+* Add reminder date, comments count and attachments count to tasks list ([ee32434](https://github.com/react-boilerplate/react-boilerplate/commit/ee324349dba9dbb777d6d484975e30a339b4d0d6))
+
+
+### Bug Fixes
+
+* Fix build ([0dd9b3d](https://github.com/react-boilerplate/react-boilerplate/commit/0dd9b3df3f43a5f4ff5153ae9127eaf75a45b14c))
+* Fix texts on landing page ([2b35f30](https://github.com/react-boilerplate/react-boilerplate/commit/2b35f30216db4bb1e4f6b5c017bd5ddca1183593))
+
 ### [1.15.1](https://github.com/react-boilerplate/react-boilerplate/compare/v1.15.0...v1.15.1) (2020-12-11)
 
 
