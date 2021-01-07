@@ -15,8 +15,8 @@ export default {
   DEFAULT_SIMPLE_DATE_TIME_FORMAT,
   DEFAULT_DATE_TIME_FORMAT,
 
-  formatDate(date) {
-    return date !== null ? moment(date).format(DEFAULT_DATE_FORMAT) : ''
+  formatDate(date, format = DEFAULT_DATE_FORMAT) {
+    return date !== null ? moment(date).format(format) : ''
   },
 
   formatDateTimePrimary(date) {

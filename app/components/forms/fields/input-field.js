@@ -6,7 +6,8 @@ import styled, { css } from 'styled-components'
 import {
   commonInput,
   commonInputSmall,
-  ErrorListItem, ErrorListItemText,
+  ErrorListItem,
+  ErrorListItemText,
 } from '../../styled-components-mixins'
 import { colors } from '../../styled-components-mixins/colors'
 
@@ -60,8 +61,8 @@ const InputField = props => {
   const borderColor = isError
     ? colors.pompelmo
     : isFocused
-      ? colors.hanumanGreen
-      : colors.snowShadow
+    ? colors.hanumanGreen
+    : colors.snowShadow
 
   return (
     <Field>
@@ -86,9 +87,7 @@ const InputField = props => {
       </Label>
       {isError && (
         <ErrorListItem withoutBorder>
-          <ErrorListItemText>
-            {error}
-          </ErrorListItemText>
+          <ErrorListItemText>{error}</ErrorListItemText>
         </ErrorListItem>
       )}
     </Field>

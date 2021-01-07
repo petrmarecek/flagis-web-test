@@ -665,6 +665,29 @@ export function* unreadTip({ payload }) {
   yield put({ type: FULFILLED, payload: result })
 }
 
+export function* updateNotificationsSettings({ payload }) {
+  const { PENDING, FULFILLED } = createLoadActions(
+    AUTH.UPDATE_NOTIFICATIONS_SETTINGS
+  )
+
+  // Optimistic update
+  yield put({ type: PENDING, payload })
+
+  // Get actual setting from API
+  const { settings } = yield callApi(api.users.profile)
+
+  // Prepare update
+  const preparedUpdate = {
+    settings: _.merge(settings, { notifications: payload }),
+  }
+
+  // Call API TODO: Uncomment next line after working notifications settings
+  // const result = yield callApi(api.users.update, preparedUpdate)
+
+  // Update user settings in store TODO: Uncomment next line after working notifications settings
+  // yield put({ type: FULFILLED, payload: result })
+}
+
 // ------ HELPER FUNCTIONS ----------------------------------------------------
 
 function* authorizeUser(authApiCall, action) {

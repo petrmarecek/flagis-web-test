@@ -51,7 +51,7 @@ const Checkbox = styled.input`
 `
 
 const Label = styled.label`
-  ${fontMain}
+  ${fontMain};
   display: flex;
   align-items: center;
   position: relative;

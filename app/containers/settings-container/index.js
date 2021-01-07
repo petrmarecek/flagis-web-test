@@ -9,6 +9,7 @@ import { withTitle } from 'components/head-title/withTitle'
 // containers
 import EditProfilePage from '../edit-profile-page/'
 import ChangePasswordPage from '../change-password-page/'
+import SettingsNotificationsPage from '../settings-notifications/'
 import ColorThemePage from '../color-theme-page/'
 import UserContactUsPage from '../user-contact-us-page/'
 import NotFoundPage from 'containers/not-found-page/loadable'
@@ -21,6 +22,10 @@ const EditProfilePageWithTitle = withTitle(
 const ChangePasswordWithTitle = withTitle(
   ChangePasswordPage,
   titles.SETTINGS_CHANGE_PASSWORD
+)
+const SettingsNotificationsWithTitle = withTitle(
+  SettingsNotificationsPage,
+  titles.SETTINGS_NOTIFICATIONS
 )
 const ColorThemePageWithTitle = withTitle(
   ColorThemePage,
@@ -41,6 +46,10 @@ const SettingsContainer = ({ match }) => (
     <Route
       path={`${match.path}/change-password`}
       component={ChangePasswordWithTitle}
+    />
+    <Route
+      path={`${match.path}/notifications`}
+      component={SettingsNotificationsWithTitle}
     />
     <Route
       path={`${match.path}/color-theme`}

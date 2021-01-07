@@ -20,6 +20,7 @@ export const AUTH = {
   CONTACT_US: 'AUTH/CONTACT_US',
   READ_TIP: 'AUTH/READ-TIP',
   UNREAD_TIP: 'AUTH/UNREAD-TIP',
+  UPDATE_NOTIFICATIONS_SETTINGS: 'AUTH/UPDATE_NOTIFICATIONS_SETTINGS',
 }
 
 export const controlRedirectSignIn = () => ({
@@ -111,4 +112,9 @@ export const readTip = tipName => ({
 export const unreadTip = tipName => ({
   type: AUTH.UNREAD_TIP,
   payload: tipName,
+})
+
+export const updateNotificationsSettings = notifications => ({
+  type: AUTH.UPDATE_NOTIFICATIONS_SETTINGS,
+  payload: notifications,
 })

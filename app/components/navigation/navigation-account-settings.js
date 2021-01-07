@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { routes } from 'utils/routes'
-import { compose, withHandlers } from 'recompose'
 
 // redux
 import { connect } from 'react-redux'
@@ -11,41 +10,52 @@ import { getRoutingPathname } from 'redux/store/routing/routing.selectors'
 // styles
 import { NavigationAccountSettingsWrapper, SettingsButton } from './styles'
 
-const NavigationAccountSettings = props => {
-  const {
-    pathname,
-    onHandleClickEditProfile,
-    onHandleClickChangePassword,
-    onHandleClickColorTheme,
-    onHandleClickContactUs,
-  } = props
+const NavigationAccountSettings = ({ pathname, changeNavigation }) => {
   const { settings } = routes.user.account
+
+  const handleClickEditProfile = () => changeNavigation(settings.editProfile)
+
+  const handleClickChangePassword = () =>
+    changeNavigation(settings.changePassword)
+
+  const handleClickSettingsNotifications = () =>
+    changeNavigation(settings.notifications)
+
+  const handleClickColorTheme = () => changeNavigation(settings.colorTheme)
+
+  const handleClickContactUs = () => changeNavigation(settings.contactUs)
 
   return (
     <NavigationAccountSettingsWrapper>
       <SettingsButton
         active={pathname === settings.editProfile}
-        onClick={onHandleClickEditProfile}
+        onClick={handleClickEditProfile}
       >
         My Profile
       </SettingsButton>
       <SettingsButton
         active={pathname === settings.changePassword}
-        onClick={onHandleClickChangePassword}
+        onClick={handleClickChangePassword}
       >
         Change Password
       </SettingsButton>
       <SettingsButton
-        active={pathname === settings.contactUs}
-        onClick={onHandleClickContactUs}
+        active={pathname === settings.notifications}
+        onClick={handleClickSettingsNotifications}
       >
-        Contact Us
+        Notifications
       </SettingsButton>
       <SettingsButton
         active={pathname === settings.colorTheme}
-        onClick={onHandleClickColorTheme}
+        onClick={handleClickColorTheme}
       >
         Color Theme
+      </SettingsButton>
+      <SettingsButton
+        active={pathname === settings.contactUs}
+        onClick={handleClickContactUs}
+      >
+        Contact Us
       </SettingsButton>
     </NavigationAccountSettingsWrapper>
   )
@@ -53,10 +63,6 @@ const NavigationAccountSettings = props => {
 
 NavigationAccountSettings.propTypes = {
   pathname: PropTypes.string,
-  onHandleClickEditProfile: PropTypes.func,
-  onHandleClickChangePassword: PropTypes.func,
-  onHandleClickColorTheme: PropTypes.func,
-  onHandleClickContactUs: PropTypes.func,
 }
 
 const mapStateToProps = state => ({
@@ -67,18 +73,7 @@ const mapDispatchToProps = {
   changeNavigation,
 }
 
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  withHandlers({
-    onHandleClickEditProfile: props => () =>
-      props.changeNavigation(routes.user.account.settings.editProfile),
-    onHandleClickChangePassword: props => () =>
-      props.changeNavigation(routes.user.account.settings.changePassword),
-    onHandleClickColorTheme: props => () => {
-      props.changeNavigation(routes.user.account.settings.colorTheme)
-    },
-    onHandleClickContactUs: props => () => {
-      props.changeNavigation(routes.user.account.settings.contactUs)
-    },
-  })
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
 )(NavigationAccountSettings)

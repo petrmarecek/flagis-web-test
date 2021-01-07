@@ -50,18 +50,31 @@ export default typeToReducer(
       state.set('profile', new Profile(action.payload.profile)),
 
     [AUTH.READ_TIP]: {
-      PENDING: (state, { payload }) => state
-        .mergeIn(['profile', 'settings'], { tips: { [payload]: true } }),
+      PENDING: (state, { payload }) =>
+        state.mergeIn(['profile', 'settings'], { tips: { [payload]: true } }),
 
-      FULFILLED: (state, { payload }) => state.setIn(['profile'], new Profile(payload)),
+      FULFILLED: (state, { payload }) =>
+        state.setIn(['profile'], new Profile(payload)),
     },
 
     [AUTH.UNREAD_TIP]: {
-      PENDING: (state, { payload }) => state
-        .mergeIn(['profile', 'settings'], { tips: { [payload]: false } }),
+      PENDING: (state, { payload }) =>
+        state.mergeIn(['profile', 'settings'], { tips: { [payload]: false } }),
 
-      FULFILLED: (state, { payload }) => state.setIn(['profile'], new Profile(payload)),
+      FULFILLED: (state, { payload }) =>
+        state.setIn(['profile'], new Profile(payload)),
+    },
+
+    [AUTH.UPDATE_NOTIFICATIONS_SETTINGS]: {
+      PENDING: (state, { payload }) =>
+        state.updateIn(['profile', 'settings'], settings => ({
+          ...settings,
+          notifications: payload,
+        })),
+
+      FULFILLED: (state, { payload }) =>
+        state.setIn(['profile'], new Profile(payload)),
     },
   },
-  new AuthStore(),
+  new AuthStore()
 )

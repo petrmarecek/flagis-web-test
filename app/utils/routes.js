@@ -28,6 +28,7 @@ const routes = {
       settings: {
         editProfile: '/user/account/settings/edit-profile',
         changePassword: '/user/account/settings/change-password',
+        notifications: '/user/account/settings/notifications',
         colorTheme: '/user/account/settings/color-theme',
         contactUs: '/user/account/settings/contact-us',
       },
