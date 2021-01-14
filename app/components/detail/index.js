@@ -96,7 +96,7 @@ import {
 } from 'redux/utils/component-helper'
 import { getRoutingPrevPathname } from 'redux/store/routing/routing.selectors'
 
-import TaskDetail from './task-detail'
+import TaskDetail from '../task-detail'
 import TagDetail from './tag-detail'
 import ContactDetail from './contact-detail'
 

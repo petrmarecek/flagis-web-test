@@ -289,6 +289,7 @@ export const Task = Record({
   updatedAt: null,
   attachmentsCount: null,
   commentsCount: null,
+  isOwner: false,
 })
 
 export const Comment = Record({

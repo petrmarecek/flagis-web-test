@@ -81,7 +81,6 @@ const CenterPageTitle = styled.div`
 
 const LeftPanelWrapper = styled.div`
   ${boxSizing('border-box')};
-  ${() => console.log(colors)};
   background-color: ${props => colors[props.colorTheme].leftPanelBackground};
   width: ${props => (props.width ? props.width : '290')}px;
   position: absolute;

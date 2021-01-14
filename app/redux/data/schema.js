@@ -46,6 +46,10 @@ const task = new schema.Entity(
     processStrategy: entity => {
       if (entity.userId) {
         const { createdById, userId } = entity
+
+        const isOwner = createdById === userId
+        _.set(entity, 'isOwner', isOwner)
+
         const assignee = getAssigneeOfTask(entity.followers)
         if (createdById !== userId && assignee !== null) {
           const { isArchived, isImportant, order, reminderDate } = assignee
