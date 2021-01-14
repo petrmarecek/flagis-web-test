@@ -50,8 +50,8 @@ function loadComments(data) {
 
   // Sort by createdAt
   result = result.sort((a, b) => {
-    if (moment(a.createdAt) < moment(b.createdAt)) return -1
-    if (moment(a.createdAt) > moment(b.createdAt)) return 1
+    if (moment(a.createdAt) < moment(b.createdAt)) return 1
+    if (moment(a.createdAt) > moment(b.createdAt)) return -1
 
     return 0
   })
