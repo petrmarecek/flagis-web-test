@@ -24,6 +24,8 @@ const rightHideDetailAnimation = keyframes`${fadeOutRight}`
 
 // --------------------------------------- Detail -------------------------------------------
 const DetailStyle = styled.div`
+  min-height: 100%;
+
   ::-webkit-scrollbar {
     width: 5px;
   }
@@ -404,9 +406,8 @@ const DetailContentCommentsAddInput = styled.div`
 // --------------------------------------- Detail menu ---------------------------------------
 const Menu = styled.div`
   display: flex;
-  justify-content: flex-start;
   align-items: center;
-  height: 42px;
+  margin: 20px 0;
 `
 
 const LeftMenu = styled.div`
