@@ -31,7 +31,7 @@ const TaskDetailFollowerTo = props => {
   }
 
   if (!actualFollower) {
-    return <AddFollower followers={followers} askId={taskId} />
+    return <AddFollower followers={followers} taskId={taskId} />
   }
 
   return (
