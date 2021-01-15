@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.17.1](https://github.com/react-boilerplate/react-boilerplate/compare/v1.17.0...v1.17.1) (2021-01-15)
+
+
+### Bug Fixes
+
+* Fix add follower in task detail ([e53aef2](https://github.com/react-boilerplate/react-boilerplate/commit/e53aef2cab480e7a66046335ebd7f8a33dbd44ab))
+
 ## [1.17.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.16.0...v1.17.0) (2021-01-14)
 
 
