@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.18.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.17.1...v1.18.0) (2021-01-17)
+
+
+### Features
+
+* Add description icon to tasks list ([212ff88](https://github.com/react-boilerplate/react-boilerplate/commit/212ff88f6980c3fe4c012a4078b57b58f7354d17))
+
 ### [1.17.1](https://github.com/react-boilerplate/react-boilerplate/compare/v1.17.0...v1.17.1) (2021-01-15)
 
 
