@@ -30,6 +30,7 @@ import Icon from '../icons/icon'
 import FollowerResponseButtons from '../common/follower-response-buttons'
 import TaskListTagItems from './task-list-tag-items'
 import FollowerIcon from '../common/follower-icon'
+import DescriptionIcon from 'components/icons/description-icon'
 
 // styles
 import { colors } from 'components/styled-components-mixins/colors'
@@ -406,6 +407,11 @@ const TaskListItem = props => {
                 </Tags>
               </SubjectTags>
               <DescriptionDueDate>
+                {!_.isEmpty(task.description) && (
+                  <DueDate title="Task has a description">
+                    <DescriptionIcon color="b1b5b8" />
+                  </DueDate>
+                )}
                 {task.attachmentsCount > 0  && (
                   <DueDate
                     title={`Number of attachments - ${task.attachmentsCount}`}
