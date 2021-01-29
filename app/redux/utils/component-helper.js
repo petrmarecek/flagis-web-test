@@ -251,6 +251,13 @@ export const compareTaskByDueDate = (taskA, taskB) => {
   return subjectA - subjectB
 }
 
+export const compareTreeItemsByOrder = (treeItemA, treeItemB) => {
+  const subjectA = treeItemA.order
+  const subjectB = treeItemB.order
+
+  return subjectA - subjectB
+}
+
 export const compareTagByTitle = (tagA, tagB) => {
   const titleA = tagA.title.toLowerCase()
   const titleB = tagB.title.toLowerCase()

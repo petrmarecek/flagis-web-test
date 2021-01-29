@@ -126,13 +126,14 @@ const TagTreeSection = props => {
     maxWidth,
     title,
     isSectionNameVisible,
+    treeItemEntitiesByParent,
 
     // Handlers
     getInputRef,
     onAddChild,
     onAddControlCancel,
     onCollapse,
-    onSubitemCreated,
+    onSubItemCreated,
     onTreeItemEdit,
     onTreeItemDelete,
     onTreeItemSelected,
@@ -212,6 +213,7 @@ const TagTreeSection = props => {
                 type="text"
                 value="Favorite Filters"
                 style={styleWidth}
+                readOnly
               />
             </SectionHeader>
           )}
@@ -224,8 +226,8 @@ const TagTreeSection = props => {
               onAddControlCancel={onAddControlCancel}
               onCollapse={onCollapse}
               onDrop={onDrop}
-              onSubitemCreated={onSubitemCreated}
-              onSubmit={onSubitemCreated}
+              onSubItemCreated={onSubItemCreated}
+              onSubmit={onSubItemCreated}
               onTreeItemEdit={onTreeItemEdit}
               onTreeItemDelete={onTreeItemDelete}
               onTreeItemSelected={onTreeItemSelected}
@@ -234,6 +236,7 @@ const TagTreeSection = props => {
               parentTagRelations={null}
               treeItem={section}
               colorTheme={colorTheme}
+              treeItemEntitiesByParent={treeItemEntitiesByParent}
             />
             {!section.collapsed && (
               <SectionFooter
@@ -271,6 +274,7 @@ TagTreeSection.propTypes = {
   colorTheme: PropTypes.string,
   selection: PropTypes.object,
   tagsRelations: PropTypes.object,
+  treeItemEntitiesByParent: PropTypes.object,
   isDragging: PropTypes.bool,
   index: PropTypes.number,
   maxWidth: PropTypes.number,
@@ -285,7 +289,7 @@ TagTreeSection.propTypes = {
   onAddChild: PropTypes.func,
   onAddControlCancel: PropTypes.func,
   onCollapse: PropTypes.func,
-  onSubitemCreated: PropTypes.func,
+  onSubItemCreated: PropTypes.func,
   onTreeItemEdit: PropTypes.func,
   onTreeItemDelete: PropTypes.func,
   onTreeItemSelected: PropTypes.func,

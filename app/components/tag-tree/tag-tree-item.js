@@ -12,10 +12,11 @@ import {
 // components
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
-import TreeItemList from 'components/tag-tree/tag-tree-items'
+import TagTreeItems from 'components/tag-tree/tag-tree-items'
 
 // styles
 import {
+  ItemWithChildrenWrapper,
   ItemWrapper,
   Item,
   ItemTagIcon,
@@ -24,6 +25,10 @@ import {
   ItemIcons,
   ItemIcon,
   ItemChildren,
+  Relation,
+  RelationTop,
+  RelationCenter,
+  RelationBottom,
 } from './styles'
 import colors from 'components/styled-components-mixins/colors'
 import { useTreeItemDragDrop } from 'hooks/useTreeItemDragDrop'
@@ -38,13 +43,15 @@ const TagTreeItem = props => {
     tagsRelations,
     addControlParentId,
     colorTheme,
+    isLastItem,
+    treeItemEntitiesByParent,
 
     // Handlers
     onAddChild,
     onAddControlCancel,
     onDrop,
     onCollapse,
-    onSubitemCreated,
+    onSubItemCreated,
     onTreeItemEdit,
     onTreeItemDelete,
     onHandleTreeItemSelected,
@@ -57,7 +64,6 @@ const TagTreeItem = props => {
 
   const {
     dragHandle,
-    dragProps,
     dropHandle,
     dropProps,
     dropPosition,
@@ -70,16 +76,36 @@ const TagTreeItem = props => {
     onDrop,
   })
 
-  const isChildItems = treeItem.childItems.size > 0
+  const hasChildItems = treeItem.childItems.size > 0
   const itemParents = [...parents, treeItem]
   const tag = treeItem.tag
   const colorIndex = getColorIndex(tag.colorIndex, tag.title)
   const tagColor = getTagColor(colorIndex)
+  const isSelected = selection.includes(treeItem.id)
+
+  // computing relation
+  const children = treeItemEntitiesByParent.get(treeItem.parentId)
+  const siblings = children.filter(item => item.id !== treeItem.id)
+  let isNextSiblingSelected = false
+  for (const sibling of siblings) {
+    if (sibling.order > treeItem.order && selection.includes(sibling.id)) {
+      isNextSiblingSelected = true
+    }
+  }
+  const showRelation = isSelected || isNextSiblingSelected
+
+  const hasMoreParents = parents.length > 1
+  const hasMoreChildren = children.size > 1
+  let childrenClassNameModifier =
+    hasMoreParents && hasMoreChildren && !isLastItem ? '--border-left' : ''
+  if (childrenClassNameModifier === '--border-left' && isNextSiblingSelected) {
+    childrenClassNameModifier = '--selected-border-left'
+  }
 
   const currentTagRelations = getTagRelations(
     tagsRelations,
     parentTagRelations,
-    treeItem.tagId,
+    treeItem.tagId
   )
 
   const draggingData = {
@@ -111,18 +137,43 @@ const TagTreeItem = props => {
 
   return (
     <li ref={dragHandle}>
-      <ItemWrapper dragging={dragProps.isDragging}>
-        <div ref={dropHandle}>
+      <ItemWithChildrenWrapper>
+        <ItemWrapper>
+          {hasMoreParents && (
+            <Relation
+              className="tag-tree-item__relation"
+              showRelation={showRelation}
+            >
+              <RelationTop
+                showRelation={showRelation}
+                colorTheme={colorTheme}
+              />
+              <RelationCenter
+                showRelation={showRelation}
+                smallWidth={isNextSiblingSelected}
+                colorTheme={colorTheme}
+              />
+              {!isLastItem && (
+                <RelationBottom
+                  className="tag-tree-item__relation-bottom"
+                  showBorder={isNextSiblingSelected}
+                  hideRelation={isSelected && !isNextSiblingSelected}
+                  colorTheme={colorTheme}
+                />
+              )}
+            </Relation>
+          )}
           <Item
             onClick={onHandleClicked}
-            selected={selection.includes(treeItem.id)}
+            isSelected={isSelected}
             colorTheme={colorTheme}
-            isChildItems={isChildItems}
+            hasChildItems={hasChildItems}
+            ref={dropHandle}
             {...draggingData}
           >
             <ItemTagIcon>
               <Icon
-                icon={isChildItems ? ICONS.TAG_MULTI : ICONS.TAG}
+                icon={hasChildItems ? ICONS.TAG_MULTI : ICONS.TAG}
                 width={20}
                 height={12}
                 color={[tagColor]}
@@ -130,23 +181,21 @@ const TagTreeItem = props => {
             </ItemTagIcon>
             <ItemTitle>{treeItem.tag.title}</ItemTitle>
             <ItemRelations
-              className="tag-tree-item--relations"
-              selected={selection.includes(treeItem.id)}
+              className="tag-tree-item__relations-count"
+              selected={isSelected}
               colorTheme={colorTheme}
             >
               {currentTagRelations.size}
             </ItemRelations>
-            <ItemIcons className="tag-tree-item--icons">
-              {renderArrowIcon(treeItem.childItems)}
-              <ItemIcon title="Delete" iconMargin="0 4px 0 0">
+            <ItemIcons className="tag-tree-item__icons">
+              <ItemIcon title="Add sub filter" iconMargin="0 10px 0 5px">
                 <Icon
-                  icon={ICONS.TRASH}
+                  icon={ICONS.PLUS}
                   width={12}
-                  height={13}
-                  scale={0.5}
+                  height={12}
+                  scale={0.38}
                   color={[colors[colorTheme].tagTreeItemIcon]}
-                  hoverColor={[colors.trashHover]}
-                  onClick={onHandleDeleteIconClicked}
+                  onClick={onHandleAddChildClicked}
                 />
               </ItemIcon>
               <ItemIcon title="Go to edit tag" iconMargin="0 10px 0 0">
@@ -159,28 +208,35 @@ const TagTreeItem = props => {
                   onClick={onHandleEditIconClicked}
                 />
               </ItemIcon>
-              <ItemIcon title="Add sub filter" iconMargin="0 10px 0 0">
+              <ItemIcon title="Delete" iconMargin="0 4px 0 0">
                 <Icon
-                  icon={ICONS.PLUS}
+                  icon={ICONS.TRASH}
                   width={12}
-                  height={12}
-                  scale={0.38}
+                  height={13}
+                  scale={0.5}
                   color={[colors[colorTheme].tagTreeItemIcon]}
-                  onClick={onHandleAddChildClicked}
+                  hoverColor={[colors.trashHover]}
+                  onClick={onHandleDeleteIconClicked}
                 />
               </ItemIcon>
+              {renderArrowIcon(treeItem.childItems)}
             </ItemIcons>
           </Item>
-        </div>
-        <ItemChildren collapsed={treeItem.collapsed}>
-          <TreeItemList
+        </ItemWrapper>
+        <ItemChildren
+          className={`tag-tree-item__children${childrenClassNameModifier}`}
+          showBorder={isNextSiblingSelected && hasMoreParents}
+          colorTheme={colorTheme}
+          collapsed={treeItem.collapsed}
+        >
+          <TagTreeItems
             addControlParentId={addControlParentId}
             onAddChild={onAddChild}
             onAddControlCancel={onAddControlCancel}
             onCollapse={onCollapse}
             onDrop={onDrop}
-            onSubitemCreated={onSubitemCreated}
-            onSubmit={onSubitemCreated}
+            onSubItemCreated={onSubItemCreated}
+            onSubmit={onSubItemCreated}
             onTreeItemEdit={onTreeItemEdit}
             onTreeItemDelete={onTreeItemDelete}
             onTreeItemSelected={onHandleTreeItemSelected}
@@ -190,9 +246,10 @@ const TagTreeItem = props => {
             tagsRelations={tagsRelations}
             treeItem={treeItem}
             colorTheme={colorTheme}
+            treeItemEntitiesByParent={treeItemEntitiesByParent}
           />
         </ItemChildren>
-      </ItemWrapper>
+      </ItemWithChildrenWrapper>
     </li>
   )
 }
@@ -202,17 +259,19 @@ TagTreeItem.propTypes = {
   treeItem: PropTypes.object,
   parents: PropTypes.array.isRequired,
   parentTagRelations: PropTypes.object,
+  treeItemEntitiesByParent: PropTypes.object,
   selection: PropTypes.object,
   tagsRelations: PropTypes.object,
   addControlParentId: PropTypes.string,
   colorTheme: PropTypes.string,
+  isLastItem: PropTypes.bool,
 
   // Handlers
   onAddChild: PropTypes.func,
   onAddControlCancel: PropTypes.func,
   onDrop: PropTypes.func.isRequired,
   onCollapse: PropTypes.func.isRequired,
-  onSubitemCreated: PropTypes.func,
+  onSubItemCreated: PropTypes.func,
   onTreeItemEdit: PropTypes.func,
   onTreeItemDelete: PropTypes.func,
   onTreeItemSelected: PropTypes.func,
@@ -225,58 +284,72 @@ TagTreeItem.propTypes = {
 }
 
 const areEqual = (props, nextProps) => {
-  // props and state
-  const {
-    treeItem,
-    selection,
-    addControlParentId,
-  } = props
-
-  // nextProps and nextState
-  const nextTreeItem = nextProps.treeItem
-  const nextSelection = nextProps.selection
-  const nextAddControlParentId = nextProps.addControlParentId
-
-  const isTreeItemEqual = _.isEqual(treeItem.toJS(), nextTreeItem.toJS())
-  const isInSelection = selection.includes(treeItem.id) || nextSelection.includes(treeItem.id)
-  const isSelectionEqual = isInSelection ? _.isEqual(selection.toJS(), nextSelection.toJS()) : true
+  const isTreeItemEqual = _.isEqual(
+    props.treeItem.toJS(),
+    nextProps.treeItem.toJS()
+  )
+  const isSelected =
+    props.selection.includes(props.treeItem.id) ||
+    nextProps.selection.includes(props.treeItem.id)
+  const isSelectionEqual = isSelected
+    ? _.isEqual(props.selection.toJS(), nextProps.selection.toJS())
+    : false
+  const isAddControlParentIdEqual =
+    props.addControlParentId === nextProps.addControlParentId
+  const isTreeItemEntitiesByParentEqual = _.isEqual(
+    props.treeItemEntitiesByParent,
+    nextProps.treeItemEntitiesByParent
+  )
+  const isColorThemeEqual = _.isEqual(props.colorTheme, nextProps.colorTheme)
+  const isParentsEqual = _.isEqual(props.parents, nextProps.parents)
+  const isLastItemEqual = props.isLastItem === nextProps.isLastItem
   const isTagsRelationsEqual = _.isEqual(
-    props.tagsRelations.get(treeItem.tag.id) ? props.tagsRelations.get(treeItem.tag.id).toJS : null,
-    nextProps.tagsRelations.get(nextTreeItem.tag.id) ? nextProps.tagsRelations.get(nextTreeItem.tag.id).toJS : null,
+    props.tagsRelations.get(props.treeItem.tag.id)
+      ? props.tagsRelations.get(props.treeItem.tag.id).toJS
+      : null,
+    nextProps.tagsRelations.get(nextProps.treeItem.tag.id)
+      ? nextProps.tagsRelations.get(nextProps.treeItem.tag.id).toJS
+      : null
   )
 
-  const isEqual =
-    isTreeItemEqual
-    && isSelectionEqual
-    && addControlParentId === nextAddControlParentId
-    && isTagsRelationsEqual
-
-  return isEqual
+  return (
+    isTreeItemEqual &&
+    isSelectionEqual &&
+    isAddControlParentIdEqual &&
+    isTreeItemEntitiesByParentEqual &&
+    isColorThemeEqual &&
+    isParentsEqual &&
+    isLastItemEqual &&
+    isTagsRelationsEqual
+  )
 }
 
-export default React.memo(compose(
-  withHandlers({
-    onHandleTreeItemSelected: props => selectedTreeItems => {
-      selectedTreeItems.push(props.treeItem.toJS())
-      props.onTreeItemSelected(selectedTreeItems)
-    },
-    onHandleClicked: props => () =>
-      props.onTreeItemSelected([props.treeItem.toJS()]),
-    onHandleCollapse: props => event => {
-      event.stopPropagation()
-      props.onCollapse(props.treeItem)
-    },
-    onHandleAddChildClicked: props => event => {
-      event.stopPropagation()
-      props.onAddChild(props.treeItem.id)
-    },
-    onHandleEditIconClicked: props => event => {
-      event.stopPropagation()
-      props.onTreeItemEdit(props.treeItem.toJS())
-    },
-    onHandleDeleteIconClicked: props => event => {
-      event.stopPropagation()
-      props.onTreeItemDelete(props.treeItem.toJS())
-    },
-  }),
-)(TagTreeItem), areEqual)
+export default React.memo(
+  compose(
+    withHandlers({
+      onHandleTreeItemSelected: props => selectedTreeItems => {
+        selectedTreeItems.push(props.treeItem.toJS())
+        props.onTreeItemSelected(selectedTreeItems)
+      },
+      onHandleClicked: props => () =>
+        props.onTreeItemSelected([props.treeItem.toJS()]),
+      onHandleCollapse: props => event => {
+        event.stopPropagation()
+        props.onCollapse(props.treeItem)
+      },
+      onHandleAddChildClicked: props => event => {
+        event.stopPropagation()
+        props.onAddChild(props.treeItem.id)
+      },
+      onHandleEditIconClicked: props => event => {
+        event.stopPropagation()
+        props.onTreeItemEdit(props.treeItem.toJS())
+      },
+      onHandleDeleteIconClicked: props => event => {
+        event.stopPropagation()
+        props.onTreeItemDelete(props.treeItem.toJS())
+      },
+    })
+  )(TagTreeItem),
+  areEqual
+)

@@ -4,6 +4,7 @@ import {
   getEntitiesTreeItems,
 } from '../entities/entities.selectors'
 import { createSelector } from 'reselect'
+import { compareTreeItemsByOrder } from '../../utils/component-helper'
 
 // ------ Helper functions ----------------------------------------------------
 /* eslint-disable no-use-before-define */
@@ -74,12 +75,7 @@ export const getTree = (state, parentId = null) => {
   })
 
   // sort treeItems by order
-  items = items.sort((a, b) => {
-    if (a.order < b.order) return -1
-    if (a.order > b.order) return 1
-
-    return 0
-  })
+  items = items.sort(compareTreeItemsByOrder)
 
   return items.map(item => {
     const { id, tagId } = item
@@ -125,6 +121,21 @@ export const getDisabledTagIds = (state, parentId, updatedTreeItem = {}) => {
 
 // ------ Reselect selectors ----------------------------------------------------
 
+export const getTreeItemEntitiesByParents = createSelector(
+  getTreeItemsByParent,
+  getEntitiesTreeItems,
+  (treeItemsByParent, entitiesTreeItems) => {
+    return treeItemsByParent.map((treeItemIds, key) => {
+      const treeItemEntities = treeItemIds.map(treeItemId =>
+        entitiesTreeItems.get(treeItemId)
+      )
+      // sort tree items by order
+      treeItemEntities.sort(compareTreeItemsByOrder)
+      return treeItemEntities
+    })
+  }
+)
+
 export const getSections = createSelector(
   getTreeItemsByParent,
   getEntitiesTreeItems,
@@ -139,12 +150,7 @@ export const getSections = createSelector(
     })
 
     // sort sections by order
-    sections = sections.sort((a, b) => {
-      if (a.order < b.order) return -1
-      if (a.order > b.order) return 1
-
-      return 0
-    })
+    sections = sections.sort(compareTreeItemsByOrder)
 
     return sections
   }
