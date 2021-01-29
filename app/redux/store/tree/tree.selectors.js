@@ -125,7 +125,7 @@ export const getTreeItemEntitiesByParents = createSelector(
   getTreeItemsByParent,
   getEntitiesTreeItems,
   (treeItemsByParent, entitiesTreeItems) => {
-    return treeItemsByParent.map((treeItemIds, key) => {
+    return treeItemsByParent.map(treeItemIds => {
       const treeItemEntities = treeItemIds.map(treeItemId =>
         entitiesTreeItems.get(treeItemId)
       )

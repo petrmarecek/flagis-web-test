@@ -114,9 +114,9 @@ const TagTreeItem = props => {
     dragOverBottom: dropProps.isOver && dropPosition === 'BOTTOM',
   }
 
-  const renderArrowIcon = children => {
+  const renderArrowIcon = treeChildren => {
     const title = treeItem.collapsed ? 'Expand' : 'Collapse'
-    return children.size > 0 ? (
+    return treeChildren.size > 0 ? (
       <ItemIcon
         title={title}
         iconMargin="0 6px 0 6px"

@@ -63,6 +63,7 @@ const NavigationAccountSettings = ({ pathname, changeNavigation }) => {
 
 NavigationAccountSettings.propTypes = {
   pathname: PropTypes.string,
+  changeNavigation: PropTypes.func,
 }
 
 const mapStateToProps = state => ({

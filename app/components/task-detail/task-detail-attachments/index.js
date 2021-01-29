@@ -4,13 +4,16 @@ import React, { useCallback, useEffect } from 'react'
 
 import {
   Body,
-  Header, HeaderIcon, HeaderLeft, HeaderTitle,
+  Header,
+  HeaderIcon,
+  HeaderLeft,
+  HeaderTitle,
   Wrapper,
 } from './styles'
 import TaskDetailAttachmentsItem from './task-detail-attachments-item'
 
 const TaskDetailAttachments = props => {
-  const { attachments, isFetching, isUpdatable, onDelete, onFetch, onUpload } = props
+  const { attachments, onDelete, onFetch } = props
 
   // Start fetching attachments
   useEffect(() => {
@@ -20,7 +23,7 @@ const TaskDetailAttachments = props => {
   // Prepare handler for deleting attachment
   const handleDeleteItem = useCallback(
     attachmentId => () => onDelete(attachmentId),
-    [onDelete],
+    [onDelete]
   )
 
   // Hide when no attachments found
