@@ -80,7 +80,10 @@ const TagTreeItem = props => {
   const hasChildItems = treeItem.childItems.size > 0
   const itemParents = [...parents, treeItem]
   const tag = treeItem.tag
-  const colorIndex = getColorIndex(tag ? tag.colorIndex : null, tag ? tag.title : '')
+  const colorIndex = getColorIndex(
+    tag ? tag.colorIndex : null,
+    tag ? tag.title : ''
+  )
   const tagColor = getTagColor(colorIndex)
   const isSelected = selection.includes(treeItem.id)
 
@@ -106,7 +109,7 @@ const TagTreeItem = props => {
   const currentTagRelations = getTagRelations(
     tagsRelations,
     parentTagRelations,
-    treeItem.tagId || treeItem.fromUserId,
+    treeItem.tagId || treeItem.fromUserId
   )
 
   const draggingData = {
@@ -120,7 +123,7 @@ const TagTreeItem = props => {
     return treeChildren.size > 0 ? (
       <ItemIcon
         title={title}
-        iconMargin='0 6px 0 6px'
+        iconMargin="0 6px 0 6px"
         animation
         collapsed={treeItem.collapsed}
       >
@@ -183,16 +186,16 @@ const TagTreeItem = props => {
             {...draggingData}
           >
             <ItemTagIcon>
-              {tag
-                ? (
-                  <Icon
-                    icon={hasChildItems ? ICONS.TAG_MULTI : ICONS.TAG}
-                    width={20}
-                    height={12}
-                    color={[tagColor]}
-                  />
-                )
-                : <UserFilterIcon />}
+              {tag ? (
+                <Icon
+                  icon={hasChildItems ? ICONS.TAG_MULTI : ICONS.TAG}
+                  width={20}
+                  height={12}
+                  color={[tagColor]}
+                />
+              ) : (
+                <UserFilterIcon />
+              )}
             </ItemTagIcon>
             <ItemTitle>{tag ? tag.title : getUsername()}</ItemTitle>
             <ItemRelations
@@ -320,7 +323,10 @@ const areEqual = (props, nextProps) => {
   const isColorThemeEqual = _.isEqual(props.colorTheme, nextProps.colorTheme)
   const isParentsEqual = _.isEqual(props.parents, nextProps.parents)
   const isLastItemEqual = props.isLastItem === nextProps.isLastItem
-  const isTagsRelationsEqual = _.isEqual(props.tagsRelations, nextProps.tagsRelations)
+  const isTagsRelationsEqual = _.isEqual(
+    props.tagsRelations,
+    nextProps.tagsRelations
+  )
 
   return (
     isTreeItemEqual &&
