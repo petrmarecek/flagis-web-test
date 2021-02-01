@@ -151,6 +151,7 @@ const SettingsNotificationsForm = ({
 
 SettingsNotificationsForm.propTypes = {
   notifications: PropTypes.object,
+  updateNotificationsSettings: PropTypes.func,
 }
 
 const mapStateToProps = state => ({

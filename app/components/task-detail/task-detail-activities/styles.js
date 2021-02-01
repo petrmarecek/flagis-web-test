@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import Icon from '../../icons/icon'
 import { ICONS } from '../../icons/icon-constants'
-import {placeholderColor} from '../../styled-components-mixins'
+import { placeholderColor } from '../../styled-components-mixins'
 
 import {
   ContentBox,
@@ -13,7 +13,6 @@ import {
   ContentBoxHeaderTitle,
   ContentBoxBody,
 } from '../styles'
-import React from 'react'
 
 const Body = styled(ContentBoxBody)`
   flex-direction: column;
@@ -56,7 +55,7 @@ const Activity = styled.div`
 const ActivityText = styled.span`
   font-size: 11px;
   line-height: 14px;
-  color: #676D71;
+  color: #676d71;
 `
 
 // ------ COMMENT -------------------------------------------------------------
@@ -96,16 +95,16 @@ const CommentAuthor = styled.span`
   font-size: 11px;
   font-weight: 500;
   line-height: 13px;
-  color: #1C2124;
+  color: #1c2124;
 `
 
 const CommentDate = styled.span`
   font-size: 11px;
   line-height: 13px;
-  color: #676D71;
+  color: #676d71;
 
   &:before {
-    content: " ";
+    content: ' ';
   }
 `
 
@@ -114,7 +113,7 @@ const CommentText = styled.p`
 
   font-size: 14px;
   line-height: 16px;
-  color: #1C2124;
+  color: #1c2124;
 `
 
 const CommentDeleteBox = styled.div`
@@ -142,9 +141,9 @@ const AddComment = styled.div`
   flex: 1;
   align-items: flex-end;
 
-  background-color: #FAFAFA;
-  border-bottom: 1px solid #F0F0F0;
-  border-top: 1px solid #F0F0F0;
+  background-color: #fafafa;
+  border-bottom: 1px solid #f0f0f0;
+  border-top: 1px solid #f0f0f0;
   padding: 12px 10px;
 `
 
@@ -157,7 +156,7 @@ const AddCommentAvatar = styled(Avatar).attrs({
 `
 
 const AddCommentInput = styled.textarea.attrs({
-  placeholder: 'Add a comment'
+  placeholder: 'Add a comment',
 })`
   width: 100%;
   height: 36px;
@@ -167,15 +166,15 @@ const AddCommentInput = styled.textarea.attrs({
   overflow: hidden;
   cursor: text;
 
-  background: #FFFFFF;
-  border: 1px solid #F0F0F0;
+  background: #ffffff;
+  border: 1px solid #f0f0f0;
   box-sizing: border-box;
   border-radius: 8px;
   padding: 9px 11px;
 
   font-size: 14px;
   line-height: 16px;
-  color: #1C2124;
+  color: #1c2124;
 
   ${placeholderColor('#676D71')};
 `
@@ -187,11 +186,9 @@ export {
   HeaderIcon,
   HeaderTitle,
   Wrapper,
-
   // ACTIVITY
   Activity,
   ActivityText,
-
   // COMMENT
   Comment,
   CommentAuthor,
@@ -203,7 +200,6 @@ export {
   CommentDeleteBox,
   CommentHeader,
   CommentText,
-
   // ADD COMMENT
   AddComment,
   AddCommentAvatar,

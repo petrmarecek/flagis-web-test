@@ -19,6 +19,33 @@ const Wrapper = styled.div`
   bottom: 0;
   left: 0;
   padding: 0 20px 0 24px;
+
+  .tag-tree-item__relation,
+  .tag-tree-item__relation-bottom,
+  .tag-tree-item__children--selected-border-left,
+  .tag-tree-item__children--border-left {
+    ${transition('100ms ease-out')};
+  }
+
+  :hover {
+    .tag-tree-item__relation,
+    .tag-tree-item__relation-bottom {
+      ${transition('100ms ease-out')};
+      opacity: 1;
+    }
+
+    .tag-tree-item__children--selected-border-left {
+      ${transition('100ms ease-out')};
+      border-left: 1px solid
+        ${props => colors[props.colorTheme].tagTreeRelationSelected};
+    }
+
+    .tag-tree-item__children--border-left {
+      ${transition('100ms ease-out')};
+      border-left: 1px solid
+        ${props => colors[props.colorTheme].tagTreeRelation};
+    }
+  }
 `
 
 const AddSection = styled.div`
@@ -58,7 +85,7 @@ const SectionWrapper = styled.div`
 
 const SectionHeader = styled.div`
   display: flex;
-  align-items: top;
+  align-items: flex-start;
   justify-content: space-between;
   height: 24px;
   background-color: transparent;
@@ -154,7 +181,7 @@ const AddFilterText = styled.span`
 /* ---------------------------- Tag-Tree Items -------------------------------- */
 
 const ItemsList = styled.ul`
-  padding: ${props => (props.root ? '15px 0 0 0' : '0 0 0 26px')};
+  padding: ${props => props.padding};
   display: ${props => (props.collapsed ? 'none' : 'block')};
 `
 
@@ -184,7 +211,7 @@ const dragOverTop = css`
   outline: none;
 
   :after {
-    ${dragOverBorder}
+    ${dragOverBorder};
     top: -1px;
   }
 `
@@ -195,18 +222,24 @@ const dragOverBottom = css`
   outline: none;
 
   :after {
-    ${dragOverBorder}
+    ${dragOverBorder};
     bottom: -1px;
   }
 `
 
-const ItemWrapper = styled.div`
+const ItemWithChildrenWrapper = styled.div`
   margin: 0;
   padding: 0;
   font-weight: normal;
-  position: relative;
   opacity: ${props => (props.dragging ? '0' : '1')};
   overflow: hidden;
+`
+
+const ItemWrapper = styled.div`
+  display: flex;
+  min-width: 0;
+  width: 100%;
+  position: relative;
 `
 
 const itemSelected = css`
@@ -218,15 +251,17 @@ const itemSelected = css`
 `
 
 const Item = styled.div`
+  display: flex;
   position: relative;
   list-style-type: none;
-  display: block;
   height: ${constants.TAG_TREE_ITEM_HEIGHT}px;
   line-height: ${constants.TAG_TREE_ITEM_HEIGHT}px;
   cursor: pointer;
+  width: 100%;
   font-size: 14px;
-  padding: ${props => (props.isChildItems ? `0 80px 0 34px` : `0 65px 0 34px`)};
   margin-bottom: 5px;
+  padding: 0 4px;
+  min-width: 0;
   color: ${props =>
     props.selected
       ? colors[props.colorTheme].tagTreeItemHover
@@ -235,13 +270,13 @@ const Item = styled.div`
   ${props => (props.dragOver ? dragOver : null)}
   ${props => (props.dragOverTop ? dragOverTop : null)}
   ${props => (props.dragOverBottom ? dragOverBottom : null)}
-  ${props => (props.selected ? itemSelected : null)}
+  ${props => (props.isSelected ? itemSelected : null)}
 
-  .tag-tree-item--relations {
+  .tag-tree-item__relations-count {
     visibility: visible;
   }
 
-  .tag-tree-item--icons {
+  .tag-tree-item__icons {
     visibility: hidden;
   }
 
@@ -251,35 +286,30 @@ const Item = styled.div`
       colors[props.colorTheme].tagTreeItemBackgroundHover};
     color: ${props => colors[props.colorTheme].tagTreeItemHover};
 
-    .tag-tree-item--relations {
+    .tag-tree-item__relations-count {
       visibility: hidden;
     }
 
-    .tag-tree-item--icons {
+    .tag-tree-item__icons {
       visibility: visible;
     }
   }
 `
 
 const ItemTagIcon = styled.div`
-  position: absolute;
-  left: 7px;
-  top: -1px;
+  margin-right: 5px;
 `
 
 const ItemTitle = styled.div`
   ${textOverflow('ellipsis')}
-  display: inline-block;
   width: 100%;
   overflow: hidden;
   white-space: nowrap;
-  max-width: 100%;
-  max-width: calc(100% - 15px);
 `
 
 const ItemRelations = styled.div`
   color: ${props =>
-    props.selected
+    props.isSelected
       ? colors[props.colorTheme].tagTreeItemHover
       : colors.tagTreeItem};
   position: absolute;
@@ -291,23 +321,62 @@ const ItemRelations = styled.div`
 `
 
 const ItemIcons = styled.div`
-  position: absolute;
-  top: 0;
-  right: 8px;
+  display: flex;
+  justify-content: end;
 `
 
 const ItemIcon = styled.div`
-  float: right;
   margin: ${props => props.iconMargin};
   ${transition(props => (props.animation ? 'all 0.1s ease-out' : 'none'))}
-  ${transform(props =>
-    props.collapsed ? 'rotate(90deg)' : 'rotate(0deg)'
-  )}
-  display: block;
+  ${transform(props => (props.collapsed ? 'rotate(90deg)' : 'rotate(0deg)'))}
 `
 
 const ItemChildren = styled.span`
   display: ${props => (props.collapsed ? 'none' : 'block')};
+  border-left: 1px solid
+    ${props =>
+      props.showBorder
+        ? colors[props.colorTheme].tagTreeRelationSelected
+        : 'transparent'};
+`
+
+const Relation = styled.div`
+  height: 32px;
+  width: 5px;
+  margin-right: 2px;
+  opacity: ${props => (props.showRelation ? '1' : '0')};
+`
+
+const RelationTop = styled.div`
+  height: 14px;
+  width: 5px;
+  border-left: 1px solid
+    ${props =>
+      props.showRelation
+        ? colors[props.colorTheme].tagTreeRelationSelected
+        : colors[props.colorTheme].tagTreeRelation};
+`
+
+const RelationCenter = styled.div`
+  height: 1px;
+  width: ${props => (props.smallWidth ? '1px' : '5px')};
+  border-bottom: 1px solid
+    ${props =>
+      props.showRelation
+        ? colors[props.colorTheme].tagTreeRelationSelected
+        : colors[props.colorTheme].tagTreeRelation};
+  opacity: ${props => (props.hideRelation ? '0' : '1')};
+`
+
+const RelationBottom = styled.div`
+  height: 17px;
+  width: 5px;
+  border-left: 1px solid
+    ${props =>
+      props.showBorder
+        ? colors[props.colorTheme].tagTreeRelationSelected
+        : colors[props.colorTheme].tagTreeRelation};
+  opacity: ${props => (props.hideRelation ? '0' : '1')};
 `
 
 export {
@@ -327,6 +396,7 @@ export {
   // Tag-Tree Items
   ItemsList,
   // Tag-Tree Item
+  ItemWithChildrenWrapper,
   ItemWrapper,
   Item,
   ItemTagIcon,
@@ -335,4 +405,8 @@ export {
   ItemIcons,
   ItemIcon,
   ItemChildren,
+  Relation,
+  RelationTop,
+  RelationCenter,
+  RelationBottom,
 }

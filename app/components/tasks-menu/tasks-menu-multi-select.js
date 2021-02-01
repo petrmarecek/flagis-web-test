@@ -18,27 +18,6 @@ import { colors } from 'components/styled-components-mixins/colors'
 const TasksMenuMultiSelect = props => {
   const multiSelectRef = useRef()
 
-  useEffect(() => {
-    velocity(multiSelectRef.current, 'transition.fadeIn', {
-      duration: 600,
-      display: 'flex',
-    })
-
-    // Add listener for close menu
-    document
-      .getElementsByClassName('page-overflow-fix')[0]
-      .addEventListener('click', handleClick, false)
-    document.addEventListener('keydown', handleKeyDown, false)
-
-    return () => {
-      // Remove listener for close menu
-      document
-        .getElementsByClassName('page-overflow-fix')[0]
-        .removeEventListener('click', handleClick, false)
-      document.removeEventListener('keydown', handleKeyDown, false)
-    }
-  }, [])
-
   const handleClick = event => {
     const multiSelectElem = findDOMNode(multiSelectRef.current)
     const notContainsElem = multiSelectElem
@@ -78,6 +57,27 @@ const TasksMenuMultiSelect = props => {
         return
     }
   }
+
+  useEffect(() => {
+    velocity(multiSelectRef.current, 'transition.fadeIn', {
+      duration: 600,
+      display: 'flex',
+    })
+
+    // Add listener for close menu
+    document
+      .getElementsByClassName('page-overflow-fix')[0]
+      .addEventListener('click', handleClick, false)
+    document.addEventListener('keydown', handleKeyDown, false)
+
+    return () => {
+      // Remove listener for close menu
+      document
+        .getElementsByClassName('page-overflow-fix')[0]
+        .removeEventListener('click', handleClick, false)
+      document.removeEventListener('keydown', handleKeyDown, false)
+    }
+  }, [])
 
   return (
     <MultiSelectWrapper ref={multiSelectRef}>

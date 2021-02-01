@@ -1,5 +1,3 @@
-import { TASKS } from 'redux/store/tasks/tasks.actions'
-
 export const MULTI_SELECT = {
   ADD_TO_LIST: 'MULTI-SELECT/ADD-TO-LIST',
   DELETE_FROM_LIST: 'MULTI-SELECT/DELETE-FROM-LIST',
