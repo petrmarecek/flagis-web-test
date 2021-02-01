@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.19.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.18.0...v1.19.0) (2021-02-01)
+
+
+### Features
+
+* Add fixed height and width of task detail and others ([d1e372d](https://github.com/react-boilerplate/react-boilerplate/commit/d1e372d32dbb16e426a7ba68ba22cbf461a957f7))
+* Add user as filter to tag tree ([5922ea9](https://github.com/react-boilerplate/react-boilerplate/commit/5922ea9bbc026a113541dd4ac5bf51836340342f))
+
+
+### Bug Fixes
+
+* Fix height of activities ([1ff727d](https://github.com/react-boilerplate/react-boilerplate/commit/1ff727d56fbddeee599675c42eaf22e1d85c8330))
+* Fix margin of central panel on device with resolution ([b3a3b03](https://github.com/react-boilerplate/react-boilerplate/commit/b3a3b031c864db915696c782a5b55e959ecbeb5c))
+
 ## [1.18.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.17.1...v1.18.0) (2021-01-17)
 
 
