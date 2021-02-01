@@ -4,25 +4,9 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [1.20.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.15.1...v1.20.0) (2021-02-01)
 
-
-### Features
-
-* Add description icon to tasks list ([212ff88](https://github.com/react-boilerplate/react-boilerplate/commit/212ff88f6980c3fe4c012a4078b57b58f7354d17))
-* Add fixed height and width of task detail and others ([d1e372d](https://github.com/react-boilerplate/react-boilerplate/commit/d1e372d32dbb16e426a7ba68ba22cbf461a957f7))
-* Add notifications settings page (disabled yet) ([eeabb6f](https://github.com/react-boilerplate/react-boilerplate/commit/eeabb6ffe800988c0ae2c94c9742218c362afece))
-* Add redesigned task detail ([2f40390](https://github.com/react-boilerplate/react-boilerplate/commit/2f40390e35e5ad6eb969dc7709e56fe2aec843e3))
-* Add reminder date, comments count and attachments count to tasks list ([ee32434](https://github.com/react-boilerplate/react-boilerplate/commit/ee324349dba9dbb777d6d484975e30a339b4d0d6))
-* Add user as filter to tag tree ([5922ea9](https://github.com/react-boilerplate/react-boilerplate/commit/5922ea9bbc026a113541dd4ac5bf51836340342f))
-
-
 ### Bug Fixes
 
-* Fix add follower in task detail ([e53aef2](https://github.com/react-boilerplate/react-boilerplate/commit/e53aef2cab480e7a66046335ebd7f8a33dbd44ab))
 * Fix add sub item in tag-tree ([7744154](https://github.com/react-boilerplate/react-boilerplate/commit/77441549216c4f719e2c62f169d97bc4e1a80994))
-* Fix build ([0dd9b3d](https://github.com/react-boilerplate/react-boilerplate/commit/0dd9b3df3f43a5f4ff5153ae9127eaf75a45b14c))
-* Fix height of activities ([1ff727d](https://github.com/react-boilerplate/react-boilerplate/commit/1ff727d56fbddeee599675c42eaf22e1d85c8330))
-* Fix margin of central panel on device with resolution ([b3a3b03](https://github.com/react-boilerplate/react-boilerplate/commit/b3a3b031c864db915696c782a5b55e959ecbeb5c))
-* Fix texts on landing page ([2b35f30](https://github.com/react-boilerplate/react-boilerplate/commit/2b35f30216db4bb1e4f6b5c017bd5ddca1183593))
 
 ## [1.19.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.18.0...v1.19.0) (2021-02-01)
 
