@@ -41,7 +41,9 @@ const HeaderTitle = styled(ContentBoxHeaderTitle).attrs({
   large: true,
 })``
 
-const Wrapper = styled(ContentBox)``
+const Wrapper = styled(ContentBox)`
+  flex: 1;
+`
 
 // ------ ACTIVITY ------------------------------------------------------------
 const Activity = styled.div`

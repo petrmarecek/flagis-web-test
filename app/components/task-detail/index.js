@@ -294,17 +294,15 @@ const TaskDetail = props => {
                   onFetch={handleFetchAttachments}
                   onUpload={handleUploadAttachments}
                 />
+                <TaskDetailActivities
+                  data={comments.items.toArray()}
+                  isFetching={comments.isFetching}
+                  isCommentAddAllowed={allowedActions[TASK_ACTIONS.ADD_COMMENT]}
+                  onAddComment={handleAddComment}
+                  onFetch={handleFetchActivities}
+                />
               </ContentRight>
             </ContentCenter>
-            <ContentBottom>
-              <TaskDetailActivities
-                data={comments.items.toArray()}
-                isFetching={comments.isFetching}
-                isCommentAddAllowed={allowedActions[TASK_ACTIONS.ADD_COMMENT]}
-                onAddComment={handleAddComment}
-                onFetch={handleFetchActivities}
-              />
-            </ContentBottom>
           </Content>
         </ScrollContent>
       </Wrapper>
