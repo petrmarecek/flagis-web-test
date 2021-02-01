@@ -67,11 +67,14 @@ export function* hintSelected(action) {
 
     // Hint selected within tree context
     if (location === 'tagTree') {
+      const userId = hint.email ? hint.id : null
       yield put(
         treeActions.createTreeItem({
-          title: hint.title,
+          title: hint.title || null,
           parentId: parentId,
           order: Date.now(),
+          fromUserId: userId || null,
+          toUserId: userId || null,
         })
       )
       return

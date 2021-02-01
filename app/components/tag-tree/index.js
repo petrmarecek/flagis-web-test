@@ -58,11 +58,14 @@ import AddTagTreeItemSectionForm from 'components/common/add-tag-tree-item-secti
 import { CollabsibleContent, EmptyList } from '../styled-components-mixins'
 import colors from 'components/styled-components-mixins/colors'
 import { Wrapper } from './styles'
+import { getContactsRelations } from 'redux/store/contacts/contacts.selectors'
+import { getTreeRelations } from 'redux/utils/component-helper'
 
 const TagTreeContainer = props => {
   const {
     // Data
     addControlParentId,
+    addControlParentType,
     selection,
     tagsRelations,
     tree,
@@ -122,6 +125,7 @@ const TagTreeContainer = props => {
                 treeItems={tree}
                 selection={selection}
                 addControlParentId={addControlParentId}
+                addControlParentType={addControlParentType}
                 tagsRelations={tagsRelations}
                 onMoveSection={onMoveSection}
                 onTreeItemSelected={onHandleTreeItemsSelected}
@@ -207,7 +211,8 @@ const mapStateToProps = state => ({
   sections: getSections(state),
   selection: getSelectionTree(state),
   addControlParentId: getAddControlParentId(state),
-  tagsRelations: getTagsRelations(state),
+  addControlParentType: state.getIn(['tree', 'addControlParentType']),
+  tagsRelations: getTreeRelations(state),
   isVisibleMoreNavigation: getPrimaryHiddenNavigationVisibility(state),
   leftPanel: getLeftPanel(state),
 })
@@ -233,7 +238,7 @@ export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   branch(
     props => props.isFetching,
-    renderComponent(() => <Loader light />)
+    renderComponent(() => <Loader light />),
   ),
   withStateHandlers(() => ({ showAddControl: false, order: null }), {
     onInvokeMove: (state, props) => move => {
@@ -253,8 +258,8 @@ export default compose(
       props.dropSection(sourceSection, order)
       return {}
     },
-    onHandleAddTreeItem: (state, props) => parentTreeItemId => {
-      props.showTreeItemAddControl(parentTreeItemId)
+    onHandleAddTreeItem: (state, props) => (parentTreeItemId, type = 'tags') => {
+      props.showTreeItemAddControl(parentTreeItemId, type)
       return {}
     },
     onHandleTreeItemsSelected: (state, props) => selectedTreeItems => {
@@ -324,5 +329,5 @@ export default compose(
       return {}
     },
   }),
-  pure
+  pure,
 )(TagTreeContainer)

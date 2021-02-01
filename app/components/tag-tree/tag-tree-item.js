@@ -27,6 +27,7 @@ import {
 } from './styles'
 import colors from 'components/styled-components-mixins/colors'
 import { useTreeItemDragDrop } from 'hooks/useTreeItemDragDrop'
+import UserFilterIcon from 'components/icons/user-filter-icon'
 
 const TagTreeItem = props => {
   const {
@@ -73,13 +74,13 @@ const TagTreeItem = props => {
   const isChildItems = treeItem.childItems.size > 0
   const itemParents = [...parents, treeItem]
   const tag = treeItem.tag
-  const colorIndex = getColorIndex(tag.colorIndex, tag.title)
+  const colorIndex = getColorIndex(tag ? tag.colorIndex : null, tag ? tag.title : '')
   const tagColor = getTagColor(colorIndex)
 
   const currentTagRelations = getTagRelations(
     tagsRelations,
     parentTagRelations,
-    treeItem.tagId,
+    treeItem.tagId || treeItem.fromUserId,
   )
 
   const draggingData = {
@@ -93,7 +94,7 @@ const TagTreeItem = props => {
     return children.size > 0 ? (
       <ItemIcon
         title={title}
-        iconMargin="0 6px 0 6px"
+        iconMargin='0 6px 0 6px'
         animation
         collapsed={treeItem.collapsed}
       >
@@ -109,6 +110,16 @@ const TagTreeItem = props => {
     ) : null
   }
 
+  const getUsername = () => {
+    const profile = treeItem.fromUser || treeItem.toUser
+
+    if (!profile.nickname) {
+      return `${profile.email}`
+    }
+
+    return `@${profile.nickname}`
+  }
+
   return (
     <li ref={dragHandle}>
       <ItemWrapper dragging={dragProps.isDragging}>
@@ -121,24 +132,28 @@ const TagTreeItem = props => {
             {...draggingData}
           >
             <ItemTagIcon>
-              <Icon
-                icon={isChildItems ? ICONS.TAG_MULTI : ICONS.TAG}
-                width={20}
-                height={12}
-                color={[tagColor]}
-              />
+              {tag
+                ? (
+                  <Icon
+                    icon={isChildItems ? ICONS.TAG_MULTI : ICONS.TAG}
+                    width={20}
+                    height={12}
+                    color={[tagColor]}
+                  />
+                )
+                : <UserFilterIcon />}
             </ItemTagIcon>
-            <ItemTitle>{treeItem.tag.title}</ItemTitle>
+            <ItemTitle>{tag ? tag.title : getUsername()}</ItemTitle>
             <ItemRelations
-              className="tag-tree-item--relations"
+              className='tag-tree-item--relations'
               selected={selection.includes(treeItem.id)}
               colorTheme={colorTheme}
             >
               {currentTagRelations.size}
             </ItemRelations>
-            <ItemIcons className="tag-tree-item--icons">
+            <ItemIcons className='tag-tree-item--icons'>
               {renderArrowIcon(treeItem.childItems)}
-              <ItemIcon title="Delete" iconMargin="0 4px 0 0">
+              <ItemIcon title='Delete' iconMargin='0 4px 0 0'>
                 <Icon
                   icon={ICONS.TRASH}
                   width={12}
@@ -149,17 +164,19 @@ const TagTreeItem = props => {
                   onClick={onHandleDeleteIconClicked}
                 />
               </ItemIcon>
-              <ItemIcon title="Go to edit tag" iconMargin="0 10px 0 0">
-                <Icon
-                  icon={ICONS.PENCIL}
-                  width={11}
-                  height={11}
-                  scale={0.73}
-                  color={[colors[colorTheme].tagTreeItemIcon]}
-                  onClick={onHandleEditIconClicked}
-                />
-              </ItemIcon>
-              <ItemIcon title="Add sub filter" iconMargin="0 10px 0 0">
+              {Boolean(tag) && (
+                <ItemIcon title='Go to edit tag' iconMargin='0 10px 0 0'>
+                  <Icon
+                    icon={ICONS.PENCIL}
+                    width={11}
+                    height={11}
+                    scale={0.73}
+                    color={[colors[colorTheme].tagTreeItemIcon]}
+                    onClick={onHandleEditIconClicked}
+                  />
+                </ItemIcon>
+              )}
+              <ItemIcon title='Add sub filter' iconMargin='0 10px 0 0'>
                 <Icon
                   icon={ICONS.PLUS}
                   width={12}
@@ -240,10 +257,7 @@ const areEqual = (props, nextProps) => {
   const isTreeItemEqual = _.isEqual(treeItem.toJS(), nextTreeItem.toJS())
   const isInSelection = selection.includes(treeItem.id) || nextSelection.includes(treeItem.id)
   const isSelectionEqual = isInSelection ? _.isEqual(selection.toJS(), nextSelection.toJS()) : true
-  const isTagsRelationsEqual = _.isEqual(
-    props.tagsRelations.get(treeItem.tag.id) ? props.tagsRelations.get(treeItem.tag.id).toJS : null,
-    nextProps.tagsRelations.get(nextTreeItem.tag.id) ? nextProps.tagsRelations.get(nextTreeItem.tag.id).toJS : null,
-  )
+  const isTagsRelationsEqual = _.isEqual(props.tagsRelations, nextProps.tagsRelations)
 
   const isEqual =
     isTreeItemEqual

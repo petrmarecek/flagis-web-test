@@ -1,3 +1,5 @@
+import { Set } from 'immutable'
+
 export const TASKS_MENU = {
   RESET: 'TASKS-MENU/RESET',
 
@@ -21,6 +23,7 @@ export const TASKS_MENU = {
   DELETE_FILTER: 'TASKS-MENU/DELETE_FILTER',
   VISIBLE_MENU_FILTER: 'TASKS-MENU/VISIBLE_MENU_FILTER',
   HIDE_MENU_FILTER: 'TASKS-MENU/HIDE_MENU_FILTER',
+  SET_USER_IDS_FILTER: 'TASKS-MENU/SET-USER-IDS-FILTER',
 
   // Sort
   TOGGLE_SORT_ALGORITHM: 'TASKS-MENU/TOGGLE_SORT_ALGORITHM',
@@ -118,6 +121,11 @@ export const visibleMenuFilter = () => ({
 
 export const hideMenuFilter = () => ({
   type: TASKS_MENU.HIDE_MENU_FILTER,
+})
+
+export const setUserIdsFilter = (userIds = Set()) => ({
+  type: TASKS_MENU.SET_USER_IDS_FILTER,
+  payload: userIds,
 })
 
 // ------ Sort --------------------------------------------------------------

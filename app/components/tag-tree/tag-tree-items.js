@@ -11,11 +11,11 @@ const TagTreeItems = props => {
   const {
     treeItem,
     addControlParentId,
+    addControlParentType,
     onSubitemCreated,
     onAddControlCancel,
   } = props
   const propsData = R.omit(['treeItem'], props)
-
   return (
     <ItemsList root={treeItem.parentId === null} collapsed={treeItem.collapsed}>
       {treeItem.childItems.map(item => (
@@ -24,6 +24,7 @@ const TagTreeItems = props => {
       {addControlParentId === treeItem.id && (
         <AddTagTreeItemSectionForm
           parentId={treeItem.id}
+          type={addControlParentType}
           onCancel={onAddControlCancel}
           onSubmit={onSubitemCreated}
         />

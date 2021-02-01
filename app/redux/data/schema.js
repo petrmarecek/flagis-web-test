@@ -21,20 +21,24 @@ const follower = new schema.Entity(
       const userId = entity.profile.id
       return _.assign({ userId }, entity)
     },
-  }
+  },
 )
 const followers = new schema.Array(follower)
 
 const tag = new schema.Entity('tags', {}, { idAttribute: 'id' })
 const tags = new schema.Array(tag)
 
-const treeItem = new schema.Entity('treeItem', { tag }, { idAttribute: 'id' })
+const treeItem = new schema.Entity('treeItem', {
+  tag,
+  fromUser: profile,
+  toUser: profile,
+}, { idAttribute: 'id' })
 const treeItems = new schema.Array(treeItem)
 
 const tree = new schema.Entity(
   'tree',
   { items: treeItems },
-  { idAttribute: 'parentId' }
+  { idAttribute: 'parentId' },
 )
 const trees = new schema.Array(tree)
 
@@ -63,7 +67,7 @@ const task = new schema.Entity(
 
       return _.omit(entity, ['followerIds', 'userId'])
     },
-  }
+  },
 )
 const tasks = new schema.Array(task)
 
@@ -73,7 +77,7 @@ const activities = new schema.Array(activitie)
 const notification = new schema.Entity(
   'notification',
   {},
-  { idAttribute: 'id' }
+  { idAttribute: 'id' },
 )
 const notifications = new schema.Array(notification)
 

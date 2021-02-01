@@ -119,6 +119,7 @@ const TagTreeSection = props => {
     // Data
     section,
     addControlParentId,
+    addControlParentType,
     colorTheme,
     selection,
     tagsRelations,
@@ -181,7 +182,7 @@ const TagTreeSection = props => {
           {isSectionNameVisible && (
             <SectionHeader colorTheme={colorTheme}>
               <SectionHeaderTitle
-                type="text"
+                type='text'
                 value={title}
                 onClick={onHandleTitleClicked}
                 onChange={onHandleChangeTitle}
@@ -191,7 +192,7 @@ const TagTreeSection = props => {
                 ref={getInputRef}
                 style={styleWidth}
               />
-              <SectionHeaderIcon leftOffset title="Delete">
+              <SectionHeaderIcon leftOffset title='Delete'>
                 <Icon
                   icon={ICONS.TRASH}
                   width={12}
@@ -209,8 +210,8 @@ const TagTreeSection = props => {
           {!isSectionNameVisible && (
             <SectionHeader colorTheme={colorTheme}>
               <SectionHeaderTitle
-                type="text"
-                value="Favorite Filters"
+                type='text'
+                value='Favorite Filters'
                 style={styleWidth}
               />
             </SectionHeader>
@@ -219,6 +220,7 @@ const TagTreeSection = props => {
           <SectionContent>
             <TagTreeItems
               addControlParentId={addControlParentId}
+              addControlParentType={addControlParentType}
               tagsRelations={tagsRelations}
               onAddChild={onAddChild}
               onAddControlCancel={onAddControlCancel}
@@ -236,27 +238,45 @@ const TagTreeSection = props => {
               colorTheme={colorTheme}
             />
             {!section.collapsed && (
-              <SectionFooter
-                onClick={onHandleAddChildClicked}
-                addSubtag
-                colorTheme={colorTheme}
-              >
-                <AddFilterIcon colorTheme={colorTheme}>
-                  <Icon
-                    icon={ICONS.PLUS}
-                    width={15}
-                    height={15}
-                    scale={0.52}
-                    color={[colors.tagTreeAddFilterIcon]}
-                  />
-                </AddFilterIcon>
-                <AddFilterText>Add Tag</AddFilterText>
-              </SectionFooter>
+              <div>
+                <SectionFooter
+                  onClick={onHandleAddChildClicked('tags')}
+                  addSubtag
+                  colorTheme={colorTheme}
+                >
+                  <AddFilterIcon colorTheme={colorTheme}>
+                    <Icon
+                      icon={ICONS.PLUS}
+                      width={15}
+                      height={15}
+                      scale={0.52}
+                      color={[colors.tagTreeAddFilterIcon]}
+                    />
+                  </AddFilterIcon>
+                  <AddFilterText>Add Tag Filter</AddFilterText>
+                </SectionFooter>
+                <SectionFooter
+                  onClick={onHandleAddChildClicked('contacts')}
+                  addSubtag
+                  colorTheme={colorTheme}
+                >
+                  <AddFilterIcon colorTheme={colorTheme}>
+                    <Icon
+                      icon={ICONS.PLUS}
+                      width={15}
+                      height={15}
+                      scale={0.52}
+                      color={[colors.tagTreeAddFilterIcon]}
+                    />
+                  </AddFilterIcon>
+                  <AddFilterText>Add User Filter</AddFilterText>
+                </SectionFooter>
+              </div>
             )}
           </SectionContent>
         </SectionWrapper>
-      </li>
-    )
+      </li>,
+    ),
   )
 }
 
@@ -309,13 +329,13 @@ TagTreeSection.propTypes = {
 export default DragSource(
   TagTreeSectionDragDrop.type,
   TagTreeSectionDragDrop.sectionSource,
-  TagTreeSectionDragDrop.collectDragSource
+  TagTreeSectionDragDrop.collectDragSource,
 )(
   compose(
     DropTarget(
       TagTreeSectionDragDrop.type,
       TagTreeSectionDragDrop.sectionTarget,
-      TagTreeSectionDragDrop.collectDropTarget
+      TagTreeSectionDragDrop.collectDropTarget,
     ),
     withStateHandlers(
       props => ({ inputRef: null, title: props.section.title }),
@@ -346,12 +366,12 @@ export default DragSource(
           props.onUpdateSectionTitle(props.section, title)
           return {}
         },
-      }
+      },
     ),
     withHandlers({
-      onHandleAddChildClicked: props => event => {
+      onHandleAddChildClicked: props => (type = 'tags') => event => {
         event.stopPropagation()
-        props.onAddChild(props.section.id)
+        props.onAddChild(props.section.id, type)
       },
       onHandleDeleteIconClicked: props => event => {
         event.stopPropagation()
@@ -381,6 +401,6 @@ export default DragSource(
             return
         }
       },
-    })
-  )(TagTreeSection)
+    }),
+  )(TagTreeSection),
 )

@@ -43,8 +43,9 @@ export default typeToReducer(
       },
     },
 
-    [TREE.SHOW_ADD_CONTROL]: (state, action) =>
-      state.set('addControlParentId', action.payload.parentTreeItemId),
+    [TREE.SHOW_ADD_CONTROL]: (state, action) => state
+      .set('addControlParentId', action.payload.parentTreeItemId)
+      .set('addControlParentType', action.payload.type),
 
     [TREE.HIDE_ADD_CONTROL]: state => state.set('addControlParentId', null),
 

@@ -39,10 +39,11 @@ export const fetchTree = () => ({
   type: TREE.FETCH,
 })
 
-export const showTreeItemAddControl = parentTreeItemId => ({
+export const showTreeItemAddControl = (parentTreeItemId, type) => ({
   type: TREE.SHOW_ADD_CONTROL,
   payload: {
     parentTreeItemId,
+    type,
   },
 })
 
