@@ -20,8 +20,18 @@ import TaskDetailRemove from 'components/task-detail/task-detail-remove'
 import TaskDetailSubject from 'components/task-detail/task-detail-subject'
 import TaskDetailTags from './task-detail-tags'
 import {
-  Content, ContentLeft, ContentLeftTop, ContentLeftBottom, ContentRight,
-  Divider, Header, ScrollContent, Wrapper, TaskDetailWrapper,
+  Content,
+  ContentBottom,
+  ContentCenter,
+  ContentLeft,
+  ContentLeftTop,
+  ContentLeftBottom,
+  ContentRight,
+  Divider,
+  Header,
+  ScrollContent,
+  Wrapper,
+  TaskDetailWrapper,
 } from './styles'
 
 const TaskDetail = props => {
@@ -212,77 +222,81 @@ const TaskDetail = props => {
         <Divider />
         <ScrollContent>
           <Content>
-            <ContentLeft>
-              <ContentLeftTop>
-                <TaskDetailTags
-                  isUpdatable={allowedActions[TASK_ACTIONS.UPDATE_TAGS]}
-                  onDelete={handleDeleteTag}
-                  tags={task.tags}
+            <ContentCenter>
+              <ContentLeft>
+                <ContentLeftTop>
+                  <TaskDetailTags
+                    isUpdatable={allowedActions[TASK_ACTIONS.UPDATE_TAGS]}
+                    onDelete={handleDeleteTag}
+                    tags={task.tags}
+                    taskId={task.id}
+                  />
+                  <TaskDetailFollower
+                    followers={task.followers.toArray()}
+                    isAddAllowed={allowedActions[TASK_ACTIONS.ADD_FOLLOWER]}
+                    isDeleteAllowed={allowedActions[TASK_ACTIONS.DELETE_FOLLOWER]}
+                    isOwner={task.isOwner}
+                    isAcceptAllowed={allowedActions[TASK_ACTIONS.ACCEPT]}
+                    isRejectAllowed={allowedActions[TASK_ACTIONS.REJECT_TASK]}
+                    isSendAllowed={allowedActions[TASK_ACTIONS.SEND_TASK]}
+                    isTakeBackAllowed={allowedActions[TASK_ACTIONS.TAKE_BACK]}
+                    onAccept={handleAccept}
+                    onDelete={handleDeleteFollower}
+                    onReject={handleReject}
+                    onSend={handleSend}
+                    owner={task.createdBy}
+                    taskId={task.id}
+                  />
+                  <TaskDetailDate
+                    icon={ICONS.DUE_DATE}
+                    isUpdatable={allowedActions[TASK_ACTIONS.UPDATE_DUE_DATE]}
+                    onUpdate={handleUpdateDate('dueDate')}
+                    title='Due date'
+                    value={task.dueDate}
+                  />
+                  <TaskDetailDate
+                    icon={ICONS.REMINDER_DATE}
+                    isUpdatable={allowedActions[TASK_ACTIONS.UPDATE_REMINDER_DATE]}
+                    onUpdate={handleUpdateDate('reminderDate')}
+                    title='Reminder date'
+                    value={task.reminderDate}
+                  />
+                  <TaskDetailImportant
+                    isImportant={task.isImportant}
+                    isUpdatable={allowedActions[TASK_ACTIONS.TOGGLE_IMPORTANT]}
+                    onClick={handleToggleImportant}
+                  />
+                  <TaskDetailAddAttachment
+                    isUpdatable={allowedActions[TASK_ACTIONS.ADD_ATTACHMENT]}
+                    onUpload={handleUploadAttachments}
+                  />
+                </ContentLeftTop>
+                <ContentLeftBottom>
+                  <TaskDetailRemove
+                    isUpdatable={allowedActions[TASK_ACTIONS.DELETE_TASK]}
+                    onClick={handleDeleteTask}
+                  />
+                </ContentLeftBottom>
+              </ContentLeft>
+              <ContentRight>
+                <TaskDetailDescription
+                  description={task.description}
+                  isUpdatable={allowedActions[TASK_ACTIONS.UPDATE_DESCRIPTION]}
+                  onUpdate={handleUpdateDescription}
+                  onUpload={handleUploadAttachments}
                   taskId={task.id}
                 />
-                <TaskDetailFollower
-                  followers={task.followers.toArray()}
-                  isAddAllowed={allowedActions[TASK_ACTIONS.ADD_FOLLOWER]}
-                  isDeleteAllowed={allowedActions[TASK_ACTIONS.DELETE_FOLLOWER]}
-                  isOwner={task.isOwner}
-                  isAcceptAllowed={allowedActions[TASK_ACTIONS.ACCEPT]}
-                  isRejectAllowed={allowedActions[TASK_ACTIONS.REJECT_TASK]}
-                  isSendAllowed={allowedActions[TASK_ACTIONS.SEND_TASK]}
-                  isTakeBackAllowed={allowedActions[TASK_ACTIONS.TAKE_BACK]}
-                  onAccept={handleAccept}
-                  onDelete={handleDeleteFollower}
-                  onReject={handleReject}
-                  onSend={handleSend}
-                  owner={task.createdBy}
-                  taskId={task.id}
-                />
-                <TaskDetailDate
-                  icon={ICONS.DUE_DATE}
-                  isUpdatable={allowedActions[TASK_ACTIONS.UPDATE_DUE_DATE]}
-                  onUpdate={handleUpdateDate('dueDate')}
-                  title='Due date'
-                  value={task.dueDate}
-                />
-                <TaskDetailDate
-                  icon={ICONS.REMINDER_DATE}
-                  isUpdatable={allowedActions[TASK_ACTIONS.UPDATE_REMINDER_DATE]}
-                  onUpdate={handleUpdateDate('reminderDate')}
-                  title='Reminder date'
-                  value={task.reminderDate}
-                />
-                <TaskDetailImportant
-                  isImportant={task.isImportant}
-                  isUpdatable={allowedActions[TASK_ACTIONS.TOGGLE_IMPORTANT]}
-                  onClick={handleToggleImportant}
-                />
-                <TaskDetailAddAttachment
+                <TaskDetailAttachments
+                  attachments={attachments.items.toArray()}
+                  isFetching={attachments.isFetching}
                   isUpdatable={allowedActions[TASK_ACTIONS.ADD_ATTACHMENT]}
+                  onDelete={handleDeleteAttachment}
+                  onFetch={handleFetchAttachments}
                   onUpload={handleUploadAttachments}
                 />
-              </ContentLeftTop>
-              <ContentLeftBottom>
-                <TaskDetailRemove
-                  isUpdatable={allowedActions[TASK_ACTIONS.DELETE_TASK]}
-                  onClick={handleDeleteTask}
-                />
-              </ContentLeftBottom>
-            </ContentLeft>
-            <ContentRight>
-              <TaskDetailDescription
-                description={task.description}
-                isUpdatable={allowedActions[TASK_ACTIONS.UPDATE_DESCRIPTION]}
-                onUpdate={handleUpdateDescription}
-                onUpload={handleUploadAttachments}
-                taskId={task.id}
-              />
-              <TaskDetailAttachments
-                attachments={attachments.items.toArray()}
-                isFetching={attachments.isFetching}
-                isUpdatable={allowedActions[TASK_ACTIONS.ADD_ATTACHMENT]}
-                onDelete={handleDeleteAttachment}
-                onFetch={handleFetchAttachments}
-                onUpload={handleUploadAttachments}
-              />
+              </ContentRight>
+            </ContentCenter>
+            <ContentBottom>
               <TaskDetailActivities
                 data={comments.items.toArray()}
                 isFetching={comments.isFetching}
@@ -290,7 +304,7 @@ const TaskDetail = props => {
                 onAddComment={handleAddComment}
                 onFetch={handleFetchActivities}
               />
-            </ContentRight>
+            </ContentBottom>
           </Content>
         </ScrollContent>
       </Wrapper>

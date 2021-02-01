@@ -49,11 +49,19 @@ const Header = styled.div`
 const Content = styled.div`
   display: flex;
   flex: 1;
+  flex-direction: column;
   min-height: 100%;
 
   background-color: #ffffff;
   box-sizing: border-box;
   padding: 9px 16px 12px;
+`
+
+const ContentBottom = styled.div``
+
+const ContentCenter = styled.div`
+  display: flex;
+  flex: 1;
 `
 
 const ContentLeft = styled.div`
@@ -164,6 +172,8 @@ export {
 
   // CONTENT
   Content,
+  ContentBottom,
+  ContentCenter,
   ContentLeft,
   ContentLeftBottom,
   ContentLeftTop,
