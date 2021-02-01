@@ -21,7 +21,7 @@ import TaskDetailSubject from 'components/task-detail/task-detail-subject'
 import TaskDetailTags from './task-detail-tags'
 import {
   Content, ContentLeft, ContentLeftTop, ContentLeftBottom, ContentRight,
-  Divider, Header, ScrollContent, Wrapper,
+  Divider, Header, ScrollContent, Wrapper, TaskDetailWrapper,
 } from './styles'
 
 const TaskDetail = props => {
@@ -178,7 +178,7 @@ const TaskDetail = props => {
   )
 
   return (
-    <div>
+    <TaskDetailWrapper>
       <TaskDetailHeadTitle
         isArchived={task.isArchived}
         isInbox={task.isInbox}
@@ -294,7 +294,7 @@ const TaskDetail = props => {
           </Content>
         </ScrollContent>
       </Wrapper>
-    </div>
+    </TaskDetailWrapper>
   )
 }
 

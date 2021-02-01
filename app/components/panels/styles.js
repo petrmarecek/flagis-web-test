@@ -5,7 +5,7 @@ import { boxSizing } from '../styled-components-mixins'
 /*------------------------------------------ Center Panel --------------------------------------*/
 
 const CenterPanelWrapper = styled.div`
-  margin: 0 10px 0 10px;
+  margin: 0 auto 0 auto;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -13,6 +13,7 @@ const CenterPanelWrapper = styled.div`
   right: 0;
   z-index: 50;
   transition: 0.2s right ease-in;
+  max-width: 1200px;
   ${props => props.style}
 `
 

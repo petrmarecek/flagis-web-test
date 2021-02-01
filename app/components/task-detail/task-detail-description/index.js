@@ -13,7 +13,7 @@ const TaskDetailDescription = ({ description, isUpdatable, onUpdate, onUpload, t
       <MarkdownEditableContainer
         componentId={taskId}
         content={description}
-        editorHeight={200}
+        editorHeight={500}
         setDescription={onUpdate}
         disabled={!isUpdatable}
         onInsertImage={onUpload}
