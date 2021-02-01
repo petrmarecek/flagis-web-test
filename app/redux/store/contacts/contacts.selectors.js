@@ -1,6 +1,11 @@
+import _ from 'lodash'
 import { List } from 'immutable'
 import { getContactDetail } from '../app-state/app-state.selectors'
-import { getEntitiesContacts } from '../entities/entities.selectors'
+import {
+  getEntitiesContacts,
+  getEntitiesFollowers,
+  getEntitiesTasks,
+} from '../entities/entities.selectors'
 import { createSelector } from 'reselect'
 import { compareContactByEmail } from '../../utils/component-helper'
 
@@ -79,7 +84,7 @@ export const getContacts = createSelector(
         .sort(compareContactByEmail)
         .toArray(),
     }
-  }
+  },
 )
 
 export const getAllContacts = createSelector(
@@ -93,7 +98,7 @@ export const getAllContacts = createSelector(
         .sort(compareContactByEmail)
         .toArray(),
     }
-  }
+  },
 )
 
 export const getVisibleContacts = createSelector(
@@ -107,7 +112,7 @@ export const getVisibleContacts = createSelector(
       isFetching: contactsIsFetching,
       items: loadContact(data),
     }
-  }
+  },
 )
 
 export const getCurrentContact = createSelector(
@@ -119,7 +124,7 @@ export const getCurrentContact = createSelector(
     }
 
     return entitiesContacts.get(currentContactId)
-  }
+  },
 )
 
 export const getNextContact = createSelector(
@@ -151,7 +156,7 @@ export const getNextContact = createSelector(
 
     const nextContactId = contacts.get(nextIndex)
     return entitiesContacts.get(nextContactId)
-  }
+  },
 )
 
 export const getPreviousContact = createSelector(
@@ -183,7 +188,7 @@ export const getPreviousContact = createSelector(
 
     const prevContactId = contacts.get(prevIndex)
     return entitiesContacts.get(prevContactId)
-  }
+  },
 )
 
 export const getContactsEmail = createSelector(
@@ -193,5 +198,31 @@ export const getContactsEmail = createSelector(
       .filter(contact => contact.isContact)
       .map(contact => contact.email.toLowerCase())
       .toList()
+  },
+)
+
+const isContactTask = (contactId, task, followers) => {
+  if (task.archivedAt) {
+    return false
   }
+
+  if (contactId === task.createdById) {
+    return true
+  }
+
+  if (!followers.isEmpty() && followers.get(0).profile === contactId) {
+    return true
+  }
+
+  return false
+}
+
+export const getContactsRelations = createSelector(
+  getEntitiesContacts,
+  getEntitiesTasks,
+  getEntitiesFollowers,
+  (contacts, tasks, followers) => contacts.reduce(
+    (result, contact) => _.merge(result, { [contact.id]: tasks.filter(task => isContactTask(contact.id, task, task.followers.map(followerId => followers.get(followerId)))).keySeq().toSet() }),
+    {},
+  ),
 )

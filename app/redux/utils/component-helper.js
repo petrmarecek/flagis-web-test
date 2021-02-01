@@ -1,9 +1,11 @@
-import { List, Set } from 'immutable'
+import { Map, List, Set } from 'immutable'
 import commonUtils from 'redux/utils/common'
 import constants from 'utils/constants'
 import moment from 'moment'
 import showdown from 'showdown'
 import R from 'ramda'
+import { getTagsRelations } from 'redux/store/tags/tags.selectors'
+import { getContactsRelations } from 'redux/store/contacts/contacts.selectors'
 
 export function getSelectionInfo(event, task, selectedTasks) {
   let isMultiSelection = false
@@ -33,7 +35,7 @@ export function setArchive(
   completedTasks,
   archivedTasks,
   entitiesTasks,
-  selectedTasks
+  selectedTasks,
 ) {
   let newArchiveTasksList = List()
   newArchiveTasksList = newArchiveTasksList.unshift(taskId)
@@ -63,7 +65,7 @@ export function cancelArchive(
   completedTasks,
   archivedTasks,
   entitiesTasks,
-  selectedTasks
+  selectedTasks,
 ) {
   let newTasks = List()
   newTasks = newTasks.unshift(taskId)
@@ -93,14 +95,14 @@ export function archiveCompletedTasks(
   completedTasks,
   archivedTasks,
   entitiesTasks,
-  selectedTasks
+  selectedTasks,
 ) {
   const newArchiveTasksList = showCompletedTasks
 
   for (const completedTask of showCompletedTasks) {
     tasks = tasks.delete(tasks.indexOf(completedTask))
     completedTasks = completedTasks.delete(
-      completedTasks.indexOf(completedTask)
+      completedTasks.indexOf(completedTask),
     )
     archivedTasks = archivedTasks.unshift(completedTask)
     entitiesTasks = entitiesTasks.setIn([completedTask, 'isArchived'], true)
@@ -132,6 +134,14 @@ export function getTagRelations(relations, parentRelations, tagId) {
   return parentRelations
     ? currentTagRelations.intersect(parentRelations || Set())
     : currentTagRelations
+}
+
+export function getTreeRelations(state) {
+  return Map({
+    ...getTagsRelations(state).toObject(),
+    ...getContactsRelations(state),
+  })
+
 }
 
 export const getColorIndex = (colorIndex, title) => {
@@ -247,6 +257,13 @@ export const compareTaskBySubject = (taskA, taskB) => {
 export const compareTaskByDueDate = (taskA, taskB) => {
   const subjectA = moment(taskA.dueDate).valueOf()
   const subjectB = moment(taskB.dueDate).valueOf()
+
+  return subjectA - subjectB
+}
+
+export const compareTreeItemsByOrder = (treeItemA, treeItemB) => {
+  const subjectA = treeItemA.order
+  const subjectB = treeItemB.order
 
   return subjectA - subjectB
 }

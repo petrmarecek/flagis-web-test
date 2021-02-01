@@ -45,6 +45,7 @@ import {
   getSelectionTree,
   getAddControlParentId,
   getSections,
+  getTreeItemEntitiesByParents,
 } from 'redux/store/tree/tree.selectors'
 import { computeTreeSectionOrder } from 'redux/utils/redux-helper'
 
@@ -58,16 +59,20 @@ import AddTagTreeItemSectionForm from 'components/common/add-tag-tree-item-secti
 import { CollabsibleContent, EmptyList } from '../styled-components-mixins'
 import colors from 'components/styled-components-mixins/colors'
 import { Wrapper } from './styles'
+import { getContactsRelations } from 'redux/store/contacts/contacts.selectors'
+import { getTreeRelations } from 'redux/utils/component-helper'
 
 const TagTreeContainer = props => {
   const {
     // Data
     addControlParentId,
+    addControlParentType,
     selection,
     tagsRelations,
     tree,
     colorTheme,
     leftPanel,
+    treeItemEntitiesByParent,
 
     // state
     showAddControl,
@@ -77,7 +82,7 @@ const TagTreeContainer = props => {
     onHandleDropSection,
     onHandleAddTreeItem,
     onHandleTreeItemsSelected,
-    onHandleSubitemCreated,
+    onHandleSubItemCreated,
     onHandleAddSectionCancel,
     onHandleAddSectionSubmit,
     onHandleUpdateSectionTitle,
@@ -112,7 +117,7 @@ const TagTreeContainer = props => {
         scrollStep={constants.list.tagTrees.SCROLL_STEP}
         isDraggable
       >
-        <Wrapper>
+        <Wrapper colorTheme={colorTheme}>
           <CollabsibleContent>
             {tree.size === 0 && !showAddControl && (
               <EmptyList>No sections found</EmptyList>
@@ -122,10 +127,11 @@ const TagTreeContainer = props => {
                 treeItems={tree}
                 selection={selection}
                 addControlParentId={addControlParentId}
+                addControlParentType={addControlParentType}
                 tagsRelations={tagsRelations}
                 onMoveSection={onMoveSection}
                 onTreeItemSelected={onHandleTreeItemsSelected}
-                onSubitemCreated={onHandleSubitemCreated}
+                onSubItemCreated={onHandleSubItemCreated}
                 onTreeItemEdit={onHandleEditTreeItem}
                 onTreeItemDelete={onHandleDeleteTreeItem}
                 onAddChild={onHandleAddTreeItem}
@@ -136,6 +142,7 @@ const TagTreeContainer = props => {
                 onDropSection={onHandleDropSection}
                 maxWidth={leftPanel.width}
                 colorTheme={colorTheme}
+                treeItemEntitiesByParent={treeItemEntitiesByParent}
               />
             )}
             {showAddControl && (
@@ -163,6 +170,7 @@ TagTreeContainer.propTypes = {
   sections: PropTypes.object,
   isVisibleMoreNavigation: PropTypes.bool,
   leftPanel: PropTypes.object,
+  treeItemEntitiesByParent: PropTypes.object,
 
   // state
   showAddControl: PropTypes.bool,
@@ -172,7 +180,7 @@ TagTreeContainer.propTypes = {
   onHandleDropSection: PropTypes.func,
   onHandleAddTreeItem: PropTypes.func,
   onHandleTreeItemsSelected: PropTypes.func,
-  onHandleSubitemCreated: PropTypes.func,
+  onHandleSubItemCreated: PropTypes.func,
   onHandleAddButtonClicked: PropTypes.func,
   onHandleAddSectionCancel: PropTypes.func,
   onHandleAddSectionSubmit: PropTypes.func,
@@ -202,12 +210,14 @@ TagTreeContainer.propTypes = {
 
 const mapStateToProps = state => ({
   isFetching: getTreeItemsIsFetching(state),
+  treeItemEntitiesByParent: getTreeItemEntitiesByParents(state),
   tree: getTree(state),
   colorTheme: getColorTheme(state),
   sections: getSections(state),
   selection: getSelectionTree(state),
   addControlParentId: getAddControlParentId(state),
-  tagsRelations: getTagsRelations(state),
+  addControlParentType: state.getIn(['tree', 'addControlParentType']),
+  tagsRelations: getTreeRelations(state),
   isVisibleMoreNavigation: getPrimaryHiddenNavigationVisibility(state),
   leftPanel: getLeftPanel(state),
 })
@@ -233,7 +243,7 @@ export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   branch(
     props => props.isFetching,
-    renderComponent(() => <Loader light />)
+    renderComponent(() => <Loader light />),
   ),
   withStateHandlers(() => ({ showAddControl: false, order: null }), {
     onInvokeMove: (state, props) => move => {
@@ -253,15 +263,15 @@ export default compose(
       props.dropSection(sourceSection, order)
       return {}
     },
-    onHandleAddTreeItem: (state, props) => parentTreeItemId => {
-      props.showTreeItemAddControl(parentTreeItemId)
+    onHandleAddTreeItem: (state, props) => (parentTreeItemId, type = 'tags') => {
+      props.showTreeItemAddControl(parentTreeItemId, type)
       return {}
     },
     onHandleTreeItemsSelected: (state, props) => selectedTreeItems => {
       props.selectPath(selectedTreeItems)
       return {}
     },
-    onHandleSubitemCreated: (state, props) => treeItemInfo => {
+    onHandleSubItemCreated: (state, props) => treeItemInfo => {
       props.createTreeItem(treeItemInfo)
       return {}
     },
@@ -324,5 +334,5 @@ export default compose(
       return {}
     },
   }),
-  pure
+  pure,
 )(TagTreeContainer)

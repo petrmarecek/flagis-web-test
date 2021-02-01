@@ -133,6 +133,7 @@ export const TasksFilters = Record({
   uncompleted: false,
   noIncoming: false,
   noTags: false,
+  userIds: Set(),
 })
 
 export const TasksSort = Record({
@@ -251,6 +252,7 @@ export const TagStore = Record({
 export const TreeStore = Record({
   isFetching: false,
   addControlParentId: null,
+  addControlParentType: null,
   selection: List(),
   itemsById: Map(),
   itemsByParent: Map(),
@@ -382,6 +384,10 @@ export const TreeItem = Record({
   childItems: List(),
   collapsed: false,
   tag: null,
+  fromUserId: null,
+  toUserId: null,
+  fromUser: null,
+  toUser: null,
 })
 
 export const Follower = Record({

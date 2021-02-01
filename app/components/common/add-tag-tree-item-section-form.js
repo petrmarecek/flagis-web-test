@@ -65,20 +65,51 @@ const AddTagTreeItemSectionForm = props => {
     getInputRef,
     onHandleBlur,
     onHandleKeyDown,
+    type,
   } = props
 
-  return parentId === null ? (
-    <AddSection>
-      <SectionInput
-        ref={getInputRef}
-        placeholder="Add Title"
-        type="text"
-        onKeyDown={onHandleKeyDown}
-        onBlur={onHandleBlur}
-        colorTheme={colorTheme}
-      />
-    </AddSection>
-  ) : (
+  if (parentId === null) {
+    return (
+      <AddSection>
+        <SectionInput
+          ref={getInputRef}
+          placeholder='Add Title'
+          type='text'
+          onKeyDown={onHandleKeyDown}
+          onBlur={onHandleBlur}
+          colorTheme={colorTheme}
+        />
+      </AddSection>
+    )
+  }
+
+  if (type === 'contacts') {
+    return (
+      <AddItem>
+        <Icon
+          icon={ICONS.TAG}
+          width={20}
+          height={11}
+          color={[colors.tagTreeAddFilterIcon]}
+        />
+        <ItemInput>
+          <Autocomplete
+            dataType='contacts'
+            location='tagTree'
+            placeholder='Add user filter'
+            selectedItems={selectedItems}
+            onAddInputRef={getInputRef}
+            onBlurTagTree={onHandleBlur}
+            parentId={parentId}
+            isWithoutItems
+            isFocusTagTree
+          />
+        </ItemInput>
+      </AddItem>
+    )
+  }
+
+  return (
     <AddItem>
       <Icon
         icon={ICONS.TAG}
@@ -88,9 +119,9 @@ const AddTagTreeItemSectionForm = props => {
       />
       <ItemInput>
         <Autocomplete
-          dataType="tags"
-          location="tagTree"
-          placeholder="Add tag"
+          dataType='tags'
+          location='tagTree'
+          placeholder='Add tag filter'
           selectedItems={selectedItems}
           parentId={parentId}
           onAddInputRef={getInputRef}
@@ -115,6 +146,7 @@ AddTagTreeItemSectionForm.propTypes = {
   onHandleBlur: PropTypes.func,
   onHandleSubmit: PropTypes.func,
   onHandleKeyDown: PropTypes.func,
+  type: PropTypes.string,
 }
 
 const mapStateToProps = (state, props) => ({
@@ -168,5 +200,5 @@ export default compose(
         }
       }, 10)
     },
-  })
+  }),
 )(AddTagTreeItemSectionForm)

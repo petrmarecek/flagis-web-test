@@ -1,4 +1,3 @@
-import ReactGA from 'react-ga'
 import _ from 'lodash'
 import { routes } from 'utils/routes'
 import date from '../../utils/date'
@@ -666,25 +665,24 @@ export function* unreadTip({ payload }) {
 }
 
 export function* updateNotificationsSettings({ payload }) {
-  const { PENDING, FULFILLED } = createLoadActions(
-    AUTH.UPDATE_NOTIFICATIONS_SETTINGS
-  )
+  // Add FULFILLED TODO: Uncomment next lines after working notifications settings
+  const { PENDING } = createLoadActions(AUTH.UPDATE_NOTIFICATIONS_SETTINGS)
 
   // Optimistic update
   yield put({ type: PENDING, payload })
 
   // Get actual setting from API
-  const { settings } = yield callApi(api.users.profile)
+  // const { settings } = yield callApi(api.users.profile)
 
   // Prepare update
-  const preparedUpdate = {
-    settings: _.merge(settings, { notifications: payload }),
-  }
+  // const preparedUpdate = {
+  //   settings: _.merge(settings, { notifications: payload }),
+  // }
 
-  // Call API TODO: Uncomment next line after working notifications settings
+  // Call API
   // const result = yield callApi(api.users.update, preparedUpdate)
 
-  // Update user settings in store TODO: Uncomment next line after working notifications settings
+  // Update user settings in store
   // yield put({ type: FULFILLED, payload: result })
 }
 

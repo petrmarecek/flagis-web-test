@@ -4,6 +4,7 @@ import {
   getEntitiesTreeItems,
 } from '../entities/entities.selectors'
 import { createSelector } from 'reselect'
+import { compareTreeItemsByOrder } from '../../utils/component-helper'
 
 // ------ Helper functions ----------------------------------------------------
 /* eslint-disable no-use-before-define */
@@ -74,12 +75,7 @@ export const getTree = (state, parentId = null) => {
   })
 
   // sort treeItems by order
-  items = items.sort((a, b) => {
-    if (a.order < b.order) return -1
-    if (a.order > b.order) return 1
-
-    return 0
-  })
+  items = items.sort(compareTreeItemsByOrder)
 
   return items.map(item => {
     const { id, tagId } = item
@@ -88,6 +84,8 @@ export const getTree = (state, parentId = null) => {
       .set('collapsed', state.getIn(['tree', 'collapsedItems']).has(id))
       .set('childItems', getTree(state, id))
       .set('tag', state.getIn(['entities', 'tags']).get(tagId))
+      .set('fromUser', state.getIn(['entities', 'contacts', item.fromUserId]))
+      .set('toUser', state.getIn(['entities', 'contacts', item.toUserId]))
   })
 }
 
@@ -107,7 +105,7 @@ export const getDisabledTagIds = (state, parentId, updatedTreeItem = {}) => {
   // tag ids of tree item childs
   const tagIdsOfChilds = getTagIdsOfChilds(
     state,
-    updatedTreeItem ? updatedTreeItem.treeItemId : parentId
+    updatedTreeItem ? updatedTreeItem.treeItemId : parentId,
   )
 
   let result = tagIdsOfSameParent
@@ -125,6 +123,21 @@ export const getDisabledTagIds = (state, parentId, updatedTreeItem = {}) => {
 
 // ------ Reselect selectors ----------------------------------------------------
 
+export const getTreeItemEntitiesByParents = createSelector(
+  getTreeItemsByParent,
+  getEntitiesTreeItems,
+  (treeItemsByParent, entitiesTreeItems) => {
+    return treeItemsByParent.map(treeItemIds => {
+      const treeItemEntities = treeItemIds.map(treeItemId =>
+        entitiesTreeItems.get(treeItemId)
+      )
+      // sort tree items by order
+      treeItemEntities.sort(compareTreeItemsByOrder)
+      return treeItemEntities
+    })
+  }
+)
+
 export const getSections = createSelector(
   getTreeItemsByParent,
   getEntitiesTreeItems,
@@ -139,15 +152,10 @@ export const getSections = createSelector(
     })
 
     // sort sections by order
-    sections = sections.sort((a, b) => {
-      if (a.order < b.order) return -1
-      if (a.order > b.order) return 1
-
-      return 0
-    })
+    sections = sections.sort(compareTreeItemsByOrder)
 
     return sections
-  }
+  },
 )
 
 export const getTagsReferences = createSelector(
@@ -155,10 +163,10 @@ export const getTagsReferences = createSelector(
   getEntitiesTreeItems,
   (treeItemsById, entitiesTreeItems) => {
     const treeItemsEntities = treeItemsById.map(treeItem =>
-      entitiesTreeItems.getIn([treeItem.id])
+      entitiesTreeItems.getIn([treeItem.id]),
     )
     return treeItemsEntities.map(treeItem => treeItem.tagId).toSet()
-  }
+  },
 )
 
 export const getTagsOfTree = (state, parentId) =>
@@ -171,11 +179,15 @@ export const getTagsOfTree = (state, parentId) =>
       const treeItemsIdByParent = treeItemsByParent.get(parentId)
       const parentsTagIds = getTagIdsOfAllParents(state, parentId)
       let tags = parentsTagIds.map(tagId => entitiesTags.get(tagId)).toSet()
+      const contacts = treeItemsIdByParent
+        .map(itemId => entitiesTreeItems.get(itemId))
+        .map(item => ({ id: item.toUserId || item.fromUserId }))
+        .toList()
 
       // Tags of all children
       if (treeItemsIdByParent) {
         const treeItems = treeItemsIdByParent.map(treeItemId =>
-          entitiesTreeItems.get(treeItemId)
+          entitiesTreeItems.get(treeItemId),
         )
         const childrenTags = treeItems
           .map(treeItem => entitiesTags.get(treeItem.tagId))
@@ -184,6 +196,9 @@ export const getTagsOfTree = (state, parentId) =>
       }
 
       // Return tags of all parents and children
-      return { tags: tags.isEmpty() ? null : tags.toList() }
-    }
+      return {
+        tags: tags.isEmpty() ? null : tags.toList(),
+        contacts,
+      }
+    },
   )

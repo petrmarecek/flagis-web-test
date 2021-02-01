@@ -1,5 +1,4 @@
 import schema from '../../data/schema'
-import { MULTI_SELECT } from 'redux/store/multi-select/multi-select.actions'
 
 export const TASKS = {
   FETCH: 'TASK/FETCH',

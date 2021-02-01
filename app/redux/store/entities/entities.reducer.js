@@ -432,10 +432,13 @@ function updateReferencingTreeItems(state, tagId, tagFieldName, tagFieldValue) {
 function saveTree(payload, state) {
   const rawItems = payload.entities.treeItem || {}
   const rawTags = payload.entities.tags || {}
+
   const items = convertToImmutable(rawItems, records.TreeItem)
   const tags = convertToImmutable(rawTags, records.Tag)
 
-  return state.mergeIn(['treeItems'], items).mergeIn(['tags'], tags)
+  return state
+    .mergeIn(['treeItems'], items)
+    .mergeIn(['tags'], tags)
 }
 
 function saveTasks(payload, state) {

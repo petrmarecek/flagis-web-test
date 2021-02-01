@@ -5,7 +5,7 @@ import { boxSizing } from '../styled-components-mixins'
 /*------------------------------------------ Center Panel --------------------------------------*/
 
 const CenterPanelWrapper = styled.div`
-  margin: 0 10px 0 10px;
+  margin: 0 auto 0 auto;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -13,7 +13,12 @@ const CenterPanelWrapper = styled.div`
   right: 0;
   z-index: 50;
   transition: 0.2s right ease-in;
-  ${props => props.style}
+  max-width: 1200px;
+  ${props => props.style};
+
+  @media screen and (max-width: 1550px) {
+    margin: 0 10px;
+  }
 `
 
 const CenterPanelTop = styled.div`
@@ -40,7 +45,7 @@ const CenterPanelTopPrimary = styled.div`
   height: 60px;
   padding: 0 20px 0 17px;
   border-bottom: ${props =>
-    props.bottomBorder ? '1px solid rgba(151, 151, 151, 0.2)' : 'none'};
+          props.bottomBorder ? '1px solid rgba(151, 151, 151, 0.2)' : 'none'};
 `
 
 const CenterPanelTopPrimaryLeft = styled.div`
@@ -59,7 +64,7 @@ const CenterPanelTopSecondary = styled.div`
   height: 38px;
   padding: 0 10px 0 0;
   border-bottom: ${props =>
-    props.bottomBorder ? '1px solid rgba(151, 151, 151, 0.2)' : 'none'};
+          props.bottomBorder ? '1px solid rgba(151, 151, 151, 0.2)' : 'none'};
 `
 
 const CenterPanelScroll = styled.div`

@@ -290,6 +290,22 @@ function loadTasks(ids, data) {
     tasks = tasks.filter(task => task.tags.size === 0)
   }
 
+  // Apply user ids filter
+  const userIdsFilter = tasksMenu.getIn(['filters', 'userIds'])
+  if (!userIdsFilter.isEmpty()) {
+    tasks = tasks.filter(task => {
+      if (userIdsFilter.includes(task.createdById)) {
+        return true
+      }
+
+      if (task.followers.get(0) && userIdsFilter.includes(task.followers.get(0).profile.id)) {
+        return true
+      }
+
+      return false
+    })
+  }
+
   // apply sort alphabetically
   const isAlphabetSorting = tasksMenu.getIn(['sort', 'alphabet'])
   if (isAlphabetSorting) {

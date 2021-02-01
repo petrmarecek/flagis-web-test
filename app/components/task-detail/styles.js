@@ -26,6 +26,13 @@ const Wrapper = styled.div`
   flex-direction: column;
 
   box-shadow: 0 0 5px rgba(192, 192, 192, 0.5);
+  box-sizing: border-box;
+`
+
+const TaskDetailWrapper = styled.div`
+  min-height: 100%;
+  line-height: 0;
+  vertical-align: bottom;
 `
 
 // ------ HEADER --------------------------------------------------------------
@@ -42,10 +49,19 @@ const Header = styled.div`
 const Content = styled.div`
   display: flex;
   flex: 1;
+  flex-direction: column;
+  min-height: 100%;
 
   background-color: #ffffff;
   box-sizing: border-box;
   padding: 9px 16px 12px;
+`
+
+const ContentBottom = styled.div``
+
+const ContentCenter = styled.div`
+  display: flex;
+  flex: 1;
 `
 
 const ContentLeft = styled.div`
@@ -149,12 +165,15 @@ export {
   Divider,
   ScrollContent,
   Wrapper,
+  TaskDetailWrapper,
 
   // HEADER
   Header,
 
   // CONTENT
   Content,
+  ContentBottom,
+  ContentCenter,
   ContentLeft,
   ContentLeftBottom,
   ContentLeftTop,
