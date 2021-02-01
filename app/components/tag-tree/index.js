@@ -26,7 +26,6 @@ import {
 import { getColorTheme } from 'redux/store/auth/auth.selectors'
 import { deselectTasks } from 'redux/store/tasks/tasks.actions'
 import { selectTag } from 'redux/store/tags/tags.actions'
-import { getTagsRelations } from 'redux/store/tags/tags.selectors'
 import {
   updateTreeItemTitle,
   showTreeItemAddControl,
@@ -243,7 +242,7 @@ export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   branch(
     props => props.isFetching,
-    renderComponent(() => <Loader light />),
+    renderComponent(() => <Loader light />)
   ),
   withStateHandlers(() => ({ showAddControl: false, order: null }), {
     onInvokeMove: (state, props) => move => {
@@ -263,7 +262,10 @@ export default compose(
       props.dropSection(sourceSection, order)
       return {}
     },
-    onHandleAddTreeItem: (state, props) => (parentTreeItemId, type = 'tags') => {
+    onHandleAddTreeItem: (state, props) => (
+      parentTreeItemId,
+      type = 'tags'
+    ) => {
       props.showTreeItemAddControl(parentTreeItemId, type)
       return {}
     },
@@ -334,5 +336,5 @@ export default compose(
       return {}
     },
   }),
-  pure,
+  pure
 )(TagTreeContainer)

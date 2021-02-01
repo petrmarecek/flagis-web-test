@@ -105,7 +105,7 @@ export const getDisabledTagIds = (state, parentId, updatedTreeItem = {}) => {
   // tag ids of tree item childs
   const tagIdsOfChilds = getTagIdsOfChilds(
     state,
-    updatedTreeItem ? updatedTreeItem.treeItemId : parentId,
+    updatedTreeItem ? updatedTreeItem.treeItemId : parentId
   )
 
   let result = tagIdsOfSameParent
@@ -155,7 +155,7 @@ export const getSections = createSelector(
     sections = sections.sort(compareTreeItemsByOrder)
 
     return sections
-  },
+  }
 )
 
 export const getTagsReferences = createSelector(
@@ -163,10 +163,10 @@ export const getTagsReferences = createSelector(
   getEntitiesTreeItems,
   (treeItemsById, entitiesTreeItems) => {
     const treeItemsEntities = treeItemsById.map(treeItem =>
-      entitiesTreeItems.getIn([treeItem.id]),
+      entitiesTreeItems.getIn([treeItem.id])
     )
     return treeItemsEntities.map(treeItem => treeItem.tagId).toSet()
-  },
+  }
 )
 
 export const getTagsOfTree = (state, parentId) =>
@@ -179,15 +179,16 @@ export const getTagsOfTree = (state, parentId) =>
       const treeItemsIdByParent = treeItemsByParent.get(parentId)
       const parentsTagIds = getTagIdsOfAllParents(state, parentId)
       let tags = parentsTagIds.map(tagId => entitiesTags.get(tagId)).toSet()
-      const contacts = treeItemsIdByParent
-        .map(itemId => entitiesTreeItems.get(itemId))
-        .map(item => ({ id: item.toUserId || item.fromUserId }))
-        .toList()
+      let contacts = List()
 
       // Tags of all children
       if (treeItemsIdByParent) {
+        contacts = treeItemsIdByParent
+          .map(itemId => entitiesTreeItems.get(itemId))
+          .map(item => ({ id: item.toUserId || item.fromUserId }))
+          .toList()
         const treeItems = treeItemsIdByParent.map(treeItemId =>
-          entitiesTreeItems.get(treeItemId),
+          entitiesTreeItems.get(treeItemId)
         )
         const childrenTags = treeItems
           .map(treeItem => entitiesTags.get(treeItem.tagId))
@@ -200,5 +201,5 @@ export const getTagsOfTree = (state, parentId) =>
         tags: tags.isEmpty() ? null : tags.toList(),
         contacts,
       }
-    },
+    }
   )
