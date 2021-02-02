@@ -220,10 +220,10 @@ const TaskDetail = props => {
           />
         </Header>
         <Divider />
-        <ScrollContent>
-          <Content>
-            <ContentCenter>
-              <ContentLeft>
+        <Content>
+          <ContentCenter>
+            <ContentLeft>
+              <ScrollContent>
                 <ContentLeftTop>
                   <TaskDetailTags
                     isUpdatable={allowedActions[TASK_ACTIONS.UPDATE_TAGS]}
@@ -277,8 +277,10 @@ const TaskDetail = props => {
                     onClick={handleDeleteTask}
                   />
                 </ContentLeftBottom>
-              </ContentLeft>
-              <ContentRight>
+              </ScrollContent>
+            </ContentLeft>
+            <ContentRight>
+              <ScrollContent>
                 <TaskDetailDescription
                   description={task.description}
                   isUpdatable={allowedActions[TASK_ACTIONS.UPDATE_DESCRIPTION]}
@@ -301,10 +303,10 @@ const TaskDetail = props => {
                   onAddComment={handleAddComment}
                   onFetch={handleFetchActivities}
                 />
-              </ContentRight>
-            </ContentCenter>
-          </Content>
-        </ScrollContent>
+              </ScrollContent>
+            </ContentRight>
+          </ContentCenter>
+        </Content>
       </Wrapper>
     </TaskDetailWrapper>
   )

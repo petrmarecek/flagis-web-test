@@ -34,7 +34,11 @@ const HeaderLock = styled(ContentBoxHeaderLock)``
 
 const HeaderLockIcon = styled(ContentBoxHeaderLockIcon)``
 
-const Wrapper = styled(ContentBox)``
+const Wrapper = styled(ContentBox)`
+  &:hover {
+    box-shadow: 1px 2px 9px rgba(214, 214, 214, 0.5);
+  }
+`
 
 export {
   Body,
