@@ -7,12 +7,13 @@ import { ICONS } from '../icons/icon-constants'
 const Divider = styled.div`
   width: 100%;
 
-  border: 2px solid #EFEFEF;
+  border: 1px solid #EFEFEF;
+  box-sizing: border-box;
 `
 
 const ScrollContent = styled(ShadowScrollbar).attrs({
   style: {
-    height: 'calc(100vh - 126px)',
+    height: 'calc(100vh - 142px)',
     shadowHeight: 20,
     boxShadowTop: 'inset 0 10px 10px -5px #fff',
     boxShadowBottom: 'inset 0 -10px 10px -5px #fff',
@@ -54,7 +55,6 @@ const Content = styled.div`
 
   background-color: #ffffff;
   box-sizing: border-box;
-  padding: 9px 16px 12px;
 `
 
 const ContentBottom = styled.div``
@@ -68,8 +68,10 @@ const ContentLeft = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
+  max-width: 350px;
 
-  margin: 0 16px 0 0;
+  box-shadow: 3px 0 5px 0 rgba(231, 231, 231, 0.5);
+  padding: 9px 0 12px;
 `
 
 const ContentLeftTop = styled.div`
@@ -88,6 +90,8 @@ const ContentRight = styled.div`
   display: flex;
   flex: 2;
   flex-direction: column;
+
+  padding: 9px 0 12px;
 `
 
 // ------ CONTENT BOX ---------------------------------------------------------
@@ -95,13 +99,9 @@ const ContentBox = styled.div`
   background: #FFFFFF;
   border: 1px solid #F0F0F0;
   border-radius: 4px;
-  margin: 7px 0 0;
+  margin: 7px 16px 0;
 
   cursor: ${props => props.cursor || 'default'};
-
-  &:hover {
-    box-shadow: 1px 2px 9px rgba(214, 214, 214, 0.5);
-  }
 `
 
 const ContentBoxHeader = styled.div`

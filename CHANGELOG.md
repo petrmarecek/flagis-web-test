@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.20.3](https://github.com/react-boilerplate/react-boilerplate/compare/v1.20.2...v1.20.3) (2021-02-02)
+
+
+### Bug Fixes
+
+* Fix task detail scroll and box shadow ([415a9ed](https://github.com/react-boilerplate/react-boilerplate/commit/415a9edcc06a3807f87f118cf0340b06d7882fa4))
+
 ### [1.20.2](https://github.com/react-boilerplate/react-boilerplate/compare/v1.20.1...v1.20.2) (2021-02-02)
 
 
