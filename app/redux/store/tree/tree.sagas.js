@@ -1,5 +1,5 @@
 import { normalize } from 'normalizr'
-import { Map, Set } from 'immutable'
+import { Map, Set, List } from 'immutable'
 import intersection from 'lodash/intersection'
 import includes from 'lodash/includes'
 import { routes } from 'utils/routes'
@@ -56,13 +56,13 @@ function* saveChangeFromFirestore(change) {
   // Prepare data
   const normalizeData = normalize(treeItem, schema.treeItem)
   const storeAddControlParentId = yield select(state =>
-    treeSelectors.getAddControlParentId(state),
+    treeSelectors.getAddControlParentId(state)
   )
   const storeSelection = yield select(state =>
-    treeSelectors.getSelectionTree(state),
+    treeSelectors.getSelectionTree(state)
   )
   let storeActiveTags = yield select(state =>
-    tagSelectors.getActiveTagsIds(state),
+    tagSelectors.getActiveTagsIds(state)
   )
   const { id, isDeleted, tagId } = treeItem
 
@@ -101,7 +101,7 @@ function* syncTagTreeItemsChannel(channel) {
       yield all(
         snapshot
           .docChanges()
-          .map(change => call(saveChangeFromFirestore, change)),
+          .map(change => call(saveChangeFromFirestore, change))
       )
     }
   } catch (err) {
@@ -114,7 +114,7 @@ function* syncTagTreeItemsChannel(channel) {
         tagValue: 'SYNC_TAG-TREE',
         breadcrumbCategory: sentryBreadcrumbCategory.FIRESTORE,
         breadcrumbMessage: 'SYNC_TAG-TREE',
-      }),
+      })
     )
   } finally {
     if (yield cancelled()) {
@@ -165,7 +165,7 @@ export function* createTreeItem(action) {
         tagValue: action.type,
         breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
         breadcrumbMessage: action.type,
-      }),
+      })
     )
   }
 }
@@ -186,7 +186,7 @@ export function* selectPath(action) {
 
   // redirect to archive
   const isArchivedTasks = yield select(state =>
-    appStateSelectors.getArchivedTasksVisibility(state),
+    appStateSelectors.getArchivedTasksVisibility(state)
   )
 
   if (isArchivedTasks) {
@@ -195,7 +195,7 @@ export function* selectPath(action) {
   }
 
   const pathname = yield select(state =>
-    routingSelectors.getRoutingPathname(state),
+    routingSelectors.getRoutingPathname(state)
   )
 
   // other pages -> redirect to tasks-page
@@ -227,7 +227,7 @@ export function* updateTreeItem(action) {
     const result = yield callApi(
       api.tree.updateTitle,
       action.payload.treeItem.id,
-      action.payload.title,
+      action.payload.title
     )
 
     yield put({
@@ -242,13 +242,13 @@ export function* updateTreeItem(action) {
     if (treeStore.selection.includes(originalTreeItem.id)) {
       const newTagId = result.tag.id
       let activeTags = yield select(state =>
-        tagSelectors.getActiveTagsIds(state),
+        tagSelectors.getActiveTagsIds(state)
       )
 
       // replace old tag by new tag id
       activeTags = activeTags.update(
         activeTags.indexOf(originalTreeItem.tagId),
-        () => newTagId,
+        () => newTagId
       )
 
       yield put(tagActions.setActiveTags(activeTags))
@@ -266,7 +266,7 @@ export function* updateTreeItem(action) {
         tagValue: action.type,
         breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
         breadcrumbMessage: action.type,
-      }),
+      })
     )
   }
 }
@@ -285,10 +285,10 @@ export function* deleteTreeItem(action) {
     const title = action.payload.originalData.isSection
       ? 'treeGroupDelete'
       : 'treeItemDelete'
-    yield * mainUndo(action, title)
+    yield* mainUndo(action, title)
 
     // delete all child items on client
-    yield * deleteChildItems(action.payload.originalData)
+    yield* deleteChildItems(action.payload.originalData)
   } catch (err) {
     // send error to sentry
     yield put(
@@ -297,7 +297,7 @@ export function* deleteTreeItem(action) {
         tagValue: action.type,
         breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
         breadcrumbMessage: action.type,
-      }),
+      })
     )
   }
 }
@@ -349,7 +349,7 @@ export function* undoDeleteTreeItem(action) {
         tagValue: action.type,
         breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
         breadcrumbMessage: action.type,
-      }),
+      })
     )
   }
 }
@@ -373,12 +373,12 @@ export function* dropTreeItem(action) {
   // Run validations
   const targetParentsTags = treeItemsToTags(
     storeData.treeEntities,
-    findParentsRecursive(storeData.treeMap, targetItemId),
+    findParentsRecursive(storeData.treeMap, targetItemId)
   )
   const targetTag = treeItemToTag(storeData.treeEntities, targetItemId)
   const sourceChildTags = treeItemsToTags(
     storeData.treeEntities,
-    findChildrenRecursive(storeData.treeMap, sourceItemId),
+    findChildrenRecursive(storeData.treeMap, sourceItemId)
   )
   const sourceTag = treeItemToTag(storeData.treeEntities, sourceItemId)
 
@@ -387,11 +387,11 @@ export function* dropTreeItem(action) {
   const isParentColision =
     action.payload.dropPosition !== 'MIDDLE'
       ? intersection(targetParentsTags, [sourceTag, ...sourceChildTags])
-      .length !== 0
+          .length !== 0
       : intersection(
-      [targetTag, ...targetParentsTags],
-      [sourceTag, ...sourceChildTags],
-    ).length !== 0
+          [targetTag, ...targetParentsTags],
+          [sourceTag, ...sourceChildTags]
+        ).length !== 0
 
   if (isParentColision) {
     toast.error(toastCommon.errorMessages.treeItems.duplicatePathConflict, {
@@ -405,7 +405,7 @@ export function* dropTreeItem(action) {
   if (sourceParentId !== targetParentId) {
     const siblingsTagsIds = treeItemsToTags(
       storeData.treeEntities,
-      findChildren(storeData.treeMap, targetParentId),
+      findChildren(storeData.treeMap, targetParentId)
     )
     const sourceTagId = treeItemToTag(storeData.treeEntities, sourceItemId)
     if (includes(siblingsTagsIds, sourceTagId)) {
@@ -422,7 +422,7 @@ export function* dropTreeItem(action) {
     let order = Date.now()
     if (action.payload.dropPosition !== 'MIDDLE') {
       const children = yield select(state =>
-        treeSelectors.getTree(state, targetParentId),
+        treeSelectors.getTree(state, targetParentId)
       )
       const direction = action.payload.dropPosition
       const targetIndex = children.findIndex(item => item.id === targetItemId)
@@ -450,7 +450,7 @@ export function* dropTreeItem(action) {
         target: action.payload.dragTarget,
         targetParentId,
         order,
-      }),
+      })
     )
 
     // cancel tag tree selection
@@ -463,7 +463,7 @@ export function* dropTreeItem(action) {
         tagValue: action.type,
         breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
         breadcrumbMessage: action.type,
-      }),
+      })
     )
   }
 }
@@ -479,7 +479,7 @@ export function* dropSection(action) {
     yield callApi(
       api.tree.updateParent,
       action.payload.section.id,
-      sourceUpdate,
+      sourceUpdate
     )
   } catch (err) {
     // send error to sentry
@@ -489,9 +489,14 @@ export function* dropSection(action) {
         tagValue: action.type,
         breadcrumbCategory: sentryBreadcrumbCategory.ACTION,
         breadcrumbMessage: action.type,
-      }),
+      })
     )
   }
+}
+
+export function* clearTagTreeSelection() {
+  yield put(tagActions.selectActiveTags(List()))
+  yield put(taskMenuActions.setUserIdsFilter(Set()))
 }
 
 // ------ Helper methods ------------------------------------------------------

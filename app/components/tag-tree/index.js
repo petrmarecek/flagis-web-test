@@ -26,6 +26,7 @@ import {
 import { getColorTheme } from 'redux/store/auth/auth.selectors'
 import { deselectTasks } from 'redux/store/tasks/tasks.actions'
 import { selectTag } from 'redux/store/tags/tags.actions'
+import { getTasksMenuFiltersItem } from 'redux/store/tasks-menu/tasks-menu.selectors'
 import {
   updateTreeItemTitle,
   showTreeItemAddControl,
@@ -37,6 +38,7 @@ import {
   moveSection,
   dropSection,
   deleteTreeItem,
+  clearTagTreeSelection,
 } from 'redux/store/tree/tree.actions'
 import {
   getTree,
@@ -170,6 +172,7 @@ TagTreeContainer.propTypes = {
   isVisibleMoreNavigation: PropTypes.bool,
   leftPanel: PropTypes.object,
   treeItemEntitiesByParent: PropTypes.object,
+  userIdsSelection: PropTypes.object,
 
   // state
   showAddControl: PropTypes.bool,
@@ -205,6 +208,7 @@ TagTreeContainer.propTypes = {
   setDetail: PropTypes.func,
   changeLocation: PropTypes.func,
   deselectTasks: PropTypes.func,
+  clearTagTreeSelection: PropTypes.func,
 }
 
 const mapStateToProps = state => ({
@@ -219,6 +223,7 @@ const mapStateToProps = state => ({
   tagsRelations: getTreeRelations(state),
   isVisibleMoreNavigation: getPrimaryHiddenNavigationVisibility(state),
   leftPanel: getLeftPanel(state),
+  userIdsSelection: getTasksMenuFiltersItem(state, 'userIds'),
 })
 
 const mapDispatchToProps = {
@@ -236,6 +241,7 @@ const mapDispatchToProps = {
   changeNavigation,
   deselectTasks,
   deleteTreeItem,
+  clearTagTreeSelection,
 }
 
 export default compose(
@@ -269,7 +275,22 @@ export default compose(
       props.showTreeItemAddControl(parentTreeItemId, type)
       return {}
     },
-    onHandleTreeItemsSelected: (state, props) => selectedTreeItems => {
+    onHandleTreeItemsSelected: (state, props) => (
+      selectedTreeItems,
+      selectedTreeItem
+    ) => {
+      // clear tag-tree selection, when user click on the last item in tree again (it is already in selection)
+      const selectionBackUp = _.cloneDeep(props.selection)
+      const clickedOnLastSelectedTreeItem =
+        (props.userIdsSelection.includes(selectedTreeItem.fromUserId) &&
+          props.selection.size === 0) ||
+        selectionBackUp.first() === selectedTreeItem.id
+
+      if (clickedOnLastSelectedTreeItem) {
+        props.clearTagTreeSelection()
+        return {}
+      }
+
       props.selectPath(selectedTreeItems)
       return {}
     },

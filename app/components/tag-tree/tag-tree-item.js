@@ -344,11 +344,18 @@ export default React.memo(
   compose(
     withHandlers({
       onHandleTreeItemSelected: props => selectedTreeItems => {
+        const selectedTreeItemsBackUp = _.cloneDeep(selectedTreeItems)
         selectedTreeItems.push(props.treeItem.toJS())
-        props.onTreeItemSelected(selectedTreeItems)
+        props.onTreeItemSelected(
+          selectedTreeItems,
+          selectedTreeItemsBackUp.shift()
+        )
       },
       onHandleClicked: props => () =>
-        props.onTreeItemSelected([props.treeItem.toJS()]),
+        props.onTreeItemSelected(
+          [props.treeItem.toJS()],
+          props.treeItem.toJS()
+        ),
       onHandleCollapse: props => event => {
         event.stopPropagation()
         props.onCollapse(props.treeItem)

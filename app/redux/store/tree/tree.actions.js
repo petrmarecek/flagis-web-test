@@ -14,6 +14,7 @@ export const TREE = {
   SELECT_PATH: 'TREE/SELECT_PATH',
   DESELECT_PATH: 'TREE/DESELECT_PATH',
   COLLAPSE: 'TREE/COLLAPSE',
+  CLEAR_SELECTION: 'TREE/CLEAR_SELECTION',
 
   MOVE_TREE_ITEM: 'TREE/MOVE_TREE_ITEM',
   DROP_TREE_ITEM: 'TREE/DROP_TREE_ITEM',
@@ -106,4 +107,8 @@ export const dropSection = (section, order) => ({
     section: section,
     order: order,
   },
+})
+
+export const clearTagTreeSelection = () => ({
+  type: TREE.CLEAR_SELECTION,
 })

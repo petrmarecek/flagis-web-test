@@ -173,6 +173,7 @@ export default function* root() {
     takeEvery(TREE.UNDO_DELETE, tree.undoDeleteTreeItem),
     takeEvery(TREE.DROP_TREE_ITEM, tree.dropTreeItem),
     takeEvery(TREE.DROP_SECTION, tree.dropSection),
+    takeEvery(TREE.CLEAR_SELECTION, tree.clearTagTreeSelection),
 
     // tags
     takeLatest(TAGS.FETCH, tag.fetchTags),

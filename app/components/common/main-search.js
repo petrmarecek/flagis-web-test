@@ -2,10 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { compose, withHandlers } from 'recompose'
 import { connect } from 'react-redux'
-import { List } from 'immutable'
 
 import { getActiveTags } from 'redux/store/tags/tags.selectors'
 import { selectActiveTags } from 'redux/store/tags/tags.actions'
+import { clearTagTreeSelection } from 'redux/store/tree/tree.actions'
 import Autocomplete from 'components/autocomplete'
 
 import { ICONS } from 'components/icons/icon-constants'
@@ -51,6 +51,7 @@ const MainSearch = ({ tags, handleClearFilter, handleItemDelete }) => (
 MainSearch.propTypes = {
   tags: PropTypes.object.isRequired,
   selectActiveTags: PropTypes.func.isRequired,
+  clearTagTreeSelection: PropTypes.func.isRequired,
   handleClearFilter: PropTypes.func,
   handleItemDelete: PropTypes.func,
 }
@@ -61,12 +62,13 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   selectActiveTags,
+  clearTagTreeSelection,
 }
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withHandlers({
-    handleClearFilter: props => () => props.selectActiveTags(List()),
+    handleClearFilter: props => () => props.clearTagTreeSelection(),
     handleItemDelete: props => tagToDelete => {
       const tagIds = props.tags
         .map(tag => tag.id)

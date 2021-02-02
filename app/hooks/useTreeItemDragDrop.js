@@ -6,7 +6,6 @@ import constants from 'utils/constants'
 import { DragType, TaskDropTarget } from 'utils/enums'
 
 const useTreeItemDragDrop = ({ treeItem, parents, tags, onDrop }) => {
-
   // Keeps reference to drop DOM element
   const dropTarget = useRef()
 
@@ -29,16 +28,16 @@ const useTreeItemDragDrop = ({ treeItem, parents, tags, onDrop }) => {
       }
 
       onDrop(dropResult)
-    }
+    },
   })
 
   // Tree item drop
   const [dropProps, drop] = useDrop({
     accept: [DragType.TREE_ITEM, DragType.TASK],
-    collect: (monitor) => ({
-      isOver: monitor.isOver()
+    collect: monitor => ({
+      isOver: monitor.isOver(),
     }),
-    canDrop: (dragSource) => {
+    canDrop: dragSource => {
       // Not section
       if (!treeItem.parentId) {
         return false
@@ -63,7 +62,9 @@ const useTreeItemDragDrop = ({ treeItem, parents, tags, onDrop }) => {
         return
       }
 
-      const hoverBoundingRect = findDOMNode(dropTarget.current).getBoundingClientRect()
+      const hoverBoundingRect = findDOMNode(
+        dropTarget.current
+      ).getBoundingClientRect()
       const thirdHeight = treeItem.parentId
         ? constants.TAG_TREE_ITEM_HEIGHT / 3
         : constants.TAG_TREE_SECTION_HEIGHT / 3
@@ -103,10 +104,10 @@ const useTreeItemDragDrop = ({ treeItem, parents, tags, onDrop }) => {
       }
 
       return null
-    }
+    },
   })
 
-  const attachDrop = useCallback((domElement) => {
+  const attachDrop = useCallback(domElement => {
     drop(domElement)
     dropTarget.current = domElement
   })
@@ -120,6 +121,4 @@ const useTreeItemDragDrop = ({ treeItem, parents, tags, onDrop }) => {
   }
 }
 
-export {
-  useTreeItemDragDrop
-}
+export { useTreeItemDragDrop }
