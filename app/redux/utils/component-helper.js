@@ -140,10 +140,11 @@ export function getTagRelations(relations, parentRelations, tagId) {
 export const getTreeRelations = createSelector(
   getTagsRelations,
   getContactsRelations,
-  (tags, contacts) => Map(
-    ...tags.toObject(),
-    ...contacts,
-  ),
+  (tags, contacts) => Map({
+      ...tags.toObject(),
+      ...contacts,
+
+    }),
 )
 
 export const getColorIndex = (colorIndex, title) => {
