@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.20.1](https://github.com/react-boilerplate/react-boilerplate/compare/v1.20.0...v1.20.1) (2021-02-02)
+
+
+### Bug Fixes
+
+* Fix height of task description box by window height ([ea4f0db](https://github.com/react-boilerplate/react-boilerplate/commit/ea4f0db75c863ea7eece77598d0862cc56cefce8))
+* Fix name of button for creating user filter in tag tree ([1d1e41c](https://github.com/react-boilerplate/react-boilerplate/commit/1d1e41cd1d91905c1d46dbb25745ae29096aeeb4))
+* Fix position of remove button in task detail ([300c88d](https://github.com/react-boilerplate/react-boilerplate/commit/300c88d1c29bd1d9f77a15c86455ab12752f6cde))
+* Fix removing task ([63dff5b](https://github.com/react-boilerplate/react-boilerplate/commit/63dff5b4e87a8892ed210935e19196dd4b2dd8b5))
+
 ## [1.20.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.15.1...v1.20.0) (2021-02-01)
 
 ### Bug Fixes
