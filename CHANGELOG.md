@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.21.1](https://github.com/react-boilerplate/react-boilerplate/compare/v1.21.0...v1.21.1) (2021-02-02)
+
+
+### Bug Fixes
+
+* Fix return after dropping task in tag-tree ([b15886c](https://github.com/react-boilerplate/react-boilerplate/commit/b15886c54e564b55fe0acfb47fb7d5375b2c8980))
+
 ## [1.21.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.20.0...v1.21.0) (2021-02-02)
 
 
