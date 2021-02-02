@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.21.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.20.0...v1.21.0) (2021-02-02)
+
+
+### Features
+
+* Clear the tag-tree selection, when user clicks on the last item in tag-tree again ([9beb08b](https://github.com/react-boilerplate/react-boilerplate/commit/9beb08ba8ec4003c3d216825acb20170c36bdddf))
+
+
+### Bug Fixes
+
+* Fix design of comments box in task detail (now without title) ([f8dd090](https://github.com/react-boilerplate/react-boilerplate/commit/f8dd090d04bfd8aaed1e67d9ff52efe9e8e8f423))
+* Fix height of task description box by window height ([ea4f0db](https://github.com/react-boilerplate/react-boilerplate/commit/ea4f0db75c863ea7eece77598d0862cc56cefce8))
+* Fix name of button for creating user filter in tag tree ([1d1e41c](https://github.com/react-boilerplate/react-boilerplate/commit/1d1e41cd1d91905c1d46dbb25745ae29096aeeb4))
+* Fix position of remove button in task detail ([300c88d](https://github.com/react-boilerplate/react-boilerplate/commit/300c88d1c29bd1d9f77a15c86455ab12752f6cde))
+* Fix removing task ([63dff5b](https://github.com/react-boilerplate/react-boilerplate/commit/63dff5b4e87a8892ed210935e19196dd4b2dd8b5))
+* Fix tags relations in tag tree ([2a8e3ff](https://github.com/react-boilerplate/react-boilerplate/commit/2a8e3ff17bbe69ab0b389d9a4934ed3526610b21))
+* Fix task detail scroll and box shadow ([415a9ed](https://github.com/react-boilerplate/react-boilerplate/commit/415a9edcc06a3807f87f118cf0340b06d7882fa4))
+* Fix the task dropping on tag items only in the tag-tree ([c7d4ebb](https://github.com/react-boilerplate/react-boilerplate/commit/c7d4ebbb2c13562c749b14661717b66e0c280ab2))
+
 ### [1.20.3](https://github.com/react-boilerplate/react-boilerplate/compare/v1.20.2...v1.20.3) (2021-02-02)
 
 
