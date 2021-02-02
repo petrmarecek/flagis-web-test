@@ -68,7 +68,6 @@ const ContentLeft = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
-  justify-content: space-between;
 
   margin: 0 16px 0 0;
 `
