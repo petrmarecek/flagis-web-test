@@ -221,8 +221,15 @@ export const getContactsRelations = createSelector(
   getEntitiesContacts,
   getEntitiesTasks,
   getEntitiesFollowers,
-  (contacts, tasks, followers) => contacts.reduce(
-    (result, contact) => _.merge(result, { [contact.id]: tasks.filter(task => isContactTask(contact.id, task, task.followers.map(followerId => followers.get(followerId)))).keySeq().toSet() }),
-    {},
-  ),
+  (contacts, tasks, followers) => {
+    return contacts.reduce(
+      (result, contact) => _.merge(result, {
+        [contact.id]: tasks.filter(task => task
+          ? isContactTask(contact.id, task, task.followers.map(followerId => followers.get(followerId)))
+          : null,
+        ).keySeq().toSet(),
+      }),
+      {},
+    )
+  },
 )

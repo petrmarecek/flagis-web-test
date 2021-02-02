@@ -6,6 +6,7 @@ import showdown from 'showdown'
 import R from 'ramda'
 import { getTagsRelations } from 'redux/store/tags/tags.selectors'
 import { getContactsRelations } from 'redux/store/contacts/contacts.selectors'
+import { createSelector } from 'reselect'
 
 export function getSelectionInfo(event, task, selectedTasks) {
   let isMultiSelection = false
@@ -136,13 +137,14 @@ export function getTagRelations(relations, parentRelations, tagId) {
     : currentTagRelations
 }
 
-export function getTreeRelations(state) {
-  return Map({
-    ...getTagsRelations(state).toObject(),
-    ...getContactsRelations(state),
-  })
-
-}
+export const getTreeRelations = createSelector(
+  getTagsRelations,
+  getContactsRelations,
+  (tags, contacts) => Map(
+    ...tags.toObject(),
+    ...contacts,
+  ),
+)
 
 export const getColorIndex = (colorIndex, title) => {
   return colorIndex === null
