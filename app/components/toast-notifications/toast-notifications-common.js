@@ -111,6 +111,7 @@ export const successMessages = {
 export const infoMessages = {
   treeItems: {
     edit: 'You are editing the tag.',
+    canDropTaskOnTagOnly: 'You can use this action only with tag items.',
   },
 
   collaboration: {

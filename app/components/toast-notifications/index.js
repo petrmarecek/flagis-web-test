@@ -31,7 +31,7 @@ const ToastNotificationsWrapper = styled.div`
   }
   .Toastify__toast {
     ${fontBold}
-    ${borderRadius('5px')}
+    ${borderRadius('5px')};
     padding: 10px 10px 10px 0;
     color: ${props => defaultColors[props.colorTheme].toastNotificationText};
     background: ${props =>
@@ -41,27 +41,27 @@ const ToastNotificationsWrapper = styled.div`
   }
   .Toastify__toast--error {
     .Toastify__toast-body::before {
-      ${circle}
+      ${circle};
       background: ${colors.pompelmo};
     }
   }
   .Toastify__toast--info {
     .Toastify__toast-body::before {
-      ${circle}
+      ${circle};
       background: ${colors.pervenche};
     }
   }
   .Toastify__toast--success {
     .Toastify__toast-body::before {
-      ${circle}
+      ${circle};
       background: ${colors.hanumanGreen};
     }
   }
   .Toastify__toast-body {
-      display: flex;
-      align-items: center;
-      line-height: 18px;
-    }
+    display: flex;
+    align-items: center;
+    line-height: 18px;
+  }
   .Toastify__close-button {
     margin-left: 10px;
     color: ${colors.coldWind};
