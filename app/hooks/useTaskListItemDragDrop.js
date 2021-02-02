@@ -65,6 +65,8 @@ const useTaskListItemDragDrop = props => {
             position: toastCommon.position.DEFAULT,
             autoClose: toastCommon.duration.INFO_DURATION,
           })
+
+          return
         }
 
         const strategy =
