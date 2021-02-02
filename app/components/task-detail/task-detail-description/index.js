@@ -1,9 +1,11 @@
 import PropTypes from 'prop-types'
-import React from 'react'
+import React, { useMemo } from 'react'
 
 import { MarkdownEditableContainer, Wrapper } from './styles'
 
 const TaskDetailDescription = ({ description, isUpdatable, onUpdate, onUpload, taskId }) => {
+  const height = useMemo(() => window.innerHeight > 1000 ? 500 : 350, [window])
+
   if (!description && !isUpdatable) {
     return null
   }
@@ -13,7 +15,7 @@ const TaskDetailDescription = ({ description, isUpdatable, onUpdate, onUpload, t
       <MarkdownEditableContainer
         componentId={taskId}
         content={description}
-        editorHeight={500}
+        editorHeight={height}
         setDescription={onUpdate}
         disabled={!isUpdatable}
         onInsertImage={onUpload}
