@@ -272,7 +272,7 @@ const TagTreeSection = props => {
                       color={[colors.tagTreeAddFilterIcon]}
                     />
                   </AddFilterIcon>
-                  <AddFilterText>Add User Filter</AddFilterText>
+                  <AddFilterText>Add Contact Filter</AddFilterText>
                 </SectionFooter>
               </div>
             )}

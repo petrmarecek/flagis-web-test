@@ -96,7 +96,7 @@ const AddTagTreeItemSectionForm = props => {
           <Autocomplete
             dataType='contacts'
             location='tagTree'
-            placeholder='Add user filter'
+            placeholder='Add contact filter'
             selectedItems={selectedItems}
             onAddInputRef={getInputRef}
             onBlurTagTree={onHandleBlur}
