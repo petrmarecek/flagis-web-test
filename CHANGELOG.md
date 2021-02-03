@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.22.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.21.1...v1.22.0) (2021-02-03)
+
+
+### Features
+
+* Add new icons and change a design of follower buttons ([77a2a93](https://github.com/react-boilerplate/react-boilerplate/commit/77a2a930a0953645b32f18e975812adffd63b5d0))
+
+
+### Bug Fixes
+
+* Run the clear tag-tree selection after clicking on the logo or my tasks ([caa49aa](https://github.com/react-boilerplate/react-boilerplate/commit/caa49aa704f22070768279ce53c87e3400cab985))
+
 ### [1.21.1](https://github.com/react-boilerplate/react-boilerplate/compare/v1.21.0...v1.21.1) (2021-02-02)
 
 
