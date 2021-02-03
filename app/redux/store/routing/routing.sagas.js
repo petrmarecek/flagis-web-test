@@ -4,6 +4,7 @@ import { push } from 'react-router-redux'
 import * as appStateActions from 'redux/store/app-state/app-state.actions'
 import * as taskActions from 'redux/store/tasks/tasks.actions'
 import * as tagActions from 'redux/store/tags/tags.actions'
+import * as treeActions from 'redux/store/tree/tree.actions'
 import * as contactActions from 'redux/store/contacts/contacts.actions'
 import { getAccountNavigationVisibility } from 'redux/store/app-state/app-state.selectors'
 
@@ -23,7 +24,7 @@ export function* changeNavigation(action) {
   yield put(tagActions.deselectTags())
   yield put(contactActions.deselectContacts())
   yield put(appStateActions.resetScrollbarPosition())
-  yield put(tagActions.selectActiveTags([]))
+  yield put(treeActions.clearTagTreeSelection())
 
   if (type === 'archived') {
     yield put(taskActions.fetchArchivedTasks())

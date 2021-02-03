@@ -1,4 +1,3 @@
-import { List } from 'immutable'
 import { routes } from 'utils/routes'
 
 // toast notifications
@@ -32,7 +31,7 @@ export function* defaultDisplay() {
   yield put(contactActions.deselectContacts())
   yield put(appStateActions.resetScrollbarPosition())
   yield put(tasksMenuActions.resetTasksMenu())
-  yield put(tagActions.selectActiveTags(List()))
+  yield put(treeActions.clearTagTreeSelection())
   yield put(push(routes.user.tasks))
 }
 
