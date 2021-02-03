@@ -2,8 +2,8 @@ import React, { useCallback, useMemo } from 'react'
 import PropTypes from 'prop-types'
 
 import { ICONS } from '../icons/icon-constants'
-import { TASK_ACTIONS } from '../../utils/constants'
-import { isTaskActionAllowed } from '../../utils/permissions'
+import { TASK_ACTIONS } from 'utils/constants'
+import { isTaskActionAllowed } from 'utils/permissions'
 
 import DetailMenu from '../detail/detail-menu'
 import TaskDetailActivities from './task-detail-activities'
@@ -21,7 +21,6 @@ import TaskDetailSubject from 'components/task-detail/task-detail-subject'
 import TaskDetailTags from './task-detail-tags'
 import {
   Content,
-  ContentBottom,
   ContentCenter,
   ContentLeft,
   ContentLeftTop,
@@ -64,60 +63,113 @@ const TaskDetail = props => {
   } = props
 
   // Prepare memoized object with info which task actions are allowed
-  const allowedActions = useMemo(() => ({
-    [TASK_ACTIONS.ACCEPT]: isTaskActionAllowed(task, TASK_ACTIONS.ACCEPT),
-    [TASK_ACTIONS.ADD_ATTACHMENT]: isTaskActionAllowed(task, TASK_ACTIONS.ADD_ATTACHMENT),
-    [TASK_ACTIONS.ADD_COMMENT]: isTaskActionAllowed(task, TASK_ACTIONS.ADD_COMMENT),
-    [TASK_ACTIONS.ADD_FOLLOWER]: isTaskActionAllowed(task, TASK_ACTIONS.ADD_FOLLOWER),
-    [TASK_ACTIONS.DELETE_FOLLOWER]: isTaskActionAllowed(task, TASK_ACTIONS.DELETE_FOLLOWER),
-    [TASK_ACTIONS.DELETE_TASK]: isTaskActionAllowed(task, TASK_ACTIONS.DELETE_TASK),
-    [TASK_ACTIONS.REJECT_TASK]: isTaskActionAllowed(task, TASK_ACTIONS.REJECT_TASK),
-    [TASK_ACTIONS.SEND_TASK]: isTaskActionAllowed(task, TASK_ACTIONS.SEND_TASK),
-    [TASK_ACTIONS.TAKE_BACK]: isTaskActionAllowed(task, TASK_ACTIONS.TAKE_BACK),
-    [TASK_ACTIONS.TOGGLE_ARCHIVED]: isTaskActionAllowed(task, TASK_ACTIONS.TOGGLE_ARCHIVED),
-    [TASK_ACTIONS.TOGGLE_COMPLETED]: isTaskActionAllowed(task, TASK_ACTIONS.TOGGLE_COMPLETED),
-    [TASK_ACTIONS.TOGGLE_IMPORTANT]: isTaskActionAllowed(task, TASK_ACTIONS.TOGGLE_IMPORTANT),
-    [TASK_ACTIONS.UPDATE_DESCRIPTION]: isTaskActionAllowed(task, TASK_ACTIONS.UPDATE_DESCRIPTION),
-    [TASK_ACTIONS.UPDATE_DUE_DATE]: isTaskActionAllowed(task, TASK_ACTIONS.UPDATE_DUE_DATE),
-    [TASK_ACTIONS.UPDATE_REMINDER_DATE]: isTaskActionAllowed(task, TASK_ACTIONS.UPDATE_REMINDER_DATE),
-    [TASK_ACTIONS.UPDATE_SUBJECT]: isTaskActionAllowed(task, TASK_ACTIONS.UPDATE_SUBJECT),
-    [TASK_ACTIONS.UPDATE_TAGS]: isTaskActionAllowed(task, TASK_ACTIONS.UPDATE_TAGS),
-  }), [task])
+  const allowedActions = useMemo(
+    () => ({
+      [TASK_ACTIONS.ACCEPT]: isTaskActionAllowed(task, TASK_ACTIONS.ACCEPT),
+      [TASK_ACTIONS.ADD_ATTACHMENT]: isTaskActionAllowed(
+        task,
+        TASK_ACTIONS.ADD_ATTACHMENT
+      ),
+      [TASK_ACTIONS.ADD_COMMENT]: isTaskActionAllowed(
+        task,
+        TASK_ACTIONS.ADD_COMMENT
+      ),
+      [TASK_ACTIONS.ADD_FOLLOWER]: isTaskActionAllowed(
+        task,
+        TASK_ACTIONS.ADD_FOLLOWER
+      ),
+      [TASK_ACTIONS.DELETE_FOLLOWER]: isTaskActionAllowed(
+        task,
+        TASK_ACTIONS.DELETE_FOLLOWER
+      ),
+      [TASK_ACTIONS.DELETE_TASK]: isTaskActionAllowed(
+        task,
+        TASK_ACTIONS.DELETE_TASK
+      ),
+      [TASK_ACTIONS.REJECT_TASK]: isTaskActionAllowed(
+        task,
+        TASK_ACTIONS.REJECT_TASK
+      ),
+      [TASK_ACTIONS.SEND_TASK]: isTaskActionAllowed(
+        task,
+        TASK_ACTIONS.SEND_TASK
+      ),
+      [TASK_ACTIONS.TAKE_BACK]: isTaskActionAllowed(
+        task,
+        TASK_ACTIONS.TAKE_BACK
+      ),
+      [TASK_ACTIONS.TOGGLE_ARCHIVED]: isTaskActionAllowed(
+        task,
+        TASK_ACTIONS.TOGGLE_ARCHIVED
+      ),
+      [TASK_ACTIONS.TOGGLE_COMPLETED]: isTaskActionAllowed(
+        task,
+        TASK_ACTIONS.TOGGLE_COMPLETED
+      ),
+      [TASK_ACTIONS.TOGGLE_IMPORTANT]: isTaskActionAllowed(
+        task,
+        TASK_ACTIONS.TOGGLE_IMPORTANT
+      ),
+      [TASK_ACTIONS.UPDATE_DESCRIPTION]: isTaskActionAllowed(
+        task,
+        TASK_ACTIONS.UPDATE_DESCRIPTION
+      ),
+      [TASK_ACTIONS.UPDATE_DUE_DATE]: isTaskActionAllowed(
+        task,
+        TASK_ACTIONS.UPDATE_DUE_DATE
+      ),
+      [TASK_ACTIONS.UPDATE_REMINDER_DATE]: isTaskActionAllowed(
+        task,
+        TASK_ACTIONS.UPDATE_REMINDER_DATE
+      ),
+      [TASK_ACTIONS.UPDATE_SUBJECT]: isTaskActionAllowed(
+        task,
+        TASK_ACTIONS.UPDATE_SUBJECT
+      ),
+      [TASK_ACTIONS.UPDATE_TAGS]: isTaskActionAllowed(
+        task,
+        TASK_ACTIONS.UPDATE_TAGS
+      ),
+    }),
+    [task]
+  )
 
   // Prepare handler for accepting task
   const handleAccept = useCallback(
     followerId => onHandleTaskAccept({ followerId, taskId: task.id }),
-    [onHandleTaskAccept, task.id],
+    [onHandleTaskAccept, task.id]
   )
 
   // Prepare handler for adding task comment
   const handleAddComment = useCallback(
-    content => onHandleTaskAddComment({ content: { content }, taskId: task.id }),
-    [onHandleTaskAddComment, task.id],
+    content =>
+      onHandleTaskAddComment({ content: { content }, taskId: task.id }),
+    [onHandleTaskAddComment, task.id]
   )
 
   // Prepare handler for deleting task attachment
   const handleDeleteAttachment = useCallback(
     attachmentId => onHandleTaskAttachmentDelete({ attachmentId, task }),
-    [onHandleTaskAttachmentDelete, task],
+    [onHandleTaskAttachmentDelete, task]
   )
 
   // Prepare handler for deleting task follower
   const handleDeleteFollower = useCallback(
-    (followerId, userId) => onHandleTaskFollowerDeleted({ taskId: task.id, followerId, userId }),
-    [onHandleTaskFollowerDeleted, task.id],
+    (followerId, userId) =>
+      onHandleTaskFollowerDeleted({ taskId: task.id, followerId, userId }),
+    [onHandleTaskFollowerDeleted, task.id]
   )
 
   // Prepare handler for deleting task
-  const handleDeleteTask = useCallback(
-    () => onHandleTaskDelete(task.id),
-    [onHandleTaskDelete, task.id],
-  )
+  const handleDeleteTask = useCallback(() => onHandleTaskDelete(task.id), [
+    onHandleTaskDelete,
+    task.id,
+  ])
 
   // Prepare handler for deleting task tag
   const handleDeleteTag = useCallback(
     tagInfo => onHandleTaskTagDeleted({ task, tagInfo }),
-    [onHandleTaskTagDeleted, task],
+    [onHandleTaskTagDeleted, task]
   )
 
   const handleFetchActivities = useCallback(() => {
@@ -128,63 +180,70 @@ const TaskDetail = props => {
   // Prepare handler for fetching attachments
   const handleFetchAttachments = useCallback(
     () => onHandleFetchAttachment(task.id),
-    [onHandleFetchAttachment, task.id],
+    [onHandleFetchAttachment, task.id]
   )
 
   // Prepare handler for rejecting task
   const handleReject = useCallback(
     () => onHandleTaskReject({ task, type: 'task' }),
-    [onHandleTaskReject, task],
+    [onHandleTaskReject, task]
   )
 
   // Prepare handler for sending task
   const handleSend = useCallback(
     followerId => onHandleTaskSend({ followerId, taskId: task.id }),
-    [onHandleTaskSend, task.id],
+    [onHandleTaskSend, task.id]
   )
 
   // Prepare handler for toggling task attribute isArchived
-  const handleToggleArchived = useCallback(
-    () => onHandleTaskArchive(task),
-    [onHandleTaskArchive, task],
-  )
+  const handleToggleArchived = useCallback(() => onHandleTaskArchive(task), [
+    onHandleTaskArchive,
+    task,
+  ])
 
   // Prepare handler for toggling task attribute isCompleted
   const handleToggleCompleted = useCallback(
-    () => task.isCompleted
-      ? onHandleTaskSetIncomplete(task.id)
-      : onHandleTaskSetComplete(task.id),
-    [onHandleTaskSetComplete, onHandleTaskSetIncomplete, task.id, task.isCompleted],
+    () =>
+      task.isCompleted
+        ? onHandleTaskSetIncomplete(task.id)
+        : onHandleTaskSetComplete(task.id),
+    [
+      onHandleTaskSetComplete,
+      onHandleTaskSetIncomplete,
+      task.id,
+      task.isCompleted,
+    ]
   )
 
   // Prepare handler for toggling task importance
   const handleToggleImportant = useCallback(
     () => onHandleTaskToggleImportant(task),
-    [onHandleTaskToggleImportant, task],
+    [onHandleTaskToggleImportant, task]
   )
 
   // Prepare handler for updating task date
   const handleUpdateDate = useCallback(
     typeDate => date => onHandleTaskDateChanged({ date, task, typeDate }),
-    [onHandleTaskDateChanged, task],
+    [onHandleTaskDateChanged, task]
   )
 
   // Prepare handler for updating task description
   const handleUpdateDescription = useCallback(
     description => onHandleTaskDescriptionUpdate({ description, task }),
-    [onHandleTaskDescriptionUpdate, task],
+    [onHandleTaskDescriptionUpdate, task]
   )
 
   // Prepare handler for updating task subject
   const handleUpdateSubject = useCallback(
     subject => onHandleTaskSubjectUpdate({ task: task, subject }),
-    [onHandleTaskSubjectUpdate, task],
+    [onHandleTaskSubjectUpdate, task]
   )
 
   // Prepare handler for uploading task attachments
   const handleUploadAttachments = useCallback(
-    (files, callback) => onHandleTaskFileUploaded({ taskId: task.id, files, callback }),
-    [onHandleTaskFileUploaded, task.id],
+    (files, callback) =>
+      onHandleTaskFileUploaded({ taskId: task.id, files, callback }),
+    [onHandleTaskFileUploaded, task.id]
   )
 
   return (
@@ -234,7 +293,9 @@ const TaskDetail = props => {
                   <TaskDetailFollower
                     followers={task.followers.toArray()}
                     isAddAllowed={allowedActions[TASK_ACTIONS.ADD_FOLLOWER]}
-                    isDeleteAllowed={allowedActions[TASK_ACTIONS.DELETE_FOLLOWER]}
+                    isDeleteAllowed={
+                      allowedActions[TASK_ACTIONS.DELETE_FOLLOWER]
+                    }
                     isOwner={task.isOwner}
                     isAcceptAllowed={allowedActions[TASK_ACTIONS.ACCEPT]}
                     isRejectAllowed={allowedActions[TASK_ACTIONS.REJECT_TASK]}
@@ -251,14 +312,16 @@ const TaskDetail = props => {
                     icon={ICONS.DUE_DATE}
                     isUpdatable={allowedActions[TASK_ACTIONS.UPDATE_DUE_DATE]}
                     onUpdate={handleUpdateDate('dueDate')}
-                    title='Due date'
+                    title="Due date"
                     value={task.dueDate}
                   />
                   <TaskDetailDate
                     icon={ICONS.REMINDER_DATE}
-                    isUpdatable={allowedActions[TASK_ACTIONS.UPDATE_REMINDER_DATE]}
+                    isUpdatable={
+                      allowedActions[TASK_ACTIONS.UPDATE_REMINDER_DATE]
+                    }
                     onUpdate={handleUpdateDate('reminderDate')}
-                    title='Reminder date'
+                    title="Reminder date"
                     value={task.reminderDate}
                   />
                   <TaskDetailImportant

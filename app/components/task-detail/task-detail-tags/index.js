@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types'
 import React from 'react'
+import TagMultiEmptyIcon from 'components/icons/tag-multi-empty-icon'
 
 import Autocomplete from '../../autocomplete'
 import TagItems from '../../common/tag-items'
 import {
   Body,
   Header,
-  HeaderIcon,
   HeaderLeft,
   HeaderLock,
   HeaderLockIcon,
@@ -19,7 +19,7 @@ const TaskDetailTags = ({ isUpdatable, onDelete, tags, taskId }) => {
     <Wrapper>
       <Header>
         <HeaderLeft>
-          <HeaderIcon />
+          <TagMultiEmptyIcon />
         </HeaderLeft>
         <HeaderTitle>Tags</HeaderTitle>
         {!isUpdatable && (
@@ -31,10 +31,10 @@ const TaskDetailTags = ({ isUpdatable, onDelete, tags, taskId }) => {
       <Body>
         {isUpdatable && (
           <Autocomplete
-            dataType='tags'
-            location='taskDetailTags'
+            dataType="tags"
+            location="taskDetailTags"
             parentId={taskId}
-            placeholder='Add tags'
+            placeholder="Add tags"
             selectedItems={{ tags }}
             onItemDelete={onDelete}
             isAllowUpdate

@@ -19,8 +19,8 @@ const Header = styled(ContentBoxHeader)``
 const HeaderLeft = styled(ContentBoxHeaderLeft)``
 
 const HeaderIcon = styled(ContentBoxHeaderIcon).attrs({
-  icon: ICONS.IMPORTANT,
-  scale: 0.215,
+  icon: ICONS.IMPORTANT_EMPTY,
+  scale: 1,
   height: 14,
   width: 14,
 })``

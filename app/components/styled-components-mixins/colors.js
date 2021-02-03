@@ -28,6 +28,7 @@ export const colors = {
   hanumanGreen: '#44ffb1',
   shallowEnd: '#c2fee5',
   meltingGlacier: '#ecfff7',
+  drunkenDragonfly: '#37E59C',
 
   // red shades
   pompelmo: '#ff6a6a',

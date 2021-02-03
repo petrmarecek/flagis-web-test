@@ -2,7 +2,9 @@ import PropTypes from 'prop-types'
 import React, { useCallback, useMemo } from 'react'
 
 import {
-  Body, BodyButton, BodyStatus,
+  Body,
+  BodyButton,
+  BodyStatus,
   Header,
   HeaderLeft,
   HeaderTitle,
@@ -12,32 +14,37 @@ import {
 import FollowerIcon from 'components/common/follower-icon'
 
 const TaskDetailFollowerFrom = props => {
-  const { followers, isAcceptAllowed, isRejectAllowed, onAccept, onReject, owner } = props
+  const {
+    followers,
+    isAcceptAllowed,
+    isRejectAllowed,
+    onAccept,
+    onReject,
+    owner,
+  } = props
 
   // Get actual follower - now only one follower on one task
   const actualFollower = useMemo(() => followers[0] || null, [followers])
 
   // Prepare handler for accepting task
-  const handleAccept = useCallback(
-    () => onAccept(actualFollower.id),
-    [actualFollower.id, onAccept],
-  )
+  const handleAccept = useCallback(() => onAccept(actualFollower.id), [
+    actualFollower.id,
+    onAccept,
+  ])
 
   return (
     <Wrapper>
       <Header>
         <HeaderLeft>
           <FollowerIcon
-            status='assigneeInbox'
+            status="assigneeInbox"
             photo={owner.photo}
             nickname={owner.nickname}
           />
         </HeaderLeft>
         <HeaderTitle title={owner.email} withContact>
           {'From: '}
-          <HeaderTitleName>
-            {owner.nickname || owner.email}
-          </HeaderTitleName>
+          <HeaderTitleName>{owner.nickname || owner.email}</HeaderTitleName>
         </HeaderTitle>
       </Header>
       {isAcceptAllowed && isRejectAllowed && (

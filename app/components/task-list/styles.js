@@ -114,7 +114,7 @@ const Archived = styled.div`
 
 const FollowerResponse = styled.div`
   position: absolute;
-  top: 12px;
+  top: 17px;
   left: 11px;
 `
 
@@ -194,7 +194,7 @@ const Followers = styled.div`
   align-items: center;
   justify-content: flex-end;
   height: 50px;
-  width: ${props => (props.assigneeInbox ? '76px' : '63px')};
+  width: 63px;
   padding-right: 17px;
   position: absolute;
   right: 0;

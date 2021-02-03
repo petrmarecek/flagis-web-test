@@ -168,9 +168,9 @@ const TasksMenuMultiSelect = props => {
           customInput={
             <MultiSelectItem
               icon={ICONS.REMINDER_DATE}
-              width={21}
+              width={22}
               height={18}
-              scale={1.38}
+              scale={1.28}
               color={[colors.astrocopusGrey]}
               hoverColor={[colors.aztec]}
             />

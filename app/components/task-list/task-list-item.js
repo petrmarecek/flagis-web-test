@@ -275,7 +275,7 @@ const TaskListItem = props => {
   // Margin-left of content task
   const contentMarginLeft = () => {
     if (isInboxList) {
-      return '260px'
+      return '220px'
     }
 
     if (isCompletedMainList) {
@@ -283,15 +283,6 @@ const TaskListItem = props => {
     }
 
     return '50px'
-  }
-
-  // Margin-right of content task
-  const contentMarginRight = () => {
-    if (!isFollowers) {
-      return '15px'
-    }
-
-    return isInboxList || !isOwner ? '76px' : '63px'
   }
 
   // Render component
@@ -385,7 +376,7 @@ const TaskListItem = props => {
             )}
             <Content
               marginLeft={contentMarginLeft}
-              marginRight={contentMarginRight}
+              marginRight={!isFollowers ? '15px' : '63px'}
             >
               <SubjectTags>
                 <Subject
@@ -478,7 +469,6 @@ const TaskListItem = props => {
             </Content>
             {isFollowers && (
               <Followers
-                assigneeInbox={isInboxList || !isOwner}
                 title={
                   !isOwner
                     ? createdByFollower.profile.nickname === null

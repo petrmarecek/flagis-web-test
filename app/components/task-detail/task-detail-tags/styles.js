@@ -1,14 +1,13 @@
 import styled from 'styled-components'
 
-import { ICONS } from '../../icons/icon-constants'
-
 import {
   ContentBox,
   ContentBoxHeader,
-  ContentBoxHeaderIcon,
   ContentBoxHeaderLeft,
   ContentBoxHeaderTitle,
-  ContentBoxBody, ContentBoxHeaderLock, ContentBoxHeaderLockIcon,
+  ContentBoxBody,
+  ContentBoxHeaderLock,
+  ContentBoxHeaderLockIcon,
 } from '../styles'
 
 const Body = styled(ContentBoxBody)`
@@ -20,13 +19,6 @@ const Body = styled(ContentBoxBody)`
 const Header = styled(ContentBoxHeader)``
 
 const HeaderLeft = styled(ContentBoxHeaderLeft)``
-
-const HeaderIcon = styled(ContentBoxHeaderIcon).attrs({
-  icon: ICONS.TAG_MULTI,
-  scale: 0.78,
-  height: 9,
-  width: 15,
-})``
 
 const HeaderTitle = styled(ContentBoxHeaderTitle)``
 
@@ -43,7 +35,6 @@ const Wrapper = styled(ContentBox)`
 export {
   Body,
   Header,
-  HeaderIcon,
   HeaderLeft,
   HeaderLock,
   HeaderLockIcon,
