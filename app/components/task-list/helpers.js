@@ -21,6 +21,7 @@ export default {
     // yesterday
     const yesterdayStart = moment().subtract(1, 'day').startOf('day')
     const yesterdayEnd = moment().subtract(1, 'day').endOf('day')
+
     if (momentDueDate >= yesterdayStart && momentDueDate <= yesterdayEnd) {
       dueDateFormat = _.capitalize(dateUtils.YESTERDAY)
     }
@@ -56,11 +57,11 @@ export default {
       return colors.pompelmo
     }
 
-    if (dueDateFormat.dueDate === dateUtils.TODAY) {
+    if (_.lowerCase(dueDateFormat.dueDate) === dateUtils.TODAY) {
       return colors.drunkenDragonfly
     }
 
-    if (dueDateFormat.dueDate === dateUtils.TOMORROW) {
+    if (_.lowerCase(dueDateFormat.dueDate) === dateUtils.TOMORROW) {
       return colors.agedGouda
     }
 
