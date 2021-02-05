@@ -28,9 +28,9 @@ const Wrapper = styled.div`
 const IconStatus = styled.div`
   position: absolute;
   right: 0;
-  top: 0;
+  top: -4px;
   background-color: ${props => (props.isAssignee ? 'white' : 'transparent')};
-  ${props => (props.isAssignee ? '' : borderRadius('7px'))}
+  ${props => (props.isAssignee ? borderRadius('3px') : borderRadius('7px'))}
   ${boxShadow('0 2px 4px 0 rgba(0, 0, 0, 0.5)')}
 `
 
@@ -79,7 +79,7 @@ const FollowerIcon = ({
           <Icon
             icon={ICONS[icons[followerStatus]]}
             width={16}
-            height={isAssignee ? '12' : '16'}
+            height={isAssignee ? 12 : 16}
             color={color[followerStatus]}
           />
         </IconStatus>

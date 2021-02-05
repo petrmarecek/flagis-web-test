@@ -6,7 +6,13 @@ import constants from 'utils/constants'
 
 import { Input, Wrapper } from './styles'
 
-const TaskDetailSubject = ({ isCompleted, isImportant, isUpdatable, onUpdate, subject }) => {
+const TaskDetailSubject = ({
+  isCompleted,
+  isImportant,
+  isUpdatable,
+  onUpdate,
+  subject,
+}) => {
   // Input ref for future blur
   const inputRef = useRef(null)
 
@@ -15,21 +21,24 @@ const TaskDetailSubject = ({ isCompleted, isImportant, isUpdatable, onUpdate, su
 
   // Handler for updating input value
   const handleChange = useCallback(
-    event => setValue(event.target.value.substr(0, constants.TASKS_TITLE_MAX_CHARACTERS)),
-    [setValue],
+    event =>
+      setValue(
+        event.target.value.substr(0, constants.TASKS_TITLE_MAX_CHARACTERS)
+      ),
+    [setValue]
   )
 
   // Handler for ending edit
   const handleBlur = useCallback(
-    () => _.isEmpty(value) ? setValue(subject) : onUpdate(value),
-    [subject, value],
+    () => (_.isEmpty(value) ? setValue(subject) : onUpdate(value)),
+    [subject, value]
   )
 
   // Handler for make blur after pressing enter
   const handleKeyDown = useCallback(
-    event => event.which === 13 ? inputRef.current.blur() : null,
-    [inputRef],
-    )
+    event => (event.which === 13 ? inputRef.current.blur() : null),
+    [inputRef]
+  )
 
   return (
     <Wrapper>

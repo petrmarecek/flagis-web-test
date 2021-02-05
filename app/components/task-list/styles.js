@@ -11,6 +11,8 @@ import {
 } from '../styled-components-mixins'
 import { colors } from '../styled-components-mixins/colors'
 import Icon from 'components/icons/icon'
+import CommonButton from 'components/common/button'
+import CheckIcon from 'components/icons/check-icon'
 
 /*--------------------------- Task List Container (index) ------------------------------------*/
 
@@ -80,7 +82,8 @@ const TaskItem = styled.div`
 
 const Completed = styled.div`
   display: flex;
-  align-items: center;
+  align-items: ${props => (props.hasDetailInfo ? 'flex-start' : 'center')};
+  margin: ${props => (props.hasDetailInfo ? '12px 0 0 0' : '0')};
   justify-content: flex-end;
   position: absolute;
   top: 0;
@@ -89,11 +92,42 @@ const Completed = styled.div`
   width: 45px;
   padding-right: 8px;
   z-index: 1;
+`
 
-  :hover {
-    svg {
+const CompletedButton = styled(CommonButton)`
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  background-color: ${props => (props.isCompleted ? '#44FFB1' : '#FFFFFF')};
+  border: 1px solid ${props => (props.isCompleted ? '#44FFB1' : '#E4E4E4')};
+  border-radius: 3.5px;
+  box-sizing: border-box;
+  filter: drop-shadow(0px 1px 3px rgba(216, 216, 216, 0.5));
+
+  &:hover {
+    border-color: #44ffb1;
+  }
+`
+
+const CompletedIcon = styled(CheckIcon)`
+  g {
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+    opacity: ${props => (props.isCompleted ? 1 : 0.3)};
+
+    path {
+      fill: ${props => (props.isCompleted ? '#FFFFFF' : '#B1B5B8')};
+    }
+
+    ${CompletedButton}:hover & {
+      box-shadow: none;
+      opacity: 1;
+
       path {
-        fill: #44ffb1;
+        fill: ${props => (props.isCompleted ? '#FFFFFF' : '#44FFB1')};
       }
     }
   }
@@ -101,7 +135,8 @@ const Completed = styled.div`
 
 const Archived = styled.div`
   display: flex;
-  align-items: center;
+  align-items: ${props => (props.hasDetailInfo ? 'flex-start' : 'center')};
+  margin: ${props => (props.hasDetailInfo ? '12px 0 0 0' : '0')};
   justify-content: flex-start;
   position: absolute;
   top: 0;
@@ -135,7 +170,7 @@ const Subject = styled.div`
   ${textOverflow('ellipsis')};
   flex: auto;
   max-width: 70%;
-  margin: 18px 0 0 0;
+  margin: ${props => (props.hasDetailInfo ? '12px 0 0 0' : '18px 0 0 0')};
   height: 23px;
   line-height: 23px;
   font-size: 16px;
@@ -158,7 +193,7 @@ const DescriptionDueDate = styled.div`
   display: flex;
   z-index: 1;
   align-items: flex-end;
-  justify-content: flex-end;
+  justify-content: flex-start;
 `
 
 const Description = styled.div`
@@ -170,18 +205,19 @@ const Description = styled.div`
   max-height: 18px;
   white-space: nowrap;
   overflow: hidden;
-  color: ${props => (props.completed ? '#CECECE' : '#8C9DA9')};
+  color: ${props =>
+    props.completed ? colors.americanSilver : colors.lostAtSea};
   margin: -5px 0 5px 0;
 `
 
 const DueDate = styled.div`
+  display: flex;
+  align-items: center;
   height: 18px;
   line-height: 18px;
   font-size: 12px;
-  color: ${props =>
-    props.overdue && !props.completed ? '#ff6a6a' : '#8C9DA9'};
-  font-weight: ${props => (props.overdue && !props.completed ? 600 : 'normal')};
-  margin: -5px 3px 0 10px;
+  color: ${props => (props.color ? props.color : colors.batman)};
+  margin: 0 15px 0 0;
   z-index: 1;
 `
 
@@ -242,6 +278,8 @@ export {
   TaskListItems,
   TaskItem,
   Completed,
+  CompletedButton,
+  CompletedIcon,
   Archived,
   FollowerResponse,
   Content,

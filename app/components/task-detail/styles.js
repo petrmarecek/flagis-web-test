@@ -4,10 +4,18 @@ import ShadowScrollbar from '../common/shadow-scrollbar'
 import Icon from '../icons/icon'
 import { ICONS } from '../icons/icon-constants'
 
+import {
+  transform,
+  transformOrigin,
+  transition,
+  borderRadius,
+} from 'components/styled-components-mixins'
+import { colors } from 'components/styled-components-mixins/colors'
+
 const Divider = styled.div`
   width: 100%;
 
-  border: 1px solid #EFEFEF;
+  border: 1px solid #efefef;
   box-sizing: border-box;
 `
 
@@ -40,10 +48,28 @@ const TaskDetailWrapper = styled.div`
 const Header = styled.div`
   display: flex;
   align-items: center;
+  position: relative;
+  background-color: ${props => props.backgroundColor};
 
-  background-color: ${props => props.isCompleted ? 'rgb(246, 247, 248)' : '#FFFFFF'};
-  border-radius: 4px 4px 0 0;
+  ${borderRadius('4px 4px 0 0')};
   padding: 20px 16px 15px;
+  z-index: 1;
+
+  :before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: ${colors.lynxWhite};
+    ${transform(props => (props.isCompleted ? 'scaleX(1)' : 'scaleX(0)'))}
+    ${transformOrigin('0 50%')}
+    ${transition(props =>
+      props.animation ? 'transform 500ms ease-out' : 'none'
+    )}
+  }
 `
 
 // ------ CONTENT -------------------------------------------------------------
@@ -56,8 +82,6 @@ const Content = styled.div`
   background-color: #ffffff;
   box-sizing: border-box;
 `
-
-const ContentBottom = styled.div``
 
 const ContentCenter = styled.div`
   display: flex;
@@ -96,8 +120,8 @@ const ContentRight = styled.div`
 
 // ------ CONTENT BOX ---------------------------------------------------------
 const ContentBox = styled.div`
-  background: #FFFFFF;
-  border: 1px solid #F0F0F0;
+  background: #ffffff;
+  border: 1px solid #f0f0f0;
   border-radius: 4px;
   margin: 7px 16px 0;
 
@@ -105,12 +129,12 @@ const ContentBox = styled.div`
 `
 
 const ContentBoxHeader = styled.div`
-  height: ${props => props.large ? 48 : 30}px;
+  height: ${props => (props.large ? 48 : 30)}px;
   display: flex;
   flex: 1;
   align-items: center;
 
-  padding: ${props => props.large ? '0 17' : '0 8'}px;
+  padding: ${props => (props.large ? '0 17' : '0 8')}px;
 `
 
 const ContentBoxHeaderLeft = styled.div`
@@ -124,10 +148,10 @@ const ContentBoxHeaderIcon = styled(Icon).attrs({
 })``
 
 const ContentBoxHeaderTitle = styled.span`
-  font-size: ${props => props.large ? 14 : 12}px;
-  font-weight: ${props => props.large ? 'bold' : 'normal'};
-  line-height: ${props => props.large ? 16 : 14}px;
-  color: ${props => props.large ? '#1C2124' : '#676D71'};
+  font-size: ${props => (props.large ? 14 : 12)}px;
+  font-weight: ${props => (props.large ? 'bold' : 'normal')};
+  line-height: ${props => (props.large ? 16 : 14)}px;
+  color: ${props => (props.large ? '#1C2124' : '#676D71')};
 `
 
 const ContentBoxHeaderLock = styled.div`
@@ -157,7 +181,7 @@ const ContentBoxBody = styled.div`
 const ContentBoxBodyText = styled.span`
   font-size: 13px;
   line-height: 15px;
-  color: ${props => props.isDisabled ? '#676D71' : '#1C2124'};
+  color: ${props => (props.isDisabled ? '#676D71' : '#1C2124')};
 `
 
 export {
@@ -165,19 +189,15 @@ export {
   ScrollContent,
   Wrapper,
   TaskDetailWrapper,
-
   // HEADER
   Header,
-
   // CONTENT
   Content,
-  ContentBottom,
   ContentCenter,
   ContentLeft,
   ContentLeftBottom,
   ContentLeftTop,
   ContentRight,
-
   // CONTENT BOX
   ContentBox,
   ContentBoxBody,

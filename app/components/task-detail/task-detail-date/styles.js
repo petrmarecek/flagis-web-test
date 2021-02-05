@@ -25,7 +25,7 @@ const BodyClear = styled(Button)`
   width: 15px;
   height: 15px;
 
-  border: 1px solid #676D71;
+  border: 1px solid #676d71;
   border-radius: 7px;
   box-sizing: border-box;
   padding-left: 3px;
@@ -44,9 +44,9 @@ const Header = styled(ContentBoxHeader)``
 const HeaderLeft = styled(ContentBoxHeaderLeft)``
 
 const HeaderIcon = styled(ContentBoxHeaderIcon).attrs({
-  scale: 0.9,
-  height: 12,
-  width: 14,
+  scale: 1,
+  height: 14,
+  width: 17,
 })``
 
 const HeaderTitle = styled(ContentBoxHeaderTitle)``

@@ -1,10 +1,13 @@
 import React, { useCallback, useMemo } from 'react'
 import PropTypes from 'prop-types'
-
 import { ICONS } from '../icons/icon-constants'
 import { TASK_ACTIONS } from 'utils/constants'
 import { isTaskActionAllowed } from 'utils/permissions'
 
+// redux
+import { getAssigneeOfTask } from 'redux/utils/component-helper'
+
+// components
 import DetailMenu from '../detail/detail-menu'
 import TaskDetailActivities from './task-detail-activities'
 import TaskDetailAddAttachment from './task-detail-add-attachment'
@@ -19,6 +22,8 @@ import TaskDetailImportant from './task-detail-important'
 import TaskDetailRemove from 'components/task-detail/task-detail-remove'
 import TaskDetailSubject from 'components/task-detail/task-detail-subject'
 import TaskDetailTags from './task-detail-tags'
+
+// styles
 import {
   Content,
   ContentCenter,
@@ -32,11 +37,13 @@ import {
   Wrapper,
   TaskDetailWrapper,
 } from './styles'
+import { colors } from 'components/styled-components-mixins/colors'
 
 const TaskDetail = props => {
   const {
     attachments,
     comments,
+    animation,
     onHandleFetchActivities,
     onHandleFetchAttachment,
     onHandleFetchComment,
@@ -246,6 +253,22 @@ const TaskDetail = props => {
     [onHandleTaskFileUploaded, task.id]
   )
 
+  // Background color of top content
+  const assignee = getAssigneeOfTask(task.followers)
+  const followerStatus = assignee !== null ? assignee.status : null
+  const isOwnerAccepted = task.isOwner && followerStatus === 'accepted'
+  const backgroundColor = () => {
+    if (task.isArchived) {
+      return colors.porpoise
+    }
+
+    if (isOwnerAccepted) {
+      return colors.lynxWhite
+    }
+
+    return colors.white
+  }
+
   return (
     <TaskDetailWrapper>
       <TaskDetailHeadTitle
@@ -259,11 +282,21 @@ const TaskDetail = props => {
         next={onHandleNext}
       />
       <Wrapper>
-        <Header isCompleted={task.isCompleted}>
+        <Header
+          isCompleted={task.isCompleted}
+          animation={animation}
+          backgroundColor={backgroundColor}
+        >
           <TaskDetailComplete
             isCompleted={task.isCompleted}
             isUpdatable={allowedActions[TASK_ACTIONS.TOGGLE_COMPLETED]}
             onClick={handleToggleCompleted}
+          />
+          <TaskDetailArchive
+            isArchived={task.isArchived}
+            isCompleted={task.isCompleted}
+            isUpdatable={allowedActions[TASK_ACTIONS.TOGGLE_ARCHIVED]}
+            onClick={handleToggleArchived}
           />
           <TaskDetailSubject
             isCompleted={task.isCompleted}
@@ -271,11 +304,6 @@ const TaskDetail = props => {
             isUpdatable={allowedActions[TASK_ACTIONS.UPDATE_SUBJECT]}
             onUpdate={handleUpdateSubject}
             subject={task.subject}
-          />
-          <TaskDetailArchive
-            isArchived={task.isArchived}
-            isUpdatable={allowedActions[TASK_ACTIONS.TOGGLE_ARCHIVED]}
-            onClick={handleToggleArchived}
           />
         </Header>
         <Divider />
@@ -378,6 +406,7 @@ const TaskDetail = props => {
 TaskDetail.propTypes = {
   attachments: PropTypes.object.isRequired,
   comments: PropTypes.object.isRequired,
+  animation: PropTypes.bool.isRequired,
   onHandleFetchActivities: PropTypes.func.isRequired,
   onHandleFetchAttachment: PropTypes.func.isRequired,
   onHandleFetchComment: PropTypes.func.isRequired,

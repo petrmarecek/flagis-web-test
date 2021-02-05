@@ -70,14 +70,6 @@ const HeaderLeft = styled(ContentBoxHeaderLeft)`
   min-width: 40px;
 `
 
-const HeaderIcon = styled(ContentBoxHeaderIcon).attrs({
-  color: ['#FFF', '#CCCCCC'],
-  icon: ICONS.CONTACT_EXIST,
-  scale: 1.4,
-  height: 30,
-  width: 30,
-})``
-
 const HeaderTitle = styled(ContentBoxHeaderTitle)`
   ${props => (props.withContact ? 'color: #1C2124 !important' : null)};
 `
@@ -123,7 +115,6 @@ export {
   Header,
   HeaderAutocomplete,
   HeaderLeft,
-  HeaderIcon,
   HeaderTitle,
   HeaderLock,
   HeaderLockIcon,

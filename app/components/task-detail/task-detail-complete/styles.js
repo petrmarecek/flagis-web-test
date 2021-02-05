@@ -9,25 +9,26 @@ const Button = styled(CommonButton)`
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 
-  background-color: ${props => props.isCompleted ? '#44FFB1' : '#FFFFFF'};
-  border: 1px solid ${props => props.isCompleted ? '#44FFB1' : '#E4E4E4'};
+  background-color: ${props => (props.isCompleted ? '#44FFB1' : '#FFFFFF')};
+  border: 1px solid ${props => (props.isCompleted ? '#44FFB1' : '#E4E4E4')};
   border-radius: 3.5px;
   box-sizing: border-box;
   filter: drop-shadow(0px 1px 3px rgba(216, 216, 216, 0.5));
 
   &:hover {
-    border-color: #44FFB1;
+    border-color: #44ffb1;
   }
 `
 
 const Icon = styled(CheckIcon)`
   g {
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
-    opacity: ${props => props.isCompleted ? 1 : 0.3};
+    opacity: ${props => (props.isCompleted ? 1 : 0.3)};
 
     path {
-      fill: ${props => props.isCompleted ? '#FFFFFF' : '#B1B5B8'};
+      fill: ${props => (props.isCompleted ? '#FFFFFF' : '#B1B5B8')};
     }
 
     ${Button}:hover & {
@@ -35,13 +36,10 @@ const Icon = styled(CheckIcon)`
       opacity: 1;
 
       path {
-        fill: ${props => props.isCompleted ? '#FFFFFF' : '#44FFB1'};
+        fill: ${props => (props.isCompleted ? '#FFFFFF' : '#44FFB1')};
       }
     }
   }
 `
 
-export {
-  Button,
-  Icon,
-}
+export { Button, Icon }

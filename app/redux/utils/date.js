@@ -1,26 +1,45 @@
 import moment from 'moment'
 
-const DEFAULT_SIMPLE_DATE_FORMAT = 'D.M.YYYY'
-const DEFAULT_DATE_FORMAT = 'DD.MM.YYYY'
-const DEFAULT_TIME_FORMAT = 'HH:mm'
-const DEFAULT_SIMPLE_DATE_SIMPLE_TIME_FORMAT = 'D.M.YYYY H:m'
-const DEFAULT_SIMPLE_DATE_TIME_FORMAT = 'D.M.YYYY HH:mm'
-const DEFAULT_DATE_TIME_FORMAT = 'DD.MM.YYYY HH:mm'
+export const formats = {
+  DEFAULT_DAY: 'dddd',
+  DEFAULT_DAY_TIME: 'dddd HH:MM',
+  DEFAULT_SIMPLE_DATE_FORMAT: 'D.M.YYYY',
+  DEFAULT_DATE_FORMAT: 'DD.MM.YYYY',
+  DEFAULT_TIME_FORMAT: 'HH:mm',
+  DEFAULT_SIMPLE_DATE_SIMPLE_TIME_FORMAT: 'D.M.YYYY H:m',
+  DEFAULT_SIMPLE_DATE_TIME_FORMAT: 'D.M.YYYY HH:mm',
+  DEFAULT_DATE_TIME_FORMAT: 'DD.MM.YYYY HH:mm',
+}
+
+export const days = {
+  YESTERDAY: 'yesterday',
+  TODAY: 'today',
+  TOMORROW: 'tomorrow',
+}
 
 export default {
-  DEFAULT_SIMPLE_DATE_FORMAT,
-  DEFAULT_DATE_FORMAT,
-  DEFAULT_TIME_FORMAT,
-  DEFAULT_SIMPLE_DATE_SIMPLE_TIME_FORMAT,
-  DEFAULT_SIMPLE_DATE_TIME_FORMAT,
-  DEFAULT_DATE_TIME_FORMAT,
+  DEFAULT_DAY: formats.DEFAULT_DAY,
+  DEFAULT_DAY_TIME: formats.DEFAULT_DAY_TIME,
+  DEFAULT_SIMPLE_DATE_FORMAT: formats.DEFAULT_SIMPLE_DATE_FORMAT,
+  DEFAULT_DATE_FORMAT: formats.DEFAULT_DATE_FORMAT,
+  DEFAULT_TIME_FORMAT: formats.DEFAULT_TIME_FORMAT,
+  DEFAULT_SIMPLE_DATE_SIMPLE_TIME_FORMAT:
+    formats.DEFAULT_SIMPLE_DATE_SIMPLE_TIME_FORMAT,
+  DEFAULT_SIMPLE_DATE_TIME_FORMAT: formats.DEFAULT_SIMPLE_DATE_TIME_FORMAT,
+  DEFAULT_DATE_TIME_FORMAT: formats.DEFAULT_DATE_TIME_FORMAT,
 
-  formatDate(date, format = DEFAULT_DATE_FORMAT) {
+  YESTERDAY: days.YESTERDAY,
+  TODAY: days.TODAY,
+  TOMORROW: days.TOMORROW,
+
+  formatDate(date, format = formats.DEFAULT_DATE_FORMAT) {
     return date !== null ? moment(date).format(format) : ''
   },
 
   formatDateTimePrimary(date) {
-    return date !== null ? moment(date).format(DEFAULT_DATE_TIME_FORMAT) : ''
+    return date !== null
+      ? moment(date).format(formats.DEFAULT_DATE_TIME_FORMAT)
+      : ''
   },
 
   formatDateTimeSecondary(date) {
@@ -28,8 +47,8 @@ export default {
       return ''
     }
 
-    const dateFormat = moment(date).format(DEFAULT_DATE_FORMAT)
-    const timeFormat = moment(date).format(DEFAULT_TIME_FORMAT)
+    const dateFormat = moment(date).format(formats.DEFAULT_DATE_FORMAT)
+    const timeFormat = moment(date).format(formats.DEFAULT_TIME_FORMAT)
     return `${dateFormat} (${timeFormat})`
   },
 

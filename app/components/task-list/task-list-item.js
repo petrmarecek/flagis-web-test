@@ -5,6 +5,7 @@ import Linkify from 'react-linkify'
 import moment from 'moment'
 import removeMd from 'remove-markdown'
 import { motion } from 'framer-motion'
+import helpers from './helpers'
 
 // hooks
 import { useTaskListItemDragDrop } from 'hooks/useTaskListItemDragDrop'
@@ -39,6 +40,8 @@ import { EmptyList } from 'components/styled-components-mixins'
 import {
   TaskItem,
   Completed,
+  CompletedButton,
+  CompletedIcon,
   Archived,
   FollowerResponse,
   Content,
@@ -202,16 +205,27 @@ const TaskListItem = props => {
   // Date from dueDate
   const now = moment()
   const dueDate = task.dueDate
-  const dueDateFormat = useMemo(() => dateUtils.formatDate(dueDate, 'DD.MM.'), [
-    dateUtils.formatDate,
+  let dueDateFormat = useMemo(() => helpers.getDueDateFormat(dueDate), [
+    helpers.getDueDateFormat,
     dueDate,
   ])
-  const fromNow = task.dueDate ? moment(dueDate).fromNow() : ''
+  const dueDateColor = useMemo(() => helpers.getDueDateColor(dueDate), [
+    helpers.getDueDateColor,
+    dueDate,
+  ])
 
   // Format reminder date
   const reminderDateFormat = useMemo(
-    () => dateUtils.formatDate(task.reminderDate, 'DD/MM HH:mm'),
+    () => dateUtils.formatDate(task.reminderDate, dateUtils.DEFAULT_DAY_TIME),
     [task.reminderDate]
+  )
+  const reminderDateTitleFormat = useMemo(
+    () =>
+      dateUtils.formatDate(
+        task.reminderDate,
+        dateUtils.DEFAULT_DATE_TIME_FORMAT
+      ),
+    [dateUtils.formatDate, task.reminderDate]
   )
 
   // Description
@@ -285,6 +299,13 @@ const TaskListItem = props => {
     return '50px'
   }
 
+  const hasDetailInfo =
+    task.commentsCount > 0 ||
+    task.attachmentsCount > 0 ||
+    task.dueDate ||
+    task.reminderDate ||
+    !_.isEmpty(task.description)
+
   // Render component
   return (
     <li ref={dragDropHandle}>
@@ -313,31 +334,21 @@ const TaskListItem = props => {
             {!isArchivedList && !isInboxList && (
               <Completed
                 completed={task.isCompleted}
+                hasDetailInfo={hasDetailInfo}
                 onClick={e => {
                   e.stopPropagation()
                   onHandleCompleteClicked(e)
                 }}
               >
-                <Icon
-                  icon={
-                    task.isCompleted
-                      ? ICONS.TASK_COMPLETED
-                      : ICONS.TASK_UNCOMPLETED
-                  }
-                  color={completedIconColor()}
-                  width={22}
-                  height={22}
-                  title={
-                    task.isCompleted
-                      ? 'Incomplete the task'
-                      : 'Complete the task'
-                  }
-                />
+                <CompletedButton isCompleted={isCompletedMainList}>
+                  <CompletedIcon isCompleted={isCompletedMainList} />
+                </CompletedButton>
               </Completed>
             )}
             {task.isCompleted && !isInboxList && (
               <Archived
                 archived={isArchivedList}
+                hasDetailInfo={hasDetailInfo}
                 onClick={e => {
                   e.stopPropagation()
                   onHandleArchiveClicked(e)
@@ -381,6 +392,7 @@ const TaskListItem = props => {
               <SubjectTags>
                 <Subject
                   archived={isArchivedList}
+                  hasDetailInfo={hasDetailInfo}
                   completed={isCompletedMainList}
                   important={task.isImportant}
                   description={isDescription}
@@ -399,70 +411,107 @@ const TaskListItem = props => {
                 </Tags>
               </SubjectTags>
               <DescriptionDueDate>
-                {!_.isEmpty(task.description) && (
-                  <DueDate title="Task has a description">
-                    <DescriptionIcon color="b1b5b8" />
-                  </DueDate>
-                )}
-                {task.attachmentsCount > 0 && (
+                {task.dueDate !== null && (
                   <DueDate
-                    title={`Number of attachments - ${task.attachmentsCount}`}
-                    completed={isCompletedMainList}
+                    title={`Due Date - ${dueDateFormat.dueDateTitle}`}
+                    color={
+                      isCompletedMainList && !isArchivedList
+                        ? colors.americanSilver
+                        : dueDateColor
+                    }
                   >
                     <DueDateIcon
-                      icon={ICONS.PIN}
-                      color={[colors.astrocopusGrey]}
-                      width={9}
-                      height={10}
-                      scale={0.4}
+                      icon={ICONS.DUE_DATE}
+                      color={
+                        isCompletedMainList && !isArchivedList
+                          ? [colors.americanSilver]
+                          : [dueDateColor]
+                      }
+                      width={12}
+                      height={12}
+                      scale={1}
                     />
-                    {task.attachmentsCount}
+                    {dueDateFormat.dueDate}
+                  </DueDate>
+                )}
+                {task.reminderDate !== null && (
+                  <DueDate
+                    title={`Reminder Date - ${reminderDateTitleFormat}`}
+                    color={
+                      isCompletedMainList && !isArchivedList
+                        ? colors.americanSilver
+                        : colors.batman
+                    }
+                  >
+                    <DueDateIcon
+                      icon={ICONS.REMINDER_DATE}
+                      color={
+                        isCompletedMainList && !isArchivedList
+                          ? [colors.americanSilver]
+                          : [colors.batman]
+                      }
+                      width={17}
+                      height={14}
+                      scale={1}
+                    />
+                    {reminderDateFormat}
                   </DueDate>
                 )}
                 {task.commentsCount > 0 && (
                   <DueDate
                     title={`Number of comments - ${task.commentsCount}`}
-                    completed={isCompletedMainList}
+                    color={
+                      isCompletedMainList && !isArchivedList
+                        ? colors.americanSilver
+                        : colors.batman
+                    }
                   >
                     <DueDateIcon
-                      icon={ICONS.COMMENT_FILL}
-                      color={[colors.astrocopusGrey]}
-                      width={10}
-                      height={9}
-                      scale={0.7}
+                      icon={ICONS.COMMENT}
+                      color={
+                        isCompletedMainList && !isArchivedList
+                          ? [colors.americanSilver]
+                          : [colors.batman]
+                      }
+                      width={16}
+                      height={15}
+                      scale={0.62}
                     />
                     {task.commentsCount}
                   </DueDate>
                 )}
-                {task.reminderDate !== null && (
+                {task.attachmentsCount > 0 && (
                   <DueDate
-                    title={`Reminder Date - ${reminderDateFormat}`}
-                    completed={isCompletedMainList}
+                    title={`Number of attachments - ${task.attachmentsCount}`}
+                    color={
+                      isCompletedMainList && !isArchivedList
+                        ? colors.americanSilver
+                        : colors.batman
+                    }
                   >
                     <DueDateIcon
-                      icon={ICONS.REMINDER_DATE}
-                      color={[colors.astrocopusGrey]}
-                      width={10}
-                      height={9}
-                      scale={0.7}
+                      icon={ICONS.PIN}
+                      color={
+                        isCompletedMainList && !isArchivedList
+                          ? [colors.americanSilver]
+                          : [colors.batman]
+                      }
+                      width={13}
+                      height={14}
+                      scale={0.54}
                     />
-                    {reminderDateFormat}
+                    {task.attachmentsCount}
                   </DueDate>
                 )}
-                {task.dueDate !== null && (
-                  <DueDate
-                    title={`Due Date - ${fromNow}`}
-                    overdue={moment(dueDate) < now && !isArchivedList}
-                    completed={isCompletedMainList}
-                  >
-                    <DueDateIcon
-                      icon={ICONS.DUE_DATE}
-                      color={[colors.astrocopusGrey]}
-                      width={9}
-                      height={9}
-                      scale={0.7}
+                {!_.isEmpty(task.description) && (
+                  <DueDate title="Task has a description">
+                    <DescriptionIcon
+                      color={
+                        isCompletedMainList && !isArchivedList
+                          ? colors.americanSilver
+                          : colors.batman
+                      }
                     />
-                    {dueDateFormat}
                   </DueDate>
                 )}
               </DescriptionDueDate>

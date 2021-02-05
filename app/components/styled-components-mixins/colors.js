@@ -30,6 +30,9 @@ export const colors = {
   meltingGlacier: '#ecfff7',
   drunkenDragonfly: '#37E59C',
 
+  // yellow shades
+  agedGouda: '#DF9A43',
+
   // red shades
   pompelmo: '#ff6a6a',
 }
