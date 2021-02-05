@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.23.1](https://github.com/react-boilerplate/react-boilerplate/compare/v1.23.0...v1.23.1) (2021-02-05)
+
+
+### Bug Fixes
+
+* Fix color of dueDate in task-item ([35806c2](https://github.com/react-boilerplate/react-boilerplate/commit/35806c2cd0b6ccfddb19d83ce2733932294abb33))
+
 ## [1.23.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.22.0...v1.23.0) (2021-02-05)
 
 
