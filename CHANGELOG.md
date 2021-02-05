@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.23.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.22.0...v1.23.0) (2021-02-05)
+
+
+### Features
+
+* Change design of task-list-item and task-detail-item ([73c235c](https://github.com/react-boilerplate/react-boilerplate/commit/73c235c2f29654a373d1347789a8b4a4d5f6feb2))
+
 ## [1.22.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.21.1...v1.22.0) (2021-02-03)
 
 
