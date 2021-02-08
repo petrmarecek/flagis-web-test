@@ -348,35 +348,45 @@ const Relation = styled.div`
 `
 
 const RelationTop = styled.div`
-  height: 14px;
-  width: 5px;
+  ${borderRadius('0 0 0 5px')}
+  height: 15px;
+  width: ${props => (props.smallWidth ? '1px' : '6px')};
   border-left: 1px solid
     ${props =>
       props.showRelation
         ? colors[props.colorTheme].tagTreeRelationSelected
         : colors[props.colorTheme].tagTreeRelation};
-`
-
-const RelationCenter = styled.div`
-  height: 1px;
-  width: ${props => (props.smallWidth ? '1px' : '5px')};
   border-bottom: 1px solid
     ${props =>
       props.showRelation
         ? colors[props.colorTheme].tagTreeRelationSelected
         : colors[props.colorTheme].tagTreeRelation};
-  opacity: ${props => (props.hideRelation ? '0' : '1')};
 `
 
 const RelationBottom = styled.div`
   height: 17px;
   width: 5px;
+  position: relative;
   border-left: 1px solid
     ${props =>
       props.showBorder
         ? colors[props.colorTheme].tagTreeRelationSelected
         : colors[props.colorTheme].tagTreeRelation};
   opacity: ${props => (props.hideRelation ? '0' : '1')};
+
+  :before {
+    content: '';
+    height: 3px;
+    width: 1px;
+    position: absolute;
+    top: -3px;
+    left: -1px;
+    border-left: 1px solid
+      ${props =>
+        props.showBorder
+          ? colors[props.colorTheme].tagTreeRelationSelected
+          : colors[props.colorTheme].tagTreeRelation};
+  }
 `
 
 export {
@@ -407,6 +417,5 @@ export {
   ItemChildren,
   Relation,
   RelationTop,
-  RelationCenter,
   RelationBottom,
 }

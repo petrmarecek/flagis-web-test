@@ -27,7 +27,6 @@ import {
   ItemChildren,
   Relation,
   RelationTop,
-  RelationCenter,
   RelationBottom,
 } from './styles'
 import colors from 'components/styled-components-mixins/colors'
@@ -161,11 +160,7 @@ const TagTreeItem = props => {
               <RelationTop
                 showRelation={showRelation}
                 colorTheme={colorTheme}
-              />
-              <RelationCenter
-                showRelation={showRelation}
                 smallWidth={isNextSiblingSelected}
-                colorTheme={colorTheme}
               />
               {!isLastItem && (
                 <RelationBottom
