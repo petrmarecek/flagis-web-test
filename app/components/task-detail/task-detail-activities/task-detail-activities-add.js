@@ -2,40 +2,39 @@ import PropTypes from 'prop-types'
 import React, { useCallback, useMemo } from 'react'
 import { connect } from 'react-redux'
 
-import { getUserId } from '../../../redux/store/auth/auth.selectors'
-import { getContactById } from '../../../redux/store/contacts/contacts.selectors'
+import { getUserId } from 'redux/store/auth/auth.selectors'
+import { getContactById } from 'redux/store/contacts/contacts.selectors'
 
 import { AddComment, AddCommentAvatar, AddCommentInput } from './styles'
 
 const TaskDetailActivitiesAdd = ({ onSubmit, owner }) => {
-  // User name
-  const name = useMemo(() => `${owner.firstName} ${owner.lastName}`, [owner])
-
   // Prepare handler for key press
-  const handleKeyPress = useCallback(event => {
-    // Check enter press
-    const isSubmit = event.which === 13 || event.type === 'click'
-    if (!isSubmit) {
-      return
-    }
+  const handleKeyPress = useCallback(
+    event => {
+      // Check enter press
+      const isSubmit = event.which === 13 || event.type === 'click'
+      if (!isSubmit) {
+        return
+      }
 
-    event.preventDefault()
+      event.preventDefault()
 
-    // Does not add comment when there is no content
-    if (event.target.value === '') {
-      return
-    }
+      // Does not add comment when there is no content
+      if (event.target.value === '') {
+        return
+      }
 
-
-    // Save comment and reset field
-    onSubmit(event.target.value)
-    event.target.value = ''
-  }, [onSubmit])
+      // Save comment and reset field
+      onSubmit(event.target.value)
+      event.target.value = ''
+    },
+    [onSubmit]
+  )
 
   return (
     <AddComment>
-      <AddCommentAvatar src={owner.photo} name={name} />
-      <AddCommentInput onKeyPress={handleKeyPress}  />
+      <AddCommentAvatar src={owner.photo} name={owner.nickname} />
+      <AddCommentInput onKeyPress={handleKeyPress} />
     </AddComment>
   )
 }

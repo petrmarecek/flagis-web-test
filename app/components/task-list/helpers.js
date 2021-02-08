@@ -4,67 +4,65 @@ import * as _ from 'lodash'
 import { colors } from 'components/styled-components-mixins/colors'
 
 export default {
-  getDueDateFormat(dueDate) {
+  getDateMetaData(date) {
     // dueDate title
-    const momentDueDate = moment(dueDate)
-    const dueDateTitleFormat = dateUtils.formatDate(
-      momentDueDate,
+    const now = moment()
+    const momentDate = moment(date)
+    const metaData = {
+      date: null,
+      title: null,
+      color: colors.batman,
+      isOver: false,
+    }
+
+    // get date DD.MM.YYYY HH:mm
+    // set title and date
+    metaData.title = dateUtils.formatDate(
+      momentDate,
       dateUtils.DEFAULT_DATE_TIME_FORMAT
     )
+    metaData.date = metaData.title
 
-    // dueDate
-    let dueDateFormat = dateUtils.formatDate(
-      momentDueDate,
-      dateUtils.DEFAULT_DAY
+    // get time HH:mm
+    let dateTimeFormat = dateUtils.formatDate(
+      momentDate,
+      dateUtils.DEFAULT_TIME_FORMAT
     )
 
-    // yesterday
+    // set over date
+    if (momentDate < now) {
+      metaData.isOver = true
+      metaData.color = colors.pompelmo
+    }
+
+    // set yesterday
     const yesterdayStart = moment().subtract(1, 'day').startOf('day')
     const yesterdayEnd = moment().subtract(1, 'day').endOf('day')
 
-    if (momentDueDate >= yesterdayStart && momentDueDate <= yesterdayEnd) {
-      dueDateFormat = _.capitalize(dateUtils.YESTERDAY)
+    if (momentDate >= yesterdayStart && momentDate <= yesterdayEnd) {
+      metaData.date = `${_.capitalize(dateUtils.YESTERDAY)} ${dateTimeFormat}`
+      metaData.color = colors.pompelmo
     }
 
-    // today
+    // set today
     const todayStart = moment().startOf('day')
     const todayEnd = moment().endOf('day')
 
-    if (momentDueDate >= todayStart && momentDueDate <= todayEnd) {
-      dueDateFormat = _.capitalize(dateUtils.TODAY)
+    if (momentDate >= todayStart && momentDate <= todayEnd) {
+      metaData.date = `${_.capitalize(dateUtils.TODAY)} ${dateTimeFormat}`
+      metaData.color =
+        momentDate >= now ? colors.drunkenDragonfly : colors.pompelmo
     }
 
-    // tomorrow
+    // set tomorrow
     const tomorrowStart = moment().add(1, 'day').startOf('day')
     const tomorrowEnd = moment().add(1, 'day').endOf('day')
 
-    if (momentDueDate >= tomorrowStart && momentDueDate <= tomorrowEnd) {
-      dueDateFormat = _.capitalize(dateUtils.TOMORROW)
+    if (momentDate >= tomorrowStart && momentDate <= tomorrowEnd) {
+      metaData.date = `${_.capitalize(dateUtils.TOMORROW)} ${dateTimeFormat}`
+      metaData.color = colors.agedGouda
     }
 
-    return {
-      dueDate: dueDateFormat,
-      dueDateTitle: dueDateTitleFormat,
-    }
-  },
-
-  getDueDateColor(dueDate) {
-    const now = moment()
-    const dueDateFormat = this.getDueDateFormat(dueDate)
-    const momentDueDate = moment(dueDate)
-
-    if (momentDueDate < now) {
-      return colors.pompelmo
-    }
-
-    if (_.lowerCase(dueDateFormat.dueDate) === dateUtils.TODAY) {
-      return colors.drunkenDragonfly
-    }
-
-    if (_.lowerCase(dueDateFormat.dueDate) === dateUtils.TOMORROW) {
-      return colors.agedGouda
-    }
-
-    return colors.batman
+    return metaData
   },
 }

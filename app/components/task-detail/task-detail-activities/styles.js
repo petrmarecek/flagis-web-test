@@ -32,8 +32,8 @@ const HeaderLeft = styled(ContentBoxHeaderLeft)`
 const HeaderIcon = styled(ContentBoxHeaderIcon).attrs({
   color: '#1C2124',
   icon: ICONS.COMMENT,
-  scale: 0.8,
-  height: 18,
+  scale: 1.4,
+  height: 20,
   width: 21,
 })``
 

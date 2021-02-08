@@ -203,29 +203,16 @@ const TaskListItem = props => {
   const isOwnerAccepted = isOwner && followerStatus === 'accepted'
 
   // Date from dueDate
-  const now = moment()
   const dueDate = task.dueDate
-  let dueDateFormat = useMemo(() => helpers.getDueDateFormat(dueDate), [
-    helpers.getDueDateFormat,
-    dueDate,
-  ])
-  const dueDateColor = useMemo(() => helpers.getDueDateColor(dueDate), [
-    helpers.getDueDateColor,
+  let dueDateMetaData = useMemo(() => helpers.getDateMetaData(dueDate), [
+    helpers.getDateMetaData,
     dueDate,
   ])
 
   // Format reminder date
-  const reminderDateFormat = useMemo(
-    () => dateUtils.formatDate(task.reminderDate, dateUtils.DEFAULT_DAY_TIME),
-    [task.reminderDate]
-  )
-  const reminderDateTitleFormat = useMemo(
-    () =>
-      dateUtils.formatDate(
-        task.reminderDate,
-        dateUtils.DEFAULT_DATE_TIME_FORMAT
-      ),
-    [dateUtils.formatDate, task.reminderDate]
+  const reminderDateMetaData = useMemo(
+    () => helpers.getDateMetaData(task.reminderDate),
+    [helpers.getDateMetaData, task.reminderDate]
   )
 
   // Description
@@ -271,19 +258,6 @@ const TaskListItem = props => {
     }
 
     return colors.white
-  }
-
-  // Color of completed icon
-  const completedIconColor = () => {
-    if (task.isCompleted) {
-      return [colors.hanumanGreen]
-    }
-
-    if (isOwnerAccepted) {
-      return [colors.mercury]
-    }
-
-    return [colors.crystalBell]
   }
 
   // Margin-left of content task
@@ -413,11 +387,11 @@ const TaskListItem = props => {
               <DescriptionDueDate>
                 {task.dueDate !== null && (
                   <DueDate
-                    title={`Due Date - ${dueDateFormat.dueDateTitle}`}
+                    title={`Due Date - ${dueDateMetaData.title}`}
                     color={
                       isCompletedMainList && !isArchivedList
                         ? colors.americanSilver
-                        : dueDateColor
+                        : dueDateMetaData
                     }
                   >
                     <DueDateIcon
@@ -425,18 +399,18 @@ const TaskListItem = props => {
                       color={
                         isCompletedMainList && !isArchivedList
                           ? [colors.americanSilver]
-                          : [dueDateColor]
+                          : [dueDateMetaData]
                       }
                       width={12}
                       height={12}
                       scale={1}
                     />
-                    {dueDateFormat.dueDate}
+                    {dueDateMetaData.date}
                   </DueDate>
                 )}
-                {task.reminderDate !== null && (
+                {task.reminderDate !== null && !reminderDateMetaData.isOver && (
                   <DueDate
-                    title={`Reminder Date - ${reminderDateTitleFormat}`}
+                    title={`Reminder Date - ${reminderDateMetaData.title}`}
                     color={
                       isCompletedMainList && !isArchivedList
                         ? colors.americanSilver
@@ -454,7 +428,7 @@ const TaskListItem = props => {
                       height={14}
                       scale={1}
                     />
-                    {reminderDateFormat}
+                    {reminderDateMetaData.date}
                   </DueDate>
                 )}
                 {task.commentsCount > 0 && (
@@ -475,7 +449,7 @@ const TaskListItem = props => {
                       }
                       width={16}
                       height={15}
-                      scale={0.62}
+                      scale={1.06}
                     />
                     {task.commentsCount}
                   </DueDate>
@@ -498,7 +472,7 @@ const TaskListItem = props => {
                       }
                       width={13}
                       height={14}
-                      scale={0.54}
+                      scale={1.07}
                     />
                     {task.attachmentsCount}
                   </DueDate>

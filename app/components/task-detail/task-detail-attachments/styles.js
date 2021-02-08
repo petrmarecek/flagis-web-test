@@ -31,9 +31,9 @@ const HeaderLeft = styled(ContentBoxHeaderLeft)`
 const HeaderIcon = styled(ContentBoxHeaderIcon).attrs({
   color: '#1C2124',
   icon: ICONS.PIN,
-  scale: 0.8,
+  scale: 1.54,
   height: 20,
-  width: 18,
+  width: 19,
 })``
 
 const HeaderTitle = styled(ContentBoxHeaderTitle).attrs({
@@ -70,7 +70,7 @@ const ItemTitle = styled.span`
 
   font-size: 13px;
   line-height: 15px;
-  color: #1C2124;
+  color: #1c2124;
 `
 
 const ItemDelete = styled(Icon).attrs({
@@ -94,7 +94,6 @@ export {
   HeaderIcon,
   HeaderTitle,
   Wrapper,
-
   // ITEM
   Item,
   ItemDelete,

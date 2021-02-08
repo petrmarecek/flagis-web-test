@@ -54,7 +54,13 @@ const AttachmentAddButton = ({ onFileUploaded }) => {
   return (
     <AttachmentAddButtonWrapper {...getRootProps()}>
       <input {...getInputProps()} />
-      <Icon icon={ICONS.PIN} width={23} height={26} color={['#1C2124']} />
+      <Icon
+        icon={ICONS.PIN}
+        width={23}
+        height={26}
+        scale={2}
+        color={['#1C2124']}
+      />
       <AddButton>Add attachment</AddButton>
     </AttachmentAddButtonWrapper>
   )
