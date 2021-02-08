@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.24.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.23.1...v1.24.0) (2021-02-08)
+
+
+### Features
+
+* Add radius for tag-tree relations ([8c02d44](https://github.com/react-boilerplate/react-boilerplate/commit/8c02d44f1c155f91127c9830eb6122ee8d50110a))
+
+
+### Bug Fixes
+
+* Fix a dueDate and reminderDate format on a task-list-item ([fcf0c48](https://github.com/react-boilerplate/react-boilerplate/commit/fcf0c48167c5f377139b300988cefdb2e1434fbb))
+
 ### [1.23.1](https://github.com/react-boilerplate/react-boilerplate/compare/v1.23.0...v1.23.1) (2021-02-05)
 
 
