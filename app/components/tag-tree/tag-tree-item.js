@@ -76,19 +76,20 @@ const TagTreeItem = props => {
     onDrop,
   })
 
-  const hasChildItems = treeItem.childItems.size > 0
+  const { tag } = treeItem
+  const children = treeItemEntitiesByParent.get(treeItem.parentId)
+  const siblings = children.filter(item => item.id !== treeItem.id)
   const itemParents = [...parents, treeItem]
-  const tag = treeItem.tag
+  const hasChildItems = treeItem.childItems.size > 0
+  const hasMoreParents = parents.length > 1
+  const isSelected = selection.includes(treeItem.id)
   const colorIndex = getColorIndex(
     tag ? tag.colorIndex : null,
     tag ? tag.title : ''
   )
   const tagColor = getTagColor(colorIndex)
-  const isSelected = selection.includes(treeItem.id)
 
   // computing relation
-  const children = treeItemEntitiesByParent.get(treeItem.parentId)
-  const siblings = children.filter(item => item.id !== treeItem.id)
   let isNextSiblingSelected = false
   for (const sibling of siblings) {
     if (sibling.order > treeItem.order && selection.includes(sibling.id)) {
@@ -96,14 +97,6 @@ const TagTreeItem = props => {
     }
   }
   const showRelation = isSelected || isNextSiblingSelected
-
-  const hasMoreParents = parents.length > 1
-  const hasMoreChildren = children.size > 1
-  let childrenClassNameModifier =
-    hasMoreParents && hasMoreChildren && !isLastItem ? '--border-left' : ''
-  if (childrenClassNameModifier === '--border-left' && isNextSiblingSelected) {
-    childrenClassNameModifier = '--selected-border-left'
-  }
 
   const currentTagRelations = getTagRelations(
     tagsRelations,
@@ -153,21 +146,15 @@ const TagTreeItem = props => {
       <ItemWithChildrenWrapper>
         <ItemWrapper>
           {hasMoreParents && (
-            <Relation
-              className="tag-tree-item__relation"
-              showRelation={showRelation}
-            >
+            <Relation showRelation={showRelation}>
               <RelationTop
-                showRelation={showRelation}
                 colorTheme={colorTheme}
                 smallWidth={isNextSiblingSelected}
               />
               {!isLastItem && (
                 <RelationBottom
-                  className="tag-tree-item__relation-bottom"
-                  showBorder={isNextSiblingSelected}
-                  hideRelation={isSelected && !isNextSiblingSelected}
                   colorTheme={colorTheme}
+                  hideRelation={isSelected && !isNextSiblingSelected}
                 />
               )}
             </Relation>
@@ -239,7 +226,6 @@ const TagTreeItem = props => {
           </Item>
         </ItemWrapper>
         <ItemChildren
-          className={`tag-tree-item__children${childrenClassNameModifier}`}
           showBorder={isNextSiblingSelected && hasMoreParents}
           colorTheme={colorTheme}
           collapsed={treeItem.collapsed}

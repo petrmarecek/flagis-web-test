@@ -19,33 +19,6 @@ const Wrapper = styled.div`
   bottom: 0;
   left: 0;
   padding: 0 20px 0 24px;
-
-  .tag-tree-item__relation,
-  .tag-tree-item__relation-bottom,
-  .tag-tree-item__children--selected-border-left,
-  .tag-tree-item__children--border-left {
-    ${transition('100ms ease-out')};
-  }
-
-  :hover {
-    .tag-tree-item__relation,
-    .tag-tree-item__relation-bottom {
-      ${transition('100ms ease-out')};
-      opacity: 1;
-    }
-
-    .tag-tree-item__children--selected-border-left {
-      ${transition('100ms ease-out')};
-      border-left: 1px solid
-        ${props => colors[props.colorTheme].tagTreeRelationSelected};
-    }
-
-    .tag-tree-item__children--border-left {
-      ${transition('100ms ease-out')};
-      border-left: 1px solid
-        ${props => colors[props.colorTheme].tagTreeRelation};
-    }
-  }
 `
 
 const AddSection = styled.div`
@@ -352,41 +325,18 @@ const RelationTop = styled.div`
   height: 15px;
   width: ${props => (props.smallWidth ? '1px' : '6px')};
   border-left: 1px solid
-    ${props =>
-      props.showRelation
-        ? colors[props.colorTheme].tagTreeRelationSelected
-        : colors[props.colorTheme].tagTreeRelation};
+    ${props => colors[props.colorTheme].tagTreeRelationSelected};
   border-bottom: 1px solid
-    ${props =>
-      props.showRelation
-        ? colors[props.colorTheme].tagTreeRelationSelected
-        : colors[props.colorTheme].tagTreeRelation};
+    ${props => colors[props.colorTheme].tagTreeRelationSelected};
 `
 
 const RelationBottom = styled.div`
   height: 17px;
   width: 5px;
   position: relative;
-  border-left: 1px solid
-    ${props =>
-      props.showBorder
-        ? colors[props.colorTheme].tagTreeRelationSelected
-        : colors[props.colorTheme].tagTreeRelation};
   opacity: ${props => (props.hideRelation ? '0' : '1')};
-
-  :before {
-    content: '';
-    height: 3px;
-    width: 1px;
-    position: absolute;
-    top: -3px;
-    left: -1px;
-    border-left: 1px solid
-      ${props =>
-        props.showBorder
-          ? colors[props.colorTheme].tagTreeRelationSelected
-          : colors[props.colorTheme].tagTreeRelation};
-  }
+  border-left: 1px solid
+    ${props => colors[props.colorTheme].tagTreeRelationSelected};
 `
 
 export {

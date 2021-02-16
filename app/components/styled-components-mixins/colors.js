@@ -96,8 +96,7 @@ export default {
     tagTreeAddNewGroupHover: colors.white,
     tagTreeShadowScrollbar: colors.darkJungleGreen,
     tagTreeScrollbar: colors.batman,
-    tagTreeRelation: colors.batman,
-    tagTreeRelationSelected: colors.white,
+    tagTreeRelationSelected: colors.greyOfDarkness,
 
     // image-picker
     imagePickerButton: colors.astrocopusGrey,
@@ -141,8 +140,7 @@ export default {
     tagTreeAddNewGroupHover: colors.darkJungleGreen,
     tagTreeShadowScrollbar: colors.white,
     tagTreeScrollbar: colors.coldWind,
-    tagTreeRelation: colors.coldWind,
-    tagTreeRelationSelected: colors.darkJungleGreen,
+    tagTreeRelationSelected: colors.greyOfDarkness,
 
     // image-picker
     imagePickerButton: colors.astrocopusGrey,
