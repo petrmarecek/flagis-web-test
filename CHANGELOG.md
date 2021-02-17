@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.25.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.24.0...v1.25.0) (2021-02-17)
+
+
+### Features
+
+* Change some design details in task-item and task-detail ([5420cff](https://github.com/react-boilerplate/react-boilerplate/commit/5420cff58c9dde24afa2c492164e04b43d8b6f31))
+* Show tag-tree relations only for selected items ([125598c](https://github.com/react-boilerplate/react-boilerplate/commit/125598c4ffec68b18c88a6e095924987eb3f52a7))
+
 ## [1.24.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.23.1...v1.24.0) (2021-02-08)
 
 
