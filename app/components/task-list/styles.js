@@ -8,6 +8,7 @@ import {
   borderRadius,
   fontMain,
   link,
+  boxShadow,
 } from '../styled-components-mixins'
 import { colors } from '../styled-components-mixins/colors'
 import Icon from 'components/icons/icon'
@@ -78,6 +79,11 @@ const TaskItem = styled.div`
       props.completed ? 'scaleX(1)' : 'scaleX(0)'
     )} ${transformOrigin('0 50%')} ${transition('transform 500ms ease-out')};
   }
+
+  :hover, :hover:before {
+    ${boxShadow(`inset 0px 0px 0px 1px ${colors.porpoise}`)}
+  }
+
 `
 
 const Completed = styled.div`

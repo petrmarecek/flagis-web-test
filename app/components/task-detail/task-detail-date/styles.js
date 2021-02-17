@@ -14,6 +14,7 @@ import {
   ContentBoxHeaderLockIcon,
   ContentBoxHeaderTitle,
 } from '../styles'
+import { colors } from 'components/styled-components-mixins/colors'
 
 const Body = styled(ContentBoxBody)`
   padding: 0 9px 8px 33px;
@@ -25,14 +26,14 @@ const BodyClear = styled(Button)`
   width: 15px;
   height: 15px;
 
-  border: 1px solid #676d71;
+  border: 1px solid ${colors.batman};
   border-radius: 7px;
   box-sizing: border-box;
   padding-left: 3px;
 `
 
 const BodyClearIcon = styled(Icon).attrs({
-  color: ['#676D71'],
+  color: [colors.batman],
   icon: ICONS.CROSS_SIMPLE,
   scale: 0.5,
   width: 10,
@@ -55,7 +56,13 @@ const HeaderLock = styled(ContentBoxHeaderLock)``
 
 const HeaderLockIcon = styled(ContentBoxHeaderLockIcon)``
 
-const Wrapper = styled(ContentBox)``
+const Wrapper = styled(ContentBox)`
+  :hover {
+    ${HeaderTitle} {
+      color: ${colors.darkJungleGreen};
+    }
+  }
+`
 
 export {
   Body,

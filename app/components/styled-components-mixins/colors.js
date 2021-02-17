@@ -9,6 +9,7 @@ export const colors = {
   spanishGrey: '#979797',
   greyOfDarkness: '#a2a2a2',
   astrocopusGrey: '#b1b5b8',
+  coveredInPlatinum: '#bababa',
   bayOfHope: '#c1cad0',
   americanSilver: '#cecece',
   snowShadow: '#d7e3ec',
@@ -17,6 +18,7 @@ export const colors = {
   mercury: '#ebebeb',
   crystalBell: '#efefef',
   lynxWhite: '#F6F7F8',
+  snowflake: '#f0f0f0',
   whitePorcelain: '#fafafa',
   white: '#fff',
 

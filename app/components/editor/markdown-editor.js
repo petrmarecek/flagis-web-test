@@ -71,14 +71,14 @@ const toolsByView = {
  * See https://nhn.github.io/tui.editor/latest/ToastUIEditor
  */
 export const MarkdownEditor = ({
-                                 componentId,
-                                 content,
-                                 setDescription,
-                                 editorHeight,
-                                 onInsertImage,
-                                 view,
-                                 disabled,
-                               }) => {
+  componentId,
+  content,
+  setDescription,
+  editorHeight,
+  onInsertImage,
+  view,
+  disabled,
+}) => {
   const editorRef = useRef()
 
   const handlePasteBefore = useCallback(event => {

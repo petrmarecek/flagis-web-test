@@ -11,6 +11,7 @@ import {
   ContentBoxBody,
 } from '../styles'
 import ToggleSwitch from 'components/common/toggle-switch'
+import { colors } from 'components/styled-components-mixins/colors'
 
 const Body = styled(ContentBoxBody)``
 
@@ -38,6 +39,12 @@ const Switch = styled(ToggleSwitch)``
 
 const Wrapper = styled(ContentBox)`
   cursor: pointer;
+
+  :hover {
+    ${HeaderTitle} {
+      color: ${colors.darkJungleGreen};
+    }
+  }
 `
 
 export {

@@ -11,14 +11,17 @@ import { ICONS } from '../../icons/icon-constants'
 import {
   ContentBox,
   ContentBoxHeader,
-  ContentBoxHeaderIcon,
   ContentBoxHeaderLeft,
   ContentBoxHeaderLock,
   ContentBoxHeaderLockIcon,
   ContentBoxHeaderTitle,
   ContentBoxBody,
 } from '../styles'
-import { transition } from 'components/styled-components-mixins'
+import {
+  transition,
+  placeholderColor,
+} from 'components/styled-components-mixins'
+import { colors } from 'components/styled-components-mixins/colors'
 
 const Body = styled(ContentBoxBody)`
   ${props => (props.flexEnd ? 'justify-content: flex-end' : null)};
@@ -30,20 +33,20 @@ const BodyStatus = styled.span`
   font-size: 10px;
   line-height: 12px;
   text-transform: uppercase;
-  color: #676d71;
+  color: ${colors.batman};
 `
 
 const BodyButton = styled(Button)`
   background-color: ${props => {
     if (props.green) {
-      return '#37E59C'
+      return colors.drunkenDragonfly
     }
 
     if (props.red) {
-      return '#efefef'
+      return colors.crystalBell
     }
 
-    return '#BABABA'
+    return colors.coveredInPlatinum
   }};
   margin: 0 0 0 10px;
   padding: 5px 20px;
@@ -52,11 +55,12 @@ const BodyButton = styled(Button)`
   font-size: 13px;
   font-weight: 500;
   line-height: 15px;
-  color: ${props => (props.red ? '#ff6a6a' : '#fff')};
+  color: ${props => (props.red ? colors.pompelmo : colors.white)};
 
   :hover {
     ${transition('500ms')};
-    background-color: ${props => (props.red ? '#ff6a6a' : '#44ffb1')};
+    background-color: ${props =>
+      props.red ? colors.pompelmo : colors.hanumanGreen};
     color: #fff;
   }
 `
@@ -88,14 +92,14 @@ const HeaderDelete = styled(Button)`
   width: 15px;
   height: 15px;
 
-  border: 1px solid #676d71;
+  border: 1px solid ${colors.batman};
   border-radius: 7px;
   box-sizing: border-box;
   padding: 1px 0 0 3px;
 `
 
 const HeaderDeleteIcon = styled(Icon).attrs({
-  color: ['#676D71'],
+  color: [colors.batman],
   icon: ICONS.CROSS_SIMPLE,
   scale: 0.5,
   width: 10,
@@ -105,6 +109,10 @@ const HeaderDeleteIcon = styled(Icon).attrs({
 const Wrapper = styled(ContentBox)`
   &:hover {
     box-shadow: 1px 2px 9px rgba(214, 214, 214, 0.5);
+
+    input {
+      ${placeholderColor(colors.darkJungleGreen)}
+    }
   }
 `
 

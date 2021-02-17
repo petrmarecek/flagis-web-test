@@ -9,6 +9,8 @@ import {
   ContentBoxHeaderLock,
   ContentBoxHeaderLockIcon,
 } from '../styles'
+import { placeholderColor } from 'components/styled-components-mixins'
+import { colors } from 'components/styled-components-mixins/colors'
 
 const Body = styled(ContentBoxBody)`
   flex-wrap: wrap;
@@ -29,6 +31,10 @@ const HeaderLockIcon = styled(ContentBoxHeaderLockIcon)``
 const Wrapper = styled(ContentBox)`
   &:hover {
     box-shadow: 1px 2px 9px rgba(214, 214, 214, 0.5);
+
+    input {
+      ${placeholderColor(colors.darkJungleGreen)}
+    }
   }
 `
 

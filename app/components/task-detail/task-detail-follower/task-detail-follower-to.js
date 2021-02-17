@@ -5,15 +5,30 @@ import { FOLLOWER_STATUS } from '../../../utils/constants'
 
 import FollowerIcon from '../../common/follower-icon'
 import {
-  Body, BodyButton, BodyStatus, Header, HeaderDelete, HeaderDeleteIcon, HeaderLeft,
-  HeaderLock, HeaderTitle, HeaderTitleName, Wrapper,
+  Body,
+  BodyButton,
+  BodyStatus,
+  Header,
+  HeaderDelete,
+  HeaderDeleteIcon,
+  HeaderLeft,
+  HeaderLock,
+  HeaderTitle,
+  HeaderTitleName,
+  Wrapper,
 } from './styles'
 import AddFollower from './task-detail-follower-to-add'
 
 const TaskDetailFollowerTo = props => {
   const {
-    followers, isAddAllowed, isDeleteAllowed, isSendAllowed, isTakeBackAllowed,
-    onDelete, onSend, taskId,
+    followers,
+    isAddAllowed,
+    isDeleteAllowed,
+    isSendAllowed,
+    isTakeBackAllowed,
+    onDelete,
+    onSend,
+    taskId,
   } = props
 
   // Get actual follower - now only one follower on one task
@@ -22,7 +37,7 @@ const TaskDetailFollowerTo = props => {
   // Prepare handler for deleting follower
   const handleDelete = useCallback(
     () => onDelete(actualFollower.id, actualFollower.profile.id),
-    [actualFollower, onDelete],
+    [actualFollower, onDelete]
   )
 
   // Does not display when there is no follower and action for adding follower is not allowed
@@ -60,7 +75,8 @@ const TaskDetailFollowerTo = props => {
       </Header>
       <Body>
         <BodyStatus>
-          {actualFollower.status === FOLLOWER_STATUS.PENDING && 'Waiting for response'}
+          {actualFollower.status === FOLLOWER_STATUS.PENDING &&
+            'Waiting for response'}
           {actualFollower.status === FOLLOWER_STATUS.ACCEPTED && 'Accepted'}
           {actualFollower.status === FOLLOWER_STATUS.REJECTED && 'Rejected'}
         </BodyStatus>
@@ -70,7 +86,7 @@ const TaskDetailFollowerTo = props => {
           </BodyButton>
         )}
         {isTakeBackAllowed && (
-          <BodyButton onClick={handleDelete}>
+          <BodyButton red onClick={handleDelete}>
             Take back
           </BodyButton>
         )}
