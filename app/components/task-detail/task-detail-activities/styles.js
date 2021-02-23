@@ -47,17 +47,23 @@ const Wrapper = styled(ContentBox)`
 
 // ------ ACTIVITY ------------------------------------------------------------
 const Activity = styled.div`
-  margin: 0 0 3px 42px;
+  margin: 0 0 6px 42px;
+
+  font-size: 11px;
+  line-height: 14px;
+  color: #676d71;
 
   &:first-child {
     margin-top: 10px;
   }
 `
 
-const ActivityText = styled.span`
-  font-size: 11px;
-  line-height: 14px;
-  color: #676d71;
+const ActivityText = styled.span``
+
+const ActivityDate = styled.span`
+  &:before {
+    content: ' ';
+  }
 `
 
 // ------ COMMENT -------------------------------------------------------------
@@ -191,6 +197,7 @@ export {
   // ACTIVITY
   Activity,
   ActivityText,
+  ActivityDate,
   // COMMENT
   Comment,
   CommentAuthor,

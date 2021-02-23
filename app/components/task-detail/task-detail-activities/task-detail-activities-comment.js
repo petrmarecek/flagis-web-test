@@ -19,22 +19,25 @@ import {
   CommentHeader,
   CommentText,
 } from './styles'
+import dateUtil from 'redux/utils/date'
 
 const TaskDetailActivitiesComment = ({ data, photo, onDelete, userId }) => {
   // Format dates
-  const dateAgo = useMemo(() => moment(data.createdAt).fromNow(), [data.createdAt])
   const formattedDate = useMemo(
-    () => moment(data.createdAt).format('DD.MM.YYYY HH:mm'),
-    [data.createdAt],
+    () => dateUtil.formatDateTimeSecondary(data.createdAt),
+    [data.createdAt]
   )
 
   const isDeletable = useMemo(
     () => userId === data.createdById && !data.trashedAt,
-    [data, userId],
+    [data, userId]
   )
 
   // Prepare handler for deleting comment
-  const handleDelete = useCallback(() => onDelete(data.taskId, data.id), [data, onDelete])
+  const handleDelete = useCallback(() => onDelete(data.taskId, data.id), [
+    data,
+    onDelete,
+  ])
 
   return (
     <Comment>
@@ -44,9 +47,7 @@ const TaskDetailActivitiesComment = ({ data, photo, onDelete, userId }) => {
       <CommentContent>
         <CommentHeader>
           <CommentAuthor>{data.author}</CommentAuthor>
-          <CommentDate title={formattedDate}>
-            {dateAgo}
-          </CommentDate>
+          <CommentDate>{formattedDate}</CommentDate>
         </CommentHeader>
         <CommentText>{data.content}</CommentText>
       </CommentContent>
@@ -75,4 +76,7 @@ const mapDispatchToProps = {
   onDelete: commentActions.deleteComment,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TaskDetailActivitiesComment)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TaskDetailActivitiesComment)
