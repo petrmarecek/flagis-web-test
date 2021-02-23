@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.26.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.25.0...v1.26.0) (2021-02-23)
+
+
+### Features
+
+* Change a color of a contact in the tag-tree ([06fe435](https://github.com/react-boilerplate/react-boilerplate/commit/06fe435ef81f438ac8b48ae77300eb3c54564657))
+* Change a date of comments and activities ([2467e5f](https://github.com/react-boilerplate/react-boilerplate/commit/2467e5f05f3e64a205c5f4362d9c2bed0c72f274))
+
 ## [1.25.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.24.0...v1.25.0) (2021-02-17)
 
 
