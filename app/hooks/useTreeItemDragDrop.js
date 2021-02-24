@@ -3,7 +3,7 @@ import { useDrag, useDrop } from 'react-dnd'
 import { findDOMNode } from 'react-dom'
 import includes from 'lodash/includes'
 import constants from 'utils/constants'
-import { DragType, TaskDropTarget } from 'utils/enums'
+import { DragType, TaskDropTarget, TreeItemType } from 'utils/enums'
 
 const useTreeItemDragDrop = ({ treeItem, parents, tags, onDrop }) => {
   // Keeps reference to drop DOM element
@@ -17,6 +17,7 @@ const useTreeItemDragDrop = ({ treeItem, parents, tags, onDrop }) => {
     item: {
       id: treeItem.id,
       type: DragType.TREE_ITEM,
+      treeItemType: treeItem.tagId ? TreeItemType.TAG : TreeItemType.CONTACT,
     },
     collect: monitor => ({
       isDragging: monitor.isDragging(),
@@ -79,9 +80,19 @@ const useTreeItemDragDrop = ({ treeItem, parents, tags, onDrop }) => {
           currentDropPosition = 'TOP'
         } else if (hoverClientY < 2 * thirdHeight) {
           currentDropPosition = 'MIDDLE'
+
+          // Not move a contact into an other contact as a sub-contact
+          if (item.treeItemType === TreeItemType.CONTACT && !treeItem.tagId) {
+            return
+          }
         } else {
           currentDropPosition = 'BOTTOM'
         }
+      }
+
+      // Not move a task into a contact
+      if (item.type === DragType.TASK && !treeItem.tagId) {
+        return
       }
 
       setDropPosition(currentDropPosition)
