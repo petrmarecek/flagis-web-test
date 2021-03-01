@@ -21,6 +21,7 @@ import {
   placeholderColor,
 } from '../styled-components-mixins'
 import colors from 'components/styled-components-mixins/colors'
+import UserFilterIcon from 'components/icons/user-filter-icon'
 
 const AddItem = styled.div`
   display: flex;
@@ -73,8 +74,8 @@ const AddTagTreeItemSectionForm = props => {
       <AddSection>
         <SectionInput
           ref={getInputRef}
-          placeholder='Add Title'
-          type='text'
+          placeholder="Add Title"
+          type="text"
           onKeyDown={onHandleKeyDown}
           onBlur={onHandleBlur}
           colorTheme={colorTheme}
@@ -86,17 +87,12 @@ const AddTagTreeItemSectionForm = props => {
   if (type === 'contacts') {
     return (
       <AddItem>
-        <Icon
-          icon={ICONS.TAG}
-          width={20}
-          height={11}
-          color={[colors.tagTreeAddFilterIcon]}
-        />
+        <UserFilterIcon />
         <ItemInput>
           <Autocomplete
-            dataType='contacts'
-            location='tagTree'
-            placeholder='Add contact filter'
+            dataType="contacts"
+            location="tagTree"
+            placeholder="Add contact filter"
             selectedItems={selectedItems}
             onAddInputRef={getInputRef}
             onBlurTagTree={onHandleBlur}
@@ -119,9 +115,9 @@ const AddTagTreeItemSectionForm = props => {
       />
       <ItemInput>
         <Autocomplete
-          dataType='tags'
-          location='tagTree'
-          placeholder='Add tag filter'
+          dataType="tags"
+          location="tagTree"
+          placeholder="Add tag filter"
           selectedItems={selectedItems}
           parentId={parentId}
           onAddInputRef={getInputRef}
@@ -200,5 +196,5 @@ export default compose(
         }
       }, 10)
     },
-  }),
+  })
 )(AddTagTreeItemSectionForm)
