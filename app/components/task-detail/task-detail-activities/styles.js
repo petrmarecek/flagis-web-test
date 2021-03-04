@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import Icon from '../../icons/icon'
 import { ICONS } from '../../icons/icon-constants'
-import { placeholderColor } from '../../styled-components-mixins'
+import { placeholderColor, link } from '../../styled-components-mixins'
 
 import {
   ContentBox,
@@ -122,6 +122,7 @@ const CommentText = styled.p`
   font-size: 14px;
   line-height: 16px;
   color: #1c2124;
+  ${link};
 `
 
 const CommentDeleteBox = styled.div`

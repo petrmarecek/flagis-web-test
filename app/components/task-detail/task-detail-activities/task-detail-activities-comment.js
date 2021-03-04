@@ -1,11 +1,10 @@
-import moment from 'moment'
 import PropTypes from 'prop-types'
 import React, { useCallback, useMemo } from 'react'
 import { connect } from 'react-redux'
 
-import { getUserId } from '../../../redux/store/auth/auth.selectors'
-import * as commentActions from '../../../redux/store/comments/comments.actions'
-import { getContactById } from '../../../redux/store/contacts/contacts.selectors'
+import { getUserId } from 'redux/store/auth/auth.selectors'
+import * as commentActions from 'redux/store/comments/comments.actions'
+import { getContactById } from 'redux/store/contacts/contacts.selectors'
 
 import {
   Comment,
@@ -20,6 +19,7 @@ import {
   CommentText,
 } from './styles'
 import dateUtil from 'redux/utils/date'
+import Linkify from 'react-linkify'
 
 const TaskDetailActivitiesComment = ({ data, photo, onDelete, userId }) => {
   // Format dates
@@ -49,7 +49,9 @@ const TaskDetailActivitiesComment = ({ data, photo, onDelete, userId }) => {
           <CommentAuthor>{data.author}</CommentAuthor>
           <CommentDate>{formattedDate}</CommentDate>
         </CommentHeader>
-        <CommentText>{data.content}</CommentText>
+        <CommentText>
+          <Linkify properties={{ target: '_blank' }}>{data.content}</Linkify>
+        </CommentText>
       </CommentContent>
       {isDeletable && (
         <CommentDeleteBox>
