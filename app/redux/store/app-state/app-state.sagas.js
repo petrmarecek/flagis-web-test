@@ -22,6 +22,8 @@ import {
 } from 'redux/store/errors/errors.common'
 import { callApi } from 'redux/store/common.sagas'
 import api from 'redux/utils/api'
+import * as authSelectors from 'redux/store/auth/auth.selectors'
+import * as contactsActions from 'redux/store/contacts/contacts.actions'
 
 export function* defaultDisplay() {
   yield put(appStateActions.hideArchivedTasks())
@@ -66,16 +68,59 @@ export function* hintSelected(action) {
 
     // Hint selected within tree context
     if (location === 'tagTree') {
-      const userId = hint.email ? hint.id : null
-      yield put(
-        treeActions.createTreeItem({
-          title: hint.title || null,
-          parentId: parentId,
-          order: Date.now(),
-          fromUserId: userId || null,
-          toUserId: userId || null,
-        })
-      )
+      if (hint.email) {
+        // If contact is not yet defined, add it to the app
+        if (isNewHint && hint.email) {
+          const userEmail = yield select(state =>
+            authSelectors.getUserEmail(state)
+          )
+
+          // validation for email of user
+          if (userEmail === hint.email) {
+            toast.error(toastCommon.errorMessages.contact.userEmailConflict, {
+              position: toastCommon.position.DEFAULT,
+              autoClose: toastCommon.duration.ERROR_DURATION,
+            })
+
+            return
+          }
+
+          const data = { email: hint.email }
+          const contact = yield callApi(api.contacts.create, data)
+          yield put(contactsActions.addContact(contact))
+
+          yield put(
+            treeActions.createTreeItem({
+              title: hint.title || null,
+              parentId: parentId,
+              order: Date.now(),
+              fromUserId: contact.id,
+              toUserId: contact.id,
+            })
+          )
+        } else {
+          yield put(
+            treeActions.createTreeItem({
+              title: hint.title || null,
+              parentId: parentId,
+              order: Date.now(),
+              fromUserId: hint.id,
+              toUserId: hint.id,
+            })
+          )
+        }
+      } else {
+        yield put(
+          treeActions.createTreeItem({
+            title: hint.title || null,
+            parentId: parentId,
+            order: Date.now(),
+            fromUserId: null,
+            toUserId: null,
+          })
+        )
+      }
+
       return
     }
 
@@ -91,17 +136,32 @@ export function* hintSelected(action) {
 
     // Hint(contact) selected within task detail context
     if (location === 'taskDetailContacts') {
-      let profile = hint
       yield put(appStateActions.setAnimation())
 
       // If contact is not yet defined, add it to the app
       if (isNewHint) {
-        const email = profile.email
-        const data = { email }
-        profile = yield callApi(api.contacts.create, data)
-      }
+        const userEmail = yield select(state =>
+          authSelectors.getUserEmail(state)
+        )
 
-      yield put(followerActions.createFollower(parentId, profile.id))
+        // validation for email of user
+        if (userEmail === hint.email) {
+          toast.error(toastCommon.errorMessages.contact.userEmailConflict, {
+            position: toastCommon.position.DEFAULT,
+            autoClose: toastCommon.duration.ERROR_DURATION,
+          })
+
+          return
+        }
+
+        const data = { email: hint.email }
+        const contact = yield callApi(api.contacts.create, data)
+        yield put(contactsActions.addContact(contact))
+
+        yield put(followerActions.createFollower(parentId, contact.id))
+      } else {
+        yield put(followerActions.createFollower(parentId, hint.id))
+      }
     }
 
     // Hint(contact) selected within tasks menu filter

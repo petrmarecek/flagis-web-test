@@ -33,6 +33,8 @@ import api from 'redux/utils/api'
 import schema from 'redux/data/schema'
 import firebase from 'redux/utils/firebase'
 import { getContactTasksRelations } from 'redux/utils/redux-helper'
+import toast from 'utils/toastify-helper'
+import * as toastCommon from 'components/toast-notifications/toast-notifications-common'
 
 const CONTACTS = contactsActions.CONTACTS
 
@@ -119,6 +121,33 @@ export function* fetchContacts() {
 export function* createContact(action) {
   try {
     const email = action.payload.email
+    const userEmail = yield select(state => authSelectors.getUserEmail(state))
+    const validEmails = yield select(state =>
+      contactsSelectors.getContactsEmail(state)
+    )
+
+    // validation for email of user
+    if (userEmail === email) {
+      toast.error(toastCommon.errorMessages.contact.userEmailConflict, {
+        position: toastCommon.position.DEFAULT,
+        autoClose: toastCommon.duration.ERROR_DURATION,
+      })
+
+      return
+    }
+
+    // validation for existing emails
+    if (validEmails.includes(email.toLowerCase())) {
+      toast.error(
+        toastCommon.errorMessages.createEntity.createConflict('contact'),
+        {
+          position: toastCommon.position.DEFAULT,
+          autoClose: toastCommon.duration.ERROR_DURATION,
+        }
+      )
+
+      return
+    }
 
     // check if contact exists on client then delete it
     // it is possible that contact was deleted but relations with tasks were existed
@@ -259,3 +288,5 @@ export function* undoDeleteContact(action) {
   const createData = action.payload.email
   yield put(contactsActions.createContact(createData))
 }
+
+function contactValidation() {}

@@ -69,6 +69,7 @@ export const getContactByEmail = (state, email) => {
   return entitiesContacts
     .toArray()
     .filter(entitieContact => entitieContact.email === email)
+    .pop()
 }
 
 // ------ Reselect selectors ----------------------------------------------------
@@ -84,7 +85,7 @@ export const getContacts = createSelector(
         .sort(compareContactByEmail)
         .toArray(),
     }
-  },
+  }
 )
 
 export const getAllContacts = createSelector(
@@ -98,7 +99,7 @@ export const getAllContacts = createSelector(
         .sort(compareContactByEmail)
         .toArray(),
     }
-  },
+  }
 )
 
 export const getVisibleContacts = createSelector(
@@ -112,7 +113,7 @@ export const getVisibleContacts = createSelector(
       isFetching: contactsIsFetching,
       items: loadContact(data),
     }
-  },
+  }
 )
 
 export const getCurrentContact = createSelector(
@@ -124,7 +125,7 @@ export const getCurrentContact = createSelector(
     }
 
     return entitiesContacts.get(currentContactId)
-  },
+  }
 )
 
 export const getNextContact = createSelector(
@@ -156,7 +157,7 @@ export const getNextContact = createSelector(
 
     const nextContactId = contacts.get(nextIndex)
     return entitiesContacts.get(nextContactId)
-  },
+  }
 )
 
 export const getPreviousContact = createSelector(
@@ -188,7 +189,7 @@ export const getPreviousContact = createSelector(
 
     const prevContactId = contacts.get(prevIndex)
     return entitiesContacts.get(prevContactId)
-  },
+  }
 )
 
 export const getContactsEmail = createSelector(
@@ -198,7 +199,7 @@ export const getContactsEmail = createSelector(
       .filter(contact => contact.isContact)
       .map(contact => contact.email.toLowerCase())
       .toList()
-  },
+  }
 )
 
 const isContactTask = (contactId, task, followers) => {
@@ -223,13 +224,22 @@ export const getContactsRelations = createSelector(
   getEntitiesFollowers,
   (contacts, tasks, followers) => {
     return contacts.reduce(
-      (result, contact) => _.merge(result, {
-        [contact.id]: tasks.filter(task => task
-          ? isContactTask(contact.id, task, task.followers.map(followerId => followers.get(followerId)))
-          : null,
-        ).keySeq().toSet(),
-      }),
-      {},
+      (result, contact) =>
+        _.merge(result, {
+          [contact.id]: tasks
+            .filter(task =>
+              task
+                ? isContactTask(
+                    contact.id,
+                    task,
+                    task.followers.map(followerId => followers.get(followerId))
+                  )
+                : null
+            )
+            .keySeq()
+            .toSet(),
+        }),
+      {}
     )
-  },
+  }
 )

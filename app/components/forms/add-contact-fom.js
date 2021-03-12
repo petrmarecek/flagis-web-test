@@ -2,18 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { compose, withHandlers } from 'recompose'
 
-// toast notifications
-import toast from 'utils/toastify-helper'
-import * as toastCommon from 'components/toast-notifications/toast-notifications-common'
-
 // redux
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form/immutable'
 import { afterSubmitContacts } from 'redux/utils/form-submit'
 import { validateAddContact } from 'redux/utils/validate'
 import { createContact } from 'redux/store/contacts/contacts.actions'
-import { getContactsEmail } from 'redux/store/contacts/contacts.selectors'
-import { getUserEmail } from 'redux/store/auth/auth.selectors'
 
 // components
 import { ICONS } from 'components/icons/icon-constants'
@@ -97,10 +91,7 @@ AddContactForm.propTypes = {
   onSubmit: PropTypes.func,
 }
 
-const mapStateToProps = state => ({
-  validEmails: getContactsEmail(state),
-  userEmail: getUserEmail(state),
-})
+const mapStateToProps = () => ({})
 
 const mapDispatchToProps = { createContact }
 
@@ -108,32 +99,7 @@ export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withHandlers({
     onSubmit: props => value => {
-      const { validEmails, userEmail } = props
       const email = value.get('email')
-
-      // validation for email of user
-      if (userEmail === email) {
-        toast.error(toastCommon.errorMessages.contact.userEmailConflict, {
-          position: toastCommon.position.DEFAULT,
-          autoClose: toastCommon.duration.ERROR_DURATION,
-        })
-
-        return
-      }
-
-      // validation for existing emails
-      if (validEmails.includes(email.toLowerCase())) {
-        toast.error(
-          toastCommon.errorMessages.createEntity.createConflict('contact'),
-          {
-            position: toastCommon.position.DEFAULT,
-            autoClose: toastCommon.duration.ERROR_DURATION,
-          }
-        )
-
-        return
-      }
-
       props.createContact(email)
     },
   }),
