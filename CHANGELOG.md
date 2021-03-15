@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.27.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.26.0...v1.27.0) (2021-03-15)
+
+
+### Features
+
+* Add a validation for moving a contact in the tag-tree ([b6d66c0](https://github.com/react-boilerplate/react-boilerplate/commit/b6d66c0de41ad2f911fa769f9643de39f76b959f))
+* Add links to comments ([d56345b](https://github.com/react-boilerplate/react-boilerplate/commit/d56345b9319b6c27070ea56801e8d57cec1da344))
+* Add validation for moving tree-item of contact type ([a116c2c](https://github.com/react-boilerplate/react-boilerplate/commit/a116c2ca9e6a656e6062a7e6986341fee3075c34))
+* Change an icon for adding a contact in the tag-tree ([7b4bc26](https://github.com/react-boilerplate/react-boilerplate/commit/7b4bc268ba87f2c8dd92f5f90622a3d46028cac1))
+* Create contact in tag-tree ([d876db3](https://github.com/react-boilerplate/react-boilerplate/commit/d876db3d37362be5c9c8ae59dd9fcba9cc5a785f))
+* Remove a userdId from a sentry error message ([293413f](https://github.com/react-boilerplate/react-boilerplate/commit/293413f9a98860786ef1f1b211e4ecbb93a29b26))
+
 ## [1.26.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.25.0...v1.26.0) (2021-02-23)
 
 
