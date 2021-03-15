@@ -2,7 +2,10 @@ import { normalize } from 'normalizr'
 import { Map, Set, List } from 'immutable'
 import intersection from 'lodash/intersection'
 import includes from 'lodash/includes'
+
+// utils
 import { routes } from 'utils/routes'
+import { TreeItemPosition } from 'utils/enums'
 
 // toast notifications
 import toast from 'utils/toastify-helper'
@@ -366,7 +369,7 @@ export function* dropTreeItem(action) {
   const targetItemId = action.payload.dragTarget.id
   const sourceParentId = findParent(storeData.treeMap, sourceItemId)
   const targetParentId =
-    action.payload.dropPosition === 'MIDDLE'
+    action.payload.dropPosition === TreeItemPosition.MIDDLE
       ? targetItemId
       : findParent(storeData.treeMap, targetItemId)
 
@@ -385,7 +388,7 @@ export function* dropTreeItem(action) {
   // Validate parents-children conflicts (when target parents contain similar tag that source with children that the
   // tree path to the leaf will contain a duplicate tag)
   const isParentColision =
-    action.payload.dropPosition !== 'MIDDLE'
+    action.payload.dropPosition !== TreeItemPosition.MIDDLE
       ? intersection(targetParentsTags, [sourceTag, ...sourceChildTags])
           .length !== 0
       : intersection(
@@ -420,7 +423,7 @@ export function* dropTreeItem(action) {
   try {
     // Call server
     let order = Date.now()
-    if (action.payload.dropPosition !== 'MIDDLE') {
+    if (action.payload.dropPosition !== TreeItemPosition.MIDDLE) {
       const children = yield select(state =>
         treeSelectors.getTree(state, targetParentId)
       )

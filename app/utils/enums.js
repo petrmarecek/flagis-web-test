@@ -8,6 +8,12 @@ const TreeItemType = {
   CONTACT: 'contact',
 }
 
+const TreeItemPosition = {
+  TOP: 'TOP',
+  MIDDLE: 'MIDDLE',
+  BOTTOM: 'BOTTOM',
+}
+
 const TaskDropTarget = {
   TASK_LIST: 'taskList',
   TAG_TREE: 'tagTree',
@@ -18,4 +24,10 @@ const TagsUpdateStrategy = {
   MERGE: 'merge',
 }
 
-export { DragType, TreeItemType, TaskDropTarget, TagsUpdateStrategy }
+export {
+  DragType,
+  TreeItemType,
+  TreeItemPosition,
+  TaskDropTarget,
+  TagsUpdateStrategy,
+}

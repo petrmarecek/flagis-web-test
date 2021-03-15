@@ -3,6 +3,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { compose, withHandlers } from 'recompose'
 
+// utils
+import { TreeItemPosition } from 'utils/enums'
 import {
   getColorIndex,
   getTagColor,
@@ -73,6 +75,13 @@ const TagTreeItem = props => {
     tags: [...parents, treeItem]
       .map(item => (item.tag ? item.tag.id : null))
       .filter(item => item),
+    contacts: [...parents, treeItem]
+      .map(item =>
+        item.fromUserId || item.toUserId
+          ? item.fromUserId || item.toUserId
+          : null
+      )
+      .filter(item => item),
     onDrop,
   })
 
@@ -105,9 +114,10 @@ const TagTreeItem = props => {
   )
 
   const draggingData = {
-    dragOver: dropProps.isOver && dropPosition === 'MIDDLE',
-    dragOverTop: dropProps.isOver && dropPosition === 'TOP',
-    dragOverBottom: dropProps.isOver && dropPosition === 'BOTTOM',
+    dragOver: dropProps.isOver && dropPosition === TreeItemPosition.MIDDLE,
+    dragOverTop: dropProps.isOver && dropPosition === TreeItemPosition.TOP,
+    dragOverBottom:
+      dropProps.isOver && dropPosition === TreeItemPosition.BOTTOM,
   }
 
   const renderArrowIcon = treeChildren => {

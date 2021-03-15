@@ -1,6 +1,9 @@
 import { Map, List } from 'immutable'
 import typeToReducer from 'type-to-reducer'
 
+// utils
+import { TreeItemPosition } from 'utils/enums'
+
 import { AUTH } from '../auth/auth.actions'
 import { APP_STATE } from '../app-state/app-state.actions'
 import { TREE } from './tree.actions'
@@ -43,9 +46,10 @@ export default typeToReducer(
       },
     },
 
-    [TREE.SHOW_ADD_CONTROL]: (state, action) => state
-      .set('addControlParentId', action.payload.parentTreeItemId)
-      .set('addControlParentType', action.payload.type),
+    [TREE.SHOW_ADD_CONTROL]: (state, action) =>
+      state
+        .set('addControlParentId', action.payload.parentTreeItemId)
+        .set('addControlParentType', action.payload.type),
 
     [TREE.HIDE_ADD_CONTROL]: state => state.set('addControlParentId', null),
 
@@ -123,19 +127,19 @@ function moveItem(state, move) {
 
     // Add to target position
     switch (move.position) {
-      case 'MIDDLE':
+      case TreeItemPosition.MIDDLE:
         return result.has(move.target.id)
           ? result.updateIn([move.target.id], list => list.push(move.source.id))
           : result.setIn([move.target.id], List([move.source.id]))
 
-      case 'TOP': {
+      case TreeItemPosition.TOP: {
         const target = getTarget(result, move.target.id)
         return result.updateIn([target.parentId], list =>
           list.splice(target.index, 0, move.source.id)
         )
       }
 
-      case 'BOTTOM': {
+      case TreeItemPosition.BOTTOM: {
         const target = getTarget(result, move.target.id)
         return result.updateIn([target.parentId], list =>
           list.splice(target.index + 1, 0, move.source.id)

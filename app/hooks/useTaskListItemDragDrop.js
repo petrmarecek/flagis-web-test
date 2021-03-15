@@ -4,10 +4,6 @@ import { findDOMNode } from 'react-dom'
 import moment from 'moment'
 import { DragType, TaskDropTarget, TagsUpdateStrategy } from 'utils/enums'
 
-// toast notification
-import toast from 'utils/toastify-helper'
-import * as toastCommon from 'components/toast-notifications/toast-notifications-common'
-
 const useTaskListItemDragDrop = props => {
   // Keeps reference to drop DOM element
   const dropTarget = useRef()
@@ -59,16 +55,6 @@ const useTaskListItemDragDrop = props => {
       }
 
       if (dropResult.target === TaskDropTarget.TAG_TREE) {
-        // tree-item target isn't a tag (it's a contact) => show notification "can drop task on tag only"
-        if (dropResult.tags.length === 0) {
-          toast.info(toastCommon.infoMessages.treeItems.canDropTaskOnTagOnly, {
-            position: toastCommon.position.DEFAULT,
-            autoClose: toastCommon.duration.INFO_DURATION,
-          })
-
-          return
-        }
-
         const strategy =
           dropResult.dropEffect === 'copy'
             ? TagsUpdateStrategy.OVERRIDE

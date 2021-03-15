@@ -2,6 +2,9 @@ import { getAssigneeOfTask } from 'redux/utils/component-helper'
 import dateUtil from 'redux/utils/date'
 import R from 'ramda'
 
+// utils
+import { TreeItemPosition } from 'utils/enums'
+
 // For task order nad filter group order in tag tree
 export function computeOrder(tasks, move) {
   const { targetIndex, direction, isActiveTags } = move
@@ -108,7 +111,7 @@ export function computeTreeItemOrder(items, drop) {
   let prevItemsOrder = itemsArray[targetIndex].order
   let nextItemsOrder = itemsArray[targetIndex + 1].order
 
-  if (direction === 'TOP') {
+  if (direction === TreeItemPosition.TOP) {
     prevItemsOrder = itemsArray[targetIndex - 1].order
     nextItemsOrder = itemsArray[targetIndex].order
   }

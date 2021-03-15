@@ -2,10 +2,41 @@ import { useRef, useCallback, useState } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
 import { findDOMNode } from 'react-dom'
 import includes from 'lodash/includes'
-import constants from 'utils/constants'
-import { DragType, TaskDropTarget, TreeItemType } from 'utils/enums'
 
-const useTreeItemDragDrop = ({ treeItem, parents, tags, onDrop }) => {
+// toast notification
+import toast from 'utils/toastify-helper'
+import * as toastCommon from 'components/toast-notifications/toast-notifications-common'
+
+// utils
+import constants from 'utils/constants'
+import {
+  DragType,
+  TaskDropTarget,
+  TreeItemType,
+  TreeItemPosition,
+} from 'utils/enums'
+
+const useTreeItemDragDrop = ({ treeItem, parents, tags, contacts, onDrop }) => {
+  // Not move a dragged contact
+  // if dropped item has one of parents of a contact type
+  // or dropped item is an other contact
+  const getCurrentDropPosition = (dragSource, dropPosition) => {
+    if (
+      !_.isEmpty(contacts) &&
+      dragSource.treeItemType === TreeItemType.CONTACT
+    ) {
+      if (dropPosition === TreeItemPosition.MIDDLE) {
+        return null
+      }
+
+      return contacts.length === 1 &&
+        contacts[0] === (treeItem.fromUserId || treeItem.toUserId)
+        ? dropPosition
+        : null
+    }
+
+    return dropPosition
+  }
   // Keeps reference to drop DOM element
   const dropTarget = useRef()
 
@@ -56,7 +87,13 @@ const useTreeItemDragDrop = ({ treeItem, parents, tags, onDrop }) => {
 
       return Boolean(treeItem.parentId)
     },
-    hover(item, monitor) {
+    hover(dragSource, monitor) {
+      // Not move a task into a contact
+      if (dragSource.type === DragType.TASK && !treeItem.tagId) {
+        return
+      }
+
+      // Cannot drop
       const canDrop = monitor.canDrop()
       if (!canDrop) {
         setDropPosition(null)
@@ -74,25 +111,28 @@ const useTreeItemDragDrop = ({ treeItem, parents, tags, onDrop }) => {
       const clientOffset = monitor.getClientOffset()
       const hoverClientY = clientOffset.y - hoverBoundingRect.top
 
-      let currentDropPosition = 'MIDDLE'
-      if (item.type === DragType.TREE_ITEM) {
+      let currentDropPosition = TreeItemPosition.MIDDLE
+      if (dragSource.type === DragType.TREE_ITEM) {
         if (hoverClientY < thirdHeight) {
-          currentDropPosition = 'TOP'
+          currentDropPosition = getCurrentDropPosition(
+            dragSource,
+            TreeItemPosition.TOP
+          )
         } else if (hoverClientY < 2 * thirdHeight) {
-          currentDropPosition = 'MIDDLE'
+          currentDropPosition = getCurrentDropPosition(
+            dragSource,
+            TreeItemPosition.MIDDLE
+          )
 
-          // Not move a contact into an other contact as a sub-contact
-          if (item.treeItemType === TreeItemType.CONTACT && !treeItem.tagId) {
+          if (currentDropPosition === null) {
             return
           }
         } else {
-          currentDropPosition = 'BOTTOM'
+          currentDropPosition = getCurrentDropPosition(
+            dragSource,
+            TreeItemPosition.BOTTOM
+          )
         }
-      }
-
-      // Not move a task into a contact
-      if (item.type === DragType.TASK && !treeItem.tagId) {
-        return
       }
 
       setDropPosition(currentDropPosition)
@@ -107,6 +147,16 @@ const useTreeItemDragDrop = ({ treeItem, parents, tags, onDrop }) => {
       }
 
       if (item.type === DragType.TASK) {
+        // Not drop task on a contact type item
+        if (!treeItem.tagId) {
+          toast.info(toastCommon.infoMessages.treeItems.canDropTaskOnTagOnly, {
+            position: toastCommon.position.DEFAULT,
+            autoClose: toastCommon.duration.INFO_DURATION,
+          })
+
+          return
+        }
+
         return {
           target: TaskDropTarget.TAG_TREE,
           item,
