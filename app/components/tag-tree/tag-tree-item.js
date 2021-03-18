@@ -295,39 +295,39 @@ TagTreeItem.propTypes = {
 }
 
 const areEqual = (props, nextProps) => {
-  const isTreeItemEqual = _.isEqual(
-    props.treeItem.toJS(),
-    nextProps.treeItem.toJS()
-  )
-  const isSelected =
-    props.selection.includes(props.treeItem.id) ||
-    nextProps.selection.includes(props.treeItem.id)
-  const isSelectionEqual = isSelected
-    ? _.isEqual(props.selection.toJS(), nextProps.selection.toJS())
-    : false
-  const isAddControlParentIdEqual =
-    props.addControlParentId === nextProps.addControlParentId
-  const isTreeItemEntitiesByParentEqual = _.isEqual(
-    props.treeItemEntitiesByParent,
-    nextProps.treeItemEntitiesByParent
-  )
-  const isColorThemeEqual = _.isEqual(props.colorTheme, nextProps.colorTheme)
+  // compare objects and arrays
   const isParentsEqual = _.isEqual(props.parents, nextProps.parents)
-  const isLastItemEqual = props.isLastItem === nextProps.isLastItem
+  const isTreeItemEqual = _.isEqual(props.treeItem, nextProps.treeItem)
+  const isSelectionEqual = _.isEqual(props.selection, nextProps.selection)
   const isTagsRelationsEqual = _.isEqual(
     props.tagsRelations,
     nextProps.tagsRelations
   )
+  const isParentTagRelations = _.isEqual(
+    props.parentTagRelations,
+    nextProps.parentTagRelations
+  )
+  const isTreeItemEntitiesByParentEqual = _.isEqual(
+    props.treeItemEntitiesByParent,
+    nextProps.treeItemEntitiesByParent
+  )
+
+  // compare strings
+  const isLastItemEqual = props.isLastItem === nextProps.isLastItem
+  const isColorThemeEqual = props.colorTheme === nextProps.colorTheme
+  const isAddControlParentIdEqual =
+    props.addControlParentId === nextProps.addControlParentId
 
   return (
+    isParentsEqual &&
     isTreeItemEqual &&
     isSelectionEqual &&
-    isAddControlParentIdEqual &&
     isTreeItemEntitiesByParentEqual &&
-    isColorThemeEqual &&
-    isParentsEqual &&
+    isTagsRelationsEqual &&
+    isParentTagRelations &&
     isLastItemEqual &&
-    isTagsRelationsEqual
+    isColorThemeEqual &&
+    isAddControlParentIdEqual
   )
 }
 
