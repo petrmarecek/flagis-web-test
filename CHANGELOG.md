@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.27.1](https://github.com/react-boilerplate/react-boilerplate/compare/v1.27.0...v1.27.1) (2021-03-18)
+
+
+### Bug Fixes
+
+* Optimize tag-tree-items as much as possible ([906f697](https://github.com/react-boilerplate/react-boilerplate/commit/906f697e7edb5fe6f099dc9a83c13bbdc2cf3e74))
+
 ## [1.27.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.26.0...v1.27.0) (2021-03-15)
 
 
