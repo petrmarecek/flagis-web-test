@@ -20,6 +20,8 @@ import {
   deselectTasks,
   selectAllTask,
   prepareDeleteTask,
+  moveSelectedTasksToTop,
+  moveSelectedTasksToBottom,
   setSelectedTasksImportant,
   setSelectedTasksUnimportant,
   setSelectedTasksComplete,
@@ -96,7 +98,16 @@ const TasksMenuContainer = props => {
     auth: props.auth,
     activeTags: props.activeTags,
     deselectTasks: props.deselectTasks,
+    selectedTasks: props.selectedTasks,
     isVisibleArchivedTasks: props.isVisibleArchivedTasks,
+  }
+
+  const handleMoveSelectedTasksToTop = () => {
+    props.moveSelectedTasksToTop()
+  }
+
+  const handleMoveSelectedTasksToBottom = () => {
+    props.moveSelectedTasksToBottom()
   }
 
   const handleSetSelectedTasksImportant = () => {
@@ -216,6 +227,8 @@ const TasksMenuContainer = props => {
       {props.isMultiSelect && (
         <TasksMenuMultiSelect
           {...multiSelectProps}
+          onMoveSelectedTasksToTop={handleMoveSelectedTasksToTop}
+          onMoveSelectedTasksToBottom={handleMoveSelectedTasksToBottom}
           onSetSelectedTasksImportant={handleSetSelectedTasksImportant}
           onSetSelectedTasksUnimportant={handleSetSelectedTasksUnimportant}
           onSetSelectedTasksComplete={handleSetSelectedTasksComplete}
@@ -358,6 +371,8 @@ const mapDispatchToProps = {
   deselectActiveSender,
   deselectActiveAssignee,
   prepareDeleteTask,
+  moveSelectedTasksToTop,
+  moveSelectedTasksToBottom,
   setSelectedTasksImportant,
   setSelectedTasksUnimportant,
   setSelectedTasksComplete,

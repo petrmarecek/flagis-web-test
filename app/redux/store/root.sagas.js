@@ -73,6 +73,11 @@ export default function* root() {
       TASKS.SET_SELECTED_TASKS_UNIMPORTANT,
       task.setSelectedTasksUnimportant
     ),
+    takeLatest(TASKS.MOVE_SELECTED_TASKS_TO_TOP, task.moveSelectedTasksToTop),
+    takeLatest(
+      TASKS.MOVE_SELECTED_TASKS_TO_BOTTOM,
+      task.moveSelectedTasksToBottom
+    ),
     takeLatest(TASKS.SET_DATE, task.setDate),
     takeLatest(TASKS.SET_SELECTED_TASKS_DATE, task.setSelectedTasksDate),
     takeLatest(TASKS.SET_ORDER, task.setOrder),

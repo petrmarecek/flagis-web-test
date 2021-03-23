@@ -1,6 +1,6 @@
-import _ from 'lodash'
 import { normalize } from 'normalizr'
 import moment from 'moment'
+import * as _ from 'lodash'
 
 // toast notifications
 import toast from 'utils/toastify-helper'
@@ -487,6 +487,42 @@ export function* setSelectedTasksUnimportant(action) {
     }
   }
   yield put(appStateActions.deselectLoader(loaderTypes.GLOBAL))
+}
+
+export function* moveSelectedTasksToTop() {
+  const tasks = yield select(state => taskSelectors.getTasks(state).items)
+  const firstTaskOrder = _.first(tasks).order
+  const selectedTasks = yield select(state =>
+    taskSelectors.getSelectTasks(state)
+  )
+
+  // works only for one selected task now
+  if (selectedTasks.length > 1) {
+    return
+  }
+
+  const timestamp = new Date(firstTaskOrder + 1000).getTime()
+  for (const task of selectedTasks) {
+    yield put(taskActions.setOrder(task, timestamp))
+  }
+}
+
+export function* moveSelectedTasksToBottom() {
+  const tasks = yield select(state => taskSelectors.getTasks(state).items)
+  const lastTaskOrder = _.last(tasks).order
+  const selectedTasks = yield select(state =>
+    taskSelectors.getSelectTasks(state)
+  )
+
+  // works only for one selected task now
+  if (selectedTasks.length > 1) {
+    return
+  }
+
+  const timestamp = new Date(lastTaskOrder - 1000).getTime()
+  for (const task of selectedTasks) {
+    yield put(taskActions.setOrder(task, timestamp))
+  }
 }
 
 export function* prepareToggleDragAndDrop(action) {

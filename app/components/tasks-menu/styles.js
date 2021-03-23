@@ -170,6 +170,9 @@ const MultiSelectWrapper = styled.div`
 
 const MultiSelectItem = styled(Icon)`
   margin: 0 8px 0 10px;
+  pointer-events: ${props => (props.disabled ? 'none' : 'auto')};
+  ${props => (props.arrowUp ? transform('rotate(-90deg)') : null)};
+  ${props => (props.arrowDown ? transform('rotate(90deg)') : null)}
 `
 
 // ---------------------------------------- MenuBox ----------------------------------------

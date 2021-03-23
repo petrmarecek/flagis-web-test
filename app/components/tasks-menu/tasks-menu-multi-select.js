@@ -17,6 +17,7 @@ import { colors } from 'components/styled-components-mixins/colors'
 
 const TasksMenuMultiSelect = props => {
   const multiSelectRef = useRef()
+  const isMoreThanOneSelectedTask = props.selectedTasks.size > 1
 
   const handleClick = event => {
     const multiSelectElem = findDOMNode(multiSelectRef.current)
@@ -81,6 +82,46 @@ const TasksMenuMultiSelect = props => {
 
   return (
     <MultiSelectWrapper ref={multiSelectRef}>
+      {!props.isVisibleArchivedTasks && (
+        <MultiSelectItem
+          icon={ICONS.ARROW_SIMPLE_RIGHT}
+          width={11}
+          height={17}
+          scale={1}
+          title="Move to Top"
+          color={
+            isMoreThanOneSelectedTask
+              ? [colors.porpoise]
+              : [colors.astrocopusGrey]
+          }
+          hoverColor={
+            isMoreThanOneSelectedTask ? [colors.porpoise] : [colors.aztec]
+          }
+          onClick={props.onMoveSelectedTasksToTop}
+          disabled={isMoreThanOneSelectedTask}
+          arrowUp
+        />
+      )}
+      {!props.isVisibleArchivedTasks && (
+        <MultiSelectItem
+          icon={ICONS.ARROW_SIMPLE_RIGHT}
+          width={11}
+          height={17}
+          scale={1}
+          title="Move to Bottom"
+          color={
+            isMoreThanOneSelectedTask
+              ? [colors.porpoise]
+              : [colors.astrocopusGrey]
+          }
+          hoverColor={
+            isMoreThanOneSelectedTask ? [colors.porpoise] : [colors.aztec]
+          }
+          onClick={props.onMoveSelectedTasksToBottom}
+          disabled={isMoreThanOneSelectedTask}
+          arrowDown
+        />
+      )}
       {!props.isVisibleArchivedTasks && (
         <MultiSelectItem
           icon={ICONS.UNIMPORTANT}
@@ -208,8 +249,11 @@ TasksMenuMultiSelect.propTypes = {
   activeTags: PropTypes.object,
   isVisibleArchivedTasks: PropTypes.bool,
   onDelete: PropTypes.func,
+  selectedTasks: PropTypes.object,
   deselectTasks: PropTypes.func,
   onAddRemoveTags: PropTypes.func,
+  onMoveSelectedTasksToTop: PropTypes.func,
+  onMoveSelectedTasksToBottom: PropTypes.func,
   onSetSelectedTasksImportant: PropTypes.func,
   onSetSelectedTasksUnimportant: PropTypes.func,
   onSetSelectedTasksComplete: PropTypes.func,

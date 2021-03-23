@@ -21,6 +21,8 @@ export const TASKS = {
   CANCEL_ARCHIVE: 'TASK/CANCEL_ARCHIVE',
   TOGGLE_IMPORTANT_REQUESTED: 'TASK/TOGGLE_IMPORTANT-REQUESTED',
   SET_IMPORTANT: 'TASK/SET_IMPORTANT',
+  MOVE_SELECTED_TASKS_TO_TOP: 'TASK/MOVE_SELECTED_TASKS_TO_TOP',
+  MOVE_SELECTED_TASKS_TO_BOTTOM: 'TASK/MOVE_SELECTED_TASKS_TO_BOTTOM',
   SET_SELECTED_TASKS_IMPORTANT: 'TASK/SET_SELECTED_TASKS_IMPORTANT',
   SET_SELECTED_TASKS_UNIMPORTANT: 'TASK/SET_SELECTED_TASKS_UNIMPORTANT',
   REPLACE: 'TASK/REPLACE',
@@ -163,6 +165,14 @@ export const requestToggleImportant = task => ({
 export const setImportant = (task, isImportant) => ({
   type: TASKS.SET_IMPORTANT,
   payload: { task, isImportant },
+})
+
+export const moveSelectedTasksToTop = () => ({
+  type: TASKS.MOVE_SELECTED_TASKS_TO_TOP,
+})
+
+export const moveSelectedTasksToBottom = () => ({
+  type: TASKS.MOVE_SELECTED_TASKS_TO_BOTTOM,
 })
 
 export const setSelectedTasksImportant = () => ({
