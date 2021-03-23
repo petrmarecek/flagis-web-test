@@ -64,7 +64,9 @@ const Header = styled.div`
     right: 0;
     bottom: 0;
     background-color: ${colors.lynxWhite};
-    ${transform(props => (props.isCompleted ? 'scaleX(1)' : 'scaleX(0)'))}
+    ${transform(props =>
+      props.isCompleted && !props.isArchived ? 'scaleX(1)' : 'scaleX(0)'
+    )}
     ${transformOrigin('0 50%')}
     ${transition(props =>
       props.animation ? 'transform 500ms ease-out' : 'none'

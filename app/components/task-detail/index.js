@@ -284,6 +284,7 @@ const TaskDetail = props => {
       <Wrapper>
         <Header
           isCompleted={task.isCompleted}
+          isArchived={task.isArchived}
           animation={animation}
           backgroundColor={backgroundColor}
         >
@@ -300,6 +301,7 @@ const TaskDetail = props => {
           />
           <TaskDetailSubject
             isCompleted={task.isCompleted}
+            isArchived={task.isArchived}
             isImportant={task.isImportant}
             isUpdatable={allowedActions[TASK_ACTIONS.UPDATE_SUBJECT]}
             onUpdate={handleUpdateSubject}

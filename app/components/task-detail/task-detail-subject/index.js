@@ -8,6 +8,7 @@ import { Input, Wrapper } from './styles'
 
 const TaskDetailSubject = ({
   isCompleted,
+  isArchived,
   isImportant,
   isUpdatable,
   onUpdate,
@@ -44,6 +45,7 @@ const TaskDetailSubject = ({
     <Wrapper>
       <Input
         isCompleted={isCompleted}
+        isArchived={isArchived}
         isImportant={isImportant}
         isUpdatable={isUpdatable}
         onBlur={handleBlur}
@@ -62,6 +64,7 @@ TaskDetailSubject.defaultProps = {
 
 TaskDetailSubject.propTypes = {
   isCompleted: PropTypes.bool.isRequired,
+  isArchived: PropTypes.bool.isRequired,
   isImportant: PropTypes.bool.isRequired,
   isUpdatable: PropTypes.bool,
   onUpdate: PropTypes.func.isRequired,

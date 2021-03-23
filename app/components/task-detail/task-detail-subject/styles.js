@@ -15,7 +15,8 @@ const Input = styled.input.attrs(props => ({
   font-weight: ${props => (props.isImportant ? 'bold' : 'normal')};
   text-decoration: ${props => (props.isCompleted ? 'line-through' : 'none')};
   line-height: 19px;
-  color: ${props => (props.isCompleted ? '#CECECE' : '#293034')};
+  color: ${props =>
+    props.isCompleted && !props.isArchived ? '#CECECE' : '#293034'};
 
   pointer-events: ${props => (props.isUpdatable ? 'normal' : 'none')};
   ${transition('color 500ms ease-out')};
