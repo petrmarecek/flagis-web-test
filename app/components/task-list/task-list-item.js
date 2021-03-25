@@ -49,10 +49,11 @@ import {
   Subject,
   Tags,
   DescriptionDueDate,
-  DueDate,
+  AdditionalInformation,
+  AdditionalInformationIcon,
   Followers,
-  DueDateIcon,
 } from './styles'
+import date from 'redux/utils/date'
 
 // TaskListItem
 const TaskListItem = props => {
@@ -215,6 +216,19 @@ const TaskListItem = props => {
     [helpers.getDateMetaData, task.reminderDate]
   )
 
+  // Format archived date
+  let archivedDate = null
+  if (task.isArchived) {
+    archivedDate = useMemo(
+      () =>
+        dateUtils.formatDate(
+          task.archivedAt,
+          dateUtils.DEFAULT_DATE_TIME_FORMAT
+        ),
+      [dateUtils.formatDate, task.archivedAt]
+    )
+  }
+
   // Description
   let description = isDescription ? task.description : ''
   description = useMemo(() => markdownToHTML(description), [
@@ -274,6 +288,7 @@ const TaskListItem = props => {
   }
 
   const hasDetailInfo =
+    archivedDate ||
     task.commentsCount > 0 ||
     task.attachmentsCount > 0 ||
     task.dueDate ||
@@ -385,31 +400,39 @@ const TaskListItem = props => {
                 </Tags>
               </SubjectTags>
               <DescriptionDueDate>
+                {archivedDate !== null && (
+                  <AdditionalInformation
+                    title={`Task was archived at ${archivedDate}`}
+                    color={colors.darkJungleGreen}
+                  >
+                    Archived at {archivedDate}
+                  </AdditionalInformation>
+                )}
                 {task.dueDate !== null && (
-                  <DueDate
+                  <AdditionalInformation
                     title={`Due Date - ${dueDateMetaData.title}`}
                     color={
                       isCompletedMainList && !isArchivedList
                         ? colors.americanSilver
-                        : dueDateMetaData
+                        : dueDateMetaData.color
                     }
                   >
-                    <DueDateIcon
+                    <AdditionalInformationIcon
                       icon={ICONS.DUE_DATE}
                       color={
                         isCompletedMainList && !isArchivedList
                           ? [colors.americanSilver]
-                          : [dueDateMetaData]
+                          : [dueDateMetaData.color]
                       }
                       width={12}
                       height={12}
                       scale={1}
                     />
                     {dueDateMetaData.date}
-                  </DueDate>
+                  </AdditionalInformation>
                 )}
                 {task.reminderDate !== null && !reminderDateMetaData.isOver && (
-                  <DueDate
+                  <AdditionalInformation
                     title={`Reminder Date - ${reminderDateMetaData.title}`}
                     color={
                       isCompletedMainList && !isArchivedList
@@ -417,7 +440,7 @@ const TaskListItem = props => {
                         : colors.batman
                     }
                   >
-                    <DueDateIcon
+                    <AdditionalInformationIcon
                       icon={ICONS.REMINDER_DATE}
                       color={
                         isCompletedMainList && !isArchivedList
@@ -429,10 +452,10 @@ const TaskListItem = props => {
                       scale={1}
                     />
                     {reminderDateMetaData.date}
-                  </DueDate>
+                  </AdditionalInformation>
                 )}
                 {task.commentsCount > 0 && (
-                  <DueDate
+                  <AdditionalInformation
                     title={`Number of comments - ${task.commentsCount}`}
                     color={
                       isCompletedMainList && !isArchivedList
@@ -440,7 +463,7 @@ const TaskListItem = props => {
                         : colors.batman
                     }
                   >
-                    <DueDateIcon
+                    <AdditionalInformationIcon
                       icon={ICONS.COMMENT}
                       color={
                         isCompletedMainList && !isArchivedList
@@ -452,10 +475,10 @@ const TaskListItem = props => {
                       scale={1.06}
                     />
                     {task.commentsCount}
-                  </DueDate>
+                  </AdditionalInformation>
                 )}
                 {task.attachmentsCount > 0 && (
-                  <DueDate
+                  <AdditionalInformation
                     title={`Number of attachments - ${task.attachmentsCount}`}
                     color={
                       isCompletedMainList && !isArchivedList
@@ -463,7 +486,7 @@ const TaskListItem = props => {
                         : colors.batman
                     }
                   >
-                    <DueDateIcon
+                    <AdditionalInformationIcon
                       icon={ICONS.PIN}
                       color={
                         isCompletedMainList && !isArchivedList
@@ -475,10 +498,10 @@ const TaskListItem = props => {
                       scale={1.07}
                     />
                     {task.attachmentsCount}
-                  </DueDate>
+                  </AdditionalInformation>
                 )}
                 {!_.isEmpty(task.description) && (
-                  <DueDate title="Task has a description">
+                  <AdditionalInformation title="Task has a description">
                     <DescriptionIcon
                       color={
                         isCompletedMainList && !isArchivedList
@@ -486,7 +509,7 @@ const TaskListItem = props => {
                           : colors.batman
                       }
                     />
-                  </DueDate>
+                  </AdditionalInformation>
                 )}
               </DescriptionDueDate>
             </Content>

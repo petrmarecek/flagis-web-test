@@ -22,6 +22,7 @@ import TaskDetailImportant from './task-detail-important'
 import TaskDetailRemove from 'components/task-detail/task-detail-remove'
 import TaskDetailSubject from 'components/task-detail/task-detail-subject'
 import TaskDetailTags from './task-detail-tags'
+import TaskDetailArchiveDate from './task-detail-archive-date'
 
 // styles
 import {
@@ -314,6 +315,7 @@ const TaskDetail = props => {
             <ContentLeft>
               <ScrollContent>
                 <ContentLeftTop>
+                  <TaskDetailArchiveDate archivedAt={task.archivedAt} />
                   <TaskDetailTags
                     isUpdatable={allowedActions[TASK_ACTIONS.UPDATE_TAGS]}
                     onDelete={handleDeleteTag}

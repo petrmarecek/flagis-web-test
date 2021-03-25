@@ -216,7 +216,7 @@ const Description = styled.div`
   margin: -5px 0 5px 0;
 `
 
-const DueDate = styled.div`
+const AdditionalInformation = styled.div`
   display: flex;
   align-items: center;
   height: 18px;
@@ -227,7 +227,7 @@ const DueDate = styled.div`
   z-index: 1;
 `
 
-const DueDateIcon = styled(Icon)`
+const AdditionalInformationIcon = styled(Icon)`
   margin-right: 4px;
 `
 
@@ -294,8 +294,8 @@ export {
   Tags,
   DescriptionDueDate,
   Description,
-  DueDate,
-  DueDateIcon,
+  AdditionalInformation,
+  AdditionalInformationIcon,
   Followers,
   TagItems,
   Item,
