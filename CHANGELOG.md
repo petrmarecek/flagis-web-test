@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.28.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.27.1...v1.28.0) (2021-03-25)
+
+
+### Features
+
+* Add archived date on task-item and to task-detail ([b9dfb19](https://github.com/react-boilerplate/react-boilerplate/commit/b9dfb1946b9a361152ab980ae4725f0b1eb49db8))
+* Add move task to top and bottom function into multiselection ([48d7398](https://github.com/react-boilerplate/react-boilerplate/commit/48d7398496bd9df2d65bd4338de4bd6fd048079c))
+* Allow tags for completed tasks and change color for archived tasks in detail ([38851db](https://github.com/react-boilerplate/react-boilerplate/commit/38851dbf1b804b70c450cf022c388a51622c8fc7))
+
 ### [1.27.1](https://github.com/react-boilerplate/react-boilerplate/compare/v1.27.0...v1.27.1) (2021-03-18)
 
 
