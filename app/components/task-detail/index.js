@@ -37,6 +37,7 @@ import {
   ScrollContent,
   Wrapper,
   TaskDetailWrapper,
+  RemoveListener,
 } from './styles'
 import { colors } from 'components/styled-components-mixins/colors'
 
@@ -48,6 +49,7 @@ const TaskDetail = props => {
     onHandleFetchActivities,
     onHandleFetchAttachment,
     onHandleFetchComment,
+    onHandleRemoveEventListener,
     onHandleNext,
     onHandlePrevious,
     onHandleTaskAccept,
@@ -300,14 +302,16 @@ const TaskDetail = props => {
             isUpdatable={allowedActions[TASK_ACTIONS.TOGGLE_ARCHIVED]}
             onClick={handleToggleArchived}
           />
-          <TaskDetailSubject
-            isCompleted={task.isCompleted}
-            isArchived={task.isArchived}
-            isImportant={task.isImportant}
-            isUpdatable={allowedActions[TASK_ACTIONS.UPDATE_SUBJECT]}
-            onUpdate={handleUpdateSubject}
-            subject={task.subject}
-          />
+          <RemoveListener onClick={onHandleRemoveEventListener}>
+            <TaskDetailSubject
+              isCompleted={task.isCompleted}
+              isArchived={task.isArchived}
+              isImportant={task.isImportant}
+              isUpdatable={allowedActions[TASK_ACTIONS.UPDATE_SUBJECT]}
+              onUpdate={handleUpdateSubject}
+              subject={task.subject}
+            />
+          </RemoveListener>
         </Header>
         <Divider />
         <Content>
@@ -316,30 +320,34 @@ const TaskDetail = props => {
               <ScrollContent>
                 <ContentLeftTop>
                   <TaskDetailArchiveDate archivedAt={task.archivedAt} />
-                  <TaskDetailTags
-                    isUpdatable={allowedActions[TASK_ACTIONS.UPDATE_TAGS]}
-                    onDelete={handleDeleteTag}
-                    tags={task.tags}
-                    taskId={task.id}
-                  />
-                  <TaskDetailFollower
-                    followers={task.followers.toArray()}
-                    isAddAllowed={allowedActions[TASK_ACTIONS.ADD_FOLLOWER]}
-                    isDeleteAllowed={
-                      allowedActions[TASK_ACTIONS.DELETE_FOLLOWER]
-                    }
-                    isOwner={task.isOwner}
-                    isAcceptAllowed={allowedActions[TASK_ACTIONS.ACCEPT]}
-                    isRejectAllowed={allowedActions[TASK_ACTIONS.REJECT_TASK]}
-                    isSendAllowed={allowedActions[TASK_ACTIONS.SEND_TASK]}
-                    isTakeBackAllowed={allowedActions[TASK_ACTIONS.TAKE_BACK]}
-                    onAccept={handleAccept}
-                    onDelete={handleDeleteFollower}
-                    onReject={handleReject}
-                    onSend={handleSend}
-                    owner={task.createdBy}
-                    taskId={task.id}
-                  />
+                  <RemoveListener onClick={onHandleRemoveEventListener}>
+                    <TaskDetailTags
+                      isUpdatable={allowedActions[TASK_ACTIONS.UPDATE_TAGS]}
+                      onDelete={handleDeleteTag}
+                      tags={task.tags}
+                      taskId={task.id}
+                    />
+                  </RemoveListener>
+                  <RemoveListener onClick={onHandleRemoveEventListener}>
+                    <TaskDetailFollower
+                      followers={task.followers.toArray()}
+                      isAddAllowed={allowedActions[TASK_ACTIONS.ADD_FOLLOWER]}
+                      isDeleteAllowed={
+                        allowedActions[TASK_ACTIONS.DELETE_FOLLOWER]
+                      }
+                      isOwner={task.isOwner}
+                      isAcceptAllowed={allowedActions[TASK_ACTIONS.ACCEPT]}
+                      isRejectAllowed={allowedActions[TASK_ACTIONS.REJECT_TASK]}
+                      isSendAllowed={allowedActions[TASK_ACTIONS.SEND_TASK]}
+                      isTakeBackAllowed={allowedActions[TASK_ACTIONS.TAKE_BACK]}
+                      onAccept={handleAccept}
+                      onDelete={handleDeleteFollower}
+                      onReject={handleReject}
+                      onSend={handleSend}
+                      owner={task.createdBy}
+                      taskId={task.id}
+                    />
+                  </RemoveListener>
                   <TaskDetailDate
                     icon={ICONS.DUE_DATE}
                     isUpdatable={allowedActions[TASK_ACTIONS.UPDATE_DUE_DATE]}
@@ -376,13 +384,17 @@ const TaskDetail = props => {
             </ContentLeft>
             <ContentRight>
               <ScrollContent>
-                <TaskDetailDescription
-                  description={task.description}
-                  isUpdatable={allowedActions[TASK_ACTIONS.UPDATE_DESCRIPTION]}
-                  onUpdate={handleUpdateDescription}
-                  onUpload={handleUploadAttachments}
-                  taskId={task.id}
-                />
+                <RemoveListener onClick={onHandleRemoveEventListener}>
+                  <TaskDetailDescription
+                    description={task.description}
+                    isUpdatable={
+                      allowedActions[TASK_ACTIONS.UPDATE_DESCRIPTION]
+                    }
+                    onUpdate={handleUpdateDescription}
+                    onUpload={handleUploadAttachments}
+                    taskId={task.id}
+                  />
+                </RemoveListener>
                 <TaskDetailAttachments
                   attachments={attachments.items.toArray()}
                   isFetching={attachments.isFetching}
@@ -391,13 +403,17 @@ const TaskDetail = props => {
                   onFetch={handleFetchAttachments}
                   onUpload={handleUploadAttachments}
                 />
-                <TaskDetailActivities
-                  data={comments.items.toArray()}
-                  isFetching={comments.isFetching}
-                  isCommentAddAllowed={allowedActions[TASK_ACTIONS.ADD_COMMENT]}
-                  onAddComment={handleAddComment}
-                  onFetch={handleFetchActivities}
-                />
+                <RemoveListener onClick={onHandleRemoveEventListener}>
+                  <TaskDetailActivities
+                    data={comments.items.toArray()}
+                    isFetching={comments.isFetching}
+                    isCommentAddAllowed={
+                      allowedActions[TASK_ACTIONS.ADD_COMMENT]
+                    }
+                    onAddComment={handleAddComment}
+                    onFetch={handleFetchActivities}
+                  />
+                </RemoveListener>
               </ScrollContent>
             </ContentRight>
           </ContentCenter>
@@ -414,6 +430,7 @@ TaskDetail.propTypes = {
   onHandleFetchActivities: PropTypes.func.isRequired,
   onHandleFetchAttachment: PropTypes.func.isRequired,
   onHandleFetchComment: PropTypes.func.isRequired,
+  onHandleRemoveEventListener: PropTypes.func.isRequired,
   onHandleNext: PropTypes.func.isRequired,
   onHandlePrevious: PropTypes.func.isRequired,
   onHandleTaskAccept: PropTypes.func.isRequired,

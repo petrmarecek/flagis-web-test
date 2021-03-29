@@ -186,6 +186,9 @@ const ContentBoxBodyText = styled.span`
   color: ${props => (props.isDisabled ? '#676D71' : '#1C2124')};
 `
 
+// ------ COMMON ---------------------------------------------------------
+const RemoveListener = styled.span``
+
 export {
   Divider,
   ScrollContent,
@@ -210,4 +213,6 @@ export {
   ContentBoxHeaderLock,
   ContentBoxHeaderLockIcon,
   ContentBoxHeaderTitle,
+  // COMMON
+  RemoveListener,
 }
