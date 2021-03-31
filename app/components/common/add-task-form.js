@@ -30,10 +30,10 @@ const AddForm = styled.form`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
   background-color: ${colors.white};
-  height: 58px;
-  ${boxShadow(`0 1px 6px 0 ${colors.americanSilver}`)}
+  height: 60px;
+  ${boxShadow(`0 2px 6px 0${colors.greyOfDarkness}`)}
   ${borderRadius('3px')}
 `
 
@@ -42,11 +42,11 @@ const SubmitIcon = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  flex: 0 0 60px;
-  height: 58px;
+  flex: 0 0 72px;
+  height: 60px;
   margin: 0;
   cursor: pointer;
-  pointer-events: ${props => (props.disabled ? 'none' : 'auto')};
+  visibility: ${props => (props.isDisabled ? 'hidden' : 'visible')};
 `
 
 const SubjectContainer = styled.div`
@@ -70,36 +70,29 @@ const Subject = styled.input`
   background-color: ${colors.white};
 `
 
-const AddTaskForm = ({ subject, tasksMenu, handleChange, handleSubmit }) => {
-  const addButtonDisabled = isStringEmpty(subject)
-  const plusColor = addButtonDisabled
-    ? colors.americanSilver
-    : colors.hanumanGreen
-
-  return (
-    <AddForm autoComplete="off" onSubmit={handleSubmit}>
-      <SubjectContainer>
-        <Subject
-          type="text"
-          name="subject"
-          placeholder="Add new task"
-          value={subject}
-          onChange={handleChange}
-          isImportant={tasksMenu.filters.important}
-        />
-      </SubjectContainer>
-      <SubmitIcon onClick={handleSubmit} disabled={addButtonDisabled}>
-        <Icon
-          icon={ICONS.PLUS}
-          width={29}
-          height={29}
-          color={[plusColor]}
-          title={addButtonDisabled ? '' : 'Add new task'}
-        />
-      </SubmitIcon>
-    </AddForm>
-  )
-}
+const AddTaskForm = ({ subject, tasksMenu, handleChange, handleSubmit }) => (
+  <AddForm autoComplete="off" onSubmit={handleSubmit}>
+    <SubjectContainer>
+      <Subject
+        type="text"
+        name="subject"
+        placeholder="Add new task"
+        value={subject}
+        onChange={handleChange}
+        isImportant={tasksMenu.filters.important}
+      />
+    </SubjectContainer>
+    <SubmitIcon onClick={handleSubmit} isDisabled={isStringEmpty(subject)}>
+      <Icon
+        icon={ICONS.PLUS_CIRCLE}
+        width={30}
+        height={30}
+        color={[colors.hanumanGreen]}
+        title={'Add new task'}
+      />
+    </SubmitIcon>
+  </AddForm>
+)
 
 AddTaskForm.propTypes = {
   subject: PropTypes.string,

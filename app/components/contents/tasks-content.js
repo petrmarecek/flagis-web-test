@@ -51,7 +51,7 @@ const TasksContent = ({
       </CenterPanelTopSecondary>
       <AddTaskForm />
     </CenterPanelTop>
-    <CenterPanelScroll offsetTop={162} offsetBottom={30}>
+    <CenterPanelScroll offsetTop={166} offsetBottom={30}>
       <TaskListContainer />
     </CenterPanelScroll>
     <TasksProgressBar />
