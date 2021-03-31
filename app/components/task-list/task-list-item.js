@@ -292,7 +292,7 @@ const TaskListItem = props => {
     task.commentsCount > 0 ||
     task.attachmentsCount > 0 ||
     task.dueDate ||
-    task.reminderDate ||
+    (task.reminderDate && !reminderDateMetaData.isOver) ||
     !_.isEmpty(task.description)
 
   // Render component
