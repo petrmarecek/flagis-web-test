@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.29.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.28.0...v1.29.0) (2021-03-31)
+
+
+### Features
+
+* Change design of add-new-task input ([3cc5e34](https://github.com/react-boilerplate/react-boilerplate/commit/3cc5e343cf822dfae744cb1af88d5e698df36b94))
+
+
+### Bug Fixes
+
+* Fix key down listener for text editable components in task-detail ([aa3df61](https://github.com/react-boilerplate/react-boilerplate/commit/aa3df61b408e87525030942e4861f97ddf410bdb))
+* Fix subject position for out of date reminder on task-list-item ([5a3228c](https://github.com/react-boilerplate/react-boilerplate/commit/5a3228c2ccc7f302a472e65241e9e8a455e76094))
+* Update a subject after switching to a new task in tas-detail ([14c1c7f](https://github.com/react-boilerplate/react-boilerplate/commit/14c1c7f5cee5ef4c6f2b2c998e0b245324a1bb2a))
+
 ## [1.28.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.27.1...v1.28.0) (2021-03-25)
 
 
