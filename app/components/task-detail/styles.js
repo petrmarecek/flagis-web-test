@@ -187,7 +187,9 @@ const ContentBoxBodyText = styled.span`
 `
 
 // ------ COMMON ---------------------------------------------------------
-const RemoveListener = styled.span``
+const RemoveListener = styled.span`
+  width: 100%;
+`
 
 export {
   Divider,

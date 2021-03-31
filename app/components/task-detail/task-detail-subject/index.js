@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import PropTypes from 'prop-types'
-import React, { useCallback, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 
 import constants from 'utils/constants'
 
@@ -19,6 +19,10 @@ const TaskDetailSubject = ({
 
   // Variable for input
   const [value, setValue] = useState(subject)
+
+  useEffect(() => {
+    setValue(subject)
+  }, [subject])
 
   // Handler for updating input value
   const handleChange = useCallback(
