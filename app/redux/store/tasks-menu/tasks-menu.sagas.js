@@ -145,6 +145,19 @@ export function* toggleNoIncomingFilter() {
   }
 }
 
+export function* toggleFilter(action) {
+  const { filter } = action.payload
+  const isFilterActive = yield select(state =>
+    taskMenuSelectros.getTasksMenuFiltersItem(state, filter)
+  )
+
+  if (isFilterActive) {
+    yield put(taskMenuActions.addActiveFilter(filter))
+  } else {
+    yield put(taskMenuActions.deleteActiveFilter(filter))
+  }
+}
+
 export function* toggleNoTagsFilter() {
   const noTags = yield select(state =>
     taskMenuSelectros.getTasksMenuFiltersItem(state, 'noTags')

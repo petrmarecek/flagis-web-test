@@ -162,6 +162,7 @@ export default function* root() {
       TASKS_MENU.TOGGLE_NO_INCOMING_FILTER,
       taskMenu.toggleNoIncomingFilter
     ),
+    takeEvery(TASKS_MENU.TOGGLE_FILTER, taskMenu.toggleFilter),
     takeEvery(TASKS_MENU.TOGGLE_NO_TAGS_FILTER, taskMenu.toggleNoTagsFilter),
     takeEvery(
       TASKS_MENU.DESELECT_NO_TAGS_FILTER,

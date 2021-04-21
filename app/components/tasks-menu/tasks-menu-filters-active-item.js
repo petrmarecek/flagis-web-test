@@ -74,6 +74,10 @@ const TasksMenuFiltersActiveItem = ({
         filterTitle = 'No incoming'
         break
 
+      case 'noFutureReminderDate':
+        filterTitle = 'No future reminder date'
+        break
+
       case 'noTags':
         filterTitle = 'No tags'
         break

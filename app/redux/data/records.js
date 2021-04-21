@@ -132,6 +132,7 @@ export const TasksFilters = Record({
   completed: false,
   uncompleted: false,
   noIncoming: false,
+  noFutureReminderDate: false,
   noTags: false,
   userIds: Set(),
 })

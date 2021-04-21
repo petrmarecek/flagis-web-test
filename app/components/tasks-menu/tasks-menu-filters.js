@@ -2,6 +2,7 @@ import React, { useRef, memo } from 'react'
 import PropTypes from 'prop-types'
 import domUtils from 'redux/utils/dom'
 import constants from 'utils/constants'
+import { Filters } from './common'
 
 // component
 import { ICONS } from 'components/icons/icon-constants'
@@ -63,6 +64,8 @@ const TasksMenuFilters = props => {
   const onHandleToggleUncompletedFilter = () =>
     props.onToggleUncompletedFilter()
   const onHandleToggleNoIncomingFilter = () => props.onToggleNoIncomingFilter()
+  const handleToggleFilter = filter => props.onToggleFilter(filter)
+
   const onHandleToggleNoTagsFilter = () => props.onToggleNoTagsFilter()
 
   return (
@@ -189,6 +192,23 @@ const TasksMenuFilters = props => {
           </MenuBoxGroup>
           <MenuBoxGroup>
             <MenuBoxItemIcon
+              active={filters.noFutureReminderDate}
+              icon={ICONS.REMINDER_DATE}
+              iconScale={0.95}
+              onChange={() =>
+                handleToggleFilter(Filters.NO_FUTURE_REMINDER_DATE)
+              }
+            />
+            <MenuBoxItemTitle
+              title="No future reminder date"
+              active={filters.noFutureReminderDate}
+              onChange={() =>
+                handleToggleFilter(Filters.NO_FUTURE_REMINDER_DATE)
+              }
+            />
+          </MenuBoxGroup>
+          <MenuBoxGroup>
+            <MenuBoxItemIcon
               active={filters.noTags}
               icon={ICONS.NO_TAGS}
               iconScale={1}
@@ -216,6 +236,7 @@ TasksMenuFilters.propTypes = {
   onToggleCompletedFilter: PropTypes.func,
   onToggleUncompletedFilter: PropTypes.func,
   onToggleNoIncomingFilter: PropTypes.func,
+  onToggleFilter: PropTypes.func,
   onToggleNoTagsFilter: PropTypes.func,
   visibleMenuFilter: PropTypes.func,
   hideMenuFilter: PropTypes.func,

@@ -284,6 +284,23 @@ function loadTasks(ids, data) {
     tasks = tasks.filter(task => !task.isInbox)
   }
 
+  // apply no future reminder date
+  const isNoFutureReminderDateFilter = tasksMenu.getIn([
+    'filters',
+    'noFutureReminderDate',
+  ])
+  if (isNoFutureReminderDateFilter) {
+    tasks = tasks.filter(task => {
+      if (!task.reminderDate) {
+        return true
+      }
+
+      const now = moment().valueOf()
+      const reminder = moment(task.reminderDate).valueOf()
+      return reminder < now
+    })
+  }
+
   // apply no tags filter
   const isNoTagsFilter = tasksMenu.getIn(['filters', 'noTags'])
   if (isNoTagsFilter) {
@@ -298,7 +315,10 @@ function loadTasks(ids, data) {
         return true
       }
 
-      if (task.followers.get(0) && userIdsFilter.includes(task.followers.get(0).profile.id)) {
+      if (
+        task.followers.get(0) &&
+        userIdsFilter.includes(task.followers.get(0).profile.id)
+      ) {
         return true
       }
 

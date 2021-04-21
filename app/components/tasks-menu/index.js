@@ -45,6 +45,7 @@ import {
   toggleCompletedFilter,
   toggleUncompletedFilter,
   toggleNoIncomingFilter,
+  toggleFilter,
   toggleNoTagsFilter,
   deleteFilter,
   toggleSortAlgorithm,
@@ -179,6 +180,10 @@ const TasksMenuContainer = props => {
     props.toggleNoIncomingFilter()
   }
 
+  const handleToggleFilter = filter => {
+    props.toggleFilter(filter)
+  }
+
   const handleToggleNoTagsFilter = () => {
     props.toggleNoTagsFilter()
   }
@@ -294,6 +299,7 @@ const TasksMenuContainer = props => {
           onToggleCompletedFilter={handleToggleCompletedFilter}
           onToggleUncompletedFilter={handleToggleUncompletedFilter}
           onToggleNoIncomingFilter={handleToggleNoIncomingFilter}
+          onToggleFilter={handleToggleFilter}
           onToggleNoTagsFilter={handleToggleNoTagsFilter}
         />
       )}
@@ -355,6 +361,7 @@ const mapDispatchToProps = {
   toggleUncompletedFilter,
   toggleNoIncomingFilter,
   toggleNoTagsFilter,
+  toggleFilter,
   deleteFilter,
   toggleSortAlgorithm,
   showDialog,

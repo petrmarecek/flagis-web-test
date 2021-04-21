@@ -64,6 +64,13 @@ export default typeToReducer(
     [TASKS_MENU.TOGGLE_NO_INCOMING_FILTER]: state =>
       state.setIn(['filters', 'noIncoming'], !state.filters.noIncoming),
 
+    [TASKS_MENU.TOGGLE_FILTER]: (state, action) => {
+      const { filter } = action.payload
+      const stateFilter = state.filters.get(filter)
+
+      return state.setIn(['filters', filter], !stateFilter)
+    },
+
     [TASKS_MENU.TOGGLE_NO_TAGS_FILTER]: state =>
       state.setIn(['filters', 'noTags'], !state.filters.noTags),
 
@@ -84,7 +91,7 @@ export default typeToReducer(
 
     [TASKS_MENU.ADD_ACTIVE_FILTER]: (state, action) =>
       state.updateIn(['filters', 'active'], list =>
-        list.push(action.payload.filter),
+        list.push(action.payload.filter)
       ),
 
     [TASKS_MENU.DELETE_ACTIVE_FILTER]: (state, action) =>
@@ -113,8 +120,8 @@ export default typeToReducer(
     [TASKS_MENU.HIDE_MENU_FILTER]: state =>
       state.setIn(['filters', 'menu', 'isVisible'], false),
 
-    [TASKS_MENU.SET_USER_IDS_FILTER]: (state, { payload }) => state
-      .setIn(['filters', 'userIds'], payload),
+    [TASKS_MENU.SET_USER_IDS_FILTER]: (state, { payload }) =>
+      state.setIn(['filters', 'userIds'], payload),
 
     // ------ SORT ACTIONS -----------------------------------------------------
 
@@ -156,5 +163,5 @@ export default typeToReducer(
 
     [AUTH.LOGOUT]: () => new TasksMenuStore(),
   },
-  new TasksMenuStore(),
+  new TasksMenuStore()
 )
