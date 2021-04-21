@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.30.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.29.0...v1.30.0) (2021-04-21)
+
+
+### Features
+
+* Add no future reminder date filter ([24088da](https://github.com/react-boilerplate/react-boilerplate/commit/24088da39ea2df88aa12c4fa8b7cc1def8bb12c2))
+
 ## [1.29.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.28.0...v1.29.0) (2021-03-31)
 
 
