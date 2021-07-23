@@ -12,6 +12,10 @@ const EditorWrapper = styled.div`
   .te-heading-add li {
     line-height: 30px;
   }
+
+  .te-mode-switch-section {
+    visibility: hidden;
+  }
 `
 
 const ViewerWrapper = styled.div`
