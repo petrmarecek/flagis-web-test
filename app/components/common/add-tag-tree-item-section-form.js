@@ -2,11 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { compose, pure, withState, withHandlers, lifecycle } from 'recompose'
 import { isStringEmpty } from 'redux/utils/component-helper'
+import { autocompleteLocations } from 'components/autocomplete/enums'
 
 // redux
 import { connect } from 'react-redux'
-import { getColorTheme } from '../../redux/store/auth/auth.selectors'
-import { getTagsOfTree } from '../../redux/store/tree/tree.selectors'
+import { getColorTheme } from 'redux/store/auth/auth.selectors'
+import { getTagsOfTree } from 'redux/store/tree/tree.selectors'
 
 // component
 import { ICONS } from 'components/icons/icon-constants'
@@ -91,7 +92,7 @@ const AddTagTreeItemSectionForm = props => {
         <ItemInput>
           <Autocomplete
             dataType="contacts"
-            location="tagTree"
+            location={autocompleteLocations.TAG_TREE}
             placeholder="Add contact filter"
             selectedItems={selectedItems}
             onAddInputRef={getInputRef}
@@ -116,7 +117,7 @@ const AddTagTreeItemSectionForm = props => {
       <ItemInput>
         <Autocomplete
           dataType="tags"
-          location="tagTree"
+          location={autocompleteLocations.TAG_TREE}
           placeholder="Add tag filter"
           selectedItems={selectedItems}
           parentId={parentId}

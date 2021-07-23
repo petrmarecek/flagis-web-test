@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { withHandlers } from 'recompose'
 import { getColorIndex, getTagColor } from 'redux/utils/component-helper'
+import { autocompleteLocations } from 'components/autocomplete/enums'
 
 import { ICONS } from 'components/icons/icon-constants'
 import Icon from 'components/icons/icon'
@@ -24,7 +25,7 @@ const AutocompleteItem = ({
   const colorIndex = getColorIndex(item.colorIndex, item.title)
   const tagColor = getTagColor(colorIndex)
   const contactTitle = !item.nickname ? item.email : item.nickname
-  const mainSearch = location === 'mainSearch'
+  const mainSearch = location === autocompleteLocations.MAIN_SEARCH
 
   const getItem = {
     tags: (

@@ -7,11 +7,12 @@ import constants from '../../utils/constants'
 import {
   getHintDirectionRender,
   isStringEmpty,
-} from '../../redux/utils/component-helper'
+} from 'redux/utils/component-helper'
 
 import HintItem from './hints-item'
 
 import { HintsContainer, Title, Hint } from './styles'
+import { autocompleteLocations } from 'components/autocomplete/enums'
 
 const getTopHeight = (positionTop, directionRender) => {
   return directionRender === 'topToBottom'
@@ -39,6 +40,7 @@ const Hints = props => {
     dataType,
     position,
     value,
+    location,
     selectIndex,
     getScrollRef,
     getHintRef,
@@ -46,6 +48,12 @@ const Hints = props => {
     onHandleMouseOver,
   } = props
 
+  const existingHintsTitle =
+    location === autocompleteLocations.MAIN_SEARCH ||
+    location === autocompleteLocations.TASK_MENU_FILTER_CONTACT_ASSIGNEE ||
+    location === autocompleteLocations.TASK_MENU_FILTER_CONTACT_SENDER
+      ? 'Select existing'
+      : 'Create or select existing'
   const hintsLength = hints[dataType].length
   const isCreateNewHint = hints[dataType].length === 0
   const noHintFound = isCreateNewHint && isStringEmpty(value)
@@ -88,7 +96,7 @@ const Hints = props => {
 
     // Existing hints
     return {
-      title: `Select existing ${typeHint[dataType]}`,
+      title: existingHintsTitle,
       items: hints[dataType].map((hint, i) => (
         <HintItem
           key={hint.id}

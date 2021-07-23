@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import R from 'ramda'
 import { compose, withHandlers } from 'recompose'
+import { autocompleteLocations } from 'components/autocomplete/enums'
 
 // redux
 import { connect } from 'react-redux'
@@ -45,7 +46,7 @@ const Autocomplete = props => {
     onHandleDeselectInput,
     onHandleHintSelected,
   } = props
-  const taskDetailTags = location === 'taskDetailTags'
+  const taskDetailTags = location === autocompleteLocations.TASK_DETAIL_TAGS
 
   return (
     <AutocompleteContainer taskDetailTags={taskDetailTags}>
@@ -70,7 +71,10 @@ const Autocomplete = props => {
         </Clear>
       )}
       {!isWithoutInput && (
-        <Search key="search" taskDetailTags={location === 'taskDetailTags'}>
+        <Search
+          key="search"
+          taskDetailTags={location === autocompleteLocations.TASK_DETAIL_TAGS}
+        >
           <AutocompleteInput
             location={location}
             dataType={dataType}

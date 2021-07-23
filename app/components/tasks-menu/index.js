@@ -1,5 +1,6 @@
 import React, { memo } from 'react'
 import { OrderedSet, List } from 'immutable'
+import { autocompleteLocations } from 'components/autocomplete/enums'
 
 // toast notifications
 import toast from 'utils/toastify-helper'
@@ -263,7 +264,7 @@ const TasksMenuContainer = props => {
               filtersActiveItemProps.canAutocomplete = true
               filtersActiveItemProps.autocompleteItems = props.activeAssignee
               filtersActiveItemProps.autocompleteLocation =
-                'tasksMenuFilterContactsAssignee'
+                autocompleteLocations.TASK_MENU_FILTER_CONTACT_ASSIGNEE
               filtersActiveItemProps.onDeselectAutocomplete =
                 props.deselectActiveAssignee
             }
@@ -272,7 +273,7 @@ const TasksMenuContainer = props => {
               filtersActiveItemProps.canAutocomplete = true
               filtersActiveItemProps.autocompleteItems = props.activeSender
               filtersActiveItemProps.autocompleteLocation =
-                'tasksMenuFilterContactsSender'
+                autocompleteLocations.TASK_MENU_FILTER_CONTACT_SENDER
               filtersActiveItemProps.onDeselectAutocomplete =
                 props.deselectActiveSender
             }

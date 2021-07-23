@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { compose, withHandlers } from 'recompose'
 import { connect } from 'react-redux'
+import { autocompleteLocations } from 'components/autocomplete/enums'
 
 import { getActiveTags } from 'redux/store/tags/tags.selectors'
 import { selectActiveTags } from 'redux/store/tags/tags.actions'
@@ -38,7 +39,7 @@ const MainSearch = ({ tags, handleClearFilter, handleItemDelete }) => (
     />
     <Autocomplete
       dataType="tags"
-      location="mainSearch"
+      location={autocompleteLocations.MAIN_SEARCH}
       placeholder="Tag filter"
       selectedItems={tags.size === 0 ? { tags: null } : { tags }}
       parentId={null}

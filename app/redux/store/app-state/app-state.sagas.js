@@ -1,4 +1,5 @@
 import { routes } from 'utils/routes'
+import { autocompleteLocations } from 'components/autocomplete/enums'
 
 // toast notifications
 import toast from 'utils/toastify-helper'
@@ -43,7 +44,7 @@ export function* hintSelected(action) {
 
   // Hint selected within main search context
   try {
-    if (location === 'mainSearch') {
+    if (location === autocompleteLocations.MAIN_SEARCH) {
       if (isNewHint) {
         toast.error(
           toastCommon.errorMessages.createEntity.notAllowedCreate(
@@ -67,7 +68,7 @@ export function* hintSelected(action) {
     }
 
     // Hint selected within tree context
-    if (location === 'tagTree') {
+    if (location === autocompleteLocations.TAG_TREE) {
       if (hint.email) {
         // If contact is not yet defined, add it to the app
         if (isNewHint && hint.email) {
@@ -125,7 +126,7 @@ export function* hintSelected(action) {
     }
 
     // Hint(tag) selected within task detail context
-    if (location === 'taskDetailTags') {
+    if (location === autocompleteLocations.TASK_DETAIL_TAGS) {
       // If tag is not yet defined, add it to the app
       if (isNewHint) {
         yield put(tagActions.addTag(hint))
@@ -165,8 +166,10 @@ export function* hintSelected(action) {
     }
 
     // Hint(contact) selected within tasks menu filter
-    const isAssigneeFilter = location === 'tasksMenuFilterContactsAssignee'
-    const isSenderFilter = location === 'tasksMenuFilterContactsSender'
+    const isAssigneeFilter =
+      location === autocompleteLocations.TASK_MENU_FILTER_CONTACT_ASSIGNEE
+    const isSenderFilter =
+      location === autocompleteLocations.TASK_MENU_FILTER_CONTACT_SENDER
     if (isAssigneeFilter || isSenderFilter) {
       // Not allowed create a new contact
       if (isNewHint) {

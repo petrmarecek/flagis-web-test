@@ -10,6 +10,7 @@ import {
   getHintDirectionRender,
 } from 'redux/utils/component-helper'
 import constants from 'utils/constants'
+import { autocompleteLocations } from 'components/autocomplete/enums'
 
 // toast notifications
 import toast from 'utils/toastify-helper'
@@ -22,7 +23,7 @@ import { InputContainer, Input } from './styles'
 const getInputPosition = (location, ref) => {
   const position = domUtils.getOffset(ref)
   position.top += 30
-  position.left -= location === 'taskDetailTags' ? 115 : 0
+  position.left -= location === autocompleteLocations.TASK_DETAIL_TAGS ? 115 : 0
 
   return position
 }
@@ -459,14 +460,14 @@ const AutocompleteInput = props => {
         ref={ref => getInputRef(ref)}
         type="text"
         autoComplete="off"
-        size={location === 'taskDetailTags' ? 5 : 15}
+        size={location === autocompleteLocations.TASK_DETAIL_TAGS ? 5 : 15}
         placeholder={placeholder}
         onFocus={onHandleFocus}
         onKeyDown={onHandleKeyDown}
         onChange={onHandleChange}
-        mainSearch={location === 'mainSearch'}
+        mainSearch={location === autocompleteLocations.MAIN_SEARCH}
         value={value}
-        title="Select existing tag"
+        title="Create or select existing"
       />
       {hintsElement && showHints && createPortal(hints, hintsElement)}
     </InputContainer>
