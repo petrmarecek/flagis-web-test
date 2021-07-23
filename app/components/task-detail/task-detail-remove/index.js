@@ -14,7 +14,7 @@ const TaskDetailRemove = ({ isUpdatable, onClick }) => {
         <HeaderLeft>
           <HeaderIcon />
         </HeaderLeft>
-        <HeaderTitle>Remove</HeaderTitle>
+        <HeaderTitle>Delete</HeaderTitle>
       </Header>
     </Wrapper>
   )

@@ -34,7 +34,7 @@ const NotificationListItem = ({
   onHandleReadTaskNotification,
 }) => {
   // init data
-  const { type, readAt, sentAt, fromUserEmail, data } = notification
+  const { type, readAt, updatedAt, fromUserEmail, data } = notification
   const { subject } = task
   const { nickname, email } = profile
 
@@ -50,10 +50,12 @@ const NotificationListItem = ({
     type === 'TASKS/DATES/DUE-DATE'
 
   // prepare data
-  const date = dateUtils.formatDateTimeSecondary(sentAt)
+  const date = isRead
+    ? dateUtils.formatDateTimeSecondary(readAt)
+    : dateUtils.formatDateTimeSecondary(updatedAt)
   const commentContent = data && data.content ? data.content : null
   const attachmentName = data && data.fileName ? data.fileName : null
-  const taskSubject = subject !== null ? subject : (data ? data.subject : '')
+  const taskSubject = subject !== null ? subject : data ? data.subject : ''
   const profileName =
     email !== null
       ? nickname !== null

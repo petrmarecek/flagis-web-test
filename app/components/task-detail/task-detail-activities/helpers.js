@@ -72,6 +72,4 @@ const getActivityText = ({ data, type }) => {
   }
 }
 
-export {
-  getActivityText,
-}
+export { getActivityText }

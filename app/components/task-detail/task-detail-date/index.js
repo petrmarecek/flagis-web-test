@@ -34,16 +34,16 @@ const TaskDetailDate = ({ icon, isUpdatable, onUpdate, title, value }) => {
         dateUtil.DEFAULT_SIMPLE_DATE_TIME_FORMAT,
         dateUtil.DEFAULT_SIMPLE_DATE_FORMAT,
       ]}
-      dropdownMode='scroll'
-      locale='en-gb'
+      dropdownMode="scroll"
+      locale="en-gb"
       onChange={onUpdate}
-      placeholderText='select a date'
+      placeholderText="select a date"
       selected={date}
       showTimeSelect
       title={title}
-      timeFormat='HH:mm'
-      timeIntervals={5}
-      todayButton='Today'
+      timeFormat="HH:mm"
+      timeIntervals={1}
+      todayButton="Today"
     />
   )
 }

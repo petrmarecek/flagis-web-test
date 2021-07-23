@@ -19,7 +19,7 @@ export const notificationText = type => {
       return `Rejected`
 
     case 'TASKS/FOLLOWERS/TAKE-BACK':
-      return `Task removed`
+      return `Task deleted`
 
     case 'TASKS/COMPLETED':
       return `Completed`

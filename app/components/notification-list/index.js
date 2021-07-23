@@ -74,7 +74,7 @@ export default compose(
   withHandlers({
     onHandleSetScrollbarPosition: props => position =>
       props.setScrollbarPosition('notification', position),
-    onHandleReadNotification: props => (notificationId, task = null) =>
-      props.readNotification(notificationId, task),
+    onHandleReadNotification: props => (notification, task = null) =>
+      props.readNotification(notification, task),
   })
 )(NotificationListContainer)

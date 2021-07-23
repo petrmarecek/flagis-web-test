@@ -18,17 +18,33 @@ function loadNotifications(data) {
     notifications = notifications.push(notification)
   })
 
-  // All or active filters
   if (!isReadVisible) {
-    notifications = notifications.filter(
-      notification => notification.readAt === null
-    )
-  }
+    // Get only unread notifications
+    notifications = notifications
+      .filter(notification => notification.readAt === null)
+      .sortBy(notification => notification.updatedAt)
+      .reverse()
+  } else {
+    // Get all notifications
+    // Unread notifications as first
+    let unReadList = List()
+    let readList = List()
 
-  // Sort by createdAt
-  notifications = notifications
-    .sortBy(notification => notification.sentAt)
-    .reverse()
+    notifications.forEach(notification => {
+      if (notification.readAt === null) {
+        unReadList = unReadList.push(notification)
+      } else {
+        readList = readList.push(notification)
+      }
+    })
+
+    unReadList = unReadList
+      .sortBy(notification => notification.updatedAt)
+      .reverse()
+    readList = readList.sortBy(notification => notification.readAt).reverse()
+
+    notifications = unReadList.concat(readList)
+  }
 
   return notifications.toArray()
 }

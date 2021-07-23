@@ -88,7 +88,9 @@ export function* readNotification(action) {
       yield put(taskActions.selectTask(OrderedSet().add(task.id), false))
     }
 
-    yield callApi(api.notifications.read, notification.id)
+    if (notification.readAt === null) {
+      yield callApi(api.notifications.read, notification.id)
+    }
   } catch (err) {
     // send error to sentry
     yield put(
