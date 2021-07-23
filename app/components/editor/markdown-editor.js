@@ -7,6 +7,13 @@ import { Editor, Viewer } from '@toast-ui/react-editor'
 import styled from 'styled-components'
 
 // styles for disabled mode
+// styles for headlines in menu of react-editor
+const EditorWrapper = styled.div`
+  .te-heading-add li {
+    line-height: 30px;
+  }
+`
+
 const ViewerWrapper = styled.div`
   border: 1px solid #e5e5e5;
   height: ${props => props.height};
@@ -102,7 +109,7 @@ export const MarkdownEditor = ({
   const debouncedSaveDescription = debounce(saveDescription, 1000)
 
   return (
-    <div>
+    <EditorWrapper>
       {disabled && (
         <ViewerWrapper height={editorHeight}>
           <Viewer ref={editorRef} initialValue={content} />
@@ -135,7 +142,7 @@ export const MarkdownEditor = ({
           toolbarItems={toolsByView[view]}
         />
       )}
-    </div>
+    </EditorWrapper>
   )
 }
 
