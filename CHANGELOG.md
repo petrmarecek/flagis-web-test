@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.31.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.30.0...v1.31.0) (2021-07-23)
+
+
+### Features
+
+* Change notifications sorting, Prettier, Change remove task to delete ([75aacce](https://github.com/react-boilerplate/react-boilerplate/commit/75aaccecd144231a5f304f91a27e09bca555c0f9))
+* Change title in autocomplete input by location ([6fb681c](https://github.com/react-boilerplate/react-boilerplate/commit/6fb681c6a09ecc74dfa922217f05a57d86c11d1f))
+* Hide markdown and wysiwyg buttons in description editor ([9b354ca](https://github.com/react-boilerplate/react-boilerplate/commit/9b354ca903337b8fd9f70338bd5a1f533f0f0704))
+
+
+### Bug Fixes
+
+* Fix headlines in react-editor component (description) ([c0751a6](https://github.com/react-boilerplate/react-boilerplate/commit/c0751a678a74fb58bec6f5963bd75127b030dbf1))
+
 ## [1.30.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.29.0...v1.30.0) (2021-04-21)
 
 
