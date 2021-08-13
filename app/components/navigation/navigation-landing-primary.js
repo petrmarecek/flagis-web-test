@@ -20,9 +20,9 @@ const NavigationLandingPrimary = ({ isLogoNav, location }) => {
   return (
     <NavigationLandingPrimaryWrapper>
       <LandingLogo>
-        <Link to="/">
+        <a href="https://www.flagis.com">
           <img src={Logo} />
-        </Link>
+        </a>
       </LandingLogo>
 
       {!isLogoNav && (

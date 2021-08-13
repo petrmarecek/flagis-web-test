@@ -6,10 +6,6 @@ import { titles } from 'components/head-title/head-title-common'
 import { withTitle } from 'components/head-title/withTitle'
 
 // containers
-import LandingPage from 'containers/landing-page/loadable'
-import LegalPage from 'containers/legal-page/loadable'
-import AboutPage from 'containers/about-page/loadable'
-import ContactUsPage from 'containers/contact-us-page/loadable'
 import SignInPage from 'containers/sign-in-page'
 import SignUpPage from 'containers/sign-up-page'
 import EmailResetPasswordPage from 'containers/email-reset-password-page'
@@ -26,10 +22,6 @@ import {
 } from 'components/editor/markdown-editor-styles'
 
 // adding title
-const LandingPageWithTitle = withTitle(LandingPage, titles.LANDING)
-const LegalPageWithTitle = withTitle(LegalPage, titles.LEGAL)
-const AboutPageWithTitle = withTitle(AboutPage, titles.ABOUT)
-const ContactUsPageWithTitle = withTitle(ContactUsPage, titles.CONTACT_US)
 const SignInPageWithTitle = withTitle(SignInPage, titles.SIGN_IN)
 const SignUpPageWithTitle = withTitle(SignUpPage, titles.SIGN_UP)
 const EmailResetPasswordPageWithTitle = withTitle(
@@ -53,10 +45,7 @@ export default function App() {
       <EditorStyles />
       <CodeMirrorStyles />
       <Switch>
-        <Route exact path="/" component={LandingPageWithTitle} />
-        <Route exact path="/legal*" component={LegalPageWithTitle} />
-        <Route exact path="/about" component={AboutPageWithTitle} />
-        <Route exact path="/contact-us" component={ContactUsPageWithTitle} />
+        <Route path="/" component={SignInPageWithTitle} />
         <Route path="/sign-in" component={SignInPageWithTitle} />
         <Route path="/sign-up" component={SignUpPageWithTitle} />
         <Route
