@@ -153,7 +153,7 @@ const commonInput = css`
   margin: 0 0 12px;
   padding: 0 10px 0 10px;
   font-size: 24px;
-  border-bottom: 1px solid #44ffb1;
+  border-bottom: 1px solid #00cd78;
 `
 
 const commonInputSmall = css`
@@ -161,7 +161,7 @@ const commonInputSmall = css`
   margin: 0 0 12px;
   padding: 0 10px 0 10px;
   font-size: 18px;
-  border-bottom: 1px solid #44ffb1;
+  border-bottom: 1px solid #00cd78;
 `
 
 const commonCommentInputSmall = css`

@@ -53,7 +53,7 @@ const Title = styled.li`
   line-height: 30px;
   margin: 0 5px;
   padding: 0 5px;
-  border-color: #44ffb1;
+  border-color: #00cd78;
   color: #c1cad0;
 `
 
@@ -67,7 +67,7 @@ const Hint = styled.li`
   overflow: hidden;
   max-width: 200px;
   cursor: ${props => (props.noHintFound ? 'auto' : 'pointer')};
-  background-color: ${props => (props.selected ? '#44FFB1' : '#fff')};
+  background-color: ${props => (props.selected ? '#00CD78' : '#fff')};
   font-weight: ${props => (props.selected ? 'bold' : 'normal')};
 `
 

@@ -318,7 +318,7 @@ const NotificationsCounter = styled(Counter)`
   right: -8px;
   top: 12px;
   font-size: 11px;
-  background-color: #44ffb1;
+  background-color: #00cd78;
   ${borderRadius('10px')}
 `
 
@@ -424,11 +424,11 @@ const SettingsButton = styled.div`
   cursor: pointer;
   color: ${props => (props.active ? '#1C2124' : '#B1B5B8')};
   border-bottom: ${props =>
-    props.active ? '3px solid #44FFB1' : '3px solid #fff'};
+    props.active ? '3px solid #00CD78' : '3px solid #fff'};
 
   :hover {
     color: #1c2124;
-    border-bottom: 3px solid #44ffb1;
+    border-bottom: 3px solid #00cd78;
   }
 `
 

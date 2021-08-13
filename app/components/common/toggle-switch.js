@@ -22,7 +22,7 @@ const Slider = styled.span`
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: ${props => (props.isChecked ? '#44ffb1' : '#e1e4e5')};
+  background-color: ${props => (props.isChecked ? '#00CD78' : '#e1e4e5')};
   ${borderRadius('13px')}
   ${transition('200ms')}
 
@@ -37,8 +37,8 @@ const Slider = styled.span`
     ${borderRadius('50%')}
     ${transition('200ms')}
     ${transform(props =>
-  props.isChecked ? 'translateX(14px)' : 'translateX(0)'
-)}
+      props.isChecked ? 'translateX(14px)' : 'translateX(0)'
+    )}
   }
 `
 

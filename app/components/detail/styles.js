@@ -226,7 +226,7 @@ const DetailContentAddNewContact = styled.span`
   cursor: pointer;
 
   :hover {
-    background-color: #44ffb1;
+    background-color: #00cd78;
   }
 `
 

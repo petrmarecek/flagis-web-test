@@ -230,7 +230,7 @@ export const EditorStyles = createGlobalStyle`
 }
 .tui-editor-defaultUI button.te-ok-button:hover,
 .tui-editor-defaultUI button.te-close-button:hover {
-  background-color: #44ffb1;
+  background-color: #00CD78;
 }
 .tui-editor-defaultUI button.te-ok-button {
   background-color: #293034;
@@ -431,7 +431,7 @@ export const EditorStyles = createGlobalStyle`
   height: auto;
   line-height: normal;
   position: relative;
-  border-bottom: 1px solid #44FFB1;
+  border-bottom: 1px solid #00CD78;
 }
 
 .tui-popup-header .tui-popup-header-buttons {

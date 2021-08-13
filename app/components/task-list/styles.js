@@ -108,14 +108,14 @@ const CompletedButton = styled(CommonButton)`
   justify-content: center;
   cursor: pointer;
 
-  background-color: ${props => (props.isCompleted ? '#44FFB1' : '#FFFFFF')};
-  border: 1px solid ${props => (props.isCompleted ? '#44FFB1' : '#E4E4E4')};
+  background-color: ${props => (props.isCompleted ? '#00CD78' : '#FFFFFF')};
+  border: 1px solid ${props => (props.isCompleted ? '#00CD78' : '#E4E4E4')};
   border-radius: 3.5px;
   box-sizing: border-box;
   filter: drop-shadow(0px 1px 3px rgba(216, 216, 216, 0.5));
 
   &:hover {
-    border-color: #44ffb1;
+    border-color: #00cd78;
   }
 `
 
@@ -133,7 +133,7 @@ const CompletedIcon = styled(CheckIcon)`
       opacity: 1;
 
       path {
-        fill: ${props => (props.isCompleted ? '#FFFFFF' : '#44FFB1')};
+        fill: ${props => (props.isCompleted ? '#FFFFFF' : '#00CD78')};
       }
     }
   }

@@ -166,7 +166,7 @@ const dragOverBorder = css`
   height: 0;
   left: 0;
   right: 0;
-  border-top: 2px dotted #44ffb1;
+  border-top: 2px dotted #00cd78;
 `
 
 const dragOver = css`
@@ -175,7 +175,7 @@ const dragOver = css`
   z-index: 50;
 
   ${borderRadius('13px')}
-  border: 2px dotted #44ffb1;
+  border: 2px dotted #00CD78;
 `
 const dragOverTop = css`
   overflow: visible;
