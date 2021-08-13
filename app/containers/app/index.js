@@ -6,6 +6,7 @@ import { titles } from 'components/head-title/head-title-common'
 import { withTitle } from 'components/head-title/withTitle'
 
 // containers
+import DefaultPage from 'containers/default-page'
 import SignInPage from 'containers/sign-in-page'
 import SignUpPage from 'containers/sign-up-page'
 import EmailResetPasswordPage from 'containers/email-reset-password-page'
@@ -22,6 +23,7 @@ import {
 } from 'components/editor/markdown-editor-styles'
 
 // adding title
+const DefaultPageWithTitle = withTitle(DefaultPage, titles.DEFAULT)
 const SignInPageWithTitle = withTitle(SignInPage, titles.SIGN_IN)
 const SignUpPageWithTitle = withTitle(SignUpPage, titles.SIGN_UP)
 const EmailResetPasswordPageWithTitle = withTitle(
@@ -45,7 +47,7 @@ export default function App() {
       <EditorStyles />
       <CodeMirrorStyles />
       <Switch>
-        <Route path="/" component={SignInPageWithTitle} />
+        <Route exact path="/" component={DefaultPageWithTitle} />
         <Route path="/sign-in" component={SignInPageWithTitle} />
         <Route path="/sign-up" component={SignUpPageWithTitle} />
         <Route

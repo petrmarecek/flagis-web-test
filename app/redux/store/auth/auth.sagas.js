@@ -2,6 +2,7 @@ import _ from 'lodash'
 import { routes } from 'utils/routes'
 import date from '../../utils/date'
 import fileHelper from 'utils/file-helper'
+import config from 'config'
 
 // toast notifications
 import toast from 'utils/toastify-helper'
@@ -302,6 +303,17 @@ export function* initEmail(action) {
         breadcrumbMessage: action.type,
       })
     )
+  }
+}
+
+export function* controlDefaultRedirect() {
+  const auth = yield select(state => authSelectors.getAuth(state))
+
+  if (auth.isLogged) {
+    const redirectAction = push(routes.user.tasks)
+    yield put(redirectAction)
+  } else {
+    window.location.href = config.landingURL
   }
 }
 

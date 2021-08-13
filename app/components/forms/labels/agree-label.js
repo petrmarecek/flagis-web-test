@@ -1,17 +1,16 @@
 import React from 'react'
-import { routes } from 'utils/routes'
-import { Link } from 'react-router-dom'
+import config from 'config'
 
 const AgreeLabel = () => (
   <p>
     I agree to the{' '}
-    <Link to={routes.legal.termsConditions} target="_blank">
+    <a href={`${config.landingURL}/legal/terms-of-use`} target="_blank">
       terms and conditions
-    </Link>{' '}
+    </a>{' '}
     and{' '}
-    <Link to={routes.legal.privacyPolicy} target="_blank">
+    <a href={`${config.landingURL}/legal/privacy-policy`} target="_blank">
       privacy policy
-    </Link>
+    </a>
   </p>
 )
 

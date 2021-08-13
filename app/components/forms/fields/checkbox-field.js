@@ -6,7 +6,7 @@ import { colors } from '../../styled-components-mixins/colors'
 import { fontMain } from '../../styled-components-mixins'
 
 const backgroundColor = colors.white
-const checkedBackgroundColor = colors.hanumanGreen
+const checkedBackgroundColor = colors.freeSpeechBlue
 const checkColor = colors.white
 
 const Field = styled.div``

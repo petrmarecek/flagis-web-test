@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { routes } from 'utils/routes'
 import { Link } from 'react-router-dom'
 import Logo from 'assets/img/logo/logo.svg'
+import config from 'config'
 
 // styles
 import {
@@ -20,7 +21,7 @@ const NavigationLandingPrimary = ({ isLogoNav, location }) => {
   return (
     <NavigationLandingPrimaryWrapper>
       <LandingLogo>
-        <a href="https://www.flagis.com">
+        <a href={config.landingURL}>
           <img src={Logo} />
         </a>
       </LandingLogo>

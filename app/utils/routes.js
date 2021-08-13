@@ -1,5 +1,5 @@
 const routes = {
-  landing: '/',
+  default: '/',
   legal: {
     default: '/legal',
     termsConditions: '/legal/terms-conditions',
