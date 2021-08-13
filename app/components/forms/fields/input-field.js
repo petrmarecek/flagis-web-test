@@ -61,7 +61,7 @@ const InputField = props => {
   const borderColor = isError
     ? colors.pompelmo
     : isFocused
-    ? colors.hanumanGreen
+    ? colors.freeSpeechBlue
     : colors.snowShadow
 
   return (

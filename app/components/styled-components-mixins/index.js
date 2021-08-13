@@ -203,7 +203,7 @@ const button = css`
 
   :hover {
     background-color: ${props =>
-      props.disabled ? colors.lostAtSea : colors.hanumanGreen};
+      props.disabled ? colors.lostAtSea : colors.freeSpeechBlue};
   }
 `
 

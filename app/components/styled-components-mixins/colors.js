@@ -25,9 +25,10 @@ export const colors = {
   // blue shades
   pervenche: '#0799ea',
   parachuting: '#00599c',
+  freeSpeechBlue: '#424ec3',
 
   // green shades
-  hanumanGreen: '#44ffb1',
+  hanumanGreen: '#00CD78',
   shallowEnd: '#c2fee5',
   meltingGlacier: '#ecfff7',
   drunkenDragonfly: '#37E59C',

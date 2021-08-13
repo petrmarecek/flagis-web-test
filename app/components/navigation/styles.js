@@ -33,12 +33,8 @@ const TriangleIcon = styled(Icon)`
 const NavigationLandingPrimaryWrapper = styled.nav`
   display: flex;
   align-items: center;
-  height: 140px;
-  padding: 0 70px;
-
-  ${mediaQueries.md} {
-    padding: 0 50px;
-  }
+  height: 136px;
+  padding: 0 68px;
 
   ${mediaQueries.smx} {
     height: 100px;
@@ -55,15 +51,7 @@ const LandingLogo = styled.div`
 
   img {
     height: auto;
-    width: 120px;
-
-    ${mediaQueries.md} {
-      width: 110px;
-    }
-
-    ${mediaQueries.smx} {
-      width: 90px;
-    }
+    width: 96px;
 
     ${mediaQueries.sm} {
       width: 70px;
@@ -76,15 +64,7 @@ const LandingButtons = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  font-size: 24px;
-
-  ${mediaQueries.md} {
-    font-size: 22px;
-  }
-
-  ${mediaQueries.smx} {
-    font-size: 18px;
-  }
+  font-size: 18px;
 
   ${mediaQueries.sm} {
     font-size: 14px;
@@ -97,13 +77,16 @@ const LandingButtonSignIn = styled.div`
   display: inline-block;
   cursor: pointer;
   padding: 0;
-  margin-right: 50px;
+  margin-right: 64px;
   color: ${defaultColors.darkJungleGreen};
   pointer-events: ${props => (props.active ? 'none' : 'auto')};
-  ${animateLineFromMiddle(2, 2, defaultColors.darkJungleGreen)}
 
-  ${mediaQueries.md} {
-    margin-right: 35px;
+  a {
+    color: ${defaultColors.darkJungleGreen};
+  }
+
+  a:hover {
+    color: ${defaultColors.freeSpeechBlue};
   }
 
   ${mediaQueries.smx} {
@@ -115,24 +98,19 @@ const LandingButtonSignUp = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 56px;
-  width: 230px;
-  transition: 500ms;
-  color: ${defaultColors.darkJungleGreen};
-  border: 1px solid ${defaultColors.hanumanGreen};
+  height: 40px;
+  width: 169px;
+  font-weight: bold;
+  background-color: ${defaultColors.hanumanGreen};
   pointer-events: ${props => (props.active ? 'none' : 'auto')};
-  ${borderRadius('100px')} :hover {
-    background-color: ${defaultColors.hanumanGreen};
+  ${borderRadius('100px')}
+
+  a {
+    color: ${defaultColors.white};
   }
 
-  ${mediaQueries.md} {
-    height: 50px;
-    width: 200px;
-  }
-
-  ${mediaQueries.smx} {
-    height: 40px;
-    width: 180px;
+  :hover {
+    background-color: ${defaultColors.freeSpeechBlue};
   }
 
   ${mediaQueries.sm} {
@@ -146,34 +124,6 @@ const LandingButtonSignUp = styled.div`
 const NavigationLandingSecondaryWrapper = styled.div`
   flex: 1;
   display: flex;
-`
-
-const LandingSecondaryButton = styled.div`
-  ${fontMain}
-  ${userSelect('none')};
-  display: inline-block;
-  cursor: pointer;
-  font-size: 20px;
-  margin: 0 50px 0 0;
-  padding: 0;
-  color: ${props => (props.active ? '#293034' : '#B1B5B8')};
-  pointer-events: ${props => (props.active ? 'none' : 'auto')};
-  ${animateLineFromMiddle(2, 2, defaultColors.darkJungleGreen)}
-
-  ${mediaQueries.md} {
-    margin: 0 25px 0 0;
-  }
-
-  ${mediaQueries.smx} {
-    font-size: 16px;
-    margin: 0 15px 0 0;
-  }
-
-  ${mediaQueries.sm} {
-    :last-child {
-      margin: 0;
-    }
-  }
 `
 
 /*------------------------------ Navigation Legal -----------------------------*/
@@ -493,7 +443,6 @@ export {
   LandingButtonSignUp,
   //Navigation Landing Secondary
   NavigationLandingSecondaryWrapper,
-  LandingSecondaryButton,
   // Navigation Legal
   NavigationLegalWrapper,
   LegalButton,
