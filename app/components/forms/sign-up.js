@@ -78,7 +78,7 @@ const SuccessSignUpWrapper = styled.div`
 `
 
 const Text = styled.div`
-  ${fontMain}
+  ${fontMain};
   font-size: 24px;
   text-align: center;
   line-height: 40px;
@@ -135,7 +135,7 @@ const SignUp = ({
         </SuccessSignUpWrapper>
       )}
       {!isSubmitted && (
-        <Form maxWidth={500}>
+        <Form>
           <FormBody
             onSubmit={isAgree ? handleSubmit(values => onSubmit(values)) : null}
           >

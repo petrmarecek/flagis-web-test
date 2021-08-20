@@ -32,7 +32,7 @@ const ErrorListItem = styled.li.attrs(props => ({
   display: flex;
   flex-flow: row wrap;
   border-bottom: ${props => props.borderWidth}px solid red;
-  font-size: 15px;
+  font-size: 14px;
   margin-bottom: 20px;
   padding: 5px 10px;
   color: red;

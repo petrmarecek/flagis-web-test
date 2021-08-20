@@ -150,17 +150,17 @@ const input = css`
 
 const commonInput = css`
   ${input};
-  margin: 0 0 12px;
+  margin: 0 0 20px;
   padding: 0 10px 0 10px;
-  font-size: 24px;
+  font-size: 18px;
   border-bottom: 1px solid #00cd78;
 `
 
 const commonInputSmall = css`
   ${input};
-  margin: 0 0 12px;
+  margin: 0 0 20px;
   padding: 0 10px 0 10px;
-  font-size: 18px;
+  font-size: 16px;
   border-bottom: 1px solid #00cd78;
 `
 
@@ -190,8 +190,8 @@ const button = css`
   ${fontMain};
   outline: none;
   cursor: ${props => (props.disabled ? 'auto' : 'pointer')};
-  font-size: 18px;
-  padding: 8px 24px;
+  font-size: 16px;
+  padding: 8px 20px;
   text-decoration: none;
   border: none;
 
@@ -209,7 +209,6 @@ const button = css`
 
 const ButtonDefault = styled.input`
   ${button};
-  font-size: 18px;
 `
 
 const ButtonDefaultSmall = styled.input`

@@ -13,7 +13,7 @@ import { colors } from '../../styled-components-mixins/colors'
 
 const activeLabel = css`
   left: 0;
-  top: -14px;
+  top: -16px;
   font-size: 12px;
 `
 
@@ -34,9 +34,9 @@ const Label = styled.label`
   display: block;
   position: absolute;
   left: 5px;
-  top: ${props => (props.smallSize ? '5px' : '-5px')};
+  top: ${props => (props.smallSize ? '5px' : '2px')};
   cursor: auto;
-  font-size: ${props => (props.smallSize ? '18px' : '24px')};
+  font-size: ${props => (props.smallSize ? '16px' : '18px')};
   color: ${colors.lostAtSea};
   transition: all 0.125s ease-out;
   ${props => (props.isFocused ? activeLabel : null)}

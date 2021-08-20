@@ -40,7 +40,7 @@ import {
 const SignIn = ({ errorSignIn, loader, location, handleSubmit, onSubmit }) => (
   <div className="landing-container">
     <NavigationLandingPrimary location={location} />
-    <Form maxWidth={500}>
+    <Form>
       <FormBody onSubmit={handleSubmit(values => onSubmit(values))}>
         <FormBodyFields>
           <FormErrors>

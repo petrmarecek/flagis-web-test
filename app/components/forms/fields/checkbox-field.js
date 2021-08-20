@@ -16,11 +16,11 @@ const Checkbox = styled.input`
 
   & + label:before {
     content: '';
-    margin-right: 10px;
+    margin: 0 10px;
     display: inline-block;
     vertical-align: text-top;
-    width: 20px;
-    height: 20px;
+    width: 16px;
+    height: 16px;
     background: ${backgroundColor};
     box-shadow: 0 0 0 1px ${props => props.borderColor};
   }
