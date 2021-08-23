@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.32.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.31.0...v1.32.0) (2021-08-23)
+
+
+### Features
+
+* Change primary green color and redirect new landing page ([27d2fcd](https://github.com/react-boilerplate/react-boilerplate/commit/27d2fcdab5a7ac2b51438ed664b744b8c6f8a046))
+* Smaller forms ([199d74e](https://github.com/react-boilerplate/react-boilerplate/commit/199d74e82aa0a2c868bb06a80a0361fd01c8258b))
+
 ## [1.31.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.30.0...v1.31.0) (2021-07-23)
 
 
