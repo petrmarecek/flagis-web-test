@@ -183,7 +183,7 @@ const TagTreeSection = props => {
           {isSectionNameVisible && (
             <SectionHeader colorTheme={colorTheme}>
               <SectionHeaderTitle
-                type='text'
+                type="text"
                 value={title}
                 onClick={onHandleTitleClicked}
                 onChange={onHandleChangeTitle}
@@ -193,7 +193,7 @@ const TagTreeSection = props => {
                 ref={getInputRef}
                 style={styleWidth}
               />
-              <SectionHeaderIcon leftOffset title='Delete'>
+              <SectionHeaderIcon leftOffset title="Delete">
                 <Icon
                   icon={ICONS.TRASH}
                   width={12}
@@ -211,8 +211,8 @@ const TagTreeSection = props => {
           {!isSectionNameVisible && (
             <SectionHeader colorTheme={colorTheme}>
               <SectionHeaderTitle
-                type='text'
-                value='Favorite Filters'
+                type="text"
+                value="Smart view"
                 style={styleWidth}
                 readOnly
               />
@@ -278,8 +278,8 @@ const TagTreeSection = props => {
             )}
           </SectionContent>
         </SectionWrapper>
-      </li>,
-    ),
+      </li>
+    )
   )
 }
 
@@ -333,13 +333,13 @@ TagTreeSection.propTypes = {
 export default DragSource(
   TagTreeSectionDragDrop.type,
   TagTreeSectionDragDrop.sectionSource,
-  TagTreeSectionDragDrop.collectDragSource,
+  TagTreeSectionDragDrop.collectDragSource
 )(
   compose(
     DropTarget(
       TagTreeSectionDragDrop.type,
       TagTreeSectionDragDrop.sectionTarget,
-      TagTreeSectionDragDrop.collectDropTarget,
+      TagTreeSectionDragDrop.collectDropTarget
     ),
     withStateHandlers(
       props => ({ inputRef: null, title: props.section.title }),
@@ -370,7 +370,7 @@ export default DragSource(
           props.onUpdateSectionTitle(props.section, title)
           return {}
         },
-      },
+      }
     ),
     withHandlers({
       onHandleAddChildClicked: props => (type = 'tags') => event => {
@@ -405,6 +405,6 @@ export default DragSource(
             return
         }
       },
-    }),
-  )(TagTreeSection),
+    })
+  )(TagTreeSection)
 )
