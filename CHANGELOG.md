@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.33.0](https://github.com/react-boilerplate/react-boilerplate/compare/v1.32.1...v1.33.0) (2021-08-27)
+
+
+### Features
+
+* Add new default value of tag tree section ([dad98fd](https://github.com/react-boilerplate/react-boilerplate/commit/dad98fd7b35566f0e678257c4b8db921e739f238))
+
 ### [1.32.1](https://github.com/react-boilerplate/react-boilerplate/compare/v1.32.0...v1.32.1) (2021-08-26)
 
 
